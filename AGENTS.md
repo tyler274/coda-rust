@@ -10,7 +10,7 @@ copy them.
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
 | Physician product, clinical runtime, and the clinical skill catalog | [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
-| Clinical skill markdown | [submodules/coda-agents/skills](submodules/coda-agents/skills), loaded by `crates/agent-skills` |
+| Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
 | Duet, the patient app | [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
 | Gym cases, promotion, and runs | [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
