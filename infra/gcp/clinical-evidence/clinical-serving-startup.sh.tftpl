@@ -1,0 +1,37 @@
+#!/bin/bash
+# Runs on every boot of a serving replica: mount its own disk, then run the pinned clinical evidence image on the
+# L4. The server copies the active build onto that disk and answers /ready only once it serves it.
+set -euo pipefail
+log() { logger -t coda-clinical-serving "$*"; echo "coda-clinical-serving: $*"; }
+
+DATA_ROOT='${data_root}'
+DISK=/dev/disk/by-id/google-local-nvme-ssd-0
+if ! mountpoint -q "$DATA_ROOT"; then
+  # A replaced or restarted server may come back with a blank disk; the server recopies what is missing.
+  blkid "$DISK" >/dev/null 2>&1 || mkfs.ext4 -q -F -m 0 -E lazy_itable_init=0,lazy_journal_init=0,discard "$DISK"
+  mkdir -p "$DATA_ROOT"
+  mount -o discard,defaults,noatime "$DISK" "$DATA_ROOT"
+fi
+mkdir -p "$DATA_ROOT/runtime" "$DATA_ROOT/table"
+
+until nvidia-smi >/dev/null 2>&1; do log "waiting for the GPU driver"; sleep 10; done
+for tool in docker nvidia-ctk; do
+  command -v "$tool" >/dev/null || { log "missing $tool on the boot image"; exit 1; }
+done
+
+cat > /etc/coda-clinical-serving.env <<'ENVIRONMENT'
+%{ for name, value in environment ~}
+${name}=${value}
+%{ endfor ~}
+ENVIRONMENT
+
+gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
+docker pull '${image}'
+docker rm -f coda-clinical-evidence >/dev/null 2>&1 || true
+docker run --detach --name coda-clinical-evidence --restart unless-stopped \
+  --gpus all --network host --shm-size 2g \
+  --env-file /etc/coda-clinical-serving.env \
+  --volume "$DATA_ROOT:$DATA_ROOT" \
+  --log-driver gcplogs \
+  '${image}'
+log "started ${image}"

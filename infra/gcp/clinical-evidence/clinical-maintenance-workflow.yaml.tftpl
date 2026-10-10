@@ -1,0 +1,259 @@
+perform_clinical_operation:
+  params: [refresh_id, operation, input]
+  steps:
+    - route:
+        switch:
+          - condition: $${operation == "migrate"}
+            next: migrate
+          - condition: $${operation == "convert"}
+            next: convert
+          - condition: $${operation == "verify_serving"}
+            next: verify_serving
+          - condition: $${operation == "rights"}
+            next: rights
+    - ordinary_refresh:
+        call: publish_clinical_sources
+        args:
+          refresh_id: $${refresh_id}
+          replace_build_id: $${map.get(input, "replace_build_id")}
+          resume_refresh_id: $${map.get(input, "resume_refresh_id")}
+          acquisition_id: $${map.get(input, "acquisition_id")}
+        result: result
+        next: done
+    - rights:
+        call: enforce_clinical_rights
+        args:
+          refresh_id: $${refresh_id}
+          observations: $${default(map.get(input, "rights_observations"), [])}
+        result: result
+        next: done
+    - migrate:
+        call: migrate_clinical_schema
+        args:
+          refresh_id: $${refresh_id}
+        result: result
+        next: done
+    - convert:
+        call: convert_clinical_retrieval
+        args:
+          refresh_id: $${refresh_id}
+          replace_build_id: $${input.replace_build_id}
+          resume_refresh_id: $${map.get(input, "resume_refresh_id")}
+        result: result
+        next: done
+    - verify_serving:
+        call: verify_clinical_serving
+        args:
+          refresh_id: $${refresh_id}
+          window_seconds: $${default(map.get(input, "window_seconds"), 1800)}
+        result: result
+    - done:
+        return: $${result}
+
+convert_clinical_retrieval:
+  params: [refresh_id, replace_build_id, {resume_refresh_id: null}]
+  steps:
+    - set_deadline:
+        assign:
+          - work_deadline: $${sys.now() + 6300}
+          - builder_config: null
+          - activation_environment:
+              - name: CODA_CLINICAL_EXPECTED_PREVIOUS_BUILD_ID
+                value: $${replace_build_id}
+    - read_source_state:
+        call: http.get
+        args:
+          url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+          auth:
+            type: OAuth2
+          timeout: 30
+        result: source_state
+    - require_finalized_sources:
+        switch:
+          - condition: $${source_state.body.pending != null}
+            raise: "Finish or retire the pending source candidate before recipe conversion"
+    - route_recovery:
+        switch:
+          - condition: $${resume_refresh_id != null}
+            next: read_previous_conversion
+    - read_builder_definition:
+        call: googleapis.run.v2.projects.locations.jobs.get
+        args:
+          name: "projects/${project_id}/locations/${gpu_region}/jobs/${builder_job}"
+        result: builder
+    - read_canonical_builder_config:
+        for:
+          value: entry
+          in: $${builder.template.template.containers[0].env}
+          steps:
+            - match_configuration:
+                switch:
+                  - condition: $${entry.name == "CODA_CLINICAL_RETRIEVAL_BUILD_CONFIG"}
+                    assign:
+                      - builder_config: $${json.decode(entry.value)}
+    - require_ordinary_builder:
+        switch:
+          - condition: $${builder_config == null or map.get(builder_config, "replace_build_id") != null}
+            raise: "The recurring builder must carry its ordinary configuration"
+    - bind_replacement:
+        assign:
+          - builder_config.replace_build_id: $${replace_build_id}
+    - migrate_clinical_database:
+        call: migrate_clinical_schema
+        args:
+          refresh_id: $${refresh_id}
+          deadline: $${work_deadline}
+    - build_conversion:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${gpu_region}/jobs/${builder_job}"
+          refresh_id: $${refresh_id}
+          container: retrieval-builder
+          timeout_seconds: 3600
+          deadline: $${work_deadline}
+          environment:
+            - name: CODA_CLINICAL_RETRIEVAL_BUILD_CONFIG
+              value: $${json.encode_to_string(builder_config)}
+        next: activate_conversion
+    - read_previous_conversion:
+        call: http.get
+        args:
+          url: $${"https://workflowexecutions.googleapis.com/v1/projects/${project_id}/locations/${region}/workflows/coda-clinical-corpus-refresh/executions/" + resume_refresh_id}
+          auth:
+            type: OAuth2
+          timeout: 30
+        result: previous_conversion
+    - require_terminal_conversion:
+        switch:
+          - condition: $${not (previous_conversion.body.state in ["FAILED", "SUCCEEDED", "CANCELLED"])}
+            raise: "The previous conversion must be terminal before recovery"
+    - decode_previous_conversion:
+        assign:
+          - previous_input: $${json.decode(previous_conversion.body.argument)}
+    - require_matching_conversion:
+        switch:
+          - condition: $${map.get(previous_input, "operation") != "convert" or map.get(previous_input, "replace_build_id") != replace_build_id or map.get(previous_input, "resume_refresh_id") != null}
+            raise: "Recovery must use the original conversion with the same replacement target"
+    - bind_existing_build:
+        assign:
+          - build_reference_environment:
+              name: CODA_CLINICAL_BUILD_REFRESH_ID
+              value: $${resume_refresh_id}
+          - activation_environment: $${list.concat(activation_environment, build_reference_environment)}
+    - start_recovery_sql:
+        call: start_clinical_sql
+        args:
+          refresh_id: $${refresh_id}
+    - activate_conversion:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${region}/jobs/${activator_job}"
+          refresh_id: $${refresh_id}
+          container: retrieval-activator
+          timeout_seconds: ${activation_timeout_seconds}
+          deadline: $${work_deadline}
+          environment: $${activation_environment}
+    - done:
+        return:
+          owner: clinical-corpus-maintenance
+          outcome: converted
+          refresh_id: $${refresh_id}
+          replaced_build_id: $${replace_build_id}
+
+# Schema migrations are additive and independent of retrieval builds. The parent
+# owns the publication window and parks SQL on success and failure.
+migrate_clinical_schema:
+  params: [refresh_id, {deadline: null}]
+  steps:
+    - start_sql:
+        call: start_clinical_sql
+        args:
+          refresh_id: $${refresh_id}
+    - run_migrator:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${region}/jobs/${migration_job}"
+          refresh_id: $${refresh_id}
+          timeout_seconds: 900
+          deadline: $${deadline}
+    - done:
+        return:
+          owner: clinical-corpus-maintenance
+          outcome: migrated
+          refresh_id: $${refresh_id}
+
+# The parent performs ordinary authenticated caller checks. Workflows owns the
+# timeout and cleanup even if that caller or its host disappears.
+verify_clinical_serving:
+  params: [refresh_id, window_seconds]
+  steps:
+    - start_sql:
+        call: start_clinical_sql
+        args:
+          refresh_id: $${refresh_id}
+    - create_callback:
+        call: events.create_callback_endpoint
+        args:
+          http_callback_method: POST
+        result: callback
+    - announce_window:
+        call: sys.log
+        args:
+          severity: INFO
+          json:
+            owner: clinical-corpus-maintenance
+            outcome: awaiting_caller_verification
+            refresh_id: $${refresh_id}
+            callback_url: $${callback.url}
+            deadline_epoch: $${sys.now() + window_seconds}
+    - await_verification:
+        call: events.await_callback
+        args:
+          callback: $${callback}
+          timeout: $${window_seconds}
+        result: verification
+    - require_verified_result:
+        switch:
+          - condition: $${map.get(verification, ["http_request", "body", "outcome"]) != "verified"}
+            raise: "Caller verification did not report success"
+    - done:
+        return:
+          owner: clinical-corpus-maintenance
+          outcome: caller_verified
+          refresh_id: $${refresh_id}
+
+# Exact confirmed restrictions use the existing admission owner independently of
+# publication and its maintenance lock. They never need a replacement index.
+enforce_clinical_rights:
+  params: [refresh_id, observations]
+  steps:
+    - skip_empty:
+        switch:
+          - condition: $${len(observations) == 0}
+            return:
+              owner: clinical-source-admission
+              outcome: rights_reconciled
+    - route_sql_start:
+        switch:
+          - condition: ${manage_sql_activation}
+            steps:
+              - start_sql:
+                  call: start_clinical_sql
+                  args:
+                    refresh_id: $${refresh_id}
+    - apply_rights:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${region}/jobs/${admission_job}"
+          refresh_id: $${refresh_id}
+          container: source-admission
+          timeout_seconds: 600
+          environment:
+            - name: CODA_CLINICAL_SOURCE_RIGHTS_ONLY
+              value: "true"
+            - name: CODA_CLINICAL_SOURCE_RIGHTS_OBSERVATIONS
+              value: $${json.encode_to_string(observations)}
+    - done:
+        return:
+          owner: clinical-source-admission
+          outcome: rights_reconciled

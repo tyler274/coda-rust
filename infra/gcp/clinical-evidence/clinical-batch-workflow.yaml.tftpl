@@ -1,0 +1,138 @@
+# One submission and settlement owner for disk-backed clinical jobs.
+# Scheduling and execution have separate bounds: the job must start running within
+# its scheduling wait, then finish within timeout_seconds counted from that start.
+# A scheduling timeout deletes the job and raises batch_capacity_unavailable.
+run_clinical_batch:
+  params: [refresh_id, job_prefix, batch_spec, timeout_seconds, scheduling_seconds: ${batch_scheduling_wait_seconds}]
+  steps:
+    - initialize:
+        assign:
+          - job_id: $${job_prefix + refresh_id}
+          - job_name: $${"projects/${project_id}/locations/${region}/jobs/" + job_id}
+          - batch_spec.labels.refresh_id: $${refresh_id}
+          - scheduling_ends_at: $${sys.now() + scheduling_seconds}
+          - ends_at: null
+    - run:
+        try:
+          steps:
+            - submit_once:
+                call: http.post
+                args:
+                  # Each phase has a distinct deterministic job ID. This POST
+                  # is never retried; an ambiguous response settles that exact
+                  # job. Reusing the workflow UUID as requestId across phases
+                  # could cause Batch to deduplicate a different job creation.
+                  url: $${"https://batch.googleapis.com/v1/projects/${project_id}/locations/${region}/jobs?jobId=" + job_id}
+                  auth:
+                    type: OAuth2
+                  timeout: 60
+                  body: $${batch_spec}
+            - read_job:
+                try:
+                  call: googleapis.batch.v1.projects.locations.jobs.get
+                  args:
+                    name: $${job_name}
+                  result: current
+                retry: $${http.default_retry}
+            - route_job:
+                switch:
+                  - condition: $${current.status.state == "SUCCEEDED"}
+                    next: record_completion
+                  - condition: $${current.status.state in ["FAILED", "DELETION_IN_PROGRESS"]}
+                    raise: $${current.status}
+            - start_execution_window:
+                switch:
+                  - condition: $${ends_at == null and current.status.state == "RUNNING"}
+                    assign:
+                      - ends_at: $${sys.now() + timeout_seconds}
+            - route_deadline:
+                switch:
+                  - condition: $${ends_at == null and sys.now() >= scheduling_ends_at}
+                    raise:
+                      code: batch_capacity_unavailable
+                      message: '$${"No machine started the clinical job within its scheduling wait: " + job_id}'
+                  - condition: $${ends_at != null and sys.now() >= ends_at}
+                    raise: "Clinical job exceeded its bounded Batch execution window"
+            - wait_job:
+                call: sys.sleep
+                args:
+                  seconds: 30
+                next: read_job
+            - record_completion:
+                call: sys.log
+                args:
+                  severity: INFO
+                  json:
+                    owner: $${batch_spec.labels.owner}
+                    job: $${job_name}
+                    outcome: $${current.status.state}
+                    status: $${current.status}
+        except:
+          as: error
+          steps:
+            - settle_exact_job:
+                try:
+                  call: settle_clinical_batch
+                  args:
+                    job: $${job_name}
+                    refresh_id: $${refresh_id}
+                except:
+                  as: cleanup_error
+                  steps:
+                    - preserve_failed_cleanup:
+                        raise:
+                          cleanup_failed: true
+                          job: $${job_name}
+                          operation_error: $${error}
+                          cleanup_error: $${cleanup_error}
+            - propagate_failure:
+                raise: $${error}
+    - done:
+        return:
+          job: $${job_name}
+          outcome: succeeded
+
+# Never cancel a foreign execution. A failed read/delete withholds SQL parking
+# and window release; a completed native job needs no cancellation.
+settle_clinical_batch:
+  params: [job, refresh_id]
+  steps:
+    - read_exact_job:
+        try:
+          call: googleapis.batch.v1.projects.locations.jobs.get
+          args:
+            name: $${job}
+          result: current
+        except:
+          as: read_error
+          steps:
+            - allow_absent_job:
+                switch:
+                  - condition: $${map.get(read_error, "code") == 404}
+                    return: absent
+            - propagate_read_failure:
+                raise: $${read_error}
+    - require_owner:
+        switch:
+          - condition: $${map.get(current.labels, "refresh_id") != refresh_id}
+            raise: "Refusing to settle a Batch job with a different workflow owner"
+          - condition: $${current.status.state in ["SUCCEEDED", "FAILED"]}
+            return: terminal
+    - delete_exact_job:
+        try:
+          call: googleapis.batch.v1.projects.locations.jobs.delete
+          args:
+            name: $${job}
+            connector_params:
+              timeout: 600
+        except:
+          as: cleanup_error
+          steps:
+            - allow_concurrent_absence:
+                switch:
+                  - condition: $${map.get(cleanup_error, "code") == 404}
+                    return: absent
+            - propagate_cleanup_failure:
+                raise: $${cleanup_error}
+    - done:
+        return: deleted

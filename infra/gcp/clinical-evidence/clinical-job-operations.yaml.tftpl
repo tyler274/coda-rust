@@ -1,0 +1,155 @@
+# Job execution state remains in Cloud Run and the owning Workflows execution.
+# Submit once. In particular, an ambiguous POST must not become another run.
+# A fixed job (fixed: true) runs exactly as Terraform defines it: no overrides are sent, and the
+# caller holds no authority to send any.
+run_clinical_job:
+  params: [job, refresh_id, timeout_seconds, {container: ""}, {environment: null}, {deadline: null}, {fixed: false}]
+  steps:
+    - initialize:
+        assign:
+          - ends_at: $${sys.now() + timeout_seconds + 300}
+          - owner_environment:
+              name: CODA_CLINICAL_REFRESH_ID
+              value: $${refresh_id}
+          - override:
+              env: $${list.concat(default(environment, []), owner_environment)}
+          - request: {}
+    - check_deadline:
+        switch:
+          - condition: $${deadline != null and ends_at > deadline}
+            raise: "Insufficient maintenance time for the next bounded job"
+    - name_container:
+        switch:
+          - condition: $${container != ""}
+            assign:
+              - override.name: $${container}
+    - bind_overrides:
+        switch:
+          - condition: $${not fixed}
+            assign:
+              - request.overrides:
+                  timeout: $${string(timeout_seconds) + "s"}
+                  containerOverrides: $${[override]}
+    - submit:
+        call: http.post
+        args:
+          url: $${"https://run.googleapis.com/v2/" + job + ":run"}
+          auth:
+            type: OAuth2
+          timeout: 60
+          body: $${request}
+        result: submitted
+    - read_operation:
+        try:
+          call: http.get
+          args:
+            url: $${"https://run.googleapis.com/v2/" + submitted.body.name}
+            auth:
+              type: OAuth2
+            timeout: 30
+          result: current
+        retry: $${http.default_retry}
+    - route_operation:
+        switch:
+          - condition: $${map.get(current.body, "error") != null}
+            raise: $${current.body.error}
+          - condition: $${default(map.get(current.body, "done"), false)}
+            return: $${current.body.response}
+          - condition: $${sys.now() >= ends_at}
+            raise: "Cloud Run execution exceeded its workflow deadline"
+    - wait:
+        call: sys.sleep
+        args:
+          seconds: $${math.max(0, math.min(30, ends_at - sys.now()))}
+        next: read_operation
+
+# Page through native execution history. A page size bounds workflow memory,
+# not the number of executions inspected. Never cancel another refresh's work.
+settle_clinical_job:
+  params: [job, refresh_id]
+  steps:
+    - initialize:
+        assign:
+          - page_token: ""
+          - foreign_active: []
+    - read_page:
+        call: googleapis.run.v2.projects.locations.jobs.executions.list
+        args:
+          parent: $${job}
+          pageSize: 25
+          pageToken: $${page_token}
+        result: page
+    - inspect_executions:
+        for:
+          value: execution
+          in: $${default(map.get(page, "executions"), [])}
+          steps:
+            - skip_terminal:
+                switch:
+                  - condition: $${map.get(execution, "completionTime") != null}
+                    next: continue
+            - initialize_ownership:
+                assign:
+                  - owned: false
+            - inspect_containers:
+                for:
+                  value: container
+                  in: $${execution.template.containers}
+                  steps:
+                    - inspect_environment:
+                        for:
+                          value: entry
+                          in: $${default(map.get(container, "env"), [])}
+                          steps:
+                            - match_owner:
+                                switch:
+                                  - condition: $${entry.name == "CODA_CLINICAL_REFRESH_ID" and map.get(entry, "value") == refresh_id}
+                                    assign:
+                                      - owned: true
+            - preserve_foreign_execution:
+                switch:
+                  - condition: $${not owned}
+                    steps:
+                      - record_foreign:
+                          assign:
+                            - foreign_active: $${list.concat(foreign_active, execution.name)}
+                      - skip_foreign:
+                          next: continue
+            - cancel_owned_execution:
+                try:
+                  call: googleapis.run.v2.projects.locations.jobs.executions.cancel
+                  args:
+                    name: $${execution.name}
+                    body: {}
+                    connector_params:
+                      timeout: 180
+                except:
+                  as: cancellation_error
+                  # Completion can race cancellation. The following native GET
+                  # decides whether the task is terminal, including on error.
+                  call: sys.log
+                  args:
+                    severity: WARNING
+                    json:
+                      owner: clinical-corpus-refresh
+                      outcome: cancellation_requires_readback
+                      execution: $${execution.name}
+                      error: $${cancellation_error}
+            - verify_terminal:
+                call: googleapis.run.v2.projects.locations.jobs.executions.get
+                args:
+                  name: $${execution.name}
+                result: terminal
+            - require_terminal:
+                switch:
+                  - condition: $${map.get(terminal, "completionTime") == null}
+                    raise: "Execution cancellation did not become terminal; SQL parking withheld"
+    - next_page:
+        assign:
+          - page_token: $${default(map.get(page, "nextPageToken"), "")}
+    - route_page:
+        switch:
+          - condition: $${page_token != ""}
+            next: read_page
+    - return_foreign:
+        return: $${foreign_active}

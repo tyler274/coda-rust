@@ -1,0 +1,60 @@
+run_clinical_admission_batch:
+  params: [refresh_id]
+  steps:
+    - initialize:
+        assign:
+          - batch_spec: ${admission_batch}
+          - environment: {}
+    - read_admission_definition:
+        call: googleapis.run.v2.projects.locations.jobs.get
+        args:
+          name: "projects/${project_id}/locations/${region}/jobs/${admission_job}"
+        result: admission
+    - require_canonical_admission:
+        switch:
+          - condition: $${len(admission.template.template.containers) != 1 or admission.template.template.serviceAccount != batch_spec.allocationPolicy.serviceAccount.email}
+            raise: "Batch admission requires the canonical single-container maintainer identity"
+    - bind_container:
+        assign:
+          - container: $${admission.template.template.containers[0]}
+    - require_admission_command:
+        switch:
+          - condition: $${len(container.command) != 1 or container.command[0] != "node" or len(container.args) != 1 or container.args[0] != "dist/src/server/clinicalCorpus/admit/hostedClinicalSourceAdmission.js"}
+            raise: "Batch admission requires the canonical hosted admission command"
+    - read_canonical_environment:
+        for:
+          value: entry
+          in: $${container.env}
+          steps:
+            - require_literal_value:
+                switch:
+                  - condition: $${map.get(entry, "value") == null}
+                    raise: "Batch admission cannot copy a nonliteral environment value"
+            - copy_value:
+                assign:
+                  - environment[entry.name]: $${entry.value}
+    - bind_native_execution:
+        assign:
+          - environment.CODA_CLINICAL_REFRESH_ID: $${refresh_id}
+          - environment.TMPDIR: /work
+          - environment.CODA_CLINICAL_PMC_ARCHIVE_CACHE_BYTES: "17179869184"
+          - runnable:
+              container:
+                imageUri: $${container.image}
+                entrypoint: node
+                commands: $${container.args}
+                volumes:
+                  - /mnt/disks/admission:/work
+              environment:
+                variables: $${environment}
+          - batch_spec.taskGroups[0].taskSpec.runnables: $${[runnable]}
+    - run:
+        call: run_clinical_batch
+        args:
+          refresh_id: $${refresh_id}
+          job_prefix: coda-admission-
+          batch_spec: $${batch_spec}
+          timeout_seconds: ${bulk_admission_wait_seconds}
+        result: result
+    - done:
+        return: $${result}

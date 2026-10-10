@@ -1,0 +1,124 @@
+# Execute the existing builder on ephemeral disk. No second model config,
+# candidate, publication receipt, SQL owner or embedding implementation.
+run_clinical_retrieval_batch:
+  params: [refresh_id, replace_build_id: null]
+  steps:
+    - initialize:
+        assign:
+          - batch_spec: ${retrieval_batch}
+          - environment: {}
+    - read_builder_definition:
+        call: googleapis.run.v2.projects.locations.jobs.get
+        args:
+          name: "projects/${project_id}/locations/${gpu_region}/jobs/${builder_job}"
+        result: builder
+    - require_canonical_builder:
+        switch:
+          - condition: $${len(builder.template.template.containers) != 1 or builder.template.template.serviceAccount != batch_spec.allocationPolicy.serviceAccount.email}
+            raise: "Batch building requires the canonical single-container builder identity"
+    - bind_container:
+        assign:
+          - container: $${builder.template.template.containers[0]}
+    - require_builder_command:
+        switch:
+          - condition: $${len(container.command) != 1 or container.command[0] != "node" or len(container.args) != 1 or container.args[0] != "dist/src/server/clinicalCorpus/build/hostedClinicalRetrievalBuild.js"}
+            raise: "Batch building requires the canonical hosted builder command"
+    - read_canonical_environment:
+        for:
+          value: entry
+          in: $${container.env}
+          steps:
+            - require_literal_value:
+                switch:
+                  - condition: $${map.get(entry, "value") == null}
+                    raise: "Batch builder cannot copy a nonliteral environment value"
+            - copy_value:
+                assign:
+                  - environment[entry.name]: $${entry.value}
+    - read_configuration:
+        assign:
+          - builder_config: $${json.decode(environment.CODA_CLINICAL_RETRIEVAL_BUILD_CONFIG)}
+    - require_ordinary_configuration:
+        switch:
+          - condition: $${builder_config.schema_version != 2 or builder_config.required_device != "cuda" or map.get(builder_config, "replace_build_id") != null}
+            raise: "Batch publication requires the ordinary CUDA builder configuration"
+    - bind_explicit_replacement:
+        switch:
+          - condition: $${replace_build_id != null}
+            assign:
+              - builder_config.replace_build_id: $${replace_build_id}
+              - environment.CODA_CLINICAL_RETRIEVAL_BUILD_CONFIG: $${json.encode_to_string(builder_config)}
+    - bind_native_execution:
+        assign:
+          - environment.CODA_CLINICAL_REFRESH_ID: $${refresh_id}
+          - environment.TMPDIR: /work
+          # Batch owns GPU devices, driver mounts and library paths on COS.
+          # Adding them here duplicates its generated Docker launch arguments.
+          - runnable:
+              container:
+                imageUri: $${container.image}
+                entrypoint: node
+                commands: $${container.args}
+                volumes:
+                  - /mnt/disks/retrieval:/work
+              environment:
+                variables: $${environment}
+          - batch_spec.taskGroups[0].taskSpec.runnables: $${[runnable]}
+    # One elapsed deadline bounds the whole wait for a machine: each attempt
+    # waits at most the time left, and deleting an attempt's job spends it too.
+    - bind_attempts:
+        assign:
+          - attempts: ${retrieval_attempts}
+          - last_attempt: $${attempts[len(attempts) - 1].job_prefix}
+          - capacity_ends_at: $${sys.now() + ${gpu_capacity_wait_seconds}}
+          - capacity_exhausted:
+              code: batch_capacity_unavailable
+              message: "No build machine started within the publication's ${gpu_capacity_wait_seconds}-second GPU capacity wait. The pending candidate and the active corpus are kept; publish the candidate again once capacity returns."
+    # Batch takes one machine per job: take the machines in turn, round after round,
+    # moving on only when the previous one got no capacity within its scheduling wait.
+    - try_machines:
+        for:
+          value: attempt
+          in: $${attempts}
+          steps:
+            - stop_at_capacity_deadline:
+                switch:
+                  - condition: $${capacity_ends_at - sys.now() <= 0}
+                    raise: $${capacity_exhausted}
+            - bind_machine:
+                assign:
+                  - batch_spec.allocationPolicy.instances: $${[attempt.instance]}
+                  - remaining_seconds: $${capacity_ends_at - sys.now()}
+            - run_attempt:
+                try:
+                  steps:
+                    - run_machine:
+                        call: run_clinical_batch
+                        args:
+                          refresh_id: $${refresh_id}
+                          job_prefix: $${attempt.job_prefix}
+                          batch_spec: $${batch_spec}
+                          timeout_seconds: ${bulk_build_wait_seconds}
+                          scheduling_seconds: $${if(remaining_seconds < ${batch_scheduling_wait_seconds}, remaining_seconds, ${batch_scheduling_wait_seconds})}
+                        result: result
+                    - done:
+                        return: $${result}
+                except:
+                  as: error
+                  steps:
+                    - route_capacity:
+                        switch:
+                          - condition: $${map.get(error, "code") != "batch_capacity_unavailable"}
+                            raise: $${error}
+                          - condition: $${attempt.job_prefix == last_attempt}
+                            raise: $${capacity_exhausted}
+                    - record_fallback:
+                        call: sys.log
+                        args:
+                          severity: WARNING
+                          json:
+                            owner: clinical-retrieval-build
+                            outcome: machine_unavailable
+                            refresh_id: $${refresh_id}
+                            machine: $${attempt.name}
+                            round: $${attempt.round}

@@ -1,0 +1,406 @@
+main:
+  params: [args]
+  steps:
+    - initialize:
+        assign:
+          - empty_map: {}
+          - input: $${default(args, empty_map)}
+          - refresh_id: $${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+          - operation: $${default(map.get(input, "operation"), "refresh")}
+          - serving_close_attempted: false
+          - serving_closed: false
+    - validate_operation:
+        switch:
+          - condition: $${not (operation in ["refresh", "backfill", "publish", "rights", "migrate", "convert", "verify_serving"])}
+            raise: "Unknown clinical workflow operation"
+          - condition: $${operation == "backfill" and not ${backfill_enabled}}
+            raise: "Backfill requires a configured raw PMC archive"
+          - condition: $${operation in ["migrate", "convert", "verify_serving"] and not ${maintenance_enabled}}
+            raise: "Maintenance requires paused daily scheduling and parked SQL configuration"
+          - condition: $${operation == "convert" and not text.match_regex(default(map.get(input, "replace_build_id"), ""), "^sha256:[0-9a-f]{64}$")}
+            raise: "Conversion requires one exact last-activated build target"
+          - condition: $${map.get(input, "resume_refresh_id") != null and not (operation in ["convert", "publish"])}
+            raise: "Only publication or conversion can resume a saved build"
+          - condition: $${map.get(input, "window_seconds") != null and operation != "verify_serving"}
+            raise: "Only serving verification takes a window length"
+          - condition: $${map.get(input, "window_seconds") != null and (get_type(input.window_seconds) != "integer" or input.window_seconds < 1800 or input.window_seconds > 14400)}
+            raise: "A serving window lasts 1800 to 14400 seconds"
+          - condition: $${map.get(input, "resume_refresh_id") != null and not text.match_regex(input.resume_refresh_id, "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")}
+            raise: "Conversion recovery requires one exact prior workflow execution"
+    - validate_publication_replacement:
+        switch:
+          - condition: $${map.get(input, "replace_build_id") != null and not (operation in ["convert", "publish"])}
+            raise: "Recipe replacement requires explicit conversion or publication"
+          - condition: $${operation == "publish" and map.get(input, "replace_build_id") != null and not text.match_regex(input.replace_build_id, "^sha256:[0-9a-f]{64}$")}
+            raise: "Publication replacement requires one exact last-activated build target"
+    - validate_publication_recovery:
+        switch:
+          # The original request fixes any replacement target; the saved build records its
+          # predecessor, and the activator checks it.
+          - condition: $${operation == "publish" and map.get(input, "resume_refresh_id") != null and not text.match_regex(default(map.get(input, "acquisition_id"), ""), "^sha256:[0-9a-f]{64}$")}
+            raise: "Publication recovery requires exact candidate and original execution"
+    - route_acquisition:
+        switch:
+          - condition: $${operation in ["refresh", "backfill"]}
+            steps:
+              - acquire_and_dispatch:
+                  try:
+                    call: acquire_clinical_sources
+                    args:
+                      refresh_id: $${refresh_id}
+                      input: $${input}
+                      backfill: $${operation == "backfill"}
+                    result: result
+                  except:
+                    as: error
+                    steps:
+                      - log_acquisition_failure:
+                          call: sys.log
+                          args:
+                            severity: ERROR
+                            json:
+                              owner: clinical-corpus-refresh
+                              outcome: failed
+                              execution_succeeded: false
+                              refresh_id: $${refresh_id}
+                              operation: $${operation}
+                              error: $${error}
+                      - propagate_acquisition_failure:
+                          raise: $${error}
+              - finish_acquisition:
+                  next: route_success_log
+    - route_rights_window:
+        switch:
+          - condition: $${operation == "rights"}
+            next: run_operation
+    - claim_publication_window:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: claim
+          slot: publication
+        result: publication_window
+    - route_publication_contention:
+        switch:
+          - condition: $${not publication_window.acquired and operation == "publish"}
+            return:
+              owner: clinical-corpus-refresh
+              outcome: publication_deferred
+          - condition: $${not publication_window.acquired}
+            raise: "Another clinical workflow owns the publication window"
+    - run_operation:
+        try:
+          steps:
+            - perform_operation:
+                call: perform_clinical_operation
+                args:
+                  refresh_id: $${refresh_id}
+                  operation: $${operation}
+                  input: $${input}
+                result: result
+            - close_serving_after_success:
+                switch:
+                  - condition: $${operation == "verify_serving"}
+                    steps:
+                      - record_close_attempt:
+                          assign:
+                            - serving_close_attempted: true
+                      - close_serving:
+                          call: close_clinical_serving
+                          args:
+                            refresh_id: $${refresh_id}
+                          result: serving_closed
+            - cleanup_after_success:
+                call: cleanup_clinical_operation
+                args:
+                  refresh_id: $${refresh_id}
+            - hold_unresolved_serving_close:
+                switch:
+                  - condition: $${serving_close_attempted and not serving_closed}
+                    raise: "Serving close is unresolved; the publication window stays held"
+            - release_publication_after_success:
+                call: release_clinical_publication_window
+                args:
+                  refresh_id: $${refresh_id}
+                  operation: $${operation}
+        except:
+          as: operation_error
+          steps:
+            - close_serving_after_failure:
+                switch:
+                  - condition: $${operation == "verify_serving" and not serving_close_attempted}
+                    steps:
+                      - record_failure_close_attempt:
+                          assign:
+                            - serving_close_attempted: true
+                      - close_serving_on_failure:
+                          call: close_clinical_serving
+                          args:
+                            refresh_id: $${refresh_id}
+                          result: serving_closed
+            - cleanup_after_failure:
+                try:
+                  call: cleanup_clinical_operation
+                  args:
+                    refresh_id: $${refresh_id}
+                except:
+                  as: cleanup_error
+                  steps:
+                    - log_cleanup_failure:
+                        call: sys.log
+                        args:
+                          severity: ERROR
+                          json:
+                            owner: clinical-corpus-refresh
+                            outcome: cleanup_failed
+                            execution_succeeded: false
+                            refresh_id: $${refresh_id}
+                            operation: $${operation}
+                            operation_error: $${operation_error}
+                            cleanup_error: $${cleanup_error}
+                    - raise_cleanup_failure:
+                        raise: $${cleanup_error}
+            - hold_window_for_unresolved_close:
+                switch:
+                  - condition: $${serving_close_attempted and not serving_closed}
+                    steps:
+                      - log_unresolved_close:
+                          call: sys.log
+                          args:
+                            severity: ERROR
+                            json:
+                              owner: clinical-corpus-refresh
+                              outcome: serving_close_unresolved
+                              execution_succeeded: false
+                              refresh_id: $${refresh_id}
+                              operation: $${operation}
+                              error: $${operation_error}
+                      - raise_unresolved_close:
+                          raise: $${operation_error}
+            - release_publication_after_failure:
+                call: release_clinical_publication_window
+                args:
+                  refresh_id: $${refresh_id}
+                  operation: $${operation}
+            - log_operation_failure:
+                call: sys.log
+                args:
+                  severity: ERROR
+                  json:
+                    owner: clinical-corpus-refresh
+                    outcome: failed
+                    execution_succeeded: false
+                    refresh_id: $${refresh_id}
+                    operation: $${operation}
+                    error: $${operation_error}
+            - raise_operation_failure:
+                raise: $${operation_error}
+    - route_success_log:
+        switch:
+          - condition: $${not (operation in ["refresh", "publish"])}
+            next: log_maintenance_success
+    - bind_source_health:
+        assign:
+          - source_observations_complete: $${map.get(result, ["source_observations", "dailymed", "outcome"]) in ["changed", "unchanged", "observed"] and map.get(result, ["source_observations", "pmc", "outcome"]) in ["changed", "unchanged", "observed"] and map.get(result, ["source_observations", "cdc-mmwr", "outcome"]) in ["changed", "unchanged", "observed"]}
+%{ if uspstf_enabled ~}
+          - source_observations_complete: $${source_observations_complete and map.get(result, ["source_observations", "uspstf", "outcome"]) in ["changed", "unchanged", "observed"]}
+%{ endif ~}
+          - source_checks_complete: $${source_observations_complete and not (result.outcome in ["metadata_incomplete", "activated_with_status_failure", "acquisition_deferred", "publication_deferred"])}
+    - log_success:
+        call: sys.log
+        args:
+          severity: $${if(not source_checks_complete, "WARNING", "INFO")}
+          json:
+            owner: clinical-corpus-refresh
+            outcome: $${result.outcome}
+            execution_succeeded: true
+            refresh_id: $${refresh_id}
+            acquisition_id: $${map.get(result, "acquisition_id")}
+            source_observations: $${map.get(result, "source_observations")}
+            source_checks_complete: $${source_checks_complete}
+        next: return_result
+    - log_maintenance_success:
+        call: sys.log
+        args:
+          severity: INFO
+          json:
+            owner: clinical-corpus-maintenance
+            operation: $${operation}
+            outcome: $${result.outcome}
+            execution_succeeded: true
+            refresh_id: $${refresh_id}
+    - return_result:
+        return: $${result}
+
+publish_clinical_sources:
+  params: [refresh_id, replace_build_id: null, resume_refresh_id: null, acquisition_id: null]
+  steps:
+    - read_acquisition_state:
+        call: http.get
+        args:
+          url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+          auth:
+            type: OAuth2
+        result: acquisition_state
+    - require_exact_candidate:
+        switch:
+          # A publication names its candidate so recovery can bind exactly it.
+          - condition: $${map.get(acquisition_state.body, ["pending", "acquisition_id"]) != acquisition_id and acquisition_id != null}
+            raise: "Publication candidate changed; do not publish or finalize another candidate"
+          - condition: $${acquisition_id == null and acquisition_state.body.pending != null}
+            raise: "Publication requires its exact candidate"
+    - require_replacement_candidate:
+        switch:
+          - condition: $${replace_build_id != null and acquisition_state.body.pending == null}
+            raise: "Publication replacement requires a pending candidate"
+    - initialize_activation:
+        assign:
+          - activation_environment: []
+    - bind_replacement_activation:
+        switch:
+          - condition: $${replace_build_id != null}
+            assign:
+              - activation_environment:
+                  - name: CODA_CLINICAL_EXPECTED_PREVIOUS_BUILD_ID
+                    value: $${replace_build_id}
+    - route_saved_publication:
+        switch:
+          - condition: $${resume_refresh_id != null}
+            next: read_saved_publication_execution
+        next: report_source_checks
+    - read_saved_publication_execution:
+        call: http.get
+        args:
+          url: $${"https://workflowexecutions.googleapis.com/v1/projects/${project_id}/locations/${region}/workflows/coda-clinical-corpus-refresh/executions/" + resume_refresh_id}
+          auth:
+            type: OAuth2
+          timeout: 30
+        result: previous_publication
+    - require_terminal_publication:
+        switch:
+          - condition: $${not (previous_publication.body.state in ["FAILED", "SUCCEEDED", "CANCELLED"])}
+            raise: "Original publication must be terminal before recovery"
+    - read_original_publication_input:
+        assign:
+          - original_input: $${json.decode(previous_publication.body.argument)}
+    - require_original_publication:
+        switch:
+          # The original request must have named exactly this candidate; otherwise it cannot be
+          # established, and another pending batch could be finalized unpublished.
+          - condition: $${map.get(original_input, "operation") != "publish" or map.get(original_input, "replace_build_id") != replace_build_id or map.get(original_input, "resume_refresh_id") != null or map.get(original_input, "acquisition_id") != acquisition_id}
+            raise: "Recovery must reference the original publication with the same candidate and predecessor"
+    - require_saved_build_before_compute:
+        call: http.get
+        args:
+          url: $${"https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fretrieval-refresh%2F" + resume_refresh_id + "%2Fbuild.json?alt=media"}
+          auth:
+            type: OAuth2
+          timeout: 30
+        result: saved_build
+    - verify_saved_execution_identity:
+        switch:
+          - condition: $${map.get(saved_build.body, "refresh_id") != resume_refresh_id}
+            raise: "Saved build belongs to another execution"
+    - bind_saved_publication:
+        assign:
+          - saved_build_reference:
+              name: CODA_CLINICAL_BUILD_REFRESH_ID
+              value: $${resume_refresh_id}
+          - activation_environment: $${list.concat(activation_environment, saved_build_reference)}
+          - refreshed_source_state: $${acquisition_state}
+          - status_confirmed: false
+        next: route_sql_start
+    - report_source_checks:
+        call: sys.log
+        args:
+          severity: INFO
+          json:
+            owner: clinical-source-acquisition
+            source_observations: $${map.get(acquisition_state.body, "observations")}
+    - route_candidate:
+        switch:
+          - condition: ${bibliographic_status_enabled}
+            next: route_sql_start
+          - condition: $${acquisition_state.body.pending == null}
+            next: return_unchanged
+        next: route_sql_start
+    - return_unchanged:
+        return:
+          owner: clinical-corpus-refresh
+          outcome: unchanged
+          refresh_id: $${refresh_id}
+          source_observations: $${map.get(acquisition_state.body, "observations")}
+    - route_sql_start:
+        switch:
+          - condition: ${manage_sql_activation}
+            next: start_sql
+        next: route_admission
+    - start_sql:
+        call: start_clinical_sql
+        args:
+          refresh_id: $${refresh_id}
+    - route_admission:
+        switch:
+          - condition: $${resume_refresh_id != null}
+            next: activate_retrieval
+    - admit_candidate:
+        call: run_clinical_admission_batch
+        args:
+          refresh_id: $${refresh_id}
+    - read_status_observation:
+        call: http.get
+        args:
+          url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+          auth:
+            type: OAuth2
+        result: refreshed_source_state
+    - bind_status_result:
+        assign:
+          # Bounded progress with work left is confirmed status; only a failed check is not.
+          - status_outcome: $${map.get(refreshed_source_state.body, ["observations", "nlm-pubmed", "details", "outcome"])}
+          - status_confirmed: $${map.get(refreshed_source_state.body, ["observations", "nlm-pubmed", "details", "refresh_id"]) == refresh_id and status_outcome in ["complete", "partial"]}
+    - route_content_publication:
+        switch:
+          - condition: $${acquisition_state.body.pending == null}
+            next: route_refresh_result
+    - build_retrieval:
+        call: run_clinical_retrieval_batch
+        args:
+          refresh_id: $${refresh_id}
+          replace_build_id: $${replace_build_id}
+    - activate_retrieval:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${region}/jobs/${activator_job}"
+          refresh_id: $${refresh_id}
+          container: retrieval-activator
+          timeout_seconds: ${activation_timeout_seconds}
+          environment: $${activation_environment}
+    - finalize_source_candidate:
+        call: run_clinical_job
+        args:
+          job: "projects/${project_id}/locations/${region}/jobs/${finalization_job}"
+          refresh_id: $${refresh_id}
+          container: source-finalization
+          timeout_seconds: 300
+          environment:
+            - name: CODA_CLINICAL_ACQUISITION_ID
+              value: $${acquisition_state.body.pending.acquisition_id}
+    - route_refresh_result:
+        switch:
+          - condition: $${acquisition_state.body.pending == null}
+            next: return_metadata
+        next: return_success
+    - return_metadata:
+        return:
+          owner: clinical-corpus-refresh
+          outcome: $${if(status_confirmed, "metadata_refreshed", "metadata_incomplete")}
+          refresh_id: $${refresh_id}
+          source_observations: $${map.get(refreshed_source_state.body, "observations")}
+    - return_success:
+        return:
+          owner: clinical-corpus-refresh
+          outcome: $${if(${bibliographic_status_enabled} and not status_confirmed, "activated_with_status_failure", "activated")}
+          refresh_id: $${refresh_id}
+          acquisition_id: $${acquisition_state.body.pending.acquisition_id}
+          source_observations: $${map.get(refreshed_source_state.body, "observations")}

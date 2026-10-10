@@ -1,0 +1,196 @@
+start_clinical_sql:
+  params: [refresh_id]
+  steps:
+    - claim_power_transition:
+        call: claim_clinical_sql_transition
+        args:
+          refresh_id: $${refresh_id}
+    - register_sql_user:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: enter_sql
+    - inspect_sql:
+        call: googleapis.sqladmin.v1.instances.get
+        args:
+          project: "${project_id}"
+          instance: "${sql_instance}"
+        result: before
+    - reuse_running_sql:
+        switch:
+          - condition: $${before.state == "RUNNABLE" and before.settings.activationPolicy == "ALWAYS"}
+            next: release_power_transition
+    - start_sql:
+        call: googleapis.sqladmin.v1.instances.patch
+        args:
+          project: "${project_id}"
+          instance: "${sql_instance}"
+          body:
+            settings:
+              activationPolicy: ALWAYS
+          connector_params:
+            timeout: 600
+    - read_sql:
+        call: googleapis.sqladmin.v1.instances.get
+        args:
+          project: "${project_id}"
+          instance: "${sql_instance}"
+        result: sql
+    - require_runnable:
+        switch:
+          - condition: $${sql.state != "RUNNABLE" or sql.settings.activationPolicy != "ALWAYS"}
+            raise: "Clinical SQL did not become runnable"
+    - release_power_transition:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: release
+          slot: sql_transition
+
+cleanup_clinical_operation:
+  params: [refresh_id]
+  steps:
+    - initialize_cleanup:
+        assign:
+          - foreign_jobs: []
+          - unsettled_jobs: []
+    - settle_jobs:
+        for:
+          value: job
+          in: ${job_paths}
+          steps:
+            - settle_one_job:
+                try:
+                  steps:
+                    - settle:
+                        call: settle_clinical_job
+                        args:
+                          job: $${job}
+                          refresh_id: $${refresh_id}
+                        result: foreign_active
+                    - preserve_foreign_owner:
+                        switch:
+                          - condition: $${len(foreign_active) > 0}
+                            assign:
+                              - foreign_jobs: $${list.concat(foreign_jobs, job)}
+                except:
+                  as: settlement_error
+                  assign:
+                    - unsettled_job:
+                        job: $${job}
+                        error: $${settlement_error}
+                    - unsettled_jobs: $${list.concat(unsettled_jobs, unsettled_job)}
+    - settle_admission_batch:
+        call: settle_clinical_batch
+        args:
+          job: $${"projects/${project_id}/locations/${region}/jobs/coda-admission-" + refresh_id}
+          refresh_id: $${refresh_id}
+    - settle_retrieval_batches:
+        for:
+          value: attempt
+          in: ${retrieval_attempts}
+          steps:
+            - settle_retrieval_batch:
+                call: settle_clinical_batch
+                args:
+                  job: $${"projects/${project_id}/locations/${region}/jobs/" + attempt.job_prefix + refresh_id}
+                  refresh_id: $${refresh_id}
+    - require_settled_jobs:
+        switch:
+          - condition: $${len(unsettled_jobs) > 0}
+            raise: '$${"SQL parking withheld for unsettled executions: " + json.encode_to_string(unsettled_jobs)}'
+    - claim_cleanup_transition:
+        call: claim_clinical_sql_transition
+        args:
+          refresh_id: $${refresh_id}
+    - release_sql_user:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: leave_sql
+        result: registration
+    - require_registered_foreign_owner:
+        switch:
+          - condition: $${len(foreign_jobs) > 0 and registration.sql_users == 0}
+            raise: "SQL parking withheld for foreign jobs without a registered workflow owner"
+    - verify_remaining_sql_owners:
+        for:
+          value: user_id
+          in: $${registration.sql_user_ids}
+          steps:
+            - read_owner:
+                call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.get
+                args:
+                  name: $${"projects/${project_id}/locations/${region}/workflows/coda-clinical-corpus-refresh/executions/" + user_id}
+                result: owner
+            - require_live_owner:
+                switch:
+                  - condition: $${owner.state != "ACTIVE"}
+                    raise: '$${"SQL parking requires settlement of interrupted execution " + user_id}'
+    - preserve_foreign_sql_window:
+        switch:
+          - condition: $${len(foreign_jobs) > 0 or registration.sql_users > 0}
+            next: release_cleanup_transition
+    - route_sql_park:
+        switch:
+          - condition: ${manage_sql_activation}
+            next: park_sql
+        next: release_cleanup_transition
+    - park_sql:
+        call: googleapis.sqladmin.v1.instances.patch
+        args:
+          project: "${project_id}"
+          instance: "${sql_instance}"
+          body:
+            settings:
+              activationPolicy: NEVER
+          connector_params:
+            timeout: 600
+        result: sql_stop_operation
+    - read_sql_after_park:
+        call: googleapis.sqladmin.v1.instances.get
+        args:
+          project: "${project_id}"
+          instance: "${sql_instance}"
+        result: sql
+    - require_parked:
+        # SQL Admin's RUNNABLE state also includes instances stopped by their
+        # owner. STOPPED is a gcloud display value, not an API enum. The connector
+        # waits for this exact stop operation; verify it and the resulting policy.
+        switch:
+          - condition: $${sql_stop_operation.status != "DONE" or map.get(sql_stop_operation, "error") != null or sql.settings.activationPolicy != "NEVER"}
+            raise: "Clinical SQL shutdown was not verified"
+    - release_cleanup_transition:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: release
+          slot: sql_transition
+    - return_cleanup:
+        return:
+          executions_settled: true
+          sql_managed: ${manage_sql_activation}
+
+# One close start per operation. The caller records the attempt before calling and never
+# starts another: a failed or unanswered start may still create a run that would close a
+# newer verification window. Returns whether this run confirmed serving closed.
+close_clinical_serving:
+  params: [refresh_id]
+  steps:
+    - close:
+        try:
+          call: run_clinical_job
+          args:
+            job: "${serving_close_job}"
+            refresh_id: $${refresh_id}
+            timeout_seconds: 600
+            fixed: true
+        # Nothing here may throw: the caller's SQL cleanup follows. The close run's own
+        # logs and the caller's held-window report carry the failure.
+        except:
+          as: error
+          steps:
+            - report_unconfirmed:
+                return: false
+    - confirmed:
+        return: true

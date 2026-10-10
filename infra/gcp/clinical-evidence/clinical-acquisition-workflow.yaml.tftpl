@@ -1,0 +1,198 @@
+# Acquisition owns no SQL window. A frozen publication runs as another native
+# execution of this same workflow, so a previous build cannot block today's scan.
+acquire_clinical_sources:
+  params: [refresh_id, input, backfill: false]
+  steps:
+    - apply_confirmed_restrictions:
+        switch:
+          - condition: $${len(default(map.get(input, "rights_observations"), [])) > 0}
+            steps:
+              - enforce_rights:
+                  call: run_clinical_subworkflow
+                  args:
+                    argument:
+                      operation: rights
+                      rights_observations: $${input.rights_observations}
+                    timeout_seconds: 1800
+    - claim_acquisition_window:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: claim
+          slot: acquisition
+        result: acquisition_window
+    - route_acquisition_contention:
+        switch:
+          - condition: $${not acquisition_window.acquired}
+            steps:
+              - defer_acquisition:
+                  assign:
+                    - publication:
+                        outcome: acquisition_deferred
+              - read_deferred_coverage:
+                  next: read_latest_coverage
+    - acquire:
+        try:
+          steps:
+            - read_prior_candidate:
+                call: http.get
+                args:
+                  url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+                  auth:
+                    type: OAuth2
+                result: before_acquisition
+            - run_acquisition:
+                switch:
+                  - condition: $${backfill}
+                    steps:
+                      - run_backfill:
+                          call: run_clinical_backfill_batch
+                          args:
+                            refresh_id: $${refresh_id}
+                  - condition: true
+                    steps:
+                      - run_daily:
+                          call: run_clinical_acquisition_batch
+                          args:
+                            refresh_id: $${refresh_id}
+        except:
+          as: error
+          steps:
+            - preserve_unsettled_acquisition:
+                switch:
+                  - condition: $${map.get(error, "cleanup_failed") == true}
+                    next: propagate_acquisition_failure
+            - release_failed_acquisition:
+                call: change_clinical_window
+                args:
+                  refresh_id: $${refresh_id}
+                  action: release
+                  slot: acquisition
+            - propagate_acquisition_failure:
+                raise: $${error}
+    - release_acquisition_window:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: release
+          slot: acquisition
+    - read_publication_candidate:
+        call: http.get
+        args:
+          url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+          auth:
+            type: OAuth2
+        result: after_acquisition
+    - leave_backfill_publication_explicit:
+        switch:
+          # A backfill candidate publishes through an explicit publication, so
+          # the next batch's acquisition can run while this one builds.
+          - condition: $${backfill}
+            steps:
+              - record_backfill:
+                  assign:
+                    - publication:
+                        outcome: backfill_acquired
+                        acquisition_id: $${map.get(after_acquisition.body, ["pending", "acquisition_id"])}
+              - read_backfill_coverage:
+                  next: read_latest_coverage
+    - defer_existing_candidate:
+        switch:
+          - condition: $${map.get(before_acquisition.body, ["pending", "acquisition_id"]) != null and map.get(before_acquisition.body, ["pending", "acquisition_id"]) == map.get(after_acquisition.body, ["pending", "acquisition_id"])}
+            steps:
+              - preserve_saved_work:
+                  assign:
+                    - publication:
+                        outcome: publication_deferred
+              - leave_recovery_to_explicit_publication:
+                  next: read_latest_coverage
+    - publish:
+        call: run_clinical_subworkflow
+        args:
+          argument:
+            operation: publish
+            acquisition_id: $${map.get(after_acquisition.body, ["pending", "acquisition_id"])}
+          # Admission and every build attempt each wait within their own windows.
+          timeout_seconds: ${publication_wait_seconds}
+        result: publication
+    - read_latest_coverage:
+        call: http.get
+        args:
+          url: "https://storage.googleapis.com/download/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json?alt=media"
+          auth:
+            type: OAuth2
+        result: state
+    - done:
+        return:
+          owner: clinical-corpus-refresh
+          outcome: $${publication.outcome}
+          publication: $${publication}
+          acquisition_id: $${map.get(publication, "acquisition_id")}
+          source_observations: $${map.get(state.body, "observations")}
+
+# Submit once and retain the child execution identity before waiting. An
+# ambiguous POST never triggers a second publication or cancellation of its owner.
+run_clinical_subworkflow:
+  params: [argument, timeout_seconds]
+  steps:
+    - deadline:
+        assign:
+          - ends_at: $${sys.now() + timeout_seconds}
+    - submit:
+        call: http.post
+        args:
+          url: "https://workflowexecutions.googleapis.com/v1/projects/${project_id}/locations/${region}/workflows/coda-clinical-corpus-refresh/executions"
+          auth:
+            type: OAuth2
+          timeout: 60
+          body:
+            argument: $${json.encode_to_string(argument)}
+        result: submitted
+    - read_execution:
+        try:
+          call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.get
+          args:
+            name: $${submitted.body.name}
+          result: current
+        retry: $${http.default_retry}
+    - route:
+        switch:
+          - condition: $${current.state == "SUCCEEDED"}
+            return: $${json.decode(current.result)}
+          - condition: $${current.state in ["FAILED", "CANCELLED", "UNAVAILABLE"]}
+            raise: $${current}
+          - condition: $${sys.now() >= ends_at}
+            raise: '$${"Child clinical execution remains its own cleanup owner: " + submitted.body.name}'
+    - wait:
+        call: sys.sleep
+        args:
+          seconds: 30
+        next: read_execution
+
+run_clinical_backfill_batch:
+  params: [refresh_id]
+  steps:
+    - run:
+        call: run_clinical_batch
+        args:
+          refresh_id: $${refresh_id}
+          job_prefix: coda-acquisition-
+          batch_spec: ${backfill_batch}
+          timeout_seconds: 44100
+        result: result
+    - done:
+        return: $${result}
+
+run_clinical_acquisition_batch:
+  params: [refresh_id]
+  steps:
+    - run:
+        call: run_clinical_batch
+        args:
+          refresh_id: $${refresh_id}
+          job_prefix: coda-acquisition-
+          batch_spec: ${acquisition_batch}
+          timeout_seconds: 82800
+        result: result
+    - done:
+        return: $${result}

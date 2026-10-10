@@ -1,0 +1,181 @@
+# The existing acquisition state owns these bounded native execution references.
+# A generation-conditional write serializes acquisition/publication claims and
+# SQL power transitions. Waiting executions never own a SQL user registration.
+# A cancelled execution is not a time-expiring lease: settle its exact jobs and
+# power transition before explicitly releasing its slot during recovery.
+change_clinical_window:
+  params: [refresh_id, action, {slot: null}]
+  steps:
+    - initialize:
+        assign:
+          - attempts: 0
+          - object_url: "https://storage.googleapis.com/storage/v1/b/${bucket_name}/o/operations%2Fsource-acquisition%2Fstate-v1.json"
+    - read_generation:
+        call: http.get
+        args:
+          url: $${object_url}
+          auth:
+            type: OAuth2
+        result: metadata
+    - read_exact_state:
+        try:
+          call: http.get
+          args:
+            url: $${object_url + "?alt=media&generation=" + metadata.body.generation}
+            auth:
+              type: OAuth2
+          result: saved
+        except:
+          as: error
+          steps:
+            - retry_replaced_generation:
+                switch:
+                  - condition: $${map.get(error, "code") == 404 and attempts < 30}
+                    assign:
+                      - attempts: $${attempts + 1}
+                    next: read_generation
+            - propagate_read_failure:
+                raise: $${error}
+    - prepare:
+        assign:
+          - state: $${saved.body}
+          - empty: {}
+          - windows: $${default(map.get(state, "workflow_windows"), empty)}
+          - users: $${default(map.get(windows, "sql_users"), empty)}
+    - apply:
+        switch:
+          - condition: $${action == "claim"}
+            steps:
+              - check_claim:
+                  switch:
+                    - condition: $${map.get(windows, slot) != null and map.get(windows, slot) != refresh_id}
+                      return:
+                        acquired: false
+                        owner: $${map.get(windows, slot)}
+              - claim:
+                  assign:
+                    - windows[slot]: $${refresh_id}
+          - condition: $${action == "release"}
+            steps:
+              - require_matching_owner:
+                  switch:
+                    - condition: $${map.get(windows, slot) != null and map.get(windows, slot) != refresh_id}
+                      raise: "Clinical workflow cannot release another execution's window"
+              - release:
+                  assign:
+                    - windows[slot]: null
+          - condition: $${action in ["enter_sql", "leave_sql"]}
+            steps:
+              - require_power_owner:
+                  switch:
+                    - condition: $${map.get(windows, "sql_transition") != refresh_id}
+                      raise: "Clinical SQL user registration requires the power-transition window"
+              - bound_sql_users:
+                  switch:
+                    - condition: $${action == "enter_sql" and len(users) >= 32 and not (refresh_id in users)}
+                      raise: "Clinical SQL has reached its bounded concurrent execution capacity"
+              - change_user:
+                  switch:
+                    - condition: $${action == "enter_sql"}
+                      assign:
+                        - users[refresh_id]: true
+                    - condition: $${action == "leave_sql"}
+                      steps:
+                        - initialize_remaining_users:
+                            assign:
+                              - remaining: {}
+                        - retain_other_users:
+                            for:
+                              value: user_id
+                              in: $${keys(users)}
+                              steps:
+                                - retain_user:
+                                    switch:
+                                      - condition: $${user_id != refresh_id}
+                                        assign:
+                                          - remaining[user_id]: true
+                        - update_remaining_users:
+                            assign:
+                              - users: $${remaining}
+              - retain_users:
+                  assign:
+                    - windows.sql_users: $${users}
+          - condition: true
+            raise: "Unknown clinical workflow window action"
+    - bind:
+        assign:
+          - state.workflow_windows: $${windows}
+    - write_conditionally:
+        try:
+          call: http.post
+          args:
+            url: $${"https://storage.googleapis.com/upload/storage/v1/b/${bucket_name}/o?uploadType=media&name=operations%2Fsource-acquisition%2Fstate-v1.json&ifGenerationMatch=" + metadata.body.generation}
+            auth:
+              type: OAuth2
+            headers:
+              Content-Type: application/json
+            body: $${state}
+        except:
+          as: error
+          steps:
+            - retry_known_conflict:
+                switch:
+                  - condition: $${map.get(error, "code") == 412 and attempts < 30}
+                    assign:
+                      - attempts: $${attempts + 1}
+                    next: read_generation
+            - propagate_ambiguous_write:
+                raise: $${error}
+    - done:
+        return:
+          acquired: true
+          sql_users: $${len(users)}
+          sql_user_ids: $${keys(users)}
+
+claim_clinical_sql_transition:
+  params: [refresh_id]
+  steps:
+    - deadline:
+        assign:
+          - ends_at: $${sys.now() + 1200}
+    - claim:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: claim
+          slot: sql_transition
+        result: claim
+    - route:
+        switch:
+          - condition: $${claim.acquired}
+            return: true
+          - condition: $${sys.now() >= ends_at}
+            raise: '$${"Clinical SQL transition remains owned by execution " + claim.owner}'
+    - require_live_owner:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.get
+        args:
+          name: $${"projects/${project_id}/locations/${region}/workflows/coda-clinical-corpus-refresh/executions/" + claim.owner}
+        result: owner
+    - require_settlement:
+        switch:
+          - condition: $${owner.state != "ACTIVE"}
+            raise: '$${"Settle the interrupted clinical SQL transition before releasing execution " + claim.owner}'
+    - wait:
+        call: sys.sleep
+        args:
+          seconds: 5
+        next: claim
+
+release_clinical_publication_window:
+  params: [refresh_id, operation]
+  steps:
+    - route:
+        switch:
+          - condition: $${operation == "rights"}
+            return: true
+    - release:
+        call: change_clinical_window
+        args:
+          refresh_id: $${refresh_id}
+          action: release
+          slot: publication

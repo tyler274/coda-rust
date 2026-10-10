@@ -65,6 +65,7 @@
           act
           actionlint
           mdbook
+          opentofu
         ];
 
         env.OPENSSL_NO_VENDOR = "1";
