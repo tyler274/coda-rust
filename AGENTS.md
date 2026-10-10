@@ -20,6 +20,14 @@ copy them.
 
 Duet and the physician product do not share clinical types, accounts, or servers. Shared crates are `ui` and `http` only.
 
-The physician site is a client of the physician projections. `crates/physician-sample` serves a recorded projection of the synthetic practice. It does not run a model and it is not a second clinical engine. `PHYSICIAN_API_URL` points the same client at the Node server.
+The physician site is a client of the physician projections. `crates/physician-sample` serves a recorded projection of the synthetic practice. It does not run a model and it is not a second clinical engine. `PHYSICIAN_API_URL` points the same client at the Node server. The compile default remains the sample server on port 8790.
+
+## Dev shell
+
+`nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`.
+
+Doppler holds local configuration for project `coda-rust`, config `dev`. Log in once with `doppler login`, then prefix a command with `doppler run --`. The shell loads that config when a login exists and continues when it does not. Tests and the sample server do not need a Doppler account. Production secrets stay in GCP Secret Manager.
+
+`act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
 React and SwiftUI remain the shipping clients until a journey matches them. Do not claim a production cutover, a TestFlight release, or a physician production deploy from this repository.
