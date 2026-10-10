@@ -20,13 +20,15 @@ copy them.
 
 Duet and the physician product do not share clinical types, accounts, or servers. Shared crates are `ui` and `http` only.
 
-The physician site is a client of the physician projections. `crates/physician-sample` serves a recorded projection of the synthetic practice. It does not run a model and it is not a second clinical engine. `PHYSICIAN_API_URL` points the same client at the Node server. The compile default remains the sample server on port 8790.
+The physician site is a client of the physician projections. `crates/physician-sample` serves the page and a recorded projection of the synthetic practice on one origin. It does not run a model and it is not a second clinical engine. The page mounts into `#main`. On the web build, an unset `PHYSICIAN_API_URL` uses that origin; `?api=` still points the same build at the Node server. A physician-site change is not done unless `cargo test -p physician-sample --test site` passed. That Chromium test fails when the document is blank.
+
+The live Node projection server moves into `physician-sample` route family by route family. Duet stays in `duet-api` and `duet-app`. Gym and computer use get their own crates after those, and neither imports the other's clinical types.
 
 ## Dev shell
 
 `nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`.
 
-Doppler holds local configuration for project `coda-rust`, config `dev`. Log in once with `doppler login`, then prefix a command with `doppler run --`. The shell loads that config when a login exists and continues when it does not. Tests and the sample server do not need a Doppler account. Production secrets stay in GCP Secret Manager.
+Doppler project `coda-rust` has two configs, `dev` and `prd`. Log in once with `doppler login`, then prefix a local command with `doppler run --`. The shell loads `dev` when a login exists and continues when it does not. Production Rust processes start with `doppler run --project coda-rust --config prd --` and still read environment variables. Tests and the sample server do not need a Doppler account. Creating `prd` is an operator login step; this repo stores no token and no secret value. Terraform-owned infrastructure secrets stay in GCP Secret Manager until the service that uses them moves.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

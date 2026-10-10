@@ -23,9 +23,24 @@ fn api_base() -> String {
     if let Some(url) = query_api() {
         return url;
     }
-    option_env!("PHYSICIAN_API_URL")
-        .unwrap_or("http://127.0.0.1:8790")
-        .to_owned()
+    if let Some(url) = option_env!("PHYSICIAN_API_URL") {
+        return url.to_owned();
+    }
+    #[cfg(target_arch = "wasm32")]
+    if let Some(origin) = page_origin() {
+        return origin;
+    }
+    "http://127.0.0.1:8790".to_owned()
+}
+
+#[cfg(target_arch = "wasm32")]
+fn page_origin() -> Option<String> {
+    let origin = web_sys::window()?.location().origin().ok()?;
+    if origin.is_empty() || origin == "null" {
+        None
+    } else {
+        Some(origin)
+    }
 }
 
 #[cfg(target_arch = "wasm32")]

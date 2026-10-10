@@ -18,7 +18,17 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+      - name: Install wasm-bindgen
+        run: cargo install wasm-bindgen-cli --version 0.2.129 --locked
+      - name: Install Chromium
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          install-dependencies: true
       - name: Check formatting
         run: cargo fmt --check
       - name: Test
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test --workspace

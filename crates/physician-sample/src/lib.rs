@@ -2,6 +2,11 @@
 //!
 //! The FHIR corpus stays in coda-agents. These files are the physician JSON the
 //! React site already renders. Commands are rejected here; they do not run a model.
+//! The same server serves the Dioxus page, which mounts into `#main`.
+
+use std::env;
+use std::fs;
+use std::path::{Path, PathBuf};
 
 use axum::Json;
 use axum::Router;
@@ -13,6 +18,8 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use serde::Deserialize;
 use serde_json::{Value, json};
+
+const INDEX: &str = include_str!("../../physician-app/index.html");
 
 const TODAY: &str = include_str!("../fixtures/today.json");
 const PRACTICE_DAY: &str = include_str!("../fixtures/practice-day.json");
@@ -48,7 +55,84 @@ pub fn router() -> Router {
             "/physician-state/drafts/{workspace}/{chat}",
             get(empty_draft).put(draft_not_saved),
         )
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/snapshot",
+            get(empty_snapshot),
+        )
+        .route("/", get(site_index))
+        .route("/index.html", get(site_index))
+        .fallback(site_file)
         .layer(middleware::from_fn(cors))
+}
+
+/// Directory of `wasm-bindgen --target web` output. `PHYSICIAN_SITE_DIR` wins,
+/// then `target/physician-web` beside the workspace.
+pub fn site_dir() -> Option<PathBuf> {
+    if let Some(dir) = env::var_os("PHYSICIAN_SITE_DIR") {
+        let path = PathBuf::from(dir);
+        if path.is_dir() {
+            return Some(path);
+        }
+    }
+    let fallback = PathBuf::from("target/physician-web");
+    fallback.is_dir().then_some(fallback)
+}
+
+async fn site_index() -> Response {
+    (
+        StatusCode::OK,
+        [(axum::http::header::CONTENT_TYPE, "text/html; charset=utf-8")],
+        INDEX,
+    )
+        .into_response()
+}
+
+async fn empty_snapshot(
+    axum::extract::Path((id, _chat)): axum::extract::Path<(String, String)>,
+) -> Response {
+    if workspace_body(&id).is_none() {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    Json(json!({
+        "snapshot": { "conversation": [] }
+    }))
+    .into_response()
+}
+
+async fn site_file(request: Request<Body>) -> Response {
+    let Some(dir) = site_dir() else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    let path = request.uri().path().trim_start_matches('/');
+    if path.is_empty() || path.contains("..") || path.contains('\\') {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let file = dir.join(path);
+    if !file.starts_with(&dir) {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let Ok(bytes) = fs::read(&file) else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    let Some(mime) = site_mime(&file) else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    (
+        StatusCode::OK,
+        [(axum::http::header::CONTENT_TYPE, mime)],
+        bytes,
+    )
+        .into_response()
+}
+
+fn site_mime(file: &Path) -> Option<&'static str> {
+    match file.extension().and_then(|ext| ext.to_str()) {
+        Some("js") => Some("text/javascript"),
+        Some("wasm") => Some("application/wasm"),
+        Some("png") => Some("image/png"),
+        Some("css") => Some("text/css"),
+        _ => None,
+    }
 }
 
 pub async fn serve(listener: tokio::net::TcpListener) {
@@ -293,6 +377,14 @@ mod tests {
         let (status, updates) = get("/updates").await;
         assert_eq!(status, StatusCode::OK);
         assert!(updates.contains("\"rows\":[]"));
+        let (status, page) = get("/").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(page.contains(r#"<main id="main"></main>"#));
+        let (status, snapshot) =
+            get("/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/none/snapshot")
+                .await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(snapshot.contains("\"conversation\":[]"));
     }
 
     #[tokio::test]
