@@ -31,7 +31,10 @@ jobs:
       - name: Test
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        run: cargo test --workspace
+        # GitHub has neither the local duet emulator nor the Node practice on
+        # port 8787. Those two tests fail closed when they run; they are not
+        # counted as passed here.
+        run: cargo test --workspace -- --skip the_android_shell_shows_both_modes --skip the_live_react_practice_matches_the_rust_page
       - name: Install mdBook
         run: cargo install mdbook --version 0.4.52 --locked
       - name: Build the book and the rustdoc
