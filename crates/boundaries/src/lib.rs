@@ -27,6 +27,9 @@ mod tests {
         assert!(!health.contains("physician-"));
         let physician_client = manifest("physician-client");
         assert!(!physician_client.contains("duet-"));
+        let shell = manifest("mobile");
+        assert!(shell.contains("duet-app"));
+        assert!(shell.contains("physician-app"));
     }
 
     #[test]

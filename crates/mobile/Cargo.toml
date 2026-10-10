@@ -1,0 +1,23 @@
+[package]
+name = "mobile"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+dioxus = { version = "0.7.10", default-features = false, features = ["macro", "html", "signals", "hooks"] }
+duet-app = { path = "../duet-app" }
+physician-app = { path = "../physician-app" }
+ui = { path = "../ui" }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+web-sys = { version = "0.3", features = ["Window", "Storage", "Location"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net"] }
+
+[features]
+default = []
+web = ["dioxus/web", "dioxus/launch"]
+mobile = ["dioxus/mobile", "dioxus/launch", "duet-app/mobile", "physician-app/mobile"]

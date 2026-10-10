@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build the Duet debug APK. The Nix Android SDK is read-only and only has
+# Build the mode-shell debug APK. The Nix Android SDK is read-only and only has
 # build-tools 37, while dx asks Gradle for 34. Rustc must be rustup's stable:
 # the Nix rustc has no Android standard library. DUET_API_URL and DUET_BEARER
 # are baked in at compile time; an unset URL uses http://10.0.2.2:8000.
@@ -31,7 +31,7 @@ fi
 
 log=$(mktemp)
 set +e
-"$dx" build --android --package duet-app --features mobile >"$log" 2>&1
+"$dx" build --android --package mobile --features mobile >"$log" 2>&1
 status=$?
 set -e
 cat "$log"
@@ -39,7 +39,7 @@ if [ "$status" -ne 0 ] && ! grep -q "build-tools" "$log"; then
   exit "$status"
 fi
 
-gradle_files=$(find target/dx/duet-app -name build.gradle.kts ! -path '*/build/*')
+gradle_files=$(find target/dx/mobile -name build.gradle.kts ! -path '*/build/*')
 if [ -z "$gradle_files" ]; then
   echo "dx did not generate an Android Gradle project" >&2
   exit 1
@@ -51,7 +51,7 @@ printf '%s\n' "$gradle_files" | while IFS= read -r path; do
     sed -i 's/compileSdk = \([0-9.]*\)/compileSdk = \1\n    buildToolsVersion = "37.0.0"/' "$path"
   fi
 done
-find target/dx/duet-app -path '*/src/main/AndroidManifest.xml' | while IFS= read -r path; do
+find target/dx/mobile -path '*/src/main/AndroidManifest.xml' | while IFS= read -r path; do
   if ! grep -q usesCleartextTraffic "$path"; then
     sed -i 's/<application/<application android:usesCleartextTraffic="true"/' "$path"
   fi
@@ -59,14 +59,14 @@ done
 
 # Health Connect is copied into the generated app because dx regenerates it.
 bridge="$root/platform/android/HealthConnectBridge.kt"
-java_dir=$(find target/dx/duet-app -path '*/src/main/AndroidManifest.xml' | head -n 1 | xargs dirname)
+java_dir=$(find target/dx/mobile -path '*/src/main/AndroidManifest.xml' | head -n 1 | xargs dirname)
 if [ -z "$java_dir" ] || [ ! -f "$bridge" ]; then
   echo "Health Connect bridge or generated manifest is missing" >&2
   exit 1
 fi
 mkdir -p "$java_dir/java/coda/duet"
 cp "$bridge" "$java_dir/java/coda/duet/HealthConnectBridge.kt"
-app_gradle=$(find target/dx/duet-app -path '*/app/build.gradle.kts' ! -path '*/build/*' | while IFS= read -r path; do
+app_gradle=$(find target/dx/mobile -path '*/app/build.gradle.kts' ! -path '*/build/*' | while IFS= read -r path; do
   if grep -q 'androidx.webkit' "$path"; then
     printf '%s\n' "$path"
   fi
@@ -119,11 +119,11 @@ if ! grep -q 'VIEW_PERMISSION_USAGE' "$manifest"; then
         </activity-alias>|' "$manifest"
 fi
 
-gradle=$(find target/dx/duet-app -name gradlew | head -n 1)
+gradle=$(find target/dx/mobile -name gradlew | head -n 1)
 if [ -z "$gradle" ]; then
   echo "gradlew was not generated" >&2
   exit 1
 fi
 (cd "$(dirname "$gradle")" && ./gradlew assembleDebug)
-apk=$(find target/dx/duet-app -name 'app-debug.apk' | head -n 1)
+apk=$(find target/dx/mobile -name 'app-debug.apk' | head -n 1)
 echo "$apk"
