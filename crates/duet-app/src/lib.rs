@@ -1,4 +1,6 @@
 //! Duet's four tab roots. SwiftUI remains the shipping iPhone app.
+//! Book: `book/src/ui-surface-map.md`.
+#![deny(missing_docs)]
 
 mod roots;
 

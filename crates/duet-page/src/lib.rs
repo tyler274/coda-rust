@@ -1,35 +1,54 @@
 //! One US Letter layout for the doctor page. Preview lines and the PDF are the
 //! same placement. Overflow blocks sharing.
+//! Book: `book/src/north-star.md`.
+#![deny(missing_docs)]
 
+/// The `PAGE_WIDTH` constant.
 pub const PAGE_WIDTH: f32 = 612.0;
+/// The `PAGE_HEIGHT` constant.
 pub const PAGE_HEIGHT: f32 = 792.0;
 const MARGIN: f32 = 54.0;
 const SIZES: [f32; 3] = [10.5, 10.0, 9.5];
 
 #[derive(Debug, Clone, PartialEq)]
+/// The `DoctorPage` value exchanged by this crate.
 pub struct DoctorPage {
+    /// The `name` value.
     pub name: String,
+    /// The `date_of_birth` value.
     pub date_of_birth: String,
+    /// The `questions` value.
     pub questions: Vec<String>,
+    /// The `cover_note` value.
     pub cover_note: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
+/// The `PlacedLine` value exchanged by this crate.
 pub struct PlacedLine {
+    /// The `text` value.
     pub text: String,
+    /// The `size` value.
     pub size: f32,
+    /// The `y` value.
     pub y: f32,
 }
 
 #[derive(Debug, Clone, PartialEq)]
+/// The `LaidOut` cases.
 pub enum LaidOut {
+    /// The `Page` case.
     Page {
+        /// The `lines` value.
         lines: Vec<PlacedLine>,
+        /// The `pdf` value.
         pdf: Vec<u8>,
     },
+    /// The `Overflow` case.
     Overflow,
 }
 
+/// Places the doctor page, or blocks it when the page overflows.
 pub fn lay_out(page: &DoctorPage) -> LaidOut {
     if page.questions.len() > 5 {
         return LaidOut::Overflow;

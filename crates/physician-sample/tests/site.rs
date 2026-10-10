@@ -56,9 +56,32 @@ async fn the_recorded_practice_is_visible() {
             && dom.contains("Coda hasn’t read Spruce yet.")
             && dom.contains("3:30 PM")
             && dom.contains("Mary Louis")
-            && dom.contains("m3 11 9-8 9 8"),
+            && dom.contains("m3 11 9-8 9 8")
+            && dom.contains("viewBox=\"0 0 24 24\"")
+            && dom.contains("stroke-width=\"1.8\""),
         "the page was blank or incomplete:\n{dom}"
     );
+    let logo = tokio::task::spawn_blocking(move || read_logo(address))
+        .await
+        .expect("logo read");
+    let head = String::from_utf8_lossy(&logo[..logo.len().min(80)]);
+    assert!(
+        head.contains("200") && logo.windows(8).any(|window| window == b"\x89PNG\r\n\x1a\n"),
+        "the reference logo was not a PNG:\n{head}"
+    );
+}
+
+fn read_logo(address: std::net::SocketAddr) -> Vec<u8> {
+    use std::io::{Read, Write};
+    let mut stream = std::net::TcpStream::connect(address).expect("logo connection");
+    stream
+        .write_all(
+            b"GET /assets/coda-health-logo-transparent.png HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n",
+        )
+        .unwrap();
+    let mut body = Vec::new();
+    stream.read_to_end(&mut body).unwrap();
+    body
 }
 
 fn build_site() -> PathBuf {

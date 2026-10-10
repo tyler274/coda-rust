@@ -276,6 +276,7 @@ pub fn default_api_base() -> &'static str {
     }
 }
 
+/// Returns the Duet API origin for this build.
 pub fn api_base_url() -> String {
     match option_env!("DUET_API_URL") {
         Some(url) if !url.is_empty() => url.to_owned(),
@@ -283,6 +284,7 @@ pub fn api_base_url() -> String {
     }
 }
 
+/// Returns the bearer this build sends.
 pub fn api_bearer() -> String {
     option_env!("DUET_BEARER").unwrap_or("").to_owned()
 }

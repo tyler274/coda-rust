@@ -1,23 +1,38 @@
 //! Request and stream mechanics with no schema knowledge.
+//! Book: `book/src/backend-architecture.md`.
+#![deny(missing_docs)]
 
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
 #[derive(Debug, thiserror::Error)]
+/// The `HttpError` cases.
 pub enum HttpError {
     #[error("HTTP {status}: {body}")]
-    Status { status: u16, body: String },
+    /// The server answered with this status.
+    Status {
+        /// HTTP status code.
+        status: u16,
+        /// Response body, kept for the caller.
+        body: String,
+    },
     #[error("{0}")]
+    /// The `Transport` case.
     Transport(String),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// The `SseEvent` value exchanged by this crate.
 pub struct SseEvent {
+    /// The `event` value.
     pub event: String,
+    /// The `data` value.
     pub data: String,
+    /// The `id` value.
     pub id: Option<String>,
 }
 
+/// GETs JSON and decodes it.
 pub async fn get_json<T: DeserializeOwned>(
     client: &reqwest::Client,
     url: &str,
@@ -41,6 +56,7 @@ pub async fn get_json<T: DeserializeOwned>(
     serde_json::from_str(&body).map_err(|error| HttpError::Transport(error.to_string()))
 }
 
+/// POSTs JSON and decodes the response.
 pub async fn post_json<T: DeserializeOwned>(
     client: &reqwest::Client,
     url: &str,
@@ -66,6 +82,7 @@ pub async fn post_json<T: DeserializeOwned>(
     serde_json::from_str(&text).map_err(|error| HttpError::Transport(error.to_string()))
 }
 
+/// PUTs JSON and decodes the response.
 pub async fn put_json<T: DeserializeOwned>(
     client: &reqwest::Client,
     url: &str,

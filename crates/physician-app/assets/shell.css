@@ -1,6 +1,19 @@
 html, body { margin: 0; height: 100%; background: var(--surface); color: var(--ink); font: var(--type-body-md); }
 button, input { font: inherit; }
-.icon { width: var(--icon-size); height: var(--icon-size); flex: none; }
+.icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
+.icon-tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-lowest);
+  color: var(--muted);
+  box-shadow: var(--elevation-1);
+  font: var(--type-body-md);
+}
 
 .glass-app {
   display: grid;

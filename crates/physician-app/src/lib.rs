@@ -1,5 +1,7 @@
 //! Physician shell: the shipping sidebar, Today, a patient page, and the reader.
 //! The React app remains the shipping client. This client renders the same projections.
+//! Book: `book/src/north-star.md`.
+#![deny(missing_docs)]
 
 mod icons;
 mod shell;
@@ -732,11 +734,7 @@ fn TodayRows(
                                 span { class: "live-dot", aria_hidden: "true" }
                                 strong { class: "today-row-who", "{row.patient}" }
                                 span { class: "state-pill",
-                                    svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-                                        path { d: "M12 3 2.8 19h18.4L12 3Z" }
-                                        path { d: "M12 9v4" }
-                                        path { d: "M12 16.5h.01" }
-                                    }
+                                    Icon { name: IconName::Alert }
                                     "{row.did}"
                                 }
                             }

@@ -3,6 +3,8 @@
 //! The FHIR corpus stays in coda-agents. These files are the physician JSON the
 //! React site already renders. Commands are rejected here; they do not run a model.
 //! The same server serves the Dioxus page, which mounts into `#main`.
+//! Book: `book/src/north-star.md`.
+#![deny(missing_docs)]
 
 use std::env;
 use std::fs;
@@ -20,6 +22,8 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 
 const INDEX: &str = include_str!("../../physician-app/index.html");
+const LOGO: &[u8] = include_bytes!("../../physician-app/assets/coda-health-logo-transparent.png");
+const FAVICON: &[u8] = include_bytes!("../../physician-app/assets/favicon.svg");
 
 const TODAY: &str = include_str!("../fixtures/today.json");
 const PRACTICE_DAY: &str = include_str!("../fixtures/practice-day.json");
@@ -36,6 +40,7 @@ const WORKSPACE_IDS: [&str; 5] = [
     "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e",
 ];
 
+/// Builds the HTTP router.
 pub fn router() -> Router {
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
@@ -61,6 +66,8 @@ pub fn router() -> Router {
         )
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
+        .route("/assets/coda-health-logo-transparent.png", get(logo))
+        .route("/favicon.svg", get(favicon))
         .fallback(site_file)
         .layer(middleware::from_fn(cors))
 }
@@ -76,6 +83,24 @@ pub fn site_dir() -> Option<PathBuf> {
     }
     let fallback = PathBuf::from("target/physician-web");
     fallback.is_dir().then_some(fallback)
+}
+
+async fn logo() -> Response {
+    (
+        StatusCode::OK,
+        [(axum::http::header::CONTENT_TYPE, "image/png")],
+        LOGO,
+    )
+        .into_response()
+}
+
+async fn favicon() -> Response {
+    (
+        StatusCode::OK,
+        [(axum::http::header::CONTENT_TYPE, "image/svg+xml")],
+        FAVICON,
+    )
+        .into_response()
 }
 
 async fn site_index() -> Response {
@@ -135,6 +160,7 @@ fn site_mime(file: &Path) -> Option<&'static str> {
     }
 }
 
+/// Serves the router on `listener`.
 pub async fn serve(listener: tokio::net::TcpListener) {
     axum::serve(listener, router())
         .await
@@ -214,6 +240,7 @@ struct RosterQuery {
     query: Option<String>,
 }
 
+/// Filters the recorded roster by the query.
 pub fn search_roster(query: &str) -> Vec<Value> {
     let words: Vec<String> = query
         .split_whitespace()
@@ -239,6 +266,7 @@ pub fn search_roster(query: &str) -> Vec<Value> {
         .collect()
 }
 
+/// Returns why this server rejects the command.
 pub fn rejection_message(command_type: &str) -> &'static str {
     match command_type {
         "message.submit" => "Coda couldn’t accept that message.",

@@ -3,246 +3,356 @@
 //! The physician server publishes TypeScript types, not OpenAPI, so these structs
 //! follow `src/server/apiTypes.ts` and `TodayListProjection` for the fields the
 //! screens show. Extra JSON fields are ignored, which keeps a newer server readable.
+//! Book: `book/src/north-star.md`.
+#![deny(missing_docs)]
 
 use serde::Deserialize;
 use serde_json::Value;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `HealthResponse` value exchanged by this crate.
 pub struct HealthResponse {
+    /// The `status` value.
     pub status: String,
     #[serde(default)]
+    /// The `retrying` value.
     pub retrying: Vec<Value>,
     #[serde(default)]
+    /// The `held_by_newer_release` value.
     pub held_by_newer_release: Vec<Value>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `TodayListResponse` value exchanged by this crate.
 pub struct TodayListResponse {
+    /// The `date` value.
     pub date: String,
+    /// The `rows` value.
     pub rows: Vec<TodayRow>,
+    /// The `as_of` value.
     pub as_of: i64,
     #[serde(default)]
+    /// The `connections` value.
     pub connections: Vec<TodayConnection>,
     #[serde(default)]
+    /// The `incomplete` value.
     pub incomplete: Option<bool>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `TodayConnection` value exchanged by this crate.
 pub struct TodayConnection {
+    /// The `condition` value.
     pub condition: String,
     #[serde(default)]
+    /// The `channel` value.
     pub channel: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `TodayRow` value exchanged by this crate.
 pub struct TodayRow {
+    /// The `patient_workspace_id` value.
     pub patient_workspace_id: String,
+    /// The `patient_display_name` value.
     pub patient_display_name: String,
+    /// The `item_id` value.
     pub item_id: String,
+    /// The `version_id` value.
     pub version_id: String,
+    /// The `waiting_since` value.
     pub waiting_since: String,
+    /// The `urgency` value.
     pub urgency: String,
+    /// The `kind` value.
     pub kind: String,
     #[serde(default)]
+    /// The `reason` value.
     pub reason: Option<String>,
     #[serde(default)]
+    /// The `work_kind` value.
     pub work_kind: Option<String>,
     #[serde(default)]
+    /// The `resume_target` value.
     pub resume_target: Option<WorkResumeTarget>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `WorkResumeTarget` value exchanged by this crate.
 pub struct WorkResumeTarget {
+    /// The `work_item_id` value.
     pub work_item_id: String,
+    /// The `expected_run_id` value.
     pub expected_run_id: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `PatientWorkspacesResponse` value exchanged by this crate.
 pub struct PatientWorkspacesResponse {
+    /// The `patients` value.
     pub patients: Vec<PatientWorkspaceSummary>,
     #[serde(default)]
+    /// The `incomplete` value.
     pub incomplete: Option<bool>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `PatientWorkspaceSummary` value exchanged by this crate.
 pub struct PatientWorkspaceSummary {
+    /// The `patient_workspace_id` value.
     pub patient_workspace_id: String,
+    /// The `display_name` value.
     pub display_name: String,
+    /// The `cursor` value.
     pub cursor: i64,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `WorkspaceChat` value exchanged by this crate.
 pub struct WorkspaceChat {
+    /// The `chat_id` value.
     pub chat_id: String,
     #[serde(default)]
+    /// The `title` value.
     pub title: Option<String>,
+    /// The `created_at` value.
     pub created_at: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `PracticeDayResponse` value exchanged by this crate.
 pub struct PracticeDayResponse {
+    /// The `current_time` value.
     pub current_time: String,
+    /// The `time_zone` value.
     pub time_zone: String,
+    /// The `source_state` value.
     pub source_state: PracticeSourceState,
     #[serde(default)]
+    /// The `visits` value.
     pub visits: Vec<PracticeVisit>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PracticeSourceState` value exchanged by this crate.
 pub struct PracticeSourceState {
+    /// The `state` value.
     pub state: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PracticeVisit` value exchanged by this crate.
 pub struct PracticeVisit {
     #[serde(default)]
+    /// The `patient_display_name` value.
     pub patient_display_name: Option<String>,
     #[serde(default)]
+    /// The `patient_workspace_id` value.
     pub patient_workspace_id: Option<String>,
+    /// The `label` value.
     pub label: String,
+    /// The `starts_at` value.
     pub starts_at: String,
     #[serde(default)]
+    /// The `ends_at` value.
     pub ends_at: Option<String>,
+    /// The `status` value.
     pub status: String,
     #[serde(default)]
+    /// The `patient_time_zone` value.
     pub patient_time_zone: Option<String>,
     #[serde(default)]
+    /// The `preparation` value.
     pub preparation: Option<VisitPreparation>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `VisitPreparation` value exchanged by this crate.
 pub struct VisitPreparation {
+    /// The `state` value.
     pub state: String,
     #[serde(default)]
+    /// The `last_attempt` value.
     pub last_attempt: Option<PreparationAttempt>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PreparationAttempt` value exchanged by this crate.
 pub struct PreparationAttempt {
+    /// The `outcome` value.
     pub outcome: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `RecentConversationsResponse` value exchanged by this crate.
 pub struct RecentConversationsResponse {
     #[serde(default)]
+    /// The `conversations` value.
     pub conversations: Vec<RecentConversation>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `RecentConversation` value exchanged by this crate.
 pub struct RecentConversation {
     #[serde(default)]
+    /// The `title` value.
     pub title: Option<String>,
     #[serde(default)]
+    /// The `patient_display_name` value.
     pub patient_display_name: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `UpdatesResponse` value exchanged by this crate.
 pub struct UpdatesResponse {
     #[serde(default)]
+    /// The `rows` value.
     pub rows: Vec<Value>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PatientSearchResponse` value exchanged by this crate.
 pub struct PatientSearchResponse {
     #[serde(default)]
+    /// The `patients` value.
     pub patients: Vec<PatientSearchRow>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PatientSearchRow` value exchanged by this crate.
 pub struct PatientSearchRow {
+    /// The `patient_workspace_id` value.
     pub patient_workspace_id: String,
+    /// The `patient_display_name` value.
     pub patient_display_name: String,
     #[serde(default)]
+    /// The `birth_date` value.
     pub birth_date: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
+/// The `PatientWorkspaceResponse` value exchanged by this crate.
 pub struct PatientWorkspaceResponse {
+    /// The `patient_workspace_id` value.
     pub patient_workspace_id: String,
+    /// The `display_name` value.
     pub display_name: String,
     #[serde(default)]
+    /// The `time_zone` value.
     pub time_zone: Option<String>,
     #[serde(default)]
+    /// The `chats` value.
     pub chats: Vec<WorkspaceChat>,
     #[serde(default)]
+    /// The `identity` value.
     pub identity: Option<PatientIdentity>,
     #[serde(default)]
+    /// The `patient_synopsis` value.
     pub patient_synopsis: Option<PatientSynopsis>,
     #[serde(default)]
+    /// The `automation_run` value.
     pub automation_run: Option<AutomationRun>,
     #[serde(default)]
+    /// The `active_follow_ups` value.
     pub active_follow_ups: Vec<FollowUp>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PatientIdentity` value exchanged by this crate.
 pub struct PatientIdentity {
     #[serde(default)]
+    /// The `birth_date` value.
     pub birth_date: Option<String>,
     #[serde(default)]
+    /// The `age_years` value.
     pub age_years: Option<i64>,
     #[serde(default)]
+    /// The `sex_or_gender` value.
     pub sex_or_gender: Option<SexOrGender>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `SexOrGender` value exchanged by this crate.
 pub struct SexOrGender {
     #[serde(default)]
+    /// The `value` value.
     pub value: Option<String>,
     #[serde(default)]
+    /// The `label` value.
     pub label: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PatientSynopsis` value exchanged by this crate.
 pub struct PatientSynopsis {
+    /// The `version_id` value.
     pub version_id: String,
     #[serde(default)]
+    /// The `authored_text` value.
     pub authored_text: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `AutomationRun` value exchanged by this crate.
 pub struct AutomationRun {
+    /// The `kind` value.
     pub kind: String,
+    /// The `state` value.
     pub state: String,
     #[serde(default)]
+    /// The `ended_cause` value.
     pub ended_cause: Option<String>,
     #[serde(default)]
+    /// The `purpose` value.
     pub purpose: Option<WorkPurpose>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `WorkPurpose` value exchanged by this crate.
 pub struct WorkPurpose {
     #[serde(default)]
+    /// The `headline` value.
     pub headline: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `FollowUp` value exchanged by this crate.
 pub struct FollowUp {
+    /// The `follow_up_id` value.
     pub follow_up_id: String,
     #[serde(default)]
+    /// The `description` value.
     pub description: Option<String>,
 }
 
 /// The chat snapshot the React client reads. Extra server fields are ignored.
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct ChatSnapshotResponse {
+    /// The `snapshot` value.
     pub snapshot: ChatSnapshot,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `ChatSnapshot` value exchanged by this crate.
 pub struct ChatSnapshot {
     #[serde(default)]
+    /// The `conversation` value.
     pub conversation: Vec<ChatTurn>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `ChatTurn` value exchanged by this crate.
 pub struct ChatTurn {
     #[serde(default)]
+    /// The `text` value.
     pub text: Option<String>,
     #[serde(default)]
+    /// The `authored_text` value.
     pub authored_text: Option<String>,
 }
 
 impl ChatTurn {
+    /// Returns the response body when this result has one.
     pub fn body(&self) -> Option<&str> {
         self.text.as_deref().filter(|text| !text.is_empty()).or(self
             .authored_text
@@ -252,8 +362,11 @@ impl ChatTurn {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The `PhysicianDraft` value exchanged by this crate.
 pub struct PhysicianDraft {
+    /// The `text` value.
     pub text: String,
+    /// The `revision` value.
     pub revision: i64,
 }
 

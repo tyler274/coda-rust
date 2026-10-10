@@ -12,6 +12,7 @@ pub trait Encode {
     fn forward(&mut self, windows: &[Vec<u32>]) -> Result<Vec<Vec<f32>>, String>;
 }
 
+/// Serves Duet embedding requests on stdin.
 pub fn serve_duet<E: Encode>(encoder: &mut E) -> Result<(), String> {
     let stdin = std::io::stdin();
     let stdout = std::io::stdout();
@@ -57,6 +58,7 @@ fn duet_result<E: Encode>(encoder: &mut E, line: &str) -> Result<Value, String> 
     Ok(serde_json::json!(documents))
 }
 
+/// Serves patient embedding requests on stdin.
 pub fn serve_patient<E: Encode>(encoder: &mut E) -> Result<(), String> {
     let (sender, receiver) = mpsc::channel::<Option<String>>();
     std::thread::spawn(move || {
@@ -280,6 +282,7 @@ fn error_line(id: &Value, error: &str) -> String {
     serde_json::json!({ "id": id, "error": error }).to_string()
 }
 
+/// Returns the line the encoder prints when it is ready.
 pub fn startup_line(protocol: Protocol, recipe: &str) -> String {
     match protocol {
         Protocol::Duet => serde_json::json!({ "recipe": recipe }).to_string(),

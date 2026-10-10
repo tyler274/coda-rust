@@ -3,6 +3,8 @@
 //! The markdown stays in `coda-agents/skills`. This crate reads that directory:
 //! one folder per skill, `SKILL.md` with YAML frontmatter, no symlinks, and a
 //! sha256 identity of the file bytes. It does not copy the skills.
+//! Book: `book/src/personal-agent-program.md`.
+#![deny(missing_docs)]
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -10,24 +12,38 @@ use std::path::{Path, PathBuf};
 use sha2::{Digest, Sha256};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// The `SkillResource` value exchanged by this crate.
 pub struct SkillResource {
+    /// The `file_path` value.
     pub file_path: String,
+    /// The `version_id` value.
     pub version_id: String,
+    /// The `byte_length` value.
     pub byte_length: usize,
+    /// The `content` value.
     pub content: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// The `AgentSkill` value exchanged by this crate.
 pub struct AgentSkill {
+    /// The `name` value.
     pub name: String,
+    /// The `description` value.
     pub description: String,
+    /// The `file_path` value.
     pub file_path: String,
+    /// The `version_id` value.
     pub version_id: String,
+    /// The `byte_length` value.
     pub byte_length: usize,
+    /// The `content` value.
     pub content: String,
+    /// The `resources` value.
     pub resources: Vec<SkillResource>,
 }
 
+/// Loads each skill directory under `root`.
 pub fn load_agent_skills(root: &Path) -> Result<Vec<AgentSkill>, String> {
     let root = fs::canonicalize(root).map_err(|error| error.to_string())?;
     let mut skills = Vec::new();
@@ -177,6 +193,7 @@ fn load_resource(folder: &Path, file_path: &str) -> Result<SkillResource, String
     })
 }
 
+/// Returns the sha256 identity of `bytes`.
 pub fn version_id(bytes: &[u8]) -> String {
     let digest = Sha256::digest(bytes);
     format!("sha256:{digest:x}")

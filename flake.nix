@@ -64,6 +64,7 @@
           doppler
           act
           actionlint
+          mdbook
         ];
 
         env.OPENSSL_NO_VENDOR = "1";

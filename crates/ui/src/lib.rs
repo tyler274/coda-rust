@@ -1,8 +1,11 @@
 //! Shared presentation for the Duet and physician Dioxus apps.
 //! Tokens come from the physician stylesheet; product screens stay in each app.
+//! Book: `book/src/ui-surface-map.md`.
+#![deny(missing_docs)]
 
 use dioxus::prelude::*;
 
+/// The `STYLESHEET` constant.
 pub const STYLESHEET: &str = concat!(
     include_str!("../assets/tokens.css"),
     include_str!("../assets/components.css"),

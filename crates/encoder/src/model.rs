@@ -8,6 +8,7 @@ use tokenizers::Tokenizer;
 use crate::protocol::Encode;
 use crate::window::BATCH;
 
+/// The `BertEncoder` value exchanged by this crate.
 pub struct BertEncoder {
     model: BertModel,
     tokenizer: Tokenizer,
@@ -18,6 +19,7 @@ pub struct BertEncoder {
 }
 
 impl BertEncoder {
+    /// Loads the encoder weights from the directory.
     pub fn load(directory: &Path) -> Result<Self, String> {
         let config_path = directory.join("config.json");
         let config_text = std::fs::read_to_string(&config_path)

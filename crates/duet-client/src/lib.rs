@@ -1,5 +1,7 @@
 //! Duet caller. Models and operations come from the OpenAPI Generator Rust client.
 //! This crate adds the app-build headers the FastAPI gate reads.
+//! Book: `book/src/backend-architecture.md`.
+#![deny(missing_docs)]
 
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
@@ -12,15 +14,19 @@ pub use duet_wire::models::SharingOverviewResponse;
 pub use duet_wire::models::SharingPeer;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
 
+/// The `BUILD_HEADER` constant.
 pub const BUILD_HEADER: &str = "X-Duet-App-Build";
+/// The `VERSION_HEADER` constant.
 pub const VERSION_HEADER: &str = "X-Duet-App-Version";
 
 #[derive(Debug, Clone)]
+/// The `DuetClient` value exchanged by this crate.
 pub struct DuetClient {
     configuration: Configuration,
 }
 
 impl DuetClient {
+    /// Creates the client.
     pub fn new(
         base_path: impl Into<String>,
         bearer: impl Into<String>,
@@ -47,12 +53,14 @@ impl DuetClient {
         })
     }
 
+    /// Lists account moments.
     pub async fn list_moments(&self) -> Result<Vec<AccountMoment>, String> {
         duet_wire::apis::moments_api::list_moments_api_moments_get(&self.configuration)
             .await
             .map_err(|error| error.to_string())
     }
 
+    /// Lists the conversation page.
     pub async fn list_messages(&self) -> Result<ConversationPage, String> {
         duet_wire::apis::conversation_api::messages_api_conversation_messages_get(
             &self.configuration,
@@ -63,6 +71,7 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Lists insight cycles for Today.
     pub async fn list_insight_cycles(&self) -> Result<InsightCyclePage, String> {
         duet_wire::apis::health_intelligence_api::list_insight_cycles_api_insight_cycles_get(
             &self.configuration,
@@ -73,12 +82,14 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Reads intelligence settings.
     pub async fn intelligence_settings(&self) -> Result<IntelligenceSettings, String> {
         duet_wire::apis::health_intelligence_api::get_intelligence_settings_api_intelligence_settings_get(&self.configuration)
             .await
             .map_err(|error| error.to_string())
     }
 
+    /// Reads the evidence library.
     pub async fn evidence_library(&self) -> Result<EvidenceLibraryPage, String> {
         let mut query = EvidenceLibraryQuery::new();
         query.scope = Some(EvidenceLibraryScope::Summary);
@@ -90,6 +101,7 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Reads who sharing includes.
     pub async fn sharing_overview(&self) -> Result<SharingOverviewResponse, String> {
         duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)
             .await

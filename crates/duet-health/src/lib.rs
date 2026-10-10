@@ -2,39 +2,63 @@
 //! Apple HealthKit is reached through the Swift binding in `platform/ios`.
 //! Android reads granted Health Connect records through `platform/android`.
 //! A missing permission or an empty store contributes no sample.
+//! Book: `book/src/behaviour-contract.md`.
+#![deny(missing_docs)]
 
 use serde::Deserialize;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// The `HealthStatus` cases.
 pub enum HealthStatus {
+    /// The `Available` case.
     Available,
-    Unavailable { reason: &'static str },
+    /// The store could not be read.
+    Unavailable {
+        /// Why the store is unavailable.
+        reason: &'static str,
+    },
 }
 
+/// Behavior implemented by `HealthSource`.
 pub trait HealthSource {
+    /// Returns whether the store can be read.
     fn status(&self) -> HealthStatus;
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+/// The `PhoneReading` value exchanged by this crate.
 pub struct PhoneReading {
+    /// The `name` value.
     pub name: String,
+    /// The `value` value.
     pub value: String,
+    /// The `unit` value.
     pub unit: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// The `StoreState` cases.
 pub enum StoreState {
+    /// The `Missing` case.
     Missing,
+    /// The `UpdateRequired` case.
     UpdateRequired,
+    /// The `PermissionRequired` case.
     PermissionRequired,
+    /// The `Connected` case.
     Connected,
+    /// The `Unreadable` case.
     Unreadable,
+    /// The `NoStore` case.
     NoStore,
+    /// The `HealthKitAvailable` case.
     HealthKitAvailable,
+    /// The `HealthKitUnavailable` case.
     HealthKitUnavailable,
 }
 
 impl StoreState {
+    /// Returns the sentence shown for this state.
     pub fn sentence(self) -> &'static str {
         match self {
             Self::Missing => "Health Connect is not installed on this phone.",
@@ -50,15 +74,18 @@ impl StoreState {
         }
     }
 
+    /// Reports whether the person can be asked for access.
     pub fn can_request(self) -> bool {
         matches!(self, Self::PermissionRequired)
     }
 
+    /// Reports whether the store is connected.
     pub fn connected(self) -> bool {
         matches!(self, Self::Connected)
     }
 }
 
+/// Maps a store status code to `StoreState`.
 pub fn parse_status(code: &str) -> StoreState {
     match code {
         "missing" => StoreState::Missing,
@@ -79,21 +106,27 @@ pub fn granted_readings(rows: &[PhoneReading], granted: &[String]) -> Vec<PhoneR
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// The `HealthSnapshot` value exchanged by this crate.
 pub struct HealthSnapshot {
+    /// The `state` value.
     pub state: StoreState,
+    /// The `readings` value.
     pub readings: Vec<PhoneReading>,
 }
 
 impl HealthSnapshot {
+    /// Returns the sentence shown for this state.
     pub fn sentence(&self) -> &'static str {
         self.state.sentence()
     }
 }
 
 #[derive(Debug, Default, Clone, Copy)]
+/// The `PlatformHealth` value exchanged by this crate.
 pub struct PlatformHealth;
 
 impl PlatformHealth {
+    /// Reads the current on-device snapshot.
     pub fn snapshot(&self) -> HealthSnapshot {
         #[cfg(target_os = "android")]
         {
@@ -112,6 +145,7 @@ impl PlatformHealth {
         }
     }
 
+    /// Asks the operating system for health access.
     pub fn request_access(&self) {
         #[cfg(target_os = "android")]
         android_request();
@@ -251,6 +285,7 @@ struct ReadingPage {
     rows: Vec<PhoneReading>,
 }
 
+/// Decodes Health Connect rows from the bridge JSON.
 pub fn decode_readings(body: &str) -> Vec<PhoneReading> {
     let page: ReadingPage = match serde_json::from_str(body) {
         Ok(page) => page,
@@ -259,6 +294,7 @@ pub fn decode_readings(body: &str) -> Vec<PhoneReading> {
     granted_readings(&page.rows, &page.granted)
 }
 
+/// The `NO_READINGS` constant.
 pub const NO_READINGS: &str = "Health Connect has no readings to show.";
 
 #[cfg(test)]

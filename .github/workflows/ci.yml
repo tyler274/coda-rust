@@ -32,3 +32,9 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test --workspace
+      - name: Install mdBook
+        run: cargo install mdbook --version 0.4.52 --locked
+      - name: Build the book and the rustdoc
+        run: |
+          mdbook build book
+          cargo doc --no-deps --workspace

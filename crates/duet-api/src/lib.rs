@@ -1,5 +1,7 @@
 //! Axum owner for Duet's moments routes. Other patient routers stay on FastAPI
 //! until each one moves. The physician Node server is not this crate.
+//! Book: `book/src/backend-architecture.md`.
+#![deny(missing_docs)]
 
 use std::env;
 use std::sync::Arc;
@@ -14,6 +16,7 @@ use axum::routing::{delete, get};
 use duet_wire::models::{AccountMoment, MomentKind};
 use uuid::Uuid;
 
+/// The `REQUIRED_MIGRATION` constant.
 pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
 
 const LIST_SQL: &str = "\
@@ -27,11 +30,17 @@ delete from public.account_moments \
 where id = $1 and user_id = $2";
 
 #[derive(Debug)]
+/// The `ApiError` cases.
 pub enum ApiError {
+    /// The `Unauthorized` case.
     Unauthorized,
+    /// The `Forbidden` case.
     Forbidden,
+    /// The `NotFound` case.
     NotFound,
+    /// The `Unavailable` case.
     Unavailable(&'static str),
+    /// The `Storage` case.
     Storage(String),
 }
 
@@ -55,16 +64,21 @@ impl IntoResponse for ApiError {
 }
 
 #[async_trait]
+/// Behavior implemented by `Moments`.
 pub trait Moments: Send + Sync {
+    /// The `user_id` value.
     async fn list(&self, user_id: Uuid) -> Result<Vec<AccountMoment>, ApiError>;
+    /// The `user_id` value.
     async fn remove(&self, user_id: Uuid, moment_id: Uuid) -> Result<bool, ApiError>;
 }
 
+/// The `PgMoments` value exchanged by this crate.
 pub struct PgMoments {
     pool: sqlx::PgPool,
 }
 
 impl PgMoments {
+    /// Creates the client.
     pub fn new(pool: sqlx::PgPool) -> Self {
         Self { pool }
     }
@@ -131,11 +145,13 @@ struct AppState {
     dev_bearer: bool,
 }
 
+/// Builds the HTTP router.
 pub fn router(moments: Arc<dyn Moments>) -> Router {
     let dev_bearer = env::var("DUET_API_AUTH").ok().as_deref() == Some("dev-bearer");
     router_with(moments, dev_bearer)
 }
 
+/// Builds the router, including the dev bearer when asked.
 pub fn router_with(moments: Arc<dyn Moments>, dev_bearer: bool) -> Router {
     Router::new()
         .route("/api/moments", get(list_moments))
@@ -181,6 +197,7 @@ fn account_id(headers: &HeaderMap, dev_bearer: bool) -> Result<Uuid, ApiError> {
     Uuid::parse_str(token).map_err(|_| ApiError::Unauthorized)
 }
 
+/// Reports whether the required migration is applied.
 pub async fn schema_is_ready(pool: &sqlx::PgPool) -> Result<bool, sqlx::Error> {
     sqlx::query_scalar("select exists (select 1 from public.schema_migrations where version = $1)")
         .bind(REQUIRED_MIGRATION)

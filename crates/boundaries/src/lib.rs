@@ -1,3 +1,9 @@
+//! Keeps Duet and the physician client from sharing clinical crates.
+//!
+//! The book chapter is `book/src/reading.md`.
+
+#![deny(missing_docs)]
+
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
@@ -34,5 +40,54 @@ mod tests {
             root.join("submodules/coda-agents/web/src/main.tsx")
                 .exists()
         );
+    }
+
+    #[test]
+    fn the_book_cites_every_duet_doc_heading() {
+        let docs = root().join("submodules/coda-app/docs");
+        let mut corpus = String::new();
+        for entry in std::fs::read_dir(root().join("book/src")).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|ext| ext.to_str()) == Some("md") {
+                corpus.push_str(&std::fs::read_to_string(&path).unwrap());
+                corpus.push('\n');
+            }
+        }
+        for entry in std::fs::read_dir(&docs).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
+                continue;
+            }
+            let text = std::fs::read_to_string(&path).unwrap();
+            for title in headings(&text) {
+                assert!(
+                    corpus.contains(&title),
+                    "{} missing from the book: {title}",
+                    path.display()
+                );
+            }
+        }
+    }
+
+    fn headings(text: &str) -> Vec<String> {
+        let mut found = Vec::new();
+        let mut fenced = false;
+        for line in text.lines() {
+            if line.starts_with("```") {
+                fenced = !fenced;
+                continue;
+            }
+            if fenced {
+                continue;
+            }
+            let hashes = line.chars().take_while(|ch| *ch == '#').count();
+            if (1..=6).contains(&hashes) && line[hashes..].starts_with([' ', '\t']) {
+                let title = line[hashes..].trim();
+                if !title.is_empty() {
+                    found.push(title.to_owned());
+                }
+            }
+        }
+        found
     }
 }

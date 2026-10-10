@@ -15,12 +15,16 @@ pub const QUERY_TOO_LONG: &str =
     "Query exceeds the encoder's 510-token input window; use a shorter authored query";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+/// The `Protocol` cases.
 pub enum Protocol {
+    /// The `Duet` case.
     Duet,
+    /// The `Patient` case.
     Patient,
 }
 
 impl Protocol {
+    /// Parses the protocol name.
     pub fn parse(value: &str) -> Option<Self> {
         match value {
             "duet" => Some(Self::Duet),
@@ -29,6 +33,7 @@ impl Protocol {
         }
     }
 
+    /// Returns the query prefix for this protocol.
     pub fn prefix(self) -> &'static str {
         match self {
             Self::Duet => "duet-bge-cls-v1:",
@@ -84,6 +89,7 @@ pub fn canonical_json(value: &serde_json::Value) -> String {
     }
 }
 
+/// Fingerprints the encoder recipe for this directory.
 pub fn fingerprint(protocol: Protocol, directory: &Path) -> Result<String, String> {
     let root = directory
         .canonicalize()

@@ -1,4 +1,6 @@
 //! Physician website caller for the existing Node `CodaServer`.
+//! Book: `book/src/north-star.md`.
+#![deny(missing_docs)]
 
 use physician_wire::{
     ChatSnapshotResponse, HealthResponse, PatientSearchResponse, PatientWorkspaceResponse,
@@ -7,12 +9,14 @@ use physician_wire::{
 };
 
 #[derive(Debug, Clone)]
+/// The `PhysicianClient` value exchanged by this crate.
 pub struct PhysicianClient {
     base: String,
     http: reqwest::Client,
 }
 
 impl PhysicianClient {
+    /// Creates the client.
     pub fn new(base: impl Into<String>) -> Self {
         Self {
             base: base.into().trim_end_matches('/').to_owned(),
@@ -20,32 +24,39 @@ impl PhysicianClient {
         }
     }
 
+    /// Reads the physician health check.
     pub async fn health(&self) -> Result<HealthResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/health", self.base)).await
     }
 
+    /// Reads Today.
     pub async fn today(&self) -> Result<TodayListResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/today", self.base)).await
     }
 
+    /// Reads the patient workspaces.
     pub async fn workspaces(&self) -> Result<PatientWorkspacesResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/patient-workspaces", self.base)).await
     }
 
+    /// Reads the practice day.
     pub async fn practice_day(&self) -> Result<PracticeDayResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/practice-day", self.base)).await
     }
 
+    /// Reads recent conversations.
     pub async fn recent_conversations(
         &self,
     ) -> Result<RecentConversationsResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/recent-conversations", self.base)).await
     }
 
+    /// Reads Updates.
     pub async fn updates(&self) -> Result<UpdatesResponse, http::HttpError> {
         http::get_json(&self.http, &format!("{}/updates", self.base)).await
     }
 
+    /// Reads Today for one patient.
     pub async fn today_for(
         &self,
         workspace_id: &str,
@@ -61,6 +72,7 @@ impl PhysicianClient {
         .await
     }
 
+    /// Sends a physician command.
     pub async fn command(
         &self,
         body: &serde_json::Value,
@@ -68,6 +80,7 @@ impl PhysicianClient {
         http::post_json(&self.http, &format!("{}/commands", self.base), body).await
     }
 
+    /// Reads one chat snapshot.
     pub async fn chat_snapshot(
         &self,
         workspace_id: &str,
@@ -83,6 +96,7 @@ impl PhysicianClient {
         .await
     }
 
+    /// Reads the saved draft.
     pub async fn read_draft(
         &self,
         workspace_id: &str,
@@ -98,6 +112,7 @@ impl PhysicianClient {
         .await
     }
 
+    /// Saves the draft at its revision.
     pub async fn save_draft(
         &self,
         workspace_id: &str,
@@ -117,6 +132,7 @@ impl PhysicianClient {
         Ok(())
     }
 
+    /// Sends recorded audio for transcription.
     pub async fn dictate(&self) -> Result<(), http::HttpError> {
         let _: serde_json::Value = http::post_json(
             &self.http,
@@ -127,6 +143,7 @@ impl PhysicianClient {
         Ok(())
     }
 
+    /// Searches the patient roster.
     pub async fn search(&self, query: &str) -> Result<PatientSearchResponse, http::HttpError> {
         http::get_json(
             &self.http,
@@ -135,6 +152,7 @@ impl PhysicianClient {
         .await
     }
 
+    /// Asks the server to resume one piece of work.
     pub async fn resume_work(
         &self,
         workspace_id: &str,
@@ -157,6 +175,7 @@ impl PhysicianClient {
         Ok(())
     }
 
+    /// Reads one patient workspace.
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
         http::get_json(
             &self.http,
@@ -165,6 +184,7 @@ impl PhysicianClient {
         .await
     }
 
+    /// Returns the event stream path for this client.
     pub fn events_path(&self) -> String {
         format!("{}/patient-workspaces/events", self.base)
     }
