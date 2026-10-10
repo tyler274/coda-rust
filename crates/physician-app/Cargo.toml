@@ -11,6 +11,9 @@ physician-client = { path = "../physician-client" }
 physician-wire = { path = "../physician-wire" }
 ui = { path = "../ui" }
 
+[dev-dependencies]
+serde_json = "1"
+
 [features]
 default = []
 web = ["dioxus/web", "dioxus/launch"]

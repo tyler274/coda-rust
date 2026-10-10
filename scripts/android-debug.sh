@@ -57,6 +57,68 @@ find target/dx/duet-app -path '*/src/main/AndroidManifest.xml' | while IFS= read
   fi
 done
 
+# Health Connect is copied into the generated app because dx regenerates it.
+bridge="$root/platform/android/HealthConnectBridge.kt"
+java_dir=$(find target/dx/duet-app -path '*/src/main/AndroidManifest.xml' | head -n 1 | xargs dirname)
+if [ -z "$java_dir" ] || [ ! -f "$bridge" ]; then
+  echo "Health Connect bridge or generated manifest is missing" >&2
+  exit 1
+fi
+mkdir -p "$java_dir/java/coda/duet"
+cp "$bridge" "$java_dir/java/coda/duet/HealthConnectBridge.kt"
+app_gradle=$(find target/dx/duet-app -path '*/app/build.gradle.kts' ! -path '*/build/*' | while IFS= read -r path; do
+  if grep -q 'androidx.webkit' "$path"; then
+    printf '%s\n' "$path"
+  fi
+done | head -n 1)
+if [ -z "$app_gradle" ]; then
+  echo "the app Gradle file was not generated" >&2
+  exit 1
+fi
+if ! grep -q 'connect-client' "$app_gradle"; then
+  sed -i 's/dependencies {/dependencies {\n    implementation("androidx.health.connect:connect-client:1.1.0-alpha11")\n    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")/' "$app_gradle"
+fi
+# connect-client 1.1.0-alpha11 compiles against API 35 and requires minSdk 26.
+sed -i 's/compileSdk = 34/compileSdk = 35/' "$app_gradle"
+sed -i 's/minSdk = 24/minSdk = 26/' "$app_gradle"
+manifest="$java_dir/AndroidManifest.xml"
+if ! grep -q 'android.permission.health.READ_STEPS' "$manifest"; then
+  sed -i '/android.permission.INTERNET/a\
+    <uses-permission android:name="android.permission.health.READ_STEPS" />\
+    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />\
+    <uses-permission android:name="android.permission.health.READ_EXERCISE" />\
+    <uses-permission android:name="android.permission.health.READ_DISTANCE" />\
+    <uses-permission android:name="android.permission.health.READ_NUTRITION" />\
+    <uses-permission android:name="android.permission.health.READ_HYDRATION" />\
+    <uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE" />\
+    <uses-permission android:name="android.permission.health.READ_WEIGHT" />\
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />\
+    <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE" />\
+    <uses-permission android:name="android.permission.health.READ_BODY_FAT" />\
+    <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS" />\
+    <uses-permission android:name="android.permission.health.READ_HEIGHT" />\
+    <uses-permission android:name="android.permission.health.READ_BLOOD_GLUCOSE" />\
+    <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE" />\
+    <uses-permission android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE" />\
+    <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />\
+    <uses-permission android:name="android.permission.health.READ_VO2_MAX" />\
+    <queries>\
+        <package android:name="com.google.android.apps.healthdata" />\
+    </queries>' "$manifest"
+fi
+if ! grep -q 'VIEW_PERMISSION_USAGE' "$manifest"; then
+  sed -i 's|</activity>|    <intent-filter>\
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />\
+            </intent-filter>\
+        </activity>\
+        <activity-alias android:name="ViewPermissionUsageActivity" android:exported="true" android:targetActivity="dev.dioxus.main.MainActivity" android:permission="android.permission.START_VIEW_PERMISSION_USAGE">\
+            <intent-filter>\
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />\
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />\
+            </intent-filter>\
+        </activity-alias>|' "$manifest"
+fi
+
 gradle=$(find target/dx/duet-app -name gradlew | head -n 1)
 if [ -z "$gradle" ]; then
   echo "gradlew was not generated" >&2

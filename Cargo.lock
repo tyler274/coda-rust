@@ -1911,6 +1911,12 @@ dependencies = [
 [[package]]
 name = "duet-health"
 version = "0.1.0"
+dependencies = [
+ "jni 0.21.1",
+ "ndk-context",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "duet-page"
@@ -4685,6 +4691,7 @@ dependencies = [
  "dioxus",
  "physician-client",
  "physician-wire",
+ "serde_json",
  "ui",
 ]
 

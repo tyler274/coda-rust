@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use dioxus::prelude::*;
 use duet_client::DuetClient;
-use duet_health::{HealthSource, PlatformHealth};
+use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
 use roots::{
     AWAITING, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING,
     ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, REVIEWS_PAUSED,
@@ -25,23 +25,42 @@ pub use roots::{api_base_url, api_bearer};
 #[component]
 pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
-    let health = match PlatformHealth.status() {
-        duet_health::HealthStatus::Available => "HealthKit is available.".to_owned(),
-        duet_health::HealthStatus::Unavailable { reason } => reason.to_owned(),
-    };
+    let mut phone = use_signal(|| PlatformHealth.snapshot());
     rsx! {
         style { "{ui::STYLESHEET}{DUET_STYLES}" }
         main { class: "duet",
             div { class: "duet-page",
                 div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: bearer.clone() } }
-                div { hidden: tab() != 1, TodayTab { base_url: base_url.clone(), bearer: bearer.clone() } }
-                div { hidden: tab() != 2, YouTab { base_url: base_url.clone(), bearer: bearer.clone(), health } }
+                div { hidden: tab() != 1,
+                    TodayTab {
+                        base_url: base_url.clone(),
+                        bearer: bearer.clone(),
+                        readings: phone().readings.clone(),
+                        connected: phone().state.connected(),
+                    }
+                }
+                div { hidden: tab() != 2,
+                    YouTab {
+                        base_url: base_url.clone(),
+                        bearer: bearer.clone(),
+                        phone: phone(),
+                        on_allow: move |_| {
+                            PlatformHealth.request_access();
+                            phone.set(PlatformHealth.snapshot());
+                        },
+                    }
+                }
                 div { hidden: tab() != 3, SharedTab { base_url, bearer } }
             }
             TabBar {
                 labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
                 selected: tab(),
-                on_select: move |index| tab.set(index),
+                on_select: move |index| {
+                    tab.set(index);
+                    if index == 1 || index == 2 {
+                        phone.set(PlatformHealth.snapshot());
+                    }
+                },
             }
         }
     }
@@ -179,7 +198,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
 }
 
 #[component]
-fn TodayTab(base_url: String, bearer: String) -> Element {
+fn TodayTab(
+    base_url: String,
+    bearer: String,
+    readings: Vec<PhoneReading>,
+    connected: bool,
+) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
@@ -213,6 +237,7 @@ fn TodayTab(base_url: String, bearer: String) -> Element {
         TabHeading { name: "Today".to_owned(), loading }
         p { class: "duet-date", "{date}" }
         p { class: "duet-greeting", "{hello}" }
+        PhoneReadings { readings, connected }
         match root {
             Some(TodayRoot::Quiet) => rsx! {},
             Some(TodayRoot::Paused) => rsx! {
@@ -240,7 +265,12 @@ fn TodayTab(base_url: String, bearer: String) -> Element {
 }
 
 #[component]
-fn YouTab(base_url: String, bearer: String, health: String) -> Element {
+fn YouTab(
+    base_url: String,
+    bearer: String,
+    phone: HealthSnapshot,
+    on_allow: EventHandler<()>,
+) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
@@ -273,8 +303,12 @@ fn YouTab(base_url: String, bearer: String, health: String) -> Element {
         TabHeading { name: "You".to_owned(), loading }
         div { class: "source-row",
             span { class: "source-name", "Sources" }
-            span { class: "source-detail", "{health}" }
+            span { class: "source-detail", "{phone.sentence()}" }
+            if phone.state.can_request() {
+                button { class: "duet-retry", onclick: move |_| on_allow.call(()), "Allow" }
+            }
         }
+        PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
         match root {
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
@@ -290,6 +324,21 @@ fn YouTab(base_url: String, bearer: String, health: String) -> Element {
             div { role: "alert",
                 p { class: "empty", "{LIBRARY_UNAVAILABLE}" }
                 TryAgain { on_retry: retry }
+            }
+        }
+    }
+}
+
+#[component]
+fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
+    rsx! {
+        if connected && readings.is_empty() {
+            p { class: "empty", "{NO_READINGS}" }
+        }
+        for reading in readings {
+            article { class: "number-card",
+                p { class: "card-title", "{reading.name}" }
+                p { class: "card-text", "{reading.value} {reading.unit}" }
             }
         }
     }
