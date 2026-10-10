@@ -66,6 +66,35 @@ pub async fn post_json<T: DeserializeOwned>(
     serde_json::from_str(&text).map_err(|error| HttpError::Transport(error.to_string()))
 }
 
+pub async fn put_json<T: DeserializeOwned>(
+    client: &reqwest::Client,
+    url: &str,
+    body: &impl Serialize,
+) -> Result<T, HttpError> {
+    let response = client
+        .put(url)
+        .json(body)
+        .send()
+        .await
+        .map_err(|error| HttpError::Transport(error.to_string()))?;
+    let status = response.status();
+    let text = response
+        .text()
+        .await
+        .map_err(|error| HttpError::Transport(error.to_string()))?;
+    if !status.is_success() {
+        return Err(HttpError::Status {
+            status: status.as_u16(),
+            body: text,
+        });
+    }
+    if text.is_empty() {
+        return serde_json::from_str("null")
+            .map_err(|error| HttpError::Transport(error.to_string()));
+    }
+    serde_json::from_str(&text).map_err(|error| HttpError::Transport(error.to_string()))
+}
+
 /// Parse one Server-Sent Events buffer into complete events.
 pub fn parse_sse(buffer: &str) -> Vec<SseEvent> {
     buffer

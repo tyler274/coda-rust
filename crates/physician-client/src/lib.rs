@@ -45,6 +45,57 @@ impl PhysicianClient {
         http::get_json(&self.http, &format!("{}/updates", self.base)).await
     }
 
+    pub async fn today_for(
+        &self,
+        workspace_id: &str,
+    ) -> Result<TodayListResponse, http::HttpError> {
+        http::get_json(
+            &self.http,
+            &format!(
+                "{}/today?patient_workspace_id={}",
+                self.base,
+                query_escape(workspace_id)
+            ),
+        )
+        .await
+    }
+
+    pub async fn command(
+        &self,
+        body: &serde_json::Value,
+    ) -> Result<serde_json::Value, http::HttpError> {
+        http::post_json(&self.http, &format!("{}/commands", self.base), body).await
+    }
+
+    pub async fn save_draft(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        revision: i64,
+        text: &str,
+    ) -> Result<(), http::HttpError> {
+        let _: serde_json::Value = http::put_json(
+            &self.http,
+            &format!(
+                "{}/physician-state/drafts/{workspace_id}/{chat_id}",
+                self.base
+            ),
+            &serde_json::json!({ "expected_revision": revision, "text": text }),
+        )
+        .await?;
+        Ok(())
+    }
+
+    pub async fn dictate(&self) -> Result<(), http::HttpError> {
+        let _: serde_json::Value = http::post_json(
+            &self.http,
+            &format!("{}/dictation", self.base),
+            &serde_json::json!({}),
+        )
+        .await?;
+        Ok(())
+    }
+
     pub async fn search(&self, query: &str) -> Result<PatientSearchResponse, http::HttpError> {
         http::get_json(
             &self.http,

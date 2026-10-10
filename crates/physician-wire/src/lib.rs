@@ -106,6 +106,20 @@ pub struct PracticeVisit {
     pub status: String,
     #[serde(default)]
     pub patient_time_zone: Option<String>,
+    #[serde(default)]
+    pub preparation: Option<VisitPreparation>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct VisitPreparation {
+    pub state: String,
+    #[serde(default)]
+    pub last_attempt: Option<PreparationAttempt>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct PreparationAttempt {
+    pub outcome: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -138,6 +152,8 @@ pub struct PatientSearchResponse {
 pub struct PatientSearchRow {
     pub patient_workspace_id: String,
     pub patient_display_name: String,
+    #[serde(default)]
+    pub birth_date: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -145,7 +161,65 @@ pub struct PatientWorkspaceResponse {
     pub patient_workspace_id: String,
     pub display_name: String,
     #[serde(default)]
+    pub time_zone: Option<String>,
+    #[serde(default)]
     pub chats: Vec<WorkspaceChat>,
+    #[serde(default)]
+    pub identity: Option<PatientIdentity>,
+    #[serde(default)]
+    pub patient_synopsis: Option<PatientSynopsis>,
+    #[serde(default)]
+    pub automation_run: Option<AutomationRun>,
+    #[serde(default)]
+    pub active_follow_ups: Vec<FollowUp>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct PatientIdentity {
+    #[serde(default)]
+    pub birth_date: Option<String>,
+    #[serde(default)]
+    pub age_years: Option<i64>,
+    #[serde(default)]
+    pub sex_or_gender: Option<SexOrGender>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct SexOrGender {
+    #[serde(default)]
+    pub value: Option<String>,
+    #[serde(default)]
+    pub label: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct PatientSynopsis {
+    pub version_id: String,
+    #[serde(default)]
+    pub authored_text: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct AutomationRun {
+    pub kind: String,
+    pub state: String,
+    #[serde(default)]
+    pub ended_cause: Option<String>,
+    #[serde(default)]
+    pub purpose: Option<WorkPurpose>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct WorkPurpose {
+    #[serde(default)]
+    pub headline: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct FollowUp {
+    pub follow_up_id: String,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 #[cfg(test)]

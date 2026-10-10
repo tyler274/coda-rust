@@ -94,7 +94,7 @@ button, input { font: inherit; }
 }
 .sidebar-recent-patient { color: var(--muted); font: var(--type-body-sm); }
 .sidebar-current-patient { padding: var(--space-2); color: var(--ink); font: var(--type-title-sm); }
-.sidebar-footer { padding: var(--space-2) var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
+.sidebar-footer { display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
 .sidebar-footer button {
   width: 100%;
   min-height: var(--target);
@@ -234,3 +234,23 @@ button, input { font: inherit; }
 .shortcut { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
 .shortcut kbd { color: var(--muted); }
 .dialog p { color: var(--muted); font: var(--type-body-sm); }
+.search-dob { display: block; color: var(--muted); font: var(--type-body-sm); }
+.patient-identity { display: grid; gap: var(--space-2); margin-bottom: var(--space-4); }
+.patient-facts { display: flex; gap: var(--space-3); color: var(--muted); font: var(--type-body-sm); }
+.patient-section { display: grid; gap: var(--space-2); margin-top: var(--space-5); }
+.patient-section h2 { margin: 0; font: var(--type-title-sm); }
+.synopsis { margin: 0; white-space: pre-wrap; font: var(--type-body-md); }
+.composer {
+  width: 100%;
+  min-height: 6rem;
+  padding: var(--space-3);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  font: var(--type-body-md);
+}
+.composer-actions { display: flex; align-items: center; gap: var(--space-2); }
+.composer-notice { color: var(--muted); font: var(--type-body-sm); }
+.reader { width: min(var(--measure), 100%); }
+.reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }

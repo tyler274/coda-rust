@@ -1,5 +1,5 @@
-//! Physician shell: the shipping sidebar and Today, beside the practice schedule.
-//! The React app remains the shipping client. Dictation and drafts stay there.
+//! Physician shell: the shipping sidebar, Today, a patient page, and the reader.
+//! The React app remains the shipping client. This client renders the same projections.
 
 mod shell;
 
@@ -7,10 +7,11 @@ use dioxus::prelude::*;
 use physician_client::PhysicianClient;
 use physician_wire::{PatientWorkspaceResponse, RecentConversation};
 use shell::{
-    ChatView, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE,
-    TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY,
-    WORKSPACE_UNAVAILABLE, chat_view, connection_lines, format_clock, format_waited,
-    need_you_words, today_lines, today_view, upcoming_visits,
+    ChatView, KeyInput, NavCommand, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
+    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
+    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, connection_lines, format_calendar_date,
+    format_clock, format_waited, keyboard_command, need_you_words, opens_reader, patient_visit,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -22,6 +23,10 @@ const UPDATES_UNAVAILABLE: &str = "Coda couldn’t load Updates.";
 const RECENT_NONE: &str = "Conversations with Coda will appear here.";
 const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
+const NOT_SAVED: &str = "Not saved";
+const DICTATION_UNAVAILABLE: &str =
+    "Dictation is unavailable. Check microphone support and server configuration.";
+const CONNECTIONS: &str = "Connections";
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Place {
@@ -37,6 +42,13 @@ pub fn PhysicianRoot(base_url: String) -> Element {
     let mut collapsed = use_signal(|| false);
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
+    let mut connections_open = use_signal(|| false);
+    let mut draft = use_signal(String::new);
+    let mut notice = use_signal(String::new);
+    let mut reading = use_signal(|| None::<(String, String)>);
+    let mut focus = use_signal(|| 0i32);
+    let mut moved = use_signal(|| false);
+    let mut editing = use_signal(|| false);
     let mut query = use_signal(String::new);
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
@@ -76,6 +88,16 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                 .await
                 .map(|page| page.patients)
                 .map_err(|_| ())
+        }
+    });
+    let patient_today = use_resource(move || {
+        let client = client.read().clone();
+        let open_id = selected();
+        async move {
+            match open_id {
+                Some(id) => client.today_for(&id).await.map(Some).map_err(|_| ()),
+                None => Ok(None),
+            }
         }
     });
     let workspace = use_resource(move || {
@@ -165,10 +187,109 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                 })
                 .map(|patient| patient.display_name.clone())
         });
+    let open_workspace = cached_workspace
+        .as_ref()
+        .filter(|open| selected.read().as_deref() == Some(open.patient_workspace_id.as_str()))
+        .cloned();
+    let patient_rows = patient_today
+        .read()
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .and_then(|list| list.as_ref())
+        .map(today_lines)
+        .unwrap_or_default();
+    let open_visit = day.and_then(|day| {
+        selected
+            .read()
+            .as_deref()
+            .and_then(|id| patient_visit(day, id))
+    });
     let recent_read = recent.read();
+    let search_rows = found
+        .read()
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .cloned()
+        .unwrap_or_default();
+    let modal = search_open() || shortcuts_open() || connections_open();
     rsx! {
         style { "{ui::STYLESHEET}{SHELL_STYLES}" }
-        div { class: if collapsed() { "glass-app is-collapsed" } else { "glass-app" },
+        div {
+            class: if collapsed() { "glass-app is-collapsed" } else { "glass-app" },
+            tabindex: "0",
+            onkeydown: move |event| {
+                let key = event.key().to_string();
+                if key == "Escape" {
+                    event.prevent_default();
+                    if search_open() {
+                        search_open.set(false);
+                        editing.set(false);
+                    } else if shortcuts_open() {
+                        shortcuts_open.set(false);
+                    } else if connections_open() {
+                        connections_open.set(false);
+                    } else if reading.read().is_some() {
+                        reading.set(None);
+                    }
+                    return;
+                }
+                if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
+                    event.prevent_default();
+                    let client = client.read().clone();
+                    spawn(async move {
+                        let _ = client.dictate().await;
+                        notice.set(DICTATION_UNAVAILABLE.to_owned());
+                    });
+                    return;
+                }
+                if key == "Enter" && (event.modifiers().meta() || event.modifiers().ctrl()) {
+                    event.prevent_default();
+                    let client = client.read().clone();
+                    let text = draft();
+                    spawn(async move {
+                        notice.set(command_message(&client, "message.submit", &text).await);
+                    });
+                    return;
+                }
+                let targets = focus_targets(
+                    search_open(),
+                    place(),
+                    &today_state,
+                    &visits,
+                    open_visit.clone(),
+                    &search_rows,
+                );
+                let Some(command) = keyboard_command(&KeyInput {
+                    key,
+                    meta: event.modifiers().meta(),
+                    ctrl: event.modifiers().ctrl(),
+                    alt: event.modifiers().alt(),
+                    shift: event.modifiers().shift(),
+                    editing: editing(),
+                    modal,
+                    item_focused: moved(),
+                }) else {
+                    return;
+                };
+                event.prevent_default();
+                match command {
+                    NavCommand::Search => search_open.set(true),
+                    NavCommand::Shortcuts => shortcuts_open.set(true),
+                    NavCommand::Next => {
+                        moved.set(true);
+                        let last = targets.len().saturating_sub(1) as i32;
+                        focus.set((focus() + 1).min(last));
+                    }
+                    NavCommand::Previous => {
+                        moved.set(true);
+                        focus.set((focus() - 1).max(0));
+                    }
+                    NavCommand::Activate => {
+                        let Some(target) = targets.get(focus().max(0) as usize) else { return };
+                        open_target(target.clone(), &mut selected, &mut place, &mut search_open, &mut reading, &mut workspace_attempt);
+                    }
+                }
+            },
             aside { class: "glass-sidebar",
                 div { class: "sidebar-content",
                     div { class: "sidebar-brand-row",
@@ -258,6 +379,11 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     div { class: "sidebar-footer",
                         button {
                             r#type: "button",
+                            onclick: move |_| connections_open.set(true),
+                            "{CONNECTIONS}"
+                        }
+                        button {
+                            r#type: "button",
                             onclick: move |_| shortcuts_open.set(true),
                             "Keyboard shortcuts"
                         }
@@ -275,12 +401,30 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     Place::Today => rsx! {
                         TodaySurface {
                             state: today_state.clone(),
-                            connections,
+                            connections: connections.clone(),
                             visits: visits.clone(),
                             server_now: server_now.clone(),
                             need_you,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
-                            on_open: move |id: String| {
+                            on_open_row: move |line: TodayLine| {
+                                let reading_text = if opens_reader(&line.kind) {
+                                    Some((line.patient.clone(), line.reason.clone()))
+                                } else {
+                                    None
+                                };
+                                reading.set(reading_text);
+                                selected.set(Some(line.workspace_id));
+                                place.set(Place::Workspace);
+                                search_open.set(false);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
+                            on_open_visit: move |visit: VisitLine| {
+                                let Some(id) = visit.workspace_id.clone() else { return };
+                                let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
+                                reading.set(Some((
+                                    format!("{} {clock}", visit.patient),
+                                    visit.preparation.clone().unwrap_or_default(),
+                                )));
                                 selected.set(Some(id));
                                 place.set(Place::Workspace);
                                 search_open.set(false);
@@ -298,12 +442,46 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             },
                         }
                     },
-                    Place::Updates => rsx! { UpdatesSurface { read: updates.read().as_ref().map(|result| result.as_ref().map(|page| page.rows.len()).map_err(|_| ())) } },
+                    Place::Updates => rsx! { UpdatesSurface { read: updates.read().as_ref().map(|result| result.as_ref().map(|page| page.rows.clone()).map_err(|_| ())) } },
                     Place::Workspace => rsx! {
-                        WorkspaceSurface {
+                        PatientSurface {
                             name: open_name.clone().unwrap_or_default(),
+                            workspace: open_workspace.clone(),
+                            rows: patient_rows.clone(),
+                            visit: open_visit.clone(),
                             chats: chats.clone(),
+                            server_now: server_now.clone(),
+                            draft: draft(),
+                            notice: notice(),
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
+                            on_read: move |(title, body): (String, String)| reading.set(Some((title, body))),
+                            on_draft: move |value: String| draft.set(value),
+                            on_save: move |_| {
+                                let Some(id) = selected() else { return };
+                                let client = client.read().clone();
+                                let text = draft();
+                                spawn(async move {
+                                    notice.set(match client.save_draft(&id, "draft", 0, &text).await {
+                                        Ok(()) => String::new(),
+                                        Err(_) => NOT_SAVED.to_owned(),
+                                    });
+                                });
+                            },
+                            on_send: move |_| {
+                                let client = client.read().clone();
+                                let text = draft();
+                                spawn(async move {
+                                    notice.set(command_message(&client, "message.submit", &text).await);
+                                });
+                            },
+                            on_dictate: move |_| {
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    let _ = client.dictate().await;
+                                    notice.set(DICTATION_UNAVAILABLE.to_owned());
+                                });
+                            },
+                            on_editing: move |value: bool| editing.set(value),
                         }
                     },
                 }
@@ -319,12 +497,28 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     selected.set(Some(id));
                     place.set(Place::Workspace);
                     search_open.set(false);
+                    editing.set(false);
                     workspace_attempt.set(workspace_attempt() + 1);
                 },
+                on_editing: move |value: bool| editing.set(value),
             }
         }
         if shortcuts_open() {
             ShortcutsDialog { on_close: move |_| shortcuts_open.set(false) }
+        }
+        if connections_open() {
+            ConnectionsDialog {
+                lines: connections.clone(),
+                failed: matches!(today_state, TodayView::Unavailable),
+                on_close: move |_| connections_open.set(false),
+            }
+        }
+        if let Some((title, body)) = reading() {
+            ReaderDialog {
+                title,
+                body,
+                on_close: move |_| reading.set(None),
+            }
         }
     }
 }
@@ -353,7 +547,8 @@ fn TodaySurface(
     server_now: String,
     need_you: usize,
     on_retry: EventHandler,
-    on_open: EventHandler<String>,
+    on_open_row: EventHandler<TodayLine>,
+    on_open_visit: EventHandler<VisitLine>,
     on_resume: EventHandler<TodayLine>,
 ) -> Element {
     let words = need_you_words(need_you);
@@ -386,13 +581,13 @@ fn TodaySurface(
                         TodayView::Stale(rows) => rsx! {
                             ErrorState { message: TODAY_STALE.to_owned() }
                             TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
-                            TodayRows { rows, server_now: server_now.clone(), on_open, on_resume }
+                            TodayRows { rows, server_now: server_now.clone(), on_open: on_open_row, on_resume }
                         },
-                        TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), on_open, on_resume } },
+                        TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), on_open: on_open_row, on_resume } },
                     }
                 }
                 if !visits.is_empty() {
-                    ScheduleRail { visits: visits.clone(), on_open }
+                    ScheduleRail { visits: visits.clone(), on_open: on_open_visit }
                 }
             }
         }
@@ -403,7 +598,7 @@ fn TodaySurface(
 fn TodayRows(
     rows: Vec<TodayLine>,
     server_now: String,
-    on_open: EventHandler<String>,
+    on_open: EventHandler<TodayLine>,
     on_resume: EventHandler<TodayLine>,
 ) -> Element {
     rsx! {
@@ -414,8 +609,8 @@ fn TodayRows(
                         class: "today-row-open",
                         r#type: "button",
                         onclick: {
-                            let id = row.workspace_id.clone();
-                            move |_| on_open.call(id.clone())
+                            let row = row.clone();
+                            move |_| on_open.call(row.clone())
                         },
                         span { class: "today-row-line",
                             span { class: "today-row-heading",
@@ -458,7 +653,7 @@ fn TodayRows(
 }
 
 #[component]
-fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<String>) -> Element {
+fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<VisitLine>) -> Element {
     let count = visits.len();
     rsx! {
         aside { class: "schedule-rail", aria_label: "Schedule",
@@ -473,12 +668,8 @@ fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<String>) -> Elemen
                     class: if index == 0 { "schedule-visit is-next" } else { "schedule-visit" },
                     r#type: "button",
                     onclick: {
-                        let id = visit.workspace_id.clone();
-                        move |_| {
-                            if let Some(id) = id.clone() {
-                                on_open.call(id);
-                            }
-                        }
+                        let visit = visit.clone();
+                        move |_| on_open.call(visit.clone())
                     },
                     if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
                         time { datetime: "{visit.starts_at}", "{clock}" }
@@ -491,43 +682,202 @@ fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<String>) -> Elemen
 }
 
 #[component]
-fn UpdatesSurface(read: Option<Result<usize, ()>>) -> Element {
+fn UpdatesSurface(read: Option<Result<Vec<serde_json::Value>, ()>>) -> Element {
     rsx! {
         div { class: "reading-workspace",
             header { class: "today-heading", h1 { "Updates" } }
             match read {
                 None => rsx! { EmptyState { message: UPDATES_LOADING.to_owned() } },
                 Some(Err(())) => rsx! { ErrorState { message: UPDATES_UNAVAILABLE.to_owned() } },
-                Some(Ok(0)) => rsx! {
+                Some(Ok(rows)) if rows.is_empty() => rsx! {
                     div { class: "updates-empty",
                         h2 { "{UPDATES_EMPTY}" }
                         p { "{UPDATES_EMPTY_DETAIL}" }
                     }
                 },
-                Some(Ok(count)) => rsx! { p { "{count} from Coda today." } },
+                Some(Ok(rows)) => rsx! {
+                    div { class: "today-list",
+                        for row in rows {
+                            article { class: "today-row",
+                                strong { class: "today-row-who", "{row.get(\"patient_display_name\").and_then(|value| value.as_str()).unwrap_or(\"Update\")}" }
+                            }
+                        }
+                    }
+                },
             }
         }
     }
 }
 
 #[component]
-fn WorkspaceSurface(name: String, chats: ChatView, on_retry: EventHandler) -> Element {
+fn PatientSurface(
+    name: String,
+    workspace: Option<PatientWorkspaceResponse>,
+    rows: Vec<TodayLine>,
+    visit: Option<VisitLine>,
+    chats: ChatView,
+    server_now: String,
+    draft: String,
+    notice: String,
+    on_retry: EventHandler,
+    on_read: EventHandler<(String, String)>,
+    on_draft: EventHandler<String>,
+    on_save: EventHandler,
+    on_send: EventHandler,
+    on_dictate: EventHandler,
+    on_editing: EventHandler<bool>,
+) -> Element {
+    let identity = workspace.as_ref().and_then(|open| open.identity.clone());
+    let synopsis = workspace.as_ref().and_then(|open| {
+        open.patient_synopsis
+            .as_ref()
+            .and_then(|synopsis| synopsis.authored_text.clone())
+    });
+    let work = workspace
+        .as_ref()
+        .and_then(|open| open.automation_run.clone());
+    let follow_ups = workspace
+        .as_ref()
+        .map(|open| open.active_follow_ups.clone())
+        .unwrap_or_default();
+    let dob = identity
+        .as_ref()
+        .and_then(|identity| identity.birth_date.clone())
+        .map(|day| format_calendar_date(&day));
+    let gender = identity.as_ref().and_then(|identity| {
+        identity.sex_or_gender.as_ref().and_then(|gender| {
+            gender.value.as_ref().map(|value| {
+                let mut chars = value.chars();
+                match chars.next() {
+                    Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+                    None => String::new(),
+                }
+            })
+        })
+    });
     rsx! {
-        div { class: "reading-workspace",
-            h1 { class: "workspace-title", "{name}" }
-            match chats {
-                ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
-                ChatView::Pending => rsx! {},
-                ChatView::Unavailable => rsx! {
-                    ErrorState { message: WORKSPACE_UNAVAILABLE.to_owned() }
-                    TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
-                },
-                ChatView::Empty => rsx! { EmptyState { message: WORKSPACE_EMPTY.to_owned() } },
-                ChatView::Chats(titles) => rsx! {
-                    for title in titles {
-                        div { class: "sidebar-conversation-link", "{title}" }
+        div { class: "reading-workspace patient-page",
+            header { class: "patient-identity",
+                h1 { class: "workspace-title", "{name}" }
+                div { class: "patient-facts",
+                    if let Some(dob) = dob {
+                        span { "DOB {dob}" }
                     }
-                },
+                    if let Some(gender) = gender {
+                        span { "{gender}" }
+                    }
+                }
+            }
+            if rows.is_empty() {
+                div { class: "today-list today-quiet",
+                    strong { "{TODAY_QUIET}" }
+                    span { "{TODAY_QUIET_DETAIL}" }
+                }
+            } else {
+                TodayRows {
+                    rows,
+                    server_now,
+                    on_open: move |line: TodayLine| {
+                        if opens_reader(&line.kind) {
+                            on_read.call((line.patient.clone(), line.reason.clone()));
+                        }
+                    },
+                    on_resume: move |_| {},
+                }
+            }
+            if let Some(run) = work {
+                if let Some(heading) = work_heading(&run) {
+                    section { class: "patient-section", aria_label: "Current work",
+                        h2 { "Current work" }
+                        button {
+                            class: "today-row-open",
+                            r#type: "button",
+                            onclick: {
+                                let heading = heading.clone();
+                                let visit = visit.clone();
+                                move |_| {
+                                    let body = visit
+                                        .as_ref()
+                                        .and_then(|visit| visit.preparation.clone())
+                                        .or_else(|| work_end_reason(run.ended_cause.as_deref()).map(str::to_owned))
+                                        .unwrap_or_default();
+                                    on_read.call((heading.clone(), body));
+                                }
+                            },
+                            strong { "{heading}" }
+                            if let Some(reason) = work_end_reason(run.ended_cause.as_deref()) {
+                                span { class: "today-row-reason", "{reason}" }
+                            }
+                        }
+                    }
+                }
+            }
+            if let Some(visit) = visit.clone() {
+                section { class: "patient-section", aria_label: "Visit",
+                    h2 { "Visit" }
+                    button {
+                        class: "schedule-visit",
+                        r#type: "button",
+                        onclick: move |_| {
+                            let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
+                            on_read.call((
+                                format!("{} {clock}", visit.patient),
+                                visit.preparation.clone().unwrap_or_default(),
+                            ));
+                        },
+                        if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
+                            time { "{clock}" }
+                        }
+                        strong { "{visit.label}" }
+                    }
+                }
+            }
+            if let Some(synopsis) = synopsis {
+                section { class: "patient-section", aria_label: "Synopsis",
+                    h2 { "Synopsis" }
+                    p { class: "synopsis", "{synopsis}" }
+                }
+            }
+            if !follow_ups.is_empty() {
+                section { class: "patient-section", aria_label: "Follow-ups",
+                    h2 { "Follow-ups" }
+                    for follow_up in follow_ups {
+                        p { "{follow_up.description.clone().unwrap_or_default()}" }
+                    }
+                }
+            }
+            section { class: "patient-section", aria_label: "Conversation",
+                h2 { "Conversation" }
+                match chats {
+                    ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
+                    ChatView::Pending => rsx! {},
+                    ChatView::Unavailable => rsx! {
+                        ErrorState { message: WORKSPACE_UNAVAILABLE.to_owned() }
+                        TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
+                    },
+                    ChatView::Empty => rsx! { p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" } },
+                    ChatView::Chats(titles) => rsx! {
+                        for title in titles {
+                            div { class: "sidebar-conversation-link", "{title}" }
+                        }
+                    },
+                }
+                textarea {
+                    class: "composer",
+                    placeholder: "Write a message",
+                    value: "{draft}",
+                    onfocus: move |_| on_editing.call(true),
+                    onblur: move |_| on_editing.call(false),
+                    oninput: move |event| on_draft.call(event.value()),
+                }
+                div { class: "composer-actions",
+                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_save.call(()), "Save" }
+                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
+                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
+                    if !notice.is_empty() {
+                        span { class: "composer-notice", "{notice}" }
+                    }
+                }
             }
         }
     }
@@ -540,7 +890,11 @@ fn SearchDialog(
     on_query: EventHandler<String>,
     on_close: EventHandler,
     on_open: EventHandler<String>,
+    on_editing: EventHandler<bool>,
 ) -> Element {
+    let first = results
+        .first()
+        .map(|patient| patient.patient_workspace_id.clone());
     rsx! {
         div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
             section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
@@ -548,9 +902,20 @@ fn SearchDialog(
                 input {
                     class: "dialog-search",
                     r#type: "search",
-                    placeholder: "Find patient",
+                    placeholder: "Name, DOB or phone",
                     value: "{query}",
+                    autofocus: true,
+                    onfocus: move |_| on_editing.call(true),
+                    onblur: move |_| on_editing.call(false),
                     oninput: move |event| on_query.call(event.value()),
+                    onkeydown: move |event| {
+                        if event.key().to_string() == "Enter" {
+                            event.stop_propagation();
+                            if let Some(id) = first.clone() {
+                                on_open.call(id);
+                            }
+                        }
+                    },
                 }
                 ul { class: "dialog-results",
                     for patient in results {
@@ -561,11 +926,50 @@ fn SearchDialog(
                                     let id = patient.patient_workspace_id.clone();
                                     move |_| on_open.call(id.clone())
                                 },
-                                "{patient.patient_display_name}"
+                                span { "{patient.patient_display_name}" }
+                                span { class: "search-dob", "DOB {patient.birth_date.as_deref().map(format_calendar_date).unwrap_or_else(|| \"not recorded\".to_owned())}" }
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+#[component]
+fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -> Element {
+    rsx! {
+        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
+            section { class: "dialog", aria_label: "Connections", onclick: move |event| event.stop_propagation(),
+                h2 { "{CONNECTIONS}" }
+                if failed {
+                    p { "{TODAY_UNAVAILABLE}" }
+                } else if lines.is_empty() {
+                    p { "Nothing needs you right now." }
+                } else {
+                    for line in lines {
+                        p { class: "today-connection", "{line}" }
+                    }
+                }
+                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+            }
+        }
+    }
+}
+
+#[component]
+fn ReaderDialog(title: String, body: String, on_close: EventHandler) -> Element {
+    rsx! {
+        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
+            section { class: "dialog reader", aria_label: "Reader", onclick: move |event| event.stop_propagation(),
+                h2 { "{title}" }
+                if body.is_empty() {
+                    p { "Nothing is open to read." }
+                } else {
+                    p { class: "reader-body", "{body}" }
+                }
+                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }
@@ -636,4 +1040,96 @@ fn ExpandIcon() -> Element {
         rect { x: "3", y: "4", width: "18", height: "16", rx: "2" }
         path { d: "M9 4v16M13 9l3 3-3 3" }
     } }
+}
+
+#[derive(Clone)]
+enum FocusTarget {
+    Row(TodayLine),
+    Visit(VisitLine),
+    Patient(String),
+}
+
+fn focus_targets(
+    search_open: bool,
+    place: Place,
+    today: &TodayView,
+    visits: &[VisitLine],
+    open_visit: Option<VisitLine>,
+    search_rows: &[physician_wire::PatientSearchRow],
+) -> Vec<FocusTarget> {
+    if search_open {
+        return search_rows
+            .iter()
+            .map(|row| FocusTarget::Patient(row.patient_workspace_id.clone()))
+            .collect();
+    }
+    let mut targets = Vec::new();
+    if place == Place::Workspace {
+        if let Some(visit) = open_visit {
+            targets.push(FocusTarget::Visit(visit));
+        }
+        return targets;
+    }
+    if place == Place::Today {
+        if let TodayView::Rows(rows) | TodayView::Stale(rows) = today {
+            targets.extend(rows.iter().cloned().map(FocusTarget::Row));
+        }
+        targets.extend(visits.iter().cloned().map(FocusTarget::Visit));
+    }
+    targets
+}
+
+fn open_target(
+    target: FocusTarget,
+    selected: &mut Signal<Option<String>>,
+    place: &mut Signal<Place>,
+    search_open: &mut Signal<bool>,
+    reading: &mut Signal<Option<(String, String)>>,
+    workspace_attempt: &mut Signal<u32>,
+) {
+    match target {
+        FocusTarget::Patient(id) => {
+            selected.set(Some(id));
+            place.set(Place::Workspace);
+            search_open.set(false);
+            workspace_attempt.set(workspace_attempt() + 1);
+        }
+        FocusTarget::Row(line) => {
+            if opens_reader(&line.kind) {
+                reading.set(Some((line.patient.clone(), line.reason.clone())));
+            }
+            selected.set(Some(line.workspace_id));
+            place.set(Place::Workspace);
+            search_open.set(false);
+            workspace_attempt.set(workspace_attempt() + 1);
+        }
+        FocusTarget::Visit(visit) => {
+            let Some(id) = visit.workspace_id.clone() else {
+                return;
+            };
+            let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
+            reading.set(Some((
+                format!("{} {clock}", visit.patient),
+                visit.preparation.clone().unwrap_or_default(),
+            )));
+            selected.set(Some(id));
+            place.set(Place::Workspace);
+            search_open.set(false);
+            workspace_attempt.set(workspace_attempt() + 1);
+        }
+    }
+}
+
+async fn command_message(client: &PhysicianClient, command_type: &str, text: &str) -> String {
+    match client
+        .command(&serde_json::json!({ "type": command_type, "text": text }))
+        .await
+    {
+        Ok(value) => value
+            .get("message")
+            .and_then(|message| message.as_str())
+            .unwrap_or("Coda couldn’t accept that message.")
+            .to_owned(),
+        Err(_) => "Coda couldn’t accept that message.".to_owned(),
+    }
 }
