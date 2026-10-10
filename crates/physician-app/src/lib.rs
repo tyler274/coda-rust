@@ -1,9 +1,11 @@
 //! Physician shell: the shipping sidebar, Today, a patient page, and the reader.
 //! The React app remains the shipping client. This client renders the same projections.
 
+mod icons;
 mod shell;
 
 use dioxus::prelude::*;
+use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{PatientWorkspaceResponse, RecentConversation};
 use shell::{
@@ -358,14 +360,14 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             r#type: "button",
                             aria_label: "Collapse navigation",
                             onclick: move |_| collapsed.set(true),
-                            CollapseIcon {}
+                            Icon { name: IconName::SidebarCollapse }
                         }
                         button {
                             class: "icon-button sidebar-expand",
                             r#type: "button",
                             aria_label: "Expand navigation",
                             onclick: move |_| collapsed.set(false),
-                            ExpandIcon {}
+                            Icon { name: IconName::SidebarExpand }
                         }
                     }
                     nav { class: "sidebar-primary", aria_label: "Primary",
@@ -377,7 +379,11 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             onclick: move |_| {
                                 place.set(Place::Today);
                             },
-                            if place() == Place::Today { HomeIcon {} } else { ArrowLeftIcon {} }
+                            if place() == Place::Today {
+                                Icon { name: IconName::Home }
+                            } else {
+                                Icon { name: IconName::ArrowLeft }
+                            }
                             strong { class: "item-text", "Today" }
                         }
                         button {
@@ -385,7 +391,7 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             r#type: "button",
                             aria_current: if place() == Place::Updates { "page" } else { "" },
                             onclick: move |_| place.set(Place::Updates),
-                            MessageIcon {}
+                            Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }
                         }
                         button {
@@ -393,7 +399,7 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             r#type: "button",
                             aria_label: "Find patient",
                             onclick: move |_| search_open.set(true),
-                            SearchIcon {}
+                            Icon { name: IconName::Search }
                             strong { class: "item-text", "Find patient" }
                             kbd { class: "key-hint", aria_hidden: "true", "⌘ K" }
                         }
@@ -401,7 +407,10 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     div { class: "sidebar-rule" }
                     if place() == Place::Workspace {
                         section { class: "sidebar-patient-context", aria_label: "Patient navigation",
-                            div { class: "sidebar-current-patient", "{open_name.clone().unwrap_or_default()}" }
+                            div { class: "sidebar-current-patient",
+                                "{open_name.clone().unwrap_or_default()}"
+                                Icon { name: IconName::ArrowRight }
+                            }
                             div { class: "sidebar-section-heading", h2 { "Conversations" } }
                             match chats.clone() {
                                 ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
@@ -416,6 +425,7 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                                                 let id = line.id.clone();
                                                 move |_| open_chat.set(Some(id.clone()))
                                             },
+                                            Icon { name: IconName::Message }
                                             "{line.title}"
                                         }
                                     }
@@ -441,11 +451,13 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                         button {
                             r#type: "button",
                             onclick: move |_| connections_open.set(true),
+                            Icon { name: IconName::Users }
                             "{CONNECTIONS}"
                         }
                         button {
                             r#type: "button",
                             onclick: move |_| shortcuts_open.set(true),
+                            Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
                     }
@@ -610,9 +622,12 @@ fn RecentRow(conversation: RecentConversation) -> Element {
         .unwrap_or_else(|| "Untitled".to_owned());
     rsx! {
         div { class: "sidebar-recent-link",
-            span { class: "sidebar-recent-title", "{title}" }
-            if let Some(patient) = conversation.patient_display_name {
-                span { class: "sidebar-recent-patient", "{patient}" }
+            Icon { name: IconName::Message }
+            span { class: "item-text",
+                span { class: "sidebar-recent-title", "{title}" }
+                if let Some(patient) = conversation.patient_display_name {
+                    span { class: "sidebar-recent-patient", "{patient}" }
+                }
             }
         }
     }
@@ -762,6 +777,9 @@ fn ScheduleRail(
     rsx! {
         aside { class: "schedule-rail", aria_label: "Schedule",
             header { class: "card-header",
+                span { class: "icon-tile", aria_hidden: "true",
+                    Icon { name: IconName::Calendar }
+                }
                 div { class: "card-title",
                     h2 { "Schedule" }
                     span { class: "count", span { class: "count-value", "{count}" } " left" }
@@ -979,6 +997,7 @@ fn PatientSurface(
                                     let id = line.id.clone();
                                     move |_| on_open_chat.call(id.clone())
                                 },
+                                Icon { name: IconName::Message }
                                 "{line.title}"
                             }
                         }
@@ -1122,54 +1141,6 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
             }
         }
     }
-}
-
-#[component]
-fn HomeIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        path { d: "m3 11 9-8 9 8" }
-        path { d: "M5 10v10h14V10" }
-        path { d: "M9 20v-6h6v6" }
-    } }
-}
-
-#[component]
-fn ArrowLeftIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        path { d: "M19 12H5" }
-        path { d: "m12 19-7-7 7-7" }
-    } }
-}
-
-#[component]
-fn MessageIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        path { d: "M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" }
-    } }
-}
-
-#[component]
-fn SearchIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        circle { cx: "11", cy: "11", r: "7" }
-        path { d: "m20 20-4-4" }
-    } }
-}
-
-#[component]
-fn CollapseIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        rect { x: "3", y: "4", width: "18", height: "16", rx: "2" }
-        path { d: "M9 4v16M15 9l-3 3 3 3" }
-    } }
-}
-
-#[component]
-fn ExpandIcon() -> Element {
-    rsx! { svg { class: "icon", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round",
-        rect { x: "3", y: "4", width: "18", height: "16", rx: "2" }
-        path { d: "M9 4v16M13 9l3 3-3 3" }
-    } }
 }
 
 #[derive(Clone)]

@@ -55,7 +55,8 @@ async fn the_recorded_practice_is_visible() {
             && dom.contains("Coda hasn’t read Gmail yet.")
             && dom.contains("Coda hasn’t read Spruce yet.")
             && dom.contains("3:30 PM")
-            && dom.contains("Mary Louis"),
+            && dom.contains("Mary Louis")
+            && dom.contains("m3 11 9-8 9 8"),
         "the page was blank or incomplete:\n{dom}"
     );
 }
