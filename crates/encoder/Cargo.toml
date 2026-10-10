@@ -1,0 +1,16 @@
+[package]
+name = "encoder"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+# Pinned because the recipe records this runtime. A newer Candle must change the pin and this string together.
+candle-core = "=0.11.0"
+candle-nn = "=0.11.0"
+candle-transformers = "=0.11.0"
+rayon = "1"
+serde_json = "1"
+sha2 = "0.10"
+tokenizers = { version = "0.22", default-features = false }

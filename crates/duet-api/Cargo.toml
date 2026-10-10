@@ -1,0 +1,21 @@
+[package]
+name = "duet-api"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+async-trait = "0.1"
+axum = "0.8"
+duet_wire = { path = "../duet-wire" }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "postgres", "uuid", "chrono", "tls-rustls", "derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net"] }
+uuid = { version = "1", features = ["serde"] }
+
+[dev-dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+http-body-util = "0.1"
+tower = { version = "0.5", features = ["util"] }
