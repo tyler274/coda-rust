@@ -222,6 +222,41 @@ pub struct FollowUp {
     pub description: Option<String>,
 }
 
+/// The chat snapshot the React client reads. Extra server fields are ignored.
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct ChatSnapshotResponse {
+    pub snapshot: ChatSnapshot,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct ChatSnapshot {
+    #[serde(default)]
+    pub conversation: Vec<ChatTurn>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct ChatTurn {
+    #[serde(default)]
+    pub text: Option<String>,
+    #[serde(default)]
+    pub authored_text: Option<String>,
+}
+
+impl ChatTurn {
+    pub fn body(&self) -> Option<&str> {
+        self.text.as_deref().filter(|text| !text.is_empty()).or(self
+            .authored_text
+            .as_deref()
+            .filter(|text| !text.is_empty()))
+    }
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+pub struct PhysicianDraft {
+    pub text: String,
+    pub revision: i64,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

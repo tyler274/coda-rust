@@ -448,7 +448,13 @@ pub enum ChatView {
     Pending,
     Unavailable,
     Empty,
-    Chats(Vec<String>),
+    Chats(Vec<ChatLine>),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChatLine {
+    pub id: String,
+    pub title: String,
 }
 
 pub fn chat_view(
@@ -466,7 +472,10 @@ pub fn chat_view(
             workspace
                 .chats
                 .iter()
-                .map(|chat| chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()))
+                .map(|chat| ChatLine {
+                    id: chat.chat_id.clone(),
+                    title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
+                })
                 .collect(),
         ),
     }
@@ -537,7 +546,10 @@ mod tests {
         .unwrap();
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&open))),
-            ChatView::Chats(vec!["Morning".to_owned()])
+            ChatView::Chats(vec![ChatLine {
+                id: "c1".to_owned(),
+                title: "Morning".to_owned(),
+            }])
         );
         assert_eq!(
             connection_sentence(Some("gmail"), "not_yet_read").as_deref(),
@@ -611,7 +623,13 @@ mod tests {
             "../../physician-sample/fixtures/practice-day.json"
         ))
         .unwrap();
-        assert!(upcoming_visits(&day).is_empty());
+        let ahead = upcoming_visits(&day);
+        assert_eq!(ahead.len(), 1);
+        assert_eq!(ahead[0].patient, "Mary Louis");
+        assert_eq!(
+            format_clock(&ahead[0].starts_at, &ahead[0].time_zone).as_deref(),
+            Some("3:30 PM")
+        );
         let mary = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let visit = patient_visit(&day, mary).unwrap();
         assert_eq!(

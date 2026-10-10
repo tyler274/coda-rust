@@ -1,8 +1,9 @@
 //! Physician website caller for the existing Node `CodaServer`.
 
 use physician_wire::{
-    HealthResponse, PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse,
-    PracticeDayResponse, RecentConversationsResponse, TodayListResponse, UpdatesResponse,
+    ChatSnapshotResponse, HealthResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse, RecentConversationsResponse,
+    TodayListResponse, UpdatesResponse,
 };
 
 #[derive(Debug, Clone)]
@@ -65,6 +66,36 @@ impl PhysicianClient {
         body: &serde_json::Value,
     ) -> Result<serde_json::Value, http::HttpError> {
         http::post_json(&self.http, &format!("{}/commands", self.base), body).await
+    }
+
+    pub async fn chat_snapshot(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+    ) -> Result<ChatSnapshotResponse, http::HttpError> {
+        http::get_json(
+            &self.http,
+            &format!(
+                "{}/patient-workspaces/{workspace_id}/chats/{chat_id}/snapshot",
+                self.base
+            ),
+        )
+        .await
+    }
+
+    pub async fn read_draft(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+    ) -> Result<PhysicianDraft, http::HttpError> {
+        http::get_json(
+            &self.http,
+            &format!(
+                "{}/physician-state/drafts/{workspace_id}/{chat_id}",
+                self.base
+            ),
+        )
+        .await
     }
 
     pub async fn save_draft(
@@ -179,5 +210,48 @@ mod tests {
         let today = client.today().await.unwrap();
         assert!(today.rows.is_empty());
         assert_eq!(today.date, "2026-10-09");
+    }
+
+    #[tokio::test]
+    async fn saves_a_draft_at_the_revision_node_returns() {
+        let app = axum::Router::new()
+            .route(
+                "/physician-state/drafts/{workspace}/{chat}",
+                get(|| async {
+                    Json(serde_json::json!({
+                        "text": "note",
+                        "revision": 4,
+                        "last_submission_revision": null
+                    }))
+                })
+                .put(|Json(body): Json<serde_json::Value>| async move {
+                    assert_eq!(body["expected_revision"], 4);
+                    assert_eq!(body["text"], "revised");
+                    Json(serde_json::json!({ "text": "revised", "revision": 5 }))
+                }),
+            )
+            .route(
+                "/patient-workspaces/{workspace}/chats/{chat}/snapshot",
+                get(|| async {
+                    Json(serde_json::json!({
+                        "workspace": {},
+                        "snapshot": {
+                            "conversation": [{ "text": "Hello", "authored_text": "" }]
+                        }
+                    }))
+                }),
+            );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+        let draft = client.read_draft("ws", "chat").await.unwrap();
+        assert_eq!(draft.revision, 4);
+        client
+            .save_draft("ws", "chat", draft.revision, "revised")
+            .await
+            .unwrap();
+        let snapshot = client.chat_snapshot("ws", "chat").await.unwrap();
+        assert_eq!(snapshot.snapshot.conversation[0].body(), Some("Hello"));
     }
 }

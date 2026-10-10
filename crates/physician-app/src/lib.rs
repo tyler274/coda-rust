@@ -24,6 +24,7 @@ const RECENT_NONE: &str = "Conversations with Coda will appear here.";
 const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
 const NOT_SAVED: &str = "Not saved";
+const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
@@ -46,7 +47,8 @@ pub fn PhysicianRoot(base_url: String) -> Element {
     let mut draft = use_signal(String::new);
     let mut notice = use_signal(String::new);
     let mut reading = use_signal(|| None::<(String, String)>);
-    let mut focus = use_signal(|| 0i32);
+    let mut focus = use_signal(|| -1i32);
+    let mut open_chat = use_signal(|| None::<String>);
     let mut moved = use_signal(|| false);
     let mut editing = use_signal(|| false);
     let mut query = use_signal(String::new);
@@ -120,6 +122,26 @@ pub fn PhysicianRoot(base_url: String) -> Element {
         if let Some(Ok(Some(open))) = workspace.read().as_ref() {
             if selected.read().as_deref() == Some(open.patient_workspace_id.as_str()) {
                 workspace_cache.set(Some(open.clone()));
+            }
+        }
+    });
+    use_effect(move || {
+        let current = selected();
+        let cached = workspace_cache.read().clone();
+        let same = cached
+            .as_ref()
+            .is_some_and(|open| Some(open.patient_workspace_id.as_str()) == current.as_deref());
+        if !same {
+            if open_chat.read().is_some() {
+                open_chat.set(None);
+            }
+            return;
+        }
+        if open_chat.read().is_none() {
+            if let Some(chat_id) =
+                cached.and_then(|open| open.chats.first().map(|chat| chat.chat_id.clone()))
+            {
+                open_chat.set(Some(chat_id));
             }
         }
     });
@@ -211,7 +233,35 @@ pub fn PhysicianRoot(base_url: String) -> Element {
         .and_then(|result| result.as_ref().ok())
         .cloned()
         .unwrap_or_default();
-    let modal = search_open() || shortcuts_open() || connections_open();
+    let modal = shortcuts_open() || connections_open();
+    let shown_focus = if moved() { Some(focus()) } else { None };
+    let snapshot = use_resource(move || {
+        let workspace_id = selected();
+        let chat_id = open_chat();
+        let client = client.read().clone();
+        async move {
+            match (workspace_id, chat_id) {
+                (Some(workspace_id), Some(chat_id)) => client
+                    .chat_snapshot(&workspace_id, &chat_id)
+                    .await
+                    .map(Some)
+                    .map_err(|_| ()),
+                _ => Ok(None),
+            }
+        }
+    });
+    let snapshot_lines = snapshot
+        .read()
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .and_then(|page| page.as_ref())
+        .map(|page| {
+            page.snapshot
+                .conversation
+                .iter()
+                .filter_map(|turn| turn.body().map(str::to_owned))
+                .collect::<Vec<_>>()
+        });
     rsx! {
         style { "{ui::STYLESHEET}{SHELL_STYLES}" }
         div {
@@ -278,11 +328,14 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     NavCommand::Next => {
                         moved.set(true);
                         let last = targets.len().saturating_sub(1) as i32;
-                        focus.set((focus() + 1).min(last));
+                        let next = if focus() < 0 { 0 } else { focus() + 1 };
+                        focus.set(next.min(last));
                     }
                     NavCommand::Previous => {
                         moved.set(true);
-                        focus.set((focus() - 1).max(0));
+                        let last = targets.len().saturating_sub(1) as i32;
+                        let next = if focus() < 0 { last } else { focus() - 1 };
+                        focus.set(next.max(0));
                     }
                     NavCommand::Activate => {
                         let Some(target) = targets.get(focus().max(0) as usize) else { return };
@@ -354,9 +407,17 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                                 ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
                                 ChatView::Pending => rsx! {},
                                 ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
-                                ChatView::Chats(titles) => rsx! {
-                                    for title in titles {
-                                        div { class: "sidebar-conversation-link", "{title}" }
+                                ChatView::Chats(lines) => rsx! {
+                                    for line in lines {
+                                        button {
+                                            class: "sidebar-conversation-link",
+                                            r#type: "button",
+                                            onclick: {
+                                                let id = line.id.clone();
+                                                move |_| open_chat.set(Some(id.clone()))
+                                            },
+                                            "{line.title}"
+                                        }
                                     }
                                 },
                             }
@@ -405,6 +466,7 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             visits: visits.clone(),
                             server_now: server_now.clone(),
                             need_you,
+                            focused: shown_focus,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
                             on_open_row: move |line: TodayLine| {
                                 let reading_text = if opens_reader(&line.kind) {
@@ -456,12 +518,28 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
                             on_read: move |(title, body): (String, String)| reading.set(Some((title, body))),
                             on_draft: move |value: String| draft.set(value),
+                            messages: snapshot_lines.clone().unwrap_or_default(),
+                            snapshot_failed: snapshot.read().as_ref().is_some_and(|result| result.is_err()),
+                            on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_save: move |_| {
                                 let Some(id) = selected() else { return };
                                 let client = client.read().clone();
                                 let text = draft();
+                                let chat_id = open_chat();
                                 spawn(async move {
-                                    notice.set(match client.save_draft(&id, "draft", 0, &text).await {
+                                    let saved = if let Some(chat_id) = chat_id {
+                                        match client.read_draft(&id, &chat_id).await {
+                                            Ok(existing) => {
+                                                client
+                                                    .save_draft(&id, &chat_id, existing.revision, &text)
+                                                    .await
+                                            }
+                                            Err(error) => Err(error),
+                                        }
+                                    } else {
+                                        client.save_draft(&id, "draft", 0, &text).await
+                                    };
+                                    notice.set(match saved {
                                         Ok(()) => String::new(),
                                         Err(_) => NOT_SAVED.to_owned(),
                                     });
@@ -500,6 +578,7 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                     editing.set(false);
                     workspace_attempt.set(workspace_attempt() + 1);
                 },
+                focused: if search_open() { shown_focus } else { None },
                 on_editing: move |value: bool| editing.set(value),
             }
         }
@@ -546,6 +625,7 @@ fn TodaySurface(
     visits: Vec<VisitLine>,
     server_now: String,
     need_you: usize,
+    focused: Option<i32>,
     on_retry: EventHandler,
     on_open_row: EventHandler<TodayLine>,
     on_open_visit: EventHandler<VisitLine>,
@@ -553,6 +633,25 @@ fn TodaySurface(
 ) -> Element {
     let words = need_you_words(need_you);
     let scheduled = !visits.is_empty();
+    let row_len = match &state {
+        TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len() as i32,
+        _ => 0,
+    };
+    let row_focus = focused.and_then(|index| {
+        if index >= 0 && index < row_len {
+            Some(index as usize)
+        } else {
+            None
+        }
+    });
+    let visit_focus = focused.and_then(|index| {
+        let visit_index = index - row_len;
+        if visit_index >= 0 {
+            Some(visit_index as usize)
+        } else {
+            None
+        }
+    });
     rsx! {
         div { class: "reading-workspace",
             header { class: "today-heading",
@@ -581,13 +680,13 @@ fn TodaySurface(
                         TodayView::Stale(rows) => rsx! {
                             ErrorState { message: TODAY_STALE.to_owned() }
                             TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
-                            TodayRows { rows, server_now: server_now.clone(), on_open: on_open_row, on_resume }
+                            TodayRows { rows, server_now: server_now.clone(), focused: row_focus, on_open: on_open_row, on_resume }
                         },
-                        TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), on_open: on_open_row, on_resume } },
+                        TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), focused: row_focus, on_open: on_open_row, on_resume } },
                     }
                 }
                 if !visits.is_empty() {
-                    ScheduleRail { visits: visits.clone(), on_open: on_open_visit }
+                    ScheduleRail { visits: visits.clone(), focused: visit_focus, on_open: on_open_visit }
                 }
             }
         }
@@ -598,15 +697,16 @@ fn TodaySurface(
 fn TodayRows(
     rows: Vec<TodayLine>,
     server_now: String,
+    focused: Option<usize>,
     on_open: EventHandler<TodayLine>,
     on_resume: EventHandler<TodayLine>,
 ) -> Element {
     rsx! {
         div { class: "today-list",
-            for row in rows {
+            for (index, row) in rows.iter().enumerate() {
                 article { class: "today-row",
                     button {
-                        class: "today-row-open",
+                        class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
                         r#type: "button",
                         onclick: {
                             let row = row.clone();
@@ -653,7 +753,11 @@ fn TodayRows(
 }
 
 #[component]
-fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<VisitLine>) -> Element {
+fn ScheduleRail(
+    visits: Vec<VisitLine>,
+    focused: Option<usize>,
+    on_open: EventHandler<VisitLine>,
+) -> Element {
     let count = visits.len();
     rsx! {
         aside { class: "schedule-rail", aria_label: "Schedule",
@@ -665,7 +769,13 @@ fn ScheduleRail(visits: Vec<VisitLine>, on_open: EventHandler<VisitLine>) -> Ele
             }
             for (index, visit) in visits.iter().enumerate() {
                 button {
-                    class: if index == 0 { "schedule-visit is-next" } else { "schedule-visit" },
+                    class: if focused == Some(index) {
+                        "schedule-visit is-next is-keyboard-focus"
+                    } else if index == 0 {
+                        "schedule-visit is-next"
+                    } else {
+                        "schedule-visit"
+                    },
                     r#type: "button",
                     onclick: {
                         let visit = visit.clone();
@@ -726,6 +836,9 @@ fn PatientSurface(
     on_send: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
+    messages: Vec<String>,
+    snapshot_failed: bool,
+    on_open_chat: EventHandler<String>,
 ) -> Element {
     let identity = workspace.as_ref().and_then(|open| open.identity.clone());
     let synopsis = workspace.as_ref().and_then(|open| {
@@ -777,6 +890,7 @@ fn PatientSurface(
                 TodayRows {
                     rows,
                     server_now,
+                    focused: None,
                     on_open: move |line: TodayLine| {
                         if opens_reader(&line.kind) {
                             on_read.call((line.patient.clone(), line.reason.clone()));
@@ -856,9 +970,23 @@ fn PatientSurface(
                         TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
                     },
                     ChatView::Empty => rsx! { p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" } },
-                    ChatView::Chats(titles) => rsx! {
-                        for title in titles {
-                            div { class: "sidebar-conversation-link", "{title}" }
+                    ChatView::Chats(lines) => rsx! {
+                        for line in lines {
+                            button {
+                                class: "sidebar-conversation-link",
+                                r#type: "button",
+                                onclick: {
+                                    let id = line.id.clone();
+                                    move |_| on_open_chat.call(id.clone())
+                                },
+                                "{line.title}"
+                            }
+                        }
+                        if snapshot_failed {
+                            p { class: "sidebar-loading", "{CONVERSATION_UNAVAILABLE}" }
+                        }
+                        for message in messages {
+                            p { class: "synopsis", "{message}" }
                         }
                     },
                 }
@@ -891,6 +1019,7 @@ fn SearchDialog(
     on_close: EventHandler,
     on_open: EventHandler<String>,
     on_editing: EventHandler<bool>,
+    focused: Option<i32>,
 ) -> Element {
     let first = results
         .first()
@@ -918,9 +1047,10 @@ fn SearchDialog(
                     },
                 }
                 ul { class: "dialog-results",
-                    for patient in results {
+                    for (index, patient) in results.iter().enumerate() {
                         li {
                             button {
+                                class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
                                 r#type: "button",
                                 onclick: {
                                     let id = patient.patient_workspace_id.clone();
