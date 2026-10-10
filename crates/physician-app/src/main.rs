@@ -15,7 +15,16 @@ fn main() {
 #[component]
 fn App() -> Element {
     let base = api_base();
-    rsx! { physician_app::PhysicianRoot { base_url: base } }
+    let open_patient = open_patient();
+    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient } }
+}
+
+fn open_patient() -> String {
+    #[cfg(target_arch = "wasm32")]
+    if let Some(id) = query_value("patient") {
+        return id;
+    }
+    String::new()
 }
 
 fn api_base() -> String {
@@ -45,10 +54,14 @@ fn page_origin() -> Option<String> {
 
 #[cfg(target_arch = "wasm32")]
 fn query_api() -> Option<String> {
+    query_value("api")
+}
+
+fn query_value(name: &str) -> Option<String> {
     let search = web_sys::window()?.location().search().ok()?;
     for pair in search.trim_start_matches('?').split('&') {
         let (key, value) = pair.split_once('=')?;
-        if key == "api" && !value.is_empty() {
+        if key == name && !value.is_empty() {
             return Some(percent_decode(value));
         }
     }

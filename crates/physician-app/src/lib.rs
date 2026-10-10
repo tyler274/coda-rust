@@ -11,11 +11,11 @@ use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{PatientWorkspaceResponse, RecentConversation};
 use shell::{
-    ChatView, KeyInput, NavCommand, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
-    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
+    ChatView, KeyInput, NavCommand, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
+    TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
     WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, connection_lines, format_calendar_date,
     format_clock, format_waited, keyboard_command, need_you_words, opens_reader, patient_visit,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -41,9 +41,21 @@ enum Place {
 }
 
 #[component]
-pub fn PhysicianRoot(base_url: String) -> Element {
-    let mut place = use_signal(|| Place::Today);
-    let mut selected = use_signal(|| None::<String>);
+pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
+    let mut place = use_signal(|| {
+        if open_patient.is_empty() {
+            Place::Today
+        } else {
+            Place::Workspace
+        }
+    });
+    let mut selected = use_signal(|| {
+        if open_patient.is_empty() {
+            None
+        } else {
+            Some(open_patient)
+        }
+    });
     let mut collapsed = use_signal(|| false);
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
@@ -61,6 +73,10 @@ pub fn PhysicianRoot(base_url: String) -> Element {
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
     let client = use_signal(|| PhysicianClient::new(base_url));
+    let health = use_resource(move || {
+        let client = client.read().clone();
+        async move { client.health().await.map_err(|_| ()) }
+    });
     let today = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
@@ -155,6 +171,12 @@ pub fn PhysicianRoot(base_url: String) -> Element {
         .as_ref()
         .map(|result| result.as_ref().map_err(|_| ()));
     let today_state = today_view(today_cache_read.as_deref(), today_result);
+    let connection_accounts = health
+        .read()
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .and_then(|health| health.capabilities.as_ref())
+        .is_some_and(|capabilities| capabilities.connection_accounts);
     let connections = today_read
         .as_ref()
         .and_then(|result| result.as_ref().ok())
@@ -450,11 +472,13 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                         }
                     }
                     div { class: "sidebar-footer",
-                        button {
-                            r#type: "button",
-                            onclick: move |_| connections_open.set(true),
-                            Icon { name: IconName::Users }
-                            "{CONNECTIONS}"
+                        if connection_accounts {
+                            button {
+                                r#type: "button",
+                                onclick: move |_| connections_open.set(true),
+                                Icon { name: IconName::Users }
+                                "{CONNECTIONS}"
+                            }
                         }
                         button {
                             r#type: "button",
@@ -496,11 +520,6 @@ pub fn PhysicianRoot(base_url: String) -> Element {
                             },
                             on_open_visit: move |visit: VisitLine| {
                                 let Some(id) = visit.workspace_id.clone() else { return };
-                                let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
-                                reading.set(Some((
-                                    format!("{} {clock}", visit.patient),
-                                    visit.preparation.clone().unwrap_or_default(),
-                                )));
                                 selected.set(Some(id));
                                 place.set(Place::Workspace);
                                 search_open.set(false);
@@ -650,6 +669,7 @@ fn TodaySurface(
 ) -> Element {
     let words = need_you_words(need_you);
     let scheduled = !visits.is_empty();
+    let connections_quiet = connections.is_empty();
     let row_len = match &state {
         TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len() as i32,
         _ => 0,
@@ -688,12 +708,13 @@ fn TodaySurface(
                             ErrorState { message: TODAY_UNAVAILABLE.to_owned() }
                             TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
                         },
-                        TodayView::Quiet => rsx! {
+                        TodayView::Quiet if connections_quiet => rsx! {
                             div { class: "today-list today-quiet",
                                 strong { "{TODAY_QUIET}" }
                                 span { "{TODAY_QUIET_DETAIL}" }
                             }
                         },
+                        TodayView::Quiet => rsx! {},
                         TodayView::Stale(rows) => rsx! {
                             ErrorState { message: TODAY_STALE.to_owned() }
                             TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
@@ -857,11 +878,11 @@ fn PatientSurface(
     on_open_chat: EventHandler<String>,
 ) -> Element {
     let identity = workspace.as_ref().and_then(|open| open.identity.clone());
-    let synopsis = workspace.as_ref().and_then(|open| {
-        open.patient_synopsis
-            .as_ref()
-            .and_then(|synopsis| synopsis.authored_text.clone())
-    });
+    let segments = workspace
+        .as_ref()
+        .and_then(|open| open.patient_synopsis.as_ref())
+        .map(|synopsis| synopsis.segments.clone())
+        .unwrap_or_default();
     let work = workspace
         .as_ref()
         .and_then(|open| open.automation_run.clone());
@@ -884,25 +905,36 @@ fn PatientSurface(
             })
         })
     });
+    let age = identity
+        .as_ref()
+        .and_then(|identity| identity.age_years)
+        .map(|years| format!("{years} years"));
+    let mrn = identity.as_ref().and_then(|identity| {
+        identity
+            .medical_record_numbers
+            .iter()
+            .find_map(|number| number.value.clone())
+    });
     rsx! {
         div { class: "reading-workspace patient-page",
             header { class: "patient-identity",
                 h1 { class: "workspace-title", "{name}" }
                 div { class: "patient-facts",
+                    if let Some(age) = age {
+                        span { "Age {age}" }
+                    }
                     if let Some(dob) = dob {
                         span { "DOB {dob}" }
                     }
                     if let Some(gender) = gender {
-                        span { "{gender}" }
+                        span { "Gender {gender}" }
+                    }
+                    if let Some(mrn) = mrn {
+                        span { "MRN {mrn}" }
                     }
                 }
             }
-            if rows.is_empty() {
-                div { class: "today-list today-quiet",
-                    strong { "{TODAY_QUIET}" }
-                    span { "{TODAY_QUIET_DETAIL}" }
-                }
-            } else {
+            if !rows.is_empty() {
                 TodayRows {
                     rows,
                     server_now,
@@ -962,10 +994,21 @@ fn PatientSurface(
                     }
                 }
             }
-            if let Some(synopsis) = synopsis {
-                section { class: "patient-section", aria_label: "Synopsis",
-                    h2 { "Synopsis" }
-                    p { class: "synopsis", "{synopsis}" }
+            if !segments.is_empty() {
+                section { class: "patient-section", aria_label: "Patient summary",
+                    h2 { "Patient summary" }
+                    div { class: "synopsis",
+                        for piece in synopsis_pieces(&segments) {
+                            match piece {
+                                SynopsisPiece::Text(text) => rsx! { span { "{text}" } },
+                                SynopsisPiece::Chips(chips) => rsx! {
+                                    for chip in chips {
+                                        span { class: "citation-chip", "[{chip.index}]" }
+                                    }
+                                },
+                            }
+                        }
+                    }
                 }
             }
             if !follow_ups.is_empty() {
@@ -1005,23 +1048,23 @@ fn PatientSurface(
                         for message in messages {
                             p { class: "synopsis", "{message}" }
                         }
+                        textarea {
+                            class: "composer",
+                            placeholder: "Write a message",
+                            value: "{draft}",
+                            onfocus: move |_| on_editing.call(true),
+                            onblur: move |_| on_editing.call(false),
+                            oninput: move |event| on_draft.call(event.value()),
+                        }
+                        div { class: "composer-actions",
+                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_save.call(()), "Save" }
+                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
+                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
+                            if !notice.is_empty() {
+                                span { class: "composer-notice", "{notice}" }
+                            }
+                        }
                     },
-                }
-                textarea {
-                    class: "composer",
-                    placeholder: "Write a message",
-                    value: "{draft}",
-                    onfocus: move |_| on_editing.call(true),
-                    onblur: move |_| on_editing.call(false),
-                    oninput: move |event| on_draft.call(event.value()),
-                }
-                div { class: "composer-actions",
-                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_save.call(()), "Save" }
-                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
-                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
-                    if !notice.is_empty() {
-                        span { class: "composer-notice", "{notice}" }
-                    }
                 }
             }
         }

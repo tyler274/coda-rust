@@ -2,7 +2,7 @@
 //! The reader shows the row the physician chose. It does not fetch a citation.
 
 use physician_wire::{
-    AutomationRun, PatientWorkspaceResponse, PracticeDayResponse, TodayConnection,
+    AutomationRun, ClinicalSegment, PatientWorkspaceResponse, PracticeDayResponse, TodayConnection,
     TodayListResponse, TodayRow, VisitPreparation,
 };
 
@@ -224,6 +224,118 @@ pub fn work_end_reason(cause: Option<&str>) -> Option<&'static str> {
         Some("visit_ended") => Some("The visit has ended."),
         _ => None,
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+/// One visible piece of a patient summary.
+pub enum SynopsisPiece {
+    /// Prose.
+    Text(String),
+    /// Numbered source chips that share one run.
+    Chips(Vec<SourceChip>),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+/// A numbered source chip.
+pub struct SourceChip {
+    /// The visible source number.
+    pub index: usize,
+    /// The source title.
+    pub label: String,
+}
+
+/// Groups typed segments the way the React citation run does.
+/// The same resolved source keeps one number. Markers in `authored_text` are not read.
+pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
+    let mut parts = Vec::new();
+    let mut numbers: Vec<(String, usize)> = Vec::new();
+    let mut next = 1usize;
+    let mut index = 0;
+    while index < segments.len() {
+        match &segments[index] {
+            ClinicalSegment::Text { text } => {
+                parts.push(SynopsisPiece::Text(text.clone()));
+                index += 1;
+            }
+            ClinicalSegment::Citation { .. } => {
+                let mut chips = Vec::new();
+                loop {
+                    let ClinicalSegment::Citation {
+                        state,
+                        display_label,
+                        source,
+                        source_id,
+                        handle,
+                    } = &segments[index]
+                    else {
+                        break;
+                    };
+                    let number = chip_number(
+                        state,
+                        source.as_deref(),
+                        source_id.as_deref(),
+                        handle.as_deref(),
+                        &mut numbers,
+                        &mut next,
+                    );
+                    let label = display_label
+                        .as_deref()
+                        .map(str::trim)
+                        .filter(|label| !label.is_empty())
+                        .unwrap_or("Source");
+                    chips.push(SourceChip {
+                        index: number,
+                        label: label.to_owned(),
+                    });
+                    if index + 1 < segments.len()
+                        && matches!(segments[index + 1], ClinicalSegment::Citation { .. })
+                    {
+                        index += 1;
+                        continue;
+                    }
+                    if index + 2 < segments.len()
+                        && matches!(segments[index + 2], ClinicalSegment::Citation { .. })
+                        && matches!(
+                            &segments[index + 1],
+                            ClinicalSegment::Text { text } if text.chars().all(|c| c == ' ' || c == '\t')
+                        )
+                    {
+                        index += 2;
+                        continue;
+                    }
+                    break;
+                }
+                parts.push(SynopsisPiece::Chips(chips));
+                index += 1;
+            }
+        }
+    }
+    parts
+}
+
+fn chip_number(
+    state: &str,
+    source: Option<&str>,
+    source_id: Option<&str>,
+    handle: Option<&str>,
+    numbers: &mut Vec<(String, usize)>,
+    next: &mut usize,
+) -> usize {
+    if state == "resolved" {
+        if let (Some(source), Some(source_id), Some(handle)) = (source, source_id, handle) {
+            let key = format!("{source}\n{source_id}\n{handle}");
+            if let Some((_, number)) = numbers.iter().find(|(existing, _)| existing == &key) {
+                return *number;
+            }
+            let number = *next;
+            numbers.push((key, number));
+            *next += 1;
+            return number;
+        }
+    }
+    let number = *next;
+    *next += 1;
+    number
 }
 
 pub fn opens_reader(kind: &str) -> bool {
@@ -644,13 +756,40 @@ mod tests {
             "../../physician-sample/fixtures/workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json"
         ))
         .unwrap();
+        let synopsis = workspace.patient_synopsis.as_ref().unwrap();
         assert!(
-            workspace
-                .patient_synopsis
-                .as_ref()
-                .and_then(|synopsis| synopsis.authored_text.as_deref())
+            synopsis
+                .authored_text
+                .as_deref()
                 .unwrap()
                 .contains("Mary Louis")
+        );
+        let pieces = synopsis_pieces(&synopsis.segments);
+        let chips = pieces.iter().find_map(|piece| match piece {
+            SynopsisPiece::Chips(chips) => Some(chips),
+            SynopsisPiece::Text(_) => None,
+        });
+        let chips = chips.expect("a source chip");
+        assert_eq!(chips[0].index, 1);
+        assert_eq!(chips[0].label, "Mary Louis");
+        assert!(pieces.iter().all(|piece| match piece {
+            SynopsisPiece::Text(text) => !text.contains("[[patient_source"),
+            SynopsisPiece::Chips(_) => true,
+        }));
+        assert_eq!(
+            workspace
+                .identity
+                .as_ref()
+                .and_then(|identity| identity.age_years),
+            Some(54)
+        );
+        assert_eq!(
+            workspace
+                .identity
+                .as_ref()
+                .and_then(|identity| identity.medical_record_numbers.first())
+                .and_then(|number| number.value.as_deref()),
+            Some("00000005")
         );
         assert_eq!(
             work_heading(workspace.automation_run.as_ref().unwrap()).as_deref(),

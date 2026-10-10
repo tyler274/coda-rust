@@ -20,6 +20,17 @@ pub struct HealthResponse {
     #[serde(default)]
     /// The `held_by_newer_release` value.
     pub held_by_newer_release: Vec<Value>,
+    #[serde(default)]
+    /// Whether the physician can manage connection accounts.
+    pub capabilities: Option<HealthCapabilities>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// The capability flags published with the health check.
+pub struct HealthCapabilities {
+    #[serde(default)]
+    /// True when the server can open the Connections accounts dialog.
+    pub connection_accounts: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -269,6 +280,17 @@ pub struct PatientIdentity {
     #[serde(default)]
     /// The `sex_or_gender` value.
     pub sex_or_gender: Option<SexOrGender>,
+    #[serde(default)]
+    /// Medical record numbers the chart supplied.
+    pub medical_record_numbers: Vec<MedicalRecordNumber>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// One medical record number on the patient identity.
+pub struct MedicalRecordNumber {
+    #[serde(default)]
+    /// The record number the chart supplied.
+    pub value: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -290,6 +312,38 @@ pub struct PatientSynopsis {
     #[serde(default)]
     /// The `authored_text` value.
     pub authored_text: Option<String>,
+    #[serde(default)]
+    /// Typed text and citation segments. The page renders these, not marker strings.
+    pub segments: Vec<ClinicalSegment>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+/// One piece of authored clinical text.
+pub enum ClinicalSegment {
+    /// Prose between citations.
+    Text {
+        /// The prose.
+        text: String,
+    },
+    /// A source citation. Extra server fields stay unread.
+    Citation {
+        #[serde(default)]
+        /// `resolved` or `unavailable`.
+        state: String,
+        #[serde(default)]
+        /// The source title the chip names.
+        display_label: Option<String>,
+        #[serde(default)]
+        /// Which catalog the citation belongs to.
+        source: Option<String>,
+        #[serde(default)]
+        /// The source identity.
+        source_id: Option<String>,
+        #[serde(default)]
+        /// The record handle inside that source.
+        handle: Option<String>,
+    },
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

@@ -2,6 +2,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 button, input { font: inherit; }
 .icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
 .icon-tile {
+  box-sizing: border-box;
   display: inline-grid;
   place-items: center;
   flex: none;
@@ -32,7 +33,9 @@ button, input { font: inherit; }
 .glass-app.is-collapsed .sidebar-collapse { display: none; }
 .glass-app.is-collapsed .sidebar-content { padding-inline: calc((var(--sidebar-rail-width) - var(--target)) / 2); }
 .glass-app.is-collapsed .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
+.sidebar-expand { display: none; }
 .glass-app.is-collapsed .sidebar-expand { display: inline-flex; }
+.citation-chip { font-variant-numeric: tabular-nums; }
 
 .glass-sidebar {
   height: 100dvh;

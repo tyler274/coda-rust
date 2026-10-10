@@ -18,9 +18,50 @@ async fn the_recorded_practice_is_visible() {
     tokio::spawn(async move { physician_sample::serve(listener).await });
     wait_until_ready(address).await;
 
-    let url = format!("http://{address}/");
     let chrome = chromium();
-    let child = Command::new(&chrome)
+    let dom = dump_dom(&chrome, &format!("http://{address}/")).await;
+    assert!(
+        dom.contains("Today")
+            && dom.contains("Coda hasn’t read Gmail yet.")
+            && dom.contains("Coda hasn’t read Spruce yet.")
+            && dom.contains("3:30 PM")
+            && dom.contains("Mary Louis")
+            && dom.contains("m3 11 9-8 9 8")
+            && dom.contains("viewBox=\"0 0 24 24\"")
+            && dom.contains("stroke-width=\"1.8\"")
+            && dom.contains("box-sizing: border-box")
+            && !dom.contains("Nothing needs you right now.")
+            && !dom.contains("Connections"),
+        "Today did not match the React shell:\n{dom}"
+    );
+    let workspace = dump_dom(
+        &chrome,
+        &format!("http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"),
+    )
+    .await;
+    assert!(
+        workspace.contains("Patient summary")
+            && workspace.contains("Age 54 years")
+            && workspace.contains("MRN 00000005")
+            && workspace.contains("Gender Female")
+            && workspace.contains("[1]")
+            && !workspace.contains("[[patient_source")
+            && !workspace.contains("Write a message")
+            && !workspace.contains("Visit preparation failed. No new briefing was completed."),
+        "the workspace did not match the React patient page:\n{workspace}"
+    );
+    let logo = tokio::task::spawn_blocking(move || read_logo(address))
+        .await
+        .expect("logo read");
+    let head = String::from_utf8_lossy(&logo[..logo.len().min(80)]);
+    assert!(
+        head.contains("200") && logo.windows(8).any(|window| window == b"\x89PNG\r\n\x1a\n"),
+        "the reference logo was not a PNG:\n{head}"
+    );
+}
+
+async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
+    let child = Command::new(chrome)
         .args([
             "--headless=new",
             "--disable-gpu",
@@ -28,7 +69,7 @@ async fn the_recorded_practice_is_visible() {
             "--virtual-time-budget=15000",
             "--timeout=20000",
             "--dump-dom",
-            &url,
+            url,
         ])
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
@@ -50,25 +91,7 @@ async fn the_recorded_practice_is_visible() {
         output.status.code(),
         String::from_utf8_lossy(&output.stderr)
     );
-    assert!(
-        dom.contains("Today")
-            && dom.contains("Coda hasn’t read Gmail yet.")
-            && dom.contains("Coda hasn’t read Spruce yet.")
-            && dom.contains("3:30 PM")
-            && dom.contains("Mary Louis")
-            && dom.contains("m3 11 9-8 9 8")
-            && dom.contains("viewBox=\"0 0 24 24\"")
-            && dom.contains("stroke-width=\"1.8\""),
-        "the page was blank or incomplete:\n{dom}"
-    );
-    let logo = tokio::task::spawn_blocking(move || read_logo(address))
-        .await
-        .expect("logo read");
-    let head = String::from_utf8_lossy(&logo[..logo.len().min(80)]);
-    assert!(
-        head.contains("200") && logo.windows(8).any(|window| window == b"\x89PNG\r\n\x1a\n"),
-        "the reference logo was not a PNG:\n{head}"
-    );
+    dom.into_owned()
 }
 
 fn read_logo(address: std::net::SocketAddr) -> Vec<u8> {
