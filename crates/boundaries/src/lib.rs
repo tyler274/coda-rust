@@ -26,7 +26,13 @@ mod tests {
     #[test]
     fn shipping_clients_stay_until_the_rust_journeys_match() {
         let root = root();
-        assert!(root.join("submodules/coda-app/ios/DuetApp/Sources/DuetApp").exists());
-        assert!(root.join("submodules/coda-agents/web/src/main.tsx").exists());
+        assert!(
+            root.join("submodules/coda-app/ios/DuetApp/Sources/DuetApp")
+                .exists()
+        );
+        assert!(
+            root.join("submodules/coda-agents/web/src/main.tsx")
+                .exists()
+        );
     }
 }

@@ -23,7 +23,10 @@ pub struct PlacedLine {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum LaidOut {
-    Page { lines: Vec<PlacedLine>, pdf: Vec<u8> },
+    Page {
+        lines: Vec<PlacedLine>,
+        pdf: Vec<u8>,
+    },
     Overflow,
 }
 
@@ -58,7 +61,11 @@ fn place(page: &DoctorPage, size: f32) -> Option<Vec<PlacedLine>> {
             if y < MARGIN {
                 return None;
             }
-            lines.push(PlacedLine { text: line, size, y });
+            lines.push(PlacedLine {
+                text: line,
+                size,
+                y,
+            });
         }
         y -= leading * 0.35;
     }
@@ -70,7 +77,11 @@ fn wrap(text: &str, size: f32, width: f32) -> Vec<String> {
     let mut lines = Vec::new();
     let mut current = String::new();
     for word in text.split_whitespace() {
-        let next = if current.is_empty() { word.to_owned() } else { format!("{current} {word}") };
+        let next = if current.is_empty() {
+            word.to_owned()
+        } else {
+            format!("{current} {word}")
+        };
         if next.chars().count() > max_chars && !current.is_empty() {
             lines.push(std::mem::take(&mut current));
             current = word.to_owned();
@@ -81,14 +92,21 @@ fn wrap(text: &str, size: f32, width: f32) -> Vec<String> {
     if !current.is_empty() {
         lines.push(current);
     }
-    if lines.is_empty() { vec![String::new()] } else { lines }
+    if lines.is_empty() {
+        vec![String::new()]
+    } else {
+        lines
+    }
 }
 
 fn render_pdf(lines: &[PlacedLine]) -> Vec<u8> {
     let mut stream = String::from("BT\n");
     for line in lines {
         let text = pdf_escape(&line.text);
-        stream.push_str(&format!("/F1 {} Tf\n1 0 0 1 {} {} Tm\n({}) Tj\n", line.size, MARGIN, line.y, text));
+        stream.push_str(&format!(
+            "/F1 {} Tf\n1 0 0 1 {} {} Tm\n({}) Tj\n",
+            line.size, MARGIN, line.y, text
+        ));
     }
     stream.push_str("ET\n");
     let stream_bytes = stream.into_bytes();
@@ -110,12 +128,20 @@ fn render_pdf(lines: &[PlacedLine]) -> Vec<u8> {
     for offset in &offsets {
         pdf.extend(format!("{offset:010} 00000 n \n").into_bytes());
     }
-    pdf.extend(format!("trailer<< /Size {} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n", offsets.len() + 1).into_bytes());
+    pdf.extend(
+        format!(
+            "trailer<< /Size {} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n",
+            offsets.len() + 1
+        )
+        .into_bytes(),
+    );
     pdf
 }
 
 fn pdf_escape(text: &str) -> String {
-    text.replace('\\', "\\\\").replace('(', "\\(").replace(')', "\\)")
+    text.replace('\\', "\\\\")
+        .replace('(', "\\(")
+        .replace(')', "\\)")
 }
 
 #[cfg(test)]

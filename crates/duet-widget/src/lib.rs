@@ -25,7 +25,10 @@ mod tests {
 
     #[test]
     fn round_trips_lines() {
-        let snapshot = WidgetSnapshot { generated_at: "2026-10-09T00:00:00Z".into(), lines: vec!["Quiet".into()] };
+        let snapshot = WidgetSnapshot {
+            generated_at: "2026-10-09T00:00:00Z".into(),
+            lines: vec!["Quiet".into()],
+        };
         let read = from_json(&to_json(&snapshot)).unwrap();
         assert_eq!(read.lines, vec!["Quiet".to_owned()]);
     }
