@@ -6,12 +6,17 @@ publish.workspace = true
 version.workspace = true
 
 [dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 dioxus = { version = "0.7.10", default-features = false, features = ["macro", "html", "signals", "hooks"] }
 duet-client = { path = "../duet-client" }
 duet-health = { path = "../duet-health" }
-duet-page = { path = "../duet-page" }
-duet-widget = { path = "../duet-widget" }
+duet_wire = { path = "../duet-wire" }
+futures-timer = "3"
 ui = { path = "../ui" }
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
 [features]
 default = []

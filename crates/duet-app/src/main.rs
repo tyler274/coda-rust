@@ -14,7 +14,5 @@ fn main() {
 #[cfg(any(feature = "mobile", feature = "desktop"))]
 #[component]
 fn App() -> Element {
-    let base = std::env::var("DUET_API_URL").unwrap_or_else(|_| "http://127.0.0.1:8000".into());
-    let bearer = std::env::var("DUET_BEARER").unwrap_or_default();
-    rsx! { duet_app::DuetRoot { base_url: base, bearer } }
+    rsx! { duet_app::DuetRoot { base_url: duet_app::api_base_url(), bearer: duet_app::api_bearer() } }
 }
