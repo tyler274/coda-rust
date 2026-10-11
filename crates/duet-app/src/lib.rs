@@ -11,12 +11,15 @@ use std::time::Duration;
 use dioxus::prelude::*;
 use duet_client::DuetClient;
 use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
-use duet_notify::{AlertSnapshot, AlertState, PlatformAlerts, plan_insight_delivery};
+use duet_notify::{
+    AlertSnapshot, AlertState, PlatformAlerts, insight_alerts_wanted, plan_insight_delivery,
+};
 use duet_wire::models::ConversationMessage;
 use roots::{
     ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE,
     CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
-    DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, NoteOpen,
+    DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL, LIBRARY_EMPTY,
+    LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, NoteOpen, OPEN_NOTIFICATION_SETTINGS,
     REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SavedItemPage,
     SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, composer_text,
     conversation_root, date_line, doctor_page, draft_after_send, greeting, library_root, note_open,
@@ -42,6 +45,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
     let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
+    let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
     rsx! {
         style { "{ui::STYLESHEET}{DUET_STYLES}" }
         main { class: "duet",
@@ -53,6 +57,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         bearer: bearer.clone(),
                         readings: phone().readings.clone(),
                         connected: phone().state.connected(),
+                        insight_alerts,
                     }
                 }
                 div { hidden: tab() != 2,
@@ -61,6 +66,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         bearer: bearer.clone(),
                         phone: phone(),
                         alerts: alerts(),
+                        insight_alerts: insight_alerts(),
                         on_allow: move |_| {
                             PlatformHealth.request_access();
                             phone.set(PlatformHealth.snapshot());
@@ -69,6 +75,12 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                             PlatformAlerts.request_access();
                             alerts.set(PlatformAlerts.snapshot());
                         },
+                        on_insight_alerts: move |enabled| {
+                            PlatformAlerts.set_insights(enabled);
+                            insight_alerts.set(PlatformAlerts.insights_enabled());
+                            alerts.set(PlatformAlerts.snapshot());
+                        },
+                        on_open_settings: move |_| PlatformAlerts.open_settings(),
                     }
                 }
                 div { hidden: tab() != 3, SharedTab { base_url, bearer } }
@@ -83,6 +95,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                     }
                     if index == 2 {
                         alerts.set(PlatformAlerts.snapshot());
+                        insight_alerts.set(PlatformAlerts.insights_enabled());
                     }
                 },
             }
@@ -248,10 +261,14 @@ async fn load_today(
 }
 
 fn schedule_loaded_insights(page: &duet_client::InsightCyclePage) {
-    if PlatformAlerts.snapshot().state != AlertState::Allowed {
+    let state = PlatformAlerts.snapshot().state;
+    if state == AlertState::Allowed {
+        PlatformAlerts.register_remote();
+    }
+    if !insight_alerts_wanted(PlatformAlerts.insights_enabled(), state) {
+        PlatformAlerts.cancel_insight();
         return;
     }
-    PlatformAlerts.register_remote();
     let cycles: Vec<(uuid::Uuid, bool)> = page
         .items
         .iter()
@@ -1047,6 +1064,7 @@ fn TodayTab(
     bearer: String,
     readings: Vec<PhoneReading>,
     connected: bool,
+    insight_alerts: Signal<bool>,
 ) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
@@ -1058,6 +1076,7 @@ fn TodayTab(
         load_today(base_url, bearer)
     });
     use_effect(move || {
+        let _preference = insight_alerts();
         loading.set(resource().is_none());
         if let Some(Ok(value)) = resource() {
             schedule_loaded_insights(&value.1);
@@ -1115,8 +1134,11 @@ fn YouTab(
     bearer: String,
     phone: HealthSnapshot,
     alerts: AlertSnapshot,
+    insight_alerts: bool,
     on_allow: EventHandler<()>,
     on_allow_alerts: EventHandler<()>,
+    on_insight_alerts: EventHandler<bool>,
+    on_open_settings: EventHandler<()>,
 ) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
@@ -1284,6 +1306,25 @@ fn YouTab(
                         onclick: move |_| on_allow_alerts.call(()),
                         "Allow"
                     }
+                }
+            }
+            div { class: "source-row",
+                span { class: "source-name", "{INSIGHT_NOTIFICATIONS}" }
+                span { class: "source-detail", "{INSIGHT_NOTIFICATIONS_DETAIL}" }
+                input {
+                    r#type: "checkbox",
+                    checked: insight_alerts,
+                    aria_label: "{INSIGHT_NOTIFICATIONS}",
+                    onchange: move |event| on_insight_alerts.call(event.checked()),
+                }
+            }
+            if alerts.state == AlertState::Denied {
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    aria_label: "{OPEN_NOTIFICATION_SETTINGS}",
+                    onclick: move |_| on_open_settings.call(()),
+                    "{OPEN_NOTIFICATION_SETTINGS}"
                 }
             }
         }

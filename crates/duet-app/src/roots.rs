@@ -36,6 +36,9 @@ pub const TRY_AGAIN: &str = "Try again";
 pub const AWAITING: &str = "Awaiting acceptance";
 pub const ALLOW_HEALTHKIT: &str = "Allow HealthKit";
 pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
+pub const INSIGHT_NOTIFICATIONS: &str = "New insight notifications";
+pub const INSIGHT_NOTIFICATIONS_DETAIL: &str = "Notify me when Duet finds something worth showing.";
+pub const OPEN_NOTIFICATION_SETTINGS: &str = "Open iPhone Settings";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DoctorPage {
@@ -1182,6 +1185,10 @@ mod tests {
         assert_ne!(ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS);
         assert!(ALLOW_HEALTHKIT.contains("HealthKit"));
         assert!(ALLOW_NOTIFICATIONS.contains("notifications"));
+        assert_eq!(INSIGHT_NOTIFICATIONS, "New insight notifications");
+        assert_ne!(INSIGHT_NOTIFICATIONS, ALLOW_NOTIFICATIONS);
+        assert!(INSIGHT_NOTIFICATIONS_DETAIL.contains("worth showing"));
+        assert_eq!(OPEN_NOTIFICATION_SETTINGS, "Open iPhone Settings");
     }
 
     #[test]

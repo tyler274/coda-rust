@@ -8,9 +8,11 @@ import UserNotifications
 /// notification coordinator. A failed settings read leaves the pointer null.
 /// The alert request asks for alerts only.
 ///
-/// One insight alert is submitted only when alerts are allowed. Its title and
-/// body match the shipping coordinator. A remote-notification token that
-/// arrives is kept in memory and is not uploaded.
+/// One insight alert is submitted only when new insight notifications are on
+/// and alerts are allowed. Its title and body match the shipping coordinator.
+/// Turning them off removes the pending daily request and leaves the planned
+/// cycle id. A remote-notification token that arrives is kept in memory and
+/// is not uploaded.
 @_cdecl("duet_notify_status")
 public func duetNotifyStatus() -> UnsafeMutablePointer<CChar>? {
     copyString(NotificationBridge.status())
@@ -60,6 +62,26 @@ public func duetNotifyRememberToken(_ token: UnsafePointer<CChar>?) {
     NotificationBridge.rememberToken(String(cString: token))
 }
 
+@_cdecl("duet_notify_insights_enabled")
+public func duetNotifyInsightsEnabled() -> Int32 {
+    NotificationBridge.insightsEnabled() ? 1 : 0
+}
+
+@_cdecl("duet_notify_set_insights")
+public func duetNotifySetInsights(_ enabled: Int32) -> Int32 {
+    NotificationBridge.setInsights(enabled != 0) ? 1 : 0
+}
+
+@_cdecl("duet_notify_cancel_insights")
+public func duetNotifyCancelInsights() {
+    NotificationBridge.cancelPending()
+}
+
+@_cdecl("duet_notify_open_settings")
+public func duetNotifyOpenSettings() {
+    NotificationBridge.openSettings()
+}
+
 @_cdecl("duet_notify_string_free")
 public func duetNotifyStringFree(_ pointer: UnsafeMutablePointer<CChar>?) {
     free(pointer)
@@ -72,6 +94,7 @@ private func copyString(_ value: String) -> UnsafeMutablePointer<CChar>? {
 private enum NotificationBridge {
     private static let requestPrefix = "health.duet.notification.daily."
     private static let plannedKey = "coda.duet.insight.planned-cycle"
+    private static let enabledKey = "coda.duet.insight.enabled"
     private static var remoteToken: String?
 
     static func status() -> String {
@@ -91,6 +114,22 @@ private enum NotificationBridge {
         DispatchQueue.main.async {
             center.requestAuthorization(options: [.alert]) { _, _ in }
         }
+    }
+
+    private static func requestAccessAndWait() {
+        let center = UNUserNotificationCenter.current()
+        let ready = DispatchSemaphore(value: 0)
+        let ask = {
+            center.requestAuthorization(options: [.alert]) { _, _ in
+                ready.signal()
+            }
+        }
+        if Thread.isMainThread {
+            ask()
+        } else {
+            DispatchQueue.main.async(execute: ask)
+        }
+        ready.wait()
     }
 
     static func registerRemote() {
@@ -115,8 +154,47 @@ private enum NotificationBridge {
         UserDefaults.standard.string(forKey: plannedKey)
     }
 
-    /// Submits one insight alert and drops older daily ids. Denied or unread
-    /// permission does not schedule and does not count as a planned cycle.
+    static func insightsEnabled() -> Bool {
+        UserDefaults.standard.bool(forKey: enabledKey)
+    }
+
+    /// Saves the opt-in only when alerts are allowed. Turning it off drops
+    /// pending daily ids and leaves the planned cycle id.
+    static func setInsights(_ enabled: Bool) -> Bool {
+        if !enabled {
+            UserDefaults.standard.set(false, forKey: enabledKey)
+            cancelPending()
+            return false
+        }
+        if status() == "not_determined" {
+            requestAccessAndWait()
+        }
+        guard status() == "allowed" else { return false }
+        UserDefaults.standard.set(true, forKey: enabledKey)
+        return true
+    }
+
+    static func cancelPending() {
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { requests in
+            let pending = requests.map(\.identifier).filter { $0.hasPrefix(requestPrefix) }
+            center.removePendingNotificationRequests(withIdentifiers: pending)
+        }
+    }
+
+    static func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        let open = { UIApplication.shared.open(url) }
+        if Thread.isMainThread {
+            open()
+        } else {
+            DispatchQueue.main.async(execute: open)
+        }
+    }
+
+    /// Submits one insight alert and drops older daily ids. The opt-in and
+    /// allowed alerts are both required. Denied or unread permission does not
+    /// schedule and does not count as a planned cycle.
     static func schedule(
         identifier: String,
         year: Int,
@@ -126,7 +204,7 @@ private enum NotificationBridge {
         minute: Int,
         cycleID: String
     ) {
-        guard status() == "allowed" else { return }
+        guard status() == "allowed", insightsEnabled() else { return }
         registerRemote()
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { requests in

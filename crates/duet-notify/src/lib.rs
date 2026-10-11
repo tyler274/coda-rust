@@ -115,6 +115,53 @@ impl PlatformAlerts {
             let _ = delivery;
         }
     }
+
+    /// Reads whether new insight notifications are on. They start off.
+    pub fn insights_enabled(&self) -> bool {
+        #[cfg(target_os = "ios")]
+        {
+            return ios_insights_enabled();
+        }
+        #[cfg(not(target_os = "ios"))]
+        {
+            false
+        }
+    }
+
+    /// Turns new insight notifications on or off.
+    ///
+    /// Turning them on asks for alerts when none have been asked, and saves
+    /// only when alerts are allowed. A host or Android build cannot turn them on.
+    /// The returned value is whether they are on after the call.
+    pub fn set_insights(&self, enabled: bool) -> bool {
+        #[cfg(target_os = "ios")]
+        {
+            return ios_set_insights(enabled);
+        }
+        #[cfg(not(target_os = "ios"))]
+        {
+            let _ = enabled;
+            false
+        }
+    }
+
+    /// Removes a pending daily insight alert. The planned cycle id stays.
+    pub fn cancel_insight(&self) {
+        #[cfg(target_os = "ios")]
+        ios_cancel_insight();
+    }
+
+    /// Opens the system Settings page for this app.
+    pub fn open_settings(&self) {
+        #[cfg(target_os = "ios")]
+        ios_open_settings();
+    }
+}
+
+/// Reports whether a new insight cycle may be scheduled.
+/// The preference starts off. Alerts must also be allowed.
+pub fn insight_alerts_wanted(preference: bool, state: AlertState) -> bool {
+    preference && state == AlertState::Allowed
 }
 
 /// One local insight alert.
@@ -268,6 +315,38 @@ fn ios_submit(delivery: &InsightDelivery) {
 }
 
 #[cfg(target_os = "ios")]
+fn ios_insights_enabled() -> bool {
+    extern "C" {
+        fn duet_notify_insights_enabled() -> i32;
+    }
+    unsafe { duet_notify_insights_enabled() != 0 }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_set_insights(enabled: bool) -> bool {
+    extern "C" {
+        fn duet_notify_set_insights(enabled: i32) -> i32;
+    }
+    unsafe { duet_notify_set_insights(i32::from(enabled)) != 0 }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_cancel_insight() {
+    extern "C" {
+        fn duet_notify_cancel_insights();
+    }
+    unsafe { duet_notify_cancel_insights() }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_open_settings() {
+    extern "C" {
+        fn duet_notify_open_settings();
+    }
+    unsafe { duet_notify_open_settings() }
+}
+
+#[cfg(target_os = "ios")]
 fn bridge_string(
     pointer: *mut std::ffi::c_char,
     free_string: unsafe extern "C" fn(*mut std::ffi::c_char),
@@ -333,6 +412,19 @@ mod tests {
         assert!(!snapshot.state.shown());
         assert!(!snapshot.state.can_request());
         assert!(PlatformAlerts.last_planned_cycle().is_none());
+        assert!(!PlatformAlerts.insights_enabled());
+        assert!(!PlatformAlerts.set_insights(true));
+        assert!(!PlatformAlerts.insights_enabled());
+    }
+
+    #[test]
+    fn insight_alerts_stay_off_until_they_are_allowed() {
+        assert!(!insight_alerts_wanted(false, AlertState::Allowed));
+        assert!(!insight_alerts_wanted(true, AlertState::Denied));
+        assert!(!insight_alerts_wanted(true, AlertState::NotDetermined));
+        assert!(!insight_alerts_wanted(true, AlertState::Unreadable));
+        assert!(!insight_alerts_wanted(true, AlertState::NoCenter));
+        assert!(insight_alerts_wanted(true, AlertState::Allowed));
     }
 
     #[test]
