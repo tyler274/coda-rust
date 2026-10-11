@@ -57,6 +57,7 @@ fn query_api() -> Option<String> {
     query_value("api")
 }
 
+#[cfg(target_arch = "wasm32")]
 fn query_value(name: &str) -> Option<String> {
     let search = web_sys::window()?.location().search().ok()?;
     for pair in search.trim_start_matches('?').split('&') {

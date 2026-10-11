@@ -193,7 +193,8 @@ impl Page {
             } else {
                 None
             };
-            let mut payload = self.read_exact(usize::try_from(len).expect("DevTools frame"), deadline);
+            let mut payload =
+                self.read_exact(usize::try_from(len).expect("DevTools frame"), deadline);
             if let Some(mask) = mask {
                 for (index, byte) in payload.iter_mut().enumerate() {
                     *byte ^= mask[index % 4];
