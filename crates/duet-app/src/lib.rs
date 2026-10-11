@@ -15,10 +15,11 @@ use duet_wire::models::ConversationMessage;
 use roots::{
     AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
     CONNECTING, ConversationNote, ConversationRoot, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE,
-    LibraryRoot, NOT_SHARING, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED,
-    SHARING_UNCHECKED, SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    composer_text, conversation_root, date_line, doctor_page, draft_after_send, greeting,
-    library_root, opens_doctor, page_with_accepted, send_id, shared_root, today_root,
+    LibraryRoot, NOT_SHARING, NoteOpen, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED,
+    SHARING_UNCHECKED, SavedItemPage, SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send,
+    composer_open, composer_text, conversation_root, date_line, doctor_page, draft_after_send,
+    greeting, library_root, note_open, page_with_accepted, plan_page, reminder_page, send_id,
+    shared_root, today_root,
 };
 use ui::TabBar;
 
@@ -129,6 +130,21 @@ fn open_client(base_url: String, bearer: String) -> Result<DuetClient, String> {
     DuetClient::new(base_url, bearer, "0", "0.1.0")
 }
 
+#[derive(Clone)]
+enum ShownPage {
+    Doctor(DoctorPage),
+    Item(SavedItemPage),
+}
+
+impl ShownPage {
+    fn heading(&self) -> String {
+        match self {
+            ShownPage::Doctor(_) => "For my doctor".to_owned(),
+            ShownPage::Item(item) => item.heading.clone(),
+        }
+    }
+}
+
 async fn load_today(
     base_url: String,
     bearer: String,
@@ -158,7 +174,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut routines = use_signal(Vec::new);
     let mut follow_ups = use_signal(Vec::new);
     let mut doctor = use_signal(|| None);
-    let mut doctor_open = use_signal(|| false);
+    let mut open_item = use_signal(|| None::<NoteOpen>);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -232,7 +248,21 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         .as_ref()
         .map(|page| conversation_root(page, &routines(), &follow_ups(), doctor().as_ref()));
     let retry = move |_| attempt.set(attempt() + 1);
-    let can_compose = page.as_ref().is_some_and(composer_open) && !doctor_open();
+    let shown = match open_item() {
+        Some(NoteOpen::Doctor) => doctor().as_ref().map(doctor_page).map(ShownPage::Doctor),
+        Some(NoteOpen::Routine(id)) => routines()
+            .iter()
+            .find(|routine| routine.id == id)
+            .map(plan_page)
+            .map(ShownPage::Item),
+        Some(NoteOpen::FollowUp(id)) => follow_ups()
+            .iter()
+            .find(|follow_up| follow_up.id == id)
+            .map(reminder_page)
+            .map(ShownPage::Item),
+        None => None,
+    };
+    let can_compose = page.as_ref().is_some_and(composer_open) && shown.is_none();
     let closed = page.as_ref().and_then(closed_send);
     let mut submit = move |text: String| {
         if sending() {
@@ -293,18 +323,17 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             sending.set(false);
         });
     };
-    let showing_doctor = doctor_open() && doctor().is_some();
     rsx! {
-        if showing_doctor {
-            TabHeading { name: "For my doctor".to_owned(), loading }
+        if let Some(shown) = shown {
+            TabHeading { name: shown.heading(), loading }
             button {
                 class: "duet-retry",
                 r#type: "button",
-                onclick: move |_| doctor_open.set(false),
+                onclick: move |_| open_item.set(None),
                 "Close"
             }
-            match doctor().as_ref().map(doctor_page) {
-                Some(DoctorPage::Lines(entries)) => rsx! {
+            match shown {
+                ShownPage::Doctor(DoctorPage::Lines(entries)) => rsx! {
                     div { class: "duet-thread",
                         for entry in entries {
                             p { class: "card-text", "{entry.title}" }
@@ -314,7 +343,19 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         }
                     }
                 },
-                _ => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
+                ShownPage::Doctor(DoctorPage::Empty) => rsx! {
+                    p { class: "empty", "{LIBRARY_EMPTY}" }
+                },
+                ShownPage::Item(item) => rsx! {
+                    div { class: "duet-thread",
+                        if let Some(title) = item.title {
+                            p { class: "card-text", "{title}" }
+                        }
+                        if let Some(detail) = item.detail {
+                            p { class: "record-meta", "{detail}" }
+                        }
+                    }
+                },
             }
         } else {
         TabHeading { name: "Duet".to_owned(), loading }
@@ -343,9 +384,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                             p { class: "card-text", "{line.text}" }
                             for note in line.notes {
                                 ThreadNote {
-                                    note,
-                                    opens: doctor().is_some(),
-                                    on_open: move |_| doctor_open.set(true),
+                                    note: note.clone(),
+                                    open: note_open(&note, doctor().is_some(), &routines(), &follow_ups()),
+                                    on_open: move |which| open_item.set(Some(which)),
                                 }
                             }
                         }
@@ -400,13 +441,17 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
 }
 
 #[component]
-fn ThreadNote(note: ConversationNote, opens: bool, on_open: EventHandler) -> Element {
-    if opens && opens_doctor(&note) {
+fn ThreadNote(
+    note: ConversationNote,
+    open: Option<NoteOpen>,
+    on_open: EventHandler<NoteOpen>,
+) -> Element {
+    if let Some(open) = open {
         rsx! {
             button {
                 class: "thread-open",
                 r#type: "button",
-                onclick: move |_| on_open.call(()),
+                onclick: move |_| on_open.call(open),
                 {note_body(note)}
             }
         }

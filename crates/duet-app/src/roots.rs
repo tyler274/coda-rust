@@ -49,6 +49,34 @@ pub struct ConversationEntry {
     pub detail: Option<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CardTarget {
+    /// The saved Plan this card names.
+    Routine(uuid::Uuid),
+    /// The reminder or check-in this card names.
+    FollowUp(uuid::Uuid),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NoteOpen {
+    /// The For my doctor collection already loaded with the thread.
+    Doctor,
+    /// A Plan whose id is in the loaded routine list.
+    Routine(uuid::Uuid),
+    /// A reminder or check-in whose id is in the loaded follow-up list.
+    FollowUp(uuid::Uuid),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SavedItemPage {
+    /// **Plan**, **Reminder**, or **Check-in**.
+    pub heading: String,
+    /// The routine or follow-up title.
+    pub title: Option<String>,
+    /// The routine body, or the follow-up schedule.
+    pub detail: Option<String>,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConversationCard {
     pub receipt: String,
@@ -56,6 +84,7 @@ pub struct ConversationCard {
     pub detail: Option<String>,
     pub schedule: Option<String>,
     pub entries: Vec<ConversationEntry>,
+    pub target: Option<CardTarget>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -269,6 +298,7 @@ fn saved_doctor_note(
         detail: None,
         schedule: None,
         entries,
+        target: None,
     })
 }
 
@@ -288,6 +318,7 @@ fn proposal_note(
         detail: Some("Review and save your page when you’re ready.".to_owned()),
         schedule: None,
         entries,
+        target: None,
     })
 }
 
@@ -407,6 +438,7 @@ fn routine_note(
         detail,
         schedule: None,
         entries: vec![],
+        target: Some(CardTarget::Routine(routine.id)),
     })
 }
 
@@ -448,6 +480,7 @@ fn follow_note(
                 detail: None,
                 schedule,
                 entries: vec![],
+                target: Some(CardTarget::FollowUp(item.id)),
             })
         }
         FollowKind::Pause | FollowKind::Resume | FollowKind::Cancel => {
@@ -467,6 +500,48 @@ fn follow_note(
             };
             ConversationNote::Receipt(marked(&words, marks))
         }
+    }
+}
+
+/// The Plan page for a routine the thread already loaded.
+pub fn plan_page(routine: &SavedRoutine) -> SavedItemPage {
+    SavedItemPage {
+        heading: "Plan".to_owned(),
+        title: nonempty(&routine.title),
+        detail: nonempty(&routine.body),
+    }
+}
+
+/// The reminder or check-in page for a follow-up the thread already loaded.
+pub fn reminder_page(follow_up: &FollowUp) -> SavedItemPage {
+    SavedItemPage {
+        heading: follow_kind(follow_up.operation).to_owned(),
+        title: follow_title(follow_up),
+        detail: nonempty(&follow_up.schedule_summary),
+    }
+}
+
+/// The page a note opens when its item is already loaded.
+pub fn note_open(
+    note: &ConversationNote,
+    has_doctor: bool,
+    routines: &[SavedRoutine],
+    follow_ups: &[FollowUp],
+) -> Option<NoteOpen> {
+    if has_doctor && opens_doctor(note) {
+        return Some(NoteOpen::Doctor);
+    }
+    let ConversationNote::Card(card) = note else {
+        return None;
+    };
+    match card.target {
+        Some(CardTarget::Routine(id)) if routines.iter().any(|routine| routine.id == id) => {
+            Some(NoteOpen::Routine(id))
+        }
+        Some(CardTarget::FollowUp(id)) if follow_ups.iter().any(|follow_up| follow_up.id == id) => {
+            Some(NoteOpen::FollowUp(id))
+        }
+        _ => None,
     }
 }
 
@@ -846,6 +921,7 @@ mod tests {
                             detail: Some("A short walk after dinner.".into()),
                             schedule: None,
                             entries: vec![],
+                            target: Some(CardTarget::Routine(routines[0].id)),
                         }),
                         ConversationNote::Card(ConversationCard {
                             receipt: "Reminder".into(),
@@ -853,6 +929,7 @@ mod tests {
                             detail: None,
                             schedule: Some("Every evening".into()),
                             entries: vec![],
+                            target: Some(CardTarget::FollowUp(follow_ups[0].id)),
                         }),
                         ConversationNote::Card(ConversationCard {
                             receipt: "Saved to For my doctor".into(),
@@ -863,6 +940,7 @@ mod tests {
                                 title: "Ask about sleep".into(),
                                 detail: Some("How the week of walks has felt.".into()),
                             }],
+                            target: None,
                         }),
                     ],
                 },
@@ -874,6 +952,36 @@ mod tests {
                 },
             ])
         );
+        assert_eq!(
+            plan_page(&routines[0]),
+            SavedItemPage {
+                heading: "Plan".into(),
+                title: Some("Evening walk".into()),
+                detail: Some("A short walk after dinner.".into()),
+            }
+        );
+        assert_eq!(
+            reminder_page(&follow_ups[0]),
+            SavedItemPage {
+                heading: "Reminder".into(),
+                title: Some("Evening walk".into()),
+                detail: Some("Every evening".into()),
+            }
+        );
+        let opened = conversation_root(&page, &routines, &follow_ups, Some(&collection));
+        let ConversationRoot::Messages(lines) = &opened else {
+            panic!("expected messages");
+        };
+        assert_eq!(
+            note_open(&lines[0].notes[0], false, &routines, &follow_ups),
+            Some(NoteOpen::Routine(routines[0].id))
+        );
+        assert_eq!(note_open(&lines[0].notes[0], false, &[], &follow_ups), None);
+        assert_eq!(
+            note_open(&lines[0].notes[1], false, &routines, &follow_ups),
+            Some(NoteOpen::FollowUp(follow_ups[0].id))
+        );
+        assert_eq!(note_open(&lines[0].notes[1], false, &routines, &[]), None);
         assert!(
             conversation_root(&page, &[], &[], None).eq(&ConversationRoot::Messages(vec![
                 ConversationLine {
