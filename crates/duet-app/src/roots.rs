@@ -34,6 +34,8 @@ pub const SHARING_UNCHECKED: &str = "Duet couldn’t check whether sharing is st
 pub const SHARING_SAVED: &str = "Duet couldn’t check whether sharing is still allowed. Saved values stay visible for up to 24 hours after the last successful check.";
 pub const TRY_AGAIN: &str = "Try again";
 pub const AWAITING: &str = "Awaiting acceptance";
+pub const ALLOW_HEALTHKIT: &str = "Allow HealthKit";
+pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DoctorPage {
@@ -1173,6 +1175,13 @@ mod tests {
                 notice: Some(SharedNotice::SavedStayVisible)
             }
         );
+    }
+
+    #[test]
+    fn allow_buttons_name_their_permission() {
+        assert_ne!(ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS);
+        assert!(ALLOW_HEALTHKIT.contains("HealthKit"));
+        assert!(ALLOW_NOTIFICATIONS.contains("notifications"));
     }
 
     #[test]

@@ -11,15 +11,16 @@ use std::time::Duration;
 use dioxus::prelude::*;
 use duet_client::DuetClient;
 use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
+use duet_notify::{AlertSnapshot, PlatformAlerts};
 use duet_wire::models::ConversationMessage;
 use roots::{
-    AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
-    CONNECTING, ConversationNote, ConversationRoot, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE,
-    LibraryRoot, NOT_SHARING, NoteOpen, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED,
-    SHARING_UNCHECKED, SavedItemPage, SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send,
-    composer_open, composer_text, conversation_root, date_line, doctor_page, draft_after_send,
-    greeting, library_root, note_open, page_with_accepted, plan_page, reminder_page, send_id,
-    shared_root, today_root,
+    ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE,
+    CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
+    DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, NoteOpen,
+    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SavedItemPage,
+    SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, composer_text,
+    conversation_root, date_line, doctor_page, draft_after_send, greeting, library_root, note_open,
+    page_with_accepted, plan_page, reminder_page, send_id, shared_root, today_root,
 };
 use ui::TabBar;
 
@@ -40,6 +41,7 @@ pub use roots::{api_base_url, api_bearer};
 pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
     let mut phone = use_signal(|| PlatformHealth.snapshot());
+    let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     rsx! {
         style { "{ui::STYLESHEET}{DUET_STYLES}" }
         main { class: "duet",
@@ -58,9 +60,14 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         base_url: base_url.clone(),
                         bearer: bearer.clone(),
                         phone: phone(),
+                        alerts: alerts(),
                         on_allow: move |_| {
                             PlatformHealth.request_access();
                             phone.set(PlatformHealth.snapshot());
+                        },
+                        on_allow_alerts: move |_| {
+                            PlatformAlerts.request_access();
+                            alerts.set(PlatformAlerts.snapshot());
                         },
                     }
                 }
@@ -73,6 +80,9 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                     tab.set(index);
                     if index == 1 || index == 2 {
                         phone.set(PlatformHealth.snapshot());
+                    }
+                    if index == 2 {
+                        alerts.set(PlatformAlerts.snapshot());
                     }
                 },
             }
@@ -1075,7 +1085,9 @@ fn YouTab(
     base_url: String,
     bearer: String,
     phone: HealthSnapshot,
+    alerts: AlertSnapshot,
     on_allow: EventHandler<()>,
+    on_allow_alerts: EventHandler<()>,
 ) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
@@ -1224,7 +1236,26 @@ fn YouTab(
             span { class: "source-name", "Sources" }
             span { class: "source-detail", "{phone.sentence()}" }
             if phone.state.can_request() {
-                button { class: "duet-retry", onclick: move |_| on_allow.call(()), "Allow" }
+                button {
+                    class: "duet-retry",
+                    aria_label: "{ALLOW_HEALTHKIT}",
+                    onclick: move |_| on_allow.call(()),
+                    "Allow"
+                }
+            }
+        }
+        if alerts.state.shown() {
+            div { class: "source-row",
+                span { class: "source-name", "Notifications" }
+                span { class: "source-detail", "{alerts.sentence()}" }
+                if alerts.state.can_request() {
+                    button {
+                        class: "duet-retry",
+                        aria_label: "{ALLOW_NOTIFICATIONS}",
+                        onclick: move |_| on_allow_alerts.call(()),
+                        "Allow"
+                    }
+                }
             }
         }
         PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
