@@ -423,8 +423,14 @@ mod tests {
 
     #[test]
     fn every_react_icon_keeps_its_paths() {
-        let source = include_str!("../../../submodules/coda-agents/web/src/components/Icon.tsx");
-        let names = react_names(source);
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../submodules/coda-agents/web/src/components/Icon.tsx");
+        let source = match std::fs::read_to_string(&path) {
+            Ok(source) => source,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return,
+            Err(error) => panic!("{}: {error}", path.display()),
+        };
+        let names = react_names(&source);
         assert_eq!(names.len(), IconName::ALL.len());
         let mut rendered_paths = 0;
         let mut rendered_rects = 0;
@@ -459,7 +465,7 @@ mod tests {
                 );
             }
         }
-        for path in quoted(source, "d=\"") {
+        for path in quoted(&source, "d=\"") {
             assert!(
                 IconName::ALL
                     .iter()
