@@ -442,6 +442,18 @@ fn YouTab(
                 for section in sections {
                     article { class: if section.measured { "number-card" } else { "voice-card" },
                         p { class: "card-title", "{section.name}" }
+                        for record in section.records {
+                            p { class: "card-text", "{record.title}" }
+                            if let Some(summary) = record.summary {
+                                p { class: "record-meta", "{summary}" }
+                            }
+                            if let Some(when) = record.when {
+                                p { class: "record-meta", "{when}" }
+                            }
+                            if let Some(source) = record.source {
+                                p { class: "record-meta", "{source}" }
+                            }
+                        }
                     }
                 }
             },

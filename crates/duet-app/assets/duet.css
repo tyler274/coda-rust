@@ -76,6 +76,8 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; color:
 .user-bubble { background: #0e5237; color: #fff; }
 .card-title { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
 .card-text, .empty, .status-detail { margin: 0; font-size: 15px; }
+.record-meta { margin: 4px 0 0; color: #505a63; font-size: 15px; }
+.card-text + .card-text, .record-meta + .card-text { margin-top: 12px; }
 .empty-title, .status-title { margin: 0 0 8px; font-size: 22px; font-weight: 700; }
 .source-row {
   display: flex;
@@ -169,7 +171,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; color:
 @media (prefers-color-scheme: dark) {
   html, body, .duet { background: #000; color: #f3f4f6; }
   .duet::before { background: linear-gradient(180deg, #191f1c 0%, #1d1c21 42%, rgba(0, 0, 0, 0) 100%); }
-  .duet-status, .source-detail { color: #bdc3cc; }
+  .duet-status, .source-detail, .record-meta { color: #bdc3cc; }
   .voice-card { background: #1d1c21; }
   .number-card { background: #191f1c; }
   .user-bubble { background: #2a7254; }

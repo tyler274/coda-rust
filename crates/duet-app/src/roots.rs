@@ -191,9 +191,18 @@ pub fn today_root(settings: &IntelligenceSettings, page: &InsightCyclePage) -> T
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LibraryRecord {
+    pub title: String,
+    pub summary: Option<String>,
+    pub when: Option<String>,
+    pub source: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LibrarySection {
     pub name: &'static str,
     pub measured: bool,
+    pub records: Vec<LibraryRecord>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -244,12 +253,50 @@ pub fn library_root(page: &EvidenceLibraryPage) -> LibraryRoot {
     let sections = SECTIONS
         .iter()
         .filter(|(keys, _, _)| keys.iter().any(|key| present.contains(*key)))
-        .map(|(_, name, measured)| LibrarySection {
+        .map(|(keys, name, measured)| LibrarySection {
             name,
             measured: *measured,
+            records: page
+                .entries
+                .iter()
+                .filter(|entry| keys.contains(&entry.category.as_str()))
+                .map(library_record)
+                .collect(),
         })
         .collect();
     LibraryRoot::Sections(sections)
+}
+
+fn library_record(entry: &duet_wire::models::EvidenceLibraryEntry) -> LibraryRecord {
+    let when = entry
+        .date
+        .map(|date| calendar_line(date.date_naive()))
+        .or_else(|| entry.day.flatten().map(calendar_line));
+    LibraryRecord {
+        title: entry.title.clone(),
+        summary: supplied(&entry.summary),
+        when,
+        source: supplied(&entry.source_label),
+    }
+}
+
+fn supplied(value: &Option<Option<String>>) -> Option<String> {
+    value
+        .as_ref()
+        .and_then(|text| text.as_ref())
+        .map(|text| text.trim())
+        .filter(|text| !text.is_empty())
+        .map(str::to_owned)
+}
+
+fn calendar_line(day: chrono::NaiveDate) -> String {
+    let number = day.format("%e").to_string();
+    format!(
+        "{} {}, {}",
+        day.format("%B"),
+        number.trim(),
+        day.format("%Y")
+    )
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -509,13 +556,31 @@ mod tests {
             LibraryRoot::Sections(vec![
                 LibrarySection {
                     name: "Medications",
-                    measured: false
+                    measured: false,
+                    records: vec![],
                 },
                 LibrarySection {
                     name: "Recent labs",
-                    measured: true
+                    measured: true,
+                    records: vec![],
                 },
             ])
+        );
+        let listed = json::<EvidenceLibraryPage>(
+            r#"{"catalog_revision":null,"counts":{"medication":1},"entries":[{"category":"medication","coding_identities":[],"condition_status_conflict":false,"date":"2026-10-01T15:00:00Z","entity":"health_evidence","group_kind":null,"id":"med-1","member_count":1,"preview":null,"record_id":"00000000-0000-0000-0000-000000000021","source_label":"Pharmacy","status_conflict":false,"summary":"10 mg","title":"Lisinopril"}],"health_records_generation":0,"next_cursor":null,"revision":1,"total_count":1}"#,
+        );
+        assert_eq!(
+            library_root(&listed),
+            LibraryRoot::Sections(vec![LibrarySection {
+                name: "Medications",
+                measured: false,
+                records: vec![LibraryRecord {
+                    title: "Lisinopril".into(),
+                    summary: Some("10 mg".into()),
+                    when: Some("October 1, 2026".into()),
+                    source: Some("Pharmacy".into()),
+                }],
+            }])
         );
         assert_eq!(
             LIBRARY_UNAVAILABLE,
