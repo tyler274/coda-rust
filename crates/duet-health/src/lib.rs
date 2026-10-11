@@ -64,10 +64,26 @@ impl StoreState {
             Self::Missing => "Health Connect is not installed on this phone.",
             Self::UpdateRequired => "Health Connect needs an update before Duet can read it.",
             Self::PermissionRequired => {
-                "Health Connect is installed. Duet does not have permission to read it yet."
+                if cfg!(target_os = "ios") {
+                    "HealthKit is available. Duet does not have permission to read it yet."
+                } else {
+                    "Health Connect is installed. Duet does not have permission to read it yet."
+                }
             }
-            Self::Connected => "Health Connect is connected.",
-            Self::Unreadable => "Health Connect could not be read.",
+            Self::Connected => {
+                if cfg!(target_os = "ios") {
+                    "HealthKit is connected."
+                } else {
+                    "Health Connect is connected."
+                }
+            }
+            Self::Unreadable => {
+                if cfg!(target_os = "ios") {
+                    "HealthKit could not be read."
+                } else {
+                    "Health Connect could not be read."
+                }
+            }
             Self::NoStore => "This build has no on-device health store.",
             Self::HealthKitAvailable => "HealthKit is available.",
             Self::HealthKitUnavailable => "HealthKit is not available on this iPhone.",
@@ -149,6 +165,8 @@ impl PlatformHealth {
     pub fn request_access(&self) {
         #[cfg(target_os = "android")]
         android_request();
+        #[cfg(target_os = "ios")]
+        ios_request();
     }
 }
 
@@ -168,15 +186,81 @@ impl HealthSource for PlatformHealth {
 #[cfg(target_os = "ios")]
 fn ios_snapshot() -> HealthSnapshot {
     extern "C" {
-        fn duet_healthkit_available() -> i32;
+        fn duet_healthkit_status() -> *mut std::ffi::c_char;
+        fn duet_healthkit_readings() -> *mut std::ffi::c_char;
+        fn duet_healthkit_string_free(pointer: *mut std::ffi::c_char);
     }
-    let state = if unsafe { duet_healthkit_available() } == 1 {
-        StoreState::HealthKitAvailable
-    } else {
-        StoreState::HealthKitUnavailable
+    let Some(code) = bridge_string(
+        unsafe { duet_healthkit_status() },
+        duet_healthkit_string_free,
+    ) else {
+        return unreadable_snapshot();
     };
+    if code != "connected" {
+        return healthkit_snapshot(&code, Ok(""));
+    }
+    match bridge_string(
+        unsafe { duet_healthkit_readings() },
+        duet_healthkit_string_free,
+    ) {
+        Some(body) => healthkit_snapshot("connected", Ok(&body)),
+        None => healthkit_snapshot("connected", Err(())),
+    }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_request() {
+    extern "C" {
+        fn duet_healthkit_request();
+    }
+    unsafe { duet_healthkit_request() }
+}
+
+#[cfg(target_os = "ios")]
+fn bridge_string(
+    pointer: *mut std::ffi::c_char,
+    free_string: unsafe extern "C" fn(*mut std::ffi::c_char),
+) -> Option<String> {
+    if pointer.is_null() {
+        return None;
+    }
+    let text = unsafe { std::ffi::CStr::from_ptr(pointer) }
+        .to_str()
+        .ok()
+        .map(str::to_owned);
+    unsafe { free_string(pointer) };
+    text
+}
+
+/// Maps a HealthKit status code and readings body onto the store snapshot.
+/// An empty connected store stays connected. A failed read is unreadable.
+#[cfg(any(test, target_os = "ios"))]
+fn healthkit_snapshot(code: &str, body: Result<&str, ()>) -> HealthSnapshot {
+    let state = match code {
+        "unavailable" => StoreState::HealthKitUnavailable,
+        "permission" => StoreState::PermissionRequired,
+        "connected" => StoreState::Connected,
+        _ => StoreState::Unreadable,
+    };
+    if !state.connected() {
+        return HealthSnapshot {
+            state,
+            readings: Vec::new(),
+        };
+    }
+    match body {
+        Ok(body) => HealthSnapshot {
+            state,
+            readings: decode_readings(body),
+        },
+        Err(()) => unreadable_snapshot(),
+    }
+}
+
+#[cfg(any(test, target_os = "ios"))]
+fn unreadable_snapshot() -> HealthSnapshot {
     HealthSnapshot {
-        state,
+        state: StoreState::Unreadable,
         readings: Vec::new(),
     }
 }
@@ -337,5 +421,57 @@ mod tests {
         assert_eq!(readings.len(), 1);
         assert_eq!(readings[0].name, "Steps");
         assert_eq!(readings[0].value, "1200");
+    }
+
+    #[test]
+    fn healthkit_permission_can_be_requested_and_hides_readings() {
+        let body =
+            r#"{"granted":["Steps"],"rows":[{"name":"Steps","value":"1200","unit":"steps"}]}"#;
+        let snapshot = healthkit_snapshot("permission", Ok(body));
+        assert_eq!(snapshot.state, StoreState::PermissionRequired);
+        assert!(snapshot.state.can_request());
+        assert!(snapshot.readings.is_empty());
+    }
+
+    #[test]
+    fn healthkit_unavailable_has_no_readings() {
+        let snapshot = healthkit_snapshot("unavailable", Ok(""));
+        assert_eq!(snapshot.state, StoreState::HealthKitUnavailable);
+        assert!(snapshot.readings.is_empty());
+        assert!(!snapshot.state.can_request());
+    }
+
+    #[test]
+    fn healthkit_connected_keeps_an_empty_store() {
+        let snapshot = healthkit_snapshot("connected", Ok(r#"{"granted":[],"rows":[]}"#));
+        assert!(snapshot.state.connected());
+        assert!(snapshot.readings.is_empty());
+        assert_eq!(snapshot.state.sentence(), "Health Connect is connected.");
+    }
+
+    #[test]
+    fn healthkit_connected_omits_ungranted_rows() {
+        let body = r#"{"granted":["Steps"],"rows":[
+            {"name":"Steps","value":"1200","unit":"steps"},
+            {"name":"Weight","value":"70","unit":"kg"}
+        ]}"#;
+        let snapshot = healthkit_snapshot("connected", Ok(body));
+        assert_eq!(snapshot.readings.len(), 1);
+        assert_eq!(snapshot.readings[0].name, "Steps");
+    }
+
+    #[test]
+    fn healthkit_thrown_read_is_unreadable() {
+        let snapshot = healthkit_snapshot("connected", Err(()));
+        assert_eq!(snapshot.state, StoreState::Unreadable);
+        assert!(snapshot.readings.is_empty());
+        assert!(!snapshot.state.connected());
+    }
+
+    #[test]
+    fn healthkit_unknown_code_is_unreadable() {
+        let snapshot = healthkit_snapshot("unread", Ok(""));
+        assert_eq!(snapshot.state, StoreState::Unreadable);
+        assert!(snapshot.readings.is_empty());
     }
 }
