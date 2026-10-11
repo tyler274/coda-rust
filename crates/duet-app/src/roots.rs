@@ -6,11 +6,14 @@ use duet_client::{
 };
 use duet_wire::models::conversation_availability::Reason;
 use duet_wire::models::conversation_message::Role;
+use duet_wire::models::doctor_action_result::Status as DoctorStatus;
+use duet_wire::models::doctor_page_proposal_result::Status as ProposalStatus;
 use duet_wire::models::follow_up_action_result::Status as FollowStatus;
 use duet_wire::models::saved_routine_action_result::Status as RoutineStatus;
 use duet_wire::models::{
-    ActionsInner, ConversationMessage, FollowUp, FollowUpActionResult, FollowUpOperation,
-    SavedRoutine, SavedRoutineActionResult,
+    ActionsInner, ConversationMessage, DoctorActionResult, DoctorCollection, DoctorCollectionItem,
+    DoctorPageProposalResult, FollowUp, FollowUpActionResult, FollowUpOperation, SavedRoutine,
+    SavedRoutineActionResult,
 };
 
 pub const CONNECTING: &str = "Connecting…";
@@ -33,11 +36,18 @@ pub const TRY_AGAIN: &str = "Try again";
 pub const AWAITING: &str = "Awaiting acceptance";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ConversationEntry {
+    pub title: String,
+    pub detail: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConversationCard {
     pub receipt: String,
     pub title: Option<String>,
     pub detail: Option<String>,
     pub schedule: Option<String>,
+    pub entries: Vec<ConversationEntry>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -159,6 +169,7 @@ pub fn conversation_root(
     page: &ConversationPage,
     routines: &[SavedRoutine],
     follow_ups: &[FollowUp],
+    collection: Option<&DoctorCollection>,
 ) -> ConversationRoot {
     if page.messages.is_empty() {
         let (title, message) = availability_copy(availability_reason(page));
@@ -174,7 +185,7 @@ pub fn conversation_root(
                 },
                 text: message.text.clone(),
                 from_duet: message.role == Role::Assistant,
-                notes: message_notes(message, routines, follow_ups),
+                notes: message_notes(message, routines, follow_ups, collection),
             })
             .collect(),
     )
@@ -184,12 +195,13 @@ fn message_notes(
     message: &ConversationMessage,
     routines: &[SavedRoutine],
     follow_ups: &[FollowUp],
+    collection: Option<&DoctorCollection>,
 ) -> Vec<ConversationNote> {
     message
         .actions
         .iter()
         .flatten()
-        .filter_map(|action| note_for(action, routines, follow_ups))
+        .filter_map(|action| note_for(action, routines, follow_ups, collection))
         .collect()
 }
 
@@ -197,6 +209,7 @@ fn note_for(
     action: &ActionsInner,
     routines: &[SavedRoutine],
     follow_ups: &[FollowUp],
+    collection: Option<&DoctorCollection>,
 ) -> Option<ConversationNote> {
     match action {
         ActionsInner::CreateSavedRoutine(result) => Some(routine_note(result, false, routines)),
@@ -216,10 +229,103 @@ fn note_for(
         ActionsInner::CancelFollowUp(result) => {
             Some(follow_note(result, FollowKind::Cancel, follow_ups))
         }
-        ActionsInner::SaveDoctorQuestion(_)
-        | ActionsInner::PrepareDoctorSummary(_)
-        | ActionsInner::ProposeDoctorPage(_) => None,
+        ActionsInner::SaveDoctorQuestion(result) => {
+            Some(saved_doctor_note(result, false, collection))
+        }
+        ActionsInner::PrepareDoctorSummary(result) => {
+            Some(saved_doctor_note(result, true, collection))
+        }
+        ActionsInner::ProposeDoctorPage(result) => Some(proposal_note(result, collection)),
     }
+}
+
+fn saved_doctor_note(
+    result: &DoctorActionResult,
+    prepared: bool,
+    collection: Option<&DoctorCollection>,
+) -> ConversationNote {
+    let words = if prepared {
+        "For my doctor saved"
+    } else {
+        "Saved to For my doctor"
+    };
+    let changed = matches!(result.status, DoctorStatus::Changed);
+    let receipt = marked(words, (changed, false));
+    let entries = collection.map(saved_entries).unwrap_or_default();
+    if entries.is_empty() {
+        return ConversationNote::Receipt(receipt);
+    }
+    ConversationNote::Card(ConversationCard {
+        receipt,
+        title: None,
+        detail: None,
+        schedule: None,
+        entries,
+    })
+}
+
+fn proposal_note(
+    result: &DoctorPageProposalResult,
+    collection: Option<&DoctorCollection>,
+) -> ConversationNote {
+    let changed = matches!(result.status, ProposalStatus::Changed);
+    let entries = collection
+        .and_then(|collection| collection.proposal.as_ref())
+        .and_then(|proposal| proposal.as_ref())
+        .map(|proposal| proposal_entries(proposal))
+        .unwrap_or_default();
+    ConversationNote::Card(ConversationCard {
+        receipt: marked("For my doctor", (changed, false)),
+        title: Some("Review".to_owned()),
+        detail: Some("Review and save your page when you’re ready.".to_owned()),
+        schedule: None,
+        entries,
+    })
+}
+
+fn saved_entries(collection: &DoctorCollection) -> Vec<ConversationEntry> {
+    let mut entries = item_entries(collection.items.as_deref().unwrap_or(&[]));
+    if let Some(note) = supplied(&collection.note) {
+        entries.push(ConversationEntry {
+            title: note,
+            detail: None,
+        });
+    }
+    entries
+}
+
+fn proposal_entries(proposal: &duet_wire::models::DoctorPageProposal) -> Vec<ConversationEntry> {
+    let mut entries = item_entries(&proposal.items);
+    if let Some(questions) = &proposal.page.questions {
+        for question in questions {
+            if let Some(title) = nonempty(question) {
+                entries.push(ConversationEntry {
+                    title,
+                    detail: None,
+                });
+            }
+        }
+    }
+    if let Some(note) = proposal.note.as_deref().and_then(nonempty) {
+        entries.push(ConversationEntry {
+            title: note,
+            detail: None,
+        });
+    }
+    entries
+}
+
+fn item_entries(items: &[DoctorCollectionItem]) -> Vec<ConversationEntry> {
+    items
+        .iter()
+        .filter_map(|item| {
+            let title = nonempty(&item.title)?;
+            Some(ConversationEntry {
+                title,
+                detail: nonempty(&item.detail),
+            })
+        })
+        .collect()
 }
 
 fn routine_note(
@@ -249,6 +355,7 @@ fn routine_note(
         title,
         detail,
         schedule: None,
+        entries: vec![],
     })
 }
 
@@ -289,6 +396,7 @@ fn follow_note(
                 title,
                 detail: None,
                 schedule,
+                entries: vec![],
             })
         }
         FollowKind::Pause | FollowKind::Resume | FollowKind::Cancel => {
@@ -627,7 +735,7 @@ mod tests {
             r#"{"availability":{"can_send":true},"messages":[],"revision":1}"#,
         );
         assert_eq!(
-            conversation_root(&empty, &[], &[]),
+            conversation_root(&empty, &[], &[], None),
             ConversationRoot::Empty {
                 title: CHAT_EMPTY_TITLE,
                 message: CHAT_EMPTY_MESSAGE
@@ -637,7 +745,7 @@ mod tests {
             r#"{"availability":{"can_send":true},"messages":[{"created_at":"2026-10-09T15:00:00Z","id":"00000000-0000-0000-0000-000000000001","revision":1,"role":"user","sequence":1,"state":"complete","text":"How did I sleep?","updated_at":"2026-10-09T15:00:00Z"},{"created_at":"2026-10-09T15:00:01Z","id":"00000000-0000-0000-0000-000000000002","revision":1,"role":"assistant","sequence":2,"state":"complete","text":"About seven hours.","updated_at":"2026-10-09T15:00:01Z"}],"revision":2}"#,
         );
         assert_eq!(
-            conversation_root(&loaded, &[], &[]),
+            conversation_root(&loaded, &[], &[], None),
             ConversationRoot::Messages(vec![
                 ConversationLine {
                     role: "You".into(),
@@ -670,8 +778,11 @@ mod tests {
         let follow_ups = vec![json::<FollowUp>(
             r#"{"accepted_instruction":"A short walk after dinner.","created_at":"2026-10-09T15:00:02Z","display_title":"Evening walk","id":"00000000-0000-0000-0000-000000000042","operation":"reminder","revision":1,"schedule":{"kind":"once","local_date":"2026-10-11","local_time":"19:00","timezone":"America/Los_Angeles"},"schedule_summary":"Every evening","source_basis":[],"state":"active","updated_at":"2026-10-09T15:00:02Z"}"#,
         )];
+        let collection = json::<DoctorCollection>(
+            r#"{"items":[{"detail":"How the week of walks has felt.","evidence":[],"id":"00000000-0000-0000-0000-000000000046","kind":"fact","position":0,"saved_at":"2026-10-09T15:00:02Z","source_id":"question-1","title":"Ask about sleep"}],"note_generation":1}"#,
+        );
         assert_eq!(
-            conversation_root(&page, &routines, &follow_ups),
+            conversation_root(&page, &routines, &follow_ups, Some(&collection)),
             ConversationRoot::Messages(vec![
                 ConversationLine {
                     role: "Duet".into(),
@@ -683,12 +794,24 @@ mod tests {
                             title: Some("Evening walk".into()),
                             detail: Some("A short walk after dinner.".into()),
                             schedule: None,
+                            entries: vec![],
                         }),
                         ConversationNote::Card(ConversationCard {
                             receipt: "Reminder".into(),
                             title: Some("Evening walk".into()),
                             detail: None,
                             schedule: Some("Every evening".into()),
+                            entries: vec![],
+                        }),
+                        ConversationNote::Card(ConversationCard {
+                            receipt: "Saved to For my doctor".into(),
+                            title: None,
+                            detail: None,
+                            schedule: None,
+                            entries: vec![ConversationEntry {
+                                title: "Ask about sleep".into(),
+                                detail: Some("How the week of walks has felt.".into()),
+                            }],
                         }),
                     ],
                 },
@@ -701,7 +824,7 @@ mod tests {
             ])
         );
         assert!(
-            conversation_root(&page, &[], &[]).eq(&ConversationRoot::Messages(vec![
+            conversation_root(&page, &[], &[], None).eq(&ConversationRoot::Messages(vec![
                 ConversationLine {
                     role: "Duet".into(),
                     text: "Evening walk is saved.".into(),
@@ -709,6 +832,7 @@ mod tests {
                     notes: vec![
                         ConversationNote::Receipt("Plan saved".into()),
                         ConversationNote::Receipt("Added to Coming up".into()),
+                        ConversationNote::Receipt("Saved to For my doctor".into()),
                     ],
                 },
                 ConversationLine {
@@ -729,7 +853,7 @@ mod tests {
         assert!(!composer_open(&empty));
         assert_eq!(closed_send(&empty), None);
         assert_eq!(
-            conversation_root(&empty, &[], &[]),
+            conversation_root(&empty, &[], &[], None),
             ConversationRoot::Empty {
                 title: "Chat with Duet",
                 message: "You’ve reached today’s limit. Duet will be ready again tomorrow."
@@ -773,7 +897,7 @@ mod tests {
         );
         let shown = page_with_accepted(page, accepted.clone());
         assert_eq!(
-            conversation_root(&shown, &[], &[]),
+            conversation_root(&shown, &[], &[], None),
             ConversationRoot::Messages(vec![ConversationLine {
                 role: "You".into(),
                 text: "How did I sleep?".into(),

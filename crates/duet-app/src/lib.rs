@@ -29,6 +29,7 @@ struct ThreadLoad {
     page: duet_client::ConversationPage,
     routines: Option<Vec<duet_wire::models::SavedRoutine>>,
     follow_ups: Option<Vec<duet_wire::models::FollowUp>>,
+    doctor: Option<duet_wire::models::DoctorCollection>,
 }
 const DUET_STYLES: &str = include_str!("../assets/duet.css");
 
@@ -156,6 +157,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut accepted = use_signal(|| None::<ConversationMessage>);
     let mut routines = use_signal(Vec::new);
     let mut follow_ups = use_signal(Vec::new);
+    let mut doctor = use_signal(|| None);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -173,10 +175,15 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 Ok(page) => Some(page.items),
                 Err(_) => None,
             };
+            let doctor = match api.doctor_collection().await {
+                Ok(collection) => Some(collection),
+                Err(_) => None,
+            };
             Ok::<_, String>(ThreadLoad {
                 page,
                 routines,
                 follow_ups,
+                doctor,
             })
         }
     });
@@ -188,6 +195,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             }
             if let Some(items) = loaded.follow_ups.clone() {
                 follow_ups.set(items);
+            }
+            if let Some(collection) = loaded.doctor.clone() {
+                doctor.set(Some(collection));
             }
             let page = match accepted() {
                 Some(message) => {
@@ -219,7 +229,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     };
     let root = page
         .as_ref()
-        .map(|page| conversation_root(page, &routines(), &follow_ups()));
+        .map(|page| conversation_root(page, &routines(), &follow_ups(), doctor().as_ref()));
     let retry = move |_| attempt.set(attempt() + 1);
     let can_compose = page.as_ref().is_some_and(composer_open);
     let closed = page.as_ref().and_then(closed_send);
@@ -320,6 +330,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                                             }
                                             if let Some(schedule) = card.schedule {
                                                 p { class: "record-meta", "{schedule}" }
+                                            }
+                                            for entry in card.entries {
+                                                p { class: "card-text", "{entry.title}" }
+                                                if let Some(detail) = entry.detail {
+                                                    p { class: "record-meta", "{detail}" }
+                                                }
                                             }
                                         }
                                     },

@@ -143,6 +143,15 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Reads the For my doctor collection.
+    pub async fn doctor_collection(&self) -> Result<duet_wire::models::DoctorCollection, String> {
+        duet_wire::apis::doctor_workspace_api::get_doctor_collection_api_doctor_collection_get(
+            &self.configuration,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
     /// Reads who sharing includes.
     pub async fn sharing_overview(&self) -> Result<SharingOverviewResponse, String> {
         duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)

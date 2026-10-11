@@ -22,8 +22,8 @@ use axum::routing::{get, post};
 use duet_wire::models::conversation_message::Role;
 use duet_wire::models::{
     ConversationAcceptance, ConversationMessage, ConversationMessageState, ConversationPage,
-    ConversationRun, ConversationRunState, ConversationSendRequest, EvidenceLibraryPage,
-    FollowUpPage, InsightCyclePage, IntelligenceSettings, SavedRoutineList,
+    ConversationRun, ConversationRunState, ConversationSendRequest, DoctorCollection,
+    EvidenceLibraryPage, FollowUpPage, InsightCyclePage, IntelligenceSettings, SavedRoutineList,
     SharingOverviewResponse,
 };
 use serde::de::DeserializeOwned;
@@ -34,6 +34,7 @@ const SETTINGS: &str = include_str!("../fixtures/settings.json");
 const LIBRARY: &str = include_str!("../fixtures/library.json");
 const ROUTINES: &str = include_str!("../fixtures/routines.json");
 const FOLLOW_UPS: &str = include_str!("../fixtures/follow-ups.json");
+const DOCTOR: &str = include_str!("../fixtures/doctor.json");
 const SHARING: &str = include_str!("../fixtures/sharing.json");
 const RUN_ID: &str = "00000000-0000-0000-0000-000000000099";
 
@@ -78,6 +79,7 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         .route("/api/evidence/library", post(library))
         .route("/api/saved-routines", get(routines))
         .route("/api/follow-ups", get(follow_ups))
+        .route("/api/doctor-collection", get(doctor))
         .route("/api/sharing/overview", get(sharing))
         .with_state(store)
 }
@@ -184,6 +186,10 @@ async fn follow_ups() -> Json<FollowUpPage> {
     Json(fixture("follow-ups", FOLLOW_UPS))
 }
 
+async fn doctor() -> Json<DoctorCollection> {
+    Json(fixture("doctor", DOCTOR))
+}
+
 async fn sharing() -> Json<SharingOverviewResponse> {
     Json(fixture("sharing", SHARING))
 }
@@ -223,6 +229,7 @@ mod tests {
         let library: EvidenceLibraryPage = fixture("library", LIBRARY);
         let routines: SavedRoutineList = fixture("routines", ROUTINES);
         let follow_ups: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
+        let doctor: DoctorCollection = fixture("doctor", DOCTOR);
         let sharing: SharingOverviewResponse = fixture("sharing", SHARING);
         assert_eq!(page.messages.len(), 3);
         assert_eq!(routines.items[0].title, "Evening walk");
@@ -230,6 +237,7 @@ mod tests {
             follow_ups.items[0].display_title,
             Some(Some("Evening walk".into()))
         );
+        assert_eq!(doctor.items.as_ref().unwrap()[0].title, "Ask about sleep");
         assert_eq!(
             insights.items[0].insights.as_ref().unwrap()[0].title,
             "Steady walks"
