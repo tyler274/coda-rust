@@ -290,6 +290,16 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Clears the saved For my doctor page.
+    pub async fn clear_doctor_page(&self) -> Result<(), String> {
+        duet_wire::apis::doctor_workspace_api::clear_doctor_workspace_api_doctor_collection_delete(
+            &self.configuration,
+        )
+        .await
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+    }
+
     async fn store_evidence(
         &self,
         id: uuid::Uuid,

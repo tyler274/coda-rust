@@ -161,7 +161,7 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
             "/api/follow-ups/{follow_up_id}/resume",
             post(resume_follow_up),
         )
-        .route("/api/doctor-collection", get(doctor))
+        .route("/api/doctor-collection", get(doctor).delete(clear_doctor))
         .route("/api/doctor-collection/page", put(save_doctor))
         .route("/api/sharing/overview", get(sharing))
         .with_state(store)
@@ -441,6 +441,17 @@ async fn doctor(State(store): State<Arc<Mutex<Store>>>) -> Json<DoctorCollection
             .clone()
             .unwrap_or_else(|| fixture("doctor", DOCTOR)),
     )
+}
+
+async fn clear_doctor(State(store): State<Arc<Mutex<Store>>>) -> Result<StatusCode, StatusCode> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let previous = store.doctor.clone();
+    store.doctor = Some(DoctorCollection::new(-1));
+    if store.save_writes().is_err() {
+        store.doctor = previous;
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+    Ok(StatusCode::NO_CONTENT)
 }
 
 async fn save_doctor(
@@ -816,6 +827,99 @@ mod tests {
             .unwrap();
         let again: DoctorCollection = serde_json::from_str(&body(again).await).unwrap();
         assert_eq!(again.items.as_ref().unwrap()[0].title, "Ask about sleep");
+        let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(writes_beside(&path));
+    }
+
+    #[tokio::test]
+    async fn an_edited_doctor_page_stays_and_start_fresh_clears_it() {
+        let (path, store) = temp_store();
+        let app = router(store);
+        let item = uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000046").unwrap();
+        let mut page = duet_wire::models::DoctorPageContent::new();
+        page.name = Some(Some("Ada".into()));
+        page.date_of_birth = Some(Some(chrono::NaiveDate::from_ymd_opt(1990, 4, 2).unwrap()));
+        page.cover_note = Some(Some("Bring the sleep note.".into()));
+        page.questions = Some(vec!["How is my sleep?".into()]);
+        let mut save = DoctorPageSave::new(1, vec![item], page.clone());
+        save.note = Some(Some("I want to talk about sleep.".into()));
+        let saved = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri("/api/doctor-collection/page")
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&save).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let saved: DoctorCollection = serde_json::from_str(&body(saved).await).unwrap();
+        assert_eq!(saved.items.as_ref().unwrap()[0].title, "Ask about sleep");
+        assert_eq!(saved.note, Some(Some("I want to talk about sleep.".into())));
+        let saved_page = saved.page.unwrap();
+        assert_eq!(saved_page.name, Some(Some("Ada".into())));
+        assert_eq!(
+            saved_page.date_of_birth,
+            Some(Some(chrono::NaiveDate::from_ymd_opt(1990, 4, 2).unwrap()))
+        );
+        assert_eq!(saved_page.questions, Some(vec!["How is my sleep?".into()]));
+        assert_eq!(
+            saved_page.cover_note,
+            Some(Some("Bring the sleep note.".into()))
+        );
+
+        let mut omitted = DoctorPageSave::new(1, Vec::new(), page);
+        omitted.note = Some(Some("I want to talk about sleep.".into()));
+        let omitted = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri("/api/doctor-collection/page")
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&omitted).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let omitted: DoctorCollection = serde_json::from_str(&body(omitted).await).unwrap();
+        assert!(omitted.items.unwrap_or_default().is_empty());
+        assert_eq!(
+            omitted.note,
+            Some(Some("I want to talk about sleep.".into()))
+        );
+        assert_eq!(
+            omitted.page.unwrap().questions,
+            Some(vec!["How is my sleep?".into()])
+        );
+
+        let cleared = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("DELETE")
+                    .uri("/api/doctor-collection")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(cleared.status().is_success());
+        let again = app
+            .oneshot(
+                Request::builder()
+                    .uri("/api/doctor-collection")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let again: DoctorCollection = serde_json::from_str(&body(again).await).unwrap();
+        assert!(again.items.unwrap_or_default().is_empty());
+        assert!(again.note.flatten().is_none());
+        assert!(again.page.is_none());
         let _ = fs::remove_file(&path);
         let _ = fs::remove_file(writes_beside(&path));
     }

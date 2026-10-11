@@ -130,24 +130,74 @@ fn open_client(base_url: String, bearer: String) -> Result<DuetClient, String> {
     DuetClient::new(base_url, bearer, "0", "0.1.0")
 }
 
-fn doctor_page_save(
+fn optional_text(value: &str) -> Option<String> {
+    let text = value.trim();
+    if text.is_empty() {
+        None
+    } else {
+        Some(text.to_owned())
+    }
+}
+
+fn doctor_draft_save(
     collection: &duet_wire::models::DoctorCollection,
+    name: &str,
+    birth: &str,
+    note: &str,
+    cover: &str,
+    questions: &[String],
+    kept: &[uuid::Uuid],
 ) -> duet_wire::models::DoctorPageSave {
-    let item_ids = collection
+    let present: Vec<uuid::Uuid> = collection
         .items
         .iter()
         .flatten()
         .map(|item| item.id)
         .collect();
-    let page = collection
+    let item_ids = kept
+        .iter()
+        .copied()
+        .filter(|id| present.contains(id))
+        .collect();
+    let mut page = collection
         .page
         .as_ref()
         .map(|page| (**page).clone())
         .unwrap_or_else(duet_wire::models::DoctorPageContent::new);
+    page.name = Some(optional_text(name));
+    page.date_of_birth = Some(
+        optional_text(birth)
+            .and_then(|text| chrono::NaiveDate::parse_from_str(&text, "%Y-%m-%d").ok()),
+    );
+    page.cover_note = Some(optional_text(cover));
+    let questions: Vec<String> = questions
+        .iter()
+        .map(|question| question.trim().to_owned())
+        .filter(|question| !question.is_empty())
+        .collect();
+    page.questions = if questions.is_empty() {
+        None
+    } else {
+        Some(questions)
+    };
     let mut save =
         duet_wire::models::DoctorPageSave::new(collection.note_generation, item_ids, page);
-    save.note = collection.note.clone();
+    save.note = Some(optional_text(note));
     save
+}
+
+fn field_text(value: &Option<Option<String>>) -> String {
+    value
+        .as_ref()
+        .and_then(|inner| inner.clone())
+        .unwrap_or_default()
+}
+
+fn doctor_draft_ready(birth: &str, cover: &str, questions: &[String]) -> bool {
+    let birth = birth.trim();
+    let birth_ok = birth.is_empty() || chrono::NaiveDate::parse_from_str(birth, "%Y-%m-%d").is_ok();
+    let questions_ok = questions.iter().all(|question| !question.trim().is_empty());
+    birth_ok && questions_ok && cover.chars().count() <= 500
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -203,6 +253,16 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut open_item = use_signal(|| None::<NoteOpen>);
     let mut saving_page = use_signal(|| false);
     let mut page_failed = use_signal(|| false);
+    let mut doctor_editing = use_signal(|| false);
+    let mut doctor_name = use_signal(String::new);
+    let mut doctor_birth = use_signal(String::new);
+    let mut doctor_note = use_signal(String::new);
+    let mut doctor_cover = use_signal(String::new);
+    let mut doctor_questions = use_signal(|| Vec::<String>::new());
+    let mut doctor_items = use_signal(|| Vec::<(uuid::Uuid, String)>::new());
+    let mut doctor_kept = use_signal(|| Vec::<bool>::new());
+    let mut confirm_fresh = use_signal(|| false);
+    let mut fresh_failed = use_signal(|| false);
     let mut editing = use_signal(|| false);
     let mut plan_title = use_signal(String::new);
     let mut plan_body = use_signal(String::new);
@@ -375,6 +435,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let pause_bearer = page_bearer.clone();
     let resume_url = page_url.clone();
     let resume_bearer = page_bearer.clone();
+    let fresh_url = page_url.clone();
+    let fresh_bearer = page_bearer.clone();
     let save_plan = move |_| {
         if changing() {
             return;
@@ -531,27 +593,69 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         });
     };
     let save_page = move |_| {
-        if saving_page() {
+        if saving_page()
+            || !doctor_draft_ready(&doctor_birth(), &doctor_cover(), &doctor_questions())
+        {
             return;
         }
         let Some(collection) = doctor() else {
             return;
         };
+        let kept = doctor_items()
+            .into_iter()
+            .zip(doctor_kept())
+            .filter_map(|(item, keep)| keep.then_some(item.0))
+            .collect::<Vec<_>>();
+        let save = doctor_draft_save(
+            &collection,
+            &doctor_name(),
+            &doctor_birth(),
+            &doctor_note(),
+            &doctor_cover(),
+            &doctor_questions(),
+            &kept,
+        );
         saving_page.set(true);
         page_failed.set(false);
         let base_url = page_url.clone();
         let bearer = page_bearer.clone();
         spawn(async move {
             let saved = match open_client(base_url, bearer) {
-                Ok(api) => api.save_doctor_page(doctor_page_save(&collection)).await,
+                Ok(api) => api.save_doctor_page(save).await,
                 Err(_) => Err(String::new()),
             };
             match saved {
                 Ok(collection) => {
                     doctor.set(Some(collection));
                     page_failed.set(false);
+                    doctor_editing.set(false);
                 }
                 Err(_) => page_failed.set(true),
+            }
+            saving_page.set(false);
+        });
+    };
+    let start_fresh = move |_| {
+        if saving_page() {
+            return;
+        }
+        saving_page.set(true);
+        fresh_failed.set(false);
+        let base_url = fresh_url.clone();
+        let bearer = fresh_bearer.clone();
+        spawn(async move {
+            let cleared = match open_client(base_url, bearer) {
+                Ok(api) => api.clear_doctor_page().await,
+                Err(_) => Err(String::new()),
+            };
+            match cleared {
+                Ok(()) => {
+                    doctor.set(Some(duet_wire::models::DoctorCollection::new(-1)));
+                    doctor_editing.set(false);
+                    confirm_fresh.set(false);
+                    fresh_failed.set(false);
+                }
+                Err(_) => fresh_failed.set(true),
             }
             saving_page.set(false);
         });
@@ -565,16 +669,20 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 onclick: move |_| {
                     open_item.set(None);
                     editing.set(false);
+                    doctor_editing.set(false);
+                    confirm_fresh.set(false);
                     confirm_remove.set(false);
                     removed_plan.set(false);
                     plan_save_failed.set(false);
                     plan_remove_failed.set(false);
                     follow_failed.set(false);
+                    page_failed.set(false);
+                    fresh_failed.set(false);
                 },
                 "Close"
             }
             match shown {
-                ShownPage::Doctor(DoctorPage::Lines(entries)) => rsx! {
+                ShownPage::Doctor(DoctorPage::Lines(entries)) if !doctor_editing() => rsx! {
                     div { class: "duet-thread",
                         for entry in entries {
                             p { class: "card-text", "{entry.title}" }
@@ -584,9 +692,10 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         }
                     }
                 },
-                ShownPage::Doctor(DoctorPage::Empty) => rsx! {
+                ShownPage::Doctor(DoctorPage::Empty) if !doctor_editing() => rsx! {
                     p { class: "empty", "{LIBRARY_EMPTY}" }
                 },
+                ShownPage::Doctor(_) => rsx! {},
                 ShownPage::Item(item) if !editing() => rsx! {
                     div { class: "duet-thread",
                         if let Some(title) = item.title {
@@ -684,16 +793,83 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     }
                 }
             }
-            if matches!(open_item(), Some(NoteOpen::Doctor)) {
-                if page_failed() {
-                    p { class: "empty", role: "alert", "This page couldn’t be saved." }
+            if matches!(open_item(), Some(NoteOpen::Doctor)) && doctor_editing() {
+                DoctorEditor {
+                    name: doctor_name,
+                    birth: doctor_birth,
+                    note: doctor_note,
+                    cover: doctor_cover,
+                    questions: doctor_questions,
+                    items: doctor_items(),
+                    kept: doctor_kept,
+                    saving: saving_page,
+                    failed: page_failed,
+                    on_save: save_page,
+                }
+            }
+            if matches!(open_item(), Some(NoteOpen::Doctor)) && !doctor_editing() && confirm_fresh() {
+                p { class: "status-title", "Start fresh?" }
+                p { class: "status-detail", "This clears your words, questions, chosen information and cover note. Save a PDF first if you want a copy." }
+                if fresh_failed() {
+                    p { class: "empty", role: "alert", "Duet couldn’t confirm that For my doctor was cleared. Try again." }
+                }
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: saving_page(),
+                    onclick: move |_| confirm_fresh.set(false),
+                    "Cancel"
                 }
                 button {
                     class: "duet-send",
                     r#type: "button",
                     disabled: saving_page(),
-                    onclick: save_page,
-                    "Save page"
+                    onclick: start_fresh,
+                    "Start fresh"
+                }
+            }
+            if matches!(open_item(), Some(NoteOpen::Doctor)) && !doctor_editing() && !confirm_fresh() {
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: saving_page(),
+                    onclick: move |_| {
+                        let Some(collection) = doctor() else {
+                            return;
+                        };
+                        let page = collection.page.as_ref().map(|page| page.as_ref());
+                        doctor_name.set(page.map(|page| field_text(&page.name)).unwrap_or_default());
+                        doctor_birth.set(
+                            page.and_then(|page| page.date_of_birth.as_ref())
+                                .and_then(|day| day.as_ref())
+                                .map(|day| day.format("%Y-%m-%d").to_string())
+                                .unwrap_or_default(),
+                        );
+                        doctor_note.set(field_text(&collection.note));
+                        doctor_cover.set(page.map(|page| field_text(&page.cover_note)).unwrap_or_default());
+                        doctor_questions.set(page.and_then(|page| page.questions.clone()).unwrap_or_default());
+                        let items = collection
+                            .items
+                            .iter()
+                            .flatten()
+                            .map(|item| (item.id, item.title.clone()))
+                            .collect::<Vec<_>>();
+                        doctor_kept.set(vec![true; items.len()]);
+                        doctor_items.set(items);
+                        page_failed.set(false);
+                        doctor_editing.set(true);
+                    },
+                    "Edit page"
+                }
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: saving_page(),
+                    onclick: move |_| {
+                        fresh_failed.set(false);
+                        confirm_fresh.set(true);
+                    },
+                    "Start fresh"
                 }
             }
         } else {
@@ -1121,6 +1297,133 @@ fn PlanEditor(
             disabled: saving() || !ready,
             onclick: move |_| on_save.call(()),
             "Save changes"
+        }
+    }
+}
+
+#[component]
+fn DoctorEditor(
+    name: Signal<String>,
+    birth: Signal<String>,
+    note: Signal<String>,
+    cover: Signal<String>,
+    questions: Signal<Vec<String>>,
+    items: Vec<(uuid::Uuid, String)>,
+    kept: Signal<Vec<bool>>,
+    saving: Signal<bool>,
+    failed: Signal<bool>,
+    on_save: EventHandler,
+) -> Element {
+    let ready = doctor_draft_ready(&birth(), &cover(), &questions());
+    let can_add = questions().len() < 5;
+    rsx! {
+        p { class: "status-detail", "Name" }
+        input {
+            class: "duet-field",
+            r#type: "text",
+            value: "{name}",
+            oninput: move |event| name.set(event.value()),
+        }
+        p { class: "status-detail", "Date of birth" }
+        input {
+            class: "duet-field",
+            r#type: "text",
+            value: "{birth}",
+            oninput: move |event| birth.set(event.value()),
+        }
+        p { class: "status-detail", "What I want to discuss" }
+        textarea {
+            class: "duet-field",
+            value: "{note}",
+            oninput: move |event| note.set(event.value()),
+        }
+        for index in 0..questions().len() {
+            QuestionField { index, questions }
+        }
+        if can_add {
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| {
+                    let mut fields = questions();
+                    fields.push(String::new());
+                    questions.set(fields);
+                },
+                "Add a question"
+            }
+        }
+        p { class: "status-detail", "Cover note" }
+        textarea {
+            class: "duet-field",
+            value: "{cover}",
+            oninput: move |event| cover.set(event.value()),
+        }
+        for (index, item) in items.iter().enumerate() {
+            KeepChoice { index, title: item.1.clone(), kept }
+        }
+        if failed() {
+            p { class: "empty", role: "alert", "This page couldn’t be saved." }
+        }
+        button {
+            class: "duet-send",
+            r#type: "button",
+            disabled: saving() || !ready,
+            onclick: move |_| on_save.call(()),
+            "Save page"
+        }
+    }
+}
+
+#[component]
+fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
+    let value = questions().get(index).cloned().unwrap_or_default();
+    rsx! {
+        input {
+            class: "duet-field",
+            r#type: "text",
+            value: "{value}",
+            oninput: move |event| {
+                let mut fields = questions();
+                if let Some(field) = fields.get_mut(index) {
+                    *field = event.value();
+                }
+                questions.set(fields);
+            },
+        }
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            onclick: move |_| {
+                let mut fields = questions();
+                if index < fields.len() {
+                    fields.remove(index);
+                    questions.set(fields);
+                }
+            },
+            "Remove"
+        }
+    }
+}
+
+#[component]
+fn KeepChoice(index: usize, title: String, kept: Signal<Vec<bool>>) -> Element {
+    let included = kept().get(index).copied().unwrap_or(true);
+    rsx! {
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            onclick: move |_| {
+                let mut flags = kept();
+                if let Some(flag) = flags.get_mut(index) {
+                    *flag = !*flag;
+                }
+                kept.set(flags);
+            },
+            if included {
+                "{title}"
+            } else {
+                "{title}, left off"
+            }
         }
     }
 }
