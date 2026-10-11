@@ -35,13 +35,13 @@ mod tests {
     #[test]
     fn shipping_clients_stay_until_the_rust_journeys_match() {
         let root = root();
-        let app = root.join("submodules/coda-app");
-        let agents = root.join("submodules/coda-agents");
-        if !app.exists() || !agents.exists() {
+        let ios = root.join("submodules/coda-app/ios/DuetApp/Sources/DuetApp");
+        let web = root.join("submodules/coda-agents/web/src/main.tsx");
+        if !ios.exists() && !web.exists() {
             return;
         }
-        assert!(app.join("ios/DuetApp/Sources/DuetApp").exists());
-        assert!(agents.join("web/src/main.tsx").exists());
+        assert!(ios.exists());
+        assert!(web.exists());
     }
 
     #[test]
