@@ -1,9 +1,15 @@
-//! Alert permission for the iPhone notification center.
+//! Alert permission and one local insight alert for the iPhone.
 //! Only the Duet app imports this crate.
 //! The Swift binding is `platform/ios/NotificationBridge.swift`.
-//! A host or Android build has no center and does not invent a prompt.
+//! A host or Android build has no center, schedules nothing, and does not invent a token.
 //! Book: `book/src/behaviour-contract.md`.
 #![deny(missing_docs)]
+
+use chrono::{DateTime, Datelike, Duration, TimeZone};
+use uuid::Uuid;
+
+/// Request id prefix for the one daily insight alert.
+pub const INSIGHT_REQUEST_PREFIX: &str = "health.duet.notification.daily.";
 
 /// Whether this build may show a notification alert.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -81,6 +87,96 @@ impl PlatformAlerts {
         #[cfg(target_os = "ios")]
         ios_request();
     }
+
+    /// Asks iOS to register for remote notifications. The token is not uploaded.
+    pub fn register_remote(&self) {
+        #[cfg(target_os = "ios")]
+        ios_register_remote();
+    }
+
+    /// Reads the cycle id of the last insight alert this phone planned.
+    pub fn last_planned_cycle(&self) -> Option<Uuid> {
+        #[cfg(target_os = "ios")]
+        {
+            return ios_last_planned();
+        }
+        #[cfg(not(target_os = "ios"))]
+        {
+            None
+        }
+    }
+
+    /// Submits one insight alert. A host or Android build does nothing.
+    pub fn submit_insight(&self, delivery: &InsightDelivery) {
+        #[cfg(target_os = "ios")]
+        ios_submit(delivery);
+        #[cfg(not(target_os = "ios"))]
+        {
+            let _ = delivery;
+        }
+    }
+}
+
+/// One local insight alert.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct InsightDelivery {
+    /// The cycle this alert is for.
+    pub cycle_id: Uuid,
+    /// The notification request id.
+    pub identifier: String,
+    /// Local year of the 9:00 delivery.
+    pub year: i32,
+    /// Local month of the 9:00 delivery.
+    pub month: u32,
+    /// Local day of the 9:00 delivery.
+    pub day: u32,
+    /// Local hour of the delivery. This is 9.
+    pub hour: u32,
+    /// Local minute of the delivery. This is 0.
+    pub minute: u32,
+}
+
+/// Plans at most one insight alert.
+///
+/// `cycles` is the loaded page, in order, as `(id, has insights)`. The first
+/// cycle that has insights is the candidate. The same id as `last_planned`
+/// plans nothing. A page with no such cycle plans nothing. The delivery is
+/// the next local 9:00 strictly after `now`.
+pub fn plan_insight_delivery<Tz: TimeZone>(
+    now: DateTime<Tz>,
+    cycles: &[(Uuid, bool)],
+    last_planned: Option<Uuid>,
+) -> Option<InsightDelivery> {
+    let cycle_id = cycles.iter().find(|(_, has)| *has).map(|(id, _)| *id)?;
+    if last_planned == Some(cycle_id) {
+        return None;
+    }
+    let today = now.date_naive();
+    let today_nine = today.and_hms_opt(9, 0, 0)?;
+    let fire_naive = if today_nine > now.naive_local() {
+        today_nine
+    } else {
+        today
+            .checked_add_signed(Duration::days(1))?
+            .and_hms_opt(9, 0, 0)?
+    };
+    let chrono::LocalResult::Single(fire) = now.timezone().from_local_datetime(&fire_naive) else {
+        return None;
+    };
+    Some(InsightDelivery {
+        cycle_id,
+        identifier: format!(
+            "{INSIGHT_REQUEST_PREFIX}{:04}-{:02}-{:02}",
+            fire.year(),
+            fire.month(),
+            fire.day()
+        ),
+        year: fire.year(),
+        month: fire.month(),
+        day: fire.day(),
+        hour: 9,
+        minute: 0,
+    })
 }
 
 /// Maps a notification status code onto the alert snapshot.
@@ -116,6 +212,59 @@ fn ios_request() {
         fn duet_notify_request();
     }
     unsafe { duet_notify_request() }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_register_remote() {
+    extern "C" {
+        fn duet_notify_register_remote();
+    }
+    unsafe { duet_notify_register_remote() }
+}
+
+#[cfg(target_os = "ios")]
+fn ios_last_planned() -> Option<Uuid> {
+    extern "C" {
+        fn duet_notify_last_planned() -> *mut std::ffi::c_char;
+        fn duet_notify_string_free(pointer: *mut std::ffi::c_char);
+    }
+    let text = bridge_string(
+        unsafe { duet_notify_last_planned() },
+        duet_notify_string_free,
+    )?;
+    Uuid::parse_str(&text).ok()
+}
+
+#[cfg(target_os = "ios")]
+fn ios_submit(delivery: &InsightDelivery) {
+    extern "C" {
+        fn duet_notify_schedule(
+            identifier: *const std::ffi::c_char,
+            year: i32,
+            month: i32,
+            day: i32,
+            hour: i32,
+            minute: i32,
+            cycle_id: *const std::ffi::c_char,
+        );
+    }
+    let Ok(identifier) = std::ffi::CString::new(delivery.identifier.as_str()) else {
+        return;
+    };
+    let Ok(cycle_id) = std::ffi::CString::new(delivery.cycle_id.to_string()) else {
+        return;
+    };
+    unsafe {
+        duet_notify_schedule(
+            identifier.as_ptr(),
+            delivery.year,
+            delivery.month as i32,
+            delivery.day as i32,
+            delivery.hour as i32,
+            delivery.minute as i32,
+            cycle_id.as_ptr(),
+        );
+    }
 }
 
 #[cfg(target_os = "ios")]
@@ -183,5 +332,55 @@ mod tests {
         assert_eq!(snapshot.state, AlertState::NoCenter);
         assert!(!snapshot.state.shown());
         assert!(!snapshot.state.can_request());
+        assert!(PlatformAlerts.last_planned_cycle().is_none());
+    }
+
+    #[test]
+    fn a_new_cycle_before_nine_is_delivered_today() {
+        let offset = chrono::FixedOffset::east_opt(0).unwrap();
+        let now = offset.with_ymd_and_hms(2026, 10, 11, 8, 0, 0).unwrap();
+        let cycle = Uuid::nil();
+        let delivery = plan_insight_delivery(now, &[(cycle, true)], None).unwrap();
+        assert_eq!(delivery.cycle_id, cycle);
+        assert_eq!(
+            delivery.identifier,
+            "health.duet.notification.daily.2026-10-11"
+        );
+        assert_eq!(
+            (delivery.year, delivery.month, delivery.day),
+            (2026, 10, 11)
+        );
+        assert_eq!((delivery.hour, delivery.minute), (9, 0));
+    }
+
+    #[test]
+    fn a_new_cycle_at_or_after_nine_is_delivered_the_next_morning() {
+        let offset = chrono::FixedOffset::east_opt(0).unwrap();
+        let now = offset.with_ymd_and_hms(2026, 10, 11, 9, 0, 0).unwrap();
+        let cycle = Uuid::from_u128(1);
+        let delivery =
+            plan_insight_delivery(now, &[(Uuid::nil(), false), (cycle, true)], None).unwrap();
+        assert_eq!(delivery.cycle_id, cycle);
+        assert_eq!(
+            delivery.identifier,
+            "health.duet.notification.daily.2026-10-12"
+        );
+        assert_eq!((delivery.hour, delivery.minute), (9, 0));
+    }
+
+    #[test]
+    fn the_same_cycle_is_not_planned_again() {
+        let offset = chrono::FixedOffset::east_opt(0).unwrap();
+        let now = offset.with_ymd_and_hms(2026, 10, 11, 8, 0, 0).unwrap();
+        let cycle = Uuid::from_u128(2);
+        assert!(plan_insight_delivery(now, &[(cycle, true)], Some(cycle)).is_none());
+    }
+
+    #[test]
+    fn a_page_without_an_insight_cycle_plans_nothing() {
+        let offset = chrono::FixedOffset::east_opt(0).unwrap();
+        let now = offset.with_ymd_and_hms(2026, 10, 11, 8, 0, 0).unwrap();
+        assert!(plan_insight_delivery(now, &[], None).is_none());
+        assert!(plan_insight_delivery(now, &[(Uuid::nil(), false)], None).is_none());
     }
 }

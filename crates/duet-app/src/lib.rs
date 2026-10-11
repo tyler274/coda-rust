@@ -11,7 +11,7 @@ use std::time::Duration;
 use dioxus::prelude::*;
 use duet_client::DuetClient;
 use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
-use duet_notify::{AlertSnapshot, PlatformAlerts};
+use duet_notify::{AlertSnapshot, AlertState, PlatformAlerts, plan_insight_delivery};
 use duet_wire::models::ConversationMessage;
 use roots::{
     ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE,
@@ -245,6 +245,34 @@ async fn load_today(
     let settings = api.intelligence_settings().await?;
     let cycles = api.list_insight_cycles().await?;
     Ok((settings, cycles))
+}
+
+fn schedule_loaded_insights(page: &duet_client::InsightCyclePage) {
+    if PlatformAlerts.snapshot().state != AlertState::Allowed {
+        return;
+    }
+    PlatformAlerts.register_remote();
+    let cycles: Vec<(uuid::Uuid, bool)> = page
+        .items
+        .iter()
+        .map(|cycle| {
+            (
+                cycle.id,
+                cycle
+                    .insights
+                    .as_ref()
+                    .is_some_and(|insights| !insights.is_empty()),
+            )
+        })
+        .collect();
+    let Some(delivery) = plan_insight_delivery(
+        chrono::Local::now(),
+        &cycles,
+        PlatformAlerts.last_planned_cycle(),
+    ) else {
+        return;
+    };
+    PlatformAlerts.submit_insight(&delivery);
 }
 
 #[component]
@@ -1032,6 +1060,7 @@ fn TodayTab(
     use_effect(move || {
         loading.set(resource().is_none());
         if let Some(Ok(value)) = resource() {
+            schedule_loaded_insights(&value.1);
             cache.set(Some(value));
         }
     });

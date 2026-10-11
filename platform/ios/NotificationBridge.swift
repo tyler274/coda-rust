@@ -1,12 +1,16 @@
 import Foundation
+import UIKit
 import UserNotifications
 
 /// Binding for `duet-notify`. Screens stay in Rust.
 ///
 /// Status is `not_determined`, `allowed`, or `denied`, matching the shipping
 /// notification coordinator. A failed settings read leaves the pointer null.
-/// The request asks for alerts only. It does not schedule insights or register
-/// a push token.
+/// The alert request asks for alerts only.
+///
+/// One insight alert is submitted only when alerts are allowed. Its title and
+/// body match the shipping coordinator. A remote-notification token that
+/// arrives is kept in memory and is not uploaded.
 @_cdecl("duet_notify_status")
 public func duetNotifyStatus() -> UnsafeMutablePointer<CChar>? {
     copyString(NotificationBridge.status())
@@ -15,6 +19,45 @@ public func duetNotifyStatus() -> UnsafeMutablePointer<CChar>? {
 @_cdecl("duet_notify_request")
 public func duetNotifyRequest() {
     NotificationBridge.requestAccess()
+}
+
+@_cdecl("duet_notify_register_remote")
+public func duetNotifyRegisterRemote() {
+    NotificationBridge.registerRemote()
+}
+
+@_cdecl("duet_notify_last_planned")
+public func duetNotifyLastPlanned() -> UnsafeMutablePointer<CChar>? {
+    guard let cycle = NotificationBridge.lastPlanned() else { return nil }
+    return copyString(cycle)
+}
+
+@_cdecl("duet_notify_schedule")
+public func duetNotifySchedule(
+    _ identifier: UnsafePointer<CChar>?,
+    _ year: Int32,
+    _ month: Int32,
+    _ day: Int32,
+    _ hour: Int32,
+    _ minute: Int32,
+    _ cycleID: UnsafePointer<CChar>?
+) {
+    guard let identifier, let cycleID else { return }
+    NotificationBridge.schedule(
+        identifier: String(cString: identifier),
+        year: Int(year),
+        month: Int(month),
+        day: Int(day),
+        hour: Int(hour),
+        minute: Int(minute),
+        cycleID: String(cString: cycleID)
+    )
+}
+
+@_cdecl("duet_notify_remember_token")
+public func duetNotifyRememberToken(_ token: UnsafePointer<CChar>?) {
+    guard let token else { return }
+    NotificationBridge.rememberToken(String(cString: token))
 }
 
 @_cdecl("duet_notify_string_free")
@@ -27,6 +70,10 @@ private func copyString(_ value: String) -> UnsafeMutablePointer<CChar>? {
 }
 
 private enum NotificationBridge {
+    private static let requestPrefix = "health.duet.notification.daily."
+    private static let plannedKey = "coda.duet.insight.planned-cycle"
+    private static var remoteToken: String?
+
     static func status() -> String {
         let center = UNUserNotificationCenter.current()
         let ready = DispatchSemaphore(value: 0)
@@ -43,6 +90,72 @@ private enum NotificationBridge {
         let center = UNUserNotificationCenter.current()
         DispatchQueue.main.async {
             center.requestAuthorization(options: [.alert]) { _, _ in }
+        }
+    }
+
+    static func registerRemote() {
+        let register = {
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+        if Thread.isMainThread {
+            register()
+        } else {
+            DispatchQueue.main.async(execute: register)
+        }
+    }
+
+    static func rememberToken(_ token: String) {
+        if remoteToken == token {
+            return
+        }
+        remoteToken = token
+    }
+
+    static func lastPlanned() -> String? {
+        UserDefaults.standard.string(forKey: plannedKey)
+    }
+
+    /// Submits one insight alert and drops older daily ids. Denied or unread
+    /// permission does not schedule and does not count as a planned cycle.
+    static func schedule(
+        identifier: String,
+        year: Int,
+        month: Int,
+        day: Int,
+        hour: Int,
+        minute: Int,
+        cycleID: String
+    ) {
+        guard status() == "allowed" else { return }
+        registerRemote()
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { requests in
+            let older = requests.map(\.identifier).filter {
+                $0.hasPrefix(requestPrefix) && $0 != identifier
+            }
+            center.removePendingNotificationRequests(withIdentifiers: older)
+            let content = UNMutableNotificationContent()
+            content.threadIdentifier = "health.duet.insights"
+            content.title = "New insights from Duet"
+            content.body = "See what may be worth noticing in your health information."
+            content.categoryIdentifier = "health.duet.notification.insight-ready"
+            content.userInfo = ["duet_insight_cycle_id": cycleID]
+            var when = DateComponents()
+            when.year = year
+            when.month = month
+            when.day = day
+            when.hour = hour
+            when.minute = minute
+            let request = UNNotificationRequest(
+                identifier: identifier,
+                content: content,
+                trigger: UNCalendarNotificationTrigger(dateMatching: when, repeats: false)
+            )
+            center.add(request) { error in
+                if error == nil {
+                    UserDefaults.standard.set(cycleID, forKey: plannedKey)
+                }
+            }
         }
     }
 
