@@ -4,6 +4,8 @@ use duet_client::{
     ConversationPage, EvidenceLibraryPage, InsightCyclePage, IntelligenceSettings,
     SharingOverviewResponse, SharingPeer,
 };
+use duet_wire::models::ConversationMessage;
+use duet_wire::models::conversation_availability::Reason;
 use duet_wire::models::conversation_message::Role;
 
 pub const CONNECTING: &str = "Connecting…";
@@ -41,25 +43,92 @@ pub enum ConversationRoot {
     Messages(Vec<ConversationLine>),
 }
 
+fn availability_copy(reason: Option<Reason>) -> (&'static str, &'static str) {
+    match reason {
+        None => (CHAT_EMPTY_TITLE, CHAT_EMPTY_MESSAGE),
+        Some(Reason::PermissionRequired) => (
+            "Chat with Duet",
+            "Review AI permissions in Settings before starting a conversation.",
+        ),
+        Some(Reason::Disabled) => ("Chat with Duet", "Chat is turned off in Settings."),
+        Some(Reason::DailyLimit) => (
+            "Chat with Duet",
+            "You’ve reached today’s limit. Duet will be ready again tomorrow.",
+        ),
+        Some(Reason::Unavailable) => ("Chat with Duet", CHAT_UNAVAILABLE),
+    }
+}
+
+fn availability_reason(page: &ConversationPage) -> Option<Reason> {
+    page.availability.reason.as_ref().and_then(|reason| *reason)
+}
+
+/// The composer is shown when this page allows a send, including when messages
+/// are already on screen.
+pub fn composer_open(page: &ConversationPage) -> bool {
+    page.availability.can_send
+}
+
+/// Reason sentences for a page that already has messages and cannot send.
+/// An empty page keeps those sentences in [`conversation_root`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ClosedSend {
+    /// The title the empty chat uses for this reason.
+    pub title: &'static str,
+    /// The sentence the empty chat uses for this reason.
+    pub message: &'static str,
+}
+
+/// Returns the existing reason sentences when messages are on screen and a send
+/// is not allowed. Returns nothing when the page can send, or when it has no
+/// messages, because the empty state already carries the sentences.
+pub fn closed_send(page: &ConversationPage) -> Option<ClosedSend> {
+    if page.availability.can_send || page.messages.is_empty() {
+        return None;
+    }
+    let reason = availability_reason(page)?;
+    let (title, message) = availability_copy(Some(reason));
+    Some(ClosedSend { title, message })
+}
+
+/// A failed send keeps the draft. An accepted send clears it.
+pub fn draft_after_send(draft: &str, accepted: bool) -> String {
+    if accepted {
+        String::new()
+    } else {
+        draft.to_owned()
+    }
+}
+
+/// A retry of an uncertain send reuses its id while the draft is unchanged.
+/// A new or edited draft takes a fresh id.
+pub fn send_id(pending: Option<(uuid::Uuid, &str)>, text: &str, fresh: uuid::Uuid) -> uuid::Uuid {
+    match pending {
+        Some((id, pending_text)) if pending_text == text => id,
+        _ => fresh,
+    }
+}
+
+/// The reloaded page keeps the accepted user message. A reply that is not on
+/// the page stays absent.
+pub fn page_with_accepted(
+    mut page: ConversationPage,
+    accepted: ConversationMessage,
+) -> ConversationPage {
+    if page
+        .messages
+        .iter()
+        .any(|message| message.id == accepted.id)
+    {
+        return page;
+    }
+    page.messages.push(accepted);
+    page
+}
+
 pub fn conversation_root(page: &ConversationPage) -> ConversationRoot {
     if page.messages.is_empty() {
-        let (title, message) = match page.availability.reason.as_ref().and_then(|reason| *reason) {
-            None => (CHAT_EMPTY_TITLE, CHAT_EMPTY_MESSAGE),
-            Some(duet_wire::models::conversation_availability::Reason::PermissionRequired) => (
-                "Chat with Duet",
-                "Review AI permissions in Settings before starting a conversation.",
-            ),
-            Some(duet_wire::models::conversation_availability::Reason::Disabled) => {
-                ("Chat with Duet", "Chat is turned off in Settings.")
-            }
-            Some(duet_wire::models::conversation_availability::Reason::DailyLimit) => (
-                "Chat with Duet",
-                "You’ve reached today’s limit. Duet will be ready again tomorrow.",
-            ),
-            Some(duet_wire::models::conversation_availability::Reason::Unavailable) => {
-                ("Chat with Duet", CHAT_UNAVAILABLE)
-            }
-        };
+        let (title, message) = availability_copy(availability_reason(page));
         return ConversationRoot::Empty { title, message };
     }
     ConversationRoot::Messages(
@@ -327,6 +396,70 @@ mod tests {
                 },
             ])
         );
+        assert!(composer_open(&empty));
+        assert!(composer_open(&loaded));
+        assert_eq!(closed_send(&empty), None);
+        assert_eq!(closed_send(&loaded), None);
+    }
+
+    #[test]
+    fn a_closed_page_hides_the_composer_and_keeps_the_reason() {
+        let empty = json::<ConversationPage>(
+            r#"{"availability":{"can_send":false,"reason":"daily_limit"},"messages":[],"revision":1}"#,
+        );
+        assert!(!composer_open(&empty));
+        assert_eq!(closed_send(&empty), None);
+        assert_eq!(
+            conversation_root(&empty),
+            ConversationRoot::Empty {
+                title: "Chat with Duet",
+                message: "You’ve reached today’s limit. Duet will be ready again tomorrow."
+            }
+        );
+        let loaded = json::<ConversationPage>(
+            r#"{"availability":{"can_send":false,"reason":"disabled"},"messages":[{"created_at":"2026-10-09T15:00:00Z","id":"00000000-0000-0000-0000-000000000001","revision":1,"role":"user","sequence":1,"state":"complete","text":"How did I sleep?","updated_at":"2026-10-09T15:00:00Z"}],"revision":2}"#,
+        );
+        assert!(!composer_open(&loaded));
+        assert_eq!(
+            closed_send(&loaded),
+            Some(ClosedSend {
+                title: "Chat with Duet",
+                message: "Chat is turned off in Settings."
+            })
+        );
+    }
+
+    #[test]
+    fn a_failed_send_keeps_the_draft_and_its_id() {
+        let draft = "How did I sleep?";
+        assert_eq!(draft_after_send(draft, false), draft);
+        assert_eq!(draft_after_send(draft, true), "");
+        let id = uuid::Uuid::nil();
+        let fresh = uuid::Uuid::from_u128(1);
+        assert_eq!(send_id(Some((id, draft)), draft, fresh), id);
+        assert_eq!(send_id(Some((id, draft)), "A different note", fresh), fresh);
+        assert_eq!(send_id(None, draft, fresh), fresh);
+    }
+
+    #[test]
+    fn an_accepted_send_shows_the_user_line_without_inventing_a_reply() {
+        let page = json::<ConversationPage>(
+            r#"{"availability":{"can_send":true},"messages":[],"revision":1}"#,
+        );
+        let accepted = json::<ConversationMessage>(
+            r#"{"created_at":"2026-10-09T15:00:00Z","id":"00000000-0000-0000-0000-000000000001","revision":1,"role":"user","sequence":1,"state":"complete","text":"How did I sleep?","updated_at":"2026-10-09T15:00:00Z"}"#,
+        );
+        let shown = page_with_accepted(page, accepted.clone());
+        assert_eq!(
+            conversation_root(&shown),
+            ConversationRoot::Messages(vec![ConversationLine {
+                role: "You".into(),
+                text: "How did I sleep?".into(),
+                from_duet: false
+            }])
+        );
+        let again = page_with_accepted(shown, accepted);
+        assert_eq!(again.messages.len(), 1);
     }
 
     #[test]

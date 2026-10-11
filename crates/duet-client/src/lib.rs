@@ -5,6 +5,7 @@
 
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
+pub use duet_wire::models::ConversationAcceptance;
 pub use duet_wire::models::ConversationPage;
 pub use duet_wire::models::EvidenceLibraryPage;
 pub use duet_wire::models::EvidenceLibraryQuery;
@@ -66,6 +67,27 @@ impl DuetClient {
             &self.configuration,
             None,
             Some(50),
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Sends one message. `id` is the message identity: a retry of an uncertain
+    /// send passes the same id so the server can reconcile it.
+    pub async fn send_message(
+        &self,
+        id: uuid::Uuid,
+        text: &str,
+        timezone: &str,
+    ) -> Result<ConversationAcceptance, String> {
+        let request = duet_wire::models::ConversationSendRequest::new(
+            id,
+            text.to_owned(),
+            timezone.to_owned(),
+        );
+        duet_wire::apis::conversation_api::send_message_api_conversation_messages_post(
+            &self.configuration,
+            request,
         )
         .await
         .map_err(|error| error.to_string())
@@ -203,6 +225,75 @@ mod tests {
         assert_eq!(
             client.sharing_overview().await.unwrap().account_label,
             "Ada"
+        );
+    }
+
+    #[tokio::test]
+    async fn send_message_posts_the_callers_id() {
+        let posted = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+        let recorded = posted.clone();
+        let app = axum::Router::new().route(
+            "/api/conversation/messages",
+            axum::routing::post(move |Json(body): Json<serde_json::Value>| {
+                let recorded = recorded.clone();
+                async move {
+                    let id = body["id"].as_str().unwrap_or_default().to_owned();
+                    let text = body["text"].as_str().unwrap_or_default().to_owned();
+                    recorded.lock().unwrap().push(id.clone());
+                    if text == "fail" {
+                        return (
+                            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                            Json(serde_json::json!({"detail": "unavailable"})),
+                        );
+                    }
+                    (
+                        axum::http::StatusCode::ACCEPTED,
+                        Json(serde_json::json!({
+                            "message": {
+                                "created_at": "2026-10-09T15:00:00Z",
+                                "id": id,
+                                "revision": 1,
+                                "role": "user",
+                                "sequence": 1,
+                                "state": "complete",
+                                "text": text,
+                                "updated_at": "2026-10-09T15:00:00Z"
+                            },
+                            "revision": 2,
+                            "run": {
+                                "assistant_message_id": null,
+                                "created_at": "2026-10-09T15:00:00Z",
+                                "id": "00000000-0000-0000-0000-000000000099",
+                                "message_id": null,
+                                "revision": 1,
+                                "state": "queued",
+                                "updated_at": "2026-10-09T15:00:00Z"
+                            }
+                        })),
+                    )
+                }
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client =
+            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
+        let id = uuid::Uuid::nil();
+        let accepted = client
+            .send_message(id, "How did I sleep?", "America/Los_Angeles")
+            .await
+            .unwrap();
+        assert_eq!(accepted.message.id, id);
+        assert_eq!(accepted.message.text, "How did I sleep?");
+        let retry = client.send_message(id, "fail", "America/Los_Angeles").await;
+        assert!(retry.is_err());
+        assert_eq!(
+            posted.lock().unwrap().as_slice(),
+            [
+                "00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000000"
+            ]
         );
     }
 }

@@ -11,11 +11,13 @@ use std::time::Duration;
 use dioxus::prelude::*;
 use duet_client::DuetClient;
 use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
+use duet_wire::models::ConversationMessage;
 use roots::{
-    AWAITING, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING,
-    ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, REVIEWS_PAUSED,
-    REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SharedNotice, SharedRoot, TRY_AGAIN,
-    TodayRoot, conversation_root, date_line, greeting, library_root, shared_root, today_root,
+    AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
+    CONNECTING, ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING,
+    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SharedNotice,
+    SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, conversation_root, date_line,
+    draft_after_send, greeting, library_root, page_with_accepted, send_id, shared_root, today_root,
 };
 use ui::TabBar;
 
@@ -139,6 +141,13 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
+    let mut draft = use_signal(String::new);
+    let mut pending_id = use_signal(|| None::<(uuid::Uuid, String)>);
+    let mut sending = use_signal(|| false);
+    let mut send_failed = use_signal(|| false);
+    let mut accepted = use_signal(|| None::<ConversationMessage>);
+    let send_url = base_url.clone();
+    let send_bearer = bearer.clone();
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
@@ -152,18 +161,93 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     });
     use_effect(move || {
         loading.set(resource().is_none());
-        if let Some(Ok(page)) = resource() {
+        if let Some(Ok(loaded)) = resource() {
+            let page = match accepted() {
+                Some(message) => {
+                    let merged = page_with_accepted(loaded.clone(), message.clone());
+                    if loaded.messages.iter().any(|item| item.id == message.id) {
+                        accepted.set(None);
+                    }
+                    merged
+                }
+                None => loaded,
+            };
             cache.set(Some(page));
         }
     });
     let current = resource();
     let failed = matches!(current, Some(Err(_)));
-    let page = match current {
-        Some(Ok(page)) => Some(page),
-        _ => cache(),
+    let page = if accepted().is_some() {
+        cache()
+    } else {
+        match current {
+            Some(Ok(page)) => Some(page),
+            _ => cache(),
+        }
     };
     let root = page.as_ref().map(conversation_root);
     let retry = move |_| attempt.set(attempt() + 1);
+    let can_compose = page.as_ref().is_some_and(composer_open);
+    let closed = page.as_ref().and_then(closed_send);
+    let submit = move |_| {
+        if sending() {
+            return;
+        }
+        let text = draft();
+        if text.trim().is_empty() {
+            return;
+        }
+        let pending = pending_id();
+        let id = send_id(
+            pending
+                .as_ref()
+                .map(|(id, pending_text)| (*id, pending_text.as_str())),
+            &text,
+            uuid::Uuid::new_v4(),
+        );
+        pending_id.set(Some((id, text.clone())));
+        sending.set(true);
+        send_failed.set(false);
+        let base_url = send_url.clone();
+        let bearer = send_bearer.clone();
+        let shown = page.clone();
+        spawn(async move {
+            let timezone = match iana_time_zone::get_timezone() {
+                Ok(timezone) => timezone,
+                Err(_) => {
+                    send_failed.set(true);
+                    sending.set(false);
+                    return;
+                }
+            };
+            let api = match open_client(base_url, bearer) {
+                Ok(api) => api,
+                Err(_) => {
+                    send_failed.set(true);
+                    sending.set(false);
+                    return;
+                }
+            };
+            match api.send_message(id, &text, &timezone).await {
+                Ok(admission) => {
+                    let message = *admission.message;
+                    accepted.set(Some(message.clone()));
+                    if let Some(base) = shown {
+                        cache.set(Some(page_with_accepted(base, message)));
+                    }
+                    draft.set(draft_after_send(&draft(), true));
+                    pending_id.set(None);
+                    send_failed.set(false);
+                    attempt.set(attempt() + 1);
+                }
+                Err(_) => {
+                    draft.set(draft_after_send(&draft(), false));
+                    send_failed.set(true);
+                }
+            }
+            sending.set(false);
+        });
+    };
     rsx! {
         TabHeading { name: "Duet".to_owned(), loading }
         match root {
@@ -188,6 +272,10 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         p { class: "card-text", "{line.text}" }
                     }
                 }
+                if let Some(closed) = closed {
+                    p { class: "empty-title", "{closed.title}" }
+                    p { class: "empty", "{closed.message}" }
+                }
                 if failed {
                     div { role: "alert",
                         p { class: "empty", "{CHAT_UNAVAILABLE}" }
@@ -195,6 +283,26 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     }
                 }
             },
+        }
+        if can_compose {
+            div { class: "duet-composer",
+                if send_failed() {
+                    p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
+                }
+                textarea {
+                    class: "duet-composer-field",
+                    aria_label: "{CHAT_EMPTY_MESSAGE}",
+                    value: "{draft}",
+                    oninput: move |event| draft.set(event.value()),
+                }
+                button {
+                    class: "duet-send",
+                    r#type: "button",
+                    disabled: sending(),
+                    onclick: submit,
+                    "Send"
+                }
+            }
         }
     }
 }
