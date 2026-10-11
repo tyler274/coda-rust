@@ -86,6 +86,25 @@ button.thread-open {
   font: inherit;
   text-align: left;
 }
+button.thread-open .card-title,
+button.thread-open > p.thread-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+button.thread-open .card-title::after,
+button.thread-open > p.thread-card::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 2px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  opacity: 0.45;
+  transform: rotate(45deg);
+}
 .user-bubble .thread-card { border-top-color: rgba(255, 255, 255, 0.35); }
 .user-bubble .thread-card .record-meta { color: inherit; }
 .card-title { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
