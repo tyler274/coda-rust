@@ -1,9 +1,11 @@
 /* Duet's screen language. Physician tokens stay in the shared stylesheet;
    these rules apply only inside the Duet app. */
-html, body { margin: 0; height: 100%; background: #fff; color: #1c2429; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; color: #1c2429; }
 .duet {
-  min-height: 100%;
-  min-height: 100dvh;
+  height: 100%;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   color: #1c2429;
@@ -26,9 +28,21 @@ html, body { margin: 0; height: 100%; background: #fff; color: #1c2429; }
 .duet-page {
   position: relative;
   z-index: 1;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
   padding: 0 20px 16px;
 }
+.duet-page > div:not([hidden]) {
+  flex: 1 1 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.duet-page > div[hidden] { display: none !important; }
+.duet-thread { flex: 1 1 auto; }
 .duet-heading {
   display: grid;
   grid-template-rows: auto 1.2em;
@@ -106,27 +120,42 @@ html, body { margin: 0; height: 100%; background: #fff; color: #1c2429; }
   font-weight: 600;
 }
 .duet .tabs button[aria-current="page"] { background: #e2eee7; color: #0e5237; }
+.duet-composer-wrap {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-top: auto;
+  padding-top: 8px;
+  background: #fff;
+}
 .duet-composer {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: flex-end;
   gap: 8px;
-  margin-top: 12px;
-}
-.duet-composer-field {
-  width: 100%;
-  min-height: 88px;
-  box-sizing: border-box;
-  padding: 12px 16px;
+  margin: 0;
+  padding: 6px 6px 6px 12px;
   border: 1px solid rgba(28, 36, 41, 0.16);
   border-radius: 16px;
   background: #fff;
+}
+.duet-composer-field {
+  flex: 1 1 auto;
+  width: auto;
+  min-height: 44px;
+  max-height: 132px;
+  box-sizing: border-box;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: inherit;
   font: inherit;
-  resize: vertical;
+  resize: none;
 }
 .duet-send {
   align-self: flex-end;
+  flex: 0 0 auto;
   min-height: 44px;
   padding: 0 16px;
   border: 0;
@@ -145,7 +174,9 @@ html, body { margin: 0; height: 100%; background: #fff; color: #1c2429; }
   .number-card { background: #191f1c; }
   .user-bubble { background: #2a7254; }
   .duet-retry { color: #8edab6; }
-  .duet-composer-field { background: #000; color: #f3f4f6; border-color: rgba(243, 244, 246, 0.16); }
+  .duet-composer-wrap, .duet-composer { background: #000; }
+  .duet-composer { border-color: rgba(243, 244, 246, 0.16); }
+  .duet-composer-field { color: #f3f4f6; }
   .duet-send { background: #2a7254; }
   .duet-send:disabled { opacity: 0.6; }
   .duet .tabs { background: #000; border-top-color: rgba(243, 244, 246, 0.1); }

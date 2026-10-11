@@ -58,6 +58,9 @@ find target/dx/mobile -path '*/src/main/AndroidManifest.xml' | while IFS= read -
   if ! grep -q usesCleartextTraffic "$path"; then
     sed -i 's/<application/<application android:usesCleartextTraffic="true"/' "$path"
   fi
+  if ! grep -q 'windowSoftInputMode' "$path"; then
+    sed -i 's/<activity /<activity android:windowSoftInputMode="adjustResize" /' "$path"
+  fi
 done
 
 # Health Connect is copied into the generated app because dx regenerates it.

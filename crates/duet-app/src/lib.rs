@@ -16,8 +16,9 @@ use roots::{
     AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
     CONNECTING, ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING,
     REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SharedNotice,
-    SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, conversation_root, date_line,
-    draft_after_send, greeting, library_root, page_with_accepted, send_id, shared_root, today_root,
+    SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, composer_text, conversation_root,
+    date_line, draft_after_send, greeting, library_root, page_with_accepted, send_id, shared_root,
+    today_root,
 };
 use ui::TabBar;
 
@@ -189,14 +190,14 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let retry = move |_| attempt.set(attempt() + 1);
     let can_compose = page.as_ref().is_some_and(composer_open);
     let closed = page.as_ref().and_then(closed_send);
-    let submit = move |_| {
+    let mut submit = move |text: String| {
         if sending() {
             return;
         }
-        let text = draft();
         if text.trim().is_empty() {
             return;
         }
+        draft.set(text.clone());
         let pending = pending_id();
         let id = send_id(
             pending
@@ -259,48 +260,64 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             },
             Some(ConversationRoot::Empty { title, message }) => rsx! {
-                p { class: "empty-title", "{title}" }
-                p { class: "empty", "{message}" }
-                if failed {
-                    TryAgain { on_retry: retry }
+                div { class: "duet-thread",
+                    p { class: "empty-title", "{title}" }
+                    p { class: "empty", "{message}" }
+                    if failed {
+                        TryAgain { on_retry: retry }
+                    }
                 }
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
-                for line in lines {
-                    article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
-                        p { class: "card-title", "{line.role}" }
-                        p { class: "card-text", "{line.text}" }
+                div { class: "duet-thread",
+                    for line in lines {
+                        article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
+                            p { class: "card-title", "{line.role}" }
+                            p { class: "card-text", "{line.text}" }
+                        }
                     }
-                }
-                if let Some(closed) = closed {
-                    p { class: "empty-title", "{closed.title}" }
-                    p { class: "empty", "{closed.message}" }
-                }
-                if failed {
-                    div { role: "alert",
-                        p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                        TryAgain { on_retry: retry }
+                    if let Some(closed) = closed {
+                        p { class: "empty-title", "{closed.title}" }
+                        p { class: "empty", "{closed.message}" }
+                    }
+                    if failed {
+                        div { role: "alert",
+                            p { class: "empty", "{CHAT_UNAVAILABLE}" }
+                            TryAgain { on_retry: retry }
+                        }
                     }
                 }
             },
         }
         if can_compose {
-            div { class: "duet-composer",
+            div { class: "duet-composer-wrap",
                 if send_failed() {
                     p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
                 }
-                textarea {
-                    class: "duet-composer-field",
-                    aria_label: "{CHAT_EMPTY_MESSAGE}",
-                    value: "{draft}",
-                    oninput: move |event| draft.set(event.value()),
-                }
-                button {
-                    class: "duet-send",
-                    r#type: "button",
-                    disabled: sending(),
-                    onclick: submit,
-                    "Send"
+                form {
+                    class: "duet-composer",
+                    onsubmit: move |event| {
+                        event.prevent_default();
+                        let typed = event.get_first("draft").and_then(|value| match value {
+                            dioxus::events::FormValue::Text(text) => Some(text),
+                            dioxus::events::FormValue::File(_) => None,
+                        });
+                        submit(composer_text(typed.as_deref(), &draft()));
+                    },
+                    textarea {
+                        class: "duet-composer-field",
+                        name: "draft",
+                        aria_label: "{CHAT_EMPTY_MESSAGE}",
+                        rows: "1",
+                        value: "{draft}",
+                        oninput: move |event| draft.set(event.value()),
+                    }
+                    button {
+                        class: "duet-send",
+                        r#type: "submit",
+                        disabled: sending(),
+                        "Send"
+                    }
                 }
             }
         }
