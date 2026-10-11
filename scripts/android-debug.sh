@@ -78,6 +78,30 @@ fi
 if ! grep -q 'connect-client' "$app_gradle"; then
   sed -i 's/dependencies {/dependencies {\n    implementation("androidx.health.connect:connect-client:1.1.0-alpha11")\n    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")/' "$app_gradle"
 fi
+# UI Automator is copied in for the same reason: dx regenerates this project.
+test_src="$root/platform/android/ModeShellTest.kt"
+test_dir="$java_dir/../androidTest/java/coda/duet"
+if [ ! -f "$test_src" ]; then
+  echo "the mode-shell UI Automator test is missing" >&2
+  exit 1
+fi
+mkdir -p "$test_dir"
+cp "$test_src" "$test_dir/ModeShellTest.kt"
+if ! grep -q 'uiautomator:uiautomator' "$app_gradle"; then
+  sed -i 's/dependencies {/dependencies {\n    androidTestImplementation("androidx.test.ext:junit:1.2.1")\n    androidTestImplementation("androidx.test:runner:1.6.2")\n    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")\n    androidTestUtil("androidx.test:orchestrator:1.5.1")/' "$app_gradle"
+fi
+if ! grep -q 'androidx.test:orchestrator' "$app_gradle"; then
+  sed -i 's/androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")/androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")\n    androidTestUtil("androidx.test:orchestrator:1.5.1")/' "$app_gradle"
+fi
+if ! grep -q 'testInstrumentationRunner' "$app_gradle"; then
+  sed -i 's/versionName = "0.1.0"/versionName = "0.1.0"\n        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"\n        testInstrumentationRunnerArguments["clearPackageData"] = "true"/' "$app_gradle"
+fi
+if ! grep -q 'clearPackageData' "$app_gradle"; then
+  sed -i 's/testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"/testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"\n        testInstrumentationRunnerArguments["clearPackageData"] = "true"/' "$app_gradle"
+fi
+if ! grep -q 'ANDROIDX_TEST_ORCHESTRATOR' "$app_gradle"; then
+  sed -i 's/sourceSets {/testOptions {\n        execution = "ANDROIDX_TEST_ORCHESTRATOR"\n    }\n    sourceSets {/' "$app_gradle"
+fi
 # connect-client 1.1.0-alpha11 compiles against API 35 and requires minSdk 26.
 sed -i 's/compileSdk = 34/compileSdk = 35/' "$app_gradle"
 sed -i 's/minSdk = 24/minSdk = 26/' "$app_gradle"
