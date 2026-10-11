@@ -130,6 +130,32 @@ fn open_client(base_url: String, bearer: String) -> Result<DuetClient, String> {
     DuetClient::new(base_url, bearer, "0", "0.1.0")
 }
 
+fn doctor_page_save(
+    collection: &duet_wire::models::DoctorCollection,
+) -> duet_wire::models::DoctorPageSave {
+    let item_ids = collection
+        .items
+        .iter()
+        .flatten()
+        .map(|item| item.id)
+        .collect();
+    let page = collection
+        .page
+        .as_ref()
+        .map(|page| (**page).clone())
+        .unwrap_or_else(duet_wire::models::DoctorPageContent::new);
+    let mut save =
+        duet_wire::models::DoctorPageSave::new(collection.note_generation, item_ids, page);
+    save.note = collection.note.clone();
+    save
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum YouEditor {
+    Medication,
+    Note,
+}
+
 #[derive(Clone)]
 enum ShownPage {
     Doctor(DoctorPage),
@@ -175,6 +201,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut follow_ups = use_signal(Vec::new);
     let mut doctor = use_signal(|| None);
     let mut open_item = use_signal(|| None::<NoteOpen>);
+    let mut saving_page = use_signal(|| false);
+    let mut page_failed = use_signal(|| false);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -264,6 +292,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     };
     let can_compose = page.as_ref().is_some_and(composer_open) && shown.is_none();
     let closed = page.as_ref().and_then(closed_send);
+    let page_url = send_url.clone();
+    let page_bearer = send_bearer.clone();
     let mut submit = move |text: String| {
         if sending() {
             return;
@@ -323,6 +353,32 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             sending.set(false);
         });
     };
+    let save_page = move |_| {
+        if saving_page() {
+            return;
+        }
+        let Some(collection) = doctor() else {
+            return;
+        };
+        saving_page.set(true);
+        page_failed.set(false);
+        let base_url = page_url.clone();
+        let bearer = page_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.save_doctor_page(doctor_page_save(&collection)).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(collection) => {
+                    doctor.set(Some(collection));
+                    page_failed.set(false);
+                }
+                Err(_) => page_failed.set(true),
+            }
+            saving_page.set(false);
+        });
+    };
     rsx! {
         if let Some(shown) = shown {
             TabHeading { name: shown.heading(), loading }
@@ -356,6 +412,18 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         }
                     }
                 },
+            }
+            if matches!(open_item(), Some(NoteOpen::Doctor)) {
+                if page_failed() {
+                    p { class: "empty", role: "alert", "This page couldn’t be saved." }
+                }
+                button {
+                    class: "duet-send",
+                    r#type: "button",
+                    disabled: saving_page(),
+                    onclick: save_page,
+                    "Save page"
+                }
             }
         } else {
         TabHeading { name: "Duet".to_owned(), loading }
@@ -565,6 +633,17 @@ fn YouTab(
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
+    let mut menu = use_signal(|| false);
+    let mut editor = use_signal(|| None::<YouEditor>);
+    let mut medication = use_signal(String::new);
+    let mut note_title = use_signal(String::new);
+    let mut note_body = use_signal(String::new);
+    let mut medication_id = use_signal(|| None::<uuid::Uuid>);
+    let mut note_id = use_signal(|| None::<uuid::Uuid>);
+    let mut saving = use_signal(|| false);
+    let mut save_failed = use_signal(|| false);
+    let save_url = base_url.clone();
+    let save_bearer = bearer.clone();
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
@@ -590,8 +669,110 @@ fn YouTab(
     };
     let root = page.as_ref().map(library_root);
     let retry = move |_| attempt.set(attempt() + 1);
+    let save_record = move |_| {
+        let Some(kind) = editor() else {
+            return;
+        };
+        if saving() {
+            return;
+        }
+        let (id, name, title, body) = match kind {
+            YouEditor::Medication => {
+                let name = medication().trim().to_owned();
+                if name.is_empty() {
+                    return;
+                }
+                let id = medication_id().unwrap_or_else(uuid::Uuid::new_v4);
+                medication_id.set(Some(id));
+                (id, Some(name), None, None)
+            }
+            YouEditor::Note => {
+                let title = note_title().trim().to_owned();
+                let body = note_body().trim().to_owned();
+                if title.is_empty() || body.is_empty() {
+                    return;
+                }
+                let id = note_id().unwrap_or_else(uuid::Uuid::new_v4);
+                note_id.set(Some(id));
+                (id, None, Some(title), Some(body))
+            }
+        };
+        saving.set(true);
+        save_failed.set(false);
+        let base_url = save_url.clone();
+        let bearer = save_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => match kind {
+                    YouEditor::Medication => api.add_medication(id, &name.unwrap()).await,
+                    YouEditor::Note => api.add_note(id, &title.unwrap(), &body.unwrap()).await,
+                },
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(()) => {
+                    match kind {
+                        YouEditor::Medication => {
+                            medication.set(String::new());
+                            medication_id.set(None);
+                        }
+                        YouEditor::Note => {
+                            note_title.set(String::new());
+                            note_body.set(String::new());
+                            note_id.set(None);
+                        }
+                    }
+                    save_failed.set(false);
+                    editor.set(None);
+                    attempt.set(attempt() + 1);
+                }
+                Err(_) => save_failed.set(true),
+            }
+            saving.set(false);
+        });
+    };
     rsx! {
         TabHeading { name: "You".to_owned(), loading }
+        if let Some(kind) = editor() {
+            HealthDraft {
+                kind,
+                medication,
+                note_title,
+                note_body,
+                saving,
+                failed: save_failed,
+                on_close: move |_| {
+                    save_failed.set(false);
+                    editor.set(None);
+                },
+                on_save: save_record,
+            }
+        } else if menu() {
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| {
+                    menu.set(false);
+                    editor.set(Some(YouEditor::Medication));
+                },
+                "New medication"
+            }
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| {
+                    menu.set(false);
+                    editor.set(Some(YouEditor::Note));
+                },
+                "New note"
+            }
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| menu.set(false),
+                "Close"
+            }
+        } else {
         div { class: "source-row",
             span { class: "source-name", "Sources" }
             span { class: "source-detail", "{phone.sentence()}" }
@@ -628,6 +809,84 @@ fn YouTab(
                 p { class: "empty", "{LIBRARY_UNAVAILABLE}" }
                 TryAgain { on_retry: retry }
             }
+        }
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            onclick: move |_| menu.set(true),
+            "Add health information"
+        }
+        }
+    }
+}
+
+#[component]
+fn HealthDraft(
+    kind: YouEditor,
+    medication: Signal<String>,
+    note_title: Signal<String>,
+    note_body: Signal<String>,
+    saving: Signal<bool>,
+    failed: Signal<bool>,
+    on_close: EventHandler,
+    on_save: EventHandler,
+) -> Element {
+    let ready = match kind {
+        YouEditor::Medication => !medication().trim().is_empty(),
+        YouEditor::Note => !note_title().trim().is_empty() && !note_body().trim().is_empty(),
+    };
+    rsx! {
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            onclick: move |_| on_close.call(()),
+            "Close"
+        }
+        match kind {
+            YouEditor::Medication => rsx! {
+                p { class: "status-detail", "Enter the medication as one descriptive line, including dose when you know it." }
+                input {
+                    class: "duet-field",
+                    r#type: "text",
+                    value: "{medication}",
+                    placeholder: "Atorvastatin 20 mg",
+                    oninput: move |event| medication.set(event.value()),
+                }
+                if failed() {
+                    p { class: "empty", role: "alert", "This medication couldn’t be saved. Nothing was changed." }
+                }
+                button {
+                    class: "duet-send",
+                    r#type: "button",
+                    disabled: saving() || !ready,
+                    onclick: move |_| on_save.call(()),
+                    "Add medication"
+                }
+            },
+            YouEditor::Note => rsx! {
+                input {
+                    class: "duet-field",
+                    r#type: "text",
+                    value: "{note_title}",
+                    placeholder: "What is this note about?",
+                    oninput: move |event| note_title.set(event.value()),
+                }
+                textarea {
+                    class: "duet-field",
+                    value: "{note_body}",
+                    oninput: move |event| note_body.set(event.value()),
+                }
+                if failed() {
+                    p { class: "empty", role: "alert", "This note couldn’t be saved. Nothing was changed." }
+                }
+                button {
+                    class: "duet-send",
+                    r#type: "button",
+                    disabled: saving() || !ready,
+                    onclick: move |_| on_save.call(()),
+                    "Save note"
+                }
+            },
         }
     }
 }

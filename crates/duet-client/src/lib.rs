@@ -152,6 +152,85 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Saves one medication the person typed. `id` is reused when the save fails.
+    pub async fn add_medication(&self, id: uuid::Uuid, name: &str) -> Result<(), String> {
+        let mut payload = std::collections::HashMap::new();
+        payload.insert(
+            "concept_id".to_owned(),
+            serde_json::Value::String("medication:manual".to_owned()),
+        );
+        payload.insert(
+            "display_name".to_owned(),
+            serde_json::Value::String(name.to_owned()),
+        );
+        payload.insert(
+            "source_label".to_owned(),
+            serde_json::Value::String("Added in Duet".to_owned()),
+        );
+        self.store_evidence(
+            id,
+            duet_wire::models::evidence_item::Entity::HealthEvidence,
+            payload,
+        )
+        .await
+    }
+
+    /// Saves one note the person typed. `id` is reused when the save fails.
+    pub async fn add_note(&self, id: uuid::Uuid, title: &str, body: &str) -> Result<(), String> {
+        let mut payload = std::collections::HashMap::new();
+        payload.insert(
+            "title".to_owned(),
+            serde_json::Value::String(title.to_owned()),
+        );
+        payload.insert(
+            "body".to_owned(),
+            serde_json::Value::String(body.to_owned()),
+        );
+        payload.insert(
+            "source_label".to_owned(),
+            serde_json::Value::String("Added in Duet".to_owned()),
+        );
+        self.store_evidence(
+            id,
+            duet_wire::models::evidence_item::Entity::ClinicalNote,
+            payload,
+        )
+        .await
+    }
+
+    /// Saves the For my doctor page the person is reviewing.
+    pub async fn save_doctor_page(
+        &self,
+        save: duet_wire::models::DoctorPageSave,
+    ) -> Result<duet_wire::models::DoctorCollection, String> {
+        duet_wire::apis::doctor_workspace_api::save_doctor_page_api_doctor_collection_page_put(
+            &self.configuration,
+            save,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    async fn store_evidence(
+        &self,
+        id: uuid::Uuid,
+        entity: duet_wire::models::evidence_item::Entity,
+        payload: std::collections::HashMap<String, serde_json::Value>,
+    ) -> Result<(), String> {
+        let mut item = duet_wire::models::EvidenceItem::new(entity, id.to_string());
+        item.operation = Some(duet_wire::models::evidence_item::Operation::Upsert);
+        item.payload = Some(payload);
+        let mut request = duet_wire::models::EvidenceBatchRequest::new();
+        request.items = Some(vec![item]);
+        duet_wire::apis::default_api::ingest_evidence_api_evidence_post(
+            &self.configuration,
+            request,
+        )
+        .await
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+    }
+
     /// Reads who sharing includes.
     pub async fn sharing_overview(&self) -> Result<SharingOverviewResponse, String> {
         duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)

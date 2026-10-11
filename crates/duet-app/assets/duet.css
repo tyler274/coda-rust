@@ -188,6 +188,19 @@ button.thread-open > p.thread-card::after {
   font: inherit;
   resize: none;
 }
+.duet-field {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(28, 36, 41, 0.16);
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
 .duet-send {
   align-self: flex-end;
   flex: 0 0 auto;
@@ -212,7 +225,8 @@ button.thread-open > p.thread-card::after {
   .duet-retry { color: #8edab6; }
   .duet-composer-wrap, .duet-composer { background: #000; }
   .duet-composer { border-color: rgba(243, 244, 246, 0.16); }
-  .duet-composer-field { color: #f3f4f6; }
+  .duet-composer-field, .duet-field { color: #f3f4f6; }
+  .duet-field { border-color: rgba(243, 244, 246, 0.16); }
   .duet-send { background: #2a7254; }
   .duet-send:disabled { opacity: 0.6; }
   .duet .tabs { background: #000; border-top-color: rgba(243, 244, 246, 0.1); }
