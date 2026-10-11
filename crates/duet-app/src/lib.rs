@@ -14,11 +14,11 @@ use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
 use duet_wire::models::ConversationMessage;
 use roots::{
     AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
-    CONNECTING, ConversationNote, ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE,
+    CONNECTING, ConversationNote, ConversationRoot, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE,
     LibraryRoot, NOT_SHARING, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED,
     SHARING_UNCHECKED, SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    composer_text, conversation_root, date_line, draft_after_send, greeting, library_root,
-    page_with_accepted, send_id, shared_root, today_root,
+    composer_text, conversation_root, date_line, doctor_page, draft_after_send, greeting,
+    library_root, opens_doctor, page_with_accepted, send_id, shared_root, today_root,
 };
 use ui::TabBar;
 
@@ -158,6 +158,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut routines = use_signal(Vec::new);
     let mut follow_ups = use_signal(Vec::new);
     let mut doctor = use_signal(|| None);
+    let mut doctor_open = use_signal(|| false);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -231,7 +232,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         .as_ref()
         .map(|page| conversation_root(page, &routines(), &follow_ups(), doctor().as_ref()));
     let retry = move |_| attempt.set(attempt() + 1);
-    let can_compose = page.as_ref().is_some_and(composer_open);
+    let can_compose = page.as_ref().is_some_and(composer_open) && !doctor_open();
     let closed = page.as_ref().and_then(closed_send);
     let mut submit = move |text: String| {
         if sending() {
@@ -292,7 +293,30 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             sending.set(false);
         });
     };
+    let showing_doctor = doctor_open() && doctor().is_some();
     rsx! {
+        if showing_doctor {
+            TabHeading { name: "For my doctor".to_owned(), loading }
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| doctor_open.set(false),
+                "Close"
+            }
+            match doctor().as_ref().map(doctor_page) {
+                Some(DoctorPage::Lines(entries)) => rsx! {
+                    div { class: "duet-thread",
+                        for entry in entries {
+                            p { class: "card-text", "{entry.title}" }
+                            if let Some(detail) = entry.detail {
+                                p { class: "record-meta", "{detail}" }
+                            }
+                        }
+                    }
+                },
+                _ => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
+            }
+        } else {
         TabHeading { name: "Duet".to_owned(), loading }
         match root {
             None if !failed => rsx! {},
@@ -318,30 +342,10 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                             p { class: "card-title", "{line.role}" }
                             p { class: "card-text", "{line.text}" }
                             for note in line.notes {
-                                match note {
-                                    ConversationNote::Card(card) => rsx! {
-                                        div { class: "thread-card",
-                                            p { class: "card-title", "{card.receipt}" }
-                                            if let Some(title) = card.title {
-                                                p { class: "card-text", "{title}" }
-                                            }
-                                            if let Some(detail) = card.detail {
-                                                p { class: "record-meta", "{detail}" }
-                                            }
-                                            if let Some(schedule) = card.schedule {
-                                                p { class: "record-meta", "{schedule}" }
-                                            }
-                                            for entry in card.entries {
-                                                p { class: "card-text", "{entry.title}" }
-                                                if let Some(detail) = entry.detail {
-                                                    p { class: "record-meta", "{detail}" }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    ConversationNote::Receipt(sentence) => rsx! {
-                                        p { class: "record-meta thread-card", "{sentence}" }
-                                    },
+                                ThreadNote {
+                                    note,
+                                    opens: doctor().is_some(),
+                                    on_open: move |_| doctor_open.set(true),
                                 }
                             }
                         }
@@ -391,6 +395,51 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             }
         }
+        }
+    }
+}
+
+#[component]
+fn ThreadNote(note: ConversationNote, opens: bool, on_open: EventHandler) -> Element {
+    if opens && opens_doctor(&note) {
+        rsx! {
+            button {
+                class: "thread-open",
+                r#type: "button",
+                onclick: move |_| on_open.call(()),
+                {note_body(note)}
+            }
+        }
+    } else {
+        note_body(note)
+    }
+}
+
+fn note_body(note: ConversationNote) -> Element {
+    match note {
+        ConversationNote::Card(card) => rsx! {
+            div { class: "thread-card",
+                p { class: "card-title", "{card.receipt}" }
+                if let Some(title) = card.title {
+                    p { class: "card-text", "{title}" }
+                }
+                if let Some(detail) = card.detail {
+                    p { class: "record-meta", "{detail}" }
+                }
+                if let Some(schedule) = card.schedule {
+                    p { class: "record-meta", "{schedule}" }
+                }
+                for entry in card.entries {
+                    p { class: "card-text", "{entry.title}" }
+                    if let Some(detail) = entry.detail {
+                        p { class: "record-meta", "{detail}" }
+                    }
+                }
+            }
+        },
+        ConversationNote::Receipt(sentence) => rsx! {
+            p { class: "record-meta thread-card", "{sentence}" }
+        },
     }
 }
 

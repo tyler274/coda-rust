@@ -36,6 +36,14 @@ pub const TRY_AGAIN: &str = "Try again";
 pub const AWAITING: &str = "Awaiting acceptance";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub enum DoctorPage {
+    /// The collection loaded and has nothing to list.
+    Empty,
+    /// Items, note, questions, and cover note, in that order.
+    Lines(Vec<ConversationEntry>),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConversationEntry {
     pub title: String,
     pub detail: Option<String>,
@@ -281,6 +289,49 @@ fn proposal_note(
         schedule: None,
         entries,
     })
+}
+
+/// Whether this receipt opens the For my doctor page.
+pub fn opens_doctor(note: &ConversationNote) -> bool {
+    let receipt = match note {
+        ConversationNote::Card(card) => card.receipt.as_str(),
+        ConversationNote::Receipt(sentence) => sentence.as_str(),
+    };
+    receipt.starts_with("Saved to For my doctor") || receipt.starts_with("For my doctor")
+}
+
+/// The lines a loaded For my doctor collection already contains.
+pub fn doctor_page(collection: &DoctorCollection) -> DoctorPage {
+    let mut entries = item_entries(collection.items.as_deref().unwrap_or(&[]));
+    if let Some(note) = supplied(&collection.note) {
+        entries.push(ConversationEntry {
+            title: note,
+            detail: None,
+        });
+    }
+    if let Some(page) = collection.page.as_deref() {
+        if let Some(questions) = &page.questions {
+            for question in questions {
+                if let Some(title) = nonempty(question) {
+                    entries.push(ConversationEntry {
+                        title,
+                        detail: None,
+                    });
+                }
+            }
+        }
+        if let Some(cover) = supplied(&page.cover_note) {
+            entries.push(ConversationEntry {
+                title: cover,
+                detail: None,
+            });
+        }
+    }
+    if entries.is_empty() {
+        DoctorPage::Empty
+    } else {
+        DoctorPage::Lines(entries)
+    }
 }
 
 fn saved_entries(collection: &DoctorCollection) -> Vec<ConversationEntry> {
@@ -843,6 +894,22 @@ mod tests {
                 },
             ]))
         );
+    }
+
+    #[test]
+    fn doctor_page_lists_the_saved_question() {
+        let collection = json::<DoctorCollection>(
+            r#"{"items":[{"detail":"How the week of walks has felt.","evidence":[],"id":"00000000-0000-0000-0000-000000000046","kind":"fact","position":0,"saved_at":"2026-10-09T15:00:02Z","source_id":"question-1","title":"Ask about sleep"}],"note_generation":1}"#,
+        );
+        assert_eq!(
+            doctor_page(&collection),
+            DoctorPage::Lines(vec![ConversationEntry {
+                title: "Ask about sleep".into(),
+                detail: Some("How the week of walks has felt.".into()),
+            }])
+        );
+        let empty = json::<DoctorCollection>(r#"{"note_generation":0}"#);
+        assert_eq!(doctor_page(&empty), DoctorPage::Empty);
     }
 
     #[test]
