@@ -14,15 +14,22 @@ use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
 use duet_wire::models::ConversationMessage;
 use roots::{
     AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL,
-    CONNECTING, ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING,
-    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED, SHARING_UNCHECKED, SharedNotice,
-    SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open, composer_text, conversation_root,
-    date_line, draft_after_send, greeting, library_root, page_with_accepted, send_id, shared_root,
-    today_root,
+    CONNECTING, ConversationNote, ConversationRoot, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE,
+    LibraryRoot, NOT_SHARING, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_SAVED,
+    SHARING_UNCHECKED, SharedNotice, SharedRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
+    composer_text, conversation_root, date_line, draft_after_send, greeting, library_root,
+    page_with_accepted, send_id, shared_root, today_root,
 };
 use ui::TabBar;
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
+
+#[derive(Clone)]
+struct ThreadLoad {
+    page: duet_client::ConversationPage,
+    routines: Option<Vec<duet_wire::models::SavedRoutine>>,
+    follow_ups: Option<Vec<duet_wire::models::FollowUp>>,
+}
 const DUET_STYLES: &str = include_str!("../assets/duet.css");
 
 pub use roots::{api_base_url, api_bearer};
@@ -147,6 +154,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut sending = use_signal(|| false);
     let mut send_failed = use_signal(|| false);
     let mut accepted = use_signal(|| None::<ConversationMessage>);
+    let mut routines = use_signal(Vec::new);
+    let mut follow_ups = use_signal(Vec::new);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -154,24 +163,46 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
         async move {
-            match open_client(base_url, bearer) {
-                Ok(api) => api.list_messages().await,
-                Err(error) => Err(error),
-            }
+            let api = open_client(base_url, bearer)?;
+            let page = api.list_messages().await?;
+            let routines = match api.list_saved_routines().await {
+                Ok(list) => Some(list.items),
+                Err(_) => None,
+            };
+            let follow_ups = match api.list_follow_ups().await {
+                Ok(page) => Some(page.items),
+                Err(_) => None,
+            };
+            Ok::<_, String>(ThreadLoad {
+                page,
+                routines,
+                follow_ups,
+            })
         }
     });
     use_effect(move || {
         loading.set(resource().is_none());
         if let Some(Ok(loaded)) = resource() {
+            if let Some(items) = loaded.routines.clone() {
+                routines.set(items);
+            }
+            if let Some(items) = loaded.follow_ups.clone() {
+                follow_ups.set(items);
+            }
             let page = match accepted() {
                 Some(message) => {
-                    let merged = page_with_accepted(loaded.clone(), message.clone());
-                    if loaded.messages.iter().any(|item| item.id == message.id) {
+                    let merged = page_with_accepted(loaded.page.clone(), message.clone());
+                    if loaded
+                        .page
+                        .messages
+                        .iter()
+                        .any(|item| item.id == message.id)
+                    {
                         accepted.set(None);
                     }
                     merged
                 }
-                None => loaded,
+                None => loaded.page,
             };
             cache.set(Some(page));
         }
@@ -182,11 +213,13 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         cache()
     } else {
         match current {
-            Some(Ok(page)) => Some(page),
+            Some(Ok(loaded)) => Some(loaded.page),
             _ => cache(),
         }
     };
-    let root = page.as_ref().map(conversation_root);
+    let root = page
+        .as_ref()
+        .map(|page| conversation_root(page, &routines(), &follow_ups()));
     let retry = move |_| attempt.set(attempt() + 1);
     let can_compose = page.as_ref().is_some_and(composer_open);
     let closed = page.as_ref().and_then(closed_send);
@@ -274,6 +307,27 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
                             p { class: "card-title", "{line.role}" }
                             p { class: "card-text", "{line.text}" }
+                            for note in line.notes {
+                                match note {
+                                    ConversationNote::Card(card) => rsx! {
+                                        div { class: "thread-card",
+                                            p { class: "card-title", "{card.receipt}" }
+                                            if let Some(title) = card.title {
+                                                p { class: "card-text", "{title}" }
+                                            }
+                                            if let Some(detail) = card.detail {
+                                                p { class: "record-meta", "{detail}" }
+                                            }
+                                            if let Some(schedule) = card.schedule {
+                                                p { class: "record-meta", "{schedule}" }
+                                            }
+                                        }
+                                    },
+                                    ConversationNote::Receipt(sentence) => rsx! {
+                                        p { class: "record-meta thread-card", "{sentence}" }
+                                    },
+                                }
+                            }
                         }
                     }
                     if let Some(closed) = closed {

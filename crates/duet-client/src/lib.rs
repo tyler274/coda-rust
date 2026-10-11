@@ -123,6 +123,26 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Lists saved Plans.
+    pub async fn list_saved_routines(&self) -> Result<duet_wire::models::SavedRoutineList, String> {
+        duet_wire::apis::saved_routines_api::list_saved_routines_api_saved_routines_get(
+            &self.configuration,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Lists reminders and check-ins.
+    pub async fn list_follow_ups(&self) -> Result<duet_wire::models::FollowUpPage, String> {
+        duet_wire::apis::follow_ups_api::list_follow_ups_api_follow_ups_get(
+            &self.configuration,
+            None,
+            Some(50),
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
     /// Reads who sharing includes.
     pub async fn sharing_overview(&self) -> Result<SharingOverviewResponse, String> {
         duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)

@@ -9,24 +9,79 @@
  */
 
 use crate::models;
+use serde::de::Error as _;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(tag = "kind")]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ActionsInner {
-    #[serde(rename = "prepare_doctor_summary")]
+    SaveDoctorQuestion(Box<models::DoctorActionResult>),
     PrepareDoctorSummary(Box<models::DoctorActionResult>),
-    #[serde(rename = "propose_doctor_page")]
     ProposeDoctorPage(Box<models::DoctorPageProposalResult>),
-    #[serde(rename = "create_saved_routine")]
     CreateSavedRoutine(Box<models::SavedRoutineActionResult>),
-    #[serde(rename = "cancel_follow_up")]
+    UpdateSavedRoutine(Box<models::SavedRoutineActionResult>),
+    CreateFollowUp(Box<models::FollowUpActionResult>),
+    UpdateFollowUp(Box<models::FollowUpActionResult>),
+    PauseFollowUp(Box<models::FollowUpActionResult>),
+    ResumeFollowUp(Box<models::FollowUpActionResult>),
     CancelFollowUp(Box<models::FollowUpActionResult>),
 }
 
 impl Default for ActionsInner {
     fn default() -> Self {
         Self::PrepareDoctorSummary(Default::default())
+    }
+}
+
+impl Serialize for ActionsInner {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::SaveDoctorQuestion(value) => value.serialize(serializer),
+            Self::PrepareDoctorSummary(value) => value.serialize(serializer),
+            Self::ProposeDoctorPage(value) => value.serialize(serializer),
+            Self::CreateSavedRoutine(value) => value.serialize(serializer),
+            Self::UpdateSavedRoutine(value) => value.serialize(serializer),
+            Self::CreateFollowUp(value) => value.serialize(serializer),
+            Self::UpdateFollowUp(value) => value.serialize(serializer),
+            Self::PauseFollowUp(value) => value.serialize(serializer),
+            Self::ResumeFollowUp(value) => value.serialize(serializer),
+            Self::CancelFollowUp(value) => value.serialize(serializer),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for ActionsInner {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = serde_json::Value::deserialize(deserializer)?;
+        let kind = value
+            .get("kind")
+            .and_then(|kind| kind.as_str())
+            .unwrap_or("");
+        fn parse<T, E>(value: serde_json::Value) -> Result<T, E>
+        where
+            T: serde::de::DeserializeOwned,
+            E: serde::de::Error,
+        {
+            serde_json::from_value(value).map_err(E::custom)
+        }
+        match kind {
+            "save_doctor_question" => Ok(Self::SaveDoctorQuestion(Box::new(parse(value)?))),
+            "prepare_doctor_summary" => Ok(Self::PrepareDoctorSummary(Box::new(parse(value)?))),
+            "propose_doctor_page" => Ok(Self::ProposeDoctorPage(Box::new(parse(value)?))),
+            "create_saved_routine" => Ok(Self::CreateSavedRoutine(Box::new(parse(value)?))),
+            "update_saved_routine" => Ok(Self::UpdateSavedRoutine(Box::new(parse(value)?))),
+            "create_follow_up" => Ok(Self::CreateFollowUp(Box::new(parse(value)?))),
+            "update_follow_up" => Ok(Self::UpdateFollowUp(Box::new(parse(value)?))),
+            "pause_follow_up" => Ok(Self::PauseFollowUp(Box::new(parse(value)?))),
+            "resume_follow_up" => Ok(Self::ResumeFollowUp(Box::new(parse(value)?))),
+            "cancel_follow_up" => Ok(Self::CancelFollowUp(Box::new(parse(value)?))),
+            other => Err(D::Error::custom(format!("unknown action kind {other}"))),
+        }
     }
 }
 

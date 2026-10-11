@@ -23,7 +23,8 @@ use duet_wire::models::conversation_message::Role;
 use duet_wire::models::{
     ConversationAcceptance, ConversationMessage, ConversationMessageState, ConversationPage,
     ConversationRun, ConversationRunState, ConversationSendRequest, EvidenceLibraryPage,
-    InsightCyclePage, IntelligenceSettings, SharingOverviewResponse,
+    FollowUpPage, InsightCyclePage, IntelligenceSettings, SavedRoutineList,
+    SharingOverviewResponse,
 };
 use serde::de::DeserializeOwned;
 
@@ -31,6 +32,8 @@ const CONVERSATION: &str = include_str!("../fixtures/conversation.json");
 const INSIGHTS: &str = include_str!("../fixtures/insights.json");
 const SETTINGS: &str = include_str!("../fixtures/settings.json");
 const LIBRARY: &str = include_str!("../fixtures/library.json");
+const ROUTINES: &str = include_str!("../fixtures/routines.json");
+const FOLLOW_UPS: &str = include_str!("../fixtures/follow-ups.json");
 const SHARING: &str = include_str!("../fixtures/sharing.json");
 const RUN_ID: &str = "00000000-0000-0000-0000-000000000099";
 
@@ -73,6 +76,8 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         .route("/api/insight-cycles", get(insights))
         .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
+        .route("/api/saved-routines", get(routines))
+        .route("/api/follow-ups", get(follow_ups))
         .route("/api/sharing/overview", get(sharing))
         .with_state(store)
 }
@@ -171,6 +176,14 @@ async fn library() -> Json<EvidenceLibraryPage> {
     Json(fixture("library", LIBRARY))
 }
 
+async fn routines() -> Json<SavedRoutineList> {
+    Json(fixture("routines", ROUTINES))
+}
+
+async fn follow_ups() -> Json<FollowUpPage> {
+    Json(fixture("follow-ups", FOLLOW_UPS))
+}
+
 async fn sharing() -> Json<SharingOverviewResponse> {
     Json(fixture("sharing", SHARING))
 }
@@ -208,8 +221,15 @@ mod tests {
         let insights: InsightCyclePage = fixture("insights", INSIGHTS);
         let settings: IntelligenceSettings = fixture("settings", SETTINGS);
         let library: EvidenceLibraryPage = fixture("library", LIBRARY);
+        let routines: SavedRoutineList = fixture("routines", ROUTINES);
+        let follow_ups: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
         let sharing: SharingOverviewResponse = fixture("sharing", SHARING);
-        assert_eq!(page.messages.len(), 2);
+        assert_eq!(page.messages.len(), 3);
+        assert_eq!(routines.items[0].title, "Evening walk");
+        assert_eq!(
+            follow_ups.items[0].display_title,
+            Some(Some("Evening walk".into()))
+        );
         assert_eq!(
             insights.items[0].insights.as_ref().unwrap()[0].title,
             "Steady walks"
@@ -257,8 +277,8 @@ mod tests {
             .await
             .unwrap();
         let page: ConversationPage = serde_json::from_str(&body(page).await).unwrap();
-        assert_eq!(page.messages.len(), 3);
-        assert_eq!(page.messages[2].text, "keys for \"hello\"");
+        assert_eq!(page.messages.len(), 4);
+        assert_eq!(page.messages[3].text, "keys for \"hello\"");
         let _ = fs::remove_file(path);
     }
 
