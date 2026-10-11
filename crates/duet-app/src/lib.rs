@@ -1610,6 +1610,9 @@ fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
             article { class: "number-card",
                 p { class: "card-title", "{reading.name}" }
                 p { class: "card-text", "{reading.value} {reading.unit}" }
+                if !reading.source.is_empty() {
+                    p { class: "record-meta", "{reading.source}" }
+                }
             }
         }
     }

@@ -34,6 +34,9 @@ pub struct PhoneReading {
     pub value: String,
     /// The `unit` value.
     pub unit: String,
+    /// The app that wrote this reading. Empty when the phone did not report one.
+    #[serde(default)]
+    pub source: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -109,6 +112,18 @@ pub fn parse_status(code: &str) -> StoreState {
         "permission" => StoreState::PermissionRequired,
         "connected" => StoreState::Connected,
         _ => StoreState::Unreadable,
+    }
+}
+
+/// Names the app that wrote a Health Connect record.
+/// An empty package stays empty. Samsung Health and Google Health are named.
+/// Every other package, including Health Connect itself, stays Health Connect.
+pub fn source_name(package: &str) -> &'static str {
+    match package {
+        "" => "",
+        "com.sec.android.app.shealth" => "Samsung Health",
+        "com.google.android.apps.fitness" => "Google Health",
+        _ => "Health Connect",
     }
 }
 
@@ -376,6 +391,12 @@ pub fn decode_readings(body: &str) -> Vec<PhoneReading> {
         Err(_) => return Vec::new(),
     };
     granted_readings(&page.rows, &page.granted)
+        .into_iter()
+        .map(|mut row| {
+            row.source = source_name(&row.source).to_owned();
+            row
+        })
+        .collect()
 }
 
 /// The `NO_READINGS` constant.
@@ -421,6 +442,35 @@ mod tests {
         assert_eq!(readings.len(), 1);
         assert_eq!(readings[0].name, "Steps");
         assert_eq!(readings[0].value, "1200");
+        assert!(readings[0].source.is_empty());
+    }
+
+    #[test]
+    fn health_connect_origins_keep_their_names() {
+        let body = r#"{"granted":["Steps","Weight"],"rows":[
+            {"name":"Steps","value":"800","unit":"steps","source":"com.sec.android.app.shealth"},
+            {"name":"Steps","value":"400","unit":"steps","source":"com.google.android.apps.fitness"},
+            {"name":"Weight","value":"70","unit":"kg","source":"com.google.android.apps.healthdata"},
+            {"name":"Weight","value":"71","unit":"kg","source":"com.example.other"}
+        ]}"#;
+        let readings = decode_readings(body);
+        assert_eq!(readings.len(), 4);
+        assert_eq!(readings[0].source, "Samsung Health");
+        assert_eq!(readings[1].source, "Google Health");
+        assert_eq!(readings[2].source, "Health Connect");
+        assert_eq!(readings[3].source, "Health Connect");
+        assert_eq!(source_name(""), "");
+    }
+
+    #[test]
+    fn a_host_build_does_not_invent_a_phone_source() {
+        let snapshot = PlatformHealth.snapshot();
+        assert!(
+            snapshot
+                .readings
+                .iter()
+                .all(|reading| reading.source.is_empty())
+        );
     }
 
     #[test]

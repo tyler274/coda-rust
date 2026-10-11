@@ -35,7 +35,8 @@ import org.json.JSONObject
 
 /**
  * Reads granted Health Connect records. A type that was not granted, or that
- * has no stored value, is left out. This bridge does not invent a sample.
+ * has no stored value, is left out. Totals and latest samples stay split by
+ * the app that wrote them. This bridge does not invent a sample.
  */
 object HealthConnectBridge {
     private val recordTypes: List<KClass<out androidx.health.connect.client.records.Record>> = listOf(
@@ -84,7 +85,7 @@ object HealthConnectBridge {
         val held = permissions().filter { granted.contains(it) }
         val rows = runBlocking { readGranted(context, held.toSet()) }
         JSONObject()
-            .put("granted", JSONArray(held))
+            .put("granted", namesOf(rows))
             .put("rows", rows)
             .toString()
     } catch (_: Throwable) {
@@ -113,6 +114,14 @@ object HealthConnectBridge {
 
     private fun permissions(): Set<String> = recordTypes.map { HealthPermission.getReadPermission(it) }.toSet()
 
+    private fun namesOf(rows: JSONArray): JSONArray {
+        val names = JSONArray()
+        for (index in 0 until rows.length()) {
+            names.put(rows.getJSONObject(index).getString("name"))
+        }
+        return names
+    }
+
     private suspend fun readGranted(context: Context, granted: Set<String>): JSONArray {
         val client = HealthConnectClient.getOrCreate(context)
         val zone = ZoneId.systemDefault()
@@ -125,66 +134,81 @@ object HealthConnectBridge {
             granted.contains(HealthPermission.getReadPermission(type))
 
         if (allow(StepsRecord::class)) {
-            val total = sum(client, day, StepsRecord::class) { it.count }
-            add(rows, "Steps", total, "steps")
+            emitSum(rows, "Steps", "steps", readAll(client, day, StepsRecord::class)) { it.count.toDouble() }
         }
         if (allow(DistanceRecord::class)) {
-            val meters = sumDouble(client, day, DistanceRecord::class) { it.distance.inMeters }
-            add(rows, "Distance", meters, "m")
+            emitSum(rows, "Distance", "m", readAll(client, day, DistanceRecord::class)) { it.distance.inMeters }
         }
         if (allow(ActiveCaloriesBurnedRecord::class)) {
-            val kcal = sumDouble(client, day, ActiveCaloriesBurnedRecord::class) { it.energy.inKilocalories }
-            add(rows, "Active energy", kcal, "kcal")
+            emitSum(rows, "Active energy", "kcal", readAll(client, day, ActiveCaloriesBurnedRecord::class)) {
+                it.energy.inKilocalories
+            }
         }
         if (allow(HydrationRecord::class)) {
-            val liters = sumDouble(client, day, HydrationRecord::class) { it.volume.inLiters }
-            add(rows, "Water", liters, "L")
+            emitSum(rows, "Water", "L", readAll(client, day, HydrationRecord::class)) { it.volume.inLiters }
         }
         if (allow(NutritionRecord::class)) {
-            val kcal = sumDouble(client, day, NutritionRecord::class) { it.energy?.inKilocalories ?: 0.0 }
-            add(rows, "Dietary energy", kcal, "kcal")
+            emitSum(rows, "Dietary energy", "kcal", readAll(client, day, NutritionRecord::class)) {
+                it.energy?.inKilocalories ?: 0.0
+            }
         }
         if (allow(ExerciseSessionRecord::class)) {
-            val minutes = sum(client, day, ExerciseSessionRecord::class) { minutesBetween(it.startTime, it.endTime) }
-            add(rows, "Exercise", minutes, "min")
+            emitSum(rows, "Exercise", "min", readAll(client, day, ExerciseSessionRecord::class)) {
+                minutesBetween(it.startTime, it.endTime).toDouble()
+            }
         }
         if (allow(SleepSessionRecord::class)) {
-            val minutes = sum(client, day, SleepSessionRecord::class) { minutesBetween(it.startTime, it.endTime) }
-            add(rows, "Sleep", minutes, "min")
+            emitSum(rows, "Sleep", "min", readAll(client, day, SleepSessionRecord::class)) {
+                minutesBetween(it.startTime, it.endTime).toDouble()
+            }
         }
         if (allow(RestingHeartRateRecord::class)) {
-            latest(client, RestingHeartRateRecord::class)?.let { add(rows, "Resting heart rate", it.beatsPerMinute, "bpm") }
+            emitLatest(rows, "Resting heart rate", "bpm", readLatest(client, RestingHeartRateRecord::class)) {
+                it.beatsPerMinute
+            }
         }
         if (allow(WeightRecord::class)) {
-            latest(client, WeightRecord::class)?.let { add(rows, "Weight", it.weight.inKilograms, "kg") }
+            emitLatest(rows, "Weight", "kg", readLatest(client, WeightRecord::class)) { it.weight.inKilograms }
         }
         if (allow(HeightRecord::class)) {
-            latest(client, HeightRecord::class)?.let { add(rows, "Height", it.height.inMeters, "m") }
+            emitLatest(rows, "Height", "m", readLatest(client, HeightRecord::class)) { it.height.inMeters }
         }
         if (allow(BodyFatRecord::class)) {
-            latest(client, BodyFatRecord::class)?.let { add(rows, "Body fat", it.percentage.value, "%") }
+            emitLatest(rows, "Body fat", "%", readLatest(client, BodyFatRecord::class)) { it.percentage.value }
         }
         if (allow(LeanBodyMassRecord::class)) {
-            latest(client, LeanBodyMassRecord::class)?.let { add(rows, "Lean body mass", it.mass.inKilograms, "kg") }
+            emitLatest(rows, "Lean body mass", "kg", readLatest(client, LeanBodyMassRecord::class)) {
+                it.mass.inKilograms
+            }
         }
         if (allow(BloodGlucoseRecord::class)) {
-            latest(client, BloodGlucoseRecord::class)?.let { add(rows, "Blood glucose", it.level.inMilligramsPerDeciliter, "mg/dL") }
+            emitLatest(rows, "Blood glucose", "mg/dL", readLatest(client, BloodGlucoseRecord::class)) {
+                it.level.inMilligramsPerDeciliter
+            }
         }
         if (allow(BodyTemperatureRecord::class)) {
-            latest(client, BodyTemperatureRecord::class)?.let { add(rows, "Body temperature", it.temperature.inCelsius, "C") }
+            emitLatest(rows, "Body temperature", "C", readLatest(client, BodyTemperatureRecord::class)) {
+                it.temperature.inCelsius
+            }
         }
         if (allow(BasalBodyTemperatureRecord::class)) {
-            latest(client, BasalBodyTemperatureRecord::class)?.let { add(rows, "Basal body temperature", it.temperature.inCelsius, "C") }
+            emitLatest(rows, "Basal body temperature", "C", readLatest(client, BasalBodyTemperatureRecord::class)) {
+                it.temperature.inCelsius
+            }
         }
         if (allow(OxygenSaturationRecord::class)) {
-            latest(client, OxygenSaturationRecord::class)?.let { add(rows, "Oxygen saturation", it.percentage.value, "%") }
+            emitLatest(rows, "Oxygen saturation", "%", readLatest(client, OxygenSaturationRecord::class)) {
+                it.percentage.value
+            }
         }
         if (allow(Vo2MaxRecord::class)) {
-            latest(client, Vo2MaxRecord::class)?.let { add(rows, "VO2 max", it.vo2MillilitersPerMinuteKilogram, "mL/kg/min") }
+            emitLatest(rows, "VO2 max", "mL/kg/min", readLatest(client, Vo2MaxRecord::class)) {
+                it.vo2MillilitersPerMinuteKilogram
+            }
         }
         if (allow(BloodPressureRecord::class)) {
-            latest(client, BloodPressureRecord::class)?.let {
-                add(rows, "Blood pressure", "${it.systolic.inMillimetersOfMercury.toLong()}/${it.diastolic.inMillimetersOfMercury.toLong()}", "mmHg")
+            emitLatest(rows, "Blood pressure", "mmHg", readLatest(client, BloodPressureRecord::class)) {
+                "${it.systolic.inMillimetersOfMercury.toLong()}/${it.diastolic.inMillimetersOfMercury.toLong()}"
             }
         }
         return rows
@@ -193,31 +217,49 @@ object HealthConnectBridge {
     private fun minutesBetween(start: Instant, end: Instant): Long =
         java.time.Duration.between(start, end).toMinutes().coerceAtLeast(0)
 
-    private suspend fun <T : androidx.health.connect.client.records.Record> sum(
-        client: HealthConnectClient,
-        day: TimeRangeFilter,
-        type: KClass<T>,
-        value: (T) -> Long,
-    ): Long = readAll(client, day, type).sumOf(value)
-
-    private suspend fun <T : androidx.health.connect.client.records.Record> sumDouble(
-        client: HealthConnectClient,
-        day: TimeRangeFilter,
-        type: KClass<T>,
+    private fun <T : androidx.health.connect.client.records.Record> emitSum(
+        rows: JSONArray,
+        name: String,
+        unit: String,
+        records: List<T>,
         value: (T) -> Double,
-    ): Double = readAll(client, day, type).sumOf(value)
+    ) {
+        val totals = linkedMapOf<String, Double>()
+        for (record in records) {
+            val source = record.metadata.dataOrigin.packageName
+            totals[source] = (totals[source] ?: 0.0) + value(record)
+        }
+        for ((source, total) in totals) {
+            add(rows, name, total, unit, source)
+        }
+    }
 
-    private suspend fun <T : androidx.health.connect.client.records.Record> latest(
+    private fun <T : androidx.health.connect.client.records.Record> emitLatest(
+        rows: JSONArray,
+        name: String,
+        unit: String,
+        records: List<T>,
+        value: (T) -> Any?,
+    ) {
+        val seen = linkedSetOf<String>()
+        for (record in records) {
+            val source = record.metadata.dataOrigin.packageName
+            if (!seen.add(source)) continue
+            add(rows, name, value(record), unit, source)
+        }
+    }
+
+    private suspend fun <T : androidx.health.connect.client.records.Record> readLatest(
         client: HealthConnectClient,
         type: KClass<T>,
-    ): T? = client.readRecords(
+    ): List<T> = client.readRecords(
         ReadRecordsRequest(
             recordType = type,
             timeRangeFilter = TimeRangeFilter.before(Instant.now()),
             ascendingOrder = false,
-            pageSize = 1,
+            pageSize = 1000,
         ),
-    ).records.firstOrNull()
+    ).records
 
     private suspend fun <T : androidx.health.connect.client.records.Record> readAll(
         client: HealthConnectClient,
@@ -227,7 +269,7 @@ object HealthConnectBridge {
         ReadRecordsRequest(recordType = type, timeRangeFilter = day, pageSize = 1000),
     ).records
 
-    private fun add(rows: JSONArray, name: String, value: Any?, unit: String) {
+    private fun add(rows: JSONArray, name: String, value: Any?, unit: String, source: String) {
         if (value == null) return
         val text = when (value) {
             is Double -> if (value == 0.0) return else trimNumber(value)
@@ -237,7 +279,13 @@ object HealthConnectBridge {
             else -> value.toString()
         }
         if (text.isEmpty() || text == "0") return
-        rows.put(JSONObject().put("name", name).put("value", text).put("unit", unit))
+        rows.put(
+            JSONObject()
+                .put("name", name)
+                .put("value", text)
+                .put("unit", unit)
+                .put("source", source),
+        )
     }
 
     private fun trimNumber(value: Double): String {
