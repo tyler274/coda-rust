@@ -3,6 +3,8 @@
 # build-tools 37, while dx asks Gradle for 34. Rustc must be rustup's stable:
 # the Nix rustc has no Android standard library. DUET_API_URL and DUET_BEARER
 # are baked in at compile time; an unset URL uses http://10.0.2.2:8000.
+# The host stand-in is `cargo run -p duet-stub`. It listens on 127.0.0.1:8000
+# and keeps accepted messages in its state file.
 # The emulator window is `cargo run -p android -- window`. UI Automator is
 # `cargo run -p android -- test coda.duet.ModeShellTest`. This build does not
 # start the emulator.
