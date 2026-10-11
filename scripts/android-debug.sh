@@ -63,6 +63,29 @@ find target/dx/mobile -path '*/src/main/AndroidManifest.xml' | while IFS= read -
   fi
 done
 
+# dx regenerates the activity. A hardware key never reaches a focused field;
+# the soft keyboard and paste commit through the input connection instead.
+keys="$root/platform/android/HardwareKeyDispatch.kt"
+find target/dx/mobile -name WryActivity.kt | while IFS= read -r activity; do
+  cp "$keys" "$(dirname "$activity")/HardwareKeyDispatch.kt"
+  if ! grep -q 'duet-hardware-keys' "$activity"; then
+    awk '
+      /fun getAppClass/ && !done {
+        print "    // duet-hardware-keys"
+        print "    override fun dispatchKeyEvent(event: KeyEvent): Boolean {"
+        print "        if (event.keyCode != KeyEvent.KEYCODE_BACK && ::mWebView.isInitialized && duetInsertHardwareKey(mWebView, event)) {"
+        print "            return true"
+        print "        }"
+        print "        return super.dispatchKeyEvent(event)"
+        print "    }"
+        print ""
+        done = 1
+      }
+      { print }
+    ' "$activity" > "$activity.tmp" && mv "$activity.tmp" "$activity"
+  fi
+done
+
 # Health Connect is copied into the generated app because dx regenerates it.
 bridge="$root/platform/android/HealthConnectBridge.kt"
 java_dir=$(find target/dx/mobile -path '*/src/main/AndroidManifest.xml' | head -n 1 | xargs dirname)
