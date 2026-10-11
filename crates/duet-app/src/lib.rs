@@ -203,6 +203,15 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut open_item = use_signal(|| None::<NoteOpen>);
     let mut saving_page = use_signal(|| false);
     let mut page_failed = use_signal(|| false);
+    let mut editing = use_signal(|| false);
+    let mut plan_title = use_signal(String::new);
+    let mut plan_body = use_signal(String::new);
+    let mut confirm_remove = use_signal(|| false);
+    let mut removed_plan = use_signal(|| false);
+    let mut plan_save_failed = use_signal(|| false);
+    let mut plan_remove_failed = use_signal(|| false);
+    let mut follow_failed = use_signal(|| false);
+    let mut changing = use_signal(|| false);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -278,6 +287,11 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let retry = move |_| attempt.set(attempt() + 1);
     let shown = match open_item() {
         Some(NoteOpen::Doctor) => doctor().as_ref().map(doctor_page).map(ShownPage::Doctor),
+        Some(NoteOpen::Routine(_)) if removed_plan() => Some(ShownPage::Item(SavedItemPage {
+            heading: "Plan".to_owned(),
+            title: None,
+            detail: Some("This saved plan was removed.".to_owned()),
+        })),
         Some(NoteOpen::Routine(id)) => routines()
             .iter()
             .find(|routine| routine.id == id)
@@ -353,6 +367,169 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             sending.set(false);
         });
     };
+    let plan_url = page_url.clone();
+    let plan_bearer = page_bearer.clone();
+    let remove_url = page_url.clone();
+    let remove_bearer = page_bearer.clone();
+    let pause_url = page_url.clone();
+    let pause_bearer = page_bearer.clone();
+    let resume_url = page_url.clone();
+    let resume_bearer = page_bearer.clone();
+    let save_plan = move |_| {
+        if changing() {
+            return;
+        }
+        let Some(NoteOpen::Routine(id)) = open_item() else {
+            return;
+        };
+        let title = plan_title().trim().to_owned();
+        let body = plan_body().trim().to_owned();
+        if title.is_empty() || body.is_empty() {
+            return;
+        }
+        let Some(revision) = routines()
+            .iter()
+            .find(|routine| routine.id == id)
+            .map(|routine| routine.revision)
+        else {
+            return;
+        };
+        changing.set(true);
+        plan_save_failed.set(false);
+        let base_url = plan_url.clone();
+        let bearer = plan_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.update_saved_routine(id, revision, &title, &body).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(routine) => {
+                    let mut items = routines();
+                    if let Some(item) = items.iter_mut().find(|item| item.id == routine.id) {
+                        *item = routine;
+                    }
+                    routines.set(items);
+                    editing.set(false);
+                    plan_save_failed.set(false);
+                }
+                Err(_) => plan_save_failed.set(true),
+            }
+            changing.set(false);
+        });
+    };
+    let remove_plan = move |_| {
+        if changing() {
+            return;
+        }
+        let Some(NoteOpen::Routine(id)) = open_item() else {
+            return;
+        };
+        let Some(revision) = routines()
+            .iter()
+            .find(|routine| routine.id == id)
+            .map(|routine| routine.revision)
+        else {
+            return;
+        };
+        changing.set(true);
+        plan_remove_failed.set(false);
+        let base_url = remove_url.clone();
+        let bearer = remove_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.delete_saved_routine(id, revision).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(()) => {
+                    let mut items = routines();
+                    items.retain(|item| item.id != id);
+                    routines.set(items);
+                    editing.set(false);
+                    confirm_remove.set(false);
+                    removed_plan.set(true);
+                    plan_remove_failed.set(false);
+                }
+                Err(_) => plan_remove_failed.set(true),
+            }
+            changing.set(false);
+        });
+    };
+    let pause_reminder = move |_| {
+        if changing() {
+            return;
+        }
+        let Some(NoteOpen::FollowUp(id)) = open_item() else {
+            return;
+        };
+        let Some(revision) = follow_ups()
+            .iter()
+            .find(|follow_up| follow_up.id == id)
+            .map(|follow_up| follow_up.revision)
+        else {
+            return;
+        };
+        changing.set(true);
+        follow_failed.set(false);
+        let base_url = pause_url.clone();
+        let bearer = pause_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.pause_follow_up(id, revision).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(follow_up) => {
+                    let mut items = follow_ups();
+                    if let Some(item) = items.iter_mut().find(|item| item.id == follow_up.id) {
+                        *item = follow_up;
+                    }
+                    follow_ups.set(items);
+                    follow_failed.set(false);
+                }
+                Err(_) => follow_failed.set(true),
+            }
+            changing.set(false);
+        });
+    };
+    let resume_reminder = move |_| {
+        if changing() {
+            return;
+        }
+        let Some(NoteOpen::FollowUp(id)) = open_item() else {
+            return;
+        };
+        let Some(revision) = follow_ups()
+            .iter()
+            .find(|follow_up| follow_up.id == id)
+            .map(|follow_up| follow_up.revision)
+        else {
+            return;
+        };
+        changing.set(true);
+        follow_failed.set(false);
+        let base_url = resume_url.clone();
+        let bearer = resume_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.resume_follow_up(id, revision).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(follow_up) => {
+                    let mut items = follow_ups();
+                    if let Some(item) = items.iter_mut().find(|item| item.id == follow_up.id) {
+                        *item = follow_up;
+                    }
+                    follow_ups.set(items);
+                    follow_failed.set(false);
+                }
+                Err(_) => follow_failed.set(true),
+            }
+            changing.set(false);
+        });
+    };
     let save_page = move |_| {
         if saving_page() {
             return;
@@ -385,7 +562,15 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             button {
                 class: "duet-retry",
                 r#type: "button",
-                onclick: move |_| open_item.set(None),
+                onclick: move |_| {
+                    open_item.set(None);
+                    editing.set(false);
+                    confirm_remove.set(false);
+                    removed_plan.set(false);
+                    plan_save_failed.set(false);
+                    plan_remove_failed.set(false);
+                    follow_failed.set(false);
+                },
                 "Close"
             }
             match shown {
@@ -402,7 +587,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 ShownPage::Doctor(DoctorPage::Empty) => rsx! {
                     p { class: "empty", "{LIBRARY_EMPTY}" }
                 },
-                ShownPage::Item(item) => rsx! {
+                ShownPage::Item(item) if !editing() => rsx! {
                     div { class: "duet-thread",
                         if let Some(title) = item.title {
                             p { class: "card-text", "{title}" }
@@ -410,8 +595,94 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         if let Some(detail) = item.detail {
                             p { class: "record-meta", "{detail}" }
                         }
+                        if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id && follow_up.state == duet_wire::models::FollowUpState::Paused)) {
+                            p { class: "record-meta", "Paused" }
+                        }
                     }
                 },
+                ShownPage::Item(_) => rsx! {},
+            }
+            if editing() {
+                PlanEditor {
+                    title: plan_title,
+                    body: plan_body,
+                    saving: changing,
+                    failed: plan_save_failed,
+                    on_save: save_plan,
+                }
+            }
+            if !editing() && !removed_plan() && !confirm_remove() && matches!(open_item(), Some(NoteOpen::Routine(_))) {
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: changing(),
+                    onclick: move |_| {
+                        let Some(NoteOpen::Routine(id)) = open_item() else {
+                            return;
+                        };
+                        let Some(routine) = routines().iter().find(|routine| routine.id == id).cloned() else {
+                            return;
+                        };
+                        plan_title.set(routine.title);
+                        plan_body.set(routine.body);
+                        plan_save_failed.set(false);
+                        editing.set(true);
+                    },
+                    "Edit plan"
+                }
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: changing(),
+                    onclick: move |_| {
+                        plan_remove_failed.set(false);
+                        confirm_remove.set(true);
+                    },
+                    "Remove plan"
+                }
+                if plan_remove_failed() {
+                    p { class: "empty", role: "alert", "The plan couldn’t be removed. Review the current version and try again." }
+                }
+            }
+            if confirm_remove() {
+                p { class: "status-title", "Remove this plan?" }
+                p { class: "status-detail", "This removes the saved plan and discards your unsaved edits. Your conversation stays in Duet." }
+                button {
+                    class: "duet-retry",
+                    r#type: "button",
+                    disabled: changing(),
+                    onclick: move |_| confirm_remove.set(false),
+                    "Cancel"
+                }
+                button {
+                    class: "duet-send",
+                    r#type: "button",
+                    disabled: changing(),
+                    onclick: remove_plan,
+                    "Remove"
+                }
+            }
+            if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id)) {
+                if follow_failed() {
+                    p { class: "empty", role: "alert", "Duet couldn’t change this scheduled item. Its last saved state is still here." }
+                }
+                if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id && follow_up.state == duet_wire::models::FollowUpState::Paused)) {
+                    button {
+                        class: "duet-send",
+                        r#type: "button",
+                        disabled: changing(),
+                        onclick: resume_reminder,
+                        "Resume reminder"
+                    }
+                } else {
+                    button {
+                        class: "duet-send",
+                        r#type: "button",
+                        disabled: changing(),
+                        onclick: pause_reminder,
+                        "Pause reminder"
+                    }
+                }
             }
             if matches!(open_item(), Some(NoteOpen::Doctor)) {
                 if page_failed() {
@@ -816,6 +1087,40 @@ fn YouTab(
             onclick: move |_| menu.set(true),
             "Add health information"
         }
+        }
+    }
+}
+
+#[component]
+fn PlanEditor(
+    title: Signal<String>,
+    body: Signal<String>,
+    saving: Signal<bool>,
+    failed: Signal<bool>,
+    on_save: EventHandler,
+) -> Element {
+    let ready = !title().trim().is_empty() && !body().trim().is_empty();
+    rsx! {
+        input {
+            class: "duet-field",
+            r#type: "text",
+            value: "{title}",
+            oninput: move |event| title.set(event.value()),
+        }
+        textarea {
+            class: "duet-field",
+            value: "{body}",
+            oninput: move |event| body.set(event.value()),
+        }
+        if failed() {
+            p { class: "empty", role: "alert", "Your changes haven’t been confirmed. Your words are kept; refresh to check the saved version." }
+        }
+        button {
+            class: "duet-send",
+            r#type: "button",
+            disabled: saving() || !ready,
+            onclick: move |_| on_save.call(()),
+            "Save changes"
         }
     }
 }

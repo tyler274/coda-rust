@@ -16,7 +16,7 @@ use std::sync::{Arc, Mutex};
 
 use axum::Json;
 use axum::Router;
-use axum::extract::State;
+use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::routing::{get, post, put};
 use duet_wire::models::canonical_record_revision::Entity as RevisionEntity;
@@ -27,8 +27,9 @@ use duet_wire::models::{
     CanonicalRecordRevision, ConversationAcceptance, ConversationMessage, ConversationMessageState,
     ConversationPage, ConversationRun, ConversationRunState, ConversationSendRequest,
     DoctorCollection, DoctorPageSave, EvidenceBatchRequest, EvidenceBatchResponse, EvidenceItem,
-    EvidenceLibraryEntry, EvidenceLibraryPage, FollowUpPage, InsightCyclePage,
-    IntelligenceSettings, SavedRoutineList, SharingOverviewResponse,
+    EvidenceLibraryEntry, EvidenceLibraryPage, FollowUp, FollowUpPage, FollowUpState,
+    FollowUpVersionRequest, InsightCyclePage, IntelligenceSettings, SavedRoutine, SavedRoutineList,
+    SavedRoutineUpdateRequest, SharingOverviewResponse,
 };
 use serde::de::DeserializeOwned;
 
@@ -52,12 +53,21 @@ pub struct Store {
     sent: Vec<ConversationMessage>,
     records: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
+    routines: Vec<SavedRoutine>,
+    removed_routines: Vec<uuid::Uuid>,
+    follow_ups: Vec<FollowUp>,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Default)]
 struct Writes {
     records: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
+    #[serde(default)]
+    routines: Vec<SavedRoutine>,
+    #[serde(default)]
+    removed_routines: Vec<uuid::Uuid>,
+    #[serde(default)]
+    follow_ups: Vec<FollowUp>,
 }
 
 impl Store {
@@ -71,7 +81,7 @@ impl Store {
         } else {
             Vec::new()
         };
-        let writes_path = path.with_file_name("writes.json");
+        let writes_path = writes_beside(&path);
         let writes = if writes_path.is_file() {
             let text = fs::read_to_string(&writes_path).map_err(|error| error.to_string())?;
             serde_json::from_str(&text)
@@ -85,6 +95,9 @@ impl Store {
             sent,
             records: writes.records,
             doctor: writes.doctor,
+            routines: writes.routines,
+            removed_routines: writes.removed_routines,
+            follow_ups: writes.follow_ups,
         })
     }
 
@@ -98,8 +111,19 @@ impl Store {
             &Writes {
                 records: self.records.clone(),
                 doctor: self.doctor.clone(),
+                routines: self.routines.clone(),
+                removed_routines: self.removed_routines.clone(),
+                follow_ups: self.follow_ups.clone(),
             },
         )
+    }
+}
+
+fn writes_beside(path: &std::path::Path) -> PathBuf {
+    match path.file_name().and_then(|name| name.to_str()) {
+        Some("messages.json") => path.with_file_name("writes.json"),
+        Some(name) => path.with_file_name(format!("{name}.writes.json")),
+        None => path.with_file_name("writes.json"),
     }
 }
 
@@ -124,7 +148,19 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         .route("/api/evidence/library", post(library))
         .route("/api/evidence", post(ingest))
         .route("/api/saved-routines", get(routines))
+        .route(
+            "/api/saved-routines/{routine_id}",
+            put(update_routine).delete(delete_routine),
+        )
         .route("/api/follow-ups", get(follow_ups))
+        .route(
+            "/api/follow-ups/{follow_up_id}/pause",
+            post(pause_follow_up),
+        )
+        .route(
+            "/api/follow-ups/{follow_up_id}/resume",
+            post(resume_follow_up),
+        )
         .route("/api/doctor-collection", get(doctor))
         .route("/api/doctor-collection/page", put(save_doctor))
         .route("/api/sharing/overview", get(sharing))
@@ -272,12 +308,129 @@ async fn ingest(
     Ok(Json(response))
 }
 
-async fn routines() -> Json<SavedRoutineList> {
-    Json(fixture("routines", ROUTINES))
+async fn routines(State(store): State<Arc<Mutex<Store>>>) -> Json<SavedRoutineList> {
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let mut page: SavedRoutineList = fixture("routines", ROUTINES);
+    page.items = listed_routines(&store);
+    Json(page)
 }
 
-async fn follow_ups() -> Json<FollowUpPage> {
-    Json(fixture("follow-ups", FOLLOW_UPS))
+async fn update_routine(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+    Json(request): Json<SavedRoutineUpdateRequest>,
+) -> Result<Json<SavedRoutine>, StatusCode> {
+    if request.title.trim().is_empty() || request.body.trim().is_empty() {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let Some(mut routine) = listed_routines(&store)
+        .into_iter()
+        .find(|item| item.id == id)
+    else {
+        return Err(StatusCode::NOT_FOUND);
+    };
+    if routine.revision != request.expected_revision {
+        return Err(StatusCode::CONFLICT);
+    }
+    routine.title = request.title;
+    routine.body = request.body;
+    routine.revision += 1;
+    routine.updated_at = chrono::Utc::now().fixed_offset();
+    let previous = store.routines.clone();
+    remember_routine(&mut store, routine.clone());
+    if store.save_writes().is_err() {
+        store.routines = previous;
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+    Ok(Json(routine))
+}
+
+#[derive(serde::Deserialize)]
+struct ExpectedRevision {
+    expected_revision: i32,
+}
+
+async fn delete_routine(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+    Query(query): Query<ExpectedRevision>,
+) -> Result<StatusCode, StatusCode> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let Some(routine) = listed_routines(&store)
+        .into_iter()
+        .find(|item| item.id == id)
+    else {
+        return Err(StatusCode::NOT_FOUND);
+    };
+    if routine.revision != query.expected_revision {
+        return Err(StatusCode::CONFLICT);
+    }
+    let previous_routines = store.routines.clone();
+    let previous_removed = store.removed_routines.clone();
+    store.routines.retain(|item| item.id != id);
+    store.removed_routines.push(id);
+    if store.save_writes().is_err() {
+        store.routines = previous_routines;
+        store.removed_routines = previous_removed;
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+    Ok(StatusCode::NO_CONTENT)
+}
+
+async fn follow_ups(State(store): State<Arc<Mutex<Store>>>) -> Json<FollowUpPage> {
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let mut page: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
+    page.items = listed_follow_ups(&store);
+    Json(page)
+}
+
+async fn pause_follow_up(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+    Json(request): Json<FollowUpVersionRequest>,
+) -> Result<Json<FollowUp>, StatusCode> {
+    set_follow_up_state(store, id, request.revision, FollowUpState::Paused)
+}
+
+async fn resume_follow_up(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path(id): Path<uuid::Uuid>,
+    Json(request): Json<FollowUpVersionRequest>,
+) -> Result<Json<FollowUp>, StatusCode> {
+    set_follow_up_state(store, id, request.revision, FollowUpState::Active)
+}
+
+fn set_follow_up_state(
+    store: Arc<Mutex<Store>>,
+    id: uuid::Uuid,
+    revision: i32,
+    state: FollowUpState,
+) -> Result<Json<FollowUp>, StatusCode> {
+    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let Some(mut follow_up) = listed_follow_ups(&store)
+        .into_iter()
+        .find(|item| item.id == id)
+    else {
+        return Err(StatusCode::NOT_FOUND);
+    };
+    if follow_up.revision != revision {
+        return Err(StatusCode::CONFLICT);
+    }
+    follow_up.state = state;
+    follow_up.pause_reason = match state {
+        FollowUpState::Paused => Some(Some(duet_wire::models::follow_up::PauseReason::User)),
+        _ => None,
+    };
+    follow_up.revision += 1;
+    follow_up.updated_at = chrono::Utc::now().fixed_offset();
+    let previous = store.follow_ups.clone();
+    remember_follow_up(&mut store, follow_up.clone());
+    if store.save_writes().is_err() {
+        store.follow_ups = previous;
+        return Err(StatusCode::INTERNAL_SERVER_ERROR);
+    }
+    Ok(Json(follow_up))
 }
 
 async fn doctor(State(store): State<Arc<Mutex<Store>>>) -> Json<DoctorCollection> {
@@ -332,6 +485,54 @@ fn recorded_day(item: &EvidenceItem) -> chrono::DateTime<chrono::FixedOffset> {
         .and_then(|value| value.as_str())
         .and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
         .unwrap_or_else(|| chrono::Local::now().fixed_offset())
+}
+
+fn listed_routines(store: &Store) -> Vec<SavedRoutine> {
+    let mut items = fixture::<SavedRoutineList>("routines", ROUTINES).items;
+    items.retain(|item| !store.removed_routines.contains(&item.id));
+    for saved in &store.routines {
+        if store.removed_routines.contains(&saved.id) {
+            continue;
+        }
+        if let Some(existing) = items.iter_mut().find(|item| item.id == saved.id) {
+            *existing = saved.clone();
+        } else {
+            items.push(saved.clone());
+        }
+    }
+    items
+}
+
+fn remember_routine(store: &mut Store, routine: SavedRoutine) {
+    if let Some(existing) = store.routines.iter_mut().find(|item| item.id == routine.id) {
+        *existing = routine;
+    } else {
+        store.routines.push(routine);
+    }
+}
+
+fn listed_follow_ups(store: &Store) -> Vec<FollowUp> {
+    let mut items = fixture::<FollowUpPage>("follow-ups", FOLLOW_UPS).items;
+    for saved in &store.follow_ups {
+        if let Some(existing) = items.iter_mut().find(|item| item.id == saved.id) {
+            *existing = saved.clone();
+        } else {
+            items.push(saved.clone());
+        }
+    }
+    items
+}
+
+fn remember_follow_up(store: &mut Store, follow_up: FollowUp) {
+    if let Some(existing) = store
+        .follow_ups
+        .iter_mut()
+        .find(|item| item.id == follow_up.id)
+    {
+        *existing = follow_up;
+    } else {
+        store.follow_ups.push(follow_up);
+    }
 }
 
 fn record_title(item: &EvidenceItem) -> Option<String> {
@@ -616,7 +817,120 @@ mod tests {
         let again: DoctorCollection = serde_json::from_str(&body(again).await).unwrap();
         assert_eq!(again.items.as_ref().unwrap()[0].title, "Ask about sleep");
         let _ = fs::remove_file(&path);
-        let _ = fs::remove_file(path.with_file_name("writes.json"));
+        let _ = fs::remove_file(writes_beside(&path));
+    }
+
+    #[tokio::test]
+    async fn a_plan_edit_and_a_paused_reminder_stay() {
+        let (path, store) = temp_store();
+        let app = router(store);
+        let routine = "00000000-0000-0000-0000-000000000041";
+        let follow_up = "00000000-0000-0000-0000-000000000042";
+        let save =
+            SavedRoutineUpdateRequest::new("A longer walk.".into(), 1, "Morning walk".into());
+        let saved = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri(format!("/api/saved-routines/{routine}"))
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&save).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let status = saved.status();
+        let text = body(saved).await;
+        assert!(status.is_success(), "plan save {status}: {text}");
+        let saved: SavedRoutine = serde_json::from_str(&text).unwrap();
+        assert_eq!(saved.title, "Morning walk");
+        assert_eq!(saved.revision, 2);
+        let stale = SavedRoutineUpdateRequest::new("Other".into(), 1, "Other".into());
+        let rejected = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri(format!("/api/saved-routines/{routine}"))
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&stale).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(rejected.status(), StatusCode::CONFLICT);
+        let listed = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/saved-routines")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let listed: SavedRoutineList = serde_json::from_str(&body(listed).await).unwrap();
+        assert_eq!(listed.items[0].title, "Morning walk");
+        assert_eq!(listed.items[0].body, "A longer walk.");
+        let removed = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("DELETE")
+                    .uri(format!("/api/saved-routines/{routine}?expected_revision=2"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(removed.status(), StatusCode::NO_CONTENT);
+        let after = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/saved-routines")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let after: SavedRoutineList = serde_json::from_str(&body(after).await).unwrap();
+        assert!(after.items.iter().all(|item| item.title != "Morning walk"));
+        assert!(after.items.iter().all(|item| item.title != "Evening walk"));
+
+        let pause = FollowUpVersionRequest::new(1);
+        let paused = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri(format!("/api/follow-ups/{follow_up}/pause"))
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&pause).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let paused: FollowUp = serde_json::from_str(&body(paused).await).unwrap();
+        assert_eq!(paused.state, FollowUpState::Paused);
+        let resume = FollowUpVersionRequest::new(paused.revision);
+        let resumed = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri(format!("/api/follow-ups/{follow_up}/resume"))
+                    .header("content-type", "application/json")
+                    .body(Body::from(serde_json::to_vec(&resume).unwrap()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let resumed: FollowUp = serde_json::from_str(&body(resumed).await).unwrap();
+        assert_eq!(resumed.state, FollowUpState::Active);
+        let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(writes_beside(&path));
     }
 
     async fn post_evidence(

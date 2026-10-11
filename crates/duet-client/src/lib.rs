@@ -143,6 +143,85 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Saves a new title and body for a Plan. `revision` is the one on screen.
+    pub async fn update_saved_routine(
+        &self,
+        id: uuid::Uuid,
+        revision: i32,
+        title: &str,
+        body: &str,
+    ) -> Result<duet_wire::models::SavedRoutine, String> {
+        let request = duet_wire::models::SavedRoutineUpdateRequest::new(
+            body.to_owned(),
+            revision,
+            title.to_owned(),
+        );
+        duet_wire::apis::saved_routines_api::update_saved_routine_api_saved_routines_routine_id_put(
+            &self.configuration,
+            &id.to_string(),
+            request,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Removes a Plan. `revision` is the one on screen.
+    pub async fn delete_saved_routine(&self, id: uuid::Uuid, revision: i32) -> Result<(), String> {
+        duet_wire::apis::saved_routines_api::delete_saved_routine_api_saved_routines_routine_id_delete(
+            &self.configuration,
+            &id.to_string(),
+            revision,
+        )
+        .await
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+    }
+
+    /// Pauses a reminder or check-in. `revision` is the one on screen.
+    pub async fn pause_follow_up(
+        &self,
+        id: uuid::Uuid,
+        revision: i32,
+    ) -> Result<duet_wire::models::FollowUp, String> {
+        self.set_follow_up(id, revision, true).await
+    }
+
+    /// Resumes a reminder or check-in. `revision` is the one on screen.
+    pub async fn resume_follow_up(
+        &self,
+        id: uuid::Uuid,
+        revision: i32,
+    ) -> Result<duet_wire::models::FollowUp, String> {
+        self.set_follow_up(id, revision, false).await
+    }
+
+    async fn set_follow_up(
+        &self,
+        id: uuid::Uuid,
+        revision: i32,
+        pause: bool,
+    ) -> Result<duet_wire::models::FollowUp, String> {
+        let request = duet_wire::models::FollowUpVersionRequest::new(revision);
+        let id = id.to_string();
+        if pause {
+            duet_wire::apis::follow_ups_api::pause_follow_up_api_follow_ups_follow_up_id_pause_post(
+                &self.configuration,
+                &id,
+                request,
+            )
+            .await
+            .map_err(|error| error.to_string())
+        } else {
+            duet_wire::apis::follow_ups_api::resume_follow_up_api_follow_ups_follow_up_id_resume_post(
+                &self.configuration,
+                &id,
+                request,
+            )
+            .await
+            .map_err(|error| error.to_string())
+        }
+    }
+
     /// Reads the For my doctor collection.
     pub async fn doctor_collection(&self) -> Result<duet_wire::models::DoctorCollection, String> {
         duet_wire::apis::doctor_workspace_api::get_doctor_collection_api_doctor_collection_get(
