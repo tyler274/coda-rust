@@ -1,4 +1,5 @@
 html, body { margin: 0; height: 100%; background: var(--surface); color: var(--ink); font: var(--type-body-md); }
+#main { height: 100%; }
 button, input { font: inherit; }
 .icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
 .icon-tile {
@@ -23,18 +24,32 @@ button, input { font: inherit; }
   overflow: hidden;
   background: var(--surface);
 }
-.glass-app.is-collapsed { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
-.glass-app.is-collapsed .sidebar-brand,
-.glass-app.is-collapsed .sidebar-rule,
-.glass-app.is-collapsed .sidebar-recent,
-.glass-app.is-collapsed .sidebar-patient-context,
-.glass-app.is-collapsed .sidebar-footer,
-.glass-app.is-collapsed .sidebar-nav-item > :not(.icon),
-.glass-app.is-collapsed .sidebar-collapse { display: none; }
-.glass-app.is-collapsed .sidebar-content { padding-inline: calc((var(--sidebar-rail-width) - var(--target)) / 2); }
-.glass-app.is-collapsed .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
-.sidebar-expand { display: none; }
-.glass-app.is-collapsed .sidebar-expand { display: inline-flex; }
+.glass-app.is-collapsed { display: none; }
+.glass-app.has-collapsed-sidebar { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
+.glass-app.has-collapsed-sidebar .sidebar-brand,
+.glass-app.has-collapsed-sidebar .sidebar-rule,
+.glass-app.has-collapsed-sidebar .sidebar-recent,
+.glass-app.has-collapsed-sidebar .sidebar-patient-context,
+.glass-app.has-collapsed-sidebar .sidebar-footer,
+.glass-app.has-collapsed-sidebar .sidebar-nav-item > :not(.icon),
+.glass-app.has-collapsed-sidebar .sidebar-collapse { display: none; }
+.glass-app.has-collapsed-sidebar .sidebar-content { padding-inline: calc((var(--sidebar-rail-width) - var(--target)) / 2); }
+.glass-app.has-collapsed-sidebar .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
+.coda-restore {
+  position: fixed;
+  z-index: 2;
+  top: var(--space-4);
+  left: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--surface-lowest);
+  box-shadow: var(--elevation-2);
+  cursor: pointer;
+}
 .citation-chip { font-variant-numeric: tabular-nums; }
 button.citation-chip {
   border: 0;
@@ -63,7 +78,6 @@ button.citation-chip {
 .sidebar-brand-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); min-height: var(--target); }
 .sidebar-brand { display: inline-flex; align-items: center; min-height: var(--target); padding: 0 var(--space-2); border: 0; background: transparent; cursor: pointer; }
 .coda-logo { display: block; width: auto; height: var(--logo-height); }
-.sidebar-expand { display: none; }
 .icon-button {
   display: inline-flex;
   align-items: center;
@@ -76,6 +90,8 @@ button.citation-chip {
   color: var(--muted);
   cursor: pointer;
 }
+button.sidebar-expand { display: none; }
+.glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
 .sidebar-primary { display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
 .sidebar-nav-item {
   display: flex;
@@ -156,7 +172,7 @@ button.citation-chip {
   cursor: pointer;
   font: var(--type-body-sm);
 }
-.reading-workspace { display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 0; padding: var(--space-3) var(--page-gutter) var(--space-4); }
+.reading-workspace { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 0; padding: var(--space-3) var(--page-gutter) var(--space-4); }
 .today-heading { display: flex; align-items: center; gap: var(--space-2); padding-bottom: var(--space-section); }
 .today-heading h1 { margin: 0; color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
 .count { color: var(--muted); font: var(--type-body-sm); white-space: nowrap; }
@@ -165,6 +181,9 @@ button.citation-chip {
 .today-layout.has-schedule {
   grid-template-columns: minmax(0, var(--measure)) var(--side-column-width);
   width: min(100%, calc(var(--measure) + var(--space-region) + var(--side-column-width)));
+}
+.today-layout.has-schedule:has(.schedule-rail.is-collapsed) {
+  grid-template-columns: minmax(0, 1fr) var(--side-rail-width);
 }
 .today-main { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
 .today-connection { margin: 0; color: var(--ink); font: var(--type-body-md); }
@@ -223,6 +242,20 @@ button.citation-chip {
   background: var(--surface-lowest);
   box-shadow: var(--elevation-2);
 }
+.schedule-rail.is-collapsed .schedule-rail-body { display: none; }
+.schedule-rail-expand {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-3) 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.schedule-rail-collapse { margin-left: auto; }
+.schedule-rail-empty { margin: 0; padding: 0 var(--space-4) var(--space-4); color: var(--muted); font: var(--type-body-sm); }
 .card-header { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
 .card-title { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--ink); font: var(--type-title-md); }
 .card-title h2 { margin: 0; font: inherit; }
