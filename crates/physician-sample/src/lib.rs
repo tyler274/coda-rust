@@ -1,10 +1,15 @@
-//! Read-only physician projections for the Roger synthetic practice.
+//! Physician projections for the Roger synthetic practice.
 //!
 //! The FHIR corpus stays in coda-agents. These files are the physician JSON the
-//! React site already renders. Commands are rejected here; they do not run a model.
-//! The same server serves the Dioxus page, which mounts into `#main`.
+//! React site already renders. With `CODA_LOCAL_MODEL_EXECUTION` unset, commands
+//! are rejected and no model runs. `api` answers `message.submit` through the
+//! Rust local product. `PHYSICIAN_UPSTREAM` still forwards physician routes to
+//! the Node server when api mode is unset. The same server serves the Dioxus
+//! page, which mounts into `#main`.
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
+
+mod live;
 
 use std::env;
 use std::fs;
@@ -18,6 +23,7 @@ use axum::http::{HeaderValue, Method, Request, StatusCode};
 use axum::middleware::{self, Next};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
+use futures_util::TryStreamExt;
 use serde::Deserialize;
 use serde_json::{Value, json};
 
@@ -40,8 +46,41 @@ const WORKSPACE_IDS: [&str; 5] = [
     "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e",
 ];
 
-/// Builds the HTTP router.
+/// Builds the HTTP router. `PHYSICIAN_UPSTREAM` forwards physician routes.
 pub fn router() -> Router {
+    router_with(upstream_from_env())
+}
+
+fn router_with(upstream: Option<String>) -> Router {
+    let routes = match upstream {
+        Some(base) => proxied(base),
+        None => recorded(),
+    };
+    routes.layer(middleware::from_fn(cors))
+}
+
+fn recorded() -> Router {
+    site().route("/commands", post(reject_command)).route(
+        "/patient-workspaces/{id}/chats/{chat}/snapshot",
+        get(empty_snapshot),
+    )
+}
+
+fn live_router(model: live::ChatModel) -> Router {
+    site()
+        .route("/commands", post(live::submit))
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/snapshot",
+            get(live::snapshot),
+        )
+        .route("/patient-workspaces/events", get(live::events))
+        .with_state(live::Live::new(model))
+}
+
+fn site<S>() -> Router<S>
+where
+    S: Clone + Send + Sync + 'static,
+{
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
@@ -54,22 +93,126 @@ pub fn router() -> Router {
         )
         .route("/patient-workspaces/{id}", get(workspace))
         .route("/patient-roster", get(roster))
-        .route("/commands", post(reject_command))
         .route("/dictation", post(|| async { dictation_unavailable() }))
         .route(
             "/physician-state/drafts/{workspace}/{chat}",
             get(empty_draft).put(draft_not_saved),
-        )
-        .route(
-            "/patient-workspaces/{id}/chats/{chat}/snapshot",
-            get(empty_snapshot),
         )
         .route("/", get(site_index))
         .route("/index.html", get(site_index))
         .route("/assets/coda-health-logo-transparent.png", get(logo))
         .route("/favicon.svg", get(favicon))
         .fallback(site_file)
-        .layer(middleware::from_fn(cors))
+}
+
+fn proxied(upstream: String) -> Router {
+    Router::new()
+        .route("/", get(site_index))
+        .route("/index.html", get(site_index))
+        .route("/assets/coda-health-logo-transparent.png", get(logo))
+        .route("/favicon.svg", get(favicon))
+        .fallback(move |request: Request<Body>| {
+            let upstream = upstream.clone();
+            async move {
+                let path = request.uri().path().to_owned();
+                if physician_route(&path) {
+                    forward(&upstream, request).await
+                } else {
+                    site_file(request).await
+                }
+            }
+        })
+}
+
+fn upstream_from_env() -> Option<String> {
+    let value = env::var("PHYSICIAN_UPSTREAM").ok()?;
+    let value = value.trim().trim_end_matches('/').to_owned();
+    if value.is_empty() { None } else { Some(value) }
+}
+
+fn physician_route(path: &str) -> bool {
+    const PREFIXES: [&str; 14] = [
+        "/health",
+        "/today",
+        "/practice-day",
+        "/updates",
+        "/recent-conversations",
+        "/patient-workspaces",
+        "/patient-roster",
+        "/commands",
+        "/dictation",
+        "/physician-state",
+        "/connections",
+        "/director",
+        "/sessions",
+        "/local-proof",
+    ];
+    PREFIXES
+        .iter()
+        .any(|prefix| path == *prefix || path.starts_with(&format!("{prefix}/")))
+}
+
+async fn forward(upstream: &str, request: Request<Body>) -> Response {
+    let path = request
+        .uri()
+        .path_and_query()
+        .map(|query| query.as_str())
+        .unwrap_or("/");
+    let url = format!("{upstream}{path}");
+    let method = request.method().clone();
+    let content_type = request
+        .headers()
+        .get(axum::http::header::CONTENT_TYPE)
+        .cloned();
+    let accept = request.headers().get(axum::http::header::ACCEPT).cloned();
+    let last_event = request.headers().get("last-event-id").cloned();
+    let body = axum::body::to_bytes(request.into_body(), 1_000_000)
+        .await
+        .unwrap_or_default();
+    let method =
+        reqwest::Method::from_bytes(method.as_str().as_bytes()).unwrap_or(reqwest::Method::GET);
+    let mut outgoing = reqwest::Client::new().request(method, &url).body(body);
+    if let Some(value) = content_type {
+        outgoing = outgoing.header(axum::http::header::CONTENT_TYPE, value);
+    }
+    if let Some(value) = accept {
+        outgoing = outgoing.header(axum::http::header::ACCEPT, value);
+    }
+    if let Some(value) = last_event {
+        outgoing = outgoing.header("last-event-id", value);
+    }
+    let Ok(incoming) = outgoing.send().await else {
+        return StatusCode::BAD_GATEWAY.into_response();
+    };
+    let status =
+        StatusCode::from_u16(incoming.status().as_u16()).unwrap_or(StatusCode::BAD_GATEWAY);
+    let content_type = incoming
+        .headers()
+        .get(axum::http::header::CONTENT_TYPE)
+        .cloned();
+    let cache_control = incoming
+        .headers()
+        .get(axum::http::header::CACHE_CONTROL)
+        .cloned();
+    let bytes = incoming.bytes_stream().map_err(std::io::Error::other);
+    let mut response = Response::new(Body::from_stream(bytes));
+    *response.status_mut() = status;
+    if let Some(value) = header_value(content_type) {
+        response
+            .headers_mut()
+            .insert(axum::http::header::CONTENT_TYPE, value);
+    }
+    if let Some(value) = header_value(cache_control) {
+        response
+            .headers_mut()
+            .insert(axum::http::header::CACHE_CONTROL, value);
+    }
+    response
+}
+
+fn header_value(value: Option<reqwest::header::HeaderValue>) -> Option<HeaderValue> {
+    let value = value?;
+    HeaderValue::from_bytes(value.as_bytes()).ok()
 }
 
 /// Directory of `wasm-bindgen --target web` output. `PHYSICIAN_SITE_DIR` wins,
@@ -162,9 +305,64 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 
 /// Serves the router on `listener`.
 pub async fn serve(listener: tokio::net::TcpListener) {
-    axum::serve(listener, router())
-        .await
-        .expect("sample server");
+    let app = match router_from_env() {
+        Ok(app) => app,
+        Err(error) => {
+            eprintln!("{error}");
+            std::process::exit(1);
+        }
+    };
+    axum::serve(listener, app).await.expect("sample server");
+}
+
+fn router_from_env() -> Result<Router, String> {
+    let execution =
+        local_product::model_execution(env::var("CODA_LOCAL_MODEL_EXECUTION").ok().as_deref())?;
+    if execution != local_product::ModelExecution::Api {
+        return Ok(router());
+    }
+    let key = local_product::open_ai_api_key(
+        env::var("CODA_ALLOW_MODEL_CALLS").ok().as_deref(),
+        env::var("OPENAI_API_KEY").ok().as_deref(),
+    )?;
+    let owned = role_environment();
+    let environment: Vec<(&str, &str)> = owned
+        .iter()
+        .map(|(key, value)| (*key, value.as_str()))
+        .collect();
+    let roles = local_product::model_roles("openai-responses", &environment)?;
+    eprintln!(
+        "Model execution: api via OpenAI Responses (chat {} {}; background {} {}; worker {} {}; linking {} {})",
+        roles.chat.model,
+        roles.chat.effort,
+        roles.background.model,
+        roles.background.effort,
+        roles.worker.model,
+        roles.worker.effort,
+        roles.linking.model,
+        roles.linking.effort,
+    );
+    Ok(live_router(live::ChatModel::OpenAi {
+        key,
+        binding: roles.chat,
+    })
+    .layer(middleware::from_fn(cors)))
+}
+
+fn role_environment() -> Vec<(&'static str, String)> {
+    const KEYS: [&str; 8] = [
+        "CODA_CHAT_MODEL",
+        "CODA_CHAT_EFFORT",
+        "CODA_BACKGROUND_MODEL",
+        "CODA_BACKGROUND_EFFORT",
+        "CODA_WORKER_MODEL",
+        "CODA_WORKER_EFFORT",
+        "CODA_LINKING_MODEL",
+        "CODA_LINKING_EFFORT",
+    ];
+    KEYS.into_iter()
+        .filter_map(|key| env::var(key).ok().map(|value| (key, value)))
+        .collect()
 }
 
 async fn today(Query(query): Query<TodayQuery>) -> Response {
@@ -416,6 +614,47 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn an_unset_upstream_stays_recorded_and_a_set_one_forwards() {
+        let (status, today) = request(router_with(None), "GET", "/today", Body::empty()).await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(today.contains("not_yet_read"));
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let app =
+                Router::new().route("/health", axum::routing::get(|| async { "live-health" }));
+            axum::serve(listener, app).await.unwrap();
+        });
+        let (status, health) = request(
+            router_with(Some(format!("http://{address}"))),
+            "GET",
+            "/health",
+            Body::empty(),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        assert_eq!(health, "live-health");
+    }
+
+    async fn request(router: Router, method: &str, path: &str, body: Body) -> (StatusCode, String) {
+        let response = router
+            .oneshot(
+                Request::builder()
+                    .method(method)
+                    .uri(path)
+                    .body(body)
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let status = response.status();
+        let bytes = axum::body::to_bytes(response.into_body(), 2_000_000)
+            .await
+            .unwrap();
+        (status, String::from_utf8(bytes.to_vec()).unwrap())
+    }
+
+    #[tokio::test]
     async fn commands_are_rejected_without_a_model() {
         let response = router()
             .oneshot(
@@ -435,5 +674,45 @@ mod tests {
         let body: Value = serde_json::from_slice(&bytes).unwrap();
         assert_eq!(body["outcome"], "rejected");
         assert_eq!(body["message"], "Coda couldn’t resume that work.");
+    }
+
+    #[tokio::test]
+    async fn a_chat_message_is_answered_without_calling_openai() {
+        let app = live_router(live::ChatModel::Fixed("Noted.".to_owned()))
+            .layer(middleware::from_fn(cors));
+        let submit = r#"{"type":"message.submit","idempotency_key":"k1","payload":{"patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","chat_id":"chat-1","text":"Hello","physician_time_zone":"America/New_York"}}"#;
+        let (status, accepted) =
+            request(app.clone(), "POST", "/commands", Body::from(submit)).await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(accepted.contains("\"outcome\":\"accepted\""));
+        let snapshot_path =
+            "/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/chat-1/snapshot";
+        let mut snapshot = String::new();
+        for _ in 0..20 {
+            let (status, body) = request(app.clone(), "GET", snapshot_path, Body::empty()).await;
+            assert_eq!(status, StatusCode::OK);
+            snapshot = body;
+            if snapshot.contains("Noted.") {
+                break;
+            }
+            tokio::task::yield_now().await;
+        }
+        assert!(snapshot.contains("Hello"), "{snapshot}");
+        assert!(snapshot.contains("Noted."), "{snapshot}");
+        let (status, again) = request(app.clone(), "POST", "/commands", Body::from(submit)).await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(again.contains("\"outcome\":\"accepted\""));
+        tokio::task::yield_now().await;
+        let (_, snapshot) = request(app, "GET", snapshot_path, Body::empty()).await;
+        assert_eq!(snapshot.matches("Noted.").count(), 1, "{snapshot}");
+        let (status, rejected) = request(
+            live_router(live::ChatModel::Fixed("Noted.".to_owned())),
+            "POST",
+            "/commands",
+            Body::from(r#"{"type":"work.resume","idempotency_key":"k2"}"#),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(rejected.contains("Coda couldn’t resume that work."));
     }
 }

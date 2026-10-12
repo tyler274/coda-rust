@@ -12,7 +12,12 @@ async fn the_recorded_practice_is_visible() {
     let site = build_site();
     // SAFETY: this test is the only process that reads the variable, and it
     // sets it before the server starts.
-    unsafe { env::set_var("PHYSICIAN_SITE_DIR", &site) };
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::remove_var("PHYSICIAN_UPSTREAM");
+        env::remove_var("CODA_LOCAL_MODEL_EXECUTION");
+        env::remove_var("CODA_ALLOW_MODEL_CALLS");
+    }
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     tokio::spawn(async move { physician_sample::serve(listener).await });
