@@ -47,3 +47,11 @@ Source: <a href="/submodules/coda-app/docs/README%2Emd#product-research-and-cali
 ## Change discipline
 
 Change discipline stays in <a href="/submodules/coda-app/docs/README%2Emd#change-discipline"><code>docs/README.md</code></a>.
+
+## The other checkouts
+
+The chapters above follow Duet's reading order. This checkout also holds the physician harness work, Gym, and computer use; which work belongs where stays in the routing table in `AGENTS.md`.
+
+- [Physician site](physician-site.md): the Rust physician page, the sample server, and the Coda Agents contracts it implements.
+- [Coda Gym](coda-gym.md): clinical case authoring, environments, and scoring.
+- [Computer use](computer-use.md): browser use for browser EHRs.

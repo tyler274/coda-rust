@@ -22,3 +22,6 @@
 - [Insight lab](insight-lab.md)
 - [Insight visual contract](visual-contract.md)
 - [GCP deployment](gcp.md)
+- [Physician site](physician-site.md)
+- [Coda Gym](coda-gym.md)
+- [Computer use](computer-use.md)
