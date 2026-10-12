@@ -94,7 +94,9 @@
             corepack prepare pnpm@10.33.0 --activate
           fi
           if doppler me >/dev/null 2>&1; then
-            eval "$(doppler secrets download --no-file --format env-no-quotes --project coda-rust --config dev 2>/dev/null)" || true
+            while IFS= read -r line; do
+              [ -n "$line" ] && export "$line"
+            done < <(doppler secrets download --no-file --format env-no-quotes --project coda-rust --config dev 2>/dev/null || true)
           fi
         '';
       };
