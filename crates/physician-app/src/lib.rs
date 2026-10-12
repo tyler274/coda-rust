@@ -14,8 +14,9 @@ use shell::{
     ChatView, KeyInput, NavCommand, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
     TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
     WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, connection_lines, format_calendar_date,
-    format_clock, format_waited, keyboard_command, need_you_words, opens_reader, patient_visit,
-    synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    format_clock, format_waited, keyboard_command, need_you_words, opens_reader,
+    patient_upcoming_visits, summary_times, synopsis_pieces, today_lines, today_view,
+    upcoming_visits, work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -246,12 +247,14 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
         .and_then(|list| list.as_ref())
         .map(today_lines)
         .unwrap_or_default();
-    let open_visit = day.and_then(|day| {
-        selected
-            .read()
-            .as_deref()
-            .and_then(|id| patient_visit(day, id))
-    });
+    let patient_visits = day
+        .and_then(|day| {
+            selected
+                .read()
+                .as_deref()
+                .map(|id| patient_upcoming_visits(day, id))
+        })
+        .unwrap_or_default();
     let recent_read = recent.read();
     let search_rows = found
         .read()
@@ -327,12 +330,16 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                     });
                     return;
                 }
+                let rail = if place() == Place::Workspace {
+                    patient_visits.clone()
+                } else {
+                    visits.clone()
+                };
                 let targets = focus_targets(
                     search_open(),
                     place(),
                     &today_state,
-                    &visits,
-                    open_visit.clone(),
+                    &rail,
                     &search_rows,
                 );
                 let Some(command) = keyboard_command(&KeyInput {
@@ -543,7 +550,8 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             name: open_name.clone().unwrap_or_default(),
                             workspace: open_workspace.clone(),
                             rows: patient_rows.clone(),
-                            visit: open_visit.clone(),
+                            visits: patient_visits.clone(),
+                            focused: shown_focus,
                             chats: chats.clone(),
                             server_now: server_now.clone(),
                             draft: draft(),
@@ -724,7 +732,13 @@ fn TodaySurface(
                     }
                 }
                 if !visits.is_empty() {
-                    ScheduleRail { visits: visits.clone(), focused: visit_focus, on_open: on_open_visit }
+                    ScheduleRail {
+                        visits: visits.clone(),
+                        title: "Schedule",
+                        name_the_visit: false,
+                        focused: visit_focus,
+                        on_open: on_open_visit,
+                    }
                 }
             }
         }
@@ -789,18 +803,20 @@ fn TodayRows(
 #[component]
 fn ScheduleRail(
     visits: Vec<VisitLine>,
+    title: &'static str,
+    name_the_visit: bool,
     focused: Option<usize>,
     on_open: EventHandler<VisitLine>,
 ) -> Element {
     let count = visits.len();
     rsx! {
-        aside { class: "schedule-rail", aria_label: "Schedule",
+        aside { class: "schedule-rail", aria_label: "{title}",
             header { class: "card-header",
                 span { class: "icon-tile", aria_hidden: "true",
                     Icon { name: IconName::Calendar }
                 }
                 div { class: "card-title",
-                    h2 { "Schedule" }
+                    h2 { "{title}" }
                     span { class: "count", span { class: "count-value", "{count}" } " left" }
                 }
             }
@@ -821,7 +837,12 @@ fn ScheduleRail(
                     if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
                         time { datetime: "{visit.starts_at}", "{clock}" }
                     }
-                    strong { "{visit.patient}" }
+                    strong { if name_the_visit { "{visit.label}" } else { "{visit.patient}" } }
+                    if name_the_visit {
+                        if let Some(cue) = &visit.cue {
+                            span { class: "schedule-visit-preparation", "{cue}" }
+                        }
+                    }
                 }
             }
         }
@@ -861,7 +882,8 @@ fn PatientSurface(
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
     rows: Vec<TodayLine>,
-    visit: Option<VisitLine>,
+    visits: Vec<VisitLine>,
+    focused: Option<i32>,
     chats: ChatView,
     server_now: String,
     draft: String,
@@ -915,6 +937,18 @@ fn PatientSurface(
             .iter()
             .find_map(|number| number.value.clone())
     });
+    let times = workspace
+        .as_ref()
+        .map(|open| summary_times(open, &server_now))
+        .unwrap_or_default();
+    let visit_focus = focused.and_then(|index| {
+        if index >= 0 && (index as usize) < visits.len() {
+            Some(index as usize)
+        } else {
+            None
+        }
+    });
+    let scheduled = !visits.is_empty();
     rsx! {
         div { class: "reading-workspace patient-page",
             header { class: "patient-identity",
@@ -934,10 +968,12 @@ fn PatientSurface(
                     }
                 }
             }
+            div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
+            div { class: "today-main",
             if !rows.is_empty() {
                 TodayRows {
                     rows,
-                    server_now,
+                    server_now: server_now.clone(),
                     focused: None,
                     on_open: move |line: TodayLine| {
                         if opens_reader(&line.kind) {
@@ -956,11 +992,12 @@ fn PatientSurface(
                             r#type: "button",
                             onclick: {
                                 let heading = heading.clone();
-                                let visit = visit.clone();
+                                let preparation = visits
+                                    .first()
+                                    .and_then(|visit| visit.preparation.clone());
                                 move |_| {
-                                    let body = visit
-                                        .as_ref()
-                                        .and_then(|visit| visit.preparation.clone())
+                                    let body = preparation
+                                        .clone()
                                         .or_else(|| work_end_reason(run.ended_cause.as_deref()).map(str::to_owned))
                                         .unwrap_or_default();
                                     on_read.call((heading.clone(), body));
@@ -974,29 +1011,19 @@ fn PatientSurface(
                     }
                 }
             }
-            if let Some(visit) = visit.clone() {
-                section { class: "patient-section", aria_label: "Visit",
-                    h2 { "Visit" }
-                    button {
-                        class: "schedule-visit",
-                        r#type: "button",
-                        onclick: move |_| {
-                            let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
-                            on_read.call((
-                                format!("{} {clock}", visit.patient),
-                                visit.preparation.clone().unwrap_or_default(),
-                            ));
-                        },
-                        if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
-                            time { "{clock}" }
-                        }
-                        strong { "{visit.label}" }
-                    }
-                }
-            }
             if !segments.is_empty() {
                 section { class: "patient-section", aria_label: "Patient summary",
                     h2 { "Patient summary" }
+                    if !times.is_empty() {
+                        p { class: "patient-synopsis-meta",
+                            for (index, mark) in times.iter().enumerate() {
+                                if index > 0 {
+                                    " · "
+                                }
+                                time { datetime: "{mark.instant}", "{mark.label} {mark.words}" }
+                            }
+                        }
+                    }
                     div { class: "synopsis",
                         for piece in synopsis_pieces(&segments) {
                             match piece {
@@ -1067,6 +1094,23 @@ fn PatientSurface(
                     },
                 }
             }
+            }
+            if !visits.is_empty() {
+                ScheduleRail {
+                    visits: visits.clone(),
+                    title: "Upcoming visits",
+                    name_the_visit: true,
+                    focused: visit_focus,
+                    on_open: move |visit: VisitLine| {
+                        let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
+                        on_read.call((
+                            format!("{} {clock}", visit.label),
+                            visit.preparation.clone().unwrap_or_default(),
+                        ));
+                    },
+                }
+            }
+        }
         }
     }
 }
@@ -1196,7 +1240,6 @@ fn focus_targets(
     place: Place,
     today: &TodayView,
     visits: &[VisitLine],
-    open_visit: Option<VisitLine>,
     search_rows: &[physician_wire::PatientSearchRow],
 ) -> Vec<FocusTarget> {
     if search_open {
@@ -1207,9 +1250,7 @@ fn focus_targets(
     }
     let mut targets = Vec::new();
     if place == Place::Workspace {
-        if let Some(visit) = open_visit {
-            targets.push(FocusTarget::Visit(visit));
-        }
+        targets.extend(visits.iter().cloned().map(FocusTarget::Visit));
         return targets;
     }
     if place == Place::Today {

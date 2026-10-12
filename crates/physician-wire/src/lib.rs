@@ -266,6 +266,12 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// The `active_follow_ups` value.
     pub active_follow_ups: Vec<FollowUp>,
+    #[serde(default)]
+    /// When Coda last completed a review of the patient's whole care.
+    pub last_reviewed_at: Option<String>,
+    #[serde(default)]
+    /// Connected record sources, including each last good pull.
+    pub connected_sources: Vec<ConnectedSource>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -315,6 +321,39 @@ pub struct PatientSynopsis {
     #[serde(default)]
     /// Typed text and citation segments. The page renders these, not marker strings.
     pub segments: Vec<ClinicalSegment>,
+    #[serde(default)]
+    /// When this summary version was written.
+    pub authored_at: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// One connected record source on the workspace.
+pub struct ConnectedSource {
+    #[serde(default)]
+    /// The source's current pull state.
+    pub state: SourceConnectionState,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// The pull state of one connected source.
+pub struct SourceConnectionState {
+    #[serde(default)]
+    /// `usable`, `refreshing`, `failed`, or another server state.
+    pub state: String,
+    #[serde(default)]
+    /// When this state last pulled records.
+    pub synchronized_at: Option<String>,
+    #[serde(default)]
+    /// The last good pull, kept when a later pull failed.
+    pub usable_snapshot: Option<SourceSnapshot>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// A retained good pull.
+pub struct SourceSnapshot {
+    #[serde(default)]
+    /// When that pull finished.
+    pub synchronized_at: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

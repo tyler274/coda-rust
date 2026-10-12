@@ -2,8 +2,8 @@
 //! The reader shows the row the physician chose. It does not fetch a citation.
 
 use physician_wire::{
-    AutomationRun, ClinicalSegment, PatientWorkspaceResponse, PracticeDayResponse, TodayConnection,
-    TodayListResponse, TodayRow, VisitPreparation,
+    AutomationRun, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse, PracticeDayResponse,
+    TodayConnection, TodayListResponse, TodayRow, VisitPreparation,
 };
 
 pub const TODAY_LOADING: &str = "Loading Today…";
@@ -38,7 +38,10 @@ pub struct VisitLine {
     pub label: String,
     pub starts_at: String,
     pub time_zone: String,
+    /// The long preparation sentence, for the reader. The rail uses `cue`.
     pub preparation: Option<String>,
+    /// The short preparation cue shown on the visit, such as `Preparation failed`.
+    pub cue: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -164,15 +167,41 @@ fn visit_line(day: &PracticeDayResponse, visit: &physician_wire::PracticeVisit) 
             .clone()
             .unwrap_or_else(|| day.time_zone.clone()),
         preparation: visit.preparation.as_ref().and_then(preparation_sentence),
+        cue: visit.preparation.as_ref().and_then(preparation_cue),
     }
 }
 
-/// The patient's recorded visit, including one that has already ended.
-pub fn patient_visit(day: &PracticeDayResponse, workspace_id: &str) -> Option<VisitLine> {
-    day.visits
-        .iter()
-        .find(|visit| visit.patient_workspace_id.as_deref() == Some(workspace_id))
-        .map(|visit| visit_line(day, visit))
+/// Visits still ahead for one patient, in the practice day's order.
+pub fn patient_upcoming_visits(day: &PracticeDayResponse, workspace_id: &str) -> Vec<VisitLine> {
+    upcoming_visits(day)
+        .into_iter()
+        .filter(|visit| visit.workspace_id.as_deref() == Some(workspace_id))
+        .collect()
+}
+
+/// The short cue on a visit. Scheduled and not-yet-prepared stays quiet.
+pub fn preparation_cue(preparation: &VisitPreparation) -> Option<String> {
+    if matches!(preparation.state.as_str(), "scheduled" | "pending") {
+        return None;
+    }
+    let label = if let Some(attempt) = &preparation.last_attempt {
+        match attempt.outcome.as_str() {
+            "retained" => "Preparation incomplete",
+            "failed" => "Preparation failed",
+            "cancelled" => "Preparation stopped",
+            "interrupted" => "Preparation interrupted",
+            _ => return None,
+        }
+    } else {
+        match preparation.state.as_str() {
+            "preparing" => "Preparing visit",
+            "prepared" => "Briefing ready",
+            "could_not_prepare" => "Couldn’t prepare",
+            "unavailable" => "Preparation unavailable",
+            _ => return None,
+        }
+    };
+    Some(label.to_owned())
 }
 
 pub fn preparation_sentence(preparation: &VisitPreparation) -> Option<String> {
@@ -443,6 +472,100 @@ pub fn format_clock(iso: &str, zone: &str) -> Option<String> {
         _ => (hour - 12, "PM"),
     };
     Some(format!("{hour12}:{minute:02} {suffix}"))
+}
+
+/// A time against the practice day's clock: `Today, 8:00 AM` on that day.
+pub fn format_context_time(iso: &str, zone: &str, now: &str) -> Option<String> {
+    let clock = format_clock(iso, zone)?;
+    let day = local_day(iso, zone)?;
+    let today = local_day(now, zone)?;
+    let prefix = match day - today {
+        0 => "Today",
+        -1 => "Yesterday",
+        1 => "Tomorrow",
+        _ => return Some(clock),
+    };
+    Some(format!("{prefix}, {clock}"))
+}
+
+fn local_day(iso: &str, zone: &str) -> Option<i64> {
+    let unix = parse_unix(iso)?;
+    let offset = zone_offset(zone, unix)?;
+    Some((unix + i64::from(offset)).div_euclid(86_400))
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+/// One time beside the patient summary.
+pub struct SummaryTime {
+    /// `Summary written`, `Care reviewed`, or `Records as of`.
+    pub label: &'static str,
+    /// The source instant.
+    pub instant: String,
+    /// The words shown, such as `Today, 8:00 AM`.
+    pub words: String,
+}
+
+/// Summary written, care reviewed, and records as of. A missing field adds nothing.
+pub fn summary_times(workspace: &PatientWorkspaceResponse, now: &str) -> Vec<SummaryTime> {
+    let zone = workspace.time_zone.as_deref().unwrap_or("");
+    let mut times = Vec::new();
+    if let Some(instant) = workspace
+        .patient_synopsis
+        .as_ref()
+        .and_then(|synopsis| synopsis.authored_at.clone())
+    {
+        push_summary_time(&mut times, "Summary written", instant, zone, now);
+    }
+    if let Some(instant) = workspace.last_reviewed_at.clone() {
+        push_summary_time(&mut times, "Care reviewed", instant, zone, now);
+    }
+    if let Some(instant) = records_as_of(&workspace.connected_sources) {
+        push_summary_time(&mut times, "Records as of", instant, zone, now);
+    }
+    times
+}
+
+fn push_summary_time(
+    times: &mut Vec<SummaryTime>,
+    label: &'static str,
+    instant: String,
+    zone: &str,
+    now: &str,
+) {
+    let Some(words) = format_context_time(&instant, zone, now) else {
+        return;
+    };
+    times.push(SummaryTime {
+        label,
+        instant,
+        words,
+    });
+}
+
+/// The oldest last good pull among the patient's connected sources.
+pub fn records_as_of(sources: &[ConnectedSource]) -> Option<String> {
+    let mut oldest: Option<(i64, String)> = None;
+    for source in sources {
+        let instant = match source.state.state.as_str() {
+            "usable" | "refreshing" => source.state.synchronized_at.clone(),
+            "failed" => source
+                .state
+                .usable_snapshot
+                .as_ref()
+                .and_then(|snapshot| snapshot.synchronized_at.clone()),
+            _ => None,
+        };
+        let Some(instant) = instant else {
+            continue;
+        };
+        let Some(unix) = parse_unix(&instant) else {
+            continue;
+        };
+        if oldest.as_ref().is_none_or(|(when, _)| unix < *when) {
+            oldest = Some((unix, instant));
+        }
+    }
+    oldest.map(|(_, instant)| instant)
 }
 
 fn zone_offset(zone: &str, unix: i64) -> Option<i32> {
@@ -743,13 +866,18 @@ mod tests {
             Some("3:30 PM")
         );
         let mary = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
-        let visit = patient_visit(&day, mary).unwrap();
+        let jake = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
+        assert!(patient_upcoming_visits(&day, jake).is_empty());
+        let ahead_for_mary = patient_upcoming_visits(&day, mary);
+        assert_eq!(ahead_for_mary.len(), 1);
+        assert_eq!(ahead_for_mary[0].label, "Follow-up visit");
+        assert_eq!(ahead_for_mary[0].cue.as_deref(), Some("Preparation failed"));
         assert_eq!(
-            visit.preparation.as_deref(),
+            ahead_for_mary[0].preparation.as_deref(),
             Some("Visit preparation failed. No new briefing was completed.")
         );
         assert_eq!(
-            format_clock(&visit.starts_at, &visit.time_zone).as_deref(),
+            format_clock(&ahead_for_mary[0].starts_at, &ahead_for_mary[0].time_zone).as_deref(),
             Some("3:30 PM")
         );
         let workspace: PatientWorkspaceResponse = serde_json::from_str(include_str!(
@@ -814,6 +942,45 @@ mod tests {
                 && patient.birth_date.as_deref() == Some("1972-03-18")
         }));
         assert_eq!(format_calendar_date("1972-03-18"), "Mar 18, 1972");
+        let times = summary_times(&workspace, &day.current_time);
+        assert_eq!(
+            times
+                .iter()
+                .map(|time| (time.label, time.words.as_str()))
+                .collect::<Vec<_>>(),
+            vec![
+                ("Summary written", "Today, 8:00 AM"),
+                ("Records as of", "Today, 12:57 PM"),
+            ]
+        );
+        let mut reviewed = workspace.clone();
+        reviewed.last_reviewed_at = Some("2026-08-26T16:00:00.000Z".to_owned());
+        assert!(
+            summary_times(&reviewed, &day.current_time)
+                .iter()
+                .any(|time| {
+                    time.label == "Care reviewed" && time.words == "Yesterday, 12:00 PM"
+                })
+        );
+        let older = records_as_of(&[
+            physician_wire::ConnectedSource {
+                state: physician_wire::SourceConnectionState {
+                    state: "usable".to_owned(),
+                    synchronized_at: Some("2026-08-27T16:57:53.508Z".to_owned()),
+                    usable_snapshot: None,
+                },
+            },
+            physician_wire::ConnectedSource {
+                state: physician_wire::SourceConnectionState {
+                    state: "failed".to_owned(),
+                    synchronized_at: Some("2026-08-27T18:00:00.000Z".to_owned()),
+                    usable_snapshot: Some(physician_wire::SourceSnapshot {
+                        synchronized_at: Some("2026-08-27T12:00:00.000Z".to_owned()),
+                    }),
+                },
+            },
+        ]);
+        assert_eq!(older.as_deref(), Some("2026-08-27T12:00:00.000Z"));
         let updates: physician_wire::UpdatesResponse =
             serde_json::from_str(include_str!("../../physician-sample/fixtures/updates.json"))
                 .unwrap();
