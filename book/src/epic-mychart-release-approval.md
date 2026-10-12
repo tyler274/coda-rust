@@ -4,8 +4,8 @@ Epic registration and the production gate stay in this packet. No Rust crate tal
 
 - <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#epic-mychart-release-approval">Epic MyChart release approval</a>
 - <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#authority-and-current-state">Authority and current state</a>
-- <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#epic-registration-readback-august-27-2026">Epic registration readback — August 27, 2026</a>
-- <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#epic-production-listing-readback-september-1-2026">Epic production-listing readback — September 1, 2026</a>
+- <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#epic-registration-readback--august-27-2026">Epic registration readback — August 27, 2026</a>
+- <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#epic-production-listing-readback--september-1-2026">Epic production-listing readback — September 1, 2026</a>
 - <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#callback-semantics">Callback semantics</a>
 - <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#selected-read-only-r4-access">Selected read-only R4 access</a>
 - <a href="/submodules/coda-app/docs/epic-mychart-release-approval%2Emd#completed-synthetic-sandbox-proof">Completed synthetic sandbox proof</a>

@@ -6,7 +6,7 @@ No Rust crate owns catalog identity, licensing storage, or the migration. The Py
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#purpose">Purpose</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#settled-boundaries">Settled boundaries</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#four-separate-data-products">Four separate data products</a>
-- <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#current-use-and-retained-inventory-september-8-2026">Current use and retained inventory — September 8, 2026</a>
+- <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#current-use-and-retained-inventory--september-8-2026">Current use and retained inventory — September 8, 2026</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#what-the-app-uses-today">What the app uses today</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#active-release-receipt">Active release receipt</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#storage-and-future-luna-access">Storage and future Luna access</a>
@@ -21,6 +21,6 @@ No Rust crate owns catalog identity, licensing storage, or the migration. The Py
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#staged-program-and-proof-gates">Staged program and proof gates</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#rejection-gates">Rejection gates</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#catalog-operator-commands">Catalog operator commands</a>
-- <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#official-source-r2-activation-receipt-august-30-2026">Official-source r2 activation receipt — August 30, 2026</a>
+- <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#official-source-r2-activation-receipt--august-30-2026">Official-source r2 activation receipt — August 30, 2026</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#cumulative-source-extensions">Cumulative source extensions</a>
 - <a href="/submodules/coda-app/docs/clinical-catalog-migration%2Emd#september-5-review">September 5 review</a>
