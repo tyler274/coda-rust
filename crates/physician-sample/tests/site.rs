@@ -45,6 +45,7 @@ async fn the_recorded_practice_is_visible() {
             && workspace.contains("MRN 00000005")
             && workspace.contains("Gender Female")
             && workspace.contains("[1]")
+            && workspace.contains("Source 2: Discharge Summary. Preview source.")
             && workspace.contains("Upcoming visits")
             && workspace.contains("3:30 PM")
             && workspace.contains("Follow-up visit")

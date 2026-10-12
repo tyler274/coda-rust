@@ -2,8 +2,9 @@
 //! The reader shows the row the physician chose. It does not fetch a citation.
 
 use physician_wire::{
-    AutomationRun, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse, PracticeDayResponse,
-    TodayConnection, TodayListResponse, TodayRow, VisitPreparation,
+    AutomationRun, CitationDestination, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse,
+    PracticeDayResponse, SourcePresentation, TodayConnection, TodayListResponse, TodayRow,
+    VisitPreparation,
 };
 
 pub const TODAY_LOADING: &str = "Loading Today…";
@@ -271,6 +272,66 @@ pub struct SourceChip {
     pub index: usize,
     /// The source title.
     pub label: String,
+    /// A resolved citation opens. An unresolved one stays a static chip.
+    pub open: bool,
+    /// The lead's preview prose. Empty when the chip stays closed.
+    pub preview: String,
+    /// The preview's as-of date, as the citation recorded it.
+    pub as_of: String,
+    /// `Open in {chart}` or `Open original` when a native link exists.
+    pub open_label: Option<String>,
+    /// The native destination URI.
+    pub open_uri: Option<String>,
+}
+
+/// The accessible name React gives a source chip.
+pub fn chip_name(chip: &SourceChip) -> String {
+    if chip.open {
+        format!("Source {}: {}. Preview source.", chip.index, chip.label)
+    } else {
+        format!("Source {} unavailable", chip.index)
+    }
+}
+
+/// Splits preview prose on a blank line, the way the React preview does.
+pub fn preview_paragraphs(text: &str) -> Vec<String> {
+    let mut paragraphs = Vec::new();
+    let bytes = text.as_bytes();
+    let mut start = 0;
+    let mut index = 0;
+    while index < bytes.len() {
+        if bytes[index] == b'\n' {
+            let mut end = index;
+            while end < bytes.len() && bytes[end] == b'\n' {
+                end += 1;
+            }
+            if end - index >= 2 {
+                let piece = text[start..index].trim();
+                if !piece.is_empty() {
+                    paragraphs.push(piece.to_owned());
+                }
+                start = end;
+            }
+            index = end;
+        } else {
+            index += 1;
+        }
+    }
+    let piece = text[start..].trim();
+    if !piece.is_empty() {
+        paragraphs.push(piece.to_owned());
+    }
+    paragraphs
+}
+
+/// `Prepared by Coda · as of {as_of}` when the citation recorded a date.
+pub fn prepared_line(as_of: &str) -> Option<String> {
+    let as_of = as_of.trim();
+    if as_of.is_empty() {
+        None
+    } else {
+        Some(format!("Prepared by Coda · as of {as_of}"))
+    }
 }
 
 /// Groups typed segments the way the React citation run does.
@@ -295,6 +356,8 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
                         source,
                         source_id,
                         handle,
+                        source_presentation,
+                        destination,
                     } = &segments[index]
                     else {
                         break;
@@ -307,15 +370,13 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
                         &mut numbers,
                         &mut next,
                     );
-                    let label = display_label
-                        .as_deref()
-                        .map(str::trim)
-                        .filter(|label| !label.is_empty())
-                        .unwrap_or("Source");
-                    chips.push(SourceChip {
-                        index: number,
-                        label: label.to_owned(),
-                    });
+                    chips.push(source_chip(
+                        number,
+                        state,
+                        display_label.as_deref(),
+                        source_presentation.as_ref(),
+                        destination.as_ref(),
+                    ));
                     if index + 1 < segments.len()
                         && matches!(segments[index + 1], ClinicalSegment::Citation { .. })
                     {
@@ -340,6 +401,74 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
         }
     }
     parts
+}
+
+fn source_chip(
+    index: usize,
+    state: &str,
+    display_label: Option<&str>,
+    presentation: Option<&SourcePresentation>,
+    destination: Option<&CitationDestination>,
+) -> SourceChip {
+    let label = display_label
+        .map(str::trim)
+        .filter(|label| !label.is_empty())
+        .unwrap_or("Source");
+    let open = state == "resolved";
+    let content = presentation.and_then(|presentation| presentation.content.as_ref());
+    let (preview, as_of) = if open {
+        (
+            content
+                .map(|content| content.text.clone())
+                .unwrap_or_default(),
+            content
+                .map(|content| content.as_of.clone())
+                .unwrap_or_default(),
+        )
+    } else {
+        (String::new(), String::new())
+    };
+    let (open_label, open_uri) = native_open(open, destination);
+    SourceChip {
+        index,
+        label: label.to_owned(),
+        open,
+        preview,
+        as_of,
+        open_label,
+        open_uri,
+    }
+}
+
+fn native_open(
+    open: bool,
+    destination: Option<&CitationDestination>,
+) -> (Option<String>, Option<String>) {
+    if !open {
+        return (None, None);
+    }
+    let Some(destination) = destination else {
+        return (None, None);
+    };
+    if destination.kind != "source_native" {
+        return (None, None);
+    }
+    let Some(uri) = destination
+        .uri
+        .as_deref()
+        .map(str::trim)
+        .filter(|uri| !uri.is_empty())
+    else {
+        return (None, None);
+    };
+    let label = destination
+        .source_label
+        .as_deref()
+        .map(str::trim)
+        .filter(|label| !label.is_empty())
+        .map(|label| format!("Open in {label}"))
+        .unwrap_or_else(|| "Open original".to_owned());
+    (Some(label), Some(uri.to_owned()))
 }
 
 fn chip_number(
@@ -893,13 +1022,83 @@ mod tests {
                 .contains("Mary Louis")
         );
         let pieces = synopsis_pieces(&synopsis.segments);
-        let chips = pieces.iter().find_map(|piece| match piece {
-            SynopsisPiece::Chips(chips) => Some(chips),
+        let chips: Vec<_> = pieces
+            .iter()
+            .filter_map(|piece| match piece {
+                SynopsisPiece::Chips(chips) => Some(chips.as_slice()),
+                SynopsisPiece::Text(_) => None,
+            })
+            .flatten()
+            .collect();
+        let chart = chips.iter().find(|chip| chip.index == 1).expect("chip 1");
+        assert!(chart.open);
+        assert_eq!(chart.label, "Mary Louis");
+        assert!(chart.preview.contains("Date of birth: 1972-03-18"));
+        assert_eq!(chart.as_of, "June 23, 2026");
+        assert_eq!(
+            prepared_line(&chart.as_of).as_deref(),
+            Some("Prepared by Coda · as of June 23, 2026")
+        );
+        let discharge = chips.iter().find(|chip| chip.index == 2).expect("chip 2");
+        assert_eq!(discharge.label, "Discharge Summary");
+        assert_eq!(discharge.as_of, "April 13, 2026");
+        assert_eq!(discharge.open_label.as_deref(), Some("Open in Demo chart"));
+        assert!(
+            discharge
+                .open_uri
+                .as_deref()
+                .is_some_and(|uri| uri.contains("DocumentReference"))
+        );
+        assert_eq!(
+            chip_name(discharge),
+            "Source 2: Discharge Summary. Preview source."
+        );
+        assert_eq!(
+            preview_paragraphs("First paragraph.\n\nSecond paragraph."),
+            vec![
+                "First paragraph.".to_owned(),
+                "Second paragraph.".to_owned()
+            ]
+        );
+        let closed = synopsis_pieces(&[ClinicalSegment::Citation {
+            state: "unavailable".to_owned(),
+            display_label: Some("Missing note".to_owned()),
+            source: Some("demo".to_owned()),
+            source_id: Some("doc".to_owned()),
+            handle: Some("h".to_owned()),
+            source_presentation: Some(SourcePresentation {
+                content: Some(physician_wire::SourcePreviewContent {
+                    text: "This stays closed.".to_owned(),
+                    as_of: "April 13, 2026".to_owned(),
+                }),
+            }),
+            destination: Some(CitationDestination {
+                kind: "source_native".to_owned(),
+                source_label: Some("Demo chart".to_owned()),
+                uri: Some("/local-ehr/closed".to_owned()),
+            }),
+        }]);
+        let closed_chip = closed.iter().find_map(|piece| match piece {
+            SynopsisPiece::Chips(chips) => chips.first(),
             SynopsisPiece::Text(_) => None,
         });
-        let chips = chips.expect("a source chip");
-        assert_eq!(chips[0].index, 1);
-        assert_eq!(chips[0].label, "Mary Louis");
+        let closed_chip = closed_chip.expect("an unresolved chip");
+        assert!(!closed_chip.open);
+        assert!(closed_chip.preview.is_empty());
+        assert!(closed_chip.open_uri.is_none());
+        assert_eq!(chip_name(closed_chip), "Source 1 unavailable");
+        let unlabeled = source_chip(
+            3,
+            "resolved",
+            Some("Lab"),
+            None,
+            Some(&CitationDestination {
+                kind: "source_native".to_owned(),
+                source_label: None,
+                uri: Some("/local-ehr/lab".to_owned()),
+            }),
+        );
+        assert_eq!(unlabeled.open_label.as_deref(), Some("Open original"));
         assert!(pieces.iter().all(|piece| match piece {
             SynopsisPiece::Text(text) => !text.contains("[[patient_source"),
             SynopsisPiece::Chips(_) => true,

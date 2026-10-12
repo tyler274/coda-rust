@@ -382,7 +382,46 @@ pub enum ClinicalSegment {
         #[serde(default)]
         /// The record handle inside that source.
         handle: Option<String>,
+        #[serde(default)]
+        /// The lead's short preview of this source.
+        source_presentation: Option<SourcePresentation>,
+        #[serde(default)]
+        /// Where the original record can be opened.
+        destination: Option<CitationDestination>,
     },
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// The preview stored on a citation.
+pub struct SourcePresentation {
+    #[serde(default)]
+    /// The preview body and its as-of date.
+    pub content: Option<SourcePreviewContent>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// The text a source chip opens.
+pub struct SourcePreviewContent {
+    #[serde(default)]
+    /// The preview prose.
+    pub text: String,
+    #[serde(default)]
+    /// The as-of date, already written for display.
+    pub as_of: String,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// A link from a citation back to its record.
+pub struct CitationDestination {
+    #[serde(default)]
+    /// `source_native` opens the connected chart.
+    pub kind: String,
+    #[serde(default)]
+    /// The chart name, such as Demo chart.
+    pub source_label: Option<String>,
+    #[serde(default)]
+    /// The destination URI as the server recorded it.
+    pub uri: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

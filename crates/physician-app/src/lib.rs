@@ -11,12 +11,13 @@ use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{PatientWorkspaceResponse, RecentConversation};
 use shell::{
-    ChatView, KeyInput, NavCommand, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
-    TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
-    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, connection_lines, format_calendar_date,
-    format_clock, format_waited, keyboard_command, need_you_words, opens_reader,
-    patient_upcoming_visits, summary_times, synopsis_pieces, today_lines, today_view,
-    upcoming_visits, work_end_reason, work_heading,
+    ChatView, KeyInput, NavCommand, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
+    TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
+    WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name,
+    connection_lines, format_calendar_date, format_clock, format_waited, keyboard_command,
+    need_you_words, opens_reader, patient_upcoming_visits, prepared_line, preview_paragraphs,
+    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -63,7 +64,7 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let mut connections_open = use_signal(|| false);
     let mut draft = use_signal(String::new);
     let mut notice = use_signal(String::new);
-    let mut reading = use_signal(|| None::<(String, String)>);
+    let mut reading = use_signal(|| None::<OpenReading>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
     let mut moved = use_signal(|| false);
@@ -515,7 +516,7 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
                             on_open_row: move |line: TodayLine| {
                                 let reading_text = if opens_reader(&line.kind) {
-                                    Some((line.patient.clone(), line.reason.clone()))
+                                    Some(prose_reading(line.patient.clone(), line.reason.clone()))
                                 } else {
                                     None
                                 };
@@ -557,7 +558,12 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             draft: draft(),
                             notice: notice(),
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
-                            on_read: move |(title, body): (String, String)| reading.set(Some((title, body))),
+                            on_read: move |(title, body): (String, String)| {
+                                reading.set(Some(prose_reading(title, body)));
+                            },
+                            on_open_source: move |chip: SourceChip| {
+                                reading.set(Some(source_reading(chip)));
+                            },
                             on_draft: move |value: String| draft.set(value),
                             messages: snapshot_lines.clone().unwrap_or_default(),
                             snapshot_failed: snapshot.read().as_ref().is_some_and(|result| result.is_err()),
@@ -633,10 +639,9 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                 on_close: move |_| connections_open.set(false),
             }
         }
-        if let Some((title, body)) = reading() {
+        if let Some(open) = reading() {
             ReaderDialog {
-                title,
-                body,
+                reading: open,
                 on_close: move |_| reading.set(None),
             }
         }
@@ -890,6 +895,7 @@ fn PatientSurface(
     notice: String,
     on_retry: EventHandler,
     on_read: EventHandler<(String, String)>,
+    on_open_source: EventHandler<SourceChip>,
     on_draft: EventHandler<String>,
     on_save: EventHandler,
     on_send: EventHandler,
@@ -1030,7 +1036,7 @@ fn PatientSurface(
                                 SynopsisPiece::Text(text) => rsx! { span { "{text}" } },
                                 SynopsisPiece::Chips(chips) => rsx! {
                                     for chip in chips {
-                                        span { class: "citation-chip", "[{chip.index}]" }
+                                        CitationChip { chip: chip.clone(), on_open: on_open_source }
                                     }
                                 },
                             }
@@ -1192,16 +1198,90 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
     }
 }
 
+#[derive(Clone, PartialEq, Eq)]
+struct OpenReading {
+    title: String,
+    label: Option<String>,
+    paragraphs: Vec<String>,
+    provenance: Option<String>,
+    link_label: Option<String>,
+    link_uri: Option<String>,
+}
+
+fn prose_reading(title: String, body: String) -> OpenReading {
+    OpenReading {
+        title,
+        label: None,
+        paragraphs: if body.is_empty() {
+            Vec::new()
+        } else {
+            vec![body]
+        },
+        provenance: None,
+        link_label: None,
+        link_uri: None,
+    }
+}
+
+fn source_reading(chip: SourceChip) -> OpenReading {
+    OpenReading {
+        title: format!("Source {}", chip.index),
+        label: Some(chip.label),
+        paragraphs: preview_paragraphs(&chip.preview),
+        provenance: prepared_line(&chip.as_of),
+        link_label: chip.open_label,
+        link_uri: chip.open_uri,
+    }
+}
+
 #[component]
-fn ReaderDialog(title: String, body: String, on_close: EventHandler) -> Element {
+fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
+    let name = chip_name(&chip);
+    let index = chip.index;
+    if chip.open {
+        rsx! {
+            button {
+                class: "citation-chip",
+                r#type: "button",
+                aria_label: "{name}",
+                onclick: move |_| on_open.call(chip.clone()),
+                "[{index}]"
+            }
+        }
+    } else {
+        rsx! {
+            span { class: "citation-chip", aria_label: "{name}", "[{index}]" }
+        }
+    }
+}
+
+#[component]
+fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
+    let quiet =
+        reading.paragraphs.is_empty() && reading.provenance.is_none() && reading.link_uri.is_none();
+    let title = reading.title.clone();
+    let label = reading.label.clone();
+    let provenance = reading.provenance.clone();
+    let link_label = reading.link_label.clone();
+    let link_uri = reading.link_uri.clone();
     rsx! {
         div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
             section { class: "dialog reader", aria_label: "Reader", onclick: move |event| event.stop_propagation(),
                 h2 { "{title}" }
-                if body.is_empty() {
+                if let Some(label) = label {
+                    p { strong { "{label}" } }
+                }
+                if quiet {
                     p { "Nothing is open to read." }
-                } else {
-                    p { class: "reader-body", "{body}" }
+                }
+                for paragraph in reading.paragraphs {
+                    p { class: "reader-body", "{paragraph}" }
+                }
+                if let Some(provenance) = provenance {
+                    p { class: "reader-provenance", "{provenance}" }
+                }
+                if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
+                    a { href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
                 button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
             }
@@ -1267,7 +1347,7 @@ fn open_target(
     selected: &mut Signal<Option<String>>,
     place: &mut Signal<Place>,
     search_open: &mut Signal<bool>,
-    reading: &mut Signal<Option<(String, String)>>,
+    reading: &mut Signal<Option<OpenReading>>,
     workspace_attempt: &mut Signal<u32>,
 ) {
     match target {
@@ -1279,7 +1359,10 @@ fn open_target(
         }
         FocusTarget::Row(line) => {
             if opens_reader(&line.kind) {
-                reading.set(Some((line.patient.clone(), line.reason.clone())));
+                reading.set(Some(prose_reading(
+                    line.patient.clone(),
+                    line.reason.clone(),
+                )));
             }
             selected.set(Some(line.workspace_id));
             place.set(Place::Workspace);
@@ -1291,7 +1374,7 @@ fn open_target(
                 return;
             };
             let clock = format_clock(&visit.starts_at, &visit.time_zone).unwrap_or_default();
-            reading.set(Some((
+            reading.set(Some(prose_reading(
                 format!("{} {clock}", visit.patient),
                 visit.preparation.clone().unwrap_or_default(),
             )));
