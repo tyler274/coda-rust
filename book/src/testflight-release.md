@@ -2,39 +2,12 @@
 
 TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
 
-## TestFlight release
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Apple distribution identity — September 2, 2026
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Build 135 and backend structural cleanup
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Build 134 wire compatibility
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Fixed page compatibility (units 5 and 6)
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Migration and deploy order
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Distributed builds
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Current release procedure
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
-## Update destination
-
-Source: `submodules/coda-app/docs/testflight-release.md`. TestFlight distribution stays in this runbook. A Rust build is not a TestFlight upload.
-
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#testflight-release">TestFlight release</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#apple-distribution-identity-september-2-2026">Apple distribution identity — September 2, 2026</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#build-135-and-backend-structural-cleanup">Build 135 and backend structural cleanup</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#build-134-wire-compatibility">Build 134 wire compatibility</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#fixed-page-compatibility-units-5-and-6">Fixed page compatibility (units 5 and 6)</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#migration-and-deploy-order">Migration and deploy order</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#distributed-builds">Distributed builds</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#current-release-procedure">Current release procedure</a>
+- <a href="/submodules/coda-app/docs/testflight-release%2Emd#update-destination">Update destination</a>

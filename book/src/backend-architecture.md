@@ -1,152 +1,41 @@
 # Duet Backend Architecture
 
-Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Duet Backend Architecture
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Architecture boundaries
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Execution isolation
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Execution inventory
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Composition and release contract
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## For my doctor
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Bounded maintenance
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Acquisition worker design
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Composition and access
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Bounded execution and recovery
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Worker capacity and admission
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Capacity and acceptance
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Time decisions
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Request path
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Minimum supported iPhone build
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Model cost controls
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Connector path
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Canonical evidence reads
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Calculation ownership
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Incremental Apple Health acquisition
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Canonical evidence reads
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Bounded client reads
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Agent and intelligence path
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Model-facing views and vocabulary
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Measurement reads
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Conversation context and understanding lifecycle
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Ahead-of-need continuation integration
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Unified discovery and exact recall
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Account event streams
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Accepted follow-through
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Reply feedback
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Scheduled work
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Privacy
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Patient isolation
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Data lifecycle
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Account export and deletion
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
-## Schema changes
-
-Source: `submodules/coda-app/docs/backend-architecture.md`. Account moments are the slice in [`duet-api`](../../crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](../../crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
-
+Account moments are the slice in [`duet-api`](/crates/duet-api/src/lib.rs). Request bytes with no schema are [`http`](/crates/http/src/lib.rs). The rest of this architecture is still the Python service under `submodules/coda-app`.
+
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#duet-backend-architecture">Duet Backend Architecture</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#architecture-boundaries">Architecture boundaries</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#execution-isolation">Execution isolation</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#execution-inventory">Execution inventory</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#composition-and-release-contract">Composition and release contract</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#for-my-doctor">For my doctor</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#bounded-maintenance">Bounded maintenance</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#acquisition-worker-design">Acquisition worker design</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#composition-and-access">Composition and access</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#bounded-execution-and-recovery">Bounded execution and recovery</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#worker-capacity-and-admission">Worker capacity and admission</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#capacity-and-acceptance">Capacity and acceptance</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#time-decisions">Time decisions</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#request-path">Request path</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#minimum-supported-iphone-build">Minimum supported iPhone build</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#model-cost-controls">Model cost controls</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#connector-path">Connector path</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#canonical-evidence-reads">Canonical evidence reads</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#calculation-ownership">Calculation ownership</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#incremental-apple-health-acquisition">Incremental Apple Health acquisition</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#canonical-evidence-reads-1">Canonical evidence reads</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#bounded-client-reads">Bounded client reads</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#agent-and-intelligence-path">Agent and intelligence path</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#model-facing-views-and-vocabulary">Model-facing views and vocabulary</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#measurement-reads">Measurement reads</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#conversation-context-and-understanding-lifecycle">Conversation context and understanding lifecycle</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#ahead-of-need-continuation-integration">Ahead-of-need continuation integration</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#unified-discovery-and-exact-recall">Unified discovery and exact recall</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#account-event-streams">Account event streams</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#accepted-follow-through">Accepted follow-through</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#reply-feedback">Reply feedback</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#scheduled-work">Scheduled work</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#privacy">Privacy</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#patient-isolation">Patient isolation</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#data-lifecycle">Data lifecycle</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#account-export-and-deletion">Account export and deletion</a>
+- <a href="/submodules/coda-app/docs/backend-architecture%2Emd#schema-changes">Schema changes</a>
