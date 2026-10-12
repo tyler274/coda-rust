@@ -21,7 +21,8 @@ use shell::{
     WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name,
     connection_lines, format_calendar_date, format_clock, format_waited, keyboard_command,
     need_you_words, opens_reader, patient_upcoming_visits, prepared_line, preview_paragraphs,
-    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines, today_view,
+    upcoming_visits, work_end_reason,
     work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
@@ -172,7 +173,9 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
             Some(open_patient)
         }
     });
-    let mut collapsed = use_signal(|| false);
+    let mut sidebar_collapsed = use_signal(|| false);
+    let mut app_collapsed = use_signal(|| false);
+    let mut schedule_collapsed = use_signal(|| false);
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
     let mut connections_open = use_signal(|| false);
@@ -312,6 +315,8 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
     let visits = day.map(upcoming_visits).unwrap_or_default();
+    let show_schedule = day.is_some_and(shows_today_schedule);
+    let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
     let need_you = match &today_state {
         TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len(),
         _ => 0,
@@ -412,10 +417,29 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                 .filter_map(|turn| turn.body().map(str::to_owned))
                 .collect::<Vec<_>>()
         });
+    let shell_class = format!(
+        "glass-app{}{}",
+        if app_collapsed() { " is-collapsed" } else { "" },
+        if sidebar_collapsed() {
+            " has-collapsed-sidebar"
+        } else {
+            ""
+        }
+    );
     rsx! {
         style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+        if app_collapsed() {
+            button {
+                class: "coda-restore",
+                r#type: "button",
+                aria_label: "Open Coda",
+                onclick: move |_| app_collapsed.set(false),
+                img { class: "coda-logo", src: "/assets/coda-health-logo-transparent.png", alt: "" }
+            }
+        }
         div {
-            class: if collapsed() { "glass-app is-collapsed" } else { "glass-app" },
+            class: "{shell_class}",
+            aria_hidden: if app_collapsed() { "true" } else { "false" },
             tabindex: "0",
             onkeydown: move |event| {
                 let key = event.key().to_string();
@@ -518,14 +542,14 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             class: "icon-button sidebar-collapse",
                             r#type: "button",
                             aria_label: "Collapse navigation",
-                            onclick: move |_| collapsed.set(true),
+                            onclick: move |_| sidebar_collapsed.set(true),
                             Icon { name: IconName::SidebarCollapse }
                         }
                         button {
                             class: "icon-button sidebar-expand",
                             r#type: "button",
                             aria_label: "Expand navigation",
-                            onclick: move |_| collapsed.set(false),
+                            onclick: move |_| sidebar_collapsed.set(false),
                             Icon { name: IconName::SidebarExpand }
                         }
                     }
@@ -628,7 +652,7 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                 button {
                     class: "stage-minimize",
                     r#type: "button",
-                    onclick: move |_| collapsed.set(true),
+                    onclick: move |_| app_collapsed.set(true),
                     "Collapse Coda"
                 }
                 match place() {
@@ -637,6 +661,10 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             state: today_state.clone(),
                             connections: connections.clone(),
                             visits: visits.clone(),
+                            show_schedule,
+                            schedule_empty: schedule_empty.clone(),
+                            schedule_collapsed: schedule_collapsed(),
+                            on_schedule_collapsed: move |collapsed| schedule_collapsed.set(collapsed),
                             server_now: server_now.clone(),
                             need_you,
                             focused: shown_focus,
@@ -679,6 +707,8 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             workspace: open_workspace.clone(),
                             rows: patient_rows.clone(),
                             visits: patient_visits.clone(),
+                            schedule_collapsed: schedule_collapsed(),
+                            on_schedule_collapsed: move |collapsed| schedule_collapsed.set(collapsed),
                             focused: shown_focus,
                             chats: chats.clone(),
                             server_now: server_now.clone(),
@@ -806,6 +836,10 @@ fn TodaySurface(
     state: TodayView,
     connections: Vec<String>,
     visits: Vec<VisitLine>,
+    show_schedule: bool,
+    schedule_empty: String,
+    schedule_collapsed: bool,
+    on_schedule_collapsed: EventHandler<bool>,
     server_now: String,
     need_you: usize,
     focused: Option<i32>,
@@ -815,7 +849,7 @@ fn TodaySurface(
     on_resume: EventHandler<TodayLine>,
 ) -> Element {
     let words = need_you_words(need_you);
-    let scheduled = !visits.is_empty();
+    let scheduled = show_schedule;
     let connections_quiet = connections.is_empty();
     let row_len = match &state {
         TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len() as i32,
@@ -870,10 +904,13 @@ fn TodaySurface(
                         TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), focused: row_focus, on_open: on_open_row, on_resume } },
                     }
                 }
-                if !visits.is_empty() {
+                if show_schedule {
                     ScheduleRail {
                         visits: visits.clone(),
                         title: "Schedule",
+                        empty: schedule_empty.clone(),
+                        collapsed: schedule_collapsed,
+                        on_collapsed: on_schedule_collapsed,
                         name_the_visit: false,
                         focused: visit_focus,
                         on_open: on_open_visit,
@@ -943,21 +980,58 @@ fn TodayRows(
 fn ScheduleRail(
     visits: Vec<VisitLine>,
     title: &'static str,
+    empty: String,
+    collapsed: bool,
+    on_collapsed: EventHandler<bool>,
     name_the_visit: bool,
     focused: Option<usize>,
     on_open: EventHandler<VisitLine>,
 ) -> Element {
     let count = visits.len();
+    let rail_class = if collapsed {
+        "schedule-rail is-collapsed"
+    } else {
+        "schedule-rail"
+    };
     rsx! {
-        aside { class: "schedule-rail", aria_label: "{title}",
+        aside { class: "{rail_class}", aria_label: "{title}",
+            if collapsed {
+                button {
+                    class: "schedule-rail-expand",
+                    r#type: "button",
+                    aria_expanded: "false",
+                    aria_label: "Show {title}",
+                    onclick: move |_| on_collapsed.call(false),
+                    span { class: "icon-tile", aria_hidden: "true",
+                        Icon { name: IconName::Calendar }
+                    }
+                    if count > 0 {
+                        span { class: "count", span { class: "count-value", "{count}" } }
+                    }
+                }
+            }
+            div { class: "schedule-rail-body",
             header { class: "card-header",
                 span { class: "icon-tile", aria_hidden: "true",
                     Icon { name: IconName::Calendar }
                 }
                 div { class: "card-title",
                     h2 { "{title}" }
-                    span { class: "count", span { class: "count-value", "{count}" } " left" }
+                    if count > 0 {
+                        span { class: "count", span { class: "count-value", "{count}" } " left" }
+                    }
                 }
+                button {
+                    class: "icon-button schedule-rail-collapse",
+                    r#type: "button",
+                    aria_expanded: "true",
+                    aria_label: "Collapse {title}",
+                    onclick: move |_| on_collapsed.call(true),
+                    Icon { name: IconName::PanelRightClose }
+                }
+            }
+            if visits.is_empty() {
+                p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
                 button {
@@ -983,6 +1057,7 @@ fn ScheduleRail(
                         }
                     }
                 }
+            }
             }
         }
     }
@@ -1022,6 +1097,8 @@ fn PatientSurface(
     workspace: Option<PatientWorkspaceResponse>,
     rows: Vec<TodayLine>,
     visits: Vec<VisitLine>,
+    schedule_collapsed: bool,
+    on_schedule_collapsed: EventHandler<bool>,
     focused: Option<i32>,
     chats: ChatView,
     server_now: String,
@@ -1239,6 +1316,9 @@ fn PatientSurface(
                 ScheduleRail {
                     visits: visits.clone(),
                     title: "Upcoming visits",
+                    empty: String::new(),
+                    collapsed: schedule_collapsed,
+                    on_collapsed: on_schedule_collapsed,
                     name_the_visit: true,
                     focused: visit_focus,
                     on_open: move |visit: VisitLine| {

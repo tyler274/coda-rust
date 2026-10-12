@@ -135,6 +135,20 @@ pub fn connection_sentence(channel: Option<&str>, condition: &str) -> Option<Str
     Some(line)
 }
 
+/// Today shows the schedule unless the calendar is absent. An empty usable day still shows it.
+pub fn shows_today_schedule(day: &PracticeDayResponse) -> bool {
+    !matches!(day.source_state.state.as_str(), "unavailable" | "absent")
+}
+
+/// The line under an empty schedule: none were scheduled, or none remain ahead.
+pub fn schedule_empty_copy(day: &PracticeDayResponse) -> &'static str {
+    if day.visits.is_empty() {
+        "No visits scheduled today."
+    } else {
+        "No visits remaining today."
+    }
+}
+
 /// Visits still ahead on a usable practice day, next first, in the server's order.
 pub fn upcoming_visits(day: &PracticeDayResponse) -> Vec<VisitLine> {
     if !matches!(day.source_state.state.as_str(), "usable" | "refreshing") {
@@ -1008,6 +1022,7 @@ mod tests {
             "../../physician-sample/fixtures/practice-day.json"
         ))
         .unwrap();
+        assert!(shows_today_schedule(&day));
         let ahead = upcoming_visits(&day);
         assert_eq!(ahead.len(), 1);
         assert_eq!(ahead[0].patient, "Mary Louis");
@@ -1225,5 +1240,21 @@ mod tests {
             serde_json::from_str(include_str!("../../physician-sample/fixtures/updates.json"))
                 .unwrap();
         assert!(updates.rows.is_empty());
+    }
+
+    #[test]
+    fn a_usable_day_with_no_visits_still_shows_the_schedule() {
+        let day: PracticeDayResponse = serde_json::from_str(
+            r#"{"current_time":"2026-08-30T11:00:00.000Z","time_zone":"America/New_York","source_state":{"state":"usable"},"visits":[]}"#,
+        )
+        .unwrap();
+        assert!(shows_today_schedule(&day));
+        assert!(upcoming_visits(&day).is_empty());
+        assert_eq!(schedule_empty_copy(&day), "No visits scheduled today.");
+        let gone: PracticeDayResponse = serde_json::from_str(
+            r#"{"current_time":"2026-08-30T11:00:00.000Z","time_zone":"America/New_York","source_state":{"state":"unavailable"},"visits":[]}"#,
+        )
+        .unwrap();
+        assert!(!shows_today_schedule(&gone));
     }
 }
