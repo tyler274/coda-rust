@@ -496,6 +496,27 @@ fn chip_number(
     number
 }
 
+/// A workspace or conversation event for the open patient means the chat should be read again.
+pub fn workspace_event_rereads(event: &str, data: &str, selected: Option<&str>) -> bool {
+    let Ok(value) = serde_json::from_str::<serde_json::Value>(data) else {
+        return false;
+    };
+    let patient = match event {
+        "workspace_changed" => value.get("patient_workspace_id").and_then(|id| id.as_str()),
+        "physician_state_changed" => {
+            if value.get("kind").and_then(|kind| kind.as_str()) != Some("conversation") {
+                return false;
+            }
+            value
+                .get("target")
+                .and_then(|target| target.get("patient_workspace_id"))
+                .and_then(|id| id.as_str())
+        }
+        _ => return false,
+    };
+    matches!((patient, selected), (Some(patient), Some(selected)) if patient == selected)
+}
+
 pub fn opens_reader(kind: &str) -> bool {
     kind == "concern" || kind == "reply"
 }
@@ -1099,6 +1120,26 @@ mod tests {
             }),
         );
         assert_eq!(unlabeled.open_label.as_deref(), Some("Open original"));
+        assert!(workspace_event_rereads(
+            "workspace_changed",
+            r#"{"patient_workspace_id":"pw-mary","cursor":2,"practice_day":true}"#,
+            Some("pw-mary"),
+        ));
+        assert!(!workspace_event_rereads(
+            "workspace_changed",
+            r#"{"patient_workspace_id":"pw-other","cursor":2,"practice_day":false}"#,
+            Some("pw-mary"),
+        ));
+        assert!(workspace_event_rereads(
+            "physician_state_changed",
+            r#"{"kind":"conversation","target":{"patient_workspace_id":"pw-mary"}}"#,
+            Some("pw-mary"),
+        ));
+        assert!(!workspace_event_rereads(
+            "physician_state_changed",
+            r#"{"kind":"draft","target":{"patient_workspace_id":"pw-mary","chat_id":"c1"},"revision":1}"#,
+            Some("pw-mary"),
+        ));
         assert!(pieces.iter().all(|piece| match piece {
             SynopsisPiece::Text(text) => !text.contains("[[patient_source"),
             SynopsisPiece::Chips(_) => true,

@@ -6,10 +6,15 @@
 mod icons;
 mod shell;
 
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{PatientWorkspaceResponse, RecentConversation};
+#[cfg(target_arch = "wasm32")]
+use shell::workspace_event_rereads;
 use shell::{
     ChatView, KeyInput, NavCommand, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
     TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
@@ -42,6 +47,115 @@ enum Place {
     Workspace,
 }
 
+#[cfg(target_arch = "wasm32")]
+fn follow_workspace_events(
+    base_url: &str,
+    mut workspace_attempt: Signal<u32>,
+    mut snapshot_attempt: Signal<u32>,
+    selected: Signal<Option<String>>,
+) {
+    let url = format!(
+        "{}/patient-workspaces/events?after=0",
+        base_url.trim_end_matches('/')
+    );
+    use wasm_bindgen::JsCast;
+    wasm_bindgen_futures::spawn_local(async move {
+        let Some(window) = web_sys::window() else {
+            return;
+        };
+        let Ok(value) = wasm_bindgen_futures::JsFuture::from(window.fetch_with_str(&url)).await
+        else {
+            return;
+        };
+        let Ok(response) = value.dyn_into::<web_sys::Response>() else {
+            return;
+        };
+        if !response.ok() {
+            return;
+        }
+        let event_stream = response
+            .headers()
+            .get("content-type")
+            .ok()
+            .flatten()
+            .is_some_and(|kind| kind.contains("text/event-stream"));
+        if !event_stream {
+            return;
+        }
+        let Some(body) = response.body() else {
+            return;
+        };
+        let reader = body.get_reader();
+        let mut buffer = String::new();
+        loop {
+            let Ok(read) = js_sys::Reflect::get(&reader, &"read".into()) else {
+                return;
+            };
+            let Ok(read) = read.dyn_into::<js_sys::Function>() else {
+                return;
+            };
+            let Ok(promise) = read.call0(&reader) else {
+                return;
+            };
+            let Ok(promise) = promise.dyn_into::<js_sys::Promise>() else {
+                return;
+            };
+            let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(promise).await else {
+                return;
+            };
+            let done = js_sys::Reflect::get(&chunk, &"done".into())
+                .ok()
+                .and_then(|value| value.as_bool())
+                .unwrap_or(true);
+            if done {
+                return;
+            }
+            let Some(bytes) = js_sys::Reflect::get(&chunk, &"value".into())
+                .ok()
+                .map(|value| js_sys::Uint8Array::new(&value).to_vec())
+            else {
+                return;
+            };
+            buffer.push_str(&String::from_utf8_lossy(&bytes));
+            apply_event_frames(
+                &mut buffer,
+                &selected,
+                &mut workspace_attempt,
+                &mut snapshot_attempt,
+            );
+        }
+    });
+}
+
+#[cfg(target_arch = "wasm32")]
+fn apply_event_frames(
+    buffer: &mut String,
+    selected: &Signal<Option<String>>,
+    workspace_attempt: &mut Signal<u32>,
+    snapshot_attempt: &mut Signal<u32>,
+) {
+    while let Some(at) = buffer.find("\n\n") {
+        let frame: String = buffer.drain(..at + 2).collect();
+        let mut name = "message".to_owned();
+        let mut data = String::new();
+        for line in frame.lines() {
+            if let Some(value) = line.strip_prefix("event:") {
+                name = value.trim().to_owned();
+            } else if let Some(value) = line.strip_prefix("data:") {
+                if !data.is_empty() {
+                    data.push('\n');
+                }
+                data.push_str(value.trim_start());
+            }
+        }
+        let open = selected.read().clone();
+        if workspace_event_rereads(&name, &data, open.as_deref()) {
+            workspace_attempt.set(workspace_attempt() + 1);
+            snapshot_attempt.set(snapshot_attempt() + 1);
+        }
+    }
+}
+
 #[component]
 pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let mut place = use_signal(|| {
@@ -72,9 +186,14 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let mut query = use_signal(String::new);
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
+    let snapshot_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
-    let client = use_signal(|| PhysicianClient::new(base_url));
+    let client = use_signal(|| PhysicianClient::new(base_url.clone()));
+    #[cfg(target_arch = "wasm32")]
+    use_effect(move || {
+        follow_workspace_events(&base_url, workspace_attempt, snapshot_attempt, selected);
+    });
     let health = use_resource(move || {
         let client = client.read().clone();
         async move { client.health().await.map_err(|_| ()) }
@@ -266,6 +385,7 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let modal = shortcuts_open() || connections_open();
     let shown_focus = if moved() { Some(focus()) } else { None };
     let snapshot = use_resource(move || {
+        let _attempt = snapshot_attempt();
         let workspace_id = selected();
         let chat_id = open_chat();
         let client = client.read().clone();
@@ -324,11 +444,18 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                 }
                 if key == "Enter" && (event.modifiers().meta() || event.modifiers().ctrl()) {
                     event.prevent_default();
-                    let client = client.read().clone();
-                    let text = draft();
-                    spawn(async move {
-                        notice.set(command_message(&client, "message.submit", &text).await);
-                    });
+                    send_message(
+                        client.read().clone(),
+                        selected(),
+                        open_chat(),
+                        workspace_cache
+                            .read()
+                            .as_ref()
+                            .and_then(|open| open.time_zone.clone()),
+                        draft(),
+                        notice,
+                        snapshot_attempt,
+                    );
                     return;
                 }
                 let rail = if place() == Place::Workspace {
@@ -593,11 +720,18 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                                 });
                             },
                             on_send: move |_| {
-                                let client = client.read().clone();
-                                let text = draft();
-                                spawn(async move {
-                                    notice.set(command_message(&client, "message.submit", &text).await);
-                                });
+                                send_message(
+                                    client.read().clone(),
+                                    selected(),
+                                    open_chat(),
+                                    workspace_cache
+                                        .read()
+                                        .as_ref()
+                                        .and_then(|open| open.time_zone.clone()),
+                                    draft(),
+                                    notice,
+                                    snapshot_attempt,
+                                );
                             },
                             on_dictate: move |_| {
                                 let client = client.read().clone();
@@ -1386,16 +1520,71 @@ fn open_target(
     }
 }
 
-async fn command_message(client: &PhysicianClient, command_type: &str, text: &str) -> String {
+fn send_message(
+    client: PhysicianClient,
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    time_zone: Option<String>,
+    text: String,
+    mut notice: Signal<String>,
+    mut snapshot_attempt: Signal<u32>,
+) {
+    let (Some(workspace_id), Some(chat_id), Some(time_zone)) = (workspace_id, chat_id, time_zone)
+    else {
+        notice.set("Coda couldn’t accept that message.".to_owned());
+        return;
+    };
+    spawn(async move {
+        let message = command_message(&client, &workspace_id, &chat_id, &time_zone, &text).await;
+        if message.is_empty() {
+            snapshot_attempt.set(snapshot_attempt() + 1);
+        }
+        notice.set(message);
+    });
+}
+
+async fn command_message(
+    client: &PhysicianClient,
+    workspace_id: &str,
+    chat_id: &str,
+    time_zone: &str,
+    text: &str,
+) -> String {
     match client
-        .command(&serde_json::json!({ "type": command_type, "text": text }))
+        .command(&serde_json::json!({
+            "type": "message.submit",
+            "idempotency_key": idempotency_key(),
+            "payload": {
+                "patient_workspace_id": workspace_id,
+                "chat_id": chat_id,
+                "text": text,
+                "physician_time_zone": time_zone,
+                "intent": "queue",
+            }
+        }))
         .await
     {
-        Ok(value) => value
-            .get("message")
-            .and_then(|message| message.as_str())
-            .unwrap_or("Coda couldn’t accept that message.")
-            .to_owned(),
+        Ok(value) => {
+            if value.get("outcome").and_then(|item| item.as_str()) == Some("accepted") {
+                String::new()
+            } else {
+                value
+                    .get("message")
+                    .and_then(|message| message.as_str())
+                    .unwrap_or("Coda couldn’t accept that message.")
+                    .to_owned()
+            }
+        }
         Err(_) => "Coda couldn’t accept that message.".to_owned(),
     }
+}
+
+fn idempotency_key() -> String {
+    static NEXT: AtomicU64 = AtomicU64::new(1);
+    let n = NEXT.fetch_add(1, Ordering::Relaxed);
+    let millis = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|duration| duration.as_millis())
+        .unwrap_or(0);
+    format!("submit-{millis}-{n}")
 }
