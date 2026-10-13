@@ -83,7 +83,28 @@
           export LD_LIBRARY_PATH="${swiftLibs}:${wheelLibs}''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
           export C_INCLUDE_PATH="${pkgs.glibc.dev}/include''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
           export LIBRARY_PATH="${pkgs.glibc}/lib''${LIBRARY_PATH:+:}$LIBRARY_PATH"
-          export CODA_TEST_POSTGRES_BIN="${postgres}/bin"
+          # Nix's PostgreSQL puts its Unix socket in /run/postgresql, which a
+          # non-root user cannot write on NixOS or a stock Linux host. The test
+          # suite's harness starts its own clusters with pg_ctl and passes no
+          # socket directory, so when the default is unwritable, point
+          # CODA_TEST_POSTGRES_BIN at a wrapper whose pg_ctl adds -k. The
+          # snapshot cache hashes `postgres --version` from this directory, so
+          # pass initdb and postgres through unchanged.
+          coda_pg_bin="$HOME/.cache/coda-dev/pg16-bin"
+          coda_pg_socks="''${XDG_RUNTIME_DIR:-/tmp}/coda-pg-sockets"
+          if ! [ -w /run/postgresql ]; then
+            mkdir -p "$coda_pg_bin" "$coda_pg_socks"
+            ln -sf "${postgres}/bin/initdb" "$coda_pg_bin/initdb"
+            ln -sf "${postgres}/bin/postgres" "$coda_pg_bin/postgres"
+            cat > "$coda_pg_bin/pg_ctl" <<PGCTL
+#!/bin/sh
+exec ${postgres}/bin/pg_ctl "\$@" -o "-k $coda_pg_socks"
+PGCTL
+            chmod +x "$coda_pg_bin/pg_ctl"
+            export CODA_TEST_POSTGRES_BIN="$coda_pg_bin"
+          else
+            export CODA_TEST_POSTGRES_BIN="${postgres}/bin"
+          fi
           export CODA_PATIENT_ENCODER_MODEL="$HOME/code/coda/coda-local-data/models/bge-small-en-v1.5"
           export CODA_PATIENT_ENCODER_PYTHON="$PWD/submodules/coda-agents/.venv/bin/python3"
           export CODA_PATIENT_ENCODER_BIN="$PWD/target/debug/encoder"
