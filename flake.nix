@@ -66,6 +66,7 @@
           actionlint
           mdbook
           opentofu
+          wasm-bindgen-cli_0_2_129
         ];
 
         env.OPENSSL_NO_VENDOR = "1";
