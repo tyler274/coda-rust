@@ -62,6 +62,7 @@
           unzip
           zip
           doppler
+          google-cloud-sdk
           act
           actionlint
           mdbook
