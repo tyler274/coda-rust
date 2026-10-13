@@ -22,3 +22,29 @@ cargo test --workspace
 ```
 
 `nix develop` is the shell for this checkout. Tests and the sample server do not need a Doppler account.
+
+### Dev container
+
+The same workspace runs in a VS Code Dev Container whose `dev` service executes
+the identical `nix dev shell` (the flake stays the single toolchain owner) and
+a `pgvector` PostgreSQL 16 service on `127.0.0.1:5433`. Prerequisites: Docker,
+Compose, and the Dev Containers extension (x86_64 Linux; the flake hardcodes
+that system).
+
+1. Open the repository in VS Code and choose "Reopen in Container".
+2. The first build installs pinned Nix into a `/nix` volume, fetches missing
+   submodules, materializes the dev shell, and applies the coda-app migration
+   chain (`submodules/coda-app/backend/migrations`) idempotently.
+3. Run from the command palette, Terminal > Run Task: `physician page (recorded)`
+   (http://127.0.0.1:8790), `duet-api` (http://127.0.0.1:8080), and the optional
+   `React local product` (http://127.0.0.1:8787) after its one-time host-side
+   setup (see [coda-agents README](submodules/coda-agents/README.md)). Build
+   the page bundle first with `physician page web bundle`.
+
+Storage: the database lives in the `coda-rust-pg` named volume; it survives
+rebuilds and resets only with `docker compose down -v` from `.devcontainer/`.
+`DATABASE_URL` is provided by the container. Test clusters, vitest, and the
+Postgres-backed suites behave identically inside the container because the
+flake's socket-directory wrapper engages there too. Live model execution and
+the encoder need host-only local data; uncomment the `coda-local-data` bind
+mount in [.devcontainer/docker-compose.yml](.devcontainer/docker-compose.yml).
