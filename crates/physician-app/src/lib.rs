@@ -21,9 +21,8 @@ use shell::{
     WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name,
     connection_lines, format_calendar_date, format_clock, format_waited, keyboard_command,
     need_you_words, opens_reader, patient_upcoming_visits, prepared_line, preview_paragraphs,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines, today_view,
-    upcoming_visits, work_end_reason,
-    work_heading,
+    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
+    today_view, upcoming_visits, work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
