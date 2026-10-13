@@ -10,8 +10,11 @@ Nix development shell. Host tools outside the shell are missing or mismatched.
 
 ## How the shell works
 
-- Monorepo root `/home/luluco/code/coda/.envrc` contains `use flake`, so direnv
-  activates the flake at `/home/luluco/code/coda/coda-rust/flake.nix` automatically.
+- This repo has its own `.envrc` (`use flake`) that activates the flake at
+  `/home/luluco/code/coda/coda-rust/flake.nix` whenever a shell cd's into the
+  repo (the bash direnv hook is wired in `~/.bashrc`).
+- After editing `.envrc` or the flake, direnv may require re-approval:
+  run `direnv allow` once inside the repo.
 - The flake provides: rustc, cargo, clippy, rustfmt, lld, pkg-config, openssl,
   dioxus-cli, openapi-generator-cli, nodejs_22, python314, uv, poppler-utils,
   postgres (with pgvector), gcc, gnumake, jq, gnupg, unzip, zip, **doppler**,
