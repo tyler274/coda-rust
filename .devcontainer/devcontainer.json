@@ -1,0 +1,19 @@
+{
+  "name": "coda-rust",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
+  "remoteEnv": {
+    // duet-api's only setup requirement; migrations are applied post-create.
+    "DATABASE_URL": "postgres://coda@127.0.0.1:5433/duet"
+  },
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": ["rust-lang.rust-analyzer", "tamasfe.even-better-toml"]
+    }
+  }
+}

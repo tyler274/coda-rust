@@ -1,0 +1,39 @@
+{
+  // Shell tasks for the dev container. Each runs inside the repository's nix
+  // dev shell, which owns the toolchain; nothing here repeats its versions.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "physician page web bundle",
+      "type": "shell",
+      "command": "nix develop -c bash -c 'cargo build -p physician-app --target wasm32-unknown-unknown --features web && wasm-bindgen --target web --out-dir target/physician-web \"$(pwd)/target/wasm32-unknown-unknown/debug/physician-app.wasm\"'",
+      "options": { "cwd": "/workspace" },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "physician page (recorded)",
+      "type": "shell",
+      "command": "nix develop -c cargo run -p physician-sample",
+      "options": { "cwd": "/workspace" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "duet-api",
+      "type": "shell",
+      "command": "nix develop -c cargo run -p duet-api",
+      "options": { "cwd": "/workspace" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "React local product (optional)",
+      "type": "shell",
+      "command": "nix develop -c bash -c 'missing=\"\"; test -d submodules/coda-agents/.venv || missing=\"$missing .venv\"; test -d \"$HOME/code/coda/coda-local-data/models/bge-small-en-v1.5\" || missing=\"$missing encoder-model\"; if [ -n \"$missing\" ]; then echo \"React local product is missing one-time setup:$missing\"; echo \"  .venv: cd submodules/coda-agents && pnpm install && pnpm setup:test\"; echo \"  encoder model: see submodules/coda-agents/README.md (offline baseline)\"; echo \"  then enable the coda-local-data bind mount in .devcontainer/docker-compose.yml\"; exit 1; fi; cd submodules/coda-agents && pnpm product:local'",
+      "options": { "cwd": "/workspace" },
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}

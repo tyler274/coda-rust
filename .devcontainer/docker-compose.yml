@@ -1,0 +1,67 @@
+# Compose stack for the coda-rust dev container. The dev service runs the
+# repository's own nix dev shell as the single toolchain owner; postgres is a
+# pgvector/pg16 service whose data lives in a named volume. `docker compose
+# down -v` from .devcontainer resets the database.
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # The host's systemd-resolved forwards to a DoT upstream that refuses
+    # plain DNS from container namespaces; pin a public resolver so apt can
+    # fetch during image builds and post-create.
+    dns: [1.1.1.1, 8.8.8.8]
+    # Keep the container alive; VS Code execs into it.
+    command: sleep infinity
+    # Same network namespace as the host, so the frontends are reachable at
+    # their native 127.0.0.1 ports (8787 React, 8080 duet-api, 8790
+    # physician page) without editor port-forwarding.
+    network_mode: host
+    volumes:
+      - ..:/workspace:cached
+      # The Nix store. The host already runs Nix with a populated /nix, so bind
+      # that store through and reuse it: no second store to build or keep warm,
+      # and the same closure as the host shell. On hosts without Nix, replace
+      # this line with `- coda-rust-nix:/nix` to let postCreate.sh populate a
+      # named volume instead.
+      - /nix:/nix:cached
+      # Cargo registry and build caches keyed to this checkout.
+      - coda-rust-cargo:/home/vscode/.cargo
+      # Optional: mount host-only local data (encoder model, parakeet) when a
+      # task needs it. Enable alongside the React local product or live model
+      # execution; the recorded paths work without it.
+      # - $HOME/code/coda/coda-local-data:/home/vscode/code/coda/coda-local-data:cached
+    # The host daemon's socket (bind-mounted with /nix above) admits
+    # connections by effective group: the host's `users` group is gid 100.
+    # Running the container user under that primary group is the reliable way
+    # to satisfy it (supplementary groups are not consulted over the socket).
+    user: "1000:100"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # duet-api reads this; the port maps to the postgres service below.
+      DATABASE_URL: postgres://coda@127.0.0.1:5433/duet
+
+  postgres:
+    # Same digest the earlier test-harness experiment pinned.
+    image: pgvector/pgvector:pg16@sha256:7b822b0aac60967beb1ea5e576b8602c94c300a157d187f385ae3e0da199b90a
+    # Loopback only; the host already runs its own PostgreSQL 18 cluster.
+    ports:
+      - "127.0.0.1:5433:5432"
+    environment:
+      # Local development container; no credentials are committed.
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: coda
+      POSTGRES_DB: duet
+    volumes:
+      - coda-rust-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coda -d duet"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  coda-rust-cargo:
+  coda-rust-pg:
