@@ -1,0 +1,45 @@
+---
+description: Always run all commands inside the Nix dev shell for the Coda monorepo; never use bare host tools
+alwaysApply: true
+---
+
+# Always Use the Nix Dev Shell
+
+All commands (cargo, doppler, gcloud, act, node, python, etc.) MUST run inside the
+Nix development shell. Host tools outside the shell are missing or mismatched.
+
+## How the shell works
+
+- Monorepo root `/home/luluco/code/coda/.envrc` contains `use flake`, so direnv
+  activates the flake at `/home/luluco/code/coda/coda-rust/flake.nix` automatically.
+- The flake provides: rustc, cargo, clippy, rustfmt, lld, pkg-config, openssl,
+  dioxus-cli, openapi-generator-cli, nodejs_22, python314, uv, poppler-utils,
+  postgres (with pgvector), gcc, gnumake, jq, gnupg, unzip, zip, **doppler**,
+  act, actionlint, mdbook, opentofu, wasm-bindgen-cli.
+
+## Rules
+
+1. ❌ NEVER run build/test/lint/secret/CI commands with bare host binaries
+   (`cargo ...`, `doppler ...`, `act ...` directly). They are absent or stale
+   outside the shell (e.g. `doppler` and `gcloud` are not on the host PATH).
+2. ✅ If the shell is already active (direnv prompt shows the flake env), run
+   commands directly.
+3. ✅ If the shell is NOT active, prefix with the flake instead of installing
+   anything on the host:
+
+   ```bash
+   # From the repo root
+   nix develop --command cargo test -p duet-notify --offline
+   # Or activate an interactive shell once
+   nix develop
+   ```
+
+4. ❌ NEVER `npm install -g`, `pip install --user`, `apt install`, or download
+   ad-hoc binaries to get a missing tool. First check whether the flake already
+   provides it; if a needed tool is missing from `flake.nix`, propose adding it
+   there (requires user approval) rather than installing it on the host.
+5. ❌ NEVER set global host env vars (e.g. `~/.bashrc`, `~/.profile`) for build
+   or tool configuration. Use `env.*` or `shellHook` in `flake.nix`.
+6. Long-running or backgrounded commands must be launched from within the
+   active shell so they inherit the flake environment (`PATH`, `PKG_CONFIG_PATH`,
+   `OPENSSL_NO_VENDOR`, corepack caches, etc.).
