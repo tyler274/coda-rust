@@ -1,0 +1,41 @@
+{
+  "project": "coda-duet-prod",
+  "staging_project": "coda-duet-staging",
+  "service": {
+    "secrets": {
+      "DATABASE_URL": ["DATABASE_RUNTIME_URL", "latest"],
+      "DUET_SHARING_INVITATION_PEPPER": ["DUET_SHARING_INVITATION_PEPPER", "latest"],
+      "DUET_CONNECTOR_TOKEN_KEY": ["duet-connector-token-key", "latest"],
+      "DUET_EPIC_NONPROD_CLIENT_ID": ["duet-epic-oauth-client-id-nonprod", "latest"],
+      "DUET_APNS_KEY_ID": ["DUET_APNS_KEY_ID", "latest"],
+      "DOPPLER_TOKEN": ["DOPPLER_TOKEN", "latest"]
+    }
+  },
+  "staging_service": {
+    "secrets": {
+      "DATABASE_URL": ["DATABASE_RUNTIME_URL", "latest"],
+      "DOPPLER_TOKEN": ["DOPPLER_TOKEN", "latest"]
+    }
+  },
+  "job_profiles": {
+    "epic_directory": {
+      "secrets": {
+        "DATABASE_URL": ["DATABASE_DIRECTORY_URL", "latest"]
+      }
+    }
+  },
+  "worker_service": {
+    "secrets": {
+      "DATABASE_URL": ["DATABASE_RUNTIME_URL", "latest"],
+      "DUET_CONNECTOR_TOKEN_KEY": ["duet-connector-token-key", "latest"],
+      "OPENAI_API_KEY": ["OPENAI_API_KEY", "latest"],
+      "DOPPLER_TOKEN": ["DOPPLER_TOKEN", "latest"]
+    }
+  },
+  "staging_worker_service": {
+    "secrets": {
+      "DATABASE_URL": ["DATABASE_RUNTIME_URL", "latest"],
+      "DOPPLER_TOKEN": ["DOPPLER_TOKEN", "latest"]
+    }
+  }
+}

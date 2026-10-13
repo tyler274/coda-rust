@@ -37,6 +37,16 @@ jobs:
         run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
       - name: Install mdBook
         run: cargo install mdbook --version 0.4.52 --locked
+      - name: Install Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Check the Doppler mirror scripts and run their tests
+        run: |
+          bash -n scripts/gcp/install_doppler.sh
+          python -m compileall -q scripts/gcp
+          python -m pip install pytest==8.4.2 --quiet
+          python -m pytest -q scripts/gcp/tests
       - name: Build the book and the rustdoc
         run: |
           mdbook build book
