@@ -37,6 +37,8 @@ jobs:
         run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
       - name: Install mdBook
         run: cargo install mdbook --version 0.4.52 --locked
+      - name: Check the Doppler installer
+        run: bash -n scripts/gcp/install_doppler.sh
       - name: Build the book and the rustdoc
         run: |
           mdbook build book
