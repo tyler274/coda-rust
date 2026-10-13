@@ -328,4 +328,43 @@ button.sidebar-expand { display: none; }
 .composer-actions { display: flex; align-items: center; gap: var(--space-2); }
 .composer-notice { color: var(--muted); font: var(--type-body-sm); }
 .reader { width: min(var(--measure), 100%); }
-.reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }
+.reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }.sign-in-screen {
+  display: grid;
+  place-items: center;
+  height: 100dvh;
+  padding: var(--space-6);
+}
+.sign-in-card {
+  display: grid;
+  gap: var(--space-4);
+  width: min(24rem, 100%);
+  padding: var(--space-6);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--surface-lowest);
+  box-shadow: var(--elevation-1);
+}
+.sign-in-card h1 { margin: 0; font: var(--type-title-lg); color: var(--ink); }
+.sign-in-card .sign-in-sub { margin: 0; color: var(--muted); font: var(--type-body-md); }
+.sign-in-card label { display: grid; gap: var(--space-1); color: var(--muted); font: var(--type-label-md); }
+.sign-in-input {
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+}
+.sign-in-actions { display: flex; align-items: center; gap: var(--space-3); }
+.sign-in-primary {
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: var(--hairline) solid var(--primary-outline);
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  cursor: pointer;
+  font: var(--type-label-lg);
+}
+.sign-in-primary:disabled { opacity: 0.6; cursor: default; }
+.sign-in-error { margin: 0; color: var(--error); font: var(--type-body-sm); }

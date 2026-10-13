@@ -502,6 +502,69 @@ pub struct PhysicianDraft {
     pub revision: i64,
 }
 
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The sign-in route's answer: a token to verify, or the no-account deferral.
+pub struct SignInResponse {
+    /// The `status` value: `token_issued` or `unavailable`.
+    pub status: String,
+    #[serde(default)]
+    /// The sign-in token when the server issued one (proof delivery).
+    pub token: Option<String>,
+    #[serde(default)]
+    /// The human line for `unavailable`, such as the no-account deferral.
+    pub message: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The verify route's answer: the bearer session and who holds it.
+pub struct VerifyResponse {
+    /// The bearer session to present on every physician read.
+    pub session: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The `practice_id` value.
+    pub practice_id: String,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The whoami route's answer about the session's physician.
+pub struct WhoamiResponse {
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// The physician's display name.
+    pub display_name: String,
+    #[serde(default)]
+    /// Whether this account holds clinic admin / panel-assignment permission.
+    pub admin: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The panel route's answer: the patient workspaces on one physician's panel.
+pub struct PanelResponse {
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    #[serde(default)]
+    /// The patient workspace IDs assigned to this physician's panel.
+    pub patient_workspace_ids: Vec<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The panel assignment route's answer after updating one panel membership.
+pub struct PanelAssignmentResponse {
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The `patient_workspace_id` value.
+    pub patient_workspace_id: String,
+    /// Whether the patient workspace is now on the physician's panel.
+    pub allowed: bool,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

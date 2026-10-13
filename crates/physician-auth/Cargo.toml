@@ -1,0 +1,29 @@
+[package]
+name = "physician-auth"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+async-trait = "0.1"
+sea-orm = { version = "1", default-features = false, features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "with-uuid",
+    "with-json",
+] }
+sea-orm-migration = { version = "1", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "sqlx-postgres",
+] }
+sha2 = "0.10"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1", features = ["v4"] }
+
+[[bin]]
+name = "physician-auth-migrate"
+path = "src/bin/physician-auth-migrate.rs"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }

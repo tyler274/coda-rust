@@ -39,6 +39,8 @@ const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation."
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
+const SIGN_IN_UNAVAILABLE: &str = "Coda couldn’t send a sign-in link right now.";
+const SIGN_IN_INVALID: &str = "That sign-in code is no longer valid.";
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Place {
@@ -158,6 +160,42 @@ fn apply_event_frames(
 
 #[component]
 pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
+    let mut signed_in = use_signal(|| true);
+    let mut whoami_name = use_signal(String::new);
+    // The bearer session rides the client, so one client is built once.
+    let client = use_signal(|| PhysicianClient::new(base_url.clone()));
+    if !signed_in() {
+        rsx! {
+            style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+            SignInScreen {
+                client,
+                on_signed_in: move |name: String| {
+                    whoami_name.set(name);
+                    signed_in.set(true);
+                },
+            }
+        }
+    } else {
+        rsx! {
+            PhysicianShell {
+                base_url,
+                open_patient,
+                client,
+                signed_in,
+                whoami_name,
+            }
+        }
+    }
+}
+
+#[component]
+fn PhysicianShell(
+    base_url: String,
+    open_patient: String,
+    client: Signal<PhysicianClient>,
+    mut signed_in: Signal<bool>,
+    mut whoami_name: Signal<String>,
+) -> Element {
     let mut place = use_signal(|| {
         if open_patient.is_empty() {
             Place::Today
@@ -191,7 +229,6 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let snapshot_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
-    let client = use_signal(|| PhysicianClient::new(base_url.clone()));
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
         follow_workspace_events(&base_url, workspace_attempt, snapshot_attempt, selected);
@@ -203,7 +240,17 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let today = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
-        async move { client.today().await.map_err(|_| ()) }
+        async move {
+            match client.today().await {
+                Ok(response) => Ok(response),
+                Err(physician_client::HttpError::Status { status: 401, .. }) => {
+                    signed_in.set(false);
+                    whoami_name.set(String::new());
+                    Err(())
+                }
+                Err(_) => Err(()),
+            }
+        }
     });
     let patients = use_resource(move || {
         let client = client.read().clone();
@@ -630,6 +677,9 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                         }
                     }
                     div { class: "sidebar-footer",
+                        if !whoami_name().is_empty() {
+                            span { class: "sidebar-physician", "{whoami_name}" }
+                        }
                         if connection_accounts {
                             button {
                                 r#type: "button",
@@ -643,6 +693,20 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                             onclick: move |_| shortcuts_open.set(true),
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
+                        }
+                        button {
+                            r#type: "button",
+                            aria_label: "Sign out of Coda",
+                            onclick: move |_| {
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    let _ = client.sign_out().await;
+                                    signed_in.set(false);
+                                    whoami_name.set(String::new());
+                                });
+                            },
+                            Icon { name: IconName::Users }
+                            "Sign out"
                         }
                     }
                 }
@@ -809,6 +873,137 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
             }
         }
     }
+}
+
+#[component]
+fn SignInScreen(client: Signal<PhysicianClient>, on_signed_in: EventHandler<String>) -> Element {
+    let mut email = use_signal(String::new);
+    let mut token = use_signal(String::new);
+    let mut stage = use_signal(|| SignInStage::Email);
+    let mut error = use_signal(String::new);
+    let mut busy = use_signal(|| false);
+
+    let request_token = move |_: ()| {
+        let client = client.read().clone();
+        spawn(async move {
+            busy.set(true);
+            error.set(String::new());
+            let email_value = email.read().trim().to_owned();
+            match client.begin_sign_in(&email_value).await {
+                Ok(answer) if answer.status == "token_issued" => {
+                    token.set(String::new());
+                    stage.set(SignInStage::Verify);
+                }
+                Ok(answer) => {
+                    error.set(
+                        answer
+                            .message
+                            .unwrap_or_else(|| SIGN_IN_UNAVAILABLE.to_owned()),
+                    );
+                }
+                Err(_) => error.set(SIGN_IN_UNAVAILABLE.to_owned()),
+            }
+            busy.set(false);
+        });
+    };
+    let verify_token = move |_: ()| {
+        let client = client.read().clone();
+        spawn(async move {
+            busy.set(true);
+            error.set(String::new());
+            let email_value = email.read().trim().to_owned();
+            let token_value = token.read().trim().to_owned();
+            match client.verify(&email_value, &token_value).await {
+                Ok(_) => match client.whoami().await {
+                    Ok(who) => on_signed_in.call(who.display_name),
+                    Err(_) => on_signed_in.call(String::new()),
+                },
+                Err(_) => error.set(SIGN_IN_INVALID.to_owned()),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        div { class: "sign-in-screen",
+            section { class: "sign-in-card", aria_label: "Sign in to Coda",
+                h1 { "Sign in to Coda" }
+                match stage() {
+                    SignInStage::Email => rsx! {
+                        p { class: "sign-in-sub", "We'll email you a single-use sign-in link." }
+                        label { "Work email"
+                            input {
+                                class: "sign-in-input",
+                                r#type: "email",
+                                autocomplete: "email",
+                                placeholder: "you@practice.test",
+                                value: "{email}",
+                                oninput: move |event| email.set(event.value()),
+                                onkeydown: move |event| {
+                                    if event.key().to_string() == "Enter" {
+                                        request_token(());
+                                    }
+                                },
+                            }
+                        }
+                        if !error().is_empty() {
+                            p { class: "sign-in-error", "{error}" }
+                        }
+                        div { class: "sign-in-actions",
+                            button {
+                                class: "sign-in-primary",
+                                r#type: "button",
+                                disabled: busy() || email.read().trim().is_empty(),
+                                onclick: move |_| request_token(()),
+                                if busy() { "Sending…" } else { "Send sign-in link" }
+                            }
+                        }
+                    },
+                    SignInStage::Verify => rsx! {
+                        p { class: "sign-in-sub", "Paste the code from the sign-in link we sent." }
+                        label { "Sign-in code"
+                            input {
+                                class: "sign-in-input",
+                                r#type: "text",
+                                autocomplete: "one-time-code",
+                                placeholder: "Paste the code",
+                                value: "{token}",
+                                oninput: move |event| token.set(event.value()),
+                                onkeydown: move |event| {
+                                    if event.key().to_string() == "Enter" {
+                                        verify_token(());
+                                    }
+                                },
+                            }
+                        }
+                        if !error().is_empty() {
+                            p { class: "sign-in-error", "{error}" }
+                        }
+                        div { class: "sign-in-actions",
+                            button {
+                                class: "sign-in-primary",
+                                r#type: "button",
+                                disabled: busy() || token.read().trim().is_empty(),
+                                onclick: move |_| verify_token(()),
+                                if busy() { "Checking…" } else { "Sign in" }
+                            }
+                            button {
+                                class: "control-secondary",
+                                r#type: "button",
+                                onclick: move |_| stage.set(SignInStage::Email),
+                                "Use a different email"
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum SignInStage {
+    Email,
+    Verify,
 }
 
 #[component]

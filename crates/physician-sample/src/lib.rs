@@ -9,6 +9,7 @@
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
 
+mod auth;
 mod live;
 
 use std::env;
@@ -38,7 +39,7 @@ const RECENT: &str = include_str!("../fixtures/recent-conversations.json");
 const WORKSPACES: &str = include_str!("../fixtures/patient-workspaces.json");
 const ROSTER: &str = include_str!("../fixtures/roster.json");
 
-const WORKSPACE_IDS: [&str; 5] = [
+pub(crate) const WORKSPACE_IDS: [&str; 5] = [
     "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee",
     "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
     "pw-f5404d89-acde-4bb5-8c42-2fa191766811",
@@ -59,7 +60,7 @@ fn router_with(upstream: Option<String>) -> Router {
     routes.layer(middleware::from_fn(cors))
 }
 
-fn recorded() -> Router {
+pub(crate) fn recorded() -> Router {
     site().route("/commands", post(reject_command)).route(
         "/patient-workspaces/{id}/chats/{chat}/snapshot",
         get(empty_snapshot),
@@ -130,7 +131,7 @@ fn upstream_from_env() -> Option<String> {
     if value.is_empty() { None } else { Some(value) }
 }
 
-fn physician_route(path: &str) -> bool {
+pub(crate) fn physician_route(path: &str) -> bool {
     const PREFIXES: [&str; 14] = [
         "/health",
         "/today",
@@ -305,13 +306,14 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 
 /// Serves the router on `listener`.
 pub async fn serve(listener: tokio::net::TcpListener) {
-    let app = match router_from_env() {
+    let base = match router_from_env() {
         Ok(app) => app,
         Err(error) => {
             eprintln!("{error}");
             std::process::exit(1);
         }
     };
+    let app = auth::authed_router(base).await;
     axum::serve(listener, app).await.expect("sample server");
 }
 
@@ -487,7 +489,7 @@ pub fn rejection_message(command_type: &str) -> &'static str {
     }
 }
 
-fn workspace_body(id: &str) -> Option<&'static str> {
+pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
     Some(match id {
         "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
             include_str!("../fixtures/workspaces/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json")
