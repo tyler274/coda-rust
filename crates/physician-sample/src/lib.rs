@@ -489,7 +489,7 @@ pub fn rejection_message(command_type: &str) -> &'static str {
     }
 }
 
-fn workspace_body(id: &str) -> Option<&'static str> {
+pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
     Some(match id {
         "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
             include_str!("../fixtures/workspaces/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json")

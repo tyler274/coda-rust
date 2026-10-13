@@ -4,8 +4,8 @@
 //! contract is covered by the memory-store unit tests, and these stay quiet.
 
 use physician_auth::{
-    Account, AuthStore, Membership, PhysicianIdentity, PostgresAuthStore, SESSION_TTL_SECONDS,
-    SessionError, SignInError,
+    Account, AuthStore, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
+    SESSION_TTL_SECONDS, SessionError, SignInError,
 };
 use sea_orm::ConnectionTrait;
 
@@ -186,4 +186,53 @@ async fn an_invitation_redeems_once_and_a_raced_second_redeem_finds_nothing() {
         "an invitation redeems once"
     );
     let _ = identity("pg-proof", "unused");
+}
+
+#[tokio::test]
+async fn panel_assignment_requires_admin_permission_in_the_same_practice() {
+    let Some(store) = store("panel_assign").await else {
+        return;
+    };
+    let admin_email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+    let admin_token = store
+        .invite("pg-proof", &admin_email, "Clinic Admin", true, NOW)
+        .await
+        .expect("admin invite");
+    let (admin, _) = store
+        .redeem_invitation(&admin_email, &admin_token, NOW)
+        .await
+        .expect("admin redeem");
+
+    let (doc_email, _) = invited_account(&store, "pg-proof").await;
+    let doc = store.account_by_email(&doc_email).await.unwrap().identity;
+
+    let (outside_email, _) = invited_account(&store, "other-clinic").await;
+    let outside = store
+        .account_by_email(&outside_email)
+        .await
+        .unwrap()
+        .identity;
+
+    store
+        .assign_panel(&admin, &doc.physician_id, "pw-1", Membership::Allowed)
+        .await
+        .expect("admin assigns panel");
+    assert_eq!(store.panel(&doc).await, vec!["pw-1".to_owned()]);
+
+    assert_eq!(
+        store
+            .assign_panel(&doc, &doc.physician_id, "pw-2", Membership::Allowed)
+            .await
+            .unwrap_err(),
+        PanelError::Forbidden,
+        "a physician without panel-assignment permission cannot assign panels"
+    );
+    assert_eq!(
+        store
+            .assign_panel(&admin, &outside.physician_id, "pw-1", Membership::Allowed)
+            .await
+            .unwrap_err(),
+        PanelError::UnknownTarget,
+        "cannot assign panels across practices"
+    );
 }

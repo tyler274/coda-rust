@@ -2,9 +2,14 @@
 //!
 //! `PHYSICIAN_AUTH=required` resolves every physician route's session from
 //! the request's `Authorization: Bearer` header through [`physician_auth`]:
-//! unknown tokens never read, and a workspace check answers 404 so responses
-//! never disclose a patient's existence. The auth routes themselves stay
-//! open, and `/health` stays open, because a load balancer needs it
+//! unknown tokens never read, cross-practice or unknown workspaces answer 404,
+//! physicians in the same clinic read basic demographic information for other
+//! patients in their clinic, and full clinical workspace/command access
+//! requires the patient to be on the physician's panel (`Membership::Allowed`).
+//! Clinic admins, secretaries, and physicians holding panel-assignment (`admin`)
+//! permission may assign or remove patients on a physician's panel within their
+//! clinic. The auth routes themselves stay open (or resolve their own bearer
+//! token), and `/health` stays open because a load balancer needs it
 //! unauthenticated. The store is Postgres (SeaORM) when `PHYSICIAN_DATABASE_URL`
 //! is set — migrations apply on start — and process memory otherwise.
 //! Book: `book/src/physician-site.md`.
@@ -14,17 +19,17 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use axum::Json;
 use axum::body::Body;
-use axum::extract::{Request, State};
+use axum::extract::{Path, Request, State};
 use axum::http::StatusCode;
 use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
-use axum::routing::{get, post};
+use axum::routing::{get, post, put};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
 use physician_auth::{
-    AuthStore, Membership, MemoryAuthStore, PhysicianIdentity, PostgresAuthStore, SessionError,
-    SignInError,
+    AuthStore, Membership, MemoryAuthStore, PanelError, PhysicianIdentity, PostgresAuthStore,
+    SessionError, SignInError,
 };
 
 /// The staging practice every fixture belongs to.
@@ -185,17 +190,78 @@ pub(crate) async fn guard(
     } else {
         body
     };
+    if let Some(workspace) = direct_workspace(parts.uri.path()) {
+        if allows_workspace(&auth, &identity, workspace).await {
+            return next.run(Request::from_parts(parts, body)).await;
+        }
+        // Within the same clinic, physicians can access basic demographic
+        // information about other patients in their clinic; unknown or
+        // cross-clinic patients still answer 404.
+        if identity.practice_id == STAGING_PRACTICE_ID
+            && let Some(raw) = crate::workspace_body(workspace)
+        {
+            return clinic_demographics(raw);
+        }
+        return not_found();
+    }
     if let Some(workspace) = request_workspace(parts.uri.path(), parts.uri.query())
         && !allows_workspace(&auth, &identity, &workspace).await
     {
-        // 404, not 403: a denied physician cannot learn the patient exists.
+        // 404, not 403: a denied physician cannot read clinical projections
+        // for a patient outside their panel.
         return not_found();
+    }
+    if parts.uri.path() == "/patient-roster" && identity.practice_id != STAGING_PRACTICE_ID {
+        return Json(json!({ "patients": [], "next_after": null })).into_response();
     }
     next.run(Request::from_parts(parts, body)).await
 }
 
 /// The largest command body the guard reads to resolve its workspace.
 const COMMAND_BODY_LIMIT: usize = 1_000_000;
+
+/// The top-level `/patient-workspaces/{id}` path, excluding sub-routes like
+/// `/chats/...` and the practice-wide `/patient-workspaces/events` stream.
+fn direct_workspace(path: &str) -> Option<&str> {
+    let rest = path.strip_prefix("/patient-workspaces/")?;
+    (!rest.is_empty() && rest != "events" && !rest.contains('/')).then_some(rest)
+}
+
+/// Basic demographic information for a patient in the caller's clinic who is
+/// not on the caller's panel: identity demographics are preserved while
+/// clinical synopsis, citations, chats, follow-ups, and source handles stay omitted.
+fn clinic_demographics(raw: &str) -> Response {
+    let value: Value = serde_json::from_str(raw).expect("recorded workspace fixture");
+    let identity = value.get("identity").map(|id| {
+        json!({
+            "display_name": id.get("display_name").cloned().unwrap_or(Value::Null),
+            "birth_date": id.get("birth_date").cloned().unwrap_or(Value::Null),
+            "age_years": id.get("age_years").cloned().unwrap_or(Value::Null),
+            "age_as_of": id.get("age_as_of").cloned().unwrap_or(Value::Null),
+            "sex_or_gender": id.get("sex_or_gender").cloned().unwrap_or(Value::Null),
+            "medical_record_numbers": id
+                .get("medical_record_numbers")
+                .cloned()
+                .unwrap_or_else(|| json!([])),
+            "state": id.get("state").cloned().unwrap_or(Value::Null),
+        })
+    });
+    Json(json!({
+        "patient_workspace_id": value["patient_workspace_id"],
+        "display_name": value["display_name"],
+        "time_zone": value["time_zone"],
+        "current_time": value["current_time"],
+        "cursor": value["cursor"],
+        "identity": identity,
+        "chats": [],
+        "patient_synopsis": null,
+        "automation_run": null,
+        "active_follow_ups": [],
+        "has_past_work": false,
+        "connected_sources": [],
+    }))
+    .into_response()
+}
 
 /// The patient workspace a command body names, when it names one.
 fn command_workspace(bytes: &[u8]) -> Option<String> {
@@ -218,6 +284,10 @@ fn request_workspace(path: &str, query: Option<&str>) -> Option<String> {
         if rest == "events" {
             return None;
         }
+        let id = rest.split('/').next()?;
+        return (!id.is_empty()).then(|| id.to_owned());
+    }
+    if let Some(rest) = path.strip_prefix("/physician-state/drafts/") {
         let id = rest.split('/').next()?;
         return (!id.is_empty()).then(|| id.to_owned());
     }
@@ -327,17 +397,112 @@ async fn whoami(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
         return StatusCode::UNAUTHORIZED.into_response();
     };
     let account = auth.store.account_by_identity(&identity).await;
+    let admin = account.as_ref().is_some_and(|account| account.admin);
     Json(json!({
         "physician_id": identity.physician_id,
         "practice_id": identity.practice_id,
         "display_name": account.map(|account| account.display_name)
             .unwrap_or_else(|| identity.physician_id.clone()),
+        "admin": admin,
     }))
     .into_response()
 }
 
+/// Reads the patient workspaces on one physician's panel within the caller's
+/// practice. Readable by the physician themselves or a clinic admin/secretary
+/// (`admin`) in the same practice.
+async fn get_panel(
+    State(auth): State<Arc<Auth>>,
+    Path(physician_id): Path<String>,
+    request: Request<Body>,
+) -> Response {
+    let token = bearer(&request);
+    let Ok(caller) = resolve(&auth, token).await else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let caller_admin = auth
+        .store
+        .account_by_identity(&caller)
+        .await
+        .is_some_and(|account| account.admin);
+    if caller.physician_id != physician_id && !caller_admin {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    let target = PhysicianIdentity {
+        practice_id: caller.practice_id.clone(),
+        physician_id,
+    };
+    if auth.store.account_by_identity(&target).await.is_none() {
+        return not_found();
+    }
+    let workspaces = auth.store.panel(&target).await;
+    Json(json!({
+        "practice_id": target.practice_id,
+        "physician_id": target.physician_id,
+        "patient_workspace_ids": workspaces,
+    }))
+    .into_response()
+}
+
+#[derive(Deserialize)]
+struct PanelAssignBody {
+    allowed: bool,
+}
+
+/// Assigns or removes a patient on a physician's panel. Held by clinic admins,
+/// secretaries, or physicians granted panel-assignment (`admin`) permission.
+async fn put_panel(
+    State(auth): State<Arc<Auth>>,
+    Path((physician_id, patient_workspace_id)): Path<(String, String)>,
+    request: Request<Body>,
+) -> Response {
+    let token = bearer(&request);
+    let Ok(caller) = resolve(&auth, token).await else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let Ok(body) = serde_json::from_slice::<PanelAssignBody>(&bytes) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let caller_admin = auth
+        .store
+        .account_by_identity(&caller)
+        .await
+        .is_some_and(|account| account.active && account.admin);
+    if !caller_admin {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    if caller.practice_id != STAGING_PRACTICE_ID
+        || !crate::WORKSPACE_IDS.contains(&patient_workspace_id.as_str())
+    {
+        return not_found();
+    }
+    let membership = if body.allowed {
+        Membership::Allowed
+    } else {
+        Membership::Denied
+    };
+    match auth
+        .store
+        .assign_panel(&caller, &physician_id, &patient_workspace_id, membership)
+        .await
+    {
+        Ok(()) => Json(json!({
+            "practice_id": caller.practice_id,
+            "physician_id": physician_id,
+            "patient_workspace_id": patient_workspace_id,
+            "allowed": body.allowed,
+        }))
+        .into_response(),
+        Err(PanelError::Forbidden) => StatusCode::FORBIDDEN.into_response(),
+        Err(PanelError::UnknownTarget) => not_found(),
+    }
+}
+
 /// The workspace membership check a recorded handler uses: a denied or
-/// missing membership answers 404 so the patient's existence stays unknown.
+/// missing membership answers 404 so clinical projections stay panel-scoped.
 pub(crate) async fn allows_workspace(
     auth: &Auth,
     identity: &PhysicianIdentity,
@@ -360,6 +525,11 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
         .route("/auth/verify", post(verify))
         .route("/auth/sign-out", post(sign_out))
         .route("/auth/whoami", get(whoami))
+        .route("/auth/panels/{physician_id}", get(get_panel))
+        .route(
+            "/auth/panels/{physician_id}/{patient_workspace_id}",
+            put(put_panel),
+        )
         .with_state(auth)
 }
 
@@ -648,7 +818,8 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn a_denied_workspace_is_indistinguishable_from_an_absent_one() {
+    async fn same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership()
+     {
         let (app, store) = authed_recorded().await;
         let colleague = PhysicianIdentity {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
@@ -657,21 +828,72 @@ mod tests {
         store
             .set_membership(&colleague, crate::WORKSPACE_IDS[0], Membership::Allowed)
             .await;
-        // WORKSPACE_IDS[1] is left unset: a missing row denies, like an
-        // explicit Denied row.
+        // WORKSPACE_IDS[1] is in the same clinic, not on `colleague`'s panel.
         let session = session_for(&app, COLLEAGUE_EMAIL).await;
-        let denied = crate::WORKSPACE_IDS[1];
+        let other_clinic_patient = crate::WORKSPACE_IDS[1];
         let absent = "pw-00000000-0000-0000-0000-000000000000";
+
+        // Same-clinic non-panel patient returns basic demographics only, no synopsis/chats/sources.
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/patient-workspaces/{other_clinic_patient}"),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let json: Value = serde_json::from_str(&body).expect("demographic workspace");
+        assert_eq!(json["display_name"], "Jake Smith");
+        assert_eq!(json["identity"]["birth_date"], "1950-03-12");
+        assert!(json["patient_synopsis"].is_null(), "{body}");
+        assert_eq!(json["chats"], json!([]));
+        assert_eq!(json["connected_sources"], json!([]));
+        assert!(json["identity"].get("source_handle").is_none(), "{body}");
+
+        // Clinical routes for a non-panel patient and any absent patient still return 404.
         for path in [
-            &format!("/patient-workspaces/{denied}"),
             &format!("/patient-workspaces/{absent}"),
-            &format!("/today?patient_workspace_id={denied}"),
+            &format!("/patient-workspaces/{other_clinic_patient}/chats/none/snapshot"),
+            &format!("/physician-state/drafts/{other_clinic_patient}/none"),
+            &format!("/today?patient_workspace_id={other_clinic_patient}"),
         ] {
             let (status, body) = send(&app, Method::GET.as_str(), path, Some(&session), None).await;
             assert_eq!(status, StatusCode::NOT_FOUND, "{path}: {body}");
             assert!(body.is_empty(), "a 404 carried a body: {body}");
         }
-        // The granted workspace reads; practice-level lists still read.
+
+        // Cross-clinic physician gets 404 even on /patient-workspaces/{id} and empty roster.
+        store.seed_account(
+            "other-practice",
+            "outsider",
+            "outsider@other.test",
+            "Outsider",
+            false,
+        );
+        let outsider_session = session_for(&app, "outsider@other.test").await;
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/patient-workspaces/{other_clinic_patient}"),
+            Some(&outsider_session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
+        assert!(body.is_empty(), "{body}");
+        let (status, roster_body) = send(
+            &app,
+            Method::GET.as_str(),
+            "/patient-roster?query=Jake",
+            Some(&outsider_session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(roster_body.contains("\"patients\":[]"), "{roster_body}");
+
+        // The granted workspace reads its full clinical synopsis; practice-level lists still read.
         let (status, body) = send(
             &app,
             Method::GET.as_str(),
@@ -681,6 +903,7 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::OK, "{body}");
+        assert!(body.contains("authored_text"), "{body}");
         let (status, body) = send(
             &app,
             Method::GET.as_str(),
@@ -690,6 +913,66 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::OK, "{body}");
+    }
+
+    #[tokio::test]
+    async fn clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http() {
+        let (app, store) = authed_recorded().await;
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "secretary",
+            "secretary@codahealth.test",
+            "Clinic Secretary",
+            true,
+        );
+        let secretary_session = session_for(&app, "secretary@codahealth.test").await;
+        let colleague_session = session_for(&app, COLLEAGUE_EMAIL).await;
+        let workspace = crate::WORKSPACE_IDS[1];
+
+        // Non-admin physician cannot self-assign a patient to their panel.
+        let (status, _) = send(
+            &app,
+            Method::PUT.as_str(),
+            &format!("/auth/panels/colleague/{workspace}"),
+            Some(&colleague_session),
+            Some(json!({ "allowed": true }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::FORBIDDEN);
+
+        // Secretary (or admin physician) assigns the patient to colleague's panel.
+        let (status, body) = send(
+            &app,
+            Method::PUT.as_str(),
+            &format!("/auth/panels/colleague/{workspace}"),
+            Some(&secretary_session),
+            Some(json!({ "allowed": true }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+
+        // Colleague now reads their panel and the full clinical workspace for that patient.
+        let (status, panel_body) = send(
+            &app,
+            Method::GET.as_str(),
+            "/auth/panels/colleague",
+            Some(&colleague_session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{panel_body}");
+        assert!(panel_body.contains(workspace), "{panel_body}");
+
+        let (status, ws_body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/patient-workspaces/{workspace}"),
+            Some(&colleague_session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{ws_body}");
+        assert!(ws_body.contains("authored_text"), "{ws_body}");
     }
 
     #[tokio::test]

@@ -535,6 +535,34 @@ pub struct WhoamiResponse {
     pub practice_id: String,
     /// The physician's display name.
     pub display_name: String,
+    #[serde(default)]
+    /// Whether this account holds clinic admin / panel-assignment permission.
+    pub admin: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The panel route's answer: the patient workspaces on one physician's panel.
+pub struct PanelResponse {
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    #[serde(default)]
+    /// The patient workspace IDs assigned to this physician's panel.
+    pub patient_workspace_ids: Vec<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The panel assignment route's answer after updating one panel membership.
+pub struct PanelAssignmentResponse {
+    /// The `practice_id` value.
+    pub practice_id: String,
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The `patient_workspace_id` value.
+    pub patient_workspace_id: String,
+    /// Whether the patient workspace is now on the physician's panel.
+    pub allowed: bool,
 }
 
 #[cfg(test)]

@@ -2,10 +2,12 @@
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
 
+pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, HealthResponse, PatientSearchResponse, PatientWorkspaceResponse,
-    PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse, RecentConversationsResponse,
-    SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
+    ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PanelResponse,
+    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
+    PracticeDayResponse, RecentConversationsResponse, SignInResponse, TodayListResponse,
+    UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -166,6 +168,32 @@ impl PhysicianClient {
     /// Reads the session's physician when the held session still resolves.
     pub async fn whoami(&self) -> Result<WhoamiResponse, http::HttpError> {
         self.get("/auth/whoami").await
+    }
+
+    /// Reads the patient workspaces on `physician_id`'s panel.
+    pub async fn panel(&self, physician_id: &str) -> Result<PanelResponse, http::HttpError> {
+        self.get(&format!("/auth/panels/{}", query_escape(physician_id)))
+            .await
+    }
+
+    /// Assigns or removes `patient_workspace_id` on `physician_id`'s panel.
+    /// Requires the signed-in account to hold clinic admin / panel-assignment
+    /// permission (`admin: true`).
+    pub async fn assign_panel(
+        &self,
+        physician_id: &str,
+        patient_workspace_id: &str,
+        allowed: bool,
+    ) -> Result<PanelAssignmentResponse, http::HttpError> {
+        self.put(
+            &format!(
+                "/auth/panels/{}/{}",
+                query_escape(physician_id),
+                query_escape(patient_workspace_id)
+            ),
+            &serde_json::json!({ "allowed": allowed }),
+        )
+        .await
     }
 
     /// Reads Today.

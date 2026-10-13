@@ -20,7 +20,7 @@ use uuid::Uuid;
 mod error;
 mod store;
 
-pub use error::{SessionError, SignInError};
+pub use error::{PanelError, SessionError, SignInError};
 pub use store::PostgresAuthStore;
 
 /// The SeaORM entities and the migration chain.
@@ -62,7 +62,9 @@ pub struct Account {
     pub display_name: String,
     /// Whether the account may sign in and hold sessions.
     pub active: bool,
-    /// Whether the account may administer the practice's accounts.
+    /// Whether the account may administer the practice's accounts and assign
+    /// patients to a physician's panel (held by clinic admins, secretaries,
+    /// or physicians granted panel-assignment permission).
     pub admin: bool,
     /// Sessions minted before this Unix second never resolve; deactivation
     /// moves it forward and reactivation leaves it there.
@@ -119,6 +121,19 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
         membership: Membership,
     );
+    /// Lists the patient workspaces on one physician's panel, sorted.
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String>;
+    /// Assigns or removes a patient workspace on `physician_id`'s panel in
+    /// `actor`'s practice. Requires `actor` to be an active `admin` account
+    /// (clinic admin, secretary, or physician holding panel-assignment
+    /// permission) in the same practice as `physician_id`.
+    async fn assign_panel(
+        &self,
+        actor: &PhysicianIdentity,
+        physician_id: &str,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) -> Result<(), PanelError>;
     /// Records one pending invitation and returns its redeem token.
     async fn invite(
         &self,
@@ -392,6 +407,60 @@ impl AuthStore for MemoryAuthStore {
             ),
             membership,
         );
+    }
+
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+        let state = self.state.lock().expect("auth state");
+        let mut workspaces: Vec<String> = state
+            .memberships
+            .iter()
+            .filter(|((practice_id, physician_id, _), membership)| {
+                *practice_id == identity.practice_id
+                    && *physician_id == identity.physician_id
+                    && **membership == Membership::Allowed
+            })
+            .map(|((_, _, workspace_id), _)| workspace_id.clone())
+            .collect();
+        workspaces.sort();
+        workspaces
+    }
+
+    async fn assign_panel(
+        &self,
+        actor: &PhysicianIdentity,
+        physician_id: &str,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) -> Result<(), PanelError> {
+        let mut state = self.state.lock().expect("auth state");
+        let caller = state
+            .accounts
+            .values()
+            .find(|account| account.identity == *actor)
+            .ok_or(PanelError::Forbidden)?;
+        if !caller.active || !caller.admin {
+            return Err(PanelError::Forbidden);
+        }
+        let target = PhysicianIdentity {
+            practice_id: actor.practice_id.clone(),
+            physician_id: physician_id.to_owned(),
+        };
+        if !state
+            .accounts
+            .values()
+            .any(|account| account.identity == target)
+        {
+            return Err(PanelError::UnknownTarget);
+        }
+        state.memberships.insert(
+            (
+                target.practice_id,
+                target.physician_id,
+                patient_workspace_id.to_owned(),
+            ),
+            membership,
+        );
+        Ok(())
     }
 
     async fn invite(
@@ -746,5 +815,89 @@ mod tests {
         store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
         let token = store.seed_session("doc@example.test", NOW).unwrap();
         assert!(token.starts_with("codas-"));
+    }
+
+    #[tokio::test]
+    async fn clinic_admin_or_authorized_physician_assigns_panels_within_the_practice() {
+        let store = MemoryAuthStore::new();
+        store.seed_account(
+            "practice",
+            "secretary",
+            "secretary@example.test",
+            "Clinic Secretary",
+            true,
+        );
+        store.seed_account(
+            "practice",
+            "lead-doc",
+            "lead@example.test",
+            "Lead Physician",
+            true,
+        );
+        store.seed_account("practice", "doc", "doc@example.test", "Physician", false);
+        store.seed_account(
+            "other-practice",
+            "outside-doc",
+            "outside@example.test",
+            "Outside Physician",
+            false,
+        );
+
+        let secretary = PhysicianIdentity {
+            practice_id: "practice".to_owned(),
+            physician_id: "secretary".to_owned(),
+        };
+        let lead_doc = PhysicianIdentity {
+            practice_id: "practice".to_owned(),
+            physician_id: "lead-doc".to_owned(),
+        };
+        let doc = PhysicianIdentity {
+            practice_id: "practice".to_owned(),
+            physician_id: "doc".to_owned(),
+        };
+
+        // A secretary or clinic admin assigns a patient to a physician's panel.
+        store
+            .assign_panel(&secretary, "doc", "pw-1", Membership::Allowed)
+            .await
+            .unwrap();
+        assert_eq!(store.membership(&doc, "pw-1").await, Membership::Allowed);
+        assert_eq!(store.panel(&doc).await, vec!["pw-1".to_owned()]);
+
+        // A physician who also holds the permission can assign panels too.
+        store
+            .assign_panel(&lead_doc, "doc", "pw-2", Membership::Allowed)
+            .await
+            .unwrap();
+        assert_eq!(
+            store.panel(&doc).await,
+            vec!["pw-1".to_owned(), "pw-2".to_owned()]
+        );
+
+        // A physician without the permission cannot assign panels (even their own).
+        assert_eq!(
+            store
+                .assign_panel(&doc, "doc", "pw-3", Membership::Allowed)
+                .await
+                .unwrap_err(),
+            PanelError::Forbidden
+        );
+
+        // Even an admin cannot assign panels for a physician in another practice.
+        assert_eq!(
+            store
+                .assign_panel(&secretary, "outside-doc", "pw-1", Membership::Allowed)
+                .await
+                .unwrap_err(),
+            PanelError::UnknownTarget
+        );
+
+        // Removing a patient from the panel revokes membership.
+        store
+            .assign_panel(&secretary, "doc", "pw-1", Membership::Denied)
+            .await
+            .unwrap();
+        assert_eq!(store.membership(&doc, "pw-1").await, Membership::Denied);
+        assert_eq!(store.panel(&doc).await, vec!["pw-2".to_owned()]);
     }
 }

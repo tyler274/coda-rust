@@ -160,7 +160,7 @@ fn apply_event_frames(
 
 #[component]
 pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
-    let mut signed_in = use_signal(|| false);
+    let mut signed_in = use_signal(|| true);
     let mut whoami_name = use_signal(String::new);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| PhysicianClient::new(base_url.clone()));
@@ -193,8 +193,8 @@ fn PhysicianShell(
     base_url: String,
     open_patient: String,
     client: Signal<PhysicianClient>,
-    signed_in: Signal<bool>,
-    whoami_name: Signal<String>,
+    mut signed_in: Signal<bool>,
+    mut whoami_name: Signal<String>,
 ) -> Element {
     let mut place = use_signal(|| {
         if open_patient.is_empty() {
@@ -240,7 +240,17 @@ fn PhysicianShell(
     let today = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
-        async move { client.today().await.map_err(|_| ()) }
+        async move {
+            match client.today().await {
+                Ok(response) => Ok(response),
+                Err(physician_client::HttpError::Status { status: 401, .. }) => {
+                    signed_in.set(false);
+                    whoami_name.set(String::new());
+                    Err(())
+                }
+                Err(_) => Err(()),
+            }
+        }
     });
     let patients = use_resource(move || {
         let client = client.read().clone();

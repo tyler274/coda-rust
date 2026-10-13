@@ -14,8 +14,9 @@ use sea_orm_migration::MigratorTrait;
 
 use crate::migration::{Accounts, Invitations, Memberships, Sessions, SignInTokens};
 use crate::{
-    Account, AuthStore, INVITATION_TTL_SECONDS, Membership, PhysicianIdentity, SESSION_TTL_SECONDS,
-    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, mint_token, token_hash,
+    Account, AuthStore, INVITATION_TTL_SECONDS, Membership, PanelError, PhysicianIdentity,
+    SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, mint_token,
+    token_hash,
 };
 
 /// The SQL-backed store.
@@ -268,6 +269,53 @@ impl AuthStore for PostgresAuthStore {
                 .await
             }
         };
+    }
+
+    async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
+        let mut workspaces: Vec<String> = Memberships::find()
+            .filter(
+                crate::migration::membership::Column::PracticeId
+                    .eq(&identity.practice_id)
+                    .and(
+                        crate::migration::membership::Column::PhysicianId
+                            .eq(&identity.physician_id),
+                    )
+                    .and(crate::migration::membership::Column::Allowed.eq(true)),
+            )
+            .all(&self.db)
+            .await
+            .unwrap_or_default()
+            .into_iter()
+            .map(|row| row.patient_workspace_id)
+            .collect();
+        workspaces.sort();
+        workspaces
+    }
+
+    async fn assign_panel(
+        &self,
+        actor: &PhysicianIdentity,
+        physician_id: &str,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) -> Result<(), PanelError> {
+        let caller = self
+            .account_by_identity(actor)
+            .await
+            .ok_or(PanelError::Forbidden)?;
+        if !caller.active || !caller.admin {
+            return Err(PanelError::Forbidden);
+        }
+        let target = PhysicianIdentity {
+            practice_id: actor.practice_id.clone(),
+            physician_id: physician_id.to_owned(),
+        };
+        if self.account_by_identity(&target).await.is_none() {
+            return Err(PanelError::UnknownTarget);
+        }
+        self.set_membership(&target, patient_workspace_id, membership)
+            .await;
+        Ok(())
     }
 
     async fn invite(
