@@ -4,7 +4,7 @@
 //! contract is covered by the memory-store unit tests, and these stay quiet.
 
 use physician_auth::{
-    Account, AuthStore, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
+    Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
     SESSION_TTL_SECONDS, SessionError, SignInError,
 };
 use sea_orm::ConnectionTrait;
@@ -313,4 +313,41 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         store.patient_cadence("pw-clinic-1").await,
         physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged
     );
+    }
+
+async fn patient_invitation_consent_and_cadence_round_trip() {
+    let Some(store) = store("patient_link").await else {
+        return;
+    };
+    let token = store
+        .invite_patient("pg-proof", "pw-elena", NOW)
+        .await
+        .expect("patient invite");
+    let linked = store
+        .accept_patient_invitation(&token, "duet-elena", NOW + 5)
+        .await
+        .expect("accept invite");
+    assert!(linked.linked);
+    assert_eq!(linked.duet_account_id.as_deref(), Some("duet-elena"));
+
+    let consented = store
+        .grant_patient_consent("pg-proof", "pw-elena", "duet-elena", "v1", NOW + 10)
+        .await
+        .expect("grant consent");
+    assert!(consented.sharing_consented);
+    assert_eq!(consented.consent_version.as_deref(), Some("v1"));
+
+    store
+        .set_patient_premium("pg-proof", "pw-elena", true)
+        .await;
+    assert_eq!(
+        store.patient_cadence("pg-proof", "pw-elena").await,
+        Cadence::DailyWhenChanged
+    );
+
+    let revoked = store
+        .revoke_patient_consent("pg-proof", "pw-elena", NOW + 20)
+        .await
+        .expect("revoke consent");
+    assert!(!revoked.sharing_consented);
 }

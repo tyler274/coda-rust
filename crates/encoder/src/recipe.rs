@@ -256,7 +256,7 @@ pub fn unsupported_inference(directory: &Path) -> Result<Option<String>, String>
     let named_default = settings
         .get("default_prompt_name")
         .is_some_and(|value| !value.is_null());
-    if query != QUERY_PREFIX || document != "" || extra || named_default {
+    if query != QUERY_PREFIX || !document.is_empty() || extra || named_default {
         return Ok(Some(
             "declared prompts differ from the BGE query instruction with no document prompt".into(),
         ));

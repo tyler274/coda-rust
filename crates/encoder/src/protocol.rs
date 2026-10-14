@@ -88,10 +88,7 @@ pub fn serve_patient<E: Encode>(encoder: &mut E) -> Result<(), String> {
         let mut block = !session.busy();
         loop {
             let incoming = if block {
-                match receiver.recv() {
-                    Ok(line) => line,
-                    Err(_) => None,
-                }
+                receiver.recv().unwrap_or_default()
             } else {
                 match receiver.try_recv() {
                     Ok(line) => line,
@@ -156,12 +153,12 @@ impl PatientSession {
         if let Some(request) = self.queries.pop_front() {
             return Ok(Some(answer_query(encoder, &request)));
         }
-        if self.active.is_none() {
-            if let Some(request) = self.pending.pop_front() {
-                match start_document(encoder, &request)? {
-                    Started::Failed(line) => return Ok(Some(line)),
-                    Started::Job(job) => self.active = Some(job),
-                }
+        if self.active.is_none()
+            && let Some(request) = self.pending.pop_front()
+        {
+            match start_document(encoder, &request)? {
+                Started::Failed(line) => return Ok(Some(line)),
+                Started::Job(job) => self.active = Some(job),
             }
         }
         let Some(batch) = self

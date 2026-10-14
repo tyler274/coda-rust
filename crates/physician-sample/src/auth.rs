@@ -167,9 +167,10 @@ fn guarded(path: &str) -> bool {
 /// terminates SSE streams when session or panel access is revoked.
 pub(crate) async fn guard(
     State(auth): State<Arc<Auth>>,
-    request: Request<Body>,
+    mut request: Request<Body>,
     next: Next,
 ) -> Response {
+    request.extensions_mut().insert(Arc::clone(&auth.store));
     if !guarded(request.uri().path()) {
         return next.run(request).await;
     }
@@ -1031,6 +1032,15 @@ pub async fn authed_router_with_store(
     required_router(base, auth)
 }
 
+async fn inject_auth_store(
+    State(auth): State<Arc<Auth>>,
+    mut request: Request<Body>,
+    next: Next,
+) -> Response {
+    request.extensions_mut().insert(Arc::clone(&auth.store));
+    next.run(request).await
+}
+
 /// Builds the router with auth required on the recorded practice.
 ///
 /// `PHYSICIAN_AUTH=required` guards every physician route of `base` through
@@ -1050,7 +1060,13 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
     };
     match auth_mode() {
         AuthMode::Required => required_router(base, auth),
-        AuthMode::Open => base.merge(auth_routes(auth)),
+        AuthMode::Open => {
+            base.merge(auth_routes(Arc::clone(&auth)))
+                .layer(axum::middleware::from_fn_with_state(
+                    auth,
+                    inject_auth_store,
+                ))
+        }
     }
 }
 

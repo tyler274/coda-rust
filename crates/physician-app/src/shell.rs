@@ -363,19 +363,16 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
             }
             ClinicalSegment::Citation { .. } => {
                 let mut chips = Vec::new();
-                loop {
-                    let ClinicalSegment::Citation {
-                        state,
-                        display_label,
-                        source,
-                        source_id,
-                        handle,
-                        source_presentation,
-                        destination,
-                    } = &segments[index]
-                    else {
-                        break;
-                    };
+                while let ClinicalSegment::Citation {
+                    state,
+                    display_label,
+                    source,
+                    source_id,
+                    handle,
+                    source_presentation,
+                    destination,
+                } = &segments[index]
+                {
                     let number = chip_number(
                         state,
                         source.as_deref(),
@@ -493,17 +490,17 @@ fn chip_number(
     numbers: &mut Vec<(String, usize)>,
     next: &mut usize,
 ) -> usize {
-    if state == "resolved" {
-        if let (Some(source), Some(source_id), Some(handle)) = (source, source_id, handle) {
-            let key = format!("{source}\n{source_id}\n{handle}");
-            if let Some((_, number)) = numbers.iter().find(|(existing, _)| existing == &key) {
-                return *number;
-            }
-            let number = *next;
-            numbers.push((key, number));
-            *next += 1;
-            return number;
+    if state == "resolved"
+        && let (Some(source), Some(source_id), Some(handle)) = (source, source_id, handle)
+    {
+        let key = format!("{source}\n{source_id}\n{handle}");
+        if let Some((_, number)) = numbers.iter().find(|(existing, _)| existing == &key) {
+            return *number;
         }
+        let number = *next;
+        numbers.push((key, number));
+        *next += 1;
+        return number;
     }
     let number = *next;
     *next += 1;
@@ -511,6 +508,9 @@ fn chip_number(
 }
 
 /// A workspace or conversation event for the open patient means the chat should be read again.
+// Callers are wasm-gated (follow_workspace_events in lib.rs); the function is
+// exercised by unit tests on every target.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 pub fn workspace_event_rereads(event: &str, data: &str, selected: Option<&str>) -> bool {
     let Ok(value) = serde_json::from_str::<serde_json::Value>(data) else {
         return false;

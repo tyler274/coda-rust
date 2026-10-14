@@ -1,8 +1,8 @@
 //! Root states for the four Duet tabs. Sentences are the ones the iPhone app shows.
 
 use duet_client::{
-    ConversationPage, EvidenceLibraryPage, InsightCyclePage, IntelligenceSettings,
-    SharingOverviewResponse, SharingPeer,
+    ConversationPage, DuetDoctorPlanView, EvidenceLibraryPage, InsightCyclePage,
+    IntelligenceSettings, SharingOverviewResponse, SharingPeer,
 };
 use duet_wire::models::conversation_availability::Reason;
 use duet_wire::models::conversation_message::Role;
@@ -39,6 +39,47 @@ pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
 pub const INSIGHT_NOTIFICATIONS: &str = "New insight notifications";
 pub const INSIGHT_NOTIFICATIONS_DETAIL: &str = "Notify me when Duet finds something worth showing.";
 pub const OPEN_NOTIFICATION_SETTINGS: &str = "Open iPhone Settings";
+pub const YOUR_DOCTORS_PLAN: &str = "your doctor's plan";
+pub const SHARE_WITH_MY_PHYSICIAN: &str = "Share with my physician";
+pub const STOP_SHARING: &str = "Stop sharing";
+
+/// One read-only item in `"your doctor's plan"` (`ENG-54`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DoctorPlanRow {
+    pub title: String,
+    pub body: String,
+}
+
+/// Read-only `"your doctor's plan"` section displayed in Duet (`ENG-54`),
+/// strictly separated from Duet's adaptive routines.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DoctorPlanSection {
+    pub heading: &'static str,
+    pub read_only: bool,
+    pub attribution: String,
+    pub items: Vec<DoctorPlanRow>,
+}
+
+/// Builds the read-only `"your doctor's plan"` section from an approved physician plan.
+pub fn doctor_plan_section(plan: Option<&DuetDoctorPlanView>) -> Option<DoctorPlanSection> {
+    let plan = plan?;
+    if plan.items.is_empty() {
+        return None;
+    }
+    Some(DoctorPlanSection {
+        heading: YOUR_DOCTORS_PLAN,
+        read_only: true,
+        attribution: format!("From {} · v{}", plan.physician_name, plan.version),
+        items: plan
+            .items
+            .iter()
+            .map(|item| DoctorPlanRow {
+                title: item.title.clone(),
+                body: item.body.clone(),
+            })
+            .collect(),
+    })
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DoctorPage {
@@ -759,11 +800,12 @@ pub fn people_in(overview: &SharingOverviewResponse) -> Vec<String> {
         &overview.pending_incoming,
         &overview.pending_outgoing,
         &overview.reconnect_required,
-    ] {
-        if let Some(grants) = grants {
-            for grant in grants {
-                people.push(peer_name(&grant.peer));
-            }
+    ]
+    .into_iter()
+    .flatten()
+    {
+        for grant in grants {
+            people.push(peer_name(&grant.peer));
         }
     }
     people
@@ -1199,5 +1241,28 @@ mod tests {
             "127.0.0.1"
         };
         assert!(api_base_url().contains(host) || option_env!("DUET_API_URL").is_some());
+    }
+
+    #[test]
+    fn doctors_plan_section_is_read_only_and_labeled_your_doctors_plan() {
+        let plan = DuetDoctorPlanView {
+            label: YOUR_DOCTORS_PLAN.into(),
+            read_only: true,
+            practice_id: "practice-coda-1".into(),
+            patient_workspace_id: "pat-elena".into(),
+            physician_name: "Dr. Rivera".into(),
+            version: 1,
+            approved_at: "2026-10-13T10:00:00Z".into(),
+            items: vec![duet_client::DoctorPlanItemView {
+                id: "item-1".into(),
+                title: "Repeat lipid panel".into(),
+                body: "Fasting lipid panel in 6 weeks.".into(),
+            }],
+        };
+        let section = doctor_plan_section(Some(&plan)).expect("plan section");
+        assert_eq!(section.heading, "your doctor's plan");
+        assert!(section.read_only);
+        assert_eq!(section.attribution, "From Dr. Rivera · v1");
+        assert_eq!(section.items.len(), 1);
     }
 }
