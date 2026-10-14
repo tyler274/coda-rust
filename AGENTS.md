@@ -9,13 +9,19 @@ copy them.
 | Work | Contract |
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
-| Physician product, clinical runtime, and the clinical skill catalog | [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
+| Physician product, clinical runtime, and the clinical skill catalog | [Hoisted Coda Agents contract](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
 | Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
-| Duet, the patient app | [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
-| Gym cases, promotion, and runs | [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
-| Computer use | [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
+| Duet, the patient app | [Hoisted Duet contract](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
+| Gym cases, promotion, and runs | [Hoisted Gym contract](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
+| Computer use | [Hoisted computer-use contract](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
 | Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
+
+The operative rules of all four submodule contracts are hoisted into
+[Agent contracts, hoisted](book/src/agent-contracts.md) so work in this
+workspace can follow them without opening a submodule. Submodules stay
+read-only reference; their sources win over the hoisted page when they
+disagree.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
