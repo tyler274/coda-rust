@@ -17,7 +17,7 @@ fn App() -> Element {
     rsx! {
         mobile::ModeShell {
             physician_url: physician_url(),
-            duet_url: duet_app::api_base_url(),
+            duet_url: duet_url(),
             duet_bearer: duet_app::api_bearer(),
         }
     }
@@ -35,6 +35,20 @@ fn physician_url() -> String {
         return origin;
     }
     "http://127.0.0.1:8790".to_owned()
+}
+
+#[cfg(any(feature = "web", feature = "mobile"))]
+fn duet_url() -> String {
+    if let Some(url) = option_env!("DUET_API_URL") {
+        if !url.is_empty() {
+            return url.to_owned();
+        }
+    }
+    #[cfg(target_arch = "wasm32")]
+    if let Some(origin) = page_origin() {
+        return origin;
+    }
+    duet_app::api_base_url()
 }
 
 #[cfg(all(any(feature = "web", feature = "mobile"), target_arch = "wasm32"))]

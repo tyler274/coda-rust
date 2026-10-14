@@ -93,7 +93,12 @@ struct Browser {
 
 impl Browser {
     fn launch() -> Self {
-        let port = 9333;
+        // An ephemeral port: two proof tests can run in parallel in CI.
+        let port = std::net::TcpListener::bind(("127.0.0.1", 0))
+            .expect("a free local port")
+            .local_addr()
+            .expect("local address")
+            .port();
         let child = Command::new(chromium())
             .args([
                 "--headless=new",

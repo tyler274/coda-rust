@@ -76,6 +76,7 @@ async fn the_recorded_practice_is_visible() {
 
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
+        .env_remove("LD_LIBRARY_PATH")
         .args([
             "--headless=new",
             "--disable-gpu",
@@ -161,6 +162,8 @@ fn build_site() -> PathBuf {
 
 fn cargo_without_parent_package(command: &mut Command) {
     command.env_clear();
+    // LD_LIBRARY_PATH rides along: the tools on PATH (for example the lld
+    // that links wasm) resolve their own shared libraries through it.
     for key in [
         "PATH",
         "HOME",
@@ -169,6 +172,7 @@ fn cargo_without_parent_package(command: &mut Command) {
         "CARGO_HOME",
         "RUSTUP_TOOLCHAIN",
         "TMPDIR",
+        "LD_LIBRARY_PATH",
     ] {
         if let Some(value) = env::var_os(key) {
             command.env(key, value);

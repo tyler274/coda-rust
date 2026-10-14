@@ -36,7 +36,17 @@
         pkgs.e2fsprogs
         pkgs.krb5
         pkgs.keyutils
+        # The toolchain lld loads libxml2; without it a rustc wasm link
+        # under a stripped-down environment aborts at exit 127. This nixpkgs
+        # pin's current libxml2 is 2.15, whose soname no longer matches the
+        # binary, so pin the 2.13 ABI the toolchain links against.
+        pkgs.libxml2_13
       ];
+      # Chromium's own NSS build pairs with its own sqlite; the shell's
+      # sqlite (newer glibc) must not shadow it when Chromium loads. The
+      # shellHook resolves the exact store paths by reading chromium's
+      # dynamic links at activation time.
+      chromiumBin = "${pkgs.chromium}/bin/chromium";
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -68,10 +78,15 @@
           mdbook
           opentofu
           wasm-bindgen-cli_0_2_129
+          # The proof tests drive this through CDP; CHROMIUM points at it.
+          chromium
         ];
 
         env.OPENSSL_NO_VENDOR = "1";
         env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+        # The browser proof tests (crates/mobile/tests, physician-sample/tests)
+        # look this name up when CHROMIUM is unset.
+        env.CHROMIUM = "${pkgs.chromium}/bin/chromium";
 
         shellHook = ''
           export COREPACK_HOME="$HOME/.cache/coda-dev/corepack"
@@ -83,6 +98,16 @@
             . "$HOME/.local/share/swiftly/env.sh"
           fi
           export LD_LIBRARY_PATH="${swiftLibs}:${wheelLibs}''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+          # Headless Chromium aborts at startup when the NSS it loads cannot
+          # resolve its sqlite (a glibc-mismatched copy would also break).
+          # Resolve the exact nss + sqlite pair the binary links against and
+          # put them ahead of everything else on the library path.
+          coda_chromium_real="$(sed -n 's/^exec "\([^"]*\)".*/\1/p' ${chromiumBin})"
+          coda_nss_dir="$(ldd "$coda_chromium_real" 2>/dev/null | grep 'libnss3\.so' | awk '{print $3}' | head -1 | xargs dirname | xargs dirname)/lib"
+          if [ -d "$coda_nss_dir" ]; then
+            coda_sqlite_dir="$(ldd "$coda_nss_dir/libsoftokn3.so" 2>/dev/null | grep 'libsqlite3\.so' | awk '{print $3}' | head -1 | xargs dirname)"
+            export LD_LIBRARY_PATH="$coda_sqlite_dir:$coda_nss_dir:$LD_LIBRARY_PATH"
+          fi
           export C_INCLUDE_PATH="${pkgs.glibc.dev}/include''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
           export LIBRARY_PATH="${pkgs.glibc}/lib''${LIBRARY_PATH:+:}$LIBRARY_PATH"
           # Nix's PostgreSQL puts its Unix socket in /run/postgresql, which a
@@ -108,7 +133,16 @@ PGCTL
             export CODA_TEST_POSTGRES_BIN="${postgres}/bin"
           fi
           export CODA_PATIENT_ENCODER_MODEL="$HOME/code/coda/coda-local-data/models/bge-small-en-v1.5"
-          export CODA_PATIENT_ENCODER_PYTHON="$PWD/submodules/coda-agents/.venv/bin/python3"
+          # The BGE venv is provisioned outside the submodule (it is
+          # gitignored there), so prefer the submodule copy and fall back to
+          # the sibling checkout a worktree shares the monorepo with.
+          if [ -x "$PWD/submodules/coda-agents/.venv/bin/python3" ]; then
+            export CODA_PATIENT_ENCODER_PYTHON="$PWD/submodules/coda-agents/.venv/bin/python3"
+          elif [ -x "$HOME/code/coda/coda-agents/.venv/bin/python3" ]; then
+            export CODA_PATIENT_ENCODER_PYTHON="$HOME/code/coda/coda-agents/.venv/bin/python3"
+          else
+            export CODA_PATIENT_ENCODER_PYTHON="python3"
+          fi
           export CODA_PATIENT_ENCODER_BIN="$PWD/target/debug/encoder"
           export DUET_DISCOVERY_ENCODER_MODEL="$CODA_PATIENT_ENCODER_MODEL"
           export DUET_DISCOVERY_ENCODER_BIN="$CODA_PATIENT_ENCODER_BIN"
