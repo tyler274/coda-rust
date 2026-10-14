@@ -12,6 +12,9 @@ use std::collections::HashMap;
 
 use serde_json::{Value, json};
 
+pub mod simulation;
+pub use simulation::*;
+
 /// How this process runs a model. Unset means `live`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ModelExecution {
