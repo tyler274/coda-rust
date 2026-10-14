@@ -359,6 +359,10 @@ pub struct SourceSnapshot {
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 /// One piece of authored clinical text.
+// The Citation variant carries six option fields against Text's one String,
+// which trips `large_endian_variants`; boxing the wire struct would fight the
+// generated serde shape, so the lint stays off for this enum.
+#[allow(clippy::large_enum_variant)]
 pub enum ClinicalSegment {
     /// Prose between citations.
     Text {

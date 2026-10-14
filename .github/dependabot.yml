@@ -1,0 +1,37 @@
+# Weekly dependency bumps (ENG-60). Every PR these open runs the full CI
+# suite (fmt, clippy, tests, cargo-deny), which is the validation.
+version: 2
+updates:
+  # Cargo dependencies: group minor+patch into one weekly PR so the diff
+  # stays reviewable. Major bumps land as separate PRs on their own.
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      cargo-minor-patch:
+        update-types:
+          - minor
+          - patch
+    # The wasm-bindgen crate version is hand-coupled to wasm-bindgen-cli
+    # 0.2.129, pinned in ci.yml and flake.nix. A mismatched pair breaks every
+    # wasm build; bump the pin deliberately, in one commit, everywhere.
+    ignore:
+      - dependency-name: wasm-bindgen
+      - dependency-name: wasm-bindgen-backend
+      - dependency-name: wasm-bindgen-futures
+      - dependency-name: wasm-bindgen-macro
+      - dependency-name: wasm-bindgen-macro-support
+      - dependency-name: wasm-bindgen-shared
+      - dependency-name: js-sys
+      - dependency-name: web-sys
+
+  # GitHub Actions: group all weekly bumps into one PR.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"

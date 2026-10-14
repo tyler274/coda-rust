@@ -75,9 +75,9 @@ impl BertEncoder {
         let mut mask = Vec::with_capacity(wrapped.len() * width);
         for row in &wrapped {
             ids.extend(row.iter().copied());
-            ids.extend(std::iter::repeat(self.pad).take(width - row.len()));
-            mask.extend(std::iter::repeat(1_u32).take(row.len()));
-            mask.extend(std::iter::repeat(0_u32).take(width - row.len()));
+            ids.extend(std::iter::repeat_n(self.pad, width - row.len()));
+            mask.extend(std::iter::repeat_n(1_u32, row.len()));
+            mask.extend(std::iter::repeat_n(0_u32, width - row.len()));
         }
         let rows = wrapped.len();
         let shape = (rows, width);
