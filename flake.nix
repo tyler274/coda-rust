@@ -35,6 +35,11 @@
         pkgs.e2fsprogs
         pkgs.krb5
         pkgs.keyutils
+        # The toolchain lld loads libxml2; without it a rustc wasm link
+        # under a stripped-down environment aborts at exit 127. This nixpkgs
+        # pin's current libxml2 is 2.15, whose soname no longer matches the
+        # binary, so pin the 2.13 ABI the toolchain links against.
+        pkgs.libxml2_13
       ];
       # Chromium's own NSS build pairs with its own sqlite; the shell's
       # sqlite (newer glibc) must not shadow it when Chromium loads. The
@@ -73,6 +78,8 @@
           mdbook
           opentofu
           wasm-bindgen-cli_0_2_129
+          # The proof tests drive this through CDP; CHROMIUM points at it.
+          chromium
           # FHS-wrapped Cursor so extensions work without nix-specific patches.
           # Keep this ahead of the host profile on PATH: the host's older
           # 3.19.13 build SIGTRAPs under the dev shell's LD_LIBRARY_PATH.
@@ -81,6 +88,9 @@
 
         env.OPENSSL_NO_VENDOR = "1";
         env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+        # The browser proof tests (crates/mobile/tests, physician-sample/tests)
+        # look this name up when CHROMIUM is unset.
+        env.CHROMIUM = "${pkgs.chromium}/bin/chromium";
 
         shellHook = ''
           export COREPACK_HOME="$HOME/.cache/coda-dev/corepack"

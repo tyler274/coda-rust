@@ -96,6 +96,7 @@ fn write_file(mut stream: TcpStream, dir: &Path) -> std::io::Result<()> {
 
 async fn dump_dom(chrome: &Path, url: &str) -> String {
     let child = Command::new(chrome)
+        .env_remove("LD_LIBRARY_PATH")
         .args([
             "--headless=new",
             "--disable-gpu",
@@ -134,6 +135,8 @@ fn build_site() -> PathBuf {
     let wasm = target.join("wasm32-unknown-unknown/debug/mobile.wasm");
     let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     cargo.env_clear();
+    // LD_LIBRARY_PATH rides along: the tools on PATH (for example the lld
+    // that links wasm) resolve their own shared libraries through it.
     for key in [
         "PATH",
         "HOME",
@@ -142,6 +145,7 @@ fn build_site() -> PathBuf {
         "CARGO_HOME",
         "RUSTUP_TOOLCHAIN",
         "TMPDIR",
+        "LD_LIBRARY_PATH",
     ] {
         if let Some(value) = env::var_os(key) {
             cargo.env(key, value);

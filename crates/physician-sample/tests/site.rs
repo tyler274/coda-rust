@@ -273,6 +273,8 @@ fn build_site() -> PathBuf {
 
 fn cargo_without_parent_package(command: &mut Command) {
     command.env_clear();
+    // LD_LIBRARY_PATH rides along: the tools on PATH (for example the lld
+    // that links wasm) resolve their own shared libraries through it.
     for key in [
         "HOME",
         "USER",
@@ -280,6 +282,7 @@ fn cargo_without_parent_package(command: &mut Command) {
         "CARGO_HOME",
         "RUSTUP_TOOLCHAIN",
         "TMPDIR",
+        "LD_LIBRARY_PATH",
     ] {
         if let Some(value) = env::var_os(key) {
             command.env(key, value);

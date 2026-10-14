@@ -40,6 +40,14 @@ jobs:
         # closed when it runs; it is not counted as passed here. The Android
         # shell is proved by UI Automator on a local emulator, not by this job.
         run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
+      - name: Browser proof (physician auth journeys)
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: cargo test -p physician-sample --test auth_browser --test site --test react -- --skip the_live_react_practice_matches_the_rust_page
+      - name: Browser proof (mode shells)
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: cargo test -p mobile --test mode --test browser --test duet_journey
       - name: Install mdBook
         run: cargo install mdbook --version 0.4.52 --locked
       - name: Check the Doppler installer
