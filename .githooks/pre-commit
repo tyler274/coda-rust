@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Pre-commit gate (ENG-60): rustfmt and clippy must pass before a commit
+# lands. Wired up by the flake shellHook via `git config core.hooksPath
+# .githooks`. Escape hatch for exceptional commits: `git commit --no-verify`.
+#
+# Note on strictness: clippy checks errors at CI severity; warnings are not
+# denied yet. Once the tree is clean, tighten this to `-D warnings` and add
+# the same to the CI lint step.
+set -euo pipefail
+
+if ! command -v cargo >/dev/null; then
+  echo "cargo not on PATH — run inside nix develop (or commit with --no-verify)" >&2
+  exit 1
+fi
+
+cargo fmt --all --check
+cargo clippy --workspace --all-targets --quiet

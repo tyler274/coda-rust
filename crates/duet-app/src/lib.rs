@@ -20,12 +20,12 @@ use roots::{
     CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
     DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL, JoinDraft, LIBRARY_EMPTY,
     LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, NoteOpen, OPEN_NOTIFICATION_SETTINGS,
-    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARING_ERROR, SHARING_HEADING, SHARING_OFF_DETAIL,
-    SHARING_ON_DETAIL, SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED, SavedItemPage,
-    SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    composer_text, conversation_root, date_line, doctor_page, draft_after_send, greeting,
-    library_root, note_open, page_with_accepted, plan_page, reminder_page, send_id, shared_root,
-    sharing_root, shows_join, today_root,
+    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING,
+    SHARING_OFF_DETAIL, SHARING_ON_DETAIL, SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED,
+    STOP_SHARING, SavedItemPage, SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot,
+    closed_send, composer_open, composer_text, conversation_root, date_line, doctor_page,
+    doctor_plan_section, draft_after_send, greeting, library_root, note_open, page_with_accepted,
+    plan_page, reminder_page, send_id, shared_root, sharing_root, shows_join, today_root,
 };
 use ui::TabBar;
 
@@ -366,7 +366,7 @@ fn doctor_draft_save(
         .page
         .as_ref()
         .map(|page| (**page).clone())
-        .unwrap_or_else(duet_wire::models::DoctorPageContent::new);
+        .unwrap_or_default();
     page.name = Some(optional_text(name));
     page.date_of_birth = Some(
         optional_text(birth)
@@ -493,9 +493,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut doctor_birth = use_signal(String::new);
     let mut doctor_note = use_signal(String::new);
     let mut doctor_cover = use_signal(String::new);
-    let mut doctor_questions = use_signal(|| Vec::<String>::new());
-    let mut doctor_items = use_signal(|| Vec::<(uuid::Uuid, String)>::new());
-    let mut doctor_kept = use_signal(|| Vec::<bool>::new());
+    let mut doctor_questions = use_signal(Vec::<String>::new);
+    let mut doctor_items = use_signal(Vec::<(uuid::Uuid, String)>::new);
+    let mut doctor_kept = use_signal(Vec::<bool>::new);
     let mut confirm_fresh = use_signal(|| false);
     let mut fresh_failed = use_signal(|| false);
     let mut editing = use_signal(|| false);
@@ -516,18 +516,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         async move {
             let api = open_client(base_url, bearer)?;
             let page = api.list_messages().await?;
-            let routines = match api.list_saved_routines().await {
-                Ok(list) => Some(list.items),
-                Err(_) => None,
-            };
-            let follow_ups = match api.list_follow_ups().await {
-                Ok(page) => Some(page.items),
-                Err(_) => None,
-            };
-            let doctor = match api.doctor_collection().await {
-                Ok(collection) => Some(collection),
-                Err(_) => None,
-            };
+            let routines = api.list_saved_routines().await.ok().map(|list| list.items);
+            let follow_ups = api.list_follow_ups().await.ok().map(|page| page.items);
+            let doctor = api.doctor_collection().await.ok();
             Ok::<_, String>(ThreadLoad {
                 page,
                 routines,
@@ -1324,6 +1315,7 @@ fn YouTab(
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
+    let mut doctor_plan_cache = use_signal(|| None::<duet_client::DuetDoctorPlanView>);
     let mut menu = use_signal(|| false);
     let mut editor = use_signal(|| None::<YouEditor>);
     let mut medication = use_signal(String::new);
@@ -1346,24 +1338,30 @@ fn YouTab(
         let bearer = bearer.clone();
         async move {
             match open_client(base_url, bearer) {
-                Ok(api) => api.evidence_library().await,
+                Ok(api) => {
+                    let library = api.evidence_library().await?;
+                    let doctor_plan = api.doctor_plan().await.ok().flatten();
+                    Ok((library, doctor_plan))
+                }
                 Err(error) => Err(error),
             }
         }
     });
     use_effect(move || {
         loading.set(resource().is_none());
-        if let Some(Ok(page)) = resource() {
+        if let Some(Ok((page, plan))) = resource() {
             cache.set(Some(page));
+            doctor_plan_cache.set(plan);
         }
     });
     let current = resource();
     let failed = matches!(current, Some(Err(_)));
-    let page = match current {
-        Some(Ok(page)) => Some(page),
-        _ => cache(),
+    let (page, doctor_plan) = match current {
+        Some(Ok((page, plan))) => (Some(page), plan),
+        _ => (cache(), doctor_plan_cache()),
     };
     let root = page.as_ref().map(library_root);
+    let plan_section = doctor_plan_section(doctor_plan.as_ref());
     let retry = move |_| attempt.set(attempt() + 1);
     // Saving shares the closure shapes with the other save handlers.
     let save_record = move |_| {
@@ -1562,6 +1560,16 @@ fn YouTab(
             }
         }
         PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
+        if let Some(section) = plan_section {
+            article { class: "voice-card",
+                p { class: "card-title", "{section.heading}" }
+                p { class: "record-meta", "{section.attribution}" }
+                for item in section.items {
+                    p { class: "card-text", "{item.title}" }
+                    p { class: "record-meta", "{item.body}" }
+                }
+            }
+        }
         match root {
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
@@ -1856,40 +1864,98 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
+    let mut physician_cache = use_signal(|| None::<duet_client::PhysicianSharingStatus>);
+    let action_url = base_url.clone();
+    let action_bearer = bearer.clone();
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
         let bearer = bearer.clone();
         async move {
             match open_client(base_url, bearer) {
-                Ok(api) => api.sharing_overview().await,
+                Ok(api) => {
+                    let overview = api.sharing_overview().await?;
+                    let physician = api.physician_sharing_status().await.ok();
+                    Ok((overview, physician))
+                }
                 Err(error) => Err(error),
             }
         }
     });
     use_effect(move || {
         loading.set(resource().is_none());
-        if let Some(Ok(overview)) = resource() {
+        if let Some(Ok((overview, physician))) = resource() {
             cache.set(Some(shared_root(&[], Ok(&overview))));
+            physician_cache.set(physician);
         }
     });
     let current = resource();
-    let view = match &current {
-        Some(Ok(overview)) => shared_root(&[], Ok(overview)),
-        Some(Err(_)) => shared_root(
-            &cache().map(|root| root.people).unwrap_or_default(),
-            Err(()),
+    let (view, physician_status) = match &current {
+        Some(Ok((overview, physician))) => (shared_root(&[], Ok(overview)), physician.clone()),
+        Some(Err(_)) => (
+            shared_root(
+                &cache().map(|root| root.people).unwrap_or_default(),
+                Err(()),
+            ),
+            physician_cache(),
         ),
-        None => cache().unwrap_or(SharedRoot {
-            people: Vec::new(),
-            notice: None,
-        }),
+        None => (
+            cache().unwrap_or(SharedRoot {
+                people: Vec::new(),
+                notice: None,
+            }),
+            physician_cache(),
+        ),
     };
     let people = view.people.clone();
     let notice = view.notice.clone();
     let retry = move |_| attempt.set(attempt() + 1);
+    let stop_url = action_url.clone();
+    let stop_bearer = action_bearer.clone();
+    let stop_sharing = move |_| {
+        let base_url = stop_url.clone();
+        let bearer = stop_bearer.clone();
+        spawn(async move {
+            if let Ok(api) = open_client(base_url, bearer) {
+                let _ = api.stop_physician_sharing().await;
+                attempt.set(attempt() + 1);
+            }
+        });
+    };
+    let grant_sharing = move |_| {
+        let base_url = action_url.clone();
+        let bearer = action_bearer.clone();
+        spawn(async move {
+            if let Ok(api) = open_client(base_url, bearer) {
+                let _ = api.grant_physician_consent("v1").await;
+                attempt.set(attempt() + 1);
+            }
+        });
+    };
     rsx! {
         TabHeading { name: "Shared".to_owned(), loading }
+        if let Some(status) = physician_status.filter(|status| status.linked) {
+            article { class: "voice-card",
+                p { class: "card-title", "{status.practice_name.as_deref().unwrap_or(\"Connected practice\")}" }
+                if status.sharing_consented {
+                    p { class: "record-meta", "{SHARE_WITH_MY_PHYSICIAN} ({status.consent_version.as_deref().unwrap_or(\"v1\")})" }
+                    button {
+                        class: "duet-retry",
+                        r#type: "button",
+                        onclick: stop_sharing,
+                        "{STOP_SHARING}"
+                    }
+                } else {
+                    p { class: "record-meta", "Sharing stopped" }
+                    button {
+                        class: "duet-retry",
+                        r#type: "button",
+                        onclick: grant_sharing,
+                        "{SHARE_WITH_MY_PHYSICIAN}"
+                    }
+                }
+            }
+        }
         if !people.is_empty() {
             p { class: "status-title", "People" }
             for person in people {

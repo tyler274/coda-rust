@@ -6,7 +6,7 @@
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -48,6 +48,154 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// The `incomplete` value.
     pub incomplete: Option<bool>,
+    #[serde(default)]
+    /// Active simulation status and investor metric when running in simulation mode.
+    pub simulation: Option<SimulationStatus>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Investor metric for a simulation run: items the physician touched per 100 patients per week.
+pub struct InvestorMetricWire {
+    /// Count of items directly touched by the physician during the run.
+    pub physician_touched_items: u32,
+    /// Count of episodes/reviews handled ambiently by Coda without physician touch.
+    pub ambient_handled_items: u32,
+    /// Number of patients on the simulated panel.
+    pub panel_size: u32,
+    /// Duration of the simulation run in weeks.
+    pub simulated_weeks: f64,
+    /// Normalized investor metric: `(physician_touched_items / (panel_size * simulated_weeks)) * 100.0`.
+    pub items_per_100_patients_per_week: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Aggregate investor metric across all simulation runs in the session.
+pub struct SimulationAggregateMetricWire {
+    /// Total simulation runs executed in this session.
+    pub runs_count: u32,
+    /// Total physician-touched items across all runs.
+    pub total_physician_touched_items: u32,
+    /// Total ambiently handled items across all runs.
+    pub total_ambient_handled_items: u32,
+    /// Total patient-weeks simulated across all runs.
+    pub total_patient_weeks: f64,
+    /// Aggregate items the physician touched per 100 patients per week across runs.
+    pub items_per_100_patients_per_week: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Metadata for one rerunnable simulation scenario.
+pub struct SimulationScenarioWire {
+    /// Scenario key (`connected-walk`, `reviewability`, etc.).
+    pub key: String,
+    /// Short human-readable scenario title.
+    pub label: String,
+    /// Detailed description of what the scenario exercises.
+    pub description: String,
+    /// Simulated duration in days.
+    pub simulated_days: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Summary of one synthetic patient on Roger's panel.
+pub struct SimulationPanelPatientWire {
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Patient display name.
+    pub display_name: String,
+    /// Date of birth (`YYYY-MM-DD`).
+    pub birth_date: String,
+    /// Medical record number.
+    pub mrn: String,
+    /// Clinical role in the simulation scenarios.
+    pub role_summary: String,
+    /// Whether the simulated patient takes no unprompted action.
+    pub passive_patient: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Simulation status and investor metric exposed on `/today`, `/patient-workspaces/{id}`, and `/local-proof/simulations`.
+pub struct SimulationStatus {
+    /// Active scenario key.
+    pub active_scenario_key: String,
+    /// Human-readable label for the active scenario.
+    pub active_scenario_label: String,
+    /// Current simulated clock (`ISO-8601`).
+    pub current_time: String,
+    /// Investor metric for the current run.
+    pub investor_metric: InvestorMetricWire,
+    /// Aggregate investor metric across runs in this session.
+    pub aggregate_metric: SimulationAggregateMetricWire,
+    #[serde(default)]
+    /// Available scenarios Roger can run or rerun.
+    pub scenarios: Vec<SimulationScenarioWire>,
+    #[serde(default)]
+    /// Synthetic patients on Roger's panel.
+    pub panel_patients: Vec<SimulationPanelPatientWire>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A decided item in a patient's active care plan.
+pub struct WorkspacePlanItem {
+    /// Plan item identifier.
+    pub item_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Short plan item title.
+    pub title: String,
+    /// Clinical detail for the plan item.
+    pub detail: String,
+    /// Timestamp when the item was decided.
+    pub decided_at: String,
+    #[serde(default)]
+    /// Recommendation identifier if promoted from a recommendation.
+    pub source_recommendation_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A medication recommendation awaiting or reflecting a physician decision.
+pub struct WorkspaceMedicationRecommendation {
+    /// Recommendation identifier.
+    pub recommendation_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Medication name and dose.
+    pub medication: String,
+    /// Clinical rationale or context.
+    pub rationale: String,
+    /// Source note or review label.
+    pub source_label: String,
+    /// Current decision state (`undecided`, `decided`, `declined`).
+    pub decision_state: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A drafted patient reply on a workspace projection.
+pub struct WorkspaceReply {
+    /// Reply work identifier.
+    pub reply_work_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Patient display name.
+    pub patient_display_name: String,
+    /// Outbound channel (`spruce` or `email`).
+    pub channel: String,
+    /// Summary headline.
+    pub headline: String,
+    /// Drafted message text.
+    pub draft_text: String,
+    /// Urgency tier (`urgent_ed` or `routine`).
+    pub urgency: String,
+    /// Timestamp when the reply was drafted.
+    pub created_at: String,
+    /// Lifecycle state (`ready`, `superseded_by_correction`, `closed_by_physician`).
+    pub state: String,
+    #[serde(default)]
+    /// Input key that superseded this reply, if any.
+    pub superseded_by_input: Option<String>,
+    #[serde(default)]
+    /// Reason this reply was superseded, if any.
+    pub superseded_reason: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -239,6 +387,15 @@ pub struct PatientSearchRow {
     #[serde(default)]
     /// The `birth_date` value.
     pub birth_date: Option<String>,
+    #[serde(default)]
+    /// Whether this roster patient has accepted the explicit practice invitation in Duet.
+    pub duet_linked: bool,
+    #[serde(default)]
+    /// Whether this roster patient has active `"share with my physician"` consent.
+    pub sharing_consented: bool,
+    #[serde(default)]
+    /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
+    pub cadence: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -272,6 +429,30 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// Connected record sources, including each last good pull.
     pub connected_sources: Vec<ConnectedSource>,
+    #[serde(default)]
+    /// Active ready patient replies on the workspace.
+    pub replies: Vec<WorkspaceReply>,
+    #[serde(default)]
+    /// Replies superseded by corrected laboratory results.
+    pub superseded_replies: Vec<WorkspaceReply>,
+    #[serde(default)]
+    /// Decided active care-plan items for the patient.
+    pub active_plan_items: Vec<WorkspacePlanItem>,
+    #[serde(default)]
+    /// Undecided medication recommendations held out of the active plan.
+    pub undecided_recommendations: Vec<WorkspaceMedicationRecommendation>,
+    #[serde(default)]
+    /// Active simulation status and investor metric when running in simulation mode.
+    pub simulation: Option<SimulationStatus>,
+    #[serde(default)]
+    /// The patient front-door link, versioned consent state, and review cadence (`ENG-44`).
+    pub patient_link: Option<PatientLinkWire>,
+    #[serde(default)]
+    /// Consented patient-contributed records ingested from Duet with provenance (`ENG-51`).
+    pub duet_records: Vec<DuetIngestedRecordWire>,
+    #[serde(default)]
+    /// The physician-authored patient plan draft and exact-text approval state (`ENG-53`).
+    pub doctor_plan: Option<DoctorPlanDraftWire>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -359,6 +540,10 @@ pub struct SourceSnapshot {
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 /// One piece of authored clinical text.
+// The Citation variant carries six option fields against Text's one String,
+// which trips `large_endian_variants`; boxing the wire struct would fight the
+// generated serde shape, so the lint stays off for this enum.
+#[allow(clippy::large_enum_variant)]
 pub enum ClinicalSegment {
     /// Prose between citations.
     Text {
@@ -563,6 +748,177 @@ pub struct PanelAssignmentResponse {
     pub patient_workspace_id: String,
     /// Whether the patient workspace is now on the physician's panel.
     pub allowed: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The wire representation of a roster patient's front-door link, consent, and cadence (`ENG-44`).
+pub struct PatientLinkWire {
+    /// The practice that owns the roster patient.
+    pub practice_id: String,
+    /// The roster patient's workspace id.
+    pub patient_workspace_id: String,
+    #[serde(default)]
+    /// The linked Duet account id, once the invitation is accepted.
+    pub duet_account_id: Option<String>,
+    #[serde(default)]
+    /// Whether the patient accepted the practice invitation.
+    pub linked: bool,
+    #[serde(default)]
+    /// Whether `"share with my physician"` consent is currently active.
+    pub sharing_consented: bool,
+    #[serde(default)]
+    /// The accepted consent version (such as `"v1"`).
+    pub consent_version: Option<String>,
+    #[serde(default)]
+    /// The Unix second consent was granted.
+    pub consented_at: Option<u64>,
+    #[serde(default)]
+    /// The Unix second consent was revoked via one-step stop-sharing.
+    pub revoked_at: Option<u64>,
+    #[serde(default)]
+    /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
+    pub cadence: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The patient invitation route's answer when a practice invites a roster patient (`ENG-48`).
+pub struct PatientInvitationResponse {
+    /// The practice that issued the invitation.
+    pub practice_id: String,
+    /// The explicitly invited roster patient workspace id.
+    pub patient_workspace_id: String,
+    /// The single-use invitation token to redeem in Duet.
+    pub token: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One consented Duet record ingested into a patient workspace (`ENG-51`).
+pub struct DuetIngestedRecordWire {
+    /// Stable record identifier in Duet.
+    pub record_id: String,
+    /// Deterministic `sha256` revision cursor.
+    pub revision_cursor: String,
+    /// Deterministic `sha256` content hash.
+    pub content_hash: String,
+    /// Canonical source identity used for cross-source deduplication.
+    pub source_identity: String,
+    /// Provenance string shown to the physician (always includes `"via the patient's Duet"`).
+    pub provenance: String,
+    /// Record category.
+    pub category: String,
+    /// Short display title.
+    pub title: String,
+    /// Summary text.
+    pub summary: String,
+    /// Recorded timestamp or date string.
+    pub recorded_at: String,
+    #[serde(default)]
+    /// Whether this record originated as a patient-approved Luna note (`ENG-52`).
+    pub patient_approved_note: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The Duet sync route's answer after ingesting consented Duet records (`ENG-51`).
+pub struct DuetSyncResponse {
+    /// The patient workspace id.
+    pub patient_workspace_id: String,
+    /// Number of newly added or updated records in this sync pass.
+    pub ingested_count: usize,
+    #[serde(default)]
+    /// Latest `sha256` revision cursor processed.
+    pub last_cursor: Option<String>,
+    #[serde(default)]
+    /// Current deduplicated Duet records on the workspace.
+    pub records: Vec<DuetIngestedRecordWire>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One item in a physician-authored or approved patient plan (`ENG-53` / `ENG-54`).
+pub struct PlanItemWire {
+    /// Stable item identifier within the plan.
+    pub id: String,
+    /// Item heading.
+    pub title: String,
+    /// Exact clinical guidance text visible to the patient.
+    pub body: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One drafted item in the physician's plan with exact-text approval tracking (`ENG-53`).
+pub struct DoctorPlanItemWire {
+    /// Stable item identifier within the plan.
+    pub id: String,
+    /// Item heading.
+    pub title: String,
+    /// Current drafted body text.
+    pub body: String,
+    #[serde(default)]
+    /// Previously approved exact title, if any.
+    pub approved_title: Option<String>,
+    #[serde(default)]
+    /// Previously approved exact body text, if any.
+    pub approved_body: Option<String>,
+    #[serde(default)]
+    /// Whether this item is new or edited since the last approval.
+    pub needs_approval: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// One batched item diff approved by the physician (`ENG-53`).
+pub struct PlanDiffEntryWire {
+    /// Stable item identifier.
+    pub item_id: String,
+    /// Approved item title.
+    pub title: String,
+    #[serde(default)]
+    /// Previous approved body text (`None` when newly added).
+    pub previous_body: Option<String>,
+    /// Newly approved exact body text.
+    pub approved_body: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// The physician-approved patient plan displayed read-only in Duet as `"your doctor's plan"` (`ENG-54`).
+pub struct ApprovedDoctorPlanWire {
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Practice identifier.
+    pub practice_id: String,
+    /// Approving physician's display name.
+    pub physician_name: String,
+    /// Patient-facing section label (`"your doctor's plan"`).
+    pub label: String,
+    /// Monotonically increasing approved version (`1` for full first version, `2+` for batched diffs).
+    pub version: u32,
+    /// Timestamp or date string when approved.
+    pub approved_at: String,
+    #[serde(default)]
+    /// Full list of exact-text approved items in the plan.
+    pub items: Vec<PlanItemWire>,
+    #[serde(default)]
+    /// The exact-text items approved in this version.
+    pub last_diff: Vec<PlanDiffEntryWire>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Physician workspace state for drafting and approving a patient plan (`ENG-53`).
+pub struct DoctorPlanDraftWire {
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Practice identifier.
+    pub practice_id: String,
+    /// Authoring physician's display name.
+    pub physician_name: String,
+    /// Highest approved version (`0` before the first approval).
+    pub approved_version: u32,
+    /// Whether the current draft's exact text is approved with zero unapproved edits.
+    pub currently_approved: bool,
+    #[serde(default)]
+    /// Current drafted items and their per-item approval state.
+    pub items: Vec<DoctorPlanItemWire>,
+    #[serde(default)]
+    /// Latest approved snapshot delivered to Duet, if any.
+    pub latest_approved: Option<ApprovedDoctorPlanWire>,
 }
 
 #[cfg(test)]

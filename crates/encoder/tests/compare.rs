@@ -22,16 +22,18 @@ fn matches_pytorch_when_the_model_directory_is_set() {
         .or_else(|_| std::env::var("CODA_PATIENT_ENCODER_PYTHON"))
         .unwrap_or_else(|_| "python3".into());
     let bin = PathBuf::from(env!("CARGO_BIN_EXE_encoder"));
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..");
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let overflowing = "quiet walk ".repeat(500);
     let cases = [
         (
             "duet",
-            root.join("coda-app/backend/app/services/health_text_encoder_worker.py"),
+            root.join("submodules/coda-app/backend/app/services/health_text_encoder_worker.py"),
         ),
         (
             "patient",
-            root.join("coda-agents/src/adapters/patientDiscovery/patient_text_encoder.py"),
+            root.join(
+                "submodules/coda-agents/src/adapters/patientDiscovery/patient_text_encoder.py",
+            ),
         ),
     ];
     for (protocol, script) in cases {

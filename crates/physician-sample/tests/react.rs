@@ -111,10 +111,10 @@ impl Browser {
             if started.elapsed() > Duration::from_secs(15) {
                 panic!("chromium did not open a DevTools page");
             }
-            if let Ok(pages) = targets(port) {
-                if let Some(target) = pages.into_iter().next() {
-                    break target;
-                }
+            if let Ok(pages) = targets(port)
+                && let Some(target) = pages.into_iter().next()
+            {
+                break target;
             }
             thread::sleep(Duration::from_millis(100));
         };
