@@ -274,13 +274,6 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
         premium: bool,
     );
-    /// Sets the per-patient review cadence directly.
-    async fn set_patient_cadence(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        cadence: Cadence,
-    );
     /// Reads the `PatientLink` for `(practice_id, patient_workspace_id)`, if invited or configured.
     async fn patient_link(
         &self,
@@ -288,7 +281,18 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
     ) -> Option<PatientLink>;
     /// Reads the per-patient review `Cadence` (`Weekly` | `DailyWhenChanged`) exposed to Agents.
-    async fn patient_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence;
+    ///
+    /// This is the same per-patient cadence as [`AuthStore::patient_cadence`], keyed by
+    /// `(practice_id, patient_workspace_id)` instead of workspace id alone.
+    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence;
+}
+
+/// Maps the Agents-facing `Cadence` onto the internal `ReviewCadence`.
+fn cadence_to_review_cadence(cadence: Cadence) -> ReviewCadence {
+    match cadence {
+        Cadence::Weekly => ReviewCadence::Weekly,
+        Cadence::DailyWhenChanged => ReviewCadence::WeeklyAndDailyWhenChanged,
+    }
 }
 
 /// The SHA-256 of a presented token: the only form the store keeps.
@@ -687,11 +691,20 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
-        self.state
-            .lock()
-            .expect("auth state")
+        let mut state = self.state.lock().expect("auth state");
+        state
             .cadences
             .insert(patient_workspace_id.to_owned(), cadence);
+        if let Some(record) = state
+            .patient_links
+            .values_mut()
+            .find(|record| record.link.patient_workspace_id == patient_workspace_id)
+        {
+            record.link.cadence = match cadence {
+                ReviewCadence::Weekly => Cadence::Weekly,
+                ReviewCadence::WeeklyAndDailyWhenChanged => Cadence::DailyWhenChanged,
+            };
+        }
     }
 
     async fn invite(
@@ -939,17 +952,11 @@ impl AuthStore for MemoryAuthStore {
         } else {
             Cadence::Weekly
         };
-        self.set_patient_cadence(practice_id, patient_workspace_id, cadence)
-            .await;
-    }
-
-    async fn set_patient_cadence(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        cadence: Cadence,
-    ) {
+        let review_cadence = cadence_to_review_cadence(cadence);
         let mut state = self.state.lock().expect("auth state");
+        state
+            .cadences
+            .insert(patient_workspace_id.to_owned(), review_cadence);
         let entry = state
             .patient_links
             .entry((practice_id.to_owned(), patient_workspace_id.to_owned()))
@@ -984,7 +991,7 @@ impl AuthStore for MemoryAuthStore {
             .map(|record| record.link.clone())
     }
 
-    async fn patient_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
+    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
         self.patient_link(practice_id, patient_workspace_id)
             .await
             .map(|link| link.cadence)
@@ -1448,7 +1455,7 @@ mod tests {
     async fn patient_cadence_exposes_only_weekly_or_daily_when_changed_to_agents() {
         let store = MemoryAuthStore::new();
         assert_eq!(
-            store.patient_cadence("practice-1", "pw-elena").await,
+            store.patient_link_cadence("practice-1", "pw-elena").await,
             Cadence::Weekly,
             "default roster cadence is Weekly"
         );
@@ -1457,7 +1464,7 @@ mod tests {
             .set_patient_premium("practice-1", "pw-elena", true)
             .await;
         assert_eq!(
-            store.patient_cadence("practice-1", "pw-elena").await,
+            store.patient_link_cadence("practice-1", "pw-elena").await,
             Cadence::DailyWhenChanged
         );
         let serialized = serde_json::to_string(
@@ -1477,7 +1484,7 @@ mod tests {
             .set_patient_premium("practice-1", "pw-elena", false)
             .await;
         assert_eq!(
-            store.patient_cadence("practice-1", "pw-elena").await,
+            store.patient_link_cadence("practice-1", "pw-elena").await,
             Cadence::Weekly
         );
     }

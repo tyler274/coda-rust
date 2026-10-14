@@ -790,16 +790,6 @@ impl AuthStore for PostgresAuthStore {
         } else {
             Cadence::Weekly
         };
-        self.set_patient_cadence(practice_id, patient_workspace_id, cadence)
-            .await;
-    }
-
-    async fn set_patient_cadence(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        cadence: Cadence,
-    ) {
         let existing = PatientLinks::find()
             .filter(
                 crate::migration::patient_link::Column::PracticeId
@@ -864,7 +854,7 @@ impl AuthStore for PostgresAuthStore {
             .map(patient_link_from_row)
     }
 
-    async fn patient_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
+    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
         self.patient_link(practice_id, patient_workspace_id)
             .await
             .map(|link| link.cadence)

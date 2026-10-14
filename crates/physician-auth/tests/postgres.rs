@@ -341,7 +341,7 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
         .set_patient_premium("pg-proof", "pw-elena", true)
         .await;
     assert_eq!(
-        store.patient_cadence("pg-proof", "pw-elena").await,
+        store.patient_link_cadence("pg-proof", "pw-elena").await,
         Cadence::DailyWhenChanged
     );
 
