@@ -10,6 +10,8 @@
 //! not invent an assistant reply.
 #![deny(missing_docs)]
 
+pub mod care;
+
 use std::fs;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -56,6 +58,10 @@ pub struct Store {
     routines: Vec<SavedRoutine>,
     removed_routines: Vec<uuid::Uuid>,
     follow_ups: Vec<FollowUp>,
+    /// Connected Care state (`ENG-44`, `ENG-39`, `ENG-45`, `ENG-46`).
+    pub care: care::ConnectedCareStore,
+    /// Structurally unexportable private operating index (`ENG-52`).
+    pub private_operating_index: care::PrivateOperatingIndex,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Default)]
@@ -68,6 +74,8 @@ struct Writes {
     removed_routines: Vec<uuid::Uuid>,
     #[serde(default)]
     follow_ups: Vec<FollowUp>,
+    #[serde(default)]
+    care: care::ConnectedCareStore,
 }
 
 impl Store {
@@ -98,6 +106,8 @@ impl Store {
             routines: writes.routines,
             removed_routines: writes.removed_routines,
             follow_ups: writes.follow_ups,
+            care: writes.care,
+            private_operating_index: care::PrivateOperatingIndex::default(),
         })
     }
 
@@ -105,7 +115,7 @@ impl Store {
         write_json(&self.path, &self.sent)
     }
 
-    fn save_writes(&self) -> Result<(), String> {
+    pub(crate) fn save_writes(&self) -> Result<(), String> {
         write_json(
             &self.writes_path,
             &Writes {
@@ -114,6 +124,7 @@ impl Store {
                 routines: self.routines.clone(),
                 removed_routines: self.removed_routines.clone(),
                 follow_ups: self.follow_ups.clone(),
+                care: self.care.clone(),
             },
         )
     }
@@ -163,11 +174,59 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         )
         .route("/api/doctor-collection", get(doctor).delete(clear_doctor))
         .route("/api/doctor-collection/page", put(save_doctor))
+        .route(
+            "/api/doctor-collection/share-link",
+            post(care::post_create_share_link).delete(care::delete_share_link),
+        )
+        .route(
+            "/shared/for-my-doctor/{token}",
+            get(care::get_shared_for_my_doctor),
+        )
+        .route(
+            "/api/physician-sharing/status",
+            get(care::get_sharing_status),
+        )
+        .route(
+            "/api/physician-sharing/accept-invitation",
+            post(care::post_accept_invitation),
+        )
+        .route(
+            "/api/physician-sharing/consent",
+            put(care::put_grant_consent),
+        )
+        .route(
+            "/api/physician-sharing/stop-sharing",
+            post(care::post_stop_sharing),
+        )
+        .route(
+            "/api/physician-sharing/records",
+            post(care::post_patient_record),
+        )
+        .route(
+            "/api/physician-sharing/consented-records",
+            get(care::get_consented_records),
+        )
+        .route(
+            "/api/luna-notes/propose",
+            post(care::post_propose_luna_note),
+        )
+        .route(
+            "/api/luna-notes/proposals",
+            get(care::get_luna_note_proposals),
+        )
+        .route(
+            "/api/luna-notes/{id}/approve",
+            post(care::post_approve_luna_note),
+        )
+        .route(
+            "/api/doctor-plan",
+            get(care::get_doctor_plan).put(care::put_doctor_plan),
+        )
         .route("/api/sharing/overview", get(sharing))
         .with_state(store)
 }
 
-fn fixture<T: DeserializeOwned>(name: &str, raw: &str) -> T {
+pub(crate) fn fixture<T: DeserializeOwned>(name: &str, raw: &str) -> T {
     serde_json::from_str(raw).unwrap_or_else(|error| panic!("{name} fixture: {error}"))
 }
 
@@ -1075,5 +1134,280 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn connected_care_consent_approved_luna_notes_share_link_and_read_only_doctors_plan() {
+        let (path, store) = temp_store();
+        let app = router(store);
+
+        // 1. Before consent, consented-records is forbidden.
+        let unconsented = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/physician-sharing/consented-records")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(unconsented.status(), StatusCode::FORBIDDEN);
+
+        // 2. Accept explicit practice invitation.
+        let accept = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/physician-sharing/accept-invitation")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        r#"{"practice_id":"practice-coda-1","practice_name":"Coda Internal Medicine","patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","invitation_token":"inv-1"}"#,
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(accept.status(), StatusCode::OK);
+
+        // 3. Propose two Luna notes: one stays unapproved with private operating_index reasoning,
+        //    and one is approved by the patient and saved to You.
+        let unapproved = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/luna-notes/propose")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        r#"{"date":"2026-10-12","title":"Private hypothesis","summary":"Unapproved draft","private_operating_note":"private_operating_index_secret_never_export"}"#,
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(unapproved.status(), StatusCode::OK);
+
+        let proposed = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/luna-notes/propose")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        r#"{"date":"2026-10-13","title":"Morning walking log","summary":"Walked 30 minutes daily without chest tightness.","private_operating_note":"private_operating_index_secret_never_export"}"#,
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(proposed.status(), StatusCode::OK);
+        let proposal: serde_json::Value = serde_json::from_str(&body(proposed).await).unwrap();
+        let proposal_id = proposal["id"].as_str().unwrap();
+
+        let approved = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri(format!("/api/luna-notes/{proposal_id}/approve"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(approved.status(), StatusCode::OK);
+
+        // Also add a consented Quest lab record.
+        let add_lab = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/physician-sharing/records")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        r#"{"record_id":"rec-quest-ldl","category":"lab","title":"LDL Cholesterol","summary":"98 mg/dL","recorded_at":"2026-10-13T08:00:00Z","origin_label":"from Quest","source_identity":"quest:ldl:2026-10-13"}"#,
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(add_lab.status(), StatusCode::OK);
+
+        // 4. Grant versioned "share with my physician" consent.
+        let consent = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri("/api/physician-sharing/consent")
+                    .header("content-type", "application/json")
+                    .body(Body::from(r#"{"consent_version":"v1"}"#))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(consent.status(), StatusCode::OK);
+
+        // 5. Read consented records: verify sha256 cursors and zero private-note leakage.
+        let read_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/physician-sharing/consented-records")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(read_resp.status(), StatusCode::OK);
+        let read_text = body(read_resp).await;
+        assert!(!read_text.contains("private_operating_index_secret_never_export"));
+        assert!(!read_text.contains("operating_index"));
+        assert!(!read_text.contains("Unapproved draft"));
+        let read_json: serde_json::Value = serde_json::from_str(&read_text).unwrap();
+        assert_eq!(read_json["consent_version"], "v1");
+        let items = read_json["items"].as_array().unwrap();
+        assert_eq!(items.len(), 2);
+        let cursor = read_json["latest_cursor"].as_str().unwrap();
+        assert_eq!(cursor.len(), 64);
+
+        // Incremental cursor read returns 0 items when nothing changed after `cursor`.
+        let incremental = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(format!(
+                        "/api/physician-sharing/consented-records?after_cursor={cursor}"
+                    ))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(incremental.status(), StatusCode::OK);
+        let inc_json: serde_json::Value = serde_json::from_str(&body(incremental).await).unwrap();
+        assert_eq!(inc_json["items"].as_array().unwrap().len(), 0);
+
+        // 6. Expiring, revocable read-only "For my doctor" share link.
+        let share_resp = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/doctor-collection/share-link")
+                    .header("content-type", "application/json")
+                    .body(Body::from(r#"{"ttl_seconds":3600}"#))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(share_resp.status(), StatusCode::OK);
+        let share_json: serde_json::Value = serde_json::from_str(&body(share_resp).await).unwrap();
+        let share_path = share_json["share_path"].as_str().unwrap();
+
+        let shared_page = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(share_path)
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(shared_page.status(), StatusCode::OK);
+        let shared_page_json: serde_json::Value =
+            serde_json::from_str(&body(shared_page).await).unwrap();
+        assert_eq!(shared_page_json["read_only"], true);
+
+        let revoked_link = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("DELETE")
+                    .uri("/api/doctor-collection/share-link")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(revoked_link.status(), StatusCode::OK);
+
+        let gone = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(share_path)
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(gone.status(), StatusCode::NOT_FOUND);
+
+        // 7. Read-only "your doctor's plan" in Duet.
+        let publish_plan = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("PUT")
+                    .uri("/api/doctor-plan")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        r#"{"practice_id":"practice-coda-1","patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","physician_name":"Dr. Rivera","version":1,"approved_at":"2026-10-13T12:00:00Z","items":[{"id":"item-1","title":"Continue statin","body":"Take rosuvastatin 10 mg nightly."}]}"#,
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(publish_plan.status(), StatusCode::OK);
+
+        let get_plan = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/doctor-plan")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(get_plan.status(), StatusCode::OK);
+        let plan_json: serde_json::Value = serde_json::from_str(&body(get_plan).await).unwrap();
+        assert_eq!(plan_json["label"], "your doctor's plan");
+        assert_eq!(plan_json["read_only"], true);
+        assert_eq!(plan_json["version"], 1);
+
+        // 8. One-step "stop sharing" immediately revokes physician read access.
+        let stop = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/physician-sharing/stop-sharing")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(stop.status(), StatusCode::OK);
+
+        let blocked = app
+            .oneshot(
+                Request::builder()
+                    .uri("/api/physician-sharing/consented-records")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(blocked.status(), StatusCode::FORBIDDEN);
+
+        let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(writes_beside(&path));
     }
 }

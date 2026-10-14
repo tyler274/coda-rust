@@ -1479,6 +1479,11 @@ fn PatientSurface(
         .as_ref()
         .map(|open| open.undecided_recommendations.clone())
         .unwrap_or_default();
+    let shared_records = workspace
+        .as_ref()
+        .map(|open| open.duet_records.clone())
+        .unwrap_or_default();
+    let doctor_plan = workspace.as_ref().and_then(|open| open.doctor_plan.clone());
     let dob = identity
         .as_ref()
         .and_then(|identity| identity.birth_date.clone())
@@ -1700,6 +1705,43 @@ fn PatientSurface(
                     h2 { "Follow-ups" }
                     for follow_up in follow_ups {
                         p { "{follow_up.description.clone().unwrap_or_default()}" }
+                    }
+                }
+            }
+            if !shared_records.is_empty() {
+                section { class: "patient-section", aria_label: "Patient-shared records",
+                    h2 { "Patient-shared records" }
+                    for record in shared_records {
+                        article { class: "today-row",
+                            strong { "{record.title}" }
+                            p { "{record.summary}" }
+                            span { class: "today-row-reason", "{record.provenance}" }
+                        }
+                    }
+                }
+            }
+            if let Some(plan) = doctor_plan {
+                section { class: "patient-section", aria_label: "Doctor's plan",
+                    h2 { "Doctor's plan" }
+                    p { class: "patient-synopsis-meta",
+                        if plan.currently_approved {
+                            "Approved v{plan.approved_version} · shared as your doctor's plan"
+                        } else if plan.approved_version == 0 {
+                            "Draft · full first version requires exact-text approval"
+                        } else {
+                            "Edited · prior approval invalidated until batched diffs are approved"
+                        }
+                    }
+                    for item in plan.items {
+                        article { class: "today-row",
+                            strong { "{item.title}" }
+                            p { "{item.body}" }
+                            if item.needs_approval {
+                                span { class: "today-row-reason", "Needs exact-text approval" }
+                            } else {
+                                span { class: "today-row-reason", "Approved" }
+                            }
+                        }
                     }
                 }
             }
