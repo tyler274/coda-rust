@@ -34,12 +34,12 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
-    if args.protocol == Protocol::Patient {
-        if let Some(reason) = unsupported_inference(&args.model)? {
-            return Err(format!(
-                "This model's declared inference is not supported: {reason}"
-            ));
-        }
+    if args.protocol == Protocol::Patient
+        && let Some(reason) = unsupported_inference(&args.model)?
+    {
+        return Err(format!(
+            "This model's declared inference is not supported: {reason}"
+        ));
     }
     let identity = fingerprint(args.protocol, &args.model)?;
     rayon::ThreadPoolBuilder::new()

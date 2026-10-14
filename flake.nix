@@ -23,8 +23,7 @@
       ];
       # Swift.org's Linux toolchain is a glibc binary. curl stays off this
       # path: the xtool AppImage ships its own OpenSSL, and Nix curl demands
-      # a newer one. Swift itself wants libxml2.so.2, which the Swiftly
-      # toolchain wrapper supplies.
+      # a newer one.
       swiftLibs = pkgs.lib.makeLibraryPath [
         pkgs.ncurses
         pkgs.sqlite
@@ -55,6 +54,7 @@
           cargo
           rustfmt
           clippy
+          cargo-deny
           lld
           pkg-config
           openssl
@@ -80,6 +80,10 @@
           wasm-bindgen-cli_0_2_129
           # The proof tests drive this through CDP; CHROMIUM points at it.
           chromium
+          # FHS-wrapped Cursor so extensions work without nix-specific patches.
+          # Keep this ahead of the host profile on PATH: the host's older
+          # 3.19.13 build SIGTRAPs under the dev shell's LD_LIBRARY_PATH.
+          code-cursor-fhs
         ];
 
         env.OPENSSL_NO_VENDOR = "1";
@@ -94,10 +98,39 @@
           coda_bin="$HOME/.cache/coda-dev/bin"
           mkdir -p "$COREPACK_HOME" "$coda_bin"
           export PATH="$coda_bin:$PATH"
+          # The dev shell's LD_LIBRARY_PATH (Swift and wheel libs, including
+          # Nix's sqlite) breaks Electron apps that pick those libraries up:
+          # host-profile Cursor 3.19.13 SIGTRAPs in sqlite within a minute.
+          # Strip the loader path for Cursor only; the shell keeps it for
+          # Swift and the Python wheels. $coda_bin is first on PATH, so the
+          # shim also wins over any older host-profile cursor.
+          cat > "$coda_bin/cursor" <<CURSOR
+#!/bin/sh
+exec env -u LD_LIBRARY_PATH "${pkgs.code-cursor-fhs}/bin/cursor" "\$@"
+CURSOR
+          chmod +x "$coda_bin/cursor"
           if [ -f "$HOME/.local/share/swiftly/env.sh" ]; then
             . "$HOME/.local/share/swiftly/env.sh"
           fi
-          export LD_LIBRARY_PATH="${swiftLibs}:${wheelLibs}''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+          # env.sh puts the swiftly shims first on PATH. rustc's wasm32
+          # target has no bundled rust-lld and resolves `lld` on PATH, so
+          # the shim routes it to the Swift toolchain's lld, which fails
+          # without libxml2.so.2 when the environment is cleared (the
+          # mobile web test re-invokes cargo that way). Keep $coda_bin on
+          # top and link the nix lld into it.
+          export PATH="$coda_bin:$PATH"
+          for coda_lld_name in lld ld.lld wasm-ld; do
+            coda_lld="$coda_bin/$coda_lld_name"
+            if [ ! -e "$coda_lld" ] || [ "$(readlink -f "$coda_lld")" != "${pkgs.lld}/bin/$coda_lld_name" ]; then
+              ln -sf "${pkgs.lld}/bin/$coda_lld_name" "$coda_lld"
+            fi
+          done
+          export LD_LIBRARY_PATH="${wheelLibs}''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+          # Swift toolchain binaries (lld, clang) need libxml2.so.2, which
+          # swiftly's env.sh does not put on the loader path. Append at the
+          # tail so it cannot shadow the Chromium NSS/sqlite pair resolved
+          # below.
+          export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}${pkgs.libxml2.out}/lib"
           # Headless Chromium aborts at startup when the NSS it loads cannot
           # resolve its sqlite (a glibc-mismatched copy would also break).
           # Resolve the exact nss + sqlite pair the binary links against and
@@ -107,6 +140,12 @@
           if [ -d "$coda_nss_dir" ]; then
             coda_sqlite_dir="$(ldd "$coda_nss_dir/libsoftokn3.so" 2>/dev/null | grep 'libsqlite3\.so' | awk '{print $3}' | head -1 | xargs dirname)"
             export LD_LIBRARY_PATH="$coda_sqlite_dir:$coda_nss_dir:$LD_LIBRARY_PATH"
+          fi
+          # The browser tests look for CHROMIUM, then PATH. Chromium is in
+          # the closure for the NSS resolution above; export it so the
+          # tests do not depend on it also being on PATH.
+          if [ -z "''${CHROMIUM:-}" ]; then
+            export CHROMIUM="${chromiumBin}"
           fi
           export C_INCLUDE_PATH="${pkgs.glibc.dev}/include''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
           export LIBRARY_PATH="${pkgs.glibc}/lib''${LIBRARY_PATH:+:}$LIBRARY_PATH"
@@ -154,6 +193,12 @@ PGCTL
             while IFS= read -r line; do
               [ -n "$line" ] && export "$line"
             done < <(doppler secrets download --no-file --format env-no-quotes --project coda-rust --config dev 2>/dev/null || true)
+          fi
+          # Git hooks live in .githooks (pre-commit runs rustfmt + clippy).
+          # Idempotent: only set when not already configured, so a local
+          # override survives.
+          if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
+            git config core.hooksPath .githooks
           fi
         '';
       };

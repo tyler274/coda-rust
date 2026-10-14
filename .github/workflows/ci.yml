@@ -28,6 +28,11 @@ jobs:
           install-dependencies: true
       - name: Check formatting
         run: cargo fmt --check
+      # CI parity with the pre-commit hook (.githooks/pre-commit): a commit
+      # that slips past --no-verify still faces clippy here. Warnings are
+      # reported, not denied, until the tree is clean.
+      - name: Lint
+        run: cargo clippy --workspace --all-targets
       - name: Test
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
@@ -51,3 +56,21 @@ jobs:
         run: |
           mdbook build book
           cargo doc --no-deps --workspace
+
+  # RustSec advisories, license allow-list, bans, and source checks.
+  # deny.toml is the single policy file; the nix dev shell carries the same
+  # cargo-deny so `nix develop --command cargo deny check` matches this job.
+  cargo-deny:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Check dependency guardrails
+        uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check
+          # `arguments` is word-split into the argv head; `command-arguments`
+          # land after `check`. Putting the sections in `arguments` made clap
+          # read `advisories` as the subcommand and the job failed.
+          arguments: --all-features
+          command-arguments: advisories bans licenses sources

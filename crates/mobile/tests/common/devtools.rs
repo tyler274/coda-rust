@@ -557,11 +557,11 @@ fn http_get(port: u16, path: &str) -> Result<String, String> {
         let Some((header, body)) = text.split_once("\r\n\r\n") else {
             continue;
         };
-        if let Some(length) = content_length(header) {
-            if body.len() >= length {
-                bytes.truncate(header.len() + 4 + length);
-                break;
-            }
+        if let Some(length) = content_length(header)
+            && body.len() >= length
+        {
+            bytes.truncate(header.len() + 4 + length);
+            break;
         }
     }
     let text = String::from_utf8_lossy(&bytes);

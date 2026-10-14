@@ -1,0 +1,65 @@
+---
+description: Execute each new plan in its own git worktree so plans run in parallel as separate PRs
+alwaysApply: true
+---
+
+# One Git Worktree Per Plan
+
+When starting a new plan (multi-step implementation work), do not execute it on the
+main checkout's current branch. Create a dedicated git worktree first so multiple
+plans can proceed in parallel without touching each other's files or branches.
+
+This repo already follows this convention — worktrees live in `../worktrees/`
+alongside the repo root:
+
+```text
+/home/luluco/code/coda/coda-rust        # main checkout (stays on main)
+/home/luluco/code/coda/worktrees/<slug> # one worktree per plan
+```
+
+## Steps
+
+1. Pick a short slug for the plan (e.g. `eng-60-guardrails`, `browser-ci`).
+2. Create the worktree with a new branch:
+
+   ```bash
+   git worktree add ../worktrees/<slug> -b <slug>
+   cd ../worktrees/<slug>
+   ```
+
+3. Do all plan work inside the worktree: edits, builds, tests, commits, and pushes.
+   The nix dev shell still applies there (direnv picks up the repo's `.envrc`);
+   see [nix-dev-shell](nix-dev-shell.mdc).
+4. Open a PR from the worktree's branch. One plan = one worktree = one PR.
+5. Clean up after the PR merges:
+
+   ```bash
+   git worktree remove ../worktrees/<slug>
+   git branch -d <slug>
+   ```
+
+## Rules
+
+- ❌ Do NOT implement a new plan directly in the main checkout or on `main`.
+- ❌ Do NOT reuse another plan's worktree for unrelated work.
+- ❌ Do NOT place worktrees inside the repo (`target/`, `submodules/`, etc.) or
+  edit files under `submodules/**`; the [rust-repo-first](rust-repo-first.mdc)
+  rule still applies inside a worktree (`git rev-parse --show-toplevel` must
+  print the worktree path, and file paths must not start with `submodules/`).
+- ✅ One worktree per plan, named `../worktrees/<slug>` with a matching branch.
+
+## ❌ BAD
+
+```bash
+# hacking on a new plan in the main checkout
+cd /home/luluco/code/coda/coda-rust
+git checkout -b my-plan   # blocks the main checkout and other parallel work
+```
+
+## ✅ GOOD
+
+```bash
+cd /home/luluco/code/coda/coda-rust
+git worktree add ../worktrees/my-plan -b my-plan
+cd ../worktrees/my-plan   # all plan work happens here
+```

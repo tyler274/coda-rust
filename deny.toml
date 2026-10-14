@@ -1,0 +1,62 @@
+# cargo-deny guardrails for CI (ENG-60).
+# Run: cargo deny --all-features check advisories bans licenses sources
+# CI: .github/workflows/ci.yml, step `Check dependency guardrails`.
+#
+# Thresholds start where the tree actually is: vulnerabilities and unknown
+# sources fail the build; duplicates, wildcards, and unmaintained crates are
+# warnings to work down, not lies to hide.
+
+[graph]
+# Check all targets so a Windows-only or wasm-only advisory still trips.
+all-features = true
+
+[licenses]
+version = 2
+# The workspace crates are private (publish = false, license = UNLICENSED);
+# guardrails apply to what we ship and depend on, not to this repo itself.
+private = { ignore = true }
+# Allow only permissive licenses; anything copyleft needs an explicit entry.
+allow = [
+    "MIT",
+    "MIT-0",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+    "CC0-1.0",
+    "CDLA-Permissive-2.0",
+    "MPL-2.0",
+    # libfuzzer-sys links LLVM's libFuzzer runtime, which is NCSA-licensed.
+    # It is an image-optimizer dev path through dioxus-desktop, never shipped.
+    "NCSA",
+]
+# Confidence threshold for license detection inside files.
+confidence-threshold = 0.93
+
+[bans]
+# Start as warnings: the tree carries 58 duplicate versions today. Tighten to
+# `deny` per-duplicate with `skip` entries as they are collapsed.
+multiple-versions = "warn"
+# Workspace path dependencies are declared without versions by convention.
+wildcards = "warn"
+deny = []
+
+[advisories]
+version = 2
+# Vulnerabilities still fail. These four are transitive unmaintained crates
+# with no safe upgrade; each is tracked for replacement.
+ignore = [
+    { id = "RUSTSEC-2024-0370", reason = "unsafe-libyaml via serde_yaml 0.9 in agent-skills; replace serde_yaml or move to saphyr" },
+    { id = "RUSTSEC-2024-0449", reason = "proc-macro-error is unmaintained; transitive via darling/syn struct generators" },
+    { id = "RUSTSEC-2025-0057", reason = "fxhash is unmaintained; transitive via rustc-hash users" },
+    { id = "RUSTSEC-2024-0436", reason = "paste is unmaintained; transitive via strum macros" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

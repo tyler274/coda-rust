@@ -25,3 +25,4 @@
 - [Physician site](physician-site.md)
 - [Coda Gym](coda-gym.md)
 - [Computer use](computer-use.md)
+- [Agent contracts, hoisted](agent-contracts.md)
