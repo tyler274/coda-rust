@@ -4,10 +4,11 @@
 
 pub use http::HttpError;
 use physician_wire::{
-    ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PanelResponse,
+    ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
+    PanelAssignmentResponse, PanelResponse, PatientInvitationResponse, PatientLinkWire,
     PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PracticeDayResponse, RecentConversationsResponse, SignInResponse, TodayListResponse,
-    UpdatesResponse, VerifyResponse, WhoamiResponse,
+    PlanItemWire, PracticeDayResponse, RecentConversationsResponse, SignInResponse,
+    TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -319,6 +320,59 @@ impl PhysicianClient {
     /// Reads one patient workspace.
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
         self.get(&format!("/patient-workspaces/{id}")).await
+    }
+
+    /// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet (`ENG-48`).
+    pub async fn invite_patient(
+        &self,
+        workspace_id: &str,
+    ) -> Result<PatientInvitationResponse, http::HttpError> {
+        self.post(
+            &format!("/patient-workspaces/{workspace_id}/invite"),
+            &serde_json::json!({}),
+        )
+        .await
+    }
+
+    /// Reads the front-door link, consent state, and cadence for one patient workspace (`ENG-48`).
+    pub async fn patient_link(
+        &self,
+        workspace_id: &str,
+    ) -> Result<PatientLinkWire, http::HttpError> {
+        self.get(&format!("/patient-workspaces/{workspace_id}/link"))
+            .await
+    }
+
+    /// Reads the current doctor's plan draft and approval state for one patient workspace (`ENG-53`).
+    pub async fn plan(&self, workspace_id: &str) -> Result<DoctorPlanDraftWire, http::HttpError> {
+        self.get(&format!("/patient-workspaces/{workspace_id}/plan"))
+            .await
+    }
+
+    /// Saves or edits the doctor's plan draft for one patient workspace (`ENG-53`).
+    pub async fn save_plan_draft(
+        &self,
+        workspace_id: &str,
+        items: &[PlanItemWire],
+    ) -> Result<DoctorPlanDraftWire, http::HttpError> {
+        self.put(
+            &format!("/patient-workspaces/{workspace_id}/plan/draft"),
+            &serde_json::json!({ "items": items }),
+        )
+        .await
+    }
+
+    /// Approves the exact visible text of the doctor's plan (full first version or batched diffs, `ENG-53`).
+    pub async fn approve_plan_exact_text(
+        &self,
+        workspace_id: &str,
+        approved_items: &[PlanItemWire],
+    ) -> Result<ApprovedDoctorPlanWire, http::HttpError> {
+        self.post(
+            &format!("/patient-workspaces/{workspace_id}/plan/approve"),
+            &serde_json::json!({ "approved_items": approved_items }),
+        )
+        .await
     }
 
     /// Returns the event stream path for this client.

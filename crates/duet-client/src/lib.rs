@@ -14,6 +14,109 @@ pub use duet_wire::models::IntelligenceSettings;
 pub use duet_wire::models::SharingOverviewResponse;
 pub use duet_wire::models::SharingPeer;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
+use serde::{Deserialize, Serialize};
+
+/// Status of the patient's practice link and versioned `"share with my physician"` consent (`ENG-47`).
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PhysicianSharingStatus {
+    /// Whether the patient has accepted an explicit practice invitation.
+    #[serde(default)]
+    pub linked: bool,
+    /// Linked practice identifier, if linked.
+    #[serde(default)]
+    pub practice_id: Option<String>,
+    /// Linked practice display name, if linked.
+    #[serde(default)]
+    pub practice_name: Option<String>,
+    /// Linked roster patient workspace identifier, if linked.
+    #[serde(default)]
+    pub patient_workspace_id: Option<String>,
+    /// Whether `"share with my physician"` consent is currently active.
+    #[serde(default)]
+    pub sharing_consented: bool,
+    /// Accepted consent version (such as `"v1"`).
+    #[serde(default)]
+    pub consent_version: Option<String>,
+    /// Timestamp when consent was granted.
+    #[serde(default)]
+    pub consented_at: Option<String>,
+    /// Timestamp when consent was revoked via one-step `"stop sharing"`, if revoked.
+    #[serde(default)]
+    pub revoked_at: Option<String>,
+    /// Count of patient-approved Luna notes saved to `You`.
+    #[serde(default)]
+    pub approved_note_count: usize,
+    /// Count of total consented records available to the linked physician when consent is active.
+    #[serde(default)]
+    pub consented_record_count: usize,
+}
+
+/// A short dated Luna note proposed in conversation (`ENG-52`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LunaNoteProposal {
+    /// Proposal identifier.
+    pub id: String,
+    /// Short ISO date label.
+    pub date: String,
+    /// Short note title.
+    pub title: String,
+    /// Patient-visible dated note text.
+    pub summary: String,
+    /// Whether the patient has approved saving this note to `You`.
+    pub approved: bool,
+    /// Timestamp when the patient approved the note, if approved.
+    #[serde(default)]
+    pub approved_at: Option<String>,
+    /// Person-entered record id in `You` once approved.
+    #[serde(default)]
+    pub saved_record_id: Option<String>,
+}
+
+/// Expiring, revocable read-only share link for `For my doctor` (`ENG-46`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ForMyDoctorShareLink {
+    /// The opaque share token.
+    pub token: String,
+    /// Relative share path (`/shared/for-my-doctor/{token}`).
+    pub share_path: String,
+    /// Unix timestamp (seconds) when the link expires.
+    pub expires_at_unix: u64,
+    /// Whether the patient has revoked the link.
+    pub revoked: bool,
+}
+
+/// One item in `"your doctor's plan"` (`ENG-54`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DoctorPlanItemView {
+    /// Stable item identifier.
+    pub id: String,
+    /// Item heading.
+    pub title: String,
+    /// Exact physician-approved guidance text.
+    pub body: String,
+}
+
+/// Read-only `"your doctor's plan"` displayed in Duet (`ENG-54`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DuetDoctorPlanView {
+    /// Patient-facing label: always `"your doctor's plan"`.
+    pub label: String,
+    /// Always `true`: `"your doctor's plan"` is read-only in Duet and separate from adaptive routines.
+    pub read_only: bool,
+    /// Practice identifier.
+    pub practice_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Approving physician's display name.
+    pub physician_name: String,
+    /// Approved plan version (`1` for full first version, `2+` for batched diffs).
+    pub version: u32,
+    /// Timestamp when approved by the physician.
+    pub approved_at: String,
+    /// Exact-text approved plan items.
+    #[serde(default)]
+    pub items: Vec<DoctorPlanItemView>,
+}
 
 /// The `BUILD_HEADER` constant.
 pub const BUILD_HEADER: &str = "X-Duet-App-Build";
@@ -325,6 +428,181 @@ impl DuetClient {
         duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)
             .await
             .map_err(|error| error.to_string())
+    }
+
+    /// Reads the patient's practice link and `"share with my physician"` consent status (`ENG-47`).
+    pub async fn physician_sharing_status(&self) -> Result<PhysicianSharingStatus, String> {
+        let url = format!(
+            "{}/api/physician-sharing/status",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .get(&url)
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Accepts an explicit practice invitation and links the Duet account (`ENG-47`).
+    pub async fn accept_practice_invitation(
+        &self,
+        practice_id: &str,
+        practice_name: &str,
+        patient_workspace_id: &str,
+        invitation_token: &str,
+    ) -> Result<PhysicianSharingStatus, String> {
+        let url = format!(
+            "{}/api/physician-sharing/accept-invitation",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .post(&url)
+            .json(&serde_json::json!({
+                "practice_id": practice_id,
+                "practice_name": practice_name,
+                "patient_workspace_id": patient_workspace_id,
+                "invitation_token": invitation_token,
+            }))
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Grants versioned `"share with my physician"` consent (`ENG-47`).
+    pub async fn grant_physician_consent(
+        &self,
+        consent_version: &str,
+    ) -> Result<PhysicianSharingStatus, String> {
+        let url = format!(
+            "{}/api/physician-sharing/consent",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .put(&url)
+            .json(&serde_json::json!({ "consent_version": consent_version }))
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Revokes `"share with my physician"` consent in one step (`stop sharing`, `ENG-47`).
+    pub async fn stop_physician_sharing(&self) -> Result<PhysicianSharingStatus, String> {
+        let url = format!(
+            "{}/api/physician-sharing/stop-sharing",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .post(&url)
+            .json(&serde_json::json!({}))
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Approves a short dated Luna note proposal so it is saved in `You` (`ENG-52`).
+    pub async fn approve_luna_note(&self, proposal_id: &str) -> Result<LunaNoteProposal, String> {
+        let url = format!(
+            "{}/api/luna-notes/{proposal_id}/approve",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .post(&url)
+            .json(&serde_json::json!({}))
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Creates an expiring, revocable read-only share link for `For my doctor` (`ENG-46`).
+    pub async fn create_doctor_share_link(&self) -> Result<ForMyDoctorShareLink, String> {
+        let url = format!(
+            "{}/api/doctor-collection/share-link",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .post(&url)
+            .json(&serde_json::json!({}))
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Revokes the active `For my doctor` share link (`ENG-46`).
+    pub async fn revoke_doctor_share_link(&self) -> Result<ForMyDoctorShareLink, String> {
+        let url = format!(
+            "{}/api/doctor-collection/share-link",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .delete(&url)
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        response.json().await.map_err(|error| error.to_string())
+    }
+
+    /// Reads the read-only `"your doctor's plan"` in Duet (`ENG-54`), returning `Ok(None)` when none exists.
+    pub async fn doctor_plan(&self) -> Result<Option<DuetDoctorPlanView>, String> {
+        let url = format!(
+            "{}/api/doctor-plan",
+            self.configuration.base_path.trim_end_matches('/')
+        );
+        let response = self
+            .configuration
+            .client
+            .get(&url)
+            .send()
+            .await
+            .map_err(|error| error.to_string())?;
+        if response.status().as_u16() == 404 {
+            return Ok(None);
+        }
+        if !response.status().is_success() {
+            return Err(format!("status {}", response.status()));
+        }
+        let plan: DuetDoctorPlanView = response.json().await.map_err(|error| error.to_string())?;
+        Ok(Some(plan))
     }
 }
 
