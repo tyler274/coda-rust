@@ -8,10 +8,18 @@
 //! requires the patient to be on the physician's panel (`Membership::Allowed`).
 //! Clinic admins, secretaries, and physicians holding panel-assignment (`admin`)
 //! permission may assign or remove patients on a physician's panel within their
-//! clinic. The auth routes themselves stay open (or resolve their own bearer
+//! clinic, invite a roster patient to Duet through the patient front door
+//! ([`front_door`]), and read one linked patient's account and premium/cadence
+//! status there. The auth routes themselves stay open (or resolve their own bearer
 //! token), and `/health` stays open because a load balancer needs it
 //! unauthenticated. The store is Postgres (SeaORM) when `PHYSICIAN_DATABASE_URL`
-//! is set — migrations apply on start — and process memory otherwise.
+//! is set — migrations apply on start — and process memory otherwise. The
+//! front door rides the same database when it is set, so a practice's
+//! invitations and premium reads survive a restart.
+//!
+//! Identity on the front door is email-based for now: whether Duet accounts
+//! keep a shared email magic-link provider or move to Sign in with Apple is
+//! an open "Discuss with Dev" item, not decided here.
 //! Book: `book/src/physician-site.md`.
 
 use std::sync::Arc;
@@ -585,6 +593,71 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     }
 }
 
+/// Reads one linked roster patient's Duet account and premium status.
+///
+/// Held by the same admins as the invite: the front door owns who the
+/// patient is and whether they pay, and the practice reads it per patient.
+/// Identity is email-based for now — whether Duet accounts stay a shared
+/// email magic-link provider or move to Sign in with Apple is an open
+/// "Discuss with Dev" item, not decided here.
+/// Nothing here stores billing: the practice reads only the premium flag
+/// and the cadence Agents runs (`weekly`, or `weekly-daily-check` when the
+/// patient pays). An unlinked or unknown patient answers 404.
+async fn patient_front_door(
+    State(auth): State<Arc<Auth>>,
+    Path(patient_workspace_id): Path<String>,
+    request: Request<Body>,
+) -> Response {
+    let token = bearer(&request);
+    let Ok(caller) = resolve(&auth, token).await else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let caller_admin = auth
+        .store
+        .account_by_identity(&caller)
+        .await
+        .is_some_and(|account| account.active && account.admin);
+    if !caller_admin {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    if caller.practice_id != STAGING_PRACTICE_ID
+        || !crate::WORKSPACE_IDS.contains(&patient_workspace_id.as_str())
+    {
+        return not_found();
+    }
+    let patient = RosterPatient {
+        practice_id: caller.practice_id.clone(),
+        patient_id: patient_workspace_id.clone(),
+    };
+    // The practice reads only its own roster: unknown or cross-practice
+    // patients are indistinguishable from unlinked ones here.
+    let linked = auth
+        .front_door
+        .linked_accounts(&caller.practice_id)
+        .await
+        .into_iter()
+        .find(|(_, linked)| *linked == patient);
+    let Some((account, patient)) = linked else {
+        return not_found();
+    };
+    let premium = auth.front_door.premium(&patient).await;
+    (
+        StatusCode::OK,
+        Json(json!({
+            "practice_id": caller.practice_id,
+            "patient_workspace_id": patient_workspace_id,
+            "account_id": account.id,
+            "email": account.email,
+            "display_name": account.display_name,
+            "active": account.active,
+            "premium": premium.premium,
+            // The cadence Agents runs; the practice never sees billing.
+            "cadence": premium.cadence,
+        })),
+    )
+        .into_response()
+}
+
 /// The workspace membership check a recorded handler uses: a denied or
 /// missing membership answers 404 so clinical projections stay panel-scoped.
 pub(crate) async fn allows_workspace(
@@ -615,6 +688,10 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
             put(put_panel),
         )
         .route("/auth/invitations", post(invite))
+        .route(
+            "/auth/front-door/{patient_workspace_id}",
+            get(patient_front_door),
+        )
         .with_state(auth)
 }
 
@@ -647,6 +724,17 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         AuthMode::Required => required_router(base, auth),
         AuthMode::Open => base.merge(auth_routes(auth)),
     }
+}
+
+/// Builds the required router on one explicit pair of stores, both already
+/// migrated and seeded. The Postgres integration tests use it to prove the
+/// invite → redeem → link → premium journey the deployment wiring builds.
+pub async fn authed_router_on(
+    base: axum::Router,
+    store: Arc<dyn AuthStore>,
+    front_door: Arc<dyn FrontDoorStore>,
+) -> axum::Router {
+    required_router(base, Auth::on(store, front_door).await)
 }
 
 enum AuthMode {
@@ -1322,5 +1410,143 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::CONFLICT, "{body}");
         assert!(body.contains("already invited"), "{body}");
+    }
+
+    /// Seeds one front-door account linked to the staging practice's
+    /// `workspace`, or finds one the fixture already seeded.
+    async fn linked_account(
+        front_door: &MemoryFrontDoorStore,
+        email: &str,
+        workspace: &str,
+    ) -> front_door::Account {
+        if let Some(account) = front_door.account_by_email(email).await {
+            return account;
+        }
+        let id = front_door.seed_linked_account(
+            &RosterPatient {
+                practice_id: STAGING_PRACTICE_ID.to_owned(),
+                patient_id: workspace.to_owned(),
+            },
+            email,
+            "Linked Patient",
+        );
+        front_door.account(id).await.expect("seeded account")
+    }
+
+    #[tokio::test]
+    async fn the_practice_reads_one_linked_patient_account_and_premium() {
+        let (app, _, front_door) = authed_recorded().await;
+        let session = session_for(&app, STAGING_EMAIL).await;
+        let workspace = crate::WORKSPACE_IDS[2];
+        let account = linked_account(&front_door, "reader@example.test", workspace).await;
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{workspace}"),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let json: Value = serde_json::from_str(&body).expect("front-door read");
+        assert_eq!(json["account_id"], account.id.to_string());
+        assert_eq!(json["email"], "reader@example.test");
+        assert_eq!(json["active"], true);
+        // Nothing here stores billing: the practice reads only the premium
+        // flag and the cadence Agents runs, which starts free.
+        assert_eq!(json["premium"], false);
+        assert_eq!(json["cadence"], front_door::CADENCE_WEEKLY);
+
+        // Paying flips the cadence Agents runs, still without billing.
+        let patient = RosterPatient {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            patient_id: workspace.to_owned(),
+        };
+        front_door
+            .set_premium(&patient, true, 1_760_000_000)
+            .await
+            .unwrap();
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{workspace}"),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let json: Value = serde_json::from_str(&body).expect("front-door read");
+        assert_eq!(json["premium"], true);
+        assert_eq!(json["cadence"], front_door::CADENCE_WEEKLY_DAILY_CHECK);
+    }
+
+    #[tokio::test]
+    async fn an_unlinked_or_cross_practice_front_door_read_answers_404() {
+        let (app, store, front_door) = authed_recorded().await;
+        let session = session_for(&app, STAGING_EMAIL).await;
+        // A roster patient nobody invited yet answers 404, like the
+        // workspace route's unknown patient.
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[3]),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
+        // An account linked to another practice is invisible here, even
+        // when the caller asks under a staging workspace id.
+        front_door.seed_linked_account(
+            &RosterPatient {
+                practice_id: "other-practice".to_owned(),
+                patient_id: crate::WORKSPACE_IDS[3].to_owned(),
+            },
+            "elsewhere@example.test",
+            "Elsewhere Patient",
+        );
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[3]),
+            Some(&session),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
+        // A cross-practice admin reads only their own roster's patients.
+        store.seed_account(
+            "other-practice",
+            "outsider-admin",
+            "outsider-admin@other.test",
+            "Outsider Admin",
+            true,
+        );
+        let outsider = session_for(&app, "outsider-admin@other.test").await;
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[2]),
+            Some(&outsider),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
+    }
+
+    #[tokio::test]
+    async fn a_non_admin_cannot_read_the_front_door_panel() {
+        let (app, _, front_door) = authed_recorded().await;
+        linked_account(&front_door, "reader@example.test", crate::WORKSPACE_IDS[0]).await;
+        let colleague = session_for(&app, COLLEAGUE_EMAIL).await;
+        let (status, body) = send(
+            &app,
+            Method::GET.as_str(),
+            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[0]),
+            Some(&colleague),
+            None,
+        )
+        .await;
+        assert_eq!(status, StatusCode::FORBIDDEN, "{body}");
     }
 }
