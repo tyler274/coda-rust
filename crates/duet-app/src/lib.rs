@@ -186,7 +186,7 @@ fn doctor_draft_save(
         .page
         .as_ref()
         .map(|page| (**page).clone())
-        .unwrap_or_else(duet_wire::models::DoctorPageContent::new);
+        .unwrap_or_default();
     page.name = Some(optional_text(name));
     page.date_of_birth = Some(
         optional_text(birth)
@@ -313,9 +313,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut doctor_birth = use_signal(String::new);
     let mut doctor_note = use_signal(String::new);
     let mut doctor_cover = use_signal(String::new);
-    let mut doctor_questions = use_signal(|| Vec::<String>::new());
-    let mut doctor_items = use_signal(|| Vec::<(uuid::Uuid, String)>::new());
-    let mut doctor_kept = use_signal(|| Vec::<bool>::new());
+    let mut doctor_questions = use_signal(Vec::<String>::new);
+    let mut doctor_items = use_signal(Vec::<(uuid::Uuid, String)>::new);
+    let mut doctor_kept = use_signal(Vec::<bool>::new);
     let mut confirm_fresh = use_signal(|| false);
     let mut fresh_failed = use_signal(|| false);
     let mut editing = use_signal(|| false);
@@ -336,18 +336,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         async move {
             let api = open_client(base_url, bearer)?;
             let page = api.list_messages().await?;
-            let routines = match api.list_saved_routines().await {
-                Ok(list) => Some(list.items),
-                Err(_) => None,
-            };
-            let follow_ups = match api.list_follow_ups().await {
-                Ok(page) => Some(page.items),
-                Err(_) => None,
-            };
-            let doctor = match api.doctor_collection().await {
-                Ok(collection) => Some(collection),
-                Err(_) => None,
-            };
+            let routines = api.list_saved_routines().await.ok().map(|list| list.items);
+            let follow_ups = api.list_follow_ups().await.ok().map(|page| page.items);
+            let doctor = api.doctor_collection().await.ok();
             Ok::<_, String>(ThreadLoad {
                 page,
                 routines,

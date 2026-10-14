@@ -309,10 +309,10 @@ fn PhysicianShell(
         }
     });
     use_effect(move || {
-        if let Some(Ok(Some(open))) = workspace.read().as_ref() {
-            if selected.read().as_deref() == Some(open.patient_workspace_id.as_str()) {
-                workspace_cache.set(Some(open.clone()));
-            }
+        if let Some(Ok(Some(open))) = workspace.read().as_ref()
+            && selected.read().as_deref() == Some(open.patient_workspace_id.as_str())
+        {
+            workspace_cache.set(Some(open.clone()));
         }
     });
     use_effect(move || {
@@ -327,12 +327,11 @@ fn PhysicianShell(
             }
             return;
         }
-        if open_chat.read().is_none() {
-            if let Some(chat_id) =
+        if open_chat.read().is_none()
+            && let Some(chat_id) =
                 cached.and_then(|open| open.chats.first().map(|chat| chat.chat_id.clone()))
-            {
-                open_chat.set(Some(chat_id));
-            }
+        {
+            open_chat.set(Some(chat_id));
         }
     });
     let today_read = today.read();
