@@ -68,6 +68,10 @@
           mdbook
           opentofu
           wasm-bindgen-cli_0_2_129
+          # FHS-wrapped Cursor so extensions work without nix-specific patches.
+          # Keep this ahead of the host profile on PATH: the host's older
+          # 3.19.13 build SIGTRAPs under the dev shell's LD_LIBRARY_PATH.
+          code-cursor-fhs
         ];
 
         env.OPENSSL_NO_VENDOR = "1";
@@ -79,6 +83,17 @@
           coda_bin="$HOME/.cache/coda-dev/bin"
           mkdir -p "$COREPACK_HOME" "$coda_bin"
           export PATH="$coda_bin:$PATH"
+          # The dev shell's LD_LIBRARY_PATH (Swift and wheel libs, including
+          # Nix's sqlite) breaks Electron apps that pick those libraries up:
+          # host-profile Cursor 3.19.13 SIGTRAPs in sqlite within a minute.
+          # Strip the loader path for Cursor only; the shell keeps it for
+          # Swift and the Python wheels. $coda_bin is first on PATH, so the
+          # shim also wins over any older host-profile cursor.
+          cat > "$coda_bin/cursor" <<CURSOR
+#!/bin/sh
+exec env -u LD_LIBRARY_PATH "${pkgs.code-cursor-fhs}/bin/cursor" "\$@"
+CURSOR
+          chmod +x "$coda_bin/cursor"
           if [ -f "$HOME/.local/share/swiftly/env.sh" ]; then
             . "$HOME/.local/share/swiftly/env.sh"
           fi
