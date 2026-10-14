@@ -800,11 +800,12 @@ pub fn people_in(overview: &SharingOverviewResponse) -> Vec<String> {
         &overview.pending_incoming,
         &overview.pending_outgoing,
         &overview.reconnect_required,
-    ] {
-        if let Some(grants) = grants {
-            for grant in grants {
-                people.push(peer_name(&grant.peer));
-            }
+    ]
+    .into_iter()
+    .flatten()
+    {
+        for grant in grants {
+            people.push(peer_name(&grant.peer));
         }
     }
     people

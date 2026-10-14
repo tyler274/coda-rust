@@ -19,6 +19,9 @@ fn App() -> Element {
     rsx! { physician_app::PhysicianRoot { base_url: base, open_patient } }
 }
 
+// The query-parameter and origin lookups are wasm-only; on other targets the
+// fallbacks below are the whole function.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 fn open_patient() -> String {
     #[cfg(target_arch = "wasm32")]
     if let Some(id) = query_value("patient") {
@@ -27,6 +30,8 @@ fn open_patient() -> String {
     String::new()
 }
 
+// See open_patient: the wasm branches compile out on other targets.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 fn api_base() -> String {
     #[cfg(target_arch = "wasm32")]
     if let Some(url) = query_api() {

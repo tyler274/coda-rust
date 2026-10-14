@@ -12,6 +12,7 @@
 mod auth;
 mod care;
 mod live;
+mod simulation;
 
 use std::env;
 use std::fs;
@@ -48,9 +49,73 @@ pub(crate) const WORKSPACE_IDS: [&str; 5] = [
     "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e",
 ];
 
-/// Builds the HTTP router. `PHYSICIAN_UPSTREAM` forwards physician routes.
+/// Builds the HTTP router. `PHYSICIAN_UPSTREAM` forwards physician routes;
+/// `CODA_LOCAL_SIMULATION` activates the local simulation engine.
 pub fn router() -> Router {
+    if let Some(scenario) = simulation_scenario_from_env() {
+        return simulation_router_with_scenario(&scenario);
+    }
     router_with(upstream_from_env())
+}
+
+/// Builds the interactive local simulation router initialized with `connected-walk`.
+pub fn simulation_router() -> Router {
+    simulation_router_with_scenario(local_product::DEFAULT_SIMULATION_SCENARIO)
+}
+
+/// Builds the interactive local simulation router initialized with `scenario`.
+pub fn simulation_router_with_scenario(scenario: &str) -> Router {
+    let state = simulation::SimulationState::new(scenario);
+    Router::new()
+        .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
+        .route("/today", get(simulation::today))
+        .route("/practice-day", get(|| async { json_body(PRACTICE_DAY) }))
+        .route("/updates", get(|| async { json_body(UPDATES) }))
+        .route("/recent-conversations", get(|| async { json_body(RECENT) }))
+        .route(
+            "/patient-workspaces",
+            get(|| async { json_body(WORKSPACES) }),
+        )
+        .route("/patient-workspaces/{id}", get(simulation::workspace))
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/snapshot",
+            get(simulation::snapshot),
+        )
+        .route("/patient-roster", get(roster))
+        .route("/commands", post(simulation::command))
+        .route(
+            "/local-proof/simulations",
+            get(simulation::simulations_index),
+        )
+        .route(
+            "/local-proof/simulations/run",
+            post(simulation::run_scenario_endpoint),
+        )
+        .route("/dictation", post(|| async { dictation_unavailable() }))
+        .route(
+            "/physician-state/drafts/{workspace}/{chat}",
+            get(empty_draft).put(draft_not_saved),
+        )
+        .route("/", get(site_index))
+        .route("/index.html", get(site_index))
+        .route("/assets/coda-health-logo-transparent.png", get(logo))
+        .route("/favicon.svg", get(favicon))
+        .fallback(site_file)
+        .with_state(state)
+        .layer(middleware::from_fn(cors))
+}
+
+fn simulation_scenario_from_env() -> Option<String> {
+    let raw = env::var("CODA_LOCAL_SIMULATION").ok()?;
+    let trimmed = raw.trim();
+    if trimmed.is_empty() || trimmed == "0" || trimmed.eq_ignore_ascii_case("false") {
+        return None;
+    }
+    if trimmed == "1" || trimmed.eq_ignore_ascii_case("true") {
+        Some(local_product::DEFAULT_SIMULATION_SCENARIO.to_owned())
+    } else {
+        Some(trimmed.to_owned())
+    }
 }
 
 fn router_with(upstream: Option<String>) -> Router {
@@ -1067,5 +1132,67 @@ mod tests {
         let ws_after_json: Value = serde_json::from_str(&ws_after_stop).unwrap();
         assert_eq!(ws_after_json["patient_link"]["sharing_consented"], false);
         assert_eq!(ws_after_json["duet_records"].as_array().unwrap().len(), 0);
+    }
+
+    #[tokio::test]
+    async fn simulation_router_serves_scenarios_investor_metric_and_guards_invariants() {
+        let app = simulation_router();
+
+        // 1. Default connected-walk scenario exposes investor metric on /today and clears stale ED reply.
+        let (status, today_body) = request(app.clone(), "GET", "/today", Body::empty()).await;
+        assert_eq!(status, StatusCode::OK);
+        let today: Value = serde_json::from_str(&today_body).unwrap();
+        assert_eq!(today["simulation"]["active_scenario_key"], "connected-walk");
+        assert_eq!(
+            today["simulation"]["investor_metric"]["items_per_100_patients_per_week"],
+            json!(20.0)
+        );
+        assert!(
+            today["rows"].as_array().unwrap().is_empty(),
+            "stale ED reply must be cleared after corrected BMP in connected-walk"
+        );
+
+        // 2. Jake Smith's workspace holds undecided Losartan out of active_plan_items and records superseded ED reply.
+        let jake_path = "/patient-workspaces/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
+        let (status, jake_body) = request(app.clone(), "GET", jake_path, Body::empty()).await;
+        assert_eq!(status, StatusCode::OK);
+        let jake: Value = serde_json::from_str(&jake_body).unwrap();
+        assert!(jake["replies"].as_array().unwrap().is_empty());
+        assert_eq!(jake["superseded_replies"].as_array().unwrap().len(), 1);
+        assert_eq!(
+            jake["undecided_recommendations"].as_array().unwrap().len(),
+            1
+        );
+        let plan_titles: Vec<&str> = jake["active_plan_items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter_map(|item| item["title"].as_str())
+            .collect();
+        assert!(!plan_titles.iter().any(|title| title.contains("Losartan")));
+
+        // 3. Running lab-arrives-ed-reply surfaces the urgent ED reply before correction, then admitting corrected labs clears it.
+        let run_cmd = r#"{"type":"simulation.run","payload":{"scenario":"lab-arrives-ed-reply"}}"#;
+        let (status, _) = request(app.clone(), "POST", "/commands", Body::from(run_cmd)).await;
+        assert_eq!(status, StatusCode::OK);
+        let (_, today_before) = request(app.clone(), "GET", "/today", Body::empty()).await;
+        assert!(today_before.contains("Urgent potassium 6.3 mmol/L"));
+
+        let correct_cmd = r#"{"type":"simulation.admit_corrected_labs","payload":{"patient_workspace_id":"pw-82c44e9b-58c0-4af1-bd21-771bf77e101d"}}"#;
+        let (status, _) = request(app.clone(), "POST", "/commands", Body::from(correct_cmd)).await;
+        assert_eq!(status, StatusCode::OK);
+        let (_, today_after) = request(app.clone(), "GET", "/today", Body::empty()).await;
+        assert!(!today_after.contains("Urgent potassium 6.3 mmol/L"));
+
+        // 4. Physician approving an undecided recommendation moves it into active_plan_items and updates the investor metric.
+        let decide_cmd = r#"{"type":"plan.decide_recommendation","payload":{"patient_workspace_id":"pw-82c44e9b-58c0-4af1-bd21-771bf77e101d","recommendation_id":"rec-jake-losartan-50"}}"#;
+        let (status, decide_resp) =
+            request(app.clone(), "POST", "/commands", Body::from(decide_cmd)).await;
+        assert_eq!(status, StatusCode::OK);
+        let decide_json: Value = serde_json::from_str(&decide_resp).unwrap();
+        assert_eq!(
+            decide_json["simulation"]["investor_metric"]["items_per_100_patients_per_week"],
+            json!(40.0)
+        );
     }
 }
