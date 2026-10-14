@@ -160,10 +160,25 @@ fn apply_event_frames(
 
 #[component]
 pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
+    // The first `/today` read decides the screen: a 401 from an auth-required
+    // server drops the shell for the sign-in screen, so the browser shows the
+    // gate before any physician data renders.
     let mut signed_in = use_signal(|| true);
     let mut whoami_name = use_signal(String::new);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| PhysicianClient::new(base_url.clone()));
+    #[cfg(target_arch = "wasm32")]
+    use_effect(move || {
+        let client = client.read().clone();
+        spawn(async move {
+            match client.today().await {
+                Err(physician_client::HttpError::Status { status: 401, .. }) => {
+                    signed_in.set(false);
+                }
+                _ => {}
+            }
+        });
+    });
     if !signed_in() {
         rsx! {
             style { "{ui::STYLESHEET}{SHELL_STYLES}" }
@@ -1378,6 +1393,7 @@ fn ScheduleRail(
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
                     },
+                    aria_label: "Open {visit.patient}",
                     if let Some(clock) = format_clock(&visit.starts_at, &visit.time_zone) {
                         time { datetime: "{visit.starts_at}", "{clock}" }
                     }

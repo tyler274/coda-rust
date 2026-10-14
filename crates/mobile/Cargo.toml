@@ -15,7 +15,11 @@ ui = { path = "../ui" }
 web-sys = { version = "0.3", features = ["Window", "Storage", "Location"] }
 
 [dev-dependencies]
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "net"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "fs"] }
+axum = { version = "0.8", default-features = false, features = ["json", "tokio", "http1"] }
+tower = { version = "0.5", features = ["util"] }
+duet-stub = { path = "../duet-stub" }
 
 [features]
 default = []

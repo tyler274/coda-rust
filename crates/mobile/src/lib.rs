@@ -92,7 +92,10 @@ pub fn ModeShell(physician_url: String, duet_url: String, duet_bearer: String) -
                     },
                     "Switch mode"
                 }
-                physician_app::PhysicianRoot { base_url: physician_url.clone(), open_patient: String::new() }
+                physician_app::PhysicianRoot {
+                    base_url: physician_base_url(physician_url.clone()),
+                    open_patient: String::new(),
+                }
             },
             Some(Mode::Client) => rsx! {
                 button {
@@ -104,7 +107,10 @@ pub fn ModeShell(physician_url: String, duet_url: String, duet_bearer: String) -
                     },
                     "Switch mode"
                 }
-                duet_app::DuetRoot { base_url: duet_url.clone(), bearer: duet_bearer.clone() }
+                duet_app::DuetRoot {
+                    base_url: duet_base_url(duet_url.clone()),
+                    bearer: duet_bearer.clone(),
+                }
             },
         }
     }
@@ -174,6 +180,37 @@ fn query_mode() -> Option<&'static str> {
         }
     }
     None
+}
+
+#[cfg(target_arch = "wasm32")]
+fn query_override(key: &str) -> Option<String> {
+    let search = web_sys::window()?.location().search().ok()?;
+    for pair in search.trim_start_matches('?').split('&') {
+        let (name, value) = pair.split_once('=')?;
+        if name == key && !value.is_empty() {
+            return Some(value.to_owned());
+        }
+    }
+    None
+}
+
+/// The web build can point either shell at another origin with `?api=`. The
+/// native builds keep their compile-time or default origins.
+pub fn duet_base_url(compile_time: String) -> String {
+    #[cfg(target_arch = "wasm32")]
+    if let Some(url) = query_override("api") {
+        return url;
+    }
+    compile_time
+}
+
+/// The same override for the physician shell.
+pub fn physician_base_url(compile_time: String) -> String {
+    #[cfg(target_arch = "wasm32")]
+    if let Some(url) = query_override("api") {
+        return url;
+    }
+    compile_time
 }
 
 #[cfg(not(target_arch = "wasm32"))]
