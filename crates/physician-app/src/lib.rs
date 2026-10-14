@@ -12,17 +12,19 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
-use physician_wire::{PatientWorkspaceResponse, RecentConversation};
+use physician_wire::{
+    PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, WhoamiResponse,
+};
 #[cfg(target_arch = "wasm32")]
 use shell::workspace_event_rereads;
 use shell::{
     ChatView, KeyInput, NavCommand, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
     TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
     WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name,
-    connection_lines, format_calendar_date, format_clock, format_waited, keyboard_command,
-    need_you_words, opens_reader, patient_upcoming_visits, prepared_line, preview_paragraphs,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    connection_lines, demographic_card_view, format_calendar_date, format_clock, format_waited,
+    keyboard_command, need_you_words, opens_reader, patient_upcoming_visits, prepared_line,
+    preview_paragraphs, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -50,8 +52,62 @@ enum Place {
 }
 
 #[cfg(target_arch = "wasm32")]
+const SESSION_STORAGE_KEY: &str = "coda.physician.session";
+
+#[cfg(target_arch = "wasm32")]
+fn read_stored_session() -> Option<String> {
+    use wasm_bindgen::JsCast;
+    let window = web_sys::window()?;
+    let storage = js_sys::Reflect::get(&window, &"sessionStorage".into()).ok()?;
+    if storage.is_null() || storage.is_undefined() {
+        return None;
+    }
+    let get_item = js_sys::Reflect::get(&storage, &"getItem".into())
+        .ok()?
+        .dyn_into::<js_sys::Function>()
+        .ok()?;
+    get_item
+        .call1(&storage, &SESSION_STORAGE_KEY.into())
+        .ok()?
+        .as_string()
+        .filter(|value| !value.trim().is_empty())
+}
+
+#[cfg(target_arch = "wasm32")]
+fn write_stored_session(session: Option<&str>) {
+    use wasm_bindgen::JsCast;
+    let Some(window) = web_sys::window() else {
+        return;
+    };
+    let Ok(storage) = js_sys::Reflect::get(&window, &"sessionStorage".into()) else {
+        return;
+    };
+    if storage.is_null() || storage.is_undefined() {
+        return;
+    }
+    match session {
+        Some(token) if !token.trim().is_empty() => {
+            if let Ok(set_item) = js_sys::Reflect::get(&storage, &"setItem".into())
+                && let Ok(func) = set_item.dyn_into::<js_sys::Function>()
+            {
+                let _ = func.call2(&storage, &SESSION_STORAGE_KEY.into(), &token.into());
+            }
+        }
+        _ => {
+            if let Ok(remove_item) = js_sys::Reflect::get(&storage, &"removeItem".into())
+                && let Ok(func) = remove_item.dyn_into::<js_sys::Function>()
+            {
+                let _ = func.call1(&storage, &SESSION_STORAGE_KEY.into());
+            }
+        }
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
 fn follow_workspace_events(
     base_url: &str,
+    session: Option<String>,
+    mut today_attempt: Signal<u32>,
     mut workspace_attempt: Signal<u32>,
     mut snapshot_attempt: Signal<u32>,
     selected: Signal<Option<String>>,
@@ -65,7 +121,16 @@ fn follow_workspace_events(
         let Some(window) = web_sys::window() else {
             return;
         };
-        let Ok(value) = wasm_bindgen_futures::JsFuture::from(window.fetch_with_str(&url)).await
+        let init = web_sys::RequestInit::new();
+        init.set_method("GET");
+        if let Some(token) = session.as_deref().filter(|token| !token.is_empty())
+            && let Ok(headers) = web_sys::Headers::new()
+        {
+            let _ = headers.set("Authorization", &format!("Bearer {token}"));
+            init.set_headers(&headers);
+        }
+        let Ok(value) =
+            wasm_bindgen_futures::JsFuture::from(window.fetch_with_str_and_init(&url, &init)).await
         else {
             return;
         };
@@ -103,6 +168,8 @@ fn follow_workspace_events(
                 return;
             };
             let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(promise).await else {
+                today_attempt.set(today_attempt() + 1);
+                workspace_attempt.set(workspace_attempt() + 1);
                 return;
             };
             let done = js_sys::Reflect::get(&chunk, &"done".into())
@@ -110,6 +177,8 @@ fn follow_workspace_events(
                 .and_then(|value| value.as_bool())
                 .unwrap_or(true);
             if done {
+                today_attempt.set(today_attempt() + 1);
+                workspace_attempt.set(workspace_attempt() + 1);
                 return;
             }
             let Some(bytes) = js_sys::Reflect::get(&chunk, &"value".into())
@@ -162,15 +231,28 @@ fn apply_event_frames(
 pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     let mut signed_in = use_signal(|| true);
     let mut whoami_name = use_signal(String::new);
+    let mut whoami = use_signal(|| None::<WhoamiResponse>);
     // The bearer session rides the client, so one client is built once.
-    let client = use_signal(|| PhysicianClient::new(base_url.clone()));
+    let client = use_signal(|| {
+        let client = PhysicianClient::new(base_url.clone());
+        #[cfg(target_arch = "wasm32")]
+        if let Some(session) = read_stored_session() {
+            client.session().set(session);
+        }
+        client
+    });
     if !signed_in() {
         rsx! {
             style { "{ui::STYLESHEET}{SHELL_STYLES}" }
             SignInScreen {
                 client,
-                on_signed_in: move |name: String| {
+                on_signed_in: move |who: Option<WhoamiResponse>| {
+                    let name = who
+                        .as_ref()
+                        .map(|account| account.display_name.clone())
+                        .unwrap_or_default();
                     whoami_name.set(name);
+                    whoami.set(who);
                     signed_in.set(true);
                 },
             }
@@ -183,6 +265,7 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
                 client,
                 signed_in,
                 whoami_name,
+                whoami,
             }
         }
     }
@@ -195,6 +278,7 @@ fn PhysicianShell(
     client: Signal<PhysicianClient>,
     mut signed_in: Signal<bool>,
     mut whoami_name: Signal<String>,
+    mut whoami: Signal<Option<WhoamiResponse>>,
 ) -> Element {
     let mut place = use_signal(|| {
         if open_patient.is_empty() {
@@ -229,9 +313,33 @@ fn PhysicianShell(
     let snapshot_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
+    let mut target_physician = use_signal(String::new);
+    let mut panel_busy = use_signal(|| false);
+    let mut panel_notice = use_signal(String::new);
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
-        follow_workspace_events(&base_url, workspace_attempt, snapshot_attempt, selected);
+        let session = client.read().session().get();
+        follow_workspace_events(
+            &base_url,
+            session,
+            today_attempt,
+            workspace_attempt,
+            snapshot_attempt,
+            selected,
+        );
+    });
+    let _whoami_load = use_resource(move || {
+        let _attempt = today_attempt();
+        let client = client.read().clone();
+        async move {
+            if let Ok(account) = client.whoami().await {
+                if target_physician.read().is_empty() {
+                    target_physician.set(account.physician_id.clone());
+                }
+                whoami_name.set(account.display_name.clone());
+                whoami.set(Some(account));
+            }
+        }
     });
     let health = use_resource(move || {
         let client = client.read().clone();
@@ -244,8 +352,11 @@ fn PhysicianShell(
             match client.today().await {
                 Ok(response) => Ok(response),
                 Err(physician_client::HttpError::Status { status: 401, .. }) => {
+                    #[cfg(target_arch = "wasm32")]
+                    write_stored_session(None);
                     signed_in.set(false);
                     whoami_name.set(String::new());
+                    whoami.set(None);
                     Err(())
                 }
                 Err(_) => Err(()),
@@ -253,22 +364,27 @@ fn PhysicianShell(
         }
     });
     let patients = use_resource(move || {
+        let _attempt = today_attempt();
         let client = client.read().clone();
         async move { client.workspaces().await.map_err(|_| ()) }
     });
     let practice = use_resource(move || {
+        let _attempt = today_attempt();
         let client = client.read().clone();
         async move { client.practice_day().await.map_err(|_| ()) }
     });
     let recent = use_resource(move || {
+        let _attempt = today_attempt();
         let client = client.read().clone();
         async move { client.recent_conversations().await.map_err(|_| ()) }
     });
     let updates = use_resource(move || {
+        let _attempt = today_attempt();
         let client = client.read().clone();
         async move { client.updates().await.map_err(|_| ()) }
     });
     let found = use_resource(move || {
+        let _attempt = today_attempt();
         let query = query();
         let client = client.read().clone();
         async move {
@@ -283,6 +399,7 @@ fn PhysicianShell(
         }
     });
     let patient_today = use_resource(move || {
+        let _attempt = workspace_attempt();
         let client = client.read().clone();
         let open_id = selected();
         async move {
@@ -298,7 +415,23 @@ fn PhysicianShell(
         let open_id = selected();
         async move {
             match open_id {
-                Some(id) => client.workspace(&id).await.map(Some).map_err(|_| ()),
+                Some(id) => match client.workspace(&id).await {
+                    Ok(open) => Ok(Some(open)),
+                    Err(physician_client::HttpError::Status { status: 401, .. }) => {
+                        #[cfg(target_arch = "wasm32")]
+                        write_stored_session(None);
+                        signed_in.set(false);
+                        whoami_name.set(String::new());
+                        whoami.set(None);
+                        workspace_cache.set(None);
+                        Err(())
+                    }
+                    Err(physician_client::HttpError::Status { status: 404, .. }) => {
+                        workspace_cache.set(None);
+                        Err(())
+                    }
+                    Err(_) => Err(()),
+                },
                 None => Ok(None),
             }
         }
@@ -640,25 +773,30 @@ fn PhysicianShell(
                                 "{open_name.clone().unwrap_or_default()}"
                                 Icon { name: IconName::ArrowRight }
                             }
-                            div { class: "sidebar-section-heading", h2 { "Conversations" } }
-                            match chats.clone() {
-                                ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
-                                ChatView::Pending => rsx! {},
-                                ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
-                                ChatView::Chats(lines) => rsx! {
-                                    for line in lines {
-                                        button {
-                                            class: "sidebar-conversation-link",
-                                            r#type: "button",
-                                            onclick: {
-                                                let id = line.id.clone();
-                                                move |_| open_chat.set(Some(id.clone()))
-                                            },
-                                            Icon { name: IconName::Message }
-                                            "{line.title}"
+                            if open_workspace.as_ref().is_some_and(PatientWorkspaceResponse::is_clinic_demographic) {
+                                div { class: "sidebar-section-heading", h2 { "Clinic record" } }
+                                p { class: "sidebar-empty", "Not on your panel" }
+                            } else {
+                                div { class: "sidebar-section-heading", h2 { "Conversations" } }
+                                match chats.clone() {
+                                    ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
+                                    ChatView::Pending => rsx! {},
+                                    ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
+                                    ChatView::Chats(lines) => rsx! {
+                                        for line in lines {
+                                            button {
+                                                class: "sidebar-conversation-link",
+                                                r#type: "button",
+                                                onclick: {
+                                                    let id = line.id.clone();
+                                                    move |_| open_chat.set(Some(id.clone()))
+                                                },
+                                                Icon { name: IconName::Message }
+                                                "{line.title}"
+                                            }
                                         }
-                                    }
-                                },
+                                    },
+                                }
                             }
                         }
                     } else {
@@ -701,8 +839,11 @@ fn PhysicianShell(
                                 let client = client.read().clone();
                                 spawn(async move {
                                     let _ = client.sign_out().await;
+                                    #[cfg(target_arch = "wasm32")]
+                                    write_stored_session(None);
                                     signed_in.set(false);
                                     whoami_name.set(String::new());
+                                    whoami.set(None);
                                 });
                             },
                             Icon { name: IconName::Users }
@@ -777,6 +918,93 @@ fn PhysicianShell(
                             server_now: server_now.clone(),
                             draft: draft(),
                             notice: notice(),
+                            is_admin: whoami.read().as_ref().is_some_and(|account| account.admin),
+                            practice_accounts: whoami
+                                .read()
+                                .as_ref()
+                                .map(|account| account.practice_accounts.clone())
+                                .unwrap_or_default(),
+                            target_physician_id: {
+                                let chosen = target_physician();
+                                if !chosen.is_empty() {
+                                    chosen
+                                } else {
+                                    whoami
+                                        .read()
+                                        .as_ref()
+                                        .map(|account| account.physician_id.clone())
+                                        .unwrap_or_default()
+                                }
+                            },
+                            panel_busy: panel_busy(),
+                            panel_notice: panel_notice(),
+                            on_select_physician: move |value: String| target_physician.set(value),
+                            on_assign_panel: move |_| {
+                                let Some(patient_id) = selected() else { return };
+                                let physician_id = {
+                                    let chosen = target_physician();
+                                    if !chosen.is_empty() {
+                                        chosen
+                                    } else {
+                                        whoami
+                                            .read()
+                                            .as_ref()
+                                            .map(|account| account.physician_id.clone())
+                                            .unwrap_or_default()
+                                    }
+                                };
+                                if physician_id.is_empty() {
+                                    return;
+                                }
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    panel_busy.set(true);
+                                    panel_notice.set(String::new());
+                                    match client.assign_panel(&physician_id, &patient_id, true).await {
+                                        Ok(_) => {
+                                            workspace_attempt.set(workspace_attempt() + 1);
+                                            today_attempt.set(today_attempt() + 1);
+                                        }
+                                        Err(_) => {
+                                            panel_notice.set("Coda couldn’t update panel assignment.".to_owned());
+                                        }
+                                    }
+                                    panel_busy.set(false);
+                                });
+                            },
+                            on_remove_panel: move |_| {
+                                let Some(patient_id) = selected() else { return };
+                                let physician_id = {
+                                    let chosen = target_physician();
+                                    if !chosen.is_empty() {
+                                        chosen
+                                    } else {
+                                        whoami
+                                            .read()
+                                            .as_ref()
+                                            .map(|account| account.physician_id.clone())
+                                            .unwrap_or_default()
+                                    }
+                                };
+                                if physician_id.is_empty() {
+                                    return;
+                                }
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    panel_busy.set(true);
+                                    panel_notice.set(String::new());
+                                    match client.remove_panel(&physician_id, &patient_id).await {
+                                        Ok(_) => {
+                                            workspace_attempt.set(workspace_attempt() + 1);
+                                            today_attempt.set(today_attempt() + 1);
+                                        }
+                                        Err(_) => {
+                                            panel_notice.set("Coda couldn’t update panel assignment.".to_owned());
+                                        }
+                                    }
+                                    panel_busy.set(false);
+                                });
+                            },
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
                             on_read: move |(title, body): (String, String)| {
                                 reading.set(Some(prose_reading(title, body)));
@@ -876,9 +1104,13 @@ fn PhysicianShell(
 }
 
 #[component]
-fn SignInScreen(client: Signal<PhysicianClient>, on_signed_in: EventHandler<String>) -> Element {
+fn SignInScreen(
+    client: Signal<PhysicianClient>,
+    on_signed_in: EventHandler<Option<WhoamiResponse>>,
+) -> Element {
     let mut email = use_signal(String::new);
     let mut token = use_signal(String::new);
+    let mut proof_token = use_signal(|| None::<String>);
     let mut stage = use_signal(|| SignInStage::Email);
     let mut error = use_signal(String::new);
     let mut busy = use_signal(|| false);
@@ -891,6 +1123,7 @@ fn SignInScreen(client: Signal<PhysicianClient>, on_signed_in: EventHandler<Stri
             let email_value = email.read().trim().to_owned();
             match client.begin_sign_in(&email_value).await {
                 Ok(answer) if answer.status == "token_issued" => {
+                    proof_token.set(answer.token);
                     token.set(String::new());
                     stage.set(SignInStage::Verify);
                 }
@@ -914,18 +1147,26 @@ fn SignInScreen(client: Signal<PhysicianClient>, on_signed_in: EventHandler<Stri
             let email_value = email.read().trim().to_owned();
             let token_value = token.read().trim().to_owned();
             match client.verify(&email_value, &token_value).await {
-                Ok(_) => match client.whoami().await {
-                    Ok(who) => on_signed_in.call(who.display_name),
-                    Err(_) => on_signed_in.call(String::new()),
-                },
+                Ok(_) => {
+                    #[cfg(target_arch = "wasm32")]
+                    write_stored_session(client.session().get().as_deref());
+                    match client.whoami().await {
+                        Ok(who) => on_signed_in.call(Some(who)),
+                        Err(_) => on_signed_in.call(None),
+                    }
+                }
                 Err(_) => error.set(SIGN_IN_INVALID.to_owned()),
             }
             busy.set(false);
         });
     };
+    let proof_attr = proof_token().unwrap_or_default();
     rsx! {
         div { class: "sign-in-screen",
-            section { class: "sign-in-card", aria_label: "Sign in to Coda",
+            section {
+                class: "sign-in-card",
+                aria_label: "Sign in to Coda",
+                "data-proof-token": "{proof_attr}",
                 h1 { "Sign in to Coda" }
                 match stage() {
                     SignInStage::Email => rsx! {
@@ -1298,6 +1539,14 @@ fn PatientSurface(
     server_now: String,
     draft: String,
     notice: String,
+    is_admin: bool,
+    practice_accounts: Vec<PracticeAccountSummary>,
+    target_physician_id: String,
+    panel_busy: bool,
+    panel_notice: String,
+    on_select_physician: EventHandler<String>,
+    on_assign_panel: EventHandler,
+    on_remove_panel: EventHandler,
     on_retry: EventHandler,
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
@@ -1310,7 +1559,10 @@ fn PatientSurface(
     snapshot_failed: bool,
     on_open_chat: EventHandler<String>,
 ) -> Element {
-    let identity = workspace.as_ref().and_then(|open| open.identity.clone());
+    let clinic_demographic = workspace
+        .as_ref()
+        .is_some_and(PatientWorkspaceResponse::is_clinic_demographic);
+    let demographic = workspace.as_ref().map(demographic_card_view);
     let segments = workspace
         .as_ref()
         .and_then(|open| open.patient_synopsis.as_ref())
@@ -1323,31 +1575,17 @@ fn PatientSurface(
         .as_ref()
         .map(|open| open.active_follow_ups.clone())
         .unwrap_or_default();
-    let dob = identity
+    let dob = demographic
         .as_ref()
-        .and_then(|identity| identity.birth_date.clone())
-        .map(|day| format_calendar_date(&day));
-    let gender = identity.as_ref().and_then(|identity| {
-        identity.sex_or_gender.as_ref().and_then(|gender| {
-            gender.value.as_ref().map(|value| {
-                let mut chars = value.chars();
-                match chars.next() {
-                    Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
-                    None => String::new(),
-                }
-            })
-        })
-    });
-    let age = identity
+        .and_then(|card| card.birth_date.clone());
+    let gender = demographic
         .as_ref()
-        .and_then(|identity| identity.age_years)
-        .map(|years| format!("{years} years"));
-    let mrn = identity.as_ref().and_then(|identity| {
-        identity
-            .medical_record_numbers
-            .iter()
-            .find_map(|number| number.value.clone())
-    });
+        .and_then(|card| card.sex_or_gender.clone());
+    let age = demographic.as_ref().and_then(|card| card.age.clone());
+    let mrn = demographic.as_ref().and_then(|card| card.mrn.clone());
+    let record_state = demographic
+        .as_ref()
+        .and_then(|card| card.record_state.clone());
     let times = workspace
         .as_ref()
         .map(|open| summary_times(open, &server_now))
@@ -1360,27 +1598,128 @@ fn PatientSurface(
         }
     });
     let scheduled = !visits.is_empty();
+    let heading_name = demographic
+        .as_ref()
+        .map(|card| card.display_name.clone())
+        .filter(|value| !value.is_empty())
+        .unwrap_or_else(|| name.clone());
     rsx! {
         div { class: "reading-workspace patient-page",
             header { class: "patient-identity",
-                h1 { class: "workspace-title", "{name}" }
+                div { class: "patient-identity-top",
+                    h1 { class: "workspace-title", "{heading_name}" }
+                    if is_admin && workspace.is_some() && !clinic_demographic {
+                        button {
+                            class: "control-secondary remove-panel-button",
+                            r#type: "button",
+                            disabled: panel_busy,
+                            onclick: move |_| on_remove_panel.call(()),
+                            if panel_busy { "Updating…" } else { "Remove from panel" }
+                        }
+                    }
+                }
                 div { class: "patient-facts",
-                    if let Some(age) = age {
+                    if let Some(age) = age.clone() {
                         span { "Age {age}" }
                     }
-                    if let Some(dob) = dob {
+                    if let Some(dob) = dob.clone() {
                         span { "DOB {dob}" }
                     }
-                    if let Some(gender) = gender {
+                    if let Some(gender) = gender.clone() {
                         span { "Gender {gender}" }
                     }
-                    if let Some(mrn) = mrn {
+                    if let Some(mrn) = mrn.clone() {
                         span { "MRN {mrn}" }
                     }
+                }
+                if !clinic_demographic && !panel_notice.is_empty() {
+                    span { class: "composer-notice", "{panel_notice}" }
                 }
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
             div { class: "today-main",
+            if clinic_demographic {
+                section {
+                    class: "patient-section clinic-demographic-card",
+                    aria_label: "Clinic demographic record",
+                    div { class: "clinic-demographic-header",
+                        span { class: "clinic-demographic-badge", "Clinic record · Not on your panel" }
+                        h2 { "Patient demographics" }
+                        p { class: "clinic-demographic-copy",
+                            "Basic clinic demographics are visible to physicians in this practice. Assign this patient to a physician panel to open clinical summaries, records, and conversations."
+                        }
+                    }
+                    dl { class: "clinic-demographic-grid",
+                        div { class: "clinic-demographic-field",
+                            dt { "Full name" }
+                            dd { "{heading_name}" }
+                        }
+                        if let Some(dob) = dob {
+                            div { class: "clinic-demographic-field",
+                                dt { "Date of birth" }
+                                dd { "{dob}" }
+                            }
+                        }
+                        if let Some(age) = age {
+                            div { class: "clinic-demographic-field",
+                                dt { "Age" }
+                                dd { "{age}" }
+                            }
+                        }
+                        if let Some(gender) = gender {
+                            div { class: "clinic-demographic-field",
+                                dt { "Sex or gender" }
+                                dd { "{gender}" }
+                            }
+                        }
+                        if let Some(mrn) = mrn {
+                            div { class: "clinic-demographic-field",
+                                dt { "Medical record number" }
+                                dd { "{mrn}" }
+                            }
+                        }
+                        if let Some(state) = record_state {
+                            div { class: "clinic-demographic-field",
+                                dt { "Record status" }
+                                dd { "{state}" }
+                            }
+                        }
+                    }
+                    if is_admin {
+                        div {
+                            class: "panel-assignment-controls",
+                            aria_label: "Panel assignment",
+                            if practice_accounts.len() > 1 {
+                                label { class: "panel-physician-label",
+                                    "Physician panel"
+                                    select {
+                                        class: "panel-physician-select",
+                                        aria_label: "Physician panel",
+                                        value: "{target_physician_id}",
+                                        onchange: move |event| on_select_physician.call(event.value()),
+                                        for account in practice_accounts {
+                                            option {
+                                                value: "{account.physician_id}",
+                                                "{account.display_name} ({account.email})"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            button {
+                                class: "sign-in-primary assign-panel-button",
+                                r#type: "button",
+                                disabled: panel_busy,
+                                onclick: move |_| on_assign_panel.call(()),
+                                if panel_busy { "Assigning…" } else { "Assign to panel" }
+                            }
+                            if !panel_notice.is_empty() {
+                                span { class: "composer-notice", "{panel_notice}" }
+                            }
+                        }
+                    }
+                }
+            } else {
             if !rows.is_empty() {
                 TodayRows {
                     rows,
@@ -1504,6 +1843,7 @@ fn PatientSurface(
                         }
                     },
                 }
+            }
             }
             }
             if !visits.is_empty() {

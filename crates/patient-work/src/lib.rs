@@ -9,7 +9,102 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-/// One process's grouping-window delivery.
+/// One day in milliseconds (`86_400_000`).
+pub const DAY_MS: u64 = 86_400_000;
+
+/// One week in milliseconds (`604_800_000`).
+pub const WEEK_MS: u64 = 7 * DAY_MS;
+
+/// Per-patient review cadence read by Agents without knowing payment status.
+///
+/// Every patient receives a settled weekly whole-patient review. A patient with
+/// [`ReviewCadence::WeeklyAndDailyWhenChanged`] also receives a daily check
+/// that starts a review only when the patient's record or linked health state
+/// changed since the previous review.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
+pub enum ReviewCadence {
+    /// Weekly whole-patient review only.
+    #[default]
+    Weekly,
+    /// Weekly whole-patient review plus a daily review when changed.
+    WeeklyAndDailyWhenChanged,
+}
+
+impl ReviewCadence {
+    /// Wire and storage string for this cadence.
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::Weekly => "weekly",
+            Self::WeeklyAndDailyWhenChanged => "weekly_and_daily_when_changed",
+        }
+    }
+
+    /// Parses a stored or wire cadence identifier.
+    pub fn parse(value: &str) -> Option<Self> {
+        match value.trim() {
+            "weekly" => Some(Self::Weekly),
+            "weekly_and_daily_when_changed"
+            | "weekly-daily-check"
+            | "weekly_daily_when_changed" => Some(Self::WeeklyAndDailyWhenChanged),
+            _ => None,
+        }
+    }
+
+    /// Whether this cadence includes a daily check when the patient changed.
+    pub const fn includes_daily_when_changed(self) -> bool {
+        matches!(self, Self::WeeklyAndDailyWhenChanged)
+    }
+}
+
+impl std::fmt::Display for ReviewCadence {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+/// The reason [`Dispatch`] started a patient review.
+///
+/// One scheduling owner drives source-arrival grouping windows, the settled
+/// weekly whole-patient review (replacing separate census and memory
+/// reconciliation schedules), and the daily-when-changed check.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ScheduledReviewKind {
+    /// A source-arrival grouping window closed with these source references.
+    SourceChanges(Vec<String>),
+    /// The patient's settled weekly whole-patient review came due.
+    WeeklyWholePatient {
+        /// Changes accumulated since the previous review that are folded into
+        /// this whole-patient review.
+        folded_changes: Vec<String>,
+    },
+    /// The daily check ran for a [`ReviewCadence::WeeklyAndDailyWhenChanged`]
+    /// patient who had changes since the previous review.
+    DailyWhenChanged {
+        /// Change references accumulated since the previous review.
+        changes: Vec<String>,
+    },
+}
+
+/// A review started by the single patient-work scheduling owner.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScheduledReview {
+    /// Patient identifier.
+    pub patient: String,
+    /// What triggered this review.
+    pub kind: ScheduledReviewKind,
+    /// Timestamp when the review started.
+    pub started_at: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct PatientSchedule {
+    cadence: ReviewCadence,
+    last_weekly_at: u64,
+    last_daily_check_at: u64,
+    daily_changes: Vec<String>,
+}
+
+/// One process's grouping-window delivery and per-patient cadence scheduler.
 ///
 /// Time is milliseconds. The caller advances it and then drains.
 #[derive(Debug)]
@@ -25,8 +120,10 @@ pub struct Dispatch {
     facts: Vec<Fact>,
     notices: Vec<Notice>,
     patients: BTreeMap<String, Patient>,
+    schedules: BTreeMap<String, PatientSchedule>,
     busy: BTreeSet<String>,
     accepted: Vec<Vec<String>>,
+    scheduled: Vec<ScheduledReview>,
 }
 
 #[derive(Debug)]
@@ -77,8 +174,76 @@ impl Dispatch {
             facts: Vec::new(),
             notices: Vec::new(),
             patients: BTreeMap::new(),
+            schedules: BTreeMap::new(),
             busy: BTreeSet::new(),
             accepted: Vec::new(),
+            scheduled: Vec::new(),
+        }
+    }
+
+    /// Enrolls a patient in the cadence scheduler or updates their [`ReviewCadence`].
+    pub fn enroll_patient(&mut self, patient: &str, cadence: ReviewCadence) {
+        let now = self.now;
+        self.schedules
+            .entry(patient.to_owned())
+            .and_modify(|schedule| schedule.cadence = cadence)
+            .or_insert_with(|| PatientSchedule {
+                cadence,
+                last_weekly_at: now,
+                last_daily_check_at: now,
+                daily_changes: Vec::new(),
+            });
+    }
+
+    /// Sets the per-patient [`ReviewCadence`].
+    pub fn set_cadence(&mut self, patient: &str, cadence: ReviewCadence) {
+        self.enroll_patient(patient, cadence);
+    }
+
+    /// Returns the patient's [`ReviewCadence`], defaulting to [`ReviewCadence::Weekly`].
+    pub fn cadence(&self, patient: &str) -> ReviewCadence {
+        self.schedules
+            .get(patient)
+            .map(|schedule| schedule.cadence)
+            .unwrap_or_default()
+    }
+
+    /// Records that a patient's record or linked health state changed since the last review.
+    pub fn record_daily_change(&mut self, patient: &str, change_ref: &str) {
+        let now = self.now;
+        let schedule =
+            self.schedules
+                .entry(patient.to_owned())
+                .or_insert_with(|| PatientSchedule {
+                    cadence: ReviewCadence::Weekly,
+                    last_weekly_at: now,
+                    last_daily_check_at: now,
+                    daily_changes: Vec::new(),
+                });
+        if !schedule
+            .daily_changes
+            .iter()
+            .any(|existing| existing == change_ref)
+        {
+            schedule.daily_changes.push(change_ref.to_owned());
+        }
+    }
+
+    /// All reviews started by the single scheduling owner in chronological order.
+    pub fn scheduled_reviews(&self) -> &[ScheduledReview] {
+        &self.scheduled
+    }
+
+    /// The next scheduled cadence check timestamp for an enrolled patient.
+    pub fn next_scheduled_at(&self, patient: &str) -> Option<u64> {
+        let schedule = self.schedules.get(patient)?;
+        let next_weekly = schedule.last_weekly_at.saturating_add(WEEK_MS);
+        match schedule.cadence {
+            ReviewCadence::Weekly => Some(next_weekly),
+            ReviewCadence::WeeklyAndDailyWhenChanged => {
+                let next_daily = schedule.last_daily_check_at.saturating_add(DAY_MS);
+                Some(next_daily.min(next_weekly))
+            }
         }
     }
 
@@ -152,11 +317,13 @@ impl Dispatch {
         &self.accepted
     }
 
-    /// Hears every notice waiting. Arming reads come first. A pass then delivers a window that read already found closed.
+    /// Hears every notice waiting. Arming reads come first. A pass then delivers a window that read already found closed, followed by due cadence reviews.
     pub fn drain(&mut self) {
+        let mut completed = false;
         for _ in 0..8 {
             if self.notices.is_empty() {
-                return;
+                completed = true;
+                break;
             }
             let notices = coalesce(std::mem::take(&mut self.notices));
             for notice in &notices {
@@ -171,7 +338,10 @@ impl Dispatch {
                 self.close_one(&patient);
             }
         }
-        panic!("a refused window was offered again");
+        if !completed {
+            panic!("a refused window was offered again");
+        }
+        self.drain_cadence();
     }
 
     fn push_fact(&mut self, patient: &str, kind: FactKind) -> u64 {
@@ -250,7 +420,56 @@ impl Dispatch {
             state.pending.clear();
         }
         self.busy.insert(patient.to_owned());
-        self.accepted.push(refs);
+        self.accepted.push(refs.clone());
+        self.scheduled.push(ScheduledReview {
+            patient: patient.to_owned(),
+            kind: ScheduledReviewKind::SourceChanges(refs),
+            started_at: self.now,
+        });
+    }
+
+    fn drain_cadence(&mut self) {
+        if self.refusing {
+            return;
+        }
+        let now = self.now;
+        let patients: Vec<String> = self.schedules.keys().cloned().collect();
+        for patient in patients {
+            if self.busy.contains(&patient) {
+                continue;
+            }
+            let Some(schedule) = self.schedules.get_mut(&patient) else {
+                continue;
+            };
+            let next_weekly = schedule.last_weekly_at.saturating_add(WEEK_MS);
+            if now >= next_weekly {
+                let folded_changes = std::mem::take(&mut schedule.daily_changes);
+                schedule.last_weekly_at = now;
+                schedule.last_daily_check_at = now;
+                self.busy.insert(patient.clone());
+                self.scheduled.push(ScheduledReview {
+                    patient,
+                    kind: ScheduledReviewKind::WeeklyWholePatient { folded_changes },
+                    started_at: now,
+                });
+                continue;
+            }
+            if schedule.cadence == ReviewCadence::WeeklyAndDailyWhenChanged {
+                let next_daily = schedule.last_daily_check_at.saturating_add(DAY_MS);
+                if now >= next_daily {
+                    schedule.last_daily_check_at = now;
+                    if !schedule.daily_changes.is_empty() {
+                        let changes = std::mem::take(&mut schedule.daily_changes);
+                        self.busy.insert(patient.clone());
+                        self.scheduled.push(ScheduledReview {
+                            patient,
+                            kind: ScheduledReviewKind::DailyWhenChanged { changes },
+                            started_at: now,
+                        });
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -359,5 +578,118 @@ mod tests {
         dispatch.catch_up(PATIENT);
         dispatch.drain();
         assert_eq!(dispatch.accepted(), &[vec!["result".to_owned()]]);
+    }
+
+    #[test]
+    fn weekly_cadence_runs_settled_weekly_review_and_ignores_daily_ticks() {
+        let mut dispatch = Dispatch::new(WINDOW_MS);
+        dispatch.enroll_patient(PATIENT, ReviewCadence::Weekly);
+        assert_eq!(dispatch.cadence(PATIENT), ReviewCadence::Weekly);
+        assert_eq!(dispatch.next_scheduled_at(PATIENT), Some(WEEK_MS));
+
+        dispatch.record_daily_change(PATIENT, "vitals-bp");
+        dispatch.advance_to(DAY_MS);
+        dispatch.drain();
+        assert!(
+            dispatch.scheduled_reviews().is_empty(),
+            "weekly cadence must not run a daily review"
+        );
+
+        dispatch.advance_to(WEEK_MS);
+        dispatch.drain();
+        assert_eq!(
+            dispatch.scheduled_reviews(),
+            &[ScheduledReview {
+                patient: PATIENT.to_owned(),
+                kind: ScheduledReviewKind::WeeklyWholePatient {
+                    folded_changes: vec!["vitals-bp".to_owned()],
+                },
+                started_at: WEEK_MS,
+            }]
+        );
+    }
+
+    #[test]
+    fn weekly_and_daily_when_changed_runs_daily_only_when_changes_exist_and_folds_into_weekly() {
+        let mut dispatch = Dispatch::new(WINDOW_MS);
+        dispatch.enroll_patient(PATIENT, ReviewCadence::WeeklyAndDailyWhenChanged);
+        assert_eq!(
+            dispatch.cadence(PATIENT),
+            ReviewCadence::WeeklyAndDailyWhenChanged
+        );
+        assert_eq!(dispatch.next_scheduled_at(PATIENT), Some(DAY_MS));
+
+        // Day 1 with no changes: quiet check, no review started.
+        dispatch.advance_to(DAY_MS);
+        dispatch.drain();
+        assert!(dispatch.scheduled_reviews().is_empty());
+        assert_eq!(dispatch.next_scheduled_at(PATIENT), Some(2 * DAY_MS));
+
+        // Day 2 with changes: starts DailyWhenChanged review.
+        dispatch.record_daily_change(PATIENT, "duet-home-bp");
+        dispatch.record_daily_change(PATIENT, "duet-home-bp");
+        dispatch.record_daily_change(PATIENT, "lab-bmp");
+        dispatch.advance_to(2 * DAY_MS);
+        dispatch.drain();
+        assert_eq!(
+            dispatch.scheduled_reviews(),
+            &[ScheduledReview {
+                patient: PATIENT.to_owned(),
+                kind: ScheduledReviewKind::DailyWhenChanged {
+                    changes: vec!["duet-home-bp".to_owned(), "lab-bmp".to_owned()],
+                },
+                started_at: 2 * DAY_MS,
+            }]
+        );
+        dispatch.finish_review(PATIENT);
+
+        // Day 7: settled weekly whole-patient review runs once (folding any new changes).
+        dispatch.record_daily_change(PATIENT, "med-reconciliation");
+        dispatch.advance_to(WEEK_MS);
+        dispatch.drain();
+        assert_eq!(dispatch.scheduled_reviews().len(), 2);
+        assert_eq!(
+            dispatch.scheduled_reviews()[1],
+            ScheduledReview {
+                patient: PATIENT.to_owned(),
+                kind: ScheduledReviewKind::WeeklyWholePatient {
+                    folded_changes: vec!["med-reconciliation".to_owned()],
+                },
+                started_at: WEEK_MS,
+            }
+        );
+    }
+
+    #[test]
+    fn due_cadence_review_waits_for_active_review_slot_to_finish() {
+        let mut dispatch = closed_before_the_read();
+        dispatch.enroll_patient(PATIENT, ReviewCadence::WeeklyAndDailyWhenChanged);
+        dispatch.admit(PATIENT, "lab-1");
+        dispatch.drain();
+        assert_eq!(dispatch.scheduled_reviews().len(), 1);
+
+        // While source-change review is still running, day 1 arrives with a change.
+        dispatch.record_daily_change(PATIENT, "symptom-log");
+        dispatch.advance_to(DAY_MS);
+        dispatch.drain();
+        assert_eq!(
+            dispatch.scheduled_reviews().len(),
+            1,
+            "daily review must wait while patient slot is busy"
+        );
+
+        dispatch.finish_review(PATIENT);
+        dispatch.drain();
+        assert_eq!(dispatch.scheduled_reviews().len(), 2);
+        assert_eq!(
+            dispatch.scheduled_reviews()[1],
+            ScheduledReview {
+                patient: PATIENT.to_owned(),
+                kind: ScheduledReviewKind::DailyWhenChanged {
+                    changes: vec!["symptom-log".to_owned()],
+                },
+                started_at: DAY_MS + 300,
+            }
+        );
     }
 }

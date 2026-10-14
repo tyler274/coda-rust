@@ -4,16 +4,31 @@
 use std::env;
 use std::fs;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Child, Command, Stdio};
+use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
+
+use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::TcpStream;
+use tokio::sync::Mutex;
+
+static TEST_MUTEX: OnceLock<Mutex<()>> = OnceLock::new();
+static BUILT_SITE: OnceLock<PathBuf> = OnceLock::new();
+
+fn test_lock() -> &'static Mutex<()> {
+    TEST_MUTEX.get_or_init(|| Mutex::new(()))
+}
 
 #[tokio::test]
 async fn the_recorded_practice_is_visible() {
+    let _guard = test_lock().lock().await;
     let site = build_site();
-    // SAFETY: this test is the only process that reads the variable, and it
-    // sets it before the server starts.
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
     unsafe {
         env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::remove_var("PHYSICIAN_AUTH");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
         env::remove_var("PHYSICIAN_UPSTREAM");
         env::remove_var("CODA_LOCAL_MODEL_EXECUTION");
         env::remove_var("CODA_ALLOW_MODEL_CALLS");
@@ -74,8 +89,220 @@ async fn the_recorded_practice_is_visible() {
     );
 }
 
+#[tokio::test]
+async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::set_var("PHYSICIAN_AUTH", "required");
+        env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+        env::remove_var("CODA_LOCAL_MODEL_EXECUTION");
+        env::remove_var("CODA_ALLOW_MODEL_CALLS");
+    }
+
+    let mary = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let jake = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
+
+    let store = Arc::new(MemoryAuthStore::default());
+    store.seed_account(
+        "practice-clinic-a",
+        "phys-admin",
+        "admin@clinic-a.test",
+        "Dr. Clinic Admin",
+        true,
+    );
+    store.seed_account(
+        "practice-clinic-a",
+        "phys-colleague",
+        "colleague@clinic-a.test",
+        "Dr. Colleague",
+        false,
+    );
+    // Mary belongs to practice-clinic-a (initially on Dr. Colleague's panel, not Dr. Clinic Admin's).
+    store.register_patient("practice-clinic-a", mary).await;
+    let admin_identity = PhysicianIdentity {
+        practice_id: "practice-clinic-a".to_owned(),
+        physician_id: "phys-admin".to_owned(),
+    };
+    store
+        .assign_panel(&admin_identity, "phys-colleague", mary, Membership::Allowed)
+        .await
+        .unwrap();
+    // Jake belongs to a completely different practice (practice-clinic-b).
+    store.register_patient("practice-clinic-b", jake).await;
+
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let server_store: Arc<dyn AuthStore> = store.clone();
+    tokio::spawn(async move { physician_sample::serve_with_store(listener, server_store).await });
+    wait_until_ready(address).await;
+
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/")).await;
+
+    // 1. Unauthenticated visit renders SignInScreen (never Today or clinical content).
+    let sign_in_dom = browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(15))
+        .await;
+    assert!(
+        sign_in_dom.contains("Work email")
+            && sign_in_dom.contains("Send sign-in link")
+            && !sign_in_dom.contains("Mary Louis"),
+        "expected SignInScreen before authentication:\n{sign_in_dom}"
+    );
+
+    // 2. Complete email + single-use token sign-in flow in the browser.
+    browser
+        .eval(
+            r#"new Promise((resolve) => {
+                const input = document.querySelector('input.sign-in-input[type="email"]');
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                setter.call(input, 'admin@clinic-a.test');
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                setTimeout(() => {
+                    const btn = document.querySelector('button.sign-in-primary');
+                    if (btn) btn.click();
+                    resolve(true);
+                }, 50);
+            })"#,
+        )
+        .await;
+    browser
+        .wait_for_text("Sign-in code", Duration::from_secs(10))
+        .await;
+    browser
+        .eval(
+            r#"new Promise((resolve) => {
+                const card = document.querySelector('.sign-in-card');
+                const code = card ? card.getAttribute('data-proof-token') : '';
+                const input = document.querySelector('input.sign-in-input[type="text"]');
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                setter.call(input, code);
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                setTimeout(() => {
+                    const btn = document.querySelector('button.sign-in-primary');
+                    if (btn) btn.click();
+                    resolve(code);
+                }, 50);
+            })"#,
+        )
+        .await;
+    let today_dom = browser
+        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
+        .await;
+    assert!(
+        today_dom.contains("Today") && !today_dom.contains("Mary Louis"),
+        "Mary Louis is not on Dr. Clinic Admin's panel yet and must not appear on Today:\n{today_dom}"
+    );
+
+    // 3. Cross-practice patient (Jake in practice-clinic-b) returns 404 unavailable with zero data leak.
+    browser
+        .navigate(&format!("http://{address}/?patient={jake}"))
+        .await;
+    let cross_practice_dom = browser
+        .wait_for_text(
+            "Coda couldn’t load what needs you for this patient.",
+            Duration::from_secs(10),
+        )
+        .await;
+    assert!(
+        !cross_practice_dom.contains("Jake")
+            && !cross_practice_dom.contains("Patient summary")
+            && !cross_practice_dom.contains("Patient demographics"),
+        "cross-practice patient must not leak demographics or clinical data:\n{cross_practice_dom}"
+    );
+
+    // 4. Same-clinic non-panel patient (Mary in practice-clinic-a) renders clean Clinic Demographic Card.
+    browser
+        .navigate(&format!("http://{address}/?patient={mary}"))
+        .await;
+    let demographic_dom = browser
+        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
+        .await;
+    assert!(
+        demographic_dom.contains("Patient demographics")
+            && demographic_dom.contains("Mary Louis")
+            && demographic_dom.contains("Mar 18, 1972")
+            && demographic_dom.contains("54 years")
+            && demographic_dom.contains("Female")
+            && demographic_dom.contains("00000005")
+            && demographic_dom.contains("Assign to panel")
+            && !demographic_dom.contains("Patient summary")
+            && !demographic_dom.contains("Discharge Summary")
+            && !demographic_dom.contains("This workspace has no chats."),
+        "same-clinic non-panel patient should render clean demographic card:\n{demographic_dom}"
+    );
+
+    // Verify phone viewport (390x844) and prefers-reduced-motion on the demographic card.
+    browser.set_viewport(390, 844, true).await;
+    let mobile_dom = browser.dom().await;
+    assert!(
+        mobile_dom.contains("Patient demographics") && mobile_dom.contains("Assign to panel"),
+        "demographic card should remain intact on phone viewport:\n{mobile_dom}"
+    );
+    browser.set_viewport(1280, 800, false).await;
+
+    // 5. Admin clicks "Assign to panel" -> PUT /auth/panels/... unlocks full clinical workspace live.
+    browser
+        .eval(
+            r#"(() => {
+                const btn = document.querySelector('button.assign-panel-button');
+                if (btn) btn.click();
+                return Boolean(btn);
+            })()"#,
+        )
+        .await;
+    let unlocked_dom = browser
+        .wait_for_text("Patient summary", Duration::from_secs(10))
+        .await;
+    assert!(
+        unlocked_dom.contains("Mary Louis")
+            && unlocked_dom.contains("Source 2: Discharge Summary. Preview source.")
+            && unlocked_dom.contains("Remove from panel")
+            && !unlocked_dom.contains("Clinic record · Not on your panel"),
+        "assigning patient to panel must unlock full clinical workspace live:\n{unlocked_dom}"
+    );
+
+    // 6. Admin clicks "Remove from panel" -> DELETE /auth/panels/... returns live to demographic card.
+    browser
+        .eval(
+            r#"(() => {
+                const btn = document.querySelector('button.remove-panel-button');
+                if (btn) btn.click();
+                return Boolean(btn);
+            })()"#,
+        )
+        .await;
+    let relocked_dom = browser
+        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
+        .await;
+    assert!(
+        relocked_dom.contains("Patient demographics") && !relocked_dom.contains("Patient summary"),
+        "removing patient from panel must lock clinical workspace back to demographic card:\n{relocked_dom}"
+    );
+
+    // 7. Deactivating the physician account terminates SSE and returns the browser to SignInScreen.
+    assert!(store.deactivate("admin@clinic-a.test").await);
+    let revoked_dom = browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
+    assert!(
+        revoked_dom.contains("Work email") && !revoked_dom.contains("Mary Louis"),
+        "revoking session/account must terminate SSE and return to SignInScreen:\n{revoked_dom}"
+    );
+
+    unsafe {
+        env::remove_var("PHYSICIAN_AUTH");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+    }
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
+        .env_remove("LD_LIBRARY_PATH")
         .args([
             "--headless=new",
             "--disable-gpu",
@@ -122,47 +349,50 @@ fn read_logo(address: std::net::SocketAddr) -> Vec<u8> {
 }
 
 fn build_site() -> PathBuf {
-    let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let target = env::temp_dir().join("coda-physician-wasm");
-    let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
-    let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
-    cargo_without_parent_package(&mut cargo);
-    let status = cargo
-        .current_dir(&workspace)
-        .env("CARGO_TARGET_DIR", &target)
-        .env_remove("PHYSICIAN_API_URL")
-        .args([
-            "build",
-            "-p",
-            "physician-app",
-            "--target",
-            "wasm32-unknown-unknown",
-            "--features",
-            "web",
-        ])
-        .status()
-        .expect("cargo build");
-    assert!(status.success(), "physician-app wasm build failed");
-    let site = workspace.join("target/physician-web");
-    fs::create_dir_all(&site).unwrap();
-    let status = Command::new(wasm_bindgen())
-        .args([
-            "--target",
-            "web",
-            "--out-dir",
-            site.to_str().unwrap(),
-            wasm.to_str().unwrap(),
-        ])
-        .status()
-        .expect("wasm-bindgen");
-    assert!(status.success(), "wasm-bindgen failed");
-    site
+    BUILT_SITE
+        .get_or_init(|| {
+            let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+            let target = env::temp_dir().join("coda-physician-wasm");
+            let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
+            let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+            cargo_without_parent_package(&mut cargo);
+            let status = cargo
+                .current_dir(&workspace)
+                .env("CARGO_TARGET_DIR", &target)
+                .env_remove("PHYSICIAN_API_URL")
+                .args([
+                    "build",
+                    "-p",
+                    "physician-app",
+                    "--target",
+                    "wasm32-unknown-unknown",
+                    "--features",
+                    "web",
+                ])
+                .status()
+                .expect("cargo build");
+            assert!(status.success(), "physician-app wasm build failed");
+            let site = workspace.join("target/physician-web");
+            fs::create_dir_all(&site).unwrap();
+            let status = Command::new(wasm_bindgen())
+                .args([
+                    "--target",
+                    "web",
+                    "--out-dir",
+                    site.to_str().unwrap(),
+                    wasm.to_str().unwrap(),
+                ])
+                .status()
+                .expect("wasm-bindgen");
+            assert!(status.success(), "wasm-bindgen failed");
+            site
+        })
+        .clone()
 }
 
 fn cargo_without_parent_package(command: &mut Command) {
     command.env_clear();
     for key in [
-        "PATH",
         "HOME",
         "USER",
         "RUSTUP_HOME",
@@ -173,6 +403,14 @@ fn cargo_without_parent_package(command: &mut Command) {
         if let Some(value) = env::var_os(key) {
             command.env(key, value);
         }
+    }
+    if let Some(paths) = env::var_os("PATH") {
+        let filtered = env::join_paths(
+            env::split_paths(&paths)
+                .filter(|dir| !dir.to_string_lossy().contains(".local/share/swiftly")),
+        )
+        .expect("join PATH");
+        command.env("PATH", filtered);
     }
 }
 
@@ -224,5 +462,276 @@ async fn wait_until_ready(address: std::net::SocketAddr) {
             return;
         }
         tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}
+
+struct CdpBrowser {
+    child: Child,
+    user_data_dir: PathBuf,
+    stream: TcpStream,
+    next_id: u64,
+}
+
+impl CdpBrowser {
+    async fn launch(chrome: &std::path::Path, initial_url: &str) -> Self {
+        let user_data_dir = env::temp_dir().join(format!(
+            "coda-cdp-profile-{}-{}",
+            std::process::id(),
+            Instant::now().elapsed().as_nanos()
+        ));
+        fs::create_dir_all(&user_data_dir).unwrap();
+        let mut child = Command::new(chrome)
+            .env_remove("LD_LIBRARY_PATH")
+            .args([
+                "--headless=new",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--remote-debugging-port=0",
+                "--window-size=1280,800",
+                &format!("--user-data-dir={}", user_data_dir.display()),
+                initial_url,
+            ])
+            .stdout(Stdio::null())
+            .stderr(Stdio::piped())
+            .spawn()
+            .expect("spawn headless chromium");
+
+        let stderr = child.stderr.take().expect("chromium stderr");
+        let (tx, rx) = tokio::sync::oneshot::channel();
+        std::thread::spawn(move || {
+            use std::io::BufRead;
+            let mut tx = Some(tx);
+            let reader = std::io::BufReader::new(stderr);
+            for line in reader.lines().map_while(Result::ok) {
+                if let Some((_, url)) = line.split_once("DevTools listening on ")
+                    && let Some(sender) = tx.take()
+                {
+                    let _ = sender.send(url.trim().to_owned());
+                }
+            }
+        });
+        let ws_browser_url = tokio::time::timeout(Duration::from_secs(15), rx)
+            .await
+            .expect("chromium devtools startup timeout")
+            .expect("DevTools listening URL");
+        let host_port = ws_browser_url
+            .strip_prefix("ws://")
+            .and_then(|rest| rest.split('/').next())
+            .expect("ws host:port");
+
+        let page_ws_url = Self::find_page_ws_url(host_port).await;
+        let stream = Self::connect_ws(&page_ws_url).await;
+        let mut browser = Self {
+            child,
+            user_data_dir,
+            stream,
+            next_id: 1,
+        };
+        browser.call("Page.enable", serde_json::json!({})).await;
+        browser.call("Runtime.enable", serde_json::json!({})).await;
+        browser
+    }
+
+    async fn find_page_ws_url(host_port: &str) -> String {
+        let client = reqwest::Client::new();
+        let list_url = format!("http://{host_port}/json/list");
+        let started = Instant::now();
+        loop {
+            if let Ok(resp) = client.get(&list_url).send().await
+                && let Ok(targets) = resp.json::<Vec<serde_json::Value>>().await
+                && let Some(ws) = targets.iter().find_map(|target| {
+                    (target.get("type").and_then(|t| t.as_str()) == Some("page"))
+                        .then(|| target.get("webSocketDebuggerUrl").and_then(|u| u.as_str()))
+                        .flatten()
+                })
+            {
+                return ws.to_owned();
+            }
+            assert!(
+                started.elapsed() <= Duration::from_secs(10),
+                "timed out waiting for page target on {list_url}"
+            );
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+    }
+
+    async fn connect_ws(ws_url: &str) -> TcpStream {
+        let without_scheme = ws_url.strip_prefix("ws://").expect("ws:// scheme");
+        let (host_port, path) = without_scheme.split_once('/').expect("ws path");
+        let mut stream = TcpStream::connect(host_port).await.expect("connect cdp ws");
+        let request = format!(
+            "GET /{path} HTTP/1.1\r\n\
+             Host: {host_port}\r\n\
+             Upgrade: websocket\r\n\
+             Connection: Upgrade\r\n\
+             Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n\
+             Sec-WebSocket-Version: 13\r\n\r\n"
+        );
+        stream.write_all(request.as_bytes()).await.unwrap();
+        let mut header_buf = Vec::new();
+        let mut byte = [0u8; 1];
+        while !header_buf.ends_with(b"\r\n\r\n") {
+            stream.read_exact(&mut byte).await.unwrap();
+            header_buf.push(byte[0]);
+        }
+        let header_str = String::from_utf8_lossy(&header_buf);
+        assert!(
+            header_str.starts_with("HTTP/1.1 101"),
+            "unexpected websocket handshake response:\n{header_str}"
+        );
+        stream
+    }
+
+    async fn call(&mut self, method: &str, params: serde_json::Value) -> serde_json::Value {
+        let id = self.next_id;
+        self.next_id += 1;
+        let payload = serde_json::json!({
+            "id": id,
+            "method": method,
+            "params": params,
+        })
+        .to_string();
+        self.send_frame(payload.as_bytes()).await;
+        loop {
+            let text = self.read_frame().await;
+            let Ok(message) = serde_json::from_str::<serde_json::Value>(&text) else {
+                continue;
+            };
+            if message.get("id").and_then(|v| v.as_u64()) == Some(id) {
+                return message;
+            }
+        }
+    }
+
+    async fn send_frame(&mut self, payload: &[u8]) {
+        let mut frame = Vec::with_capacity(14 + payload.len());
+        frame.push(0x81); // FIN + text frame
+        if payload.len() < 126 {
+            frame.push(0x80 | (payload.len() as u8));
+        } else if payload.len() <= u16::MAX as usize {
+            frame.push(0x80 | 126);
+            frame.extend_from_slice(&(payload.len() as u16).to_be_bytes());
+        } else {
+            frame.push(0x80 | 127);
+            frame.extend_from_slice(&(payload.len() as u64).to_be_bytes());
+        }
+        // Masking key of all zeroes keeps payload bytes unchanged while satisfying RFC 6455.
+        frame.extend_from_slice(&[0, 0, 0, 0]);
+        frame.extend_from_slice(payload);
+        self.stream.write_all(&frame).await.unwrap();
+    }
+
+    async fn read_frame(&mut self) -> String {
+        loop {
+            let mut head = [0u8; 2];
+            self.stream.read_exact(&mut head).await.unwrap();
+            let opcode = head[0] & 0x0f;
+            let masked = (head[1] & 0x80) != 0;
+            let mut len = (head[1] & 0x7f) as usize;
+            if len == 126 {
+                let mut ext = [0u8; 2];
+                self.stream.read_exact(&mut ext).await.unwrap();
+                len = u16::from_be_bytes(ext) as usize;
+            } else if len == 127 {
+                let mut ext = [0u8; 8];
+                self.stream.read_exact(&mut ext).await.unwrap();
+                len = u64::from_be_bytes(ext) as usize;
+            }
+            let mut mask = [0u8; 4];
+            if masked {
+                self.stream.read_exact(&mut mask).await.unwrap();
+            }
+            let mut data = vec![0u8; len];
+            self.stream.read_exact(&mut data).await.unwrap();
+            if masked {
+                for (i, byte) in data.iter_mut().enumerate() {
+                    *byte ^= mask[i % 4];
+                }
+            }
+            if opcode == 0x9 {
+                // Reply to ping with pong.
+                let mut pong = vec![0x8a, 0x80, 0, 0, 0, 0];
+                pong[1] |= data.len() as u8;
+                pong.extend_from_slice(&data);
+                let _ = self.stream.write_all(&pong).await;
+                continue;
+            }
+            if opcode == 0x1 {
+                return String::from_utf8_lossy(&data).into_owned();
+            }
+        }
+    }
+
+    async fn eval(&mut self, expression: &str) -> serde_json::Value {
+        self.call(
+            "Runtime.evaluate",
+            serde_json::json!({
+                "expression": expression,
+                "returnByValue": true,
+                "awaitPromise": true,
+            }),
+        )
+        .await
+    }
+
+    async fn dom(&mut self) -> String {
+        let response = self
+            .eval("document.documentElement ? document.documentElement.outerHTML : ''")
+            .await;
+        response
+            .pointer("/result/result/value")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default()
+            .to_owned()
+    }
+
+    async fn wait_for_text(&mut self, expected: &str, timeout: Duration) -> String {
+        let started = Instant::now();
+        loop {
+            let html = self.dom().await;
+            if html.contains(expected) {
+                return html;
+            }
+            if started.elapsed() > timeout {
+                panic!("timed out waiting for {expected:?} in DOM:\n{html}");
+            }
+            tokio::time::sleep(Duration::from_millis(60)).await;
+        }
+    }
+
+    async fn navigate(&mut self, url: &str) {
+        self.call("Page.navigate", serde_json::json!({ "url": url }))
+            .await;
+    }
+
+    async fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {
+        self.call(
+            "Emulation.setDeviceMetricsOverride",
+            serde_json::json!({
+                "width": width,
+                "height": height,
+                "deviceScaleFactor": 1,
+                "mobile": width < 600,
+            }),
+        )
+        .await;
+        self.call(
+            "Emulation.setEmulatedMedia",
+            serde_json::json!({
+                "features": [{
+                    "name": "prefers-reduced-motion",
+                    "value": if reduced_motion { "reduce" } else { "no-preference" },
+                }]
+            }),
+        )
+        .await;
+    }
+}
+
+impl Drop for CdpBrowser {
+    fn drop(&mut self) {
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+        let _ = fs::remove_dir_all(&self.user_data_dir);
     }
 }

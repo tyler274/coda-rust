@@ -881,6 +881,71 @@ pub fn chat_view(
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+/// Clean clinic-demographic fields shown for a same-clinic patient not on the physician's panel.
+pub struct DemographicCardView {
+    /// Patient display name.
+    pub display_name: String,
+    /// Formatted date of birth, such as `Mar 18, 1972`.
+    pub birth_date: Option<String>,
+    /// Formatted age in years, such as `54 years`.
+    pub age: Option<String>,
+    /// Capitalized sex or gender value.
+    pub sex_or_gender: Option<String>,
+    /// Primary medical record number.
+    pub mrn: Option<String>,
+    /// Capitalized record status, such as `Active`.
+    pub record_state: Option<String>,
+}
+
+/// Extracts the clinic-demographic card fields from a workspace response.
+pub fn demographic_card_view(workspace: &PatientWorkspaceResponse) -> DemographicCardView {
+    let identity = workspace.identity.as_ref();
+    let display_name = if !workspace.display_name.trim().is_empty() {
+        workspace.display_name.clone()
+    } else {
+        identity
+            .and_then(|id| id.display_name.clone())
+            .unwrap_or_default()
+    };
+    let birth_date = identity
+        .and_then(|id| id.birth_date.as_deref())
+        .map(format_calendar_date);
+    let age = identity
+        .and_then(|id| id.age_years)
+        .map(|years| format!("{years} years"));
+    let sex_or_gender = identity
+        .and_then(|id| id.sex_or_gender.as_ref())
+        .and_then(|gender| gender.value.as_deref())
+        .map(capitalize_first)
+        .filter(|value| !value.is_empty());
+    let mrn = identity.and_then(|id| {
+        id.medical_record_numbers
+            .iter()
+            .find_map(|number| number.value.clone())
+    });
+    let record_state = identity
+        .and_then(|id| id.state.as_deref())
+        .map(capitalize_first)
+        .filter(|value| !value.is_empty());
+    DemographicCardView {
+        display_name,
+        birth_date,
+        age,
+        sex_or_gender,
+        mrn,
+        record_state,
+    }
+}
+
+fn capitalize_first(value: &str) -> String {
+    let mut chars = value.trim().chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+        None => String::new(),
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(dead_code)]
 pub enum ReaderView {
     Closed,
@@ -1256,5 +1321,37 @@ mod tests {
         )
         .unwrap();
         assert!(!shows_today_schedule(&gone));
+    }
+
+    #[test]
+    fn clinic_demographic_workspace_extracts_card_fields_without_clinical_sections() {
+        let workspace: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{
+                "patient_workspace_id": "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
+                "display_name": "Jake Test",
+                "membership": "clinic_demographic",
+                "identity": {
+                    "display_name": "Jake Test",
+                    "birth_date": "1958-11-04",
+                    "age_years": 67,
+                    "sex_or_gender": { "value": "male" },
+                    "medical_record_numbers": [{ "value": "00000012" }],
+                    "state": "active"
+                },
+                "connected_sources": [],
+                "active_follow_ups": [],
+                "chats": []
+            }"#,
+        )
+        .unwrap();
+        assert!(workspace.is_clinic_demographic());
+        assert!(workspace.patient_synopsis.is_none());
+        let card = demographic_card_view(&workspace);
+        assert_eq!(card.display_name, "Jake Test");
+        assert_eq!(card.birth_date.as_deref(), Some("Nov 4, 1958"));
+        assert_eq!(card.age.as_deref(), Some("67 years"));
+        assert_eq!(card.sex_or_gender.as_deref(), Some("Male"));
+        assert_eq!(card.mrn.as_deref(), Some("00000012"));
+        assert_eq!(card.record_state.as_deref(), Some("Active"));
     }
 }

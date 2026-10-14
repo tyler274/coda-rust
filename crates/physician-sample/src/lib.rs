@@ -61,10 +61,13 @@ fn router_with(upstream: Option<String>) -> Router {
 }
 
 pub(crate) fn recorded() -> Router {
-    site().route("/commands", post(reject_command)).route(
-        "/patient-workspaces/{id}/chats/{chat}/snapshot",
-        get(empty_snapshot),
-    )
+    site()
+        .route("/commands", post(reject_command))
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/snapshot",
+            get(empty_snapshot),
+        )
+        .route("/patient-workspaces/events", get(recorded_events))
 }
 
 fn live_router(model: live::ChatModel) -> Router {
@@ -153,6 +156,18 @@ pub(crate) fn physician_route(path: &str) -> bool {
         .any(|prefix| path == *prefix || path.starts_with(&format!("{prefix}/")))
 }
 
+fn http_client() -> &'static reqwest::Client {
+    static CLIENT: std::sync::OnceLock<reqwest::Client> = std::sync::OnceLock::new();
+    CLIENT.get_or_init(|| {
+        std::thread::Builder::new()
+            .stack_size(8 * 1024 * 1024)
+            .spawn(reqwest::Client::new)
+            .expect("http client thread")
+            .join()
+            .expect("http client init")
+    })
+}
+
 async fn forward(upstream: &str, request: Request<Body>) -> Response {
     let path = request
         .uri()
@@ -172,7 +187,7 @@ async fn forward(upstream: &str, request: Request<Body>) -> Response {
         .unwrap_or_default();
     let method =
         reqwest::Method::from_bytes(method.as_str().as_bytes()).unwrap_or(reqwest::Method::GET);
-    let mut outgoing = reqwest::Client::new().request(method, &url).body(body);
+    let mut outgoing = http_client().request(method, &url).body(body);
     if let Some(value) = content_type {
         outgoing = outgoing.header(axum::http::header::CONTENT_TYPE, value);
     }
@@ -268,6 +283,19 @@ async fn empty_snapshot(
     .into_response()
 }
 
+async fn recorded_events() -> Response {
+    let stream = futures_util::stream::pending::<Result<String, std::convert::Infallible>>();
+    (
+        StatusCode::OK,
+        [(
+            axum::http::header::CONTENT_TYPE,
+            HeaderValue::from_static("text/event-stream"),
+        )],
+        Body::from_stream(stream),
+    )
+        .into_response()
+}
+
 async fn site_file(request: Request<Body>) -> Response {
     let Some(dir) = site_dir() else {
         return StatusCode::NOT_FOUND.into_response();
@@ -314,6 +342,17 @@ pub async fn serve(listener: tokio::net::TcpListener) {
         }
     };
     let app = auth::authed_router(base).await;
+    axum::serve(listener, app).await.expect("sample server");
+}
+
+/// Serves the recorded practice on `listener` with authentication required
+/// against the given `store`.
+pub async fn serve_with_store(
+    listener: tokio::net::TcpListener,
+    store: std::sync::Arc<dyn physician_auth::AuthStore>,
+) {
+    let base = router();
+    let app = auth::authed_router_with_store(base, store).await;
     axum::serve(listener, app).await.expect("sample server");
 }
 
@@ -485,6 +524,9 @@ pub fn rejection_message(command_type: &str) -> &'static str {
         "follow_up.end" => "Coda couldn’t end that follow-up.",
         "conversation.archive" => "Coda couldn’t archive that conversation.",
         "conversation.restore" => "Coda couldn’t restore that conversation.",
+        "cadence.set" | "cadence.override" | "review_cadence.set" => {
+            "Physicians cannot override patient review cadence."
+        }
         _ => "Coda couldn’t confirm that request. Reconnect to check its status.",
     }
 }
@@ -559,11 +601,11 @@ fn cors_headers(mut response: Response) -> Response {
     );
     headers.insert(
         axum::http::header::ACCESS_CONTROL_ALLOW_METHODS,
-        HeaderValue::from_static("GET, POST, PUT, OPTIONS"),
+        HeaderValue::from_static("GET, POST, PUT, DELETE, OPTIONS"),
     );
     headers.insert(
         axum::http::header::ACCESS_CONTROL_ALLOW_HEADERS,
-        HeaderValue::from_static("content-type"),
+        HeaderValue::from_static("content-type, authorization"),
     );
     response
 }
