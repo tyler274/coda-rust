@@ -1,0 +1,44 @@
+---
+description: All new development happens in the coda-rust Rust repo; submodules are read-only reference
+globs:
+alwaysApply: true
+---
+
+# Rust-repo-first development
+
+All new development — new crates, new features, bug fixes, tests, and CI
+changes — happens in the Rust workspace at the root of this repo
+(`crates/*`), not in the reference submodules.
+
+The directories under `submodules/` (`coda-agents`, `coda-app`,
+`Coda-Computer-Use`, `coda-gym`) are **reference material**. Do not:
+
+- ❌ Edit any file under `submodules/**`
+- ❌ Add crates, tests, or scripts inside a submodule
+- ❌ Create PR branches against a submodule repository
+
+Instead:
+
+- ✅ Put new Rust code in a crate under `crates/`
+- ✅ Put new tests alongside the crate they exercise (`crates/<name>/tests/`)
+- ✅ Reuse submodule code by reading it for reference, then implementing the
+  needed logic in the workspace crate that owns the concern
+- ✅ If a change genuinely belongs in a product repository, stop and raise it
+  with the user before touching anything
+
+## ❌ BAD
+
+```text
+submodules/coda-app/backend/app/services/new_feature.py   # editing a submodule
+submodules/coda-agents/src/adapters/.../new_module.rs     # editing a submodule
+```
+
+## ✅ GOOD
+
+```text
+crates/duet-api/src/new_feature.rs        # workspace crate
+crates/duet-api/tests/new_feature.rs      # tests next to the crate
+```
+
+Check before writing: `git rev-parse --show-toplevel` should print the
+coda-rust root, and the file path must not start with `submodules/`.
