@@ -12,7 +12,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
-use physician_wire::{PatientWorkspaceResponse, RecentConversation};
+use physician_wire::{PatientWorkspaceResponse, RecentConversation, SimulationStatus};
 #[cfg(target_arch = "wasm32")]
 use shell::workspace_event_rereads;
 use shell::{
@@ -283,6 +283,8 @@ fn PhysicianShell(
         }
     });
     let patient_today = use_resource(move || {
+        let _today_attempt = today_attempt();
+        let _workspace_attempt = workspace_attempt();
         let client = client.read().clone();
         let open_id = selected();
         async move {
@@ -351,6 +353,10 @@ fn PhysicianShell(
         .and_then(|result| result.as_ref().ok())
         .map(|list| connection_lines(&list.connections))
         .unwrap_or_default();
+    let simulation_status = today_read
+        .as_ref()
+        .and_then(|result| result.as_ref().ok())
+        .and_then(|list| list.simulation.clone());
     let practice_read = practice.read();
     let day = practice_read
         .as_ref()
@@ -721,6 +727,7 @@ fn PhysicianShell(
                     Place::Today => rsx! {
                         TodaySurface {
                             state: today_state.clone(),
+                            simulation: simulation_status.clone(),
                             connections: connections.clone(),
                             visits: visits.clone(),
                             show_schedule,
@@ -731,6 +738,25 @@ fn PhysicianShell(
                             need_you,
                             focused: shown_focus,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
+                            on_run_scenario: move |scenario: String| {
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    let _ = client
+                                        .command(&serde_json::json!({
+                                            "type": "simulation.run",
+                                            "payload": { "scenario": scenario },
+                                        }))
+                                        .await;
+                                    today_attempt.set(today_attempt() + 1);
+                                    workspace_attempt.set(workspace_attempt() + 1);
+                                });
+                            },
+                            on_open_patient: move |id: String| {
+                                selected.set(Some(id));
+                                place.set(Place::Workspace);
+                                search_open.set(false);
+                                workspace_attempt.set(workspace_attempt() + 1);
+                            },
                             on_open_row: move |line: TodayLine| {
                                 let reading_text = if opens_reader(&line.kind) {
                                     Some(prose_reading(line.patient.clone(), line.reason.clone()))
@@ -777,6 +803,37 @@ fn PhysicianShell(
                             draft: draft(),
                             notice: notice(),
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
+                            on_decide_recommendation: move |rec_id: String| {
+                                let Some(ws_id) = selected() else { return };
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    let _ = client
+                                        .command(&serde_json::json!({
+                                            "type": "plan.decide_recommendation",
+                                            "payload": {
+                                                "patient_workspace_id": ws_id,
+                                                "recommendation_id": rec_id,
+                                            },
+                                        }))
+                                        .await;
+                                    workspace_attempt.set(workspace_attempt() + 1);
+                                    today_attempt.set(today_attempt() + 1);
+                                });
+                            },
+                            on_admit_corrected_labs: move |_| {
+                                let Some(ws_id) = selected() else { return };
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    let _ = client
+                                        .command(&serde_json::json!({
+                                            "type": "simulation.admit_corrected_labs",
+                                            "payload": { "patient_workspace_id": ws_id },
+                                        }))
+                                        .await;
+                                    workspace_attempt.set(workspace_attempt() + 1);
+                                    today_attempt.set(today_attempt() + 1);
+                                });
+                            },
                             on_read: move |(title, body): (String, String)| {
                                 reading.set(Some(prose_reading(title, body)));
                             },
@@ -1027,6 +1084,7 @@ fn RecentRow(conversation: RecentConversation) -> Element {
 #[component]
 fn TodaySurface(
     state: TodayView,
+    simulation: Option<SimulationStatus>,
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
@@ -1037,6 +1095,8 @@ fn TodaySurface(
     need_you: usize,
     focused: Option<i32>,
     on_retry: EventHandler,
+    on_run_scenario: EventHandler<String>,
+    on_open_patient: EventHandler<String>,
     on_open_row: EventHandler<TodayLine>,
     on_open_visit: EventHandler<VisitLine>,
     on_resume: EventHandler<TodayLine>,
@@ -1073,6 +1133,13 @@ fn TodaySurface(
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
                 section { class: "today-main", aria_label: "Needs you",
+                    if let Some(sim) = simulation {
+                        SimulationPanel {
+                            sim,
+                            on_run_scenario,
+                            on_open_patient,
+                        }
+                    }
                     for line in connections {
                         p { class: "today-connection", "{line}" }
                     }
@@ -1107,6 +1174,77 @@ fn TodaySurface(
                         name_the_visit: false,
                         focused: visit_focus,
                         on_open: on_open_visit,
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn SimulationPanel(
+    sim: SimulationStatus,
+    on_run_scenario: EventHandler<String>,
+    on_open_patient: EventHandler<String>,
+) -> Element {
+    let metric = &sim.investor_metric;
+    let agg = &sim.aggregate_metric;
+    let items_per_100 = format!("{:.1}", metric.items_per_100_patients_per_week);
+    let agg_items_per_100 = format!("{:.1}", agg.items_per_100_patients_per_week);
+    let active_description = sim
+        .scenarios
+        .iter()
+        .find(|scenario| scenario.key == sim.active_scenario_key)
+        .map(|scenario| scenario.description.clone())
+        .unwrap_or_default();
+    rsx! {
+        section { class: "simulation-panel", aria_label: "Local practice simulation",
+            div { class: "simulation-header",
+                h2 { "Simulated practice walk — {sim.active_scenario_label}" }
+                span { class: "simulation-clock", "{sim.current_time}" }
+            }
+            if !active_description.is_empty() {
+                p { class: "simulation-description", "{active_description}" }
+            }
+            div { class: "investor-metric-card", aria_label: "Investor metric",
+                span { class: "investor-metric-label", "Items the physician touched per 100 patients per week" }
+                strong { class: "investor-metric-value", "{items_per_100}" }
+                span { class: "investor-metric-detail",
+                    "{metric.physician_touched_items} physician touches across {metric.panel_size} patients ({metric.ambient_handled_items} handled ambiently)"
+                }
+                span { class: "investor-metric-aggregate",
+                    "Across {agg.runs_count} simulation runs: {agg_items_per_100} items per 100 patients per week"
+                }
+            }
+            div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
+                for scenario in sim.scenarios.iter() {
+                    button {
+                        class: if scenario.key == sim.active_scenario_key {
+                            "control-secondary is-active-scenario"
+                        } else {
+                            "control-secondary"
+                        },
+                        r#type: "button",
+                        "data-scenario-key": "{scenario.key}",
+                        onclick: {
+                            let key = scenario.key.clone();
+                            move |_| on_run_scenario.call(key.clone())
+                        },
+                        "{scenario.label}"
+                    }
+                }
+            }
+            div { class: "simulation-panel-patients", aria_label: "Synthetic panel patients",
+                for patient in sim.panel_patients.iter() {
+                    button {
+                        class: "control-secondary",
+                        r#type: "button",
+                        "data-panel-patient": "{patient.patient_workspace_id}",
+                        onclick: {
+                            let id = patient.patient_workspace_id.clone();
+                            move |_| on_open_patient.call(id.clone())
+                        },
+                        "{patient.display_name} (MRN {patient.mrn})"
                     }
                 }
             }
@@ -1298,6 +1436,8 @@ fn PatientSurface(
     draft: String,
     notice: String,
     on_retry: EventHandler,
+    on_decide_recommendation: EventHandler<String>,
+    on_admit_corrected_labs: EventHandler,
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
     on_draft: EventHandler<String>,
@@ -1321,6 +1461,23 @@ fn PatientSurface(
     let follow_ups = workspace
         .as_ref()
         .map(|open| open.active_follow_ups.clone())
+        .unwrap_or_default();
+    let simulation = workspace.as_ref().and_then(|open| open.simulation.clone());
+    let replies = workspace
+        .as_ref()
+        .map(|open| open.replies.clone())
+        .unwrap_or_default();
+    let superseded_replies = workspace
+        .as_ref()
+        .map(|open| open.superseded_replies.clone())
+        .unwrap_or_default();
+    let active_plan_items = workspace
+        .as_ref()
+        .map(|open| open.active_plan_items.clone())
+        .unwrap_or_default();
+    let undecided_recommendations = workspace
+        .as_ref()
+        .map(|open| open.undecided_recommendations.clone())
         .unwrap_or_default();
     let dob = identity
         .as_ref()
@@ -1359,6 +1516,7 @@ fn PatientSurface(
         }
     });
     let scheduled = !visits.is_empty();
+    let is_simulated = simulation.is_some();
     rsx! {
         div { class: "reading-workspace patient-page",
             header { class: "patient-identity",
@@ -1380,6 +1538,24 @@ fn PatientSurface(
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
             div { class: "today-main",
+            if let Some(sim) = &simulation {
+                div { class: "investor-metric-card", aria_label: "Investor metric",
+                    span { class: "investor-metric-label", "Items the physician touched per 100 patients per week" }
+                    strong { class: "investor-metric-value", "{sim.investor_metric.items_per_100_patients_per_week:.1}" }
+                    span { class: "investor-metric-detail",
+                        "Scenario: {sim.active_scenario_label} · {sim.investor_metric.physician_touched_items} touches across {sim.investor_metric.panel_size} patients"
+                    }
+                    if !replies.is_empty() {
+                        button {
+                            class: "control-secondary",
+                            r#type: "button",
+                            "data-action": "admit-corrected-labs",
+                            onclick: move |_| on_admit_corrected_labs.call(()),
+                            "Admit corrected BMP"
+                        }
+                    }
+                }
+            }
             if !rows.is_empty() {
                 TodayRows {
                     rows,
@@ -1391,6 +1567,35 @@ fn PatientSurface(
                         }
                     },
                     on_resume: move |_| {},
+                }
+            }
+            if !replies.is_empty() || !superseded_replies.is_empty() {
+                section { class: "patient-section", aria_label: "Patient replies",
+                    h2 { "Patient replies" }
+                    for reply in replies {
+                        article {
+                            class: "simulation-card",
+                            "data-reply-state": "{reply.state}",
+                            div { class: "simulation-card-header",
+                                strong { "{reply.headline}" }
+                                span { class: "state-pill", "Active ({reply.urgency})" }
+                            }
+                            p { class: "synopsis", "{reply.draft_text}" }
+                        }
+                    }
+                    for superseded in superseded_replies {
+                        article {
+                            class: "simulation-card is-superseded",
+                            "data-reply-state": "superseded_by_correction",
+                            div { class: "simulation-card-header",
+                                strong { "{superseded.headline}" }
+                                span { class: "state-pill", "Superseded by corrected labs" }
+                            }
+                            if let Some(reason) = superseded.superseded_reason {
+                                p { class: "patient-synopsis-meta", "{reason}" }
+                            }
+                        }
+                    }
                 }
             }
             if let Some(run) = work {
@@ -1444,6 +1649,48 @@ fn PatientSurface(
                                     }
                                 },
                             }
+                        }
+                    }
+                }
+            }
+            if is_simulated || !active_plan_items.is_empty() {
+                section { class: "patient-section", aria_label: "Active plan",
+                    h2 { "Active plan" }
+                    for item in active_plan_items {
+                        article {
+                            class: "simulation-card",
+                            "data-plan-item": "{item.item_id}",
+                            strong { "{item.title}" }
+                            p { class: "patient-synopsis-meta", "{item.detail}" }
+                        }
+                    }
+                }
+            }
+            if is_simulated || !undecided_recommendations.is_empty() {
+                section { class: "patient-section", aria_label: "Undecided medication recommendations",
+                    h2 { "Undecided medication recommendations" }
+                    if undecided_recommendations.is_empty() {
+                        p { class: "patient-synopsis-meta", "No undecided medication recommendations." }
+                    }
+                    for rec in undecided_recommendations {
+                        article {
+                            class: "simulation-card",
+                            "data-recommendation-id": "{rec.recommendation_id}",
+                            div { class: "simulation-card-header",
+                                strong { "{rec.medication} — Held (undecided)" }
+                                button {
+                                    class: "control-secondary",
+                                    r#type: "button",
+                                    "data-decide-recommendation": "{rec.recommendation_id}",
+                                    onclick: {
+                                        let id = rec.recommendation_id.clone();
+                                        move |_| on_decide_recommendation.call(id.clone())
+                                    },
+                                    "Approve into plan"
+                                }
+                            }
+                            p { class: "patient-synopsis-meta", "{rec.rationale}" }
+                            p { class: "patient-synopsis-meta", "Source: {rec.source_label}" }
                         }
                     }
                 }

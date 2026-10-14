@@ -6,7 +6,7 @@
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]
@@ -48,6 +48,154 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// The `incomplete` value.
     pub incomplete: Option<bool>,
+    #[serde(default)]
+    /// Active simulation status and investor metric when running in simulation mode.
+    pub simulation: Option<SimulationStatus>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Investor metric for a simulation run: items the physician touched per 100 patients per week.
+pub struct InvestorMetricWire {
+    /// Count of items directly touched by the physician during the run.
+    pub physician_touched_items: u32,
+    /// Count of episodes/reviews handled ambiently by Coda without physician touch.
+    pub ambient_handled_items: u32,
+    /// Number of patients on the simulated panel.
+    pub panel_size: u32,
+    /// Duration of the simulation run in weeks.
+    pub simulated_weeks: f64,
+    /// Normalized investor metric: `(physician_touched_items / (panel_size * simulated_weeks)) * 100.0`.
+    pub items_per_100_patients_per_week: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Aggregate investor metric across all simulation runs in the session.
+pub struct SimulationAggregateMetricWire {
+    /// Total simulation runs executed in this session.
+    pub runs_count: u32,
+    /// Total physician-touched items across all runs.
+    pub total_physician_touched_items: u32,
+    /// Total ambiently handled items across all runs.
+    pub total_ambient_handled_items: u32,
+    /// Total patient-weeks simulated across all runs.
+    pub total_patient_weeks: f64,
+    /// Aggregate items the physician touched per 100 patients per week across runs.
+    pub items_per_100_patients_per_week: f64,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Metadata for one rerunnable simulation scenario.
+pub struct SimulationScenarioWire {
+    /// Scenario key (`connected-walk`, `reviewability`, etc.).
+    pub key: String,
+    /// Short human-readable scenario title.
+    pub label: String,
+    /// Detailed description of what the scenario exercises.
+    pub description: String,
+    /// Simulated duration in days.
+    pub simulated_days: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// Summary of one synthetic patient on Roger's panel.
+pub struct SimulationPanelPatientWire {
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Patient display name.
+    pub display_name: String,
+    /// Date of birth (`YYYY-MM-DD`).
+    pub birth_date: String,
+    /// Medical record number.
+    pub mrn: String,
+    /// Clinical role in the simulation scenarios.
+    pub role_summary: String,
+    /// Whether the simulated patient takes no unprompted action.
+    pub passive_patient: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Simulation status and investor metric exposed on `/today`, `/patient-workspaces/{id}`, and `/local-proof/simulations`.
+pub struct SimulationStatus {
+    /// Active scenario key.
+    pub active_scenario_key: String,
+    /// Human-readable label for the active scenario.
+    pub active_scenario_label: String,
+    /// Current simulated clock (`ISO-8601`).
+    pub current_time: String,
+    /// Investor metric for the current run.
+    pub investor_metric: InvestorMetricWire,
+    /// Aggregate investor metric across runs in this session.
+    pub aggregate_metric: SimulationAggregateMetricWire,
+    #[serde(default)]
+    /// Available scenarios Roger can run or rerun.
+    pub scenarios: Vec<SimulationScenarioWire>,
+    #[serde(default)]
+    /// Synthetic patients on Roger's panel.
+    pub panel_patients: Vec<SimulationPanelPatientWire>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A decided item in a patient's active care plan.
+pub struct WorkspacePlanItem {
+    /// Plan item identifier.
+    pub item_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Short plan item title.
+    pub title: String,
+    /// Clinical detail for the plan item.
+    pub detail: String,
+    /// Timestamp when the item was decided.
+    pub decided_at: String,
+    #[serde(default)]
+    /// Recommendation identifier if promoted from a recommendation.
+    pub source_recommendation_id: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A medication recommendation awaiting or reflecting a physician decision.
+pub struct WorkspaceMedicationRecommendation {
+    /// Recommendation identifier.
+    pub recommendation_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Medication name and dose.
+    pub medication: String,
+    /// Clinical rationale or context.
+    pub rationale: String,
+    /// Source note or review label.
+    pub source_label: String,
+    /// Current decision state (`undecided`, `decided`, `declined`).
+    pub decision_state: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+/// A drafted patient reply on a workspace projection.
+pub struct WorkspaceReply {
+    /// Reply work identifier.
+    pub reply_work_id: String,
+    /// Patient workspace identifier.
+    pub patient_workspace_id: String,
+    /// Patient display name.
+    pub patient_display_name: String,
+    /// Outbound channel (`spruce` or `email`).
+    pub channel: String,
+    /// Summary headline.
+    pub headline: String,
+    /// Drafted message text.
+    pub draft_text: String,
+    /// Urgency tier (`urgent_ed` or `routine`).
+    pub urgency: String,
+    /// Timestamp when the reply was drafted.
+    pub created_at: String,
+    /// Lifecycle state (`ready`, `superseded_by_correction`, `closed_by_physician`).
+    pub state: String,
+    #[serde(default)]
+    /// Input key that superseded this reply, if any.
+    pub superseded_by_input: Option<String>,
+    #[serde(default)]
+    /// Reason this reply was superseded, if any.
+    pub superseded_reason: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -272,6 +420,21 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// Connected record sources, including each last good pull.
     pub connected_sources: Vec<ConnectedSource>,
+    #[serde(default)]
+    /// Active ready patient replies on the workspace.
+    pub replies: Vec<WorkspaceReply>,
+    #[serde(default)]
+    /// Replies superseded by corrected laboratory results.
+    pub superseded_replies: Vec<WorkspaceReply>,
+    #[serde(default)]
+    /// Decided active care-plan items for the patient.
+    pub active_plan_items: Vec<WorkspacePlanItem>,
+    #[serde(default)]
+    /// Undecided medication recommendations held out of the active plan.
+    pub undecided_recommendations: Vec<WorkspaceMedicationRecommendation>,
+    #[serde(default)]
+    /// Active simulation status and investor metric when running in simulation mode.
+    pub simulation: Option<SimulationStatus>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
