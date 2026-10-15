@@ -7,6 +7,7 @@ version.workspace = true
 
 [dependencies]
 axum = "0.8"
+front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
 local-product = { path = "../local-product" }
 patient-work = { path = "../patient-work" }
@@ -18,6 +19,14 @@ serde_json = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync", "time"] }
 
 [dev-dependencies]
+physician-auth = { path = "../physician-auth" }
+front-door = { path = "../front-door" }
+sea-orm = { version = "1", default-features = false, features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "with-uuid",
+] }
 serde_json = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "time"] }
 tower = { version = "0.5", features = ["util"] }
+uuid = { version = "1", features = ["v4"] }

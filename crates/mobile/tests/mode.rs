@@ -14,13 +14,16 @@ async fn physician_and_client_modes_render() {
     let address = serve(site);
     let chrome = chromium();
     let client = dump_dom(&chrome, &format!("http://{address}/?mode=client")).await;
+    // ENG-44: without a joined session Duet is gated by the front door, so
+    // client mode shows the join screen, not the tab shell. The joined
+    // journey (tabs, send) is covered by duet_journey on the live stub.
     assert!(
-        client.contains("Duet")
-            && client.contains("Today")
-            && client.contains("You")
-            && client.contains("Shared")
-            && !client.contains("Find patient"),
-        "client mode did not show the four tabs:\n{client}"
+        client.contains("Join your practice") && !client.contains("Find patient"),
+        "client mode did not show the join gate:\n{client}"
+    );
+    assert!(
+        !client.contains("Find patient"),
+        "client mode leaked the physician shell:\n{client}"
     );
     let physician = dump_dom(&chrome, &format!("http://{address}/?mode=physician")).await;
     assert!(

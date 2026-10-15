@@ -1,7 +1,7 @@
 use std::env;
 use std::sync::Arc;
 
-use duet_api::{PgMoments, router, schema_is_ready};
+use duet_api::{DuetApi, PgMoments, router_with_front_door, schema_is_ready};
 
 #[tokio::main]
 async fn main() {
@@ -14,7 +14,14 @@ async fn main() {
         );
         std::process::exit(1);
     }
-    let app = router(Arc::new(PgMoments::new(pool)));
+    let front_door_url = env::var("FRONT_DOOR_DATABASE_URL").unwrap_or_else(|_| url.clone());
+    let front_door = front_door::PostgresFrontDoorStore::connect_with_migrations(&front_door_url)
+        .await
+        .expect("front-door database");
+    let app = router_with_front_door(
+        DuetApi::new(Arc::new(front_door)),
+        Arc::new(PgMoments::new(pool)),
+    );
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
         .await
         .expect("bind");

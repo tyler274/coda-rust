@@ -4,6 +4,7 @@
 - [North Star](north-star.md)
 - [Behaviour contract](behaviour-contract.md)
 - [Backend architecture](backend-architecture.md)
+- [Patient front door](front-door.md)
 - [iOS verification](ios-verification.md)
 - [UI surface map](ui-surface-map.md)
 - [Personal-agent program](personal-agent-program.md)

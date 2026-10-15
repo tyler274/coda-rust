@@ -14,6 +14,9 @@ mod care;
 mod live;
 mod simulation;
 
+/// The staging practice id and the auth/front-door wiring, for tests.
+pub use auth::{STAGING_PRACTICE_ID, authed_router_on};
+
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -41,7 +44,9 @@ const RECENT: &str = include_str!("../fixtures/recent-conversations.json");
 const WORKSPACES: &str = include_str!("../fixtures/patient-workspaces.json");
 const ROSTER: &str = include_str!("../fixtures/roster.json");
 
-pub(crate) const WORKSPACE_IDS: [&str; 5] = [
+/// The recorded practice's patient workspace ids, also the roster the
+/// staging practice invites from; integration tests read them too.
+pub const WORKSPACE_IDS: [&str; 5] = [
     "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee",
     "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
     "pw-f5404d89-acde-4bb5-8c42-2fa191766811",
@@ -126,7 +131,8 @@ fn router_with(upstream: Option<String>) -> Router {
     routes.layer(middleware::from_fn(cors))
 }
 
-pub(crate) fn recorded() -> Router {
+/// The recorded practice the sample server serves, for integration tests.
+pub fn recorded() -> Router {
     site()
         .route("/commands", post(reject_command))
         .route(

@@ -1873,6 +1873,7 @@ dependencies = [
  "axum",
  "chrono",
  "duet_wire",
+ "front-door",
  "http-body-util",
  "serde",
  "serde_json",
@@ -1899,6 +1900,7 @@ dependencies = [
  "serde_json",
  "ui",
  "uuid",
+ "web-sys",
 ]
 
 [[package]]
@@ -2311,6 +2313,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf"
 dependencies = [
  "percent-encoding",
+]
+
+[[package]]
+name = "front-door"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "axum",
+ "http-body-util",
+ "sea-orm",
+ "sea-orm-migration",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tokio",
+ "tower",
+ "uuid",
 ]
 
 [[package]]
@@ -4091,8 +4110,10 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "dioxus",
+ "duet-api",
  "duet-app",
  "duet-stub",
+ "front-door",
  "physician-app",
  "serde_json",
  "tokio",
@@ -4901,16 +4922,19 @@ name = "physician-sample"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "front-door",
  "futures-util",
  "local-product",
  "patient-work",
  "physician-auth",
  "physician-wire",
  "reqwest",
+ "sea-orm",
  "serde",
  "serde_json",
  "tokio",
  "tower",
+ "uuid",
 ]
 
 [[package]]

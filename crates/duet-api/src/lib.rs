@@ -1,5 +1,8 @@
 //! Axum owner for Duet's moments routes. Other patient routers stay on FastAPI
 //! until each one moves. The physician Node server is not this crate.
+//! The front door is embedded here for Duet: joining redeems a practice
+//! invitation, consent shares with the physician through the front-door
+//! store, and premium reads name only which features are on.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
@@ -16,6 +19,8 @@ use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{delete, get, post, put};
 use duet_wire::models::{AccountMoment, MomentKind};
+use front_door::http::{ConsentView, FrontDoorState, SessionView};
+use front_door::{FrontDoorStore, LinkError, Premium, SessionError, SignInError};
 use uuid::Uuid;
 
 /// The `REQUIRED_MIGRATION` constant.
@@ -40,6 +45,10 @@ pub enum ApiError {
     Forbidden,
     /// The `NotFound` case.
     NotFound,
+    /// The invitation or token is unknown, used, or expired.
+    JoinInvalid,
+    /// The account holds no front-door link, so consent cannot exist yet.
+    ConsentUnlinked,
     /// The `Unavailable` case.
     Unavailable(&'static str),
     /// The `Storage` case.
@@ -55,6 +64,14 @@ impl IntoResponse for ApiError {
                 "Accept the current Duet Terms of Service to continue.",
             ),
             Self::NotFound => (StatusCode::NOT_FOUND, "Moment not found"),
+            Self::JoinInvalid => (
+                StatusCode::UNAUTHORIZED,
+                "That invitation isn't valid, or it has already been used.",
+            ),
+            Self::ConsentUnlinked => (
+                StatusCode::NOT_FOUND,
+                "Join Duet with your practice invitation first.",
+            ),
             Self::Unavailable(detail) => (StatusCode::SERVICE_UNAVAILABLE, detail),
             Self::Storage(_) => (
                 StatusCode::SERVICE_UNAVAILABLE,
@@ -62,6 +79,24 @@ impl IntoResponse for ApiError {
             ),
         };
         (status, Json(serde_json::json!({ "detail": detail }))).into_response()
+    }
+}
+
+impl From<SessionError> for ApiError {
+    fn from(_: SessionError) -> Self {
+        Self::Unauthorized
+    }
+}
+
+impl From<SignInError> for ApiError {
+    fn from(_: SignInError) -> Self {
+        Self::JoinInvalid
+    }
+}
+
+impl From<LinkError> for ApiError {
+    fn from(_: LinkError) -> Self {
+        Self::ConsentUnlinked
     }
 }
 
@@ -227,6 +262,154 @@ pub fn router_with_care(
         })
 }
 
+/// The front-door side of the Duet API: Duet joins through the front door,
+/// keeps the resulting session as its bearer, and reads consent and premium
+/// from the front-door store. Duet never stores billing and never sees
+/// clinical data beyond what it already has.
+#[derive(Clone)]
+pub struct DuetApi {
+    /// The front-door store and the injectable clock, shared with the
+    /// front-door routes this router merges.
+    pub front_door: FrontDoorState,
+}
+
+impl DuetApi {
+    /// One Duet API on one front-door store, reading the wall clock.
+    pub fn new(store: Arc<dyn FrontDoorStore>) -> Self {
+        Self {
+            front_door: FrontDoorState::new(store),
+        }
+    }
+}
+
+/// The `Authorization: Bearer <token>` value, when the header carries one.
+fn bearer(headers: &HeaderMap) -> Option<String> {
+    headers
+        .get(axum::http::header::AUTHORIZATION)
+        .and_then(|value| value.to_str().ok())
+        .and_then(|header| header.strip_prefix("Bearer "))
+        .map(str::trim)
+        .filter(|token| !token.is_empty())
+        .map(str::to_owned)
+}
+
+/// Builds the Duet front-door routes (`/api/join`, `/api/consent`,
+/// `/api/premium`, and `/front-door/*`) backed by the given front door.
+pub fn front_door_router(api: DuetApi) -> Router {
+    let join_door = api.front_door.clone();
+    let read_door = api.front_door.clone();
+    let grant_door = api.front_door.clone();
+    let withdraw_door = api.front_door.clone();
+    let premium_door = api.front_door.clone();
+    Router::new()
+        .route(
+            "/api/join",
+            post(move |body: Json<JoinBody>| join(join_door, body)),
+        )
+        .route(
+            "/api/consent",
+            get(move |headers: HeaderMap| consent_read(read_door, headers))
+                .post(move |headers: HeaderMap| consent_grant(grant_door, headers))
+                .delete(move |headers: HeaderMap| consent_withdraw(withdraw_door, headers)),
+        )
+        .route(
+            "/api/premium",
+            get(move |headers: HeaderMap| premium_read(premium_door, headers)),
+        )
+        // The front-door routes on the same origin: redeem and sign-in stay
+        // open (the token is the proof), and the account, link, consent, and
+        // premium reads resolve the presented bearer session.
+        .merge(front_door::http::router_with(api.front_door, true))
+}
+
+/// Builds the router with the front door embedded: join, consent, premium,
+/// plus the front-door account routes and the existing moments routes.
+pub fn router_with_front_door(api: DuetApi, moments: Arc<dyn Moments>) -> Router {
+    front_door_router(api).merge(router_with(moments, dev_bearer_from_env()))
+}
+
+fn dev_bearer_from_env() -> bool {
+    env::var("DUET_API_AUTH").ok().as_deref() == Some("dev-bearer")
+}
+
+/// The join request: the invitation email and token the practice delivered.
+#[derive(Debug, serde::Deserialize)]
+pub struct JoinBody {
+    /// The email the invitation names.
+    pub email: String,
+    /// The redeem token the practice delivered.
+    pub token: String,
+}
+
+/// Redeems the practice's invitation through the front door: the account is
+/// created there, the link is written there, and the minted session becomes
+/// Duet's bearer. The route stays open: the invitation token is the proof,
+/// so a person whose session expired can still join.
+async fn join(
+    front_door: FrontDoorState,
+    Json(body): Json<JoinBody>,
+) -> Result<Json<SessionView>, ApiError> {
+    let (account_id, session) = front_door
+        .store
+        .redeem_invitation(&body.email, &body.token, (front_door.now)())
+        .await?;
+    Ok(Json(SessionView {
+        account_id,
+        session,
+    }))
+}
+
+/// Reads the presented session's consent state.
+async fn consent_read(
+    front_door: FrontDoorState,
+    headers: HeaderMap,
+) -> Result<Json<ConsentView>, ApiError> {
+    let token = bearer(&headers).ok_or(ApiError::Unauthorized)?;
+    let account_id = front_door.store.session(&token, (front_door.now)()).await?;
+    Ok(Json(front_door.store.consent(account_id).await?.into()))
+}
+
+/// Records the presented session's consent to share with the physician.
+async fn consent_grant(
+    front_door: FrontDoorState,
+    headers: HeaderMap,
+) -> Result<StatusCode, ApiError> {
+    let token = bearer(&headers).ok_or(ApiError::Unauthorized)?;
+    let account_id = front_door.store.session(&token, (front_door.now)()).await?;
+    front_door
+        .store
+        .grant_consent(account_id, (front_door.now)())
+        .await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+/// Withdraws the presented session's consent: one step, and what was already
+/// shared stays dated evidence.
+async fn consent_withdraw(
+    front_door: FrontDoorState,
+    headers: HeaderMap,
+) -> Result<StatusCode, ApiError> {
+    let token = bearer(&headers).ok_or(ApiError::Unauthorized)?;
+    let account_id = front_door.store.session(&token, (front_door.now)()).await?;
+    front_door
+        .store
+        .withdraw_consent(account_id, (front_door.now)())
+        .await?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+/// Reads the presented session's linked patient's premium status: Duet reads
+/// only which premium features are on, never billing.
+async fn premium_read(
+    front_door: FrontDoorState,
+    headers: HeaderMap,
+) -> Result<Json<Premium>, ApiError> {
+    let token = bearer(&headers).ok_or(ApiError::Unauthorized)?;
+    let account_id = front_door.store.session(&token, (front_door.now)()).await?;
+    let patient = front_door.store.link(account_id).await?;
+    Ok(Json(front_door.store.premium(&patient).await))
+}
+
 async fn list_moments(
     State(state): State<AppState>,
     headers: HeaderMap,
@@ -276,7 +459,10 @@ mod tests {
     use axum::body::Body;
     use axum::http::Request;
     use chrono::TimeZone;
+    use front_door::MemoryFrontDoorStore;
     use tower::ServiceExt;
+
+    const NOW: u64 = 1_760_000_000;
 
     struct Memory {
         rows: std::sync::Mutex<Vec<AccountMoment>>,
@@ -351,6 +537,226 @@ mod tests {
         assert!(LIST_SQL.contains("order by occurred_at desc, id desc"));
         assert!(DELETE_SQL.contains("delete from public.account_moments"));
         assert_eq!(REQUIRED_MIGRATION, "0120_one_review_bookmark");
+    }
+
+    fn front_door_app() -> (Router, Arc<MemoryFrontDoorStore>) {
+        let store = Arc::new(MemoryFrontDoorStore::new());
+        let mut front_door = FrontDoorState::new(store.clone());
+        front_door.now = Arc::new(|| NOW);
+        let moments: Arc<dyn Moments> = Arc::new(Memory {
+            rows: std::sync::Mutex::new(Vec::new()),
+        });
+        let app = router_with_front_door(DuetApi { front_door }, moments);
+        (app, store)
+    }
+
+    /// Invites through the front door (the practice side, as ENG-48 will own
+    /// it) and posts the join through Duet's route.
+    async fn joined(app: &Router, email: &str) -> (serde_json::Value, String) {
+        let token = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/front-door/invitations")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        serde_json::json!({
+                            "practice_id": "roger-synthetic-practice",
+                            "patient_id": "patient-1",
+                            "email": email,
+                            "display_name": "Luna Park",
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(token.status(), StatusCode::OK);
+        let body: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(token.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let redeem = body["token"].as_str().unwrap().to_owned();
+        let joined = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/join")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        serde_json::json!({
+                            "email": email,
+                            "token": redeem,
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(joined.status(), StatusCode::OK);
+        let body: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(joined.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        let session = body["session"].as_str().unwrap().to_owned();
+        (body, session)
+    }
+
+    async fn request(app: &Router, method: &str, uri: &str, session: Option<&str>) -> Response {
+        let mut builder = Request::builder().method(method).uri(uri);
+        if let Some(session) = session {
+            builder = builder.header("authorization", format!("Bearer {session}"));
+        }
+        app.clone()
+            .oneshot(builder.body(Body::empty()).unwrap())
+            .await
+            .unwrap()
+    }
+
+    #[tokio::test]
+    async fn a_joined_patient_holds_a_session_that_reads_the_link() {
+        let (app, _store) = front_door_app();
+        let (body, session) = joined(&app, "luna@example.test").await;
+        assert!(body["account_id"].as_str().is_some());
+        assert!(session.starts_with("codaf-"));
+        let link = request(&app, "GET", "/front-door/link", Some(&session)).await;
+        assert_eq!(link.status(), StatusCode::OK);
+        let link: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(link.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(link["practice_id"], "roger-synthetic-practice");
+        assert_eq!(link["patient_id"], "patient-1");
+    }
+
+    #[tokio::test]
+    async fn a_used_or_wrong_invitation_redeems_never_again() {
+        let (app, _store) = front_door_app();
+        let (_, _) = joined(&app, "luna@example.test").await;
+        // A second join on the redeemed invitation is unauthorized.
+        let second = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/join")
+                    .header("content-type", "application/json")
+                    .body(Body::from(
+                        serde_json::json!({
+                            "email": "luna@example.test",
+                            "token": "codaf-reused",
+                        })
+                        .to_string(),
+                    ))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(second.status(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test]
+    async fn consent_grants_reads_and_withdraws_in_one_step() {
+        let (app, _store) = front_door_app();
+        let (_, session) = joined(&app, "luna@example.test").await;
+        let none = request(&app, "GET", "/api/consent", Some(&session)).await;
+        assert_eq!(none.status(), StatusCode::OK);
+        let none: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(none.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(none["state"], "none", "consent is granted, never assumed");
+        let granted = request(&app, "POST", "/api/consent", Some(&session)).await;
+        assert_eq!(granted.status(), StatusCode::NO_CONTENT);
+        let granted = request(&app, "GET", "/api/consent", Some(&session)).await;
+        let granted: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(granted.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(granted["state"], "granted");
+        assert!(granted["at"].as_u64().is_some());
+        // One step: DELETE ends the sharing, no confirm round trip.
+        let withdrawn = request(&app, "DELETE", "/api/consent", Some(&session)).await;
+        assert_eq!(withdrawn.status(), StatusCode::NO_CONTENT);
+        let withdrawn = request(&app, "GET", "/api/consent", Some(&session)).await;
+        let withdrawn: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(withdrawn.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            withdrawn["state"], "withdrawn",
+            "what was already shared stays dated evidence"
+        );
+        assert!(withdrawn["at"].as_u64().is_some());
+        assert!(withdrawn["withdrawn_at"].as_u64().is_some());
+    }
+
+    #[tokio::test]
+    async fn consent_follows_the_presented_session_not_a_dev_header() {
+        let (app, _store) = front_door_app();
+        let (_, _session) = joined(&app, "luna@example.test").await;
+        let anonymous = request(&app, "GET", "/api/consent", None).await;
+        assert_eq!(anonymous.status(), StatusCode::UNAUTHORIZED);
+        let forged = request(&app, "GET", "/api/consent", Some("codaf-forged")).await;
+        assert_eq!(forged.status(), StatusCode::UNAUTHORIZED);
+    }
+
+    #[tokio::test]
+    async fn premium_reads_free_until_the_front_door_says_otherwise() {
+        let (app, store) = front_door_app();
+        let (_, session) = joined(&app, "luna@example.test").await;
+        let free = request(&app, "GET", "/api/premium", Some(&session)).await;
+        assert_eq!(free.status(), StatusCode::OK);
+        let free: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(free.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(free["premium"], false, "Duet reads only what is on");
+        assert_eq!(free["cadence"], "weekly");
+        // The front door owns the status; Duet only reads it.
+        let luna = store
+            .account_by_email("luna@example.test")
+            .await
+            .unwrap()
+            .id;
+        let patient = store.link(luna).await.unwrap();
+        store.set_premium(&patient, true, NOW).await.unwrap();
+        let premium = request(&app, "GET", "/api/premium", Some(&session)).await;
+        let premium: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(premium.into_body(), usize::MAX)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(premium["premium"], true);
+        assert_eq!(premium["cadence"], "weekly-daily-check");
+    }
+
+    #[tokio::test]
+    async fn an_unknown_session_cannot_read_premium_or_grant_consent() {
+        let (app, _store) = front_door_app();
+        let premium = request(&app, "GET", "/api/premium", Some("codaf-forged")).await;
+        assert_eq!(premium.status(), StatusCode::UNAUTHORIZED);
+        let grant = request(&app, "POST", "/api/consent", Some("codaf-forged")).await;
+        assert_eq!(grant.status(), StatusCode::UNAUTHORIZED);
     }
 
     #[tokio::test]

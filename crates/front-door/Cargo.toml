@@ -1,0 +1,33 @@
+[package]
+name = "front-door"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+async-trait = "0.1"
+axum = "0.8"
+sea-orm = { version = "1", default-features = false, features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "with-uuid",
+] }
+sea-orm-migration = { version = "1", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "sqlx-postgres",
+] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[[bin]]
+name = "front-door-migrate"
+path = "src/bin/front-door-migrate.rs"
+
+[dev-dependencies]
+http-body-util = "0.1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+tower = { version = "0.5", features = ["util"] }

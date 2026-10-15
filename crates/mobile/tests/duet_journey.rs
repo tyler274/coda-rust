@@ -123,9 +123,11 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
     );
 }
 
-/// One site per spawn: the mobile page at `/` and the stub router mounted
-/// under `/api` in this same process. The WASM build is shared through the
-/// process-wide cell; the two servers stay independent.
+/// One site per spawn: the mobile page at `/` and the stub router plus the
+/// in-process front door mounted under `/api` in this same process. The
+/// browser starts with a redeemed front-door invitation and bearer session.
+/// The WASM build is shared through the process-wide cell; the two servers
+/// stay independent.
 async fn spawn_site() -> std::net::SocketAddr {
     let site = shared_site();
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -136,7 +138,36 @@ async fn spawn_site() -> std::net::SocketAddr {
         )
         .expect("stub store"),
     ));
-    let app = site_router(site, duet_stub::router(store));
+    let front_door_store = Arc::new(front_door::MemoryFrontDoorStore::new());
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .expect("unix clock")
+        .as_secs();
+    let patient = front_door::RosterPatient {
+        practice_id: "roger-synthetic-practice".to_owned(),
+        patient_id: "pat-elena".to_owned(),
+    };
+    let invite_token = front_door::FrontDoorStore::invite(
+        front_door_store.as_ref(),
+        &patient,
+        "elena@codahealth.test",
+        "Elena Rostova",
+        now,
+    )
+    .await
+    .expect("front-door invite");
+    let (_account_id, session) = front_door::FrontDoorStore::redeem_invitation(
+        front_door_store.as_ref(),
+        "elena@codahealth.test",
+        &invite_token,
+        now,
+    )
+    .await
+    .expect("front-door redeem");
+    let api = duet_stub::router(store).merge(duet_api::front_door_router(duet_api::DuetApi::new(
+        front_door_store,
+    )));
+    let app = site_router(site, api, session);
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
     address
@@ -144,19 +175,22 @@ async fn spawn_site() -> std::net::SocketAddr {
 
 /// The mobile page at `/` and the stub under `/api`. The stub keeps its own
 /// `/api/...` route paths, so the request is forwarded unchanged.
-fn site_router(site_root: PathBuf, api: axum::Router) -> axum::Router {
+fn site_router(site_root: PathBuf, api: axum::Router, session: String) -> axum::Router {
     axum::Router::new().fallback(move |request: axum::http::Request<axum::body::Body>| {
         let site_root = site_root.clone();
         let mut api = api.clone();
+        let session = session.clone();
         async move {
-            if request.uri().path().starts_with("/api/") {
+            if request.uri().path().starts_with("/api/")
+                || request.uri().path().starts_with("/front-door/")
+            {
                 use tower::Service as _;
                 return api
                     .call(request)
                     .await
                     .unwrap_or_else(|never| match never {});
             }
-            match static_file(&site_root, request.uri().path()).await {
+            match static_file(&site_root, request.uri().path(), &session).await {
                 Ok(response) => response,
                 Err(_) => axum::http::Response::builder()
                     .status(axum::http::StatusCode::NOT_FOUND)
@@ -170,6 +204,7 @@ fn site_router(site_root: PathBuf, api: axum::Router) -> axum::Router {
 async fn static_file(
     root: &std::path::Path,
     path: &str,
+    session: &str,
 ) -> Result<axum::response::Response, std::io::Error> {
     use tokio::io::AsyncReadExt;
 
@@ -189,6 +224,14 @@ async fn static_file(
     let mut bytes = Vec::new();
     let mut opened = tokio::fs::File::open(&file).await?;
     opened.read_to_end(&mut bytes).await?;
+    if relative == "index.html"
+        && let Ok(html) = String::from_utf8(bytes.clone())
+    {
+        let script = format!(
+            r#"<script>window.localStorage.setItem("coda-duet-session", {session:?});</script></head>"#
+        );
+        bytes = html.replacen("</head>", &script, 1).into_bytes();
+    }
     let mime = match file.extension().and_then(|ext| ext.to_str()) {
         Some("js") => "text/javascript",
         Some("wasm") => "application/wasm",
