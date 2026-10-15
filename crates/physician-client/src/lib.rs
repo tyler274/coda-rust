@@ -128,6 +128,21 @@ impl PhysicianClient {
         read_body(response).await
     }
 
+    async fn delete<T: serde::de::DeserializeOwned>(
+        &self,
+        path: &str,
+    ) -> Result<T, http::HttpError> {
+        let mut request = self.http.delete(format!("{}{path}", self.base));
+        if let Some(bearer) = self.bearer() {
+            request = request.header(reqwest::header::AUTHORIZATION, bearer);
+        }
+        let response = request
+            .send()
+            .await
+            .map_err(|error| http::HttpError::Transport(error.to_string()))?;
+        read_body(response).await
+    }
+
     /// Reads the physician health check.
     pub async fn health(&self) -> Result<HealthResponse, http::HttpError> {
         self.get("/health").await
@@ -186,14 +201,31 @@ impl PhysicianClient {
         patient_workspace_id: &str,
         allowed: bool,
     ) -> Result<PanelAssignmentResponse, http::HttpError> {
+        if !allowed {
+            return self.remove_panel(physician_id, patient_workspace_id).await;
+        }
         self.put(
             &format!(
                 "/auth/panels/{}/{}",
                 query_escape(physician_id),
                 query_escape(patient_workspace_id)
             ),
-            &serde_json::json!({ "allowed": allowed }),
+            &serde_json::json!({ "allowed": true }),
         )
+        .await
+    }
+
+    /// Removes `patient_workspace_id` from `physician_id`'s panel via `DELETE`.
+    pub async fn remove_panel(
+        &self,
+        physician_id: &str,
+        patient_workspace_id: &str,
+    ) -> Result<PanelAssignmentResponse, http::HttpError> {
+        self.delete(&format!(
+            "/auth/panels/{}/{}",
+            query_escape(physician_id),
+            query_escape(patient_workspace_id)
+        ))
         .await
     }
 

@@ -2,6 +2,7 @@
 
 use sea_orm::entity::prelude::*;
 
+/// One roster patient's front-door invitation, Duet link, consent, and cadence at rest.
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
 #[sea_orm(table_name = "physician_patient_links")]
 pub struct Model {
@@ -34,6 +35,7 @@ pub struct Model {
     pub created_at: i64,
 }
 
+/// SeaORM relations for the patient-link entity.
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
 
