@@ -48,6 +48,10 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test -p mobile --test mode --test browser --test duet_journey
+      # Debug and wasm artifacts from the proofs fill the runner disk.
+      # Documentation does not need them.
+      - name: Free build artifacts
+        run: cargo clean
       - name: Install mdBook
         run: cargo install mdbook --version 0.4.52 --locked
       - name: Check the Doppler installer
