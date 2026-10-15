@@ -68,7 +68,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     // The front door gates the app: without a joined session only the join
     // screen shows.
     let mut front_door_attempt = use_signal(|| 0u32);
-    let mut joined_session = use_signal(|| None::<String>);
+    let mut joined_session = use_signal(roots::recalled_session);
     let door_url = base_url.clone();
     let door_bearer = bearer.clone();
     let front_door = use_resource(move || {
@@ -94,6 +94,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         FrontDoorStatus::NotJoined => Err(FrontDoorError::Unauthorized),
         FrontDoorStatus::Unavailable => Err(FrontDoorError::Unavailable),
     });
+    let active_bearer = joined_session().unwrap_or_else(|| bearer.clone());
     rsx! {
         style { "{ui::STYLESHEET}{DUET_STYLES}" }
         main { class: "duet",
@@ -102,6 +103,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                     JoinScreen {
                         base_url: base_url.clone(),
                         on_joined: move |session: String| {
+                            roots::remember_session(&session);
                             joined_session.set(Some(session));
                             front_door_attempt.set(front_door_attempt() + 1);
                         },
@@ -109,11 +111,11 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         checking: status == FrontDoorStatus::Unavailable,
                     }
                 } else {
-                div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: bearer.clone() } }
+                div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: active_bearer.clone() } }
                 div { hidden: tab() != 1,
                     TodayTab {
                         base_url: base_url.clone(),
-                        bearer: bearer.clone(),
+                        bearer: active_bearer.clone(),
                         readings: phone().readings.clone(),
                         connected: phone().state.connected(),
                         insight_alerts,
@@ -122,7 +124,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 div { hidden: tab() != 2,
                     YouTab {
                         base_url: base_url.clone(),
-                        bearer: bearer.clone(),
+                        bearer: active_bearer.clone(),
                         consent: match &status {
                             FrontDoorStatus::Loaded(state) => Ok(*state),
                             FrontDoorStatus::NotJoined => Err(FrontDoorError::Unauthorized),
@@ -147,7 +149,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         on_open_settings: move |_| PlatformAlerts.open_settings(),
                     }
                 }
-                div { hidden: tab() != 3, SharedTab { base_url, bearer } }
+                div { hidden: tab() != 3, SharedTab { base_url, bearer: active_bearer } }
                 }
             }
             if !needs_join {

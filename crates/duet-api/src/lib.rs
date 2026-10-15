@@ -293,9 +293,9 @@ fn bearer(headers: &HeaderMap) -> Option<String> {
         .map(str::to_owned)
 }
 
-/// Builds the router with the front door embedded: join, consent, premium,
-/// plus the front-door account routes and the existing moments routes.
-pub fn router_with_front_door(api: DuetApi, moments: Arc<dyn Moments>) -> Router {
+/// Builds the Duet front-door routes (`/api/join`, `/api/consent`,
+/// `/api/premium`, and `/front-door/*`) backed by the given front door.
+pub fn front_door_router(api: DuetApi) -> Router {
     let join_door = api.front_door.clone();
     let read_door = api.front_door.clone();
     let grant_door = api.front_door.clone();
@@ -319,8 +319,13 @@ pub fn router_with_front_door(api: DuetApi, moments: Arc<dyn Moments>) -> Router
         // The front-door routes on the same origin: redeem and sign-in stay
         // open (the token is the proof), and the account, link, consent, and
         // premium reads resolve the presented bearer session.
-        .merge(front_door::http::router_with(api.front_door.clone(), true))
-        .merge(router_with(moments, dev_bearer_from_env()))
+        .merge(front_door::http::router_with(api.front_door, true))
+}
+
+/// Builds the router with the front door embedded: join, consent, premium,
+/// plus the front-door account routes and the existing moments routes.
+pub fn router_with_front_door(api: DuetApi, moments: Arc<dyn Moments>) -> Router {
+    front_door_router(api).merge(router_with(moments, dev_bearer_from_env()))
 }
 
 fn dev_bearer_from_env() -> bool {

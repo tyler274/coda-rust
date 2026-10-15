@@ -891,7 +891,42 @@ pub fn api_base_url() -> String {
 
 /// Returns the bearer this build sends.
 pub fn api_bearer() -> String {
-    option_env!("DUET_BEARER").unwrap_or("").to_owned()
+    if let Some(bearer) = option_env!("DUET_BEARER")
+        && !bearer.is_empty()
+    {
+        return bearer.to_owned();
+    }
+    recalled_session().unwrap_or_default()
+}
+
+#[cfg(target_arch = "wasm32")]
+const SESSION_KEY: &str = "coda-duet-session";
+
+/// Reads a joined front-door session saved by this browser origin.
+pub fn recalled_session() -> Option<String> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        return web_sys::window()?
+            .local_storage()
+            .ok()??
+            .get_item(SESSION_KEY)
+            .ok()?
+            .filter(|value| !value.trim().is_empty());
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    None
+}
+
+/// Saves a joined front-door session so mode switches and reloads keep it.
+pub fn remember_session(session: &str) {
+    #[cfg(target_arch = "wasm32")]
+    if !session.trim().is_empty()
+        && let Some(storage) = web_sys::window().and_then(|w| w.local_storage().ok().flatten())
+    {
+        let _ = storage.set_item(SESSION_KEY, session);
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    let _ = session;
 }
 
 /// The join screen's copy: what the practice sent and where the token goes.
