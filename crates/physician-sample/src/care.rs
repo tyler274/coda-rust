@@ -20,8 +20,7 @@ use local_product::{
     IngestedDuetRecord, PlanItemInput,
 };
 use physician_auth::{
-    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence,
-    SignInError,
+    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence, SignInError,
 };
 use physician_wire::{
     ApprovedDoctorPlanWire, DoctorPlanDraftWire, DoctorPlanItemWire, DuetIngestedRecordWire,

@@ -313,8 +313,9 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         store.patient_cadence("pw-clinic-1").await,
         physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged
     );
-    }
+}
 
+#[tokio::test]
 async fn patient_invitation_consent_and_cadence_round_trip() {
     let Some(store) = store("patient_link").await else {
         return;

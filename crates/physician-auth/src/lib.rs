@@ -1386,6 +1386,7 @@ mod tests {
         );
     }
 
+    #[tokio::test]
     async fn patient_invitation_links_explicit_roster_patient_and_tracks_versioned_consent() {
         let store = MemoryAuthStore::new();
         let token = store

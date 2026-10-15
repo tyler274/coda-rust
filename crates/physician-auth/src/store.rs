@@ -12,7 +12,9 @@ use sea_orm::{
 };
 use sea_orm_migration::MigratorTrait;
 
-use crate::migration::{Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens};
+use crate::migration::{
+    Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens,
+};
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
     PhysicianIdentity, ReviewCadence, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError,
