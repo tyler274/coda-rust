@@ -21,6 +21,7 @@ pub mod invitation;
 pub mod membership;
 
 #[allow(missing_docs)]
+pub mod patient;
 pub mod patient_link;
 
 #[allow(missing_docs)]
@@ -34,6 +35,8 @@ pub use account::{ActiveModel as AccountActiveModel, Entity as Accounts};
 pub use invitation::Model as InvitationRow;
 pub use invitation::{ActiveModel as InvitationActiveModel, Entity as Invitations};
 pub use membership::{ActiveModel as MembershipActiveModel, Entity as Memberships};
+pub use patient::Model as PatientRow;
+pub use patient::{ActiveModel as PatientActiveModel, Entity as Patients};
 pub use patient_link::Model as PatientLinkRow;
 pub use patient_link::{ActiveModel as PatientLinkActiveModel, Entity as PatientLinks};
 pub use session::Model as SessionRow;
@@ -47,7 +50,10 @@ pub struct Migrator;
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20260101_000001_init)]
+        vec![
+            Box::new(m20260101_000001_init),
+            Box::new(m20260101_000002_practice_patients),
+        ]
     }
 }
 
@@ -428,6 +434,60 @@ impl MigrationTrait for m20260101_000001_init {
             .await?;
         manager
             .drop_table(Table::drop().table(Accounts).take())
+            .await
+    }
+}
+
+#[derive(DeriveMigrationName)]
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20260101_000002_practice_patients;
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20260101_000002_practice_patients {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(Patients)
+                    .col(
+                        ColumnDef::new(patient::Column::PatientWorkspaceId)
+                            .string()
+                            .not_null()
+                            .primary_key(),
+                    )
+                    .col(
+                        ColumnDef::new(patient::Column::PracticeId)
+                            .string()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(patient::Column::Cadence)
+                            .string()
+                            .not_null()
+                            .default("weekly"),
+                    )
+                    .col(
+                        ColumnDef::new(patient::Column::CreatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .take(),
+            )
+            .await?;
+        manager
+            .create_index(
+                Index::create()
+                    .name("physician_patients_practice_idx")
+                    .table(Patients)
+                    .col(patient::Column::PracticeId)
+                    .take(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(Table::drop().table(Patients).take())
             .await
     }
 }

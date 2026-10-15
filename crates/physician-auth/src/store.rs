@@ -12,11 +12,13 @@ use sea_orm::{
 };
 use sea_orm_migration::MigratorTrait;
 
-use crate::migration::{Accounts, Invitations, Memberships, PatientLinks, Sessions, SignInTokens};
+use crate::migration::{
+    Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens,
+};
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError,
-    mint_patient_token, mint_token, token_hash,
+    PhysicianIdentity, ReviewCadence, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError,
+    SignInError, mint_patient_token, mint_token, token_hash,
 };
 
 /// The SQL-backed store.
@@ -202,7 +204,17 @@ impl AuthStore for PostgresAuthStore {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
     ) -> Membership {
-        Memberships::find()
+        let patient_row = Patients::find_by_id(patient_workspace_id.to_owned())
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten();
+        if let Some(ref row) = patient_row
+            && row.practice_id != identity.practice_id
+        {
+            return Membership::Denied;
+        }
+        let panel_allowed = Memberships::find()
             .filter(
                 crate::migration::membership::Column::PracticeId
                     .eq(&identity.practice_id)
@@ -219,9 +231,14 @@ impl AuthStore for PostgresAuthStore {
             .await
             .ok()
             .flatten()
-            .filter(|row| row.allowed)
-            .map(|_| Membership::Allowed)
-            .unwrap_or(Membership::Denied)
+            .is_some_and(|row| row.allowed);
+        if panel_allowed {
+            return Membership::Allowed;
+        }
+        if patient_row.is_some_and(|row| row.practice_id == identity.practice_id) {
+            return Membership::ClinicDemographic;
+        }
+        Membership::Denied
     }
 
     async fn set_membership(
@@ -230,6 +247,10 @@ impl AuthStore for PostgresAuthStore {
         patient_workspace_id: &str,
         membership: Membership,
     ) {
+        if membership == Membership::ClinicDemographic {
+            self.register_patient(&identity.practice_id, patient_workspace_id)
+                .await;
+        }
         let allowed = membership == Membership::Allowed;
         let existing = Memberships::find()
             .filter(
@@ -272,7 +293,7 @@ impl AuthStore for PostgresAuthStore {
     }
 
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
-        let mut workspaces: Vec<String> = Memberships::find()
+        let rows = Memberships::find()
             .filter(
                 crate::migration::membership::Column::PracticeId
                     .eq(&identity.practice_id)
@@ -284,10 +305,19 @@ impl AuthStore for PostgresAuthStore {
             )
             .all(&self.db)
             .await
-            .unwrap_or_default()
-            .into_iter()
-            .map(|row| row.patient_workspace_id)
-            .collect();
+            .unwrap_or_default();
+        let mut workspaces = Vec::new();
+        for row in rows {
+            let foreign = Patients::find_by_id(row.patient_workspace_id.clone())
+                .one(&self.db)
+                .await
+                .ok()
+                .flatten()
+                .is_some_and(|patient| patient.practice_id != identity.practice_id);
+            if !foreign {
+                workspaces.push(row.patient_workspace_id);
+            }
+        }
         workspaces.sort();
         workspaces
     }
@@ -313,9 +343,119 @@ impl AuthStore for PostgresAuthStore {
         if self.account_by_identity(&target).await.is_none() {
             return Err(PanelError::UnknownTarget);
         }
+        if self
+            .patient_practice(patient_workspace_id)
+            .await
+            .is_some_and(|owner| owner != actor.practice_id)
+        {
+            return Err(PanelError::UnknownTarget);
+        }
         self.set_membership(&target, patient_workspace_id, membership)
             .await;
         Ok(())
+    }
+
+    async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
+        let existing = Patients::find_by_id(patient_workspace_id.to_owned())
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten();
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|since| since.as_secs())
+            .unwrap_or(0) as i64;
+        let _ = match existing {
+            Some(row) => {
+                let mut update: crate::migration::PatientActiveModel = row.into();
+                update.practice_id = Set(practice_id.to_owned());
+                update.update(&self.db).await
+            }
+            None => {
+                crate::migration::PatientActiveModel {
+                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
+                    practice_id: Set(practice_id.to_owned()),
+                    cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
+                    created_at: Set(now),
+                }
+                .insert(&self.db)
+                .await
+            }
+        };
+    }
+
+    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
+        Patients::find_by_id(patient_workspace_id.to_owned())
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten()
+            .map(|row| row.practice_id)
+    }
+
+    async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
+        let mut workspaces: Vec<String> = Patients::find()
+            .filter(crate::migration::patient::Column::PracticeId.eq(practice_id))
+            .all(&self.db)
+            .await
+            .unwrap_or_default()
+            .into_iter()
+            .map(|row| row.patient_workspace_id)
+            .collect();
+        workspaces.sort();
+        workspaces
+    }
+
+    async fn practice_accounts(&self, practice_id: &str) -> Vec<Account> {
+        let mut accounts: Vec<Account> = Accounts::find()
+            .filter(crate::migration::account::Column::PracticeId.eq(practice_id))
+            .all(&self.db)
+            .await
+            .unwrap_or_default()
+            .into_iter()
+            .map(Self::account_row)
+            .collect();
+        accounts.sort();
+        accounts
+    }
+
+    async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {
+        Patients::find_by_id(patient_workspace_id.to_owned())
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten()
+            .and_then(|row| ReviewCadence::parse(&row.cadence))
+            .unwrap_or(ReviewCadence::Weekly)
+    }
+
+    async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
+        let existing = Patients::find_by_id(patient_workspace_id.to_owned())
+            .one(&self.db)
+            .await
+            .ok()
+            .flatten();
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|since| since.as_secs())
+            .unwrap_or(0) as i64;
+        let _ = match existing {
+            Some(row) => {
+                let mut update: crate::migration::PatientActiveModel = row.into();
+                update.cadence = Set(cadence.as_str().to_owned());
+                update.update(&self.db).await
+            }
+            None => {
+                crate::migration::PatientActiveModel {
+                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
+                    practice_id: Set(String::new()),
+                    cadence: Set(cadence.as_str().to_owned()),
+                    created_at: Set(now),
+                }
+                .insert(&self.db)
+                .await
+            }
+        };
     }
 
     async fn invite(
@@ -652,16 +792,6 @@ impl AuthStore for PostgresAuthStore {
         } else {
             Cadence::Weekly
         };
-        self.set_patient_cadence(practice_id, patient_workspace_id, cadence)
-            .await;
-    }
-
-    async fn set_patient_cadence(
-        &self,
-        practice_id: &str,
-        patient_workspace_id: &str,
-        cadence: Cadence,
-    ) {
         let existing = PatientLinks::find()
             .filter(
                 crate::migration::patient_link::Column::PracticeId
@@ -726,7 +856,7 @@ impl AuthStore for PostgresAuthStore {
             .map(patient_link_from_row)
     }
 
-    async fn patient_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
+    async fn patient_link_cadence(&self, practice_id: &str, patient_workspace_id: &str) -> Cadence {
         self.patient_link(practice_id, patient_workspace_id)
             .await
             .map(|link| link.cadence)

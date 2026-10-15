@@ -238,6 +238,84 @@ async fn panel_assignment_requires_admin_permission_in_the_same_practice() {
 }
 
 #[tokio::test]
+async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_postgres() {
+    let Some(store) = store("practice_patients_cadence").await else {
+        return;
+    };
+    let admin_email = format!("{}@pg-proof.test", uuid::Uuid::new_v4().simple());
+    let admin_token = store
+        .invite("pg-proof", &admin_email, "Clinic Admin", true, NOW)
+        .await
+        .expect("admin invite");
+    let (admin, _) = store
+        .redeem_invitation(&admin_email, &admin_token, NOW)
+        .await
+        .expect("admin redeem");
+
+    let (doc_email, _) = invited_account(&store, "pg-proof").await;
+    let doc = store.account_by_email(&doc_email).await.unwrap().identity;
+
+    let (outside_email, _) = invited_account(&store, "other-clinic").await;
+    let outside = store
+        .account_by_email(&outside_email)
+        .await
+        .unwrap()
+        .identity;
+
+    store.register_patient("pg-proof", "pw-clinic-1").await;
+    assert_eq!(
+        store.patient_practice("pw-clinic-1").await.as_deref(),
+        Some("pg-proof")
+    );
+    assert_eq!(
+        store.membership(&doc, "pw-clinic-1").await,
+        Membership::ClinicDemographic
+    );
+    assert_eq!(
+        store.membership(&outside, "pw-clinic-1").await,
+        Membership::Denied
+    );
+
+    store
+        .assign_panel(
+            &admin,
+            &doc.physician_id,
+            "pw-clinic-1",
+            Membership::Allowed,
+        )
+        .await
+        .expect("assign panel");
+    assert_eq!(
+        store.membership(&doc, "pw-clinic-1").await,
+        Membership::Allowed
+    );
+
+    store
+        .assign_panel(&admin, &doc.physician_id, "pw-clinic-1", Membership::Denied)
+        .await
+        .expect("revoke panel");
+    assert_eq!(
+        store.membership(&doc, "pw-clinic-1").await,
+        Membership::ClinicDemographic
+    );
+
+    assert_eq!(
+        store.patient_cadence("pw-clinic-1").await,
+        physician_auth::ReviewCadence::Weekly
+    );
+    store
+        .set_patient_cadence(
+            "pw-clinic-1",
+            physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged,
+        )
+        .await;
+    assert_eq!(
+        store.patient_cadence("pw-clinic-1").await,
+        physician_auth::ReviewCadence::WeeklyAndDailyWhenChanged
+    );
+}
+
+#[tokio::test]
 async fn patient_invitation_consent_and_cadence_round_trip() {
     let Some(store) = store("patient_link").await else {
         return;
@@ -264,7 +342,7 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
         .set_patient_premium("pg-proof", "pw-elena", true)
         .await;
     assert_eq!(
-        store.patient_cadence("pg-proof", "pw-elena").await,
+        store.patient_link_cadence("pg-proof", "pw-elena").await,
         Cadence::DailyWhenChanged
     );
 

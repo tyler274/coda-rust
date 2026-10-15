@@ -9,7 +9,7 @@ use std::sync::{Arc, Mutex};
 
 use axum::Json;
 use axum::body::Body;
-use axum::extract::{Path, State};
+use axum::extract::{Extension, Path, State};
 use axum::http::{HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Response};
 use futures_util::stream;
@@ -18,6 +18,7 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use tokio::sync::broadcast;
 
+use crate::auth::{AuthContext, allows_workspace, now};
 use crate::rejection_message;
 
 /// The chat role's caller. `Fixed` never leaves the process.
@@ -79,7 +80,11 @@ struct SubmitPayload {
 }
 
 /// Accepts `message.submit` and rejects every other command.
-pub(crate) async fn submit(State(live): State<Arc<Live>>, body: axum::body::Bytes) -> Response {
+pub(crate) async fn submit(
+    State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: axum::body::Bytes,
+) -> Response {
     let Ok(body) = serde_json::from_slice::<CommandBody>(&body) else {
         return rejected_submit();
     };
@@ -119,14 +124,22 @@ pub(crate) async fn submit(State(live): State<Arc<Live>>, body: axum::body::Byte
         let live = Arc::clone(&live);
         let workspace = payload.patient_workspace_id.clone();
         let chat = payload.chat_id.clone();
+        let auth_ctx = auth_ctx.map(|Extension(ctx)| ctx);
         tokio::spawn(async move {
             if let Ok(text) = complete(&live.model, &request).await {
+                if let Some(ref ctx) = auth_ctx {
+                    let session_ok = ctx.auth.store.session(&ctx.token, now()).await.is_ok();
+                    let allowed = allows_workspace(&ctx.auth, &ctx.identity, &workspace).await;
+                    if !session_ok || !allowed {
+                        return;
+                    }
+                }
                 live.session
                     .lock()
                     .expect("chat session")
                     .record_reply(&workspace, &chat, &text);
+                let _ = live.events.send(workspace);
             }
-            let _ = live.events.send(workspace);
         });
     }
     Json(json!({

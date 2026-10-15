@@ -354,6 +354,9 @@ pub struct RecentConversationsResponse {
 /// The `RecentConversation` value exchanged by this crate.
 pub struct RecentConversation {
     #[serde(default)]
+    /// The `patient_workspace_id` value.
+    pub patient_workspace_id: Option<String>,
+    #[serde(default)]
     /// The `title` value.
     pub title: Option<String>,
     #[serde(default)]
@@ -398,6 +401,28 @@ pub struct PatientSearchRow {
     pub cadence: Option<String>,
 }
 
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+/// The caller's membership level for a patient workspace.
+pub enum WorkspaceMembership {
+    /// The patient is on the physician's panel (`Membership::Allowed`).
+    #[default]
+    Allowed,
+    /// The patient is in the same clinic, but not on the physician's panel.
+    ClinicDemographic,
+}
+
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+/// Per-patient review cadence reported on a workspace without payment status.
+pub enum ReviewCadenceWire {
+    /// Settled weekly whole-patient review only.
+    #[default]
+    Weekly,
+    /// Settled weekly whole-patient review plus a daily review when changed.
+    WeeklyAndDailyWhenChanged,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `PatientWorkspaceResponse` value exchanged by this crate.
 pub struct PatientWorkspaceResponse {
@@ -405,6 +430,12 @@ pub struct PatientWorkspaceResponse {
     pub patient_workspace_id: String,
     /// The `display_name` value.
     pub display_name: String,
+    #[serde(default)]
+    /// The caller's membership level (`allowed` or `clinic_demographic`).
+    pub membership: WorkspaceMembership,
+    #[serde(default)]
+    /// Per-patient review cadence read without knowing payment status.
+    pub review_cadence: Option<ReviewCadenceWire>,
     #[serde(default)]
     /// The `time_zone` value.
     pub time_zone: Option<String>,
@@ -455,9 +486,19 @@ pub struct PatientWorkspaceResponse {
     pub doctor_plan: Option<DoctorPlanDraftWire>,
 }
 
+impl PatientWorkspaceResponse {
+    /// Whether this response represents a same-clinic non-panel demographic card.
+    pub fn is_clinic_demographic(&self) -> bool {
+        self.membership == WorkspaceMembership::ClinicDemographic
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `PatientIdentity` value exchanged by this crate.
 pub struct PatientIdentity {
+    #[serde(default)]
+    /// The `display_name` value.
+    pub display_name: Option<String>,
     #[serde(default)]
     /// The `birth_date` value.
     pub birth_date: Option<String>,
@@ -470,6 +511,9 @@ pub struct PatientIdentity {
     #[serde(default)]
     /// Medical record numbers the chart supplied.
     pub medical_record_numbers: Vec<MedicalRecordNumber>,
+    #[serde(default)]
+    /// The identity state (`available`, `missing`, etc.).
+    pub state: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -712,6 +756,21 @@ pub struct VerifyResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// One active physician account in the caller's practice, for panel assignment.
+pub struct PracticeAccountSummary {
+    /// The `physician_id` value.
+    pub physician_id: String,
+    /// The physician's display name.
+    pub display_name: String,
+    #[serde(default)]
+    /// The physician's sign-in email.
+    pub email: String,
+    #[serde(default)]
+    /// Whether this account holds clinic admin / panel-assignment permission.
+    pub admin: bool,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The whoami route's answer about the session's physician.
 pub struct WhoamiResponse {
     /// The `physician_id` value.
@@ -723,6 +782,9 @@ pub struct WhoamiResponse {
     #[serde(default)]
     /// Whether this account holds clinic admin / panel-assignment permission.
     pub admin: bool,
+    #[serde(default)]
+    /// Active accounts in the caller's practice when `admin` is true.
+    pub practice_accounts: Vec<PracticeAccountSummary>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

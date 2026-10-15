@@ -20,7 +20,7 @@ use local_product::{
     IngestedDuetRecord, PlanItemInput,
 };
 use physician_auth::{
-    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, SignInError,
+    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence, SignInError,
 };
 use physician_wire::{
     ApprovedDoctorPlanWire, DoctorPlanDraftWire, DoctorPlanItemWire, DuetIngestedRecordWire,
@@ -292,9 +292,11 @@ pub(crate) async fn put_patient_cadence(
         let Some(cadence) = Cadence::parse(&cadence_str) else {
             return StatusCode::BAD_REQUEST.into_response();
         };
-        store
-            .set_patient_cadence(&identity.practice_id, &id, cadence)
-            .await;
+        let review_cadence = match cadence {
+            Cadence::Weekly => ReviewCadence::Weekly,
+            Cadence::DailyWhenChanged => ReviewCadence::WeeklyAndDailyWhenChanged,
+        };
+        store.set_patient_cadence(&id, review_cadence).await;
     } else {
         return StatusCode::BAD_REQUEST.into_response();
     }
