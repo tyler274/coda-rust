@@ -14,19 +14,22 @@ use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{
     PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, SimulationStatus,
-    WhoamiResponse,
+    WhoamiResponse, WorkspaceReply,
 };
 
 #[cfg(target_arch = "wasm32")]
 use shell::workspace_event_rereads;
 use shell::{
-    ChatView, KeyInput, NavCommand, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
-    TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
-    WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name,
-    connection_lines, demographic_card_view, format_calendar_date, format_clock, format_waited,
-    keyboard_command, need_you_words, opens_reader, patient_upcoming_visits, prepared_line,
-    preview_paragraphs, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
+    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA,
+    ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
+    TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
+    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name, citation_inspection,
+    connection_lines, demographic_card_view, format_calendar_date, format_clock, format_message,
+    format_waited, keyboard_command, need_you_words, opens_reader, past_work_copy,
+    patient_upcoming_visits, reply_channel_label, reply_review_actions, schedule_empty_copy,
+    shows_today_schedule, summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits,
+    work_end_reason, work_heading,
 };
 use ui::{EmptyState, ErrorState, TextButton};
 
@@ -333,6 +336,18 @@ fn PhysicianShell(
     let mut target_physician = use_signal(String::new);
     let mut panel_busy = use_signal(|| false);
     let mut panel_notice = use_signal(String::new);
+    let mut past_work_open = use_signal(|| false);
+    let mut reply_notice = use_signal(String::new);
+    let mut reply_busy = use_signal(|| false);
+    use_effect(move || {
+        let open = workspace_cache.read().clone();
+        let showing = place();
+        let allowed =
+            showing == Place::Workspace && open.as_ref().and_then(past_work_copy).is_some();
+        if !allowed && past_work_open() {
+            past_work_open.set(false);
+        }
+    });
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
         let session = client.read().session().get();
@@ -587,7 +602,8 @@ fn PhysicianShell(
         .and_then(|result| result.as_ref().ok())
         .cloned()
         .unwrap_or_default();
-    let modal = shortcuts_open() || connections_open();
+    let modal =
+        shortcuts_open() || connections_open() || past_work_open() || reading.read().is_some();
     let shown_focus = if moved() { Some(focus()) } else { None };
     let snapshot = use_resource(move || {
         let _attempt = snapshot_attempt();
@@ -652,6 +668,8 @@ fn PhysicianShell(
                         shortcuts_open.set(false);
                     } else if connections_open() {
                         connections_open.set(false);
+                    } else if past_work_open() {
+                        past_work_open.set(false);
                     } else if reading.read().is_some() {
                         reading.set(None);
                     }
@@ -1134,6 +1152,81 @@ fn PhysicianShell(
                                 });
                             },
                             on_editing: move |value: bool| editing.set(value),
+                            conversation_open: open_chat.read().is_some(),
+                            past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
+                            reply_notice: reply_notice(),
+                            reply_busy: reply_busy(),
+                            on_open_past_work: move |_| past_work_open.set(true),
+                            on_close_reply: move |reply_id: String| {
+                                let Some(ws_id) = selected() else { return };
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    reply_busy.set(true);
+                                    reply_notice.set(String::new());
+                                    reply_notice.set(
+                                        match client
+                                            .command(&serde_json::json!({
+                                                "type": "reply.close",
+                                                "idempotency_key": idempotency_key(),
+                                                "payload": {
+                                                    "patient_workspace_id": ws_id,
+                                                    "reply_work_id": reply_id,
+                                                }
+                                            }))
+                                            .await
+                                        {
+                                            Ok(value) => match command_rejection(&value) {
+                                                Some(message) => message,
+                                                None => {
+                                                    workspace_attempt.set(workspace_attempt() + 1);
+                                                    today_attempt.set(today_attempt() + 1);
+                                                    REPLY_CLOSED_NOTICE.to_owned()
+                                                }
+                                            },
+                                            Err(_) => "Coda couldn’t change that reply.".to_owned(),
+                                        },
+                                    );
+                                    reply_busy.set(false);
+                                });
+                            },
+                            on_revise_reply: move |(reply_id, instruction): (String, String)| {
+                                let Some(ws_id) = selected() else { return };
+                                let zone = workspace_cache
+                                    .read()
+                                    .as_ref()
+                                    .and_then(|open| open.time_zone.clone())
+                                    .unwrap_or_default();
+                                let client = client.read().clone();
+                                spawn(async move {
+                                    reply_busy.set(true);
+                                    reply_notice.set(String::new());
+                                    reply_notice.set(
+                                        match client
+                                            .command(&serde_json::json!({
+                                                "type": "reply.revise",
+                                                "idempotency_key": idempotency_key(),
+                                                "payload": {
+                                                    "patient_workspace_id": ws_id,
+                                                    "reply_work_id": reply_id,
+                                                    "instruction": instruction,
+                                                    "physician_time_zone": zone,
+                                                }
+                                            }))
+                                            .await
+                                        {
+                                            Ok(value) => match command_rejection(&value) {
+                                                Some(message) => message,
+                                                None => {
+                                                    workspace_attempt.set(workspace_attempt() + 1);
+                                                    String::new()
+                                                }
+                                            },
+                                            Err(_) => "Coda couldn’t revise that reply.".to_owned(),
+                                        },
+                                    );
+                                    reply_busy.set(false);
+                                });
+                            },
                         }
                     },
                 }
@@ -1172,6 +1265,26 @@ fn PhysicianShell(
                 on_close: move |_| reading.set(None),
             }
         }
+        if past_work_open() && place() == Place::Workspace {
+            PastWorkDialog {
+                patient: open_name.clone().unwrap_or_default(),
+                on_close: move |_| past_work_open.set(false),
+            }
+        }
+    }
+}
+
+fn command_rejection(value: &serde_json::Value) -> Option<String> {
+    if value.get("outcome").and_then(serde_json::Value::as_str) == Some("rejected") {
+        Some(
+            value
+                .get("message")
+                .and_then(serde_json::Value::as_str)
+                .unwrap_or("Coda couldn’t confirm that request. Reconnect to check its status.")
+                .to_owned(),
+        )
+    } else {
+        None
     }
 }
 
@@ -1714,6 +1827,13 @@ fn PatientSurface(
     messages: Vec<String>,
     snapshot_failed: bool,
     on_open_chat: EventHandler<String>,
+    conversation_open: bool,
+    past_work: bool,
+    reply_notice: String,
+    reply_busy: bool,
+    on_open_past_work: EventHandler,
+    on_close_reply: EventHandler<String>,
+    on_revise_reply: EventHandler<(String, String)>,
 ) -> Element {
     let clinic_demographic = workspace
         .as_ref()
@@ -1787,13 +1907,23 @@ fn PatientSurface(
             header { class: "patient-identity",
                 div { class: "patient-identity-top",
                     h1 { class: "workspace-title", "{heading_name}" }
-                    if is_admin && workspace.is_some() && !clinic_demographic {
-                        button {
-                            class: "control-secondary remove-panel-button",
-                            r#type: "button",
-                            disabled: panel_busy,
-                            onclick: move |_| on_remove_panel.call(()),
-                            if panel_busy { "Updating…" } else { "Remove from panel" }
+                    div { class: "patient-identity-actions",
+                        if past_work && !clinic_demographic {
+                            button {
+                                class: "control-secondary past-work-button",
+                                r#type: "button",
+                                onclick: move |_| on_open_past_work.call(()),
+                                "Past work"
+                            }
+                        }
+                        if is_admin && workspace.is_some() && !clinic_demographic {
+                            button {
+                                class: "control-secondary remove-panel-button",
+                                r#type: "button",
+                                disabled: panel_busy,
+                                onclick: move |_| on_remove_panel.call(()),
+                                if panel_busy { "Updating…" } else { "Remove from panel" }
+                            }
                         }
                     }
                 }
@@ -1933,15 +2063,16 @@ fn PatientSurface(
             if !replies.is_empty() || !superseded_replies.is_empty() {
                 section { class: "patient-section", aria_label: "Patient replies",
                     h2 { "Patient replies" }
+                    if !reply_notice.is_empty() {
+                        p { class: "composer-notice", role: "status", "{reply_notice}" }
+                    }
                     for reply in replies {
-                        article {
-                            class: "simulation-card",
-                            "data-reply-state": "{reply.state}",
-                            div { class: "simulation-card-header",
-                                strong { "{reply.headline}" }
-                                span { class: "state-pill", "Active ({reply.urgency})" }
-                            }
-                            p { class: "synopsis", "{reply.draft_text}" }
+                        ReplyReviewCard {
+                            reply: reply.clone(),
+                            busy: reply_busy,
+                            on_editing,
+                            on_close_reply,
+                            on_revise_reply,
                         }
                     }
                     for superseded in superseded_replies {
@@ -2126,9 +2257,11 @@ fn PatientSurface(
                         }
                         if snapshot_failed {
                             p { class: "sidebar-loading", "{CONVERSATION_UNAVAILABLE}" }
+                        } else if conversation_open && messages.is_empty() {
+                            h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
                         for message in messages {
-                            p { class: "synopsis", "{message}" }
+                            FormattedMessage { text: message }
                         }
                         textarea {
                             class: "composer",
@@ -2253,37 +2386,41 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
 
 #[derive(Clone, PartialEq, Eq)]
 struct OpenReading {
+    eyebrow: Option<String>,
     title: String,
-    label: Option<String>,
     paragraphs: Vec<String>,
     provenance: Option<String>,
+    unavailable: Option<String>,
     link_label: Option<String>,
     link_uri: Option<String>,
 }
 
 fn prose_reading(title: String, body: String) -> OpenReading {
     OpenReading {
+        eyebrow: None,
         title,
-        label: None,
         paragraphs: if body.is_empty() {
             Vec::new()
         } else {
             vec![body]
         },
         provenance: None,
+        unavailable: None,
         link_label: None,
         link_uri: None,
     }
 }
 
 fn source_reading(chip: SourceChip) -> OpenReading {
+    let inspection = citation_inspection(&chip);
     OpenReading {
-        title: format!("Source {}", chip.index),
-        label: Some(chip.label),
-        paragraphs: preview_paragraphs(&chip.preview),
-        provenance: prepared_line(&chip.as_of),
-        link_label: chip.open_label,
-        link_uri: chip.open_uri,
+        eyebrow: Some(inspection.eyebrow),
+        title: inspection.title,
+        paragraphs: inspection.paragraphs,
+        provenance: inspection.provenance,
+        unavailable: inspection.unavailable.map(str::to_owned),
+        link_label: inspection.open_label,
+        link_uri: inspection.open_uri,
     }
 }
 
@@ -2310,22 +2447,35 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
 
 #[component]
 fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
-    let quiet =
-        reading.paragraphs.is_empty() && reading.provenance.is_none() && reading.link_uri.is_none();
+    let quiet = reading.paragraphs.is_empty()
+        && reading.provenance.is_none()
+        && reading.link_uri.is_none()
+        && reading.unavailable.is_none();
+    let citation = reading.eyebrow.is_some();
+    let section_class = if citation {
+        "dialog reader citation-inspection"
+    } else {
+        "dialog reader"
+    };
     let title = reading.title.clone();
-    let label = reading.label.clone();
+    let eyebrow = reading.eyebrow.clone();
     let provenance = reading.provenance.clone();
+    let unavailable = reading.unavailable.clone();
     let link_label = reading.link_label.clone();
     let link_uri = reading.link_uri.clone();
+    let label = if citation { "Citation" } else { "Reader" };
     rsx! {
         div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog reader", aria_label: "Reader", onclick: move |event| event.stop_propagation(),
-                h2 { "{title}" }
-                if let Some(label) = label {
-                    p { strong { "{label}" } }
+            section { class: "{section_class}", aria_label: "{label}", onclick: move |event| event.stop_propagation(),
+                if let Some(eyebrow) = eyebrow {
+                    span { class: "citation-eyebrow", "{eyebrow}" }
                 }
+                h2 { "{title}" }
                 if quiet {
                     p { "Nothing is open to read." }
+                }
+                if let Some(unavailable) = unavailable {
+                    p { class: "citation-unavailable", "{unavailable}" }
                 }
                 for paragraph in reading.paragraphs {
                     p { class: "reader-body", "{paragraph}" }
@@ -2334,12 +2484,225 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
                     p { class: "reader-provenance", "{provenance}" }
                 }
                 if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
-                    a { href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
+                    a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
                 button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }
+}
+
+#[component]
+fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
+    rsx! {
+        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
+            section {
+                class: "dialog past-work-dialog",
+                aria_label: "Past work",
+                onclick: move |event| event.stop_propagation(),
+                h2 { id: "past-work-title", "Past work" }
+                if !patient.is_empty() {
+                    p { class: "patient-synopsis-meta", "{patient}" }
+                }
+                p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
+                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+            }
+        }
+    }
+}
+
+#[component]
+fn FormattedMessage(text: String) -> Element {
+    let blocks = format_message(&text);
+    rsx! {
+        div { class: "formatted-message",
+            for block in blocks {
+                match block {
+                    MessageBlock::Paragraph(inlines) => rsx! {
+                        p { class: "formatted-paragraph synopsis",
+                            FormattedInlines { inlines }
+                        }
+                    },
+                    MessageBlock::List(items) => rsx! {
+                        ul { class: "formatted-list",
+                            for item in items {
+                                li { FormattedInlines { inlines: item } }
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn FormattedInlines(inlines: Vec<Inline>) -> Element {
+    rsx! {
+        for inline in inlines {
+            match inline {
+                Inline::Text(text) => rsx! { span { "{text}" } },
+                Inline::Strong(text) => rsx! { strong { "{text}" } },
+                Inline::Emphasis(text) => rsx! { em { "{text}" } },
+                Inline::Break => rsx! { br {} },
+            }
+        }
+    }
+}
+
+#[component]
+fn ReplyReviewCard(
+    reply: WorkspaceReply,
+    busy: bool,
+    on_editing: EventHandler<bool>,
+    on_close_reply: EventHandler<String>,
+    on_revise_reply: EventHandler<(String, String)>,
+) -> Element {
+    let mut instruction = use_signal(String::new);
+    let mut copied = use_signal(String::new);
+    let actions = reply_review_actions(&reply);
+    let channel = reply_channel_label(&reply.channel);
+    let headline = reply.headline.clone();
+    let state = reply.state.clone();
+    let urgency = reply.urgency.clone();
+    let draft = reply.draft_text.clone();
+    let reply_id = reply.reply_work_id.clone();
+    let can_copy = actions.contains(&ReplyReviewAction::Copy);
+    let can_close = actions.contains(&ReplyReviewAction::NoReplyNeeded);
+    let can_revise = actions.contains(&ReplyReviewAction::Revise);
+    let label = format!("Replying in {channel}");
+    rsx! {
+        article {
+            class: "simulation-card reply-review",
+            "data-reply-state": "{state}",
+            aria_label: "{label}",
+            div { class: "simulation-card-header",
+                strong { "{headline}" }
+                span { class: "state-pill", "Active ({urgency})" }
+            }
+            p { class: "patient-synopsis-meta", "{label}" }
+            FormattedMessage { text: draft.clone() }
+            if can_copy || can_close {
+                div { class: "reply-review-actions",
+                    if can_copy {
+                        button {
+                            class: "sign-in-primary",
+                            r#type: "button",
+                            "data-reply-action": "copy",
+                            disabled: busy,
+                            onclick: move |_| {
+                                copied.set(if copy_text(&draft) {
+                                    "Copied".to_owned()
+                                } else {
+                                    "Couldn’t copy".to_owned()
+                                });
+                            },
+                            "{REPLY_COPY}"
+                        }
+                    }
+                    if can_close {
+                        button {
+                            class: "control-secondary",
+                            r#type: "button",
+                            "data-reply-action": "no-reply-needed",
+                            disabled: busy,
+                            onclick: {
+                                let reply_id = reply_id.clone();
+                                move |_| on_close_reply.call(reply_id.clone())
+                            },
+                            "{REPLY_NO_NEEDED}"
+                        }
+                    }
+                    if !copied.read().is_empty() {
+                        span { class: "composer-notice", role: "status", "{copied}" }
+                    }
+                }
+            }
+            if can_revise {
+                div { class: "reply-review-ask",
+                    input {
+                        class: "reply-review-instruction",
+                        r#type: "text",
+                        placeholder: "{REPLY_TELL_CODA}",
+                        aria_label: "{REPLY_TELL_CODA}",
+                        disabled: busy,
+                        value: "{instruction}",
+                        onfocus: move |_| on_editing.call(true),
+                        onblur: move |_| on_editing.call(false),
+                        oninput: move |event| instruction.set(event.value()),
+                        onkeydown: {
+                            let reply_id = reply_id.clone();
+                            move |event| {
+                                if event.key().to_string() != "Enter" {
+                                    return;
+                                }
+                                event.prevent_default();
+                                let asked = instruction.read().trim().to_owned();
+                                if asked.is_empty() || busy {
+                                    return;
+                                }
+                                on_revise_reply.call((reply_id.clone(), asked));
+                            }
+                        },
+                    }
+                    if !instruction.read().trim().is_empty() && !busy {
+                        button {
+                            class: "control-secondary",
+                            r#type: "button",
+                            "data-reply-action": "revise",
+                            aria_label: "{REPLY_ASK}",
+                            onclick: {
+                                let reply_id = reply_id.clone();
+                                move |_| {
+                                    let asked = instruction.read().trim().to_owned();
+                                    if !asked.is_empty() {
+                                        on_revise_reply.call((reply_id.clone(), asked));
+                                    }
+                                }
+                            },
+                            "{REPLY_ASK}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn copy_text(text: &str) -> bool {
+    #[cfg(target_arch = "wasm32")]
+    {
+        copy_text_wasm(text)
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        let _ = text;
+        false
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+fn copy_text_wasm(text: &str) -> bool {
+    use wasm_bindgen::JsCast;
+    let Some(window) = web_sys::window() else {
+        return false;
+    };
+    let Ok(navigator) = js_sys::Reflect::get(&window, &"navigator".into()) else {
+        return false;
+    };
+    let Ok(clipboard) = js_sys::Reflect::get(&navigator, &"clipboard".into()) else {
+        return false;
+    };
+    if clipboard.is_null() || clipboard.is_undefined() {
+        return false;
+    }
+    let Ok(write) = js_sys::Reflect::get(&clipboard, &"writeText".into()) else {
+        return false;
+    };
+    let Ok(write) = write.dyn_into::<js_sys::Function>() else {
+        return false;
+    };
+    write.call1(&clipboard, &text.into()).is_ok()
 }
 
 #[component]
