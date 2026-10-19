@@ -16,6 +16,22 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      # Preinstalled SDKs are unused here and leave no room to archive target
+      # beside itself (run 39309157954, ENOSPC during cache save).
+      - name: Free runner disk
+        run: |
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -59,10 +75,10 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git/db
             target
-          key: rust-v1-${{ runner.os }}-${{ steps.rustc.outputs.version }}-${{ hashFiles('Cargo.lock') }}
+          key: rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-${{ hashFiles('Cargo.lock') }}
           restore-keys: |
-            rust-v1-${{ runner.os }}-${{ steps.rustc.outputs.version }}-
-            rust-v1-${{ runner.os }}-
+            rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-
+            rust-v2-${{ runner.os }}-
       - name: Install Chromium
         id: chrome
         uses: browser-actions/setup-chrome@v1
@@ -90,17 +106,54 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test -p mobile --test mode --test browser --test duet_journey
-      # Proof binaries and the wasm target are what fill the disk. Drop them
-      # before the save so the cache keeps dependency artifacts only.
-      - name: Drop proof artifacts from the Rust cache
+      # The archive is written beside target, so free space has to hold that
+      # second copy. Drop proof outputs, then build-script dirs if it is
+      # still tight. Registry is always saved. A target that does not fit
+      # is not saved under the primary key, and the job fails.
+      - name: Prepare Rust cache payload
+        id: cache-payload
+        if: steps.rust-cache.outputs.cache-hit != 'true'
         run: |
-          rm -rf target/wasm32-unknown-unknown target/debug/incremental target/doc
+          set -euo pipefail
+          rm -rf target/wasm32-unknown-unknown target/debug/incremental target/doc target/debug/examples
           if [ -d target/debug ]; then
             find target/debug -maxdepth 1 -type f -delete
           fi
+          sudo rm -rf /opt/hostedtoolcache/setup-chrome || true
+          free_bytes() { df -B1 --output=avail / | awk 'NR==2 { print $1 }'; }
+          payload_bytes() {
+            local bytes=0 path size
+            for path in "$HOME/.cargo/registry/index" "$HOME/.cargo/registry/cache" "$HOME/.cargo/git/db" ${1:+target}; do
+              if [ -e "$path" ]; then
+                size="$(du -sb "$path" | awk '{ print $1 }')"
+                bytes=$((bytes + size))
+              fi
+            done
+            echo "$bytes"
+          }
+          fits() {
+            local payload free need
+            payload="$(payload_bytes "$1")"
+            free="$(free_bytes)"
+            # zstd of these artifacts is smaller than the payload. Require
+            # two thirds plus 1 GiB so the archive is not written into a full disk.
+            need=$((payload * 2 / 3 + 1073741824))
+            echo "include_target=${1:-false} payload=${payload} free=${free} need=${need}"
+            [ "$free" -ge "$need" ]
+          }
+          include_target=true
+          if ! fits true; then
+            rm -rf target/debug/build
+            if ! fits true; then
+              include_target=false
+              rm -rf target
+              fits false || true
+            fi
+          fi
+          echo "include_target=${include_target}" >> "$GITHUB_OUTPUT"
+          df -h
       - name: Save Rust build cache
-        if: steps.rust-cache.outputs.cache-hit != 'true'
-        continue-on-error: true
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -109,6 +162,20 @@ jobs:
             ~/.cargo/git/db
             target
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
+      - name: Save cargo registry without target
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}-registry
+      - name: Require the dependency target in the cache
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
+        run: |
+          echo "::error::Compiled target did not fit beside its archive. Registry was saved under a separate key; this run did not cache build artifacts."
+          exit 1
       # Debug and wasm artifacts from the proofs fill the runner disk.
       # Documentation does not need them. A full proof target left no room
       # to compile mdbook (run 38686057176, ENOSPC). That install is now a
