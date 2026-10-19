@@ -140,11 +140,19 @@ pub enum ConversationNote {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ConversationSourceChip {
+    pub message_id: uuid::Uuid,
+    pub source_id: String,
+    pub title: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConversationLine {
     pub role: String,
     pub text: String,
     pub from_duet: bool,
     pub notes: Vec<ConversationNote>,
+    pub sources: Vec<ConversationSourceChip>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -269,6 +277,16 @@ pub fn conversation_root(
                 text: message.text.clone(),
                 from_duet: message.role == Role::Assistant,
                 notes: message_notes(message, routines, follow_ups, collection),
+                sources: message
+                    .sources
+                    .iter()
+                    .flatten()
+                    .map(|source| ConversationSourceChip {
+                        message_id: message.id,
+                        source_id: source.id.clone(),
+                        title: source.title.clone(),
+                    })
+                    .collect(),
             })
             .collect(),
     )
@@ -669,8 +687,16 @@ pub fn today_root(settings: &IntelligenceSettings, page: &InsightCyclePage) -> T
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LibraryKind {
+    HealthEvidence,
+    ClinicalNote,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LibraryRecord {
+    pub id: String,
+    pub kind: LibraryKind,
     pub title: String,
     pub summary: Option<String>,
     pub when: Option<String>,
@@ -752,11 +778,63 @@ fn library_record(entry: &duet_wire::models::EvidenceLibraryEntry) -> LibraryRec
         .map(|date| calendar_line(date.date_naive()))
         .or_else(|| entry.day.flatten().map(calendar_line));
     LibraryRecord {
+        id: entry.id.clone(),
+        kind: match entry.entity {
+            duet_wire::models::evidence_library_entry::Entity::HealthEvidence => {
+                LibraryKind::HealthEvidence
+            }
+            duet_wire::models::evidence_library_entry::Entity::ClinicalNote => {
+                LibraryKind::ClinicalNote
+            }
+        },
         title: entry.title.clone(),
         summary: supplied(&entry.summary),
         when,
         source: supplied(&entry.source_label),
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum DoctorPreview {
+    Fits(Vec<String>),
+    Overflow,
+}
+
+/// Places the saved For my doctor page with the letter layout.
+/// A collection that has no page content yet returns nothing.
+pub fn doctor_preview(collection: &DoctorCollection) -> Option<DoctorPreview> {
+    let content = collection.page.as_ref()?;
+    let page = content.as_ref();
+    let name = supplied(&page.name).unwrap_or_default();
+    let date_of_birth = page
+        .date_of_birth
+        .flatten()
+        .map(|day| day.format("%Y-%m-%d").to_string())
+        .unwrap_or_default();
+    let questions = page
+        .questions
+        .iter()
+        .flatten()
+        .map(|question| question.trim().to_owned())
+        .filter(|question| !question.is_empty())
+        .collect::<Vec<_>>();
+    let cover_note = supplied(&page.cover_note);
+    if name.is_empty() && date_of_birth.is_empty() && questions.is_empty() && cover_note.is_none() {
+        return None;
+    }
+    Some(
+        match duet_page::lay_out(&duet_page::DoctorPage {
+            name,
+            date_of_birth,
+            questions,
+            cover_note,
+        }) {
+            duet_page::LaidOut::Page { lines, .. } => {
+                DoctorPreview::Fits(lines.into_iter().map(|line| line.text).collect())
+            }
+            duet_page::LaidOut::Overflow => DoctorPreview::Overflow,
+        },
+    )
 }
 
 fn supplied(value: &Option<Option<String>>) -> Option<String> {
@@ -1041,12 +1119,14 @@ mod tests {
                     text: "How did I sleep?".into(),
                     from_duet: false,
                     notes: vec![],
+                    sources: vec![],
                 },
                 ConversationLine {
                     role: "Duet".into(),
                     text: "About seven hours.".into(),
                     from_duet: true,
                     notes: vec![],
+                    sources: vec![],
                 },
             ])
         );
@@ -1106,12 +1186,14 @@ mod tests {
                             target: None,
                         }),
                     ],
+                    sources: vec![],
                 },
                 ConversationLine {
                     role: "You".into(),
                     text: "How did I sleep?".into(),
                     from_duet: false,
                     notes: vec![],
+                    sources: vec![],
                 },
             ])
         );
@@ -1156,12 +1238,14 @@ mod tests {
                         ConversationNote::Receipt("Added to Coming up".into()),
                         ConversationNote::Receipt("Saved to For my doctor".into()),
                     ],
+                    sources: vec![],
                 },
                 ConversationLine {
                     role: "You".into(),
                     text: "How did I sleep?".into(),
                     from_duet: false,
                     notes: vec![],
+                    sources: vec![],
                 },
             ]))
         );
@@ -1181,6 +1265,45 @@ mod tests {
         );
         let empty = json::<DoctorCollection>(r#"{"note_generation":0}"#);
         assert_eq!(doctor_page(&empty), DoctorPage::Empty);
+    }
+
+    #[test]
+    fn a_message_source_is_a_chip_on_its_line() {
+        let page = json::<ConversationPage>(
+            r#"{"availability":{"can_send":true},"messages":[{"created_at":"2026-10-09T15:00:01Z","id":"00000000-0000-0000-0000-000000000002","revision":1,"role":"assistant","sequence":2,"sources":[{"id":"sleep-note","kind":"record","source":"Sleep","title":"Sleep note"}],"state":"complete","text":"About seven hours.","updated_at":"2026-10-09T15:00:01Z"}],"revision":2}"#,
+        );
+        let ConversationRoot::Messages(lines) = conversation_root(&page, &[], &[], None) else {
+            panic!("expected messages");
+        };
+        assert_eq!(
+            lines[0].sources,
+            vec![ConversationSourceChip {
+                message_id: uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000002").unwrap(),
+                source_id: "sleep-note".into(),
+                title: "Sleep note".into(),
+            }]
+        );
+    }
+
+    #[test]
+    fn a_saved_doctor_page_uses_the_letter_layout() {
+        let collection = json::<DoctorCollection>(
+            r#"{"items":[],"note_generation":1,"page":{"name":"Ada Lovelace","date_of_birth":"1815-12-10","questions":["What changed?"],"cover_note":"Please review."}}"#,
+        );
+        match doctor_preview(&collection) {
+            Some(DoctorPreview::Fits(lines)) => {
+                assert!(lines.iter().any(|line| line.contains("Ada Lovelace")));
+                assert!(lines.iter().any(|line| line.contains("1. What changed?")));
+                assert!(lines.iter().any(|line| line.contains("Please review.")));
+            }
+            other => panic!("expected a fitted page, got {other:?}"),
+        }
+        let overflow = json::<DoctorCollection>(
+            r#"{"items":[],"note_generation":1,"page":{"name":"Ada","date_of_birth":"1815-12-10","questions":["One","Two","Three","Four","Five","Six"]}}"#,
+        );
+        assert_eq!(doctor_preview(&overflow), Some(DoctorPreview::Overflow));
+        let empty = json::<DoctorCollection>(r#"{"note_generation":0}"#);
+        assert_eq!(doctor_preview(&empty), None);
     }
 
     #[test]
@@ -1241,6 +1364,7 @@ mod tests {
                 text: "How did I sleep?".into(),
                 from_duet: false,
                 notes: vec![],
+                sources: vec![],
             }])
         );
         let again = page_with_accepted(shown, accepted);
@@ -1301,6 +1425,8 @@ mod tests {
                 name: "Medications",
                 measured: false,
                 records: vec![LibraryRecord {
+                    id: "med-1".into(),
+                    kind: LibraryKind::HealthEvidence,
                     title: "Lisinopril".into(),
                     summary: Some("10 mg".into()),
                     when: Some("October 1, 2026".into()),

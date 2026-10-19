@@ -23,15 +23,15 @@ use axum::http::StatusCode;
 use axum::routing::{get, post, put};
 use duet_wire::models::canonical_record_revision::Entity as RevisionEntity;
 use duet_wire::models::conversation_message::Role;
-use duet_wire::models::evidence_item::Entity as ItemEntity;
+use duet_wire::models::evidence_item::{Entity as ItemEntity, Operation};
 use duet_wire::models::evidence_library_entry::Entity as LibraryEntity;
 use duet_wire::models::{
     CanonicalRecordRevision, ConversationAcceptance, ConversationMessage, ConversationMessageState,
     ConversationPage, ConversationRun, ConversationRunState, ConversationSendRequest,
-    DoctorCollection, DoctorPageSave, EvidenceBatchRequest, EvidenceBatchResponse, EvidenceItem,
-    EvidenceLibraryEntry, EvidenceLibraryPage, FollowUp, FollowUpPage, FollowUpState,
-    FollowUpVersionRequest, InsightCyclePage, IntelligenceSettings, SavedRoutine, SavedRoutineList,
-    SavedRoutineUpdateRequest, SharingOverviewResponse,
+    ConversationSourceDetail, DoctorCollection, DoctorPageSave, EvidenceBatchRequest,
+    EvidenceBatchResponse, EvidenceItem, EvidenceLibraryEntry, EvidenceLibraryPage, FollowUp,
+    FollowUpPage, FollowUpState, FollowUpVersionRequest, InsightCyclePage, IntelligenceSettings,
+    SavedRoutine, SavedRoutineList, SavedRoutineUpdateRequest, SharingOverviewResponse,
 };
 use serde::de::DeserializeOwned;
 
@@ -54,6 +54,8 @@ pub struct Store {
     writes_path: PathBuf,
     sent: Vec<ConversationMessage>,
     records: Vec<EvidenceItem>,
+    removed_evidence: Vec<String>,
+    corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
     routines: Vec<SavedRoutine>,
     removed_routines: Vec<uuid::Uuid>,
@@ -67,6 +69,10 @@ pub struct Store {
 #[derive(serde::Serialize, serde::Deserialize, Default)]
 struct Writes {
     records: Vec<EvidenceItem>,
+    #[serde(default)]
+    removed_evidence: Vec<String>,
+    #[serde(default)]
+    corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
     #[serde(default)]
     routines: Vec<SavedRoutine>,
@@ -102,6 +108,8 @@ impl Store {
             writes_path,
             sent,
             records: writes.records,
+            removed_evidence: writes.removed_evidence,
+            corrections: writes.corrections,
             doctor: writes.doctor,
             routines: writes.routines,
             removed_routines: writes.removed_routines,
@@ -120,6 +128,8 @@ impl Store {
             &self.writes_path,
             &Writes {
                 records: self.records.clone(),
+                removed_evidence: self.removed_evidence.clone(),
+                corrections: self.corrections.clone(),
                 doctor: self.doctor.clone(),
                 routines: self.routines.clone(),
                 removed_routines: self.removed_routines.clone(),
@@ -154,6 +164,10 @@ fn write_json(path: &std::path::Path, value: &impl serde::Serialize) -> Result<(
 pub fn router(store: Arc<Mutex<Store>>) -> Router {
     Router::new()
         .route("/api/conversation/messages", get(messages).post(send))
+        .route(
+            "/api/conversation/messages/{message_id}/sources/{source_id}",
+            get(message_source),
+        )
         .route("/api/insight-cycles", get(insights))
         .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
@@ -294,6 +308,26 @@ fn next_sequence(store: &Store) -> i32 {
         + 1
 }
 
+async fn message_source(
+    State(store): State<Arc<Mutex<Store>>>,
+    Path((message_id, source_id)): Path<(uuid::Uuid, String)>,
+) -> Result<Json<ConversationSourceDetail>, StatusCode> {
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let message = find_message(&store, message_id).ok_or(StatusCode::NOT_FOUND)?;
+    let source = message
+        .sources
+        .iter()
+        .flatten()
+        .find(|source| source.id == source_id)
+        .cloned()
+        .ok_or(StatusCode::NOT_FOUND)?;
+    let text = match source.id.as_str() {
+        "sleep-note" => "About seven hours, from the sleep note.".to_owned(),
+        _ => source.title.clone(),
+    };
+    Ok(Json(ConversationSourceDetail::new(source, text)))
+}
+
 fn acceptance(message: ConversationMessage, revision: i32) -> ConversationAcceptance {
     let stamp = message.created_at;
     let run = ConversationRun::new(
@@ -325,11 +359,7 @@ async fn library(State(store): State<Arc<Mutex<Store>>>) -> Json<EvidenceLibrary
     if stamped {
         let _ = store.save_writes();
     }
-    let mut page: EvidenceLibraryPage = fixture("library", LIBRARY);
-    for item in &store.records {
-        page.entries.push(library_entry(item));
-    }
-    Json(page)
+    Json(library_page(&store))
 }
 
 async fn ingest(
@@ -341,25 +371,70 @@ async fn ingest(
     let mut stored = Vec::new();
     let mut revisions = Vec::new();
     let mut added = Vec::new();
+    let mut corrections = Vec::new();
+    let mut removed = Vec::new();
     for item in items {
-        if item.id.trim().is_empty() || record_title(&item).is_none() {
+        if item.id.trim().is_empty() {
             return Err(StatusCode::BAD_REQUEST);
         }
         let entity = revision_entity(item.entity);
         let record_id = uuid::Uuid::parse_str(&item.id).unwrap_or(uuid::Uuid::nil());
         revisions.push(CanonicalRecordRevision::new(entity, record_id, 1));
         stored.push(record_id);
-        if store.records.iter().any(|kept| kept.id == item.id) {
-            continue;
+        match item.operation {
+            Some(Operation::Delete) => {
+                if !evidence_known(&store, &item.id) {
+                    return Err(StatusCode::NOT_FOUND);
+                }
+                removed.push(item.id);
+            }
+            _ if payload_text(&item, &["corrects"]).is_some() => {
+                if record_title(&item).is_none() {
+                    return Err(StatusCode::BAD_REQUEST);
+                }
+                let target = payload_text(&item, &["corrects"]).expect("corrects");
+                if !evidence_known(&store, &target) {
+                    return Err(StatusCode::NOT_FOUND);
+                }
+                corrections.push(item);
+            }
+            _ => {
+                if record_title(&item).is_none() {
+                    return Err(StatusCode::BAD_REQUEST);
+                }
+                if store.records.iter().any(|kept| kept.id == item.id) {
+                    continue;
+                }
+                let mut item = item;
+                stamp_recorded_at(&mut item);
+                added.push(item);
+            }
         }
-        let mut item = item;
-        stamp_recorded_at(&mut item);
-        added.push(item);
     }
-    let previous = store.records.len();
+    let previous_records = store.records.clone();
+    let previous_removed = store.removed_evidence.clone();
+    let previous_corrections = store.corrections.clone();
+    for id in &removed {
+        store.records.retain(|kept| &kept.id != id);
+        store
+            .corrections
+            .retain(|item| payload_text(item, &["corrects"]).as_deref() != Some(id));
+        if !store.removed_evidence.iter().any(|kept| kept == id) {
+            store.removed_evidence.push(id.clone());
+        }
+    }
+    for item in corrections {
+        let target = payload_text(&item, &["corrects"]);
+        store
+            .corrections
+            .retain(|kept| payload_text(kept, &["corrects"]) != target);
+        store.corrections.push(item);
+    }
     store.records.extend(added);
-    if store.records.len() != previous && store.save_writes().is_err() {
-        store.records.truncate(previous);
+    if store.save_writes().is_err() {
+        store.records = previous_records;
+        store.removed_evidence = previous_removed;
+        store.corrections = previous_corrections;
         return Err(StatusCode::INTERNAL_SERVER_ERROR);
     }
     let mut response = EvidenceBatchResponse::new(revisions);
@@ -624,6 +699,66 @@ fn payload_text(item: &EvidenceItem, keys: &[&str]) -> Option<String> {
     })
 }
 
+fn evidence_known(store: &Store, id: &str) -> bool {
+    if store.removed_evidence.iter().any(|kept| kept == id) {
+        return false;
+    }
+    if store.records.iter().any(|item| item.id == id) {
+        return true;
+    }
+    let page: EvidenceLibraryPage = fixture("library", LIBRARY);
+    page.entries
+        .iter()
+        .any(|entry| entry.id == id || entry.record_id.to_string() == id)
+}
+
+fn library_page(store: &Store) -> EvidenceLibraryPage {
+    let mut page: EvidenceLibraryPage = fixture("library", LIBRARY);
+    let changed = !store.removed_evidence.is_empty() || !store.corrections.is_empty();
+    if changed {
+        page.entries.retain(|entry| {
+            !store
+                .removed_evidence
+                .iter()
+                .any(|id| id == &entry.id || id == &entry.record_id.to_string())
+        });
+    }
+    for item in &store.records {
+        if store.removed_evidence.iter().any(|id| id == &item.id) {
+            continue;
+        }
+        if page.entries.iter().any(|entry| entry.id == item.id) {
+            continue;
+        }
+        page.entries.push(library_entry(item));
+    }
+    if changed {
+        for correction in &store.corrections {
+            let Some(target) = payload_text(correction, &["corrects"]) else {
+                continue;
+            };
+            if let Some(entry) = page
+                .entries
+                .iter_mut()
+                .find(|entry| entry.id == target || entry.record_id.to_string() == target)
+            {
+                if let Some(title) = record_title(correction) {
+                    entry.title = title;
+                }
+                if let Some(summary) = payload_text(correction, &["summary", "body"]) {
+                    entry.summary = Some(Some(summary));
+                }
+            }
+        }
+        page.counts.clear();
+        for entry in &page.entries {
+            *page.counts.entry(entry.category.clone()).or_insert(0) += 1;
+        }
+        page.total_count = page.entries.len() as i32;
+    }
+    page
+}
+
 fn library_entry(item: &EvidenceItem) -> EvidenceLibraryEntry {
     let title = record_title(item).unwrap_or_default();
     let (category, entity, summary) = match item.entity {
@@ -729,6 +864,116 @@ mod tests {
         assert_eq!(library.entries[0].title, "Lisinopril");
         assert_eq!(library.entries[1].title, "LDL cholesterol");
         assert_eq!(sharing.account_label, "me");
+        assert_eq!(
+            page.messages[1].sources.as_ref().unwrap()[0].title,
+            "Sleep note"
+        );
+    }
+
+    #[tokio::test]
+    async fn a_message_source_opens_and_evidence_can_be_corrected_or_deleted() {
+        let (path, store) = temp_store();
+        let app = router(store);
+        let opened = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/sleep-note")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(opened.status().is_success());
+        let detail: ConversationSourceDetail = serde_json::from_str(&body(opened).await).unwrap();
+        assert_eq!(detail.text, "About seven hours, from the sleep note.");
+        assert_eq!(detail.reference.title, "Sleep note");
+        let missing = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/missing")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(missing.status(), StatusCode::NOT_FOUND);
+
+        let correction = serde_json::json!({
+            "items": [{
+                "id": "00000000-0000-0000-0000-000000000071",
+                "entity": "health_evidence",
+                "operation": "upsert",
+                "payload": {
+                    "display_name": "Lisinopril 5 mg",
+                    "corrects": "med-1",
+                    "source_label": "Added in Duet"
+                }
+            }]
+        });
+        let corrected = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence")
+                    .header("content-type", "application/json")
+                    .body(Body::from(correction.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(corrected.status().is_success(), "{}", body(corrected).await);
+        let deletion = serde_json::json!({
+            "items": [{
+                "id": "lab-1",
+                "entity": "health_evidence",
+                "operation": "delete"
+            }]
+        });
+        let deleted = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence")
+                    .header("content-type", "application/json")
+                    .body(Body::from(deletion.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(deleted.status().is_success(), "{}", body(deleted).await);
+        let library = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/evidence/library")
+                    .header("content-type", "application/json")
+                    .body(Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let library: EvidenceLibraryPage = serde_json::from_str(&body(library).await).unwrap();
+        assert_eq!(library.entries[0].title, "Lisinopril 5 mg");
+        assert!(
+            library
+                .entries
+                .iter()
+                .all(|entry| entry.title != "LDL cholesterol")
+        );
+        assert_eq!(
+            library
+                .entries
+                .iter()
+                .filter(|entry| entry.id == "med-1")
+                .count(),
+            1
+        );
+        let _ = fs::remove_file(&path);
+        let _ = fs::remove_file(writes_beside(&path));
     }
 
     #[tokio::test]

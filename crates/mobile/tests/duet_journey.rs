@@ -43,6 +43,34 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         "the recorded thread did not render:\n{text}"
     );
 
+    // A cited source opens the retained note from the stub.
+    browser.click(r#"button[aria-label="Open source Sleep note"]"#);
+    let text = browser.wait_for("About seven hours, from the sleep note.");
+    assert!(
+        text.contains("Sleep note"),
+        "the source sheet did not name the citation:\n{text}"
+    );
+    browser.click(r#"button[aria-label="Close source"]"#);
+
+    // For my doctor lays the saved page out with the letter layout.
+    browser.click(r#"button[aria-label="Open For my doctor"]"#);
+    browser.wait_for("Ask about sleep");
+    browser.click(r#"button[aria-label="Edit page"]"#);
+    browser.wait_for("Add a question");
+    browser.type_into(r#"input[aria-label="Name"]"#, "Ada Lovelace");
+    browser.type_into(r#"input[aria-label="Date of birth"]"#, "1990-04-02");
+    browser.click(r#"button[aria-label="Add a question"]"#);
+    wait_for_selector(&mut browser, r#"input[aria-label="Question"]"#);
+    browser.type_into(r#"input[aria-label="Question"]"#, "What changed this week?");
+    browser.click(r#"button[aria-label="Save page"]"#);
+    let text = browser.wait_for("1. What changed this week?");
+    assert!(
+        text.contains("Ada Lovelace") && text.contains("Preview"),
+        "the doctor page did not show the letter layout:\n{text}"
+    );
+    browser.click(r#"button[aria-label="Close page"]"#);
+    browser.wait_for("About seven hours.");
+
     // A send is accepted by the stub and the user line lands on the page.
     browser.type_into(".duet-composer-field", SEND_TEXT);
     browser.click(".duet-send");
@@ -58,6 +86,28 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     assert!(
         text.contains("Walking has been steady this week."),
         "the Today tab did not show the stub insights:\n{text}"
+    );
+
+    // You can correct one library row and delete another.
+    browser.click(r#"nav.tabs button:nth-of-type(3)"#);
+    browser.wait_for("Lisinopril");
+    browser.click(r#"button[aria-label="Correct Lisinopril"]"#);
+    browser.type_into(r#"input[aria-label="Corrected value"]"#, "Lisinopril 5 mg");
+    browser.click(r#"button[aria-label="Save correction"]"#);
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Saved the correction.") && text.contains("Lisinopril 5 mg")
+    });
+    assert!(
+        text.contains("Lisinopril 5 mg"),
+        "the corrected medication did not replace the library row:\n{text}"
+    );
+    browser.click(r#"button[aria-label="Delete LDL cholesterol"]"#);
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Removed from your records.") && !text.contains("LDL cholesterol")
+    });
+    assert!(
+        text.contains("Lisinopril 5 mg"),
+        "the corrected medication disappeared with the deleted lab:\n{text}"
     );
 
     // The Shared tab reports the stub's sharing overview.
@@ -121,6 +171,38 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
         text.contains("How did I sleep?"),
         "the client mode did not load the thread:\n{text}"
     );
+}
+
+fn wait_for_selector(browser: &mut Browser, selector: &str) {
+    let deadline = std::time::Instant::now() + Duration::from_secs(10);
+    while std::time::Instant::now() < deadline {
+        let found = browser
+            .page()
+            .evaluate(&format!("Boolean(document.querySelector({selector:?}))"));
+        if found.as_bool() == Some(true) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    panic!(
+        "missing {selector}:\n{}",
+        browser.body_text().unwrap_or_default()
+    );
+}
+
+fn wait_until(browser: &mut Browser, ready: impl Fn(&str) -> bool) -> String {
+    let deadline = std::time::Instant::now() + Duration::from_secs(30);
+    let mut last = String::new();
+    while std::time::Instant::now() < deadline {
+        if let Some(text) = browser.body_text() {
+            last = text;
+            if ready(&last) {
+                return last;
+            }
+        }
+        std::thread::sleep(Duration::from_millis(250));
+    }
+    panic!("the page did not reach the expected state:\n{last}");
 }
 
 /// One site per spawn: the mobile page at `/` and the stub router plus the

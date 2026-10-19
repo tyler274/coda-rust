@@ -18,14 +18,16 @@ use duet_wire::models::ConversationMessage;
 use roots::{
     ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE,
     CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
-    DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL, JoinDraft, LIBRARY_EMPTY,
-    LIBRARY_UNAVAILABLE, LibraryRoot, NOT_SHARING, NoteOpen, OPEN_NOTIFICATION_SETTINGS,
-    REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING,
+    ConversationSourceChip, DoctorPage, DoctorPreview, INSIGHT_NOTIFICATIONS,
+    INSIGHT_NOTIFICATIONS_DETAIL, JoinDraft, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
+    LibraryRecord, LibraryRoot, NOT_SHARING, NoteOpen, OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED,
+    REVIEWS_PAUSED_DETAIL, SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING,
     SHARING_OFF_DETAIL, SHARING_ON_DETAIL, SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED,
     STOP_SHARING, SavedItemPage, SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot,
     closed_send, composer_open, composer_text, conversation_root, date_line, doctor_page,
-    doctor_plan_section, draft_after_send, greeting, library_root, note_open, page_with_accepted,
-    plan_page, reminder_page, send_id, shared_root, sharing_root, shows_join, today_root,
+    doctor_plan_section, doctor_preview, draft_after_send, greeting, library_root, note_open,
+    opens_doctor, page_with_accepted, plan_page, reminder_page, send_id, shared_root, sharing_root,
+    shows_join, today_root,
 };
 use ui::TabBar;
 
@@ -412,6 +414,20 @@ enum YouEditor {
 }
 
 #[derive(Clone)]
+struct OpenedSource {
+    title: String,
+    text: Option<String>,
+    failed: bool,
+}
+
+#[derive(Clone)]
+struct EvidenceEdit {
+    id: String,
+    kind: LibraryKind,
+    title: String,
+}
+
+#[derive(Clone)]
 enum ShownPage {
     Doctor(DoctorPage),
     Item(SavedItemPage),
@@ -509,6 +525,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut plan_remove_failed = use_signal(|| false);
     let mut follow_failed = use_signal(|| false);
     let mut changing = use_signal(|| false);
+    let mut opened_source = use_signal(|| None::<OpenedSource>);
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
     let resource = use_resource(move || {
@@ -665,6 +682,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let resume_bearer = page_bearer.clone();
     let fresh_url = page_url.clone();
     let fresh_bearer = page_bearer.clone();
+    let source_url = page_url.clone();
+    let source_bearer = page_bearer.clone();
     let save_plan = move |_| {
         if changing() {
             return;
@@ -894,6 +913,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             button {
                 class: "duet-retry",
                 r#type: "button",
+                aria_label: "Close page",
                 onclick: move |_| {
                     open_item.set(None);
                     editing.set(false);
@@ -919,9 +939,11 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                             }
                         }
                     }
+                    DoctorLetter { collection: doctor() }
                 },
                 ShownPage::Doctor(DoctorPage::Empty) if !doctor_editing() => rsx! {
                     p { class: "empty", "{LIBRARY_EMPTY}" }
+                    DoctorLetter { collection: doctor() }
                 },
                 ShownPage::Doctor(_) => rsx! {},
                 ShownPage::Item(item) if !editing() => rsx! {
@@ -1087,6 +1109,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         page_failed.set(false);
                         doctor_editing.set(true);
                     },
+                    aria_label: "Edit page",
                     "Edit page"
                 }
                 button {
@@ -1120,11 +1143,37 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
+                if let Some(open) = opened_source() {
+                    article { class: "voice-card",
+                        p { class: "card-title", "{open.title}" }
+                        if let Some(text) = open.text {
+                            p { class: "card-text", "{text}" }
+                        }
+                        if open.failed {
+                            p { class: "empty", role: "alert", "This source couldn’t be opened." }
+                        }
+                        button {
+                            class: "duet-retry",
+                            r#type: "button",
+                            aria_label: "Close source",
+                            onclick: move |_| opened_source.set(None),
+                            "Close"
+                        }
+                    }
+                }
                 div { class: "duet-thread",
                     for line in lines {
                         article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
                             p { class: "card-title", "{line.role}" }
                             p { class: "card-text", "{line.text}" }
+                            for source in line.sources {
+                                SourceButton {
+                                    chip: source.clone(),
+                                    base_url: source_url.clone(),
+                                    bearer: source_bearer.clone(),
+                                    opened: opened_source,
+                                }
+                            }
                             for note in line.notes {
                                 ThreadNote {
                                     note: note.clone(),
@@ -1190,16 +1239,186 @@ fn ThreadNote(
     on_open: EventHandler<NoteOpen>,
 ) -> Element {
     if let Some(open) = open {
+        let label = if opens_doctor(&note) {
+            "Open For my doctor"
+        } else {
+            "Open saved item"
+        };
+        let body = note_body(note);
         rsx! {
             button {
                 class: "thread-open",
                 r#type: "button",
+                aria_label: "{label}",
                 onclick: move |_| on_open.call(open),
-                {note_body(note)}
+                {body}
             }
         }
     } else {
         note_body(note)
+    }
+}
+
+#[component]
+fn SourceButton(
+    chip: ConversationSourceChip,
+    base_url: String,
+    bearer: String,
+    opened: Signal<Option<OpenedSource>>,
+) -> Element {
+    let title = chip.title.clone();
+    let label = format!("Open source {title}");
+    let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
+    rsx! {
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            aria_label: "{label}",
+            onclick: open,
+            "{title}"
+        }
+    }
+}
+
+fn load_source(
+    mut opened: Signal<Option<OpenedSource>>,
+    base_url: String,
+    bearer: String,
+    chip: ConversationSourceChip,
+) {
+    let title = chip.title.clone();
+    opened.set(Some(OpenedSource {
+        title: title.clone(),
+        text: None,
+        failed: false,
+    }));
+    spawn(async move {
+        let loaded = match open_client(base_url, bearer) {
+            Ok(api) => api.message_source(chip.message_id, &chip.source_id).await,
+            Err(_) => Err(String::new()),
+        };
+        match loaded {
+            Ok(detail) => opened.set(Some(OpenedSource {
+                title,
+                text: Some(detail.text),
+                failed: false,
+            })),
+            Err(_) => opened.set(Some(OpenedSource {
+                title,
+                text: None,
+                failed: true,
+            })),
+        }
+    });
+}
+
+fn evidence_entity(kind: LibraryKind) -> duet_wire::models::evidence_item::Entity {
+    match kind {
+        LibraryKind::HealthEvidence => duet_wire::models::evidence_item::Entity::HealthEvidence,
+        LibraryKind::ClinicalNote => duet_wire::models::evidence_item::Entity::ClinicalNote,
+    }
+}
+
+#[component]
+fn EvidenceRow(
+    record: LibraryRecord,
+    base_url: String,
+    bearer: String,
+    editing: Signal<Option<EvidenceEdit>>,
+    notice: Signal<Option<String>>,
+    attempt: Signal<u32>,
+    saving: Signal<bool>,
+) -> Element {
+    let title = record.title.clone();
+    let summary = record.summary.clone();
+    let when = record.when.clone();
+    let source = record.source.clone();
+    let correct_label = format!("Correct {title}");
+    let delete_label = format!("Delete {title}");
+    let kind = record.kind;
+    let correct_id = record.id.clone();
+    let correct_title = title.clone();
+    let start_edit = move |_| {
+        notice.set(None);
+        editing.set(Some(EvidenceEdit {
+            id: correct_id.clone(),
+            kind,
+            title: correct_title.clone(),
+        }));
+    };
+    let delete_id = record.id;
+    let delete_url = base_url.clone();
+    let delete_bearer = bearer.clone();
+    let remove = move |_| {
+        if saving() {
+            return;
+        }
+        saving.set(true);
+        notice.set(None);
+        let id = delete_id.clone();
+        let base_url = delete_url.clone();
+        let bearer = delete_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => api.delete_evidence(&id, evidence_entity(kind)).await,
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(()) => {
+                    notice.set(Some("Removed from your records.".to_owned()));
+                    attempt.set(attempt() + 1);
+                }
+                Err(_) => {
+                    notice.set(Some("This record couldn’t be removed.".to_owned()));
+                }
+            }
+            saving.set(false);
+        });
+    };
+    rsx! {
+        p { class: "card-text", "{title}" }
+        if let Some(summary) = summary {
+            p { class: "record-meta", "{summary}" }
+        }
+        if let Some(when) = when {
+            p { class: "record-meta", "{when}" }
+        }
+        if let Some(source) = source {
+            p { class: "record-meta", "{source}" }
+        }
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            aria_label: "{correct_label}",
+            onclick: start_edit,
+            "Correct"
+        }
+        button {
+            class: "duet-retry",
+            r#type: "button",
+            aria_label: "{delete_label}",
+            onclick: remove,
+            "Delete"
+        }
+    }
+}
+
+#[component]
+fn DoctorLetter(collection: Option<duet_wire::models::DoctorCollection>) -> Element {
+    let Some(collection) = collection else {
+        return rsx! {};
+    };
+    match doctor_preview(&collection) {
+        Some(DoctorPreview::Fits(lines)) => rsx! {
+            p { class: "card-title", "Preview" }
+            for line in lines {
+                p { class: "card-text doctor-preview", "{line}" }
+            }
+        },
+        Some(DoctorPreview::Overflow) => rsx! {
+            p { class: "empty", role: "alert", "This page doesn’t fit on one page." }
+        },
+        None => rsx! {},
     }
 }
 
@@ -1329,10 +1548,14 @@ fn YouTab(
     let mut save_failed = use_signal(|| false);
     let mut changing_sharing = use_signal(|| false);
     let mut sharing_failed = use_signal(|| false);
+    let mut editing = use_signal(|| None::<EvidenceEdit>);
+    let mut evidence_notice = use_signal(|| None::<String>);
     let share_url = base_url.clone();
     let share_bearer = bearer.clone();
     let save_url = base_url.clone();
     let save_bearer = bearer.clone();
+    let evidence_url = base_url.clone();
+    let evidence_bearer = bearer.clone();
     let sharing = sharing_root(consent.clone());
     let resource = use_resource(move || {
         let _attempt = attempt();
@@ -1424,6 +1647,44 @@ fn YouTab(
                     attempt.set(attempt() + 1);
                 }
                 Err(_) => save_failed.set(true),
+            }
+            saving.set(false);
+        });
+    };
+    let correction_url = evidence_url.clone();
+    let correction_bearer = evidence_bearer.clone();
+    let save_correction = move |_| {
+        let Some(current) = editing() else {
+            return;
+        };
+        if current.title.trim().is_empty() || saving() {
+            return;
+        }
+        saving.set(true);
+        evidence_notice.set(None);
+        let base_url = correction_url.clone();
+        let bearer = correction_bearer.clone();
+        spawn(async move {
+            let saved = match open_client(base_url, bearer) {
+                Ok(api) => {
+                    api.correct_evidence(
+                        &current.id,
+                        evidence_entity(current.kind),
+                        current.title.trim(),
+                    )
+                    .await
+                }
+                Err(_) => Err(String::new()),
+            };
+            match saved {
+                Ok(()) => {
+                    evidence_notice.set(Some("Saved the correction.".to_owned()));
+                    editing.set(None);
+                    attempt.set(attempt() + 1);
+                }
+                Err(_) => {
+                    evidence_notice.set(Some("This correction couldn’t be saved.".to_owned()));
+                }
             }
             saving.set(false);
         });
@@ -1572,6 +1833,37 @@ fn YouTab(
                 }
             }
         }
+        if let Some(edit) = editing() {
+            input {
+                class: "duet-field",
+                r#type: "text",
+                aria_label: "Corrected value",
+                value: "{edit.title}",
+                oninput: move |event| {
+                    if let Some(mut current) = editing() {
+                        current.title = event.value();
+                        editing.set(Some(current));
+                    }
+                },
+            }
+            button {
+                class: "duet-send",
+                r#type: "button",
+                aria_label: "Save correction",
+                disabled: saving() || edit.title.trim().is_empty(),
+                onclick: save_correction,
+                "Save correction"
+            }
+            button {
+                class: "duet-retry",
+                r#type: "button",
+                onclick: move |_| editing.set(None),
+                "Cancel"
+            }
+        }
+        if let Some(notice) = evidence_notice() {
+            p { class: "record-meta", role: "status", "{notice}" }
+        }
         match root {
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
@@ -1579,15 +1871,14 @@ fn YouTab(
                     article { class: if section.measured { "number-card" } else { "voice-card" },
                         p { class: "card-title", "{section.name}" }
                         for record in section.records {
-                            p { class: "card-text", "{record.title}" }
-                            if let Some(summary) = record.summary {
-                                p { class: "record-meta", "{summary}" }
-                            }
-                            if let Some(when) = record.when {
-                                p { class: "record-meta", "{when}" }
-                            }
-                            if let Some(source) = record.source {
-                                p { class: "record-meta", "{source}" }
+                            EvidenceRow {
+                                record: record.clone(),
+                                base_url: evidence_url.clone(),
+                                bearer: evidence_bearer.clone(),
+                                editing,
+                                notice: evidence_notice,
+                                attempt,
+                                saving,
                             }
                         }
                     }
@@ -1665,6 +1956,7 @@ fn DoctorEditor(
         input {
             class: "duet-field",
             r#type: "text",
+            aria_label: "Name",
             value: "{name}",
             oninput: move |event| name.set(event.value()),
         }
@@ -1672,6 +1964,7 @@ fn DoctorEditor(
         input {
             class: "duet-field",
             r#type: "text",
+            aria_label: "Date of birth",
             value: "{birth}",
             oninput: move |event| birth.set(event.value()),
         }
@@ -1688,6 +1981,7 @@ fn DoctorEditor(
             button {
                 class: "duet-retry",
                 r#type: "button",
+                aria_label: "Add a question",
                 onclick: move |_| {
                     let mut fields = questions();
                     fields.push(String::new());
@@ -1712,6 +2006,7 @@ fn DoctorEditor(
             class: "duet-send",
             r#type: "button",
             disabled: saving() || !ready,
+            aria_label: "Save page",
             onclick: move |_| on_save.call(()),
             "Save page"
         }
@@ -1725,6 +2020,7 @@ fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
         input {
             class: "duet-field",
             r#type: "text",
+            aria_label: "Question",
             value: "{value}",
             oninput: move |event| {
                 let mut fields = questions();
