@@ -20,7 +20,7 @@ async fn migrate(url: &str, physician: bool, front_door: bool) {
 }
 
 async fn history(db: &DatabaseConnection, table: &str) -> Vec<(String, i64)> {
-    db.query_all(sea_orm::Statement::from_string(
+    db.query_all_raw(sea_orm::Statement::from_string(
         sea_orm::DatabaseBackend::Postgres,
         format!("SELECT version, applied_at FROM {table} ORDER BY version"),
     ))
