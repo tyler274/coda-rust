@@ -9,6 +9,7 @@
 //! dated evidence and re-linking must not resurrect withdrawn consent.
 
 use sea_orm_migration::prelude::*;
+use sea_orm_migration::sea_orm::{DatabaseConnection, DynIden};
 
 // The entity models below carry field docs; the generated struct and relation
 // types are mechanical SeaORM shapes, so the crate-wide doc lint stays off
@@ -49,6 +50,26 @@ pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
 pub use sign_in_token::Model as SignInTokenRow;
 pub use sign_in_token::{ActiveModel as SignInTokenActiveModel, Entity as SignInTokens};
 
+/// The table this chain records applied migrations in.
+///
+/// The practice server runs this chain and `physician-auth`'s on one
+/// database. SeaORM refuses to migrate when its table holds a version the
+/// chain does not know, so two chains cannot share `seaql_migrations`; the
+/// front door records here instead.
+pub const MIGRATION_TABLE: &str = "front_door_seaql_migrations";
+
+/// The table SeaORM records into by default, where a front-door database
+/// migrated before [`MIGRATION_TABLE`] existed holds its init.
+const LEGACY_MIGRATION_TABLE: &str = "seaql_migrations";
+
+/// The name `m20260101_000001_init` has recorded since the chain began.
+///
+/// `DeriveMigrationName` names a migration after its source file's stem, and
+/// the init lives in `mod.rs`, so the derive answered `mod`. A database that
+/// already applied the init holds `mod`, and it must keep matching or the
+/// init would run again over existing tables.
+pub const INIT_MIGRATION_NAME: &str = "mod";
+
 /// Every migration, oldest first.
 pub struct Migrator;
 
@@ -57,11 +78,59 @@ impl MigratorTrait for Migrator {
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![Box::new(m20260101_000001_init)]
     }
+
+    fn migration_table_name() -> DynIden {
+        MIGRATION_TABLE.into_iden()
+    }
 }
 
-#[derive(DeriveMigrationName)]
+/// Applies the chain, first recording an init that ran before
+/// [`MIGRATION_TABLE`] existed.
+///
+/// Before the chain had its own table, the init recorded `mod` in
+/// `seaql_migrations`. On a database shared with `physician-auth` that row is
+/// ambiguous, because the physician init recorded the same name. So the
+/// evidence is the front door's own tables: only the init creates them, in
+/// one transaction, so `front_door_accounts` existing means the init applied.
+/// The init is then recorded here, keeping the legacy `applied_at` when that
+/// row exists. The legacy row stays where it is.
+pub async fn up(db: &DatabaseConnection) -> Result<(), DbErr> {
+    adopt_legacy_init(db).await?;
+    Migrator::up(db, None).await
+}
+
+async fn adopt_legacy_init(db: &DatabaseConnection) -> Result<(), DbErr> {
+    let manager = SchemaManager::new(db);
+    if !manager.has_table("front_door_accounts").await? {
+        return Ok(());
+    }
+    Migrator::install(db).await?;
+    let applied_at = if manager.has_table(LEGACY_MIGRATION_TABLE).await? {
+        format!(
+            "COALESCE((SELECT applied_at FROM {LEGACY_MIGRATION_TABLE} \
+             WHERE version = '{INIT_MIGRATION_NAME}'), \
+             EXTRACT(EPOCH FROM now())::bigint)"
+        )
+    } else {
+        "EXTRACT(EPOCH FROM now())::bigint".to_owned()
+    };
+    db.execute_unprepared(&format!(
+        "INSERT INTO {MIGRATION_TABLE} (version, applied_at) \
+         VALUES ('{INIT_MIGRATION_NAME}', {applied_at}) \
+         ON CONFLICT (version) DO NOTHING"
+    ))
+    .await?;
+    Ok(())
+}
+
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000001_init;
+
+impl MigrationName for m20260101_000001_init {
+    fn name(&self) -> &str {
+        INIT_MIGRATION_NAME
+    }
+}
 
 #[async_trait::async_trait]
 impl MigrationTrait for m20260101_000001_init {
@@ -386,5 +455,46 @@ impl MigrationTrait for m20260101_000001_init {
         manager
             .drop_table(Table::drop().table(Accounts).take())
             .await
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sea_orm_migration::seaql_migrations;
+
+    /// SeaORM keys its table by name, so two migrations sharing one fail
+    /// every fresh migrate on a duplicate key. No database needed.
+    #[test]
+    fn every_migration_records_a_distinct_name() {
+        let names: Vec<String> = Migrator::migrations()
+            .iter()
+            .map(|migration| migration.name().to_owned())
+            .collect();
+        let mut unique = names.clone();
+        unique.sort();
+        unique.dedup();
+        assert_eq!(unique.len(), names.len(), "duplicate names in {names:?}");
+    }
+
+    /// Deployed databases hold these names. Renaming one re-runs its
+    /// migration, or fails the migrate as an unknown applied version.
+    #[test]
+    fn recorded_names_stay_what_databases_hold() {
+        let names: Vec<String> = Migrator::migrations()
+            .iter()
+            .map(|migration| migration.name().to_owned())
+            .collect();
+        assert_eq!(names, ["mod"]);
+    }
+
+    /// `physician-auth` records into SeaORM's default table on the same
+    /// database; sharing it makes each chain see the other's rows.
+    #[test]
+    fn the_chain_records_apart_from_physician_auth() {
+        assert_ne!(
+            Migrator::migration_table_name(),
+            seaql_migrations::Entity.into_iden()
+        );
     }
 }
