@@ -187,11 +187,8 @@ impl AuthStore for PostgresAuthStore {
 
     async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account> {
         Accounts::find()
-            .filter(
-                crate::migration::account::Column::PracticeId
-                    .eq(&identity.practice_id)
-                    .and(crate::migration::account::Column::PhysicianId.eq(&identity.physician_id)),
-            )
+            .filter(crate::migration::account::Column::PracticeId.eq(&identity.practice_id))
+            .filter(crate::migration::account::Column::PhysicianId.eq(&identity.physician_id))
             .one(&self.db)
             .await
             .ok()
@@ -215,17 +212,10 @@ impl AuthStore for PostgresAuthStore {
             return Membership::Denied;
         }
         let panel_allowed = Memberships::find()
+            .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
+            .filter(crate::migration::membership::Column::PhysicianId.eq(&identity.physician_id))
             .filter(
-                crate::migration::membership::Column::PracticeId
-                    .eq(&identity.practice_id)
-                    .and(
-                        crate::migration::membership::Column::PhysicianId
-                            .eq(&identity.physician_id),
-                    )
-                    .and(
-                        crate::migration::membership::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::membership::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await
@@ -253,17 +243,10 @@ impl AuthStore for PostgresAuthStore {
         }
         let allowed = membership == Membership::Allowed;
         let existing = Memberships::find()
+            .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
+            .filter(crate::migration::membership::Column::PhysicianId.eq(&identity.physician_id))
             .filter(
-                crate::migration::membership::Column::PracticeId
-                    .eq(&identity.practice_id)
-                    .and(
-                        crate::migration::membership::Column::PhysicianId
-                            .eq(&identity.physician_id),
-                    )
-                    .and(
-                        crate::migration::membership::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::membership::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await;
@@ -294,15 +277,9 @@ impl AuthStore for PostgresAuthStore {
 
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
         let rows = Memberships::find()
-            .filter(
-                crate::migration::membership::Column::PracticeId
-                    .eq(&identity.practice_id)
-                    .and(
-                        crate::migration::membership::Column::PhysicianId
-                            .eq(&identity.physician_id),
-                    )
-                    .and(crate::migration::membership::Column::Allowed.eq(true)),
-            )
+            .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
+            .filter(crate::migration::membership::Column::PhysicianId.eq(&identity.physician_id))
+            .filter(crate::migration::membership::Column::Allowed.eq(true))
             .all(&self.db)
             .await
             .unwrap_or_default();
@@ -638,13 +615,9 @@ impl AuthStore for PostgresAuthStore {
         let hash = token_hash(&token).to_vec();
         let expires_at = (now + INVITATION_TTL_SECONDS) as i64;
         let existing = PatientLinks::find()
+            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
-                crate::migration::patient_link::Column::PracticeId
-                    .eq(practice_id)
-                    .and(
-                        crate::migration::patient_link::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await
@@ -728,13 +701,9 @@ impl AuthStore for PostgresAuthStore {
             return Err(SignInError::Invalid);
         }
         let row = PatientLinks::find()
+            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
-                crate::migration::patient_link::Column::PracticeId
-                    .eq(practice_id)
-                    .and(
-                        crate::migration::patient_link::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await
@@ -759,13 +728,9 @@ impl AuthStore for PostgresAuthStore {
         now: u64,
     ) -> Result<PatientLink, SignInError> {
         let row = PatientLinks::find()
+            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
-                crate::migration::patient_link::Column::PracticeId
-                    .eq(practice_id)
-                    .and(
-                        crate::migration::patient_link::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await
@@ -793,13 +758,9 @@ impl AuthStore for PostgresAuthStore {
             Cadence::Weekly
         };
         let existing = PatientLinks::find()
+            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
-                crate::migration::patient_link::Column::PracticeId
-                    .eq(practice_id)
-                    .and(
-                        crate::migration::patient_link::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await;
@@ -841,13 +802,9 @@ impl AuthStore for PostgresAuthStore {
         patient_workspace_id: &str,
     ) -> Option<PatientLink> {
         PatientLinks::find()
+            .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
-                crate::migration::patient_link::Column::PracticeId
-                    .eq(practice_id)
-                    .and(
-                        crate::migration::patient_link::Column::PatientWorkspaceId
-                            .eq(patient_workspace_id),
-                    ),
+                crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
             .await

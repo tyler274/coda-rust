@@ -457,11 +457,8 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         now: u64,
     ) -> Result<(), LinkError> {
         let linked = Links::find()
-            .filter(
-                crate::migration::link::Column::PracticeId
-                    .eq(&patient.practice_id)
-                    .and(crate::migration::link::Column::PatientId.eq(&patient.patient_id)),
-            )
+            .filter(crate::migration::link::Column::PracticeId.eq(&patient.practice_id))
+            .filter(crate::migration::link::Column::PatientId.eq(&patient.patient_id))
             .one(&self.db)
             .await
             .map_err(|_| LinkError::Unlinked)?

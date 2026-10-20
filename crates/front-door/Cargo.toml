@@ -8,12 +8,13 @@ version.workspace = true
 [dependencies]
 async-trait = "0.1"
 axum = "0.8"
-sea-orm = { version = "1", default-features = false, features = [
+sea-orm = { version = "2", default-features = false, features = [
+    "macros",
     "sqlx-postgres",
     "runtime-tokio-rustls",
     "with-uuid",
 ] }
-sea-orm-migration = { version = "1", default-features = false, features = [
+sea-orm-migration = { version = "2", default-features = false, features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
 ] }
