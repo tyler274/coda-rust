@@ -53,6 +53,13 @@ ignore = [
     { id = "RUSTSEC-2024-0449", reason = "proc-macro-error is unmaintained; transitive via darling/syn struct generators" },
     { id = "RUSTSEC-2025-0057", reason = "fxhash is unmaintained; transitive via rustc-hash users" },
     { id = "RUSTSEC-2024-0436", reason = "paste is unmaintained; transitive via strum macros" },
+    # zip 8.6.0 is pinned by candle-core 0.11.0 (latest, requires zip ^8.6.0).
+    # All three advisories are in ZipArchive/ZipStreamReader::extract(); candle
+    # only reads entries in memory via by_name/by_index and never extracts, and
+    # encoder loads safetensors. Drop these when candle moves to zip >= 9 (ENG-108).
+    { id = "RUSTSEC-2026-0367", reason = "zip extract() keeps SUID/SGID bits; unreachable, candle-core never extracts (ENG-108)" },
+    { id = "RUSTSEC-2026-0368", reason = "zip extract() symlink escape; unreachable, candle-core never extracts (ENG-108)" },
+    { id = "RUSTSEC-2026-0369", reason = "zip extract() chmod through symlinks; unreachable, candle-core never extracts (ENG-108)" },
 ]
 
 [sources]
