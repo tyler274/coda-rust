@@ -81,6 +81,7 @@ fn event_name(kind: &EventKind) -> &'static str {
     match kind {
         EventKind::ProviderStarted { .. } => "provider_start",
         EventKind::ProviderReturned(_) => "provider_return",
+        EventKind::TextDelta { .. } => "delta",
         EventKind::ToolStarted(_) => "tool_start",
         EventKind::ToolReturned { .. } => "tool_return",
         EventKind::Candidate { .. } => "candidate",

@@ -1,11 +1,13 @@
-//! API-backed OpenAI Responses adapter. Buffered, bounded output, `store: false`,
-//! no retries and no secret logging. Streaming publication is intentionally not
-//! implemented: products must define their visibility and durable delta contract.
+//! API-backed OpenAI Responses adapter: bounded buffered or SSE output,
+//! `store: false`, no retries and no secret logging. Streaming is opt-in through
+//! [`Responses::streaming`]; the engine awaits product delta acknowledgments.
+
+mod sse;
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
 
-use crate::engine::{Invocation, Item, Provider, Request, Turn};
+use crate::engine::{DeltaSink, Failure, Invocation, Item, Provider, Request, Turn};
 
 /// OpenAI API adapter. Credentials stay in this instance and are never in events.
 /// Construction does not authorize paid calls; the composition supplies that gate.
@@ -14,6 +16,7 @@ pub struct Responses {
     endpoint: reqwest::Url,
     key: String,
     model: String,
+    streaming: bool,
 }
 
 impl Responses {
@@ -50,7 +53,15 @@ impl Responses {
             endpoint,
             key,
             model,
+            streaming: false,
         })
+    }
+
+    /// Enables SSE delivery through `Provider::complete_stream`. Direct buffered
+    /// `complete` rejects this mode rather than silently discarding deltas.
+    pub fn streaming(mut self) -> Self {
+        self.streaming = true;
+        self
     }
 
     fn body(&self, request: &Request<'_>) -> Result<Value, String> {
@@ -69,7 +80,7 @@ impl Responses {
         })).collect();
         Ok(json!({
             "model": self.model, "instructions": request.context.instructions,
-            "input": input?, "store": false, "stream": false,
+            "input": input?, "store": false, "stream": self.streaming,
             "max_output_tokens": request.limits.output_tokens,
             "tools": request.context.tools.iter().map(|tool| json!({
                 "type": "function", "name": tool.name, "description": tool.description,
@@ -88,6 +99,9 @@ impl Provider for Responses {
     }
 
     async fn complete(&mut self, request: Request<'_>) -> Result<Turn, String> {
+        if self.streaming {
+            return Err("streaming adapter requires an acknowledged delta sink".into());
+        }
         let body = self.body(&request)?;
         let mut response = self
             .client
@@ -115,6 +129,52 @@ impl Provider for Responses {
             bytes.extend_from_slice(&chunk);
         }
         decode(&bytes)
+    }
+
+    async fn complete_stream(
+        &mut self,
+        request: Request<'_>,
+        sink: &mut dyn DeltaSink,
+    ) -> Result<Turn, Failure> {
+        if !self.streaming {
+            return self.complete(request).await.map_err(Failure::Provider);
+        }
+        let body = self.body(&request).map_err(Failure::Provider)?;
+        let mut response = self
+            .client
+            .post(self.endpoint.clone())
+            .bearer_auth(&self.key)
+            .json(&body)
+            .send()
+            .await
+            .map_err(|_| Failure::Provider("provider transport failed; outcome unknown".into()))?;
+        if !response.status().is_success() {
+            return Err(Failure::Provider(format!(
+                "provider HTTP {}; no retry",
+                response.status().as_u16()
+            )));
+        }
+        let content_type = response
+            .headers()
+            .get(reqwest::header::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .unwrap_or("");
+        if content_type.split(';').next().unwrap_or("").trim() != "text/event-stream" {
+            return Err(Failure::Protocol("expected text/event-stream".into()));
+        }
+        let mut decoder = sse::Decoder::new(request.limits.response_bytes);
+        let mut stream = sse::Stream::default();
+        while let Some(chunk) = response
+            .chunk()
+            .await
+            .map_err(|_| Failure::Provider("stream disconnected; no retry".into()))?
+        {
+            for frame in decoder.push(&chunk)? {
+                stream.accept(frame, sink).await?;
+            }
+        }
+        decoder.finish()?;
+        stream.finish()
     }
 }
 

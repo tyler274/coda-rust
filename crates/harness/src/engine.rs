@@ -156,6 +156,39 @@ pub trait Provider: Send {
     fn request_bytes(&self, request: &Request<'_>) -> Result<usize, String>;
     /// Executes one request, honoring response bounds. No transparent retries.
     async fn complete(&mut self, request: Request<'_>) -> Result<Turn, String>;
+    /// Optional streaming path. Existing buffered adapters need no changes.
+    /// Await each sink acknowledgment; never retry a failed or cancelled stream.
+    async fn complete_stream(
+        &mut self,
+        request: Request<'_>,
+        _sink: &mut dyn DeltaSink,
+    ) -> Result<Turn, Failure> {
+        self.complete(request).await.map_err(Failure::Provider)
+    }
+}
+
+/// Identity-bearing authored text, not permission to publish it.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct TextDelta {
+    /// Provider response identity.
+    pub response_id: String,
+    /// Provider output item identity.
+    pub item_id: String,
+    /// Provider event sequence number.
+    pub sequence: u64,
+    /// Output item position.
+    pub output_index: usize,
+    /// Content part position.
+    pub content_index: usize,
+    /// Exact authored fragment.
+    pub text: String,
+}
+
+/// Provider-facing acknowledged delta delivery; implementations may reject output.
+#[async_trait]
+pub trait DeltaSink: Send {
+    /// Returns only after owner persistence/publication acknowledgment.
+    async fn deliver(&mut self, delta: TextDelta) -> Result<(), Failure>;
 }
 
 /// Execution evidence awaited before dependent operations. Sequence numbers are
@@ -182,6 +215,14 @@ pub enum EventKind {
     },
     /// Must be acknowledged before interpreting calls or returning a candidate.
     ProviderReturned(Turn),
+    /// Owner durably records the delta and decides whether/how it becomes visible.
+    /// Acknowledgment must precede consumption of another provider delta.
+    TextDelta {
+        /// Provider request ordinal within this attempt.
+        ordinal: u32,
+        /// Identity and exact text bytes.
+        delta: TextDelta,
+    },
     /// Must be acknowledged before an effect; not proof that it happened.
     ToolStarted(Invocation),
     /// Includes rejected calls and results whose delivery was refused by bounds.
@@ -218,6 +259,9 @@ pub trait Host: Send {
     /// Checks the current owner authority before provider/tool dispatch.
     async fn assert_current(&mut self) -> Result<(), String>;
     /// Durably records evidence/reservations; rejection stops dependent execution.
+    /// For TextDelta, also acknowledge the product's publication decision before
+    /// returning. Enforce visibility/currentness transactionally; an engine check
+    /// alone cannot fence a racing revocation. Persisted deltas are not completion.
     async fn persist(&mut self, event: Event) -> Result<(), String>;
     /// Validates product schema, permission and allowed effects for this call.
     async fn admit(&mut self, call: &Invocation, arguments: &Value) -> Result<Admission, String>;
@@ -348,6 +392,49 @@ async fn current(gate: &mut Gate<'_>, host: &mut dyn Host) -> Result<(), Failure
     .await
 }
 
+struct OwnerSink<'a> {
+    host: &'a mut dyn Host,
+    attempt: &'a str,
+    sequence: &'a mut u64,
+    ordinal: u32,
+    cancel: Cancellation,
+    deadline: Instant,
+}
+
+impl OwnerSink<'_> {
+    fn check(&self) -> Result<(), Failure> {
+        if *self.cancel.0.borrow() {
+            return Err(Failure::Cancelled);
+        }
+        if Instant::now() >= self.deadline {
+            return Err(Failure::Deadline);
+        }
+        Ok(())
+    }
+}
+
+#[async_trait]
+impl DeltaSink for OwnerSink<'_> {
+    async fn deliver(&mut self, delta: TextDelta) -> Result<(), Failure> {
+        self.check()?;
+        self.host.assert_current().await.map_err(Failure::Host)?;
+        self.check()?;
+        *self.sequence += 1;
+        self.host
+            .persist(Event {
+                attempt_id: self.attempt.to_owned(),
+                sequence: *self.sequence,
+                kind: EventKind::TextDelta {
+                    ordinal: self.ordinal,
+                    delta,
+                },
+            })
+            .await
+            .map_err(Failure::Host)?;
+        self.check()
+    }
+}
+
 async fn execute(
     provider: &mut dyn Provider,
     host: &mut dyn Host,
@@ -443,12 +530,19 @@ async fn execute(
         .await?;
         current(gate, host).await?;
         gate.usage.model_calls += 1;
+        let stream_cancel = gate.cancel.clone();
+        let stream_deadline = gate.deadline;
         let turn = gate
             .wait("provider dispatch", async {
-                provider
-                    .complete(request())
-                    .await
-                    .map_err(Failure::Provider)
+                let mut sink = OwnerSink {
+                    host,
+                    attempt,
+                    sequence: &mut sequence,
+                    ordinal,
+                    cancel: stream_cancel,
+                    deadline: stream_deadline,
+                };
+                provider.complete_stream(request(), &mut sink).await
             })
             .await?;
         record(
