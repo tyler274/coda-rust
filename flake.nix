@@ -78,6 +78,9 @@
           actionlint
           oha
           mdbook
+          # Book link check (scripts/check-book-links.sh). CI installs the
+          # same release from GitHub; keep the two versions together.
+          lychee
           opentofu
           # `otelcol-contrib validate` checks dev/observability/collector.yaml,
           # which the compose stack and infra/gcp/observability both run.

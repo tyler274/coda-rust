@@ -3,7 +3,7 @@
 The four product repositories keep their full contracts; this page hoists their
 operative rules into this workspace so an agent working on a Rust crate can
 follow them without opening a submodule. Submodules are read-only reference
-(see the [rust-repo-first](../.cursor/rules/rust-repo-first.mdc) rule). When a
+(see the <a href="/.cursor/rules/rust-repo-first%2Emdc">rust-repo-first</a> rule). When a
 rule here and a submodule source disagree, the submodule source wins and this
 page is a bug.
 
