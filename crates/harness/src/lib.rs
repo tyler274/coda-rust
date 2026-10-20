@@ -1,11 +1,14 @@
-//! Loads `skills/` once and admits `skill_view` on a model message.
+//! Product-neutral bounded execution and the existing skill catalog surface.
 //!
-//! This is the Rust caller for the skill catalog. A message is authored text
-//! plus tool calls. The only accepted tool is `skill_view`. This crate does
-//! not journal, call a model, retain a context window, or read patient
-//! evidence. A skill never authorizes a tool or a patient read. Book:
+//! [`engine`] supplies one provider/tool loop; [`responses`] supplies an API
+//! adapter. Product hosts retain authority, effects, persistence and recovery.
+//! [`Harness`] remains the compatible skill-view-only admission surface. A
+//! skill never authorizes a tool or a patient read. Book:
 //! `book/src/personal-agent-program.md`.
 #![deny(missing_docs)]
+
+pub mod engine;
+pub mod responses;
 
 use std::path::Path;
 
