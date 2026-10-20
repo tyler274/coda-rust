@@ -5,6 +5,10 @@ use duet_api::{DuetApi, PgMoments, router_with_front_door, schema_is_ready};
 
 #[tokio::main]
 async fn main() {
+    if let Err(reason) = duet_api::hosting::validate_startup(|key| env::var(key).ok()) {
+        eprintln!("{reason}");
+        std::process::exit(1);
+    }
     let url = env::var("DATABASE_URL").expect("DATABASE_URL");
     let pool = sqlx::PgPool::connect(&url).await.expect("database");
     if !schema_is_ready(&pool).await.expect("schema") {
@@ -15,9 +19,14 @@ async fn main() {
         std::process::exit(1);
     }
     let front_door_url = env::var("FRONT_DOOR_DATABASE_URL").unwrap_or_else(|_| url.clone());
-    let front_door = front_door::PostgresFrontDoorStore::connect_with_migrations(&front_door_url)
+    let front_door =
+        front_door::PostgresFrontDoorStore::connect_without_migrations(&front_door_url)
+            .await
+            .expect("front-door database");
+    front_door
+        .check_schema()
         .await
-        .expect("front-door database");
+        .expect("front-door schema; run the migration job first");
     let mut app = router_with_front_door(
         DuetApi::new(Arc::new(front_door)),
         Arc::new(PgMoments::new(pool)),
@@ -34,6 +43,7 @@ async fn main() {
             .map(|port| format!("0.0.0.0:{port}"))
             .unwrap_or_else(|_| "127.0.0.1:8080".to_owned())
     });
+    let app = app.route("/readyz", axum::routing::get(duet_api::hosting::ready));
     let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())

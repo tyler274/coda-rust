@@ -55,7 +55,7 @@
       # No credential-loading shellHook in release builds or CI packaging.
       devShells.${system} = {
       release = pkgs.mkShell {
-        packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny ];
+        packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny postgres opentofu ];
       };
       default = pkgs.mkShell {
         packages = with pkgs; [

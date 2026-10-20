@@ -89,6 +89,10 @@ let
   duet = native "duet-api" "duet-api" "duet-api";
   physicianMigration = native "physician-auth-migrate" "physician-auth" "physician-auth-migrate";
   frontDoorMigration = native "front-door-migrate" "front-door" "front-door-migrate";
+  # Product entrypoints compose their owned chains; future conversation owners
+  # extend these binaries, not the image wrapper or runtime startup.
+  physicianProductMigration = native "physician-migrate" "physician-sample" "physician-migrate";
+  duetProductMigration = native "duet-migrate" "duet-api" "duet-migrate";
   physicianWeb = web "physician-app";
   duetWeb = web "duet-app";
 in {
@@ -98,6 +102,18 @@ in {
   duet-web = duetWeb;
   physician-auth-migrate = physicianMigration;
   front-door-migrate = frontDoorMigration;
+  physician-migrate = physicianProductMigration;
+  duet-migrate = duetProductMigration;
+  physician-migration-image = image {
+    name = "coda-physician-migrate";
+    binary = physicianProductMigration;
+    executable = "physician-migrate";
+  };
+  duet-migration-image = image {
+    name = "coda-duet-migrate";
+    binary = duetProductMigration;
+    executable = "duet-migrate";
+  };
   physician-sample-image = image {
     name = "coda-physician-sample";
     binary = physician;

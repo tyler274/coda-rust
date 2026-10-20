@@ -46,6 +46,18 @@ impl PostgresFrontDoorStore {
         Ok(Self { db })
     }
 
+    /// Checks every owned table without creating a migration ledger or writing data.
+    pub async fn check_schema(&self) -> Result<(), DbErr> {
+        Accounts::find().one(&self.db).await?;
+        Consents::find().one(&self.db).await?;
+        Invitations::find().one(&self.db).await?;
+        Links::find().one(&self.db).await?;
+        Premiums::find().one(&self.db).await?;
+        Sessions::find().one(&self.db).await?;
+        SignInTokens::find().one(&self.db).await?;
+        Ok(())
+    }
+
     /// Connects and applies the crate's migration chain.
     pub async fn connect_with_migrations(database_url: &str) -> Result<Self, DbErr> {
         let store = Self::connect(database_url).await?;

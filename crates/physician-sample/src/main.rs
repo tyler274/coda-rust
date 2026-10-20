@@ -5,6 +5,10 @@ use serde_json::json;
 
 #[tokio::main]
 async fn main() {
+    if let Err(reason) = physician_sample::hosting::validate_startup(|key| env::var(key).ok()) {
+        eprintln!("{reason}");
+        std::process::exit(1);
+    }
     let args: Vec<String> = env::args().skip(1).collect();
 
     if args.iter().any(|arg| arg == "--list-simulations") {
@@ -40,8 +44,11 @@ async fn main() {
         );
     }
 
-    let bind_addr =
-        env::var("PHYSICIAN_LISTEN_ADDR").unwrap_or_else(|_| "127.0.0.1:8790".to_owned());
+    let bind_addr = env::var("PHYSICIAN_LISTEN_ADDR").unwrap_or_else(|_| {
+        env::var("PORT")
+            .map(|port| format!("0.0.0.0:{port}"))
+            .unwrap_or_else(|_| "127.0.0.1:8790".to_owned())
+    });
     let listener = tokio::net::TcpListener::bind(&bind_addr)
         .await
         .unwrap_or_else(|err| panic!("failed to bind {bind_addr}: {err}"));

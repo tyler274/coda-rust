@@ -144,6 +144,10 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         .await
         .expect("runtime connection");
     assert!(
+        runtime.check_schema().await.is_err(),
+        "empty schema must fail readiness"
+    );
+    assert!(
         runtime
             .begin_sign_in("absent@test.invalid", NOW)
             .await
@@ -183,6 +187,10 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     let reopened = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
         .await
         .expect("reopen runtime with database-enforced read-only transactions");
+    reopened
+        .check_schema()
+        .await
+        .expect("read-only schema check");
     assert_eq!(schema_tables(&url).await, expected);
     assert_eq!(reopened.session(&session, NOW).await.unwrap(), id);
     assert!(reopened.account(id).await.is_some());

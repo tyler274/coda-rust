@@ -8,6 +8,7 @@
 #![deny(missing_docs)]
 
 pub mod care;
+pub mod hosting;
 pub mod session;
 pub mod site;
 

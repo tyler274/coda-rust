@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+pub mod hosting;
 mod live;
 mod simulation;
 
@@ -451,7 +452,9 @@ pub async fn serve(listener: tokio::net::TcpListener) {
             std::process::exit(1);
         }
     };
-    let app = auth::authed_router(base).await;
+    let app = auth::authed_router(base)
+        .await
+        .route("/readyz", get(hosting::ready));
     axum::serve(listener, app).await.expect("sample server");
 }
 
