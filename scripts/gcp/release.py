@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Offline release orchestration contract; deliberately NOT a cloud CLI.
+"""Release state machine; executable adapters and offline CLI in release_commands.
 
-Future CI integration (requires a separately reviewed live adapter):
+Future CI integration (after producer jobs and operator provisioning):
 * Main push only, protected `staging` environment, OIDC repository/owner IDs,
   ref + environment subject restricted as in infra commit 4a64ba24dc4156fe0d409ba0b6e55f48d8b21639.
 * needs: ALL app, audit, format/lint, database fresh/upgrade/rerun, browser and
@@ -12,10 +12,11 @@ Future CI integration (requires a separately reviewed live adapter):
   checks:read, id-token:write, deployments:write; no infrastructure credentials.
   Add the offline unittest command from test_release.py to PR/main CI now;
   do not add an enabled deployment job until the live adapter is accepted.
-* One environment-wide concurrency group, cancel-in-progress: false. The live
-  adapter must hold an exclusive lease through publication, migration, smoke,
-  promotion and receipt persistence; guard rechecks main and the lease before
-  every mutation. GitHub concurrency is not FIFO: reject stale queued SHAs.
+* One same-repository environment concurrency group, cancel-in-progress: false,
+  spanning migration, smoke, promotion and receipt persistence. The lease token
+  is the GitHub run-attempt, NOT a distributed lock. All deployers/migrators must
+  use that group; no other repo or operator writer may run concurrently.
+  GitHub concurrency is not FIFO: reject stale queued SHAs.
 * Supply operator-exported release_contract/database_contract and approved v2
   resource specs + IAM policies independently of the deployer's observed state.
   Never infer expected infrastructure from the currently running service.
@@ -37,8 +38,10 @@ operations, reconcile ambiguous writes, and normalize Cloud Run v2 output into
 silently discard unknown mutable fields. IAM comes from the separate verifier.
 Migration execution must be awaited with no overrides and no runtime identity.
 
-No runtime acceptance verifier or live adapter exists. main() always refuses;
-there is intentionally no --force, approval flag, or environment-variable escape.
+release_commands implements concrete gh/gcloud adapters and trusted workflow
+artifact checks. Offline validation/dry-run is the default. --execute requires
+protected Actions context and actual successful producer evidence; no force or
+runtime-accepted boolean bypass exists. Runtime owners must supply real proofs.
 """
 
 from __future__ import annotations
@@ -51,16 +54,6 @@ from typing import Any, Protocol
 APPS = ("physician", "duet")
 ROLES = ("runtime", "migration")
 CHECKS = frozenset({"apps", "audit", "format-lint", "database", "browser", "images"})
-BLOCKERS = (
-    "No operator-provisioned projects/state/services or trusted infrastructure export",
-    "Runtime private SQL TLS/IAM refresh, pool <=4 and no auto-migrate not proven",
-    "Durable product auth/chat, scoped authorization and live provider journeys not proven",
-    "Four scoped Doppler configs/token pins and model bounds not accepted",
-    "Final immutable runtime/migrator images and packaged real-backend proofs missing",
-    "Separate IAP smoke identity/audience and IAM verifier not configured",
-    "No live adapter, distributed lease or trusted CI/runtime evidence verifier",
-)
-
 
 class Rejected(RuntimeError):
     pass
@@ -72,7 +65,7 @@ def require(condition: bool, message: str) -> None:
 
 
 class Runner(Protocol):
-    """Injected mock command runner. No shell or cloud implementation is provided.
+    """Injected command runner; concrete implementation lives in release_commands.
 
     call returns JSON-like observations. `guard` validates lease ownership and
     latest remote main SHA; `verify_build`/`verify_checks` verify trusted producer
@@ -232,6 +225,13 @@ class Orchestrator:
             observed = self.verify()
             for app in APPS:
                 previous = observed[app]
+                if len(previous["traffic"]) == 1:
+                    serving_revision = next(iter(previous["traffic"]))
+                    if serving_revision != previous["revision"]:
+                        # A failed no-traffic candidate may be the latest template;
+                        # rollback must target the actual serving revision/image.
+                        serving = self.call("read_revision", name=app, revision=serving_revision)
+                        previous = {**previous, **serving}
                 require(previous["traffic"] == {previous["revision"]: 100},
                         "An explicit single healthy previous revision is required")
                 require(self.call("verify_previous", app=app, previous=previous) is True,
@@ -299,6 +299,12 @@ class Orchestrator:
         return r
 
     def finish(self, r: Receipt) -> None:
+        if not self.lease:
+            # Rejected local/configuration invocations must not probe cloud state
+            # or read credentials while attempting failure reconciliation.
+            r.integrity = "not-inspected"
+            self.call("persist", receipt=deepcopy(r.__dict__))
+            return
         try:
             self.verify()
             r.integrity = "verified"
@@ -367,11 +373,9 @@ class Orchestrator:
         return r
 
 
-def main() -> int:
-    print("DEPLOYMENT BLOCKED: offline release interface only.")
-    for blocker in BLOCKERS:
-        print(f"- {blocker}")
-    return 2
+def main(argv=None) -> int:
+    from release_commands import cli
+    return cli(argv)
 
 
 if __name__ == "__main__":

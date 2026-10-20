@@ -343,8 +343,10 @@ class ReleaseTests(unittest.TestCase):
         self.assertNotIn("smoke", self.operations())
         self.assertNotIn("set_traffic", self.operations())
 
-    def test_real_entrypoint_has_no_override(self):
-        self.assertEqual(main(), 2)
+    def test_entrypoint_requires_explicit_input(self):
+        with self.assertRaises(SystemExit) as result:
+            main([])
+        self.assertEqual(result.exception.code, 2)
 
 
 if __name__ == "__main__":
