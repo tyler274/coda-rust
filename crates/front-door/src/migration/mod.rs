@@ -18,6 +18,12 @@ use sea_orm_migration::sea_orm::{DatabaseConnection, DynIden};
 pub mod account;
 
 #[allow(missing_docs)]
+pub mod identity;
+mod m20261020_identity;
+#[allow(missing_docs)]
+pub mod permission;
+
+#[allow(missing_docs)]
 pub mod consent;
 
 #[allow(missing_docs)]
@@ -76,7 +82,10 @@ pub struct Migrator;
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20260101_000001_init)]
+        vec![
+            Box::new(m20260101_000001_init),
+            Box::new(m20261020_identity::Migration),
+        ]
     }
 
     fn migration_table_name() -> DynIden {
@@ -485,7 +494,7 @@ mod tests {
             .iter()
             .map(|migration| migration.name().to_owned())
             .collect();
-        assert_eq!(names, ["mod"]);
+        assert_eq!(names, ["mod", "m20261020_identity"]);
     }
 
     /// `physician-auth` records into SeaORM's default table on the same

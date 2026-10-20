@@ -28,6 +28,8 @@ mod store;
 pub use error::{InviteError, LinkError, SessionError, SignInError};
 pub use store::PostgresFrontDoorStore;
 
+/// Durable Identity Platform mapping and Duet permission authority.
+pub mod identity;
 /// The SeaORM entities and the migration chain.
 pub mod migration;
 

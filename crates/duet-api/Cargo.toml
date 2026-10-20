@@ -8,6 +8,7 @@ version.workspace = true
 
 [dependencies]
 async-trait = "0.1"
+jsonwebtoken = { version = "10", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 axum = "0.8"
 duet_wire = { path = "../duet-wire" }
 front-door = { path = "../front-door" }

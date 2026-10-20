@@ -9,6 +9,7 @@
 
 pub mod care;
 pub mod hosting;
+pub mod identity;
 pub mod session;
 pub mod site;
 

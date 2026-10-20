@@ -70,6 +70,10 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // Rewind the records to what the chain wrote before it had its own
     // table: the init as `mod` in SeaORM's default `seaql_migrations`.
     let db = sea_orm::Database::connect(&url).await.expect("connection");
+    // Recreate the actual old schema before simulating its legacy ledger.
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(&db, Some(1))
+        .await
+        .expect("remove new identity extension for legacy upgrade proof");
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
          CREATE TABLE seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
@@ -116,7 +120,13 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
             )
         })
         .collect::<Vec<_>>();
-    assert_eq!(recorded, [("mod".to_owned(), 42)]);
+    assert!(recorded.contains(&("mod".to_owned(), 42)));
+    assert_eq!(recorded.len(), 2, "legacy init plus identity extension");
+    assert!(
+        recorded
+            .iter()
+            .any(|(name, _)| name == "m20261020_identity")
+    );
     store.migrate().await.expect("a second migrate is a no-op");
 }
 
