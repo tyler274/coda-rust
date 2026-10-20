@@ -210,6 +210,55 @@ jobs:
           mdbook build book
           cargo doc --no-deps --workspace
 
+  postgres:
+    name: Fresh Postgres migrations and tests
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 30
+    services:
+      postgres:
+        # PostgreSQL 16 + pgvector matches flake.nix and the devcontainer.
+        image: pgvector/pgvector:0.8.2-pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      CODA_REQUIRE_POSTGRES_TESTS: '1'
+      CARGO_INCREMENTAL: '0'
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_TEST_DEBUG: '0'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Cache Postgres proof build
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock') }}
+          restore-keys: |
+            postgres-${{ runner.os }}-
+      - name: Check authored SQL formatting
+        run: nix develop --command python scripts/check-sql.py
+      - name: Apply fresh migrations, rerun, and exercise Postgres stores
+        env:
+          MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
+          PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+          FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
+        run: nix develop --command bash scripts/check-postgres.sh
+
   # RustSec advisories, license allow-list, bans, and source checks.
   # deny.toml is the single policy file; the nix dev shell carries the same
   # cargo-deny so `nix develop --command cargo deny check` matches this job.

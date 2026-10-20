@@ -31,9 +31,13 @@ async fn router(
     std::sync::Arc<dyn physician_auth::AuthStore>,
     std::sync::Arc<dyn FrontDoorStore>,
 )> {
-    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok()?;
+    let url = std::env::var("PHYSICIAN_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
+        assert!(
+            std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+            "PHYSICIAN_DATABASE_URL is required for the Postgres CI proof"
+        );
         return None;
     }
     let mut split: Vec<_> = url.rsplitn(2, '/').collect();
