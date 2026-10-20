@@ -15,8 +15,17 @@ const NOW: u64 = 1_760_000_000;
 ///
 /// Each test gets its own database — named after the gate URL's database plus
 /// the test's unique suffix — so parallel tests and repeated runs never share
-/// migration state. The database is dropped when the store is dropped.
+/// migration state. The next run removes the previous test database.
 async fn store(name: &str) -> Option<PostgresAuthStore> {
+    let url = fresh_database(name).await?;
+    Some(
+        PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .expect("migrations"),
+    )
+}
+
+async fn fresh_database(name: &str) -> Option<String> {
     let url = std::env::var("PHYSICIAN_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
@@ -41,14 +50,84 @@ async fn store(name: &str) -> Option<PostgresAuthStore> {
         .execute_unprepared(&format!("CREATE DATABASE {test_db}"))
         .await
         .expect("create test database");
-    let store = PostgresAuthStore::connect_with_migrations(&format!("{base}/{test_db}"))
-        .await
-        .expect("connect with migrations");
     admin.close().await.expect("close admin connection");
-    Some(store)
+    Some(format!("{base}/{test_db}"))
     // The per-test database is intentionally left in place after the test;
     // the next run's `DROP DATABASE IF EXISTS` clears any stale leftover,
     // so a crashed or failed test never wedges the suite.
+}
+
+/// Catalog read only: unlike Migrator status helpers, never installs a ledger.
+async fn schema_tables(url: &str) -> Vec<String> {
+    let db = sea_orm::Database::connect(url)
+        .await
+        .expect("catalog connection");
+    let rows = db.query_all_raw(sea_orm::Statement::from_string(
+        sea_orm::DbBackend::Postgres,
+        "SELECT tablename::text AS name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename",
+    )).await.expect("catalog read");
+    rows.into_iter()
+        .map(|row| row.try_get("", "name").unwrap())
+        .collect()
+}
+
+#[tokio::test]
+async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
+    let Some(url) = fresh_database("migration_separation").await else {
+        return;
+    };
+    assert!(schema_tables(&url).await.is_empty());
+    let runtime = PostgresAuthStore::connect_without_migrations(&url)
+        .await
+        .expect("runtime connection");
+    assert!(
+        runtime
+            .begin_sign_in("absent@test.invalid", NOW)
+            .await
+            .is_err()
+    );
+    let _compatibility = PostgresAuthStore::connect(&url)
+        .await
+        .expect("compatibility connection");
+    assert!(
+        schema_tables(&url).await.is_empty(),
+        "runtime must not install even the migration ledger"
+    );
+
+    let migrate = || {
+        let status = std::process::Command::new(env!("CARGO_BIN_EXE_physician-auth-migrate"))
+            .env("PHYSICIAN_DATABASE_URL", &url)
+            .status()
+            .expect("migration job");
+        assert!(status.success(), "migration job failed");
+    };
+    migrate();
+    let expected = vec![
+        "physician_accounts",
+        "physician_invitations",
+        "physician_memberships",
+        "physician_patient_links",
+        "physician_patients",
+        "physician_sessions",
+        "physician_sign_in_tokens",
+        "seaql_migrations",
+    ];
+    assert_eq!(schema_tables(&url).await, expected);
+    let (email, session) = invited_account(&runtime, "separation-proof").await;
+    let who = runtime.session(&session, NOW).await.expect("saved session");
+    migrate();
+    runtime.migrate().await.expect("explicit migration rerun");
+    let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
+    let reopened = PostgresAuthStore::connect_without_migrations(&read_only_url)
+        .await
+        .expect("reopen runtime with database-enforced read-only transactions");
+    assert_eq!(schema_tables(&url).await, expected);
+    assert_eq!(reopened.session(&session, NOW).await.unwrap(), who);
+    assert!(reopened.account_by_email(&email).await.is_some());
+    assert!(
+        reopened.migrate().await.is_err(),
+        "read-only runtime cannot migrate"
+    );
 }
 
 fn identity(practice: &str, physician: &str) -> PhysicianIdentity {

@@ -28,8 +28,18 @@ pub struct PostgresAuthStore {
 }
 
 impl PostgresAuthStore {
-    /// Connects to `database_url` without applying migrations.
+    /// Connects without applying migrations; retained for existing callers.
     pub async fn connect(database_url: &str) -> Result<Self, DbErr> {
+        Self::connect_without_migrations(database_url).await
+    }
+
+    /// Opens a bounded runtime pool without creating or upgrading any schema.
+    ///
+    /// Run `physician-auth-migrate` with the migration identity first. This
+    /// constructor only establishes connectivity: callers must separately
+    /// check readiness before accepting traffic. Missing or outdated tables
+    /// are not repaired, and runtime credentials need no schema-owner rights.
+    pub async fn connect_without_migrations(database_url: &str) -> Result<Self, DbErr> {
         let mut options = ConnectOptions::new(database_url.to_owned());
         options
             .max_connections(8)

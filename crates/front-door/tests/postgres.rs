@@ -16,7 +16,7 @@ const NOW: u64 = 1_760_000_000;
 ///
 /// Each test gets its own database — named after the gate URL's database plus
 /// the test's unique suffix — so parallel tests and repeated runs never share
-/// migration state. The database is dropped when the store is dropped.
+/// migration state. The next run removes the previous test database.
 async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
     let url = database(name).await?;
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
@@ -79,6 +79,19 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     .await
     .expect("legacy records");
 
+    // Runtime startup must not perform the migration job's legacy adoption.
+    let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
+    let runtime = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
+        .await
+        .expect("runtime on legacy schema");
+    assert_eq!(runtime.link(id).await.unwrap(), patient);
+    assert!(
+        !schema_tables(&url)
+            .await
+            .iter()
+            .any(|table| table == front_door::migration::MIGRATION_TABLE)
+    );
+
     // Migrating again adopts the init rather than re-running it over the
     // existing tables, and the rows the init's tables hold survive.
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
@@ -105,6 +118,78 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         .collect::<Vec<_>>();
     assert_eq!(recorded, [("mod".to_owned(), 42)]);
     store.migrate().await.expect("a second migrate is a no-op");
+}
+
+/// Catalog read only: unlike Migrator status helpers, never installs a ledger.
+async fn schema_tables(url: &str) -> Vec<String> {
+    let db = sea_orm::Database::connect(url)
+        .await
+        .expect("catalog connection");
+    let rows = db.query_all_raw(sea_orm::Statement::from_string(
+        sea_orm::DbBackend::Postgres,
+        "SELECT tablename::text AS name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename",
+    )).await.expect("catalog read");
+    rows.into_iter()
+        .map(|row| row.try_get("", "name").unwrap())
+        .collect()
+}
+
+#[tokio::test]
+async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
+    let Some(url) = database("migration_separation").await else {
+        return;
+    };
+    assert!(schema_tables(&url).await.is_empty());
+    let runtime = PostgresFrontDoorStore::connect_without_migrations(&url)
+        .await
+        .expect("runtime connection");
+    assert!(
+        runtime
+            .begin_sign_in("absent@test.invalid", NOW)
+            .await
+            .is_err()
+    );
+    let _compatibility = PostgresFrontDoorStore::connect(&url)
+        .await
+        .expect("compatibility connection");
+    assert!(
+        schema_tables(&url).await.is_empty(),
+        "runtime must not install even the migration ledger"
+    );
+
+    let migrate = || {
+        let status = std::process::Command::new(env!("CARGO_BIN_EXE_front-door-migrate"))
+            .env("FRONT_DOOR_DATABASE_URL", &url)
+            .status()
+            .expect("migration job");
+        assert!(status.success(), "migration job failed");
+    };
+    migrate();
+    let expected = vec![
+        "front_door_accounts",
+        "front_door_consents",
+        "front_door_invitations",
+        "front_door_links",
+        "front_door_premium",
+        "front_door_seaql_migrations",
+        "front_door_sessions",
+        "front_door_sign_in_tokens",
+    ];
+    assert_eq!(schema_tables(&url).await, expected);
+    let (_, id, session) = invited_account(&runtime, "separation-proof").await;
+    migrate();
+    runtime.migrate().await.expect("explicit migration rerun");
+    let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
+    let reopened = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
+        .await
+        .expect("reopen runtime with database-enforced read-only transactions");
+    assert_eq!(schema_tables(&url).await, expected);
+    assert_eq!(reopened.session(&session, NOW).await.unwrap(), id);
+    assert!(reopened.account(id).await.is_some());
+    assert!(
+        reopened.migrate().await.is_err(),
+        "read-only runtime cannot migrate"
+    );
 }
 
 fn patient(practice: &str, id: &str) -> RosterPatient {

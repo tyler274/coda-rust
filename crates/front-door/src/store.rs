@@ -25,8 +25,19 @@ pub struct PostgresFrontDoorStore {
 }
 
 impl PostgresFrontDoorStore {
-    /// Connects to `database_url` without applying migrations.
+    /// Connects without applying migrations; retained for existing callers.
     pub async fn connect(database_url: &str) -> Result<Self, DbErr> {
+        Self::connect_without_migrations(database_url).await
+    }
+
+    /// Opens a bounded runtime pool without creating or upgrading any schema.
+    ///
+    /// Run `front-door-migrate` with the migration identity first. This
+    /// constructor only establishes connectivity: callers must separately
+    /// check readiness before accepting traffic. It does not adopt legacy
+    /// migration records or repair tables; runtime credentials need no
+    /// schema-owner rights.
+    pub async fn connect_without_migrations(database_url: &str) -> Result<Self, DbErr> {
         let mut options = ConnectOptions::new(database_url.to_owned());
         options
             .max_connections(8)
