@@ -39,6 +39,9 @@ import org.json.JSONObject
  * the app that wrote them. This bridge does not invent a sample.
  */
 object HealthConnectBridge {
+    // Extension point for the Health Connect type list. The types below are
+    // the ones this bridge already reads. Further types wait on the list
+    // Tyler is agreeing with Dev (ENG-22) before they are added here.
     private val recordTypes: List<KClass<out androidx.health.connect.client.records.Record>> = listOf(
         StepsRecord::class,
         ActiveCaloriesBurnedRecord::class,
