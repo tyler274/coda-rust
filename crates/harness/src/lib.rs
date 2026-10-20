@@ -1,8 +1,10 @@
-//! Loads `skills/` once and answers `skill_view`.
+//! Loads `skills/` once and admits `skill_view` on a model message.
 //!
-//! This is the Rust caller for the skill catalog. It does not journal, run a
-//! model, or read patient evidence. A skill never authorizes a tool or a
-//! patient read. Book: `book/src/personal-agent-program.md`.
+//! This is the Rust caller for the skill catalog. A message is authored text
+//! plus tool calls. The only accepted tool is `skill_view`. This crate does
+//! not journal, call a model, retain a context window, or read patient
+//! evidence. A skill never authorizes a tool or a patient read. Book:
+//! `book/src/personal-agent-program.md`.
 #![deny(missing_docs)]
 
 use std::path::Path;
@@ -36,6 +38,99 @@ impl Harness {
     ) -> Result<SkillView, String> {
         agent_skills::view_skill(&self.skills, name, file_path, max_result_bytes)
     }
+
+    /// Admits one model message against the loaded catalog.
+    ///
+    /// Each call named `skill_view` whose arguments the loader can use runs
+    /// through [`Self::skill_view`] and returns that view, including an
+    /// unavailable skill or an over-budget body. Any other tool name is
+    /// refused and its arguments are not read. `skill_view` arguments the
+    /// loader rejects are refused with the loader's reason and produce no
+    /// view. A valid `skill_view` in the same message still runs. Authored
+    /// text is returned unchanged. Nothing from the message is retained.
+    pub fn admit(&self, message: &ModelMessage) -> AdmittedMessage {
+        AdmittedMessage {
+            text: message.text.clone(),
+            calls: message
+                .calls
+                .iter()
+                .map(|call| self.admit_call(call))
+                .collect(),
+        }
+    }
+
+    fn admit_call(&self, call: &ToolCall) -> AdmittedCall {
+        if call.name != "skill_view" {
+            let name = call.name.clone();
+            return AdmittedCall::Refused {
+                reason: format!("unknown tool {name}"),
+                name,
+            };
+        }
+        match self.skill_view(
+            &call.arguments.name,
+            call.arguments.file_path.as_deref(),
+            call.arguments.max_result_bytes,
+        ) {
+            Ok(view) => AdmittedCall::SkillView(view),
+            Err(reason) => AdmittedCall::Refused {
+                name: call.name.clone(),
+                reason,
+            },
+        }
+    }
+}
+
+/// Authored text and the tool calls on one model message.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ModelMessage {
+    /// Text the model authored on this message.
+    pub text: String,
+    /// Tool calls in message order.
+    pub calls: Vec<ToolCall>,
+}
+
+/// One tool call. Arguments are read only when `name` is `skill_view`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ToolCall {
+    /// Tool name as the model wrote it.
+    pub name: String,
+    /// `name`, optional file path, and max bytes.
+    pub arguments: SkillViewArguments,
+}
+
+/// The arguments [`Harness::skill_view`] already takes.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SkillViewArguments {
+    /// Skill name.
+    pub name: String,
+    /// Resource path. Absent reads the skill body.
+    pub file_path: Option<String>,
+    /// Maximum encoded result size, in bytes.
+    pub max_result_bytes: u32,
+}
+
+/// A model message after admission. Calls stay in message order.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct AdmittedMessage {
+    /// The message's authored text.
+    pub text: String,
+    /// One outcome per call.
+    pub calls: Vec<AdmittedCall>,
+}
+
+/// One tool call after admission.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum AdmittedCall {
+    /// The loader ran and returned this view.
+    SkillView(SkillView),
+    /// The call was not executed.
+    Refused {
+        /// Tool name from the call.
+        name: String,
+        /// Why the call was not executed.
+        reason: String,
+    },
 }
 
 #[cfg(test)]
@@ -106,5 +201,76 @@ mod tests {
             }
             other => panic!("expected the authoring guide, got {other:?}"),
         }
+    }
+
+    #[test]
+    fn recorded_turn_runs_skill_view_and_refuses_the_rest() {
+        let root = skills_dir();
+        let harness = Harness::load(&root).unwrap();
+        let body = fs::read_to_string(root.join("pre-visit-preparation/SKILL.md")).unwrap();
+        let bad_bytes = 1;
+        let loader_reason = harness
+            .skill_view("pre-visit-preparation", None, bad_bytes)
+            .expect_err("bytes outside 4096..=65536");
+
+        let looked_up = harness.admit(&ModelMessage {
+            text: "Reading the pre-visit skill.".to_owned(),
+            calls: vec![
+                ToolCall {
+                    name: "skill_view".to_owned(),
+                    arguments: SkillViewArguments {
+                        name: "pre-visit-preparation".to_owned(),
+                        file_path: None,
+                        max_result_bytes: 65536,
+                    },
+                },
+                ToolCall {
+                    name: "not_a_tool".to_owned(),
+                    arguments: SkillViewArguments {
+                        name: "pre-visit-preparation".to_owned(),
+                        file_path: None,
+                        max_result_bytes: 65536,
+                    },
+                },
+                ToolCall {
+                    name: "skill_view".to_owned(),
+                    arguments: SkillViewArguments {
+                        name: "pre-visit-preparation".to_owned(),
+                        file_path: None,
+                        max_result_bytes: bad_bytes,
+                    },
+                },
+            ],
+        });
+
+        assert_eq!(looked_up.text, "Reading the pre-visit skill.");
+        assert_eq!(looked_up.calls.len(), 3);
+        match &looked_up.calls[0] {
+            AdmittedCall::SkillView(SkillView::Available { content, .. }) => {
+                assert_eq!(content, &body);
+            }
+            other => panic!("expected the skill body, got {other:?}"),
+        }
+        match &looked_up.calls[1] {
+            AdmittedCall::Refused { name, reason } => {
+                assert_eq!(name, "not_a_tool");
+                assert_eq!(reason, "unknown tool not_a_tool");
+            }
+            other => panic!("expected an unknown tool to be refused, got {other:?}"),
+        }
+        match &looked_up.calls[2] {
+            AdmittedCall::Refused { name, reason } => {
+                assert_eq!(name, "skill_view");
+                assert_eq!(reason, &loader_reason);
+            }
+            other => panic!("expected a bad skill_view to be refused, got {other:?}"),
+        }
+
+        let finished = harness.admit(&ModelMessage {
+            text: "Nothing else to look up.".to_owned(),
+            calls: Vec::new(),
+        });
+        assert_eq!(finished.text, "Nothing else to look up.");
+        assert!(finished.calls.is_empty());
     }
 }
