@@ -250,6 +250,8 @@ jobs:
           key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock') }}
           restore-keys: |
             postgres-${{ runner.os }}-
+      - name: Check authored SQL formatting
+        run: nix develop --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
