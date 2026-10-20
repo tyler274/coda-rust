@@ -12,14 +12,25 @@ permissions:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    # Blacksmith runner (ENG-76): same image as GitHub's ubuntu-24.04, and
+    # actions/cache talks to Blacksmith's colocated cache with no change.
+    # Roll back by setting runs-on to ubuntu-latest again.
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
       # Preinstalled SDKs are unused here and leave no room to archive target
-      # beside itself (run 39309157954, ENOSPC during cache save).
+      # beside itself (run 39309157954, ENOSPC during cache save). The build,
+      # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
+      # (run 39452707783), so 40 GiB free skips the two-minute delete.
       - name: Free runner disk
         run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -ge 40 ]; then
+            echo "${avail_gib} GiB free; skipping SDK removal"
+            exit 0
+          fi
           sudo rm -rf \
             /usr/share/dotnet \
             /usr/local/lib/android \
@@ -176,13 +187,22 @@ jobs:
         run: |
           echo "::error::Compiled target did not fit beside its archive. Registry was saved under a separate key; this run did not cache build artifacts."
           exit 1
-      # Debug and wasm artifacts from the proofs fill the runner disk.
-      # Documentation does not need them. A full proof target left no room
-      # to compile mdbook (run 38686057176, ENOSPC). That install is now a
-      # prebuilt binary. cargo doc beside the proof target is still
-      # unmeasured, so this clean stays. The cache is saved first.
+      # A full proof target once left no room to compile mdbook (run
+      # 38686057176, ENOSPC). mdbook is now a prebuilt binary. After the
+      # clean, cargo doc recompiled 215 crates (2.5 min, run 39452707783).
+      # With the cache saved, 30 GB was still free at this point on
+      # ubuntu-latest. The clean runs only when free space drops under
+      # 15 GiB, so docs can reuse the dependency metadata already built.
       - name: Free build artifacts
-        run: cargo clean
+        run: |
+          df -h /
+          avail_gib=$(( $(df -B1 --output=avail / | awk 'NR==2 { print $1 }') / 1073741824 ))
+          if [ "$avail_gib" -lt 15 ]; then
+            echo "${avail_gib} GiB free; cleaning target before docs"
+            cargo clean
+          else
+            echo "${avail_gib} GiB free; keeping target for cargo doc"
+          fi
       - name: Check the Doppler installer
         run: bash -n scripts/gcp/install_doppler.sh
       - name: Build the book and the rustdoc
@@ -194,7 +214,7 @@ jobs:
   # deny.toml is the single policy file; the nix dev shell carries the same
   # cargo-deny so `nix develop --command cargo deny check` matches this job.
   cargo-deny:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Check out repository
         uses: actions/checkout@v7

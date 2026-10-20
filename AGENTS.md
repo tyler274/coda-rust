@@ -43,4 +43,6 @@ Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`,
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
+CI runs on Blacksmith runners (`blacksmith-2vcpu-ubuntu-2404`), which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. `.actrc` maps that label to the `act` image, and [`.github/actionlint.yaml`](.github/actionlint.yaml) declares it. To roll back, set `runs-on` to `ubuntu-latest`.
+
 React and SwiftUI remain the shipping clients until a journey matches them. Do not claim a production cutover, a TestFlight release, or a physician production deploy from this repository.
