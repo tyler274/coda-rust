@@ -1,6 +1,6 @@
 # Duet behaviour contract (confirmed by Dev, Oct 4)
 
-Rule A, phone health, is read by [`duet-health`](/crates/duet-health/src/lib.rs) when Health Connect has granted it. The other rules still belong to the Python backend and the Swift app. The formal model that checks them is `submodules/coda-app/formal`.
+Rule A, phone health, is read by [`duet-health`](/crates/duet-health/src/lib.rs) when Health Connect has granted it. The other rules still belong to the Python backend and the Swift app. The [formal model](formal-model.md) that used to check them is retired upstream.
 
 - <a href="/submodules/coda-app/docs/behaviour-contract%2Emd#duet-behaviour-contract-confirmed-by-dev-oct-4">Duet behaviour contract (confirmed by Dev, Oct 4)</a>
 - <a href="/submodules/coda-app/docs/behaviour-contract%2Emd#who-acts">Who acts</a>

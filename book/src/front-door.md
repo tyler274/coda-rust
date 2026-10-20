@@ -21,38 +21,11 @@ The Postgres journey (invite → redeem → link → premium read) is proved by 
 
 Identity is email-based for now. Whether Duet accounts keep a shared email magic-link provider or move to Sign in with Apple is an open Discuss-with-Dev item.
 
-## Product doc rows to mirror (hoisted)
+## Where the product rules live
 
-The canonical product docs live in the product repositories — the [Duet North
-Star](https://github.com/Coda-Health/coda-app) in coda-app and the
-[coda-agents architecture and care-team contract](https://github.com/Coda-Health/coda-agents)
-in coda-agents. Those sources win over this section. Because submodules are
-read-only reference here (see [agent contracts, hoisted](agent-contracts.md)),
-the doc rows that the [Bridge outline](https://linear.app/coda-health/document/bridge-technical-outline-6206e6c1af4c)
-asks to update as this slice lands are hoisted below so work in this workspace
-can follow them; a change in a product repo should be mirrored here, and a
-disagreement is a bug in this section.
+This page covers the Rust implementation only. The product rules this slice touches belong to the product repositories, and they win over this page:
 
-**Duet North Star rows:**
+- Duet North Star: <a href="/submodules/coda-app/docs/north-star%2Emd#backend-and-ownership">Backend and ownership</a>, <a href="/submodules/coda-app/docs/north-star%2Emd#privacy-consent-and-learning">Privacy, consent, and learning</a>, <a href="/submodules/coda-app/docs/north-star%2Emd#identity-and-setup">Identity and setup</a>, and <a href="/submodules/coda-app/docs/north-star%2Emd#coda-agents-boundary">Coda Agents boundary</a>.
+- Coda Agents: the deferred Apple Health and Duet data line in <a href="/submodules/coda-agents/docs/readiness%2Emd#patient-messaging-design">readiness</a>, and the <a href="/submodules/coda-agents/docs/ai-care-team-operating-contract%2Emd#intended-initial-weekly-cadence">intended initial weekly cadence</a>.
 
-- **Backend and ownership.** The front door owns who the patient is, the
-  Duet-account-to-roster-patient link, consent, and premium; Duet reads only
-  which premium features are on and never stores billing.
-- **Privacy, consent, and "for my doctor".** Joining Duet now starts from a
-  practice-issued invitation; stopping sharing is one step, and what was
-  already shared stays as dated evidence in the physician's record.
-- **Identity and setup.** Identity is email magic-link based for now; Sign in
-  with Apple versus a shared provider is an open Discuss-with-Dev item.
-- **Stale row.** "No v1 Duet capability depends on that bridge" no longer
-  holds for join, consent, and premium: Duet's join screen and share toggle
-  depend on the front door.
-
-**Coda Agents rows:**
-
-- **Deferred row, qualified.** "Apple Health and Duet data is deferred" no
-  longer covers the front door: the slice carrying Duet consent and the
-  roster link has landed, while the evidence bridge itself stays deferred.
-- **New rule: per-patient cadence.** Agents reads a per-patient cadence
-  setting from the front door — `weekly` for every patient, plus a daily
-  check that runs a full review only when something changed for paying
-  patients. Agents never learns who pays.
+The [Bridge technical outline](https://linear.app/coda-health/document/bridge-technical-outline-6206e6c1af4c) in Linear lists the upstream rows that this slice changes. Those rows land through each product repository's own change process, not as copies here.
