@@ -226,6 +226,81 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Opens one source cited on a conversation message.
+    pub async fn message_source(
+        &self,
+        message_id: uuid::Uuid,
+        source_id: &str,
+    ) -> Result<duet_wire::models::ConversationSourceDetail, String> {
+        duet_wire::apis::conversation_api::message_source_api_conversation_messages_message_id_sources_source_id_get(
+            &self.configuration,
+            &message_id.to_string(),
+            source_id,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Replaces the visible title of an existing library row.
+    ///
+    /// The correction is a new evidence upsert whose payload names the row it
+    /// corrects. A second plain upsert of the same id stays the first write.
+    pub async fn correct_evidence(
+        &self,
+        target_id: &str,
+        entity: duet_wire::models::evidence_item::Entity,
+        title: &str,
+    ) -> Result<(), String> {
+        let mut payload = std::collections::HashMap::new();
+        payload.insert(
+            "corrects".to_owned(),
+            serde_json::Value::String(target_id.to_owned()),
+        );
+        payload.insert(
+            "source_label".to_owned(),
+            serde_json::Value::String("Added in Duet".to_owned()),
+        );
+        match entity {
+            duet_wire::models::evidence_item::Entity::HealthEvidence => {
+                payload.insert(
+                    "display_name".to_owned(),
+                    serde_json::Value::String(title.to_owned()),
+                );
+                payload.insert(
+                    "concept_id".to_owned(),
+                    serde_json::Value::String("medication:manual".to_owned()),
+                );
+            }
+            duet_wire::models::evidence_item::Entity::ClinicalNote => {
+                payload.insert(
+                    "title".to_owned(),
+                    serde_json::Value::String(title.to_owned()),
+                );
+            }
+        }
+        self.store_evidence(uuid::Uuid::new_v4(), entity, payload)
+            .await
+    }
+
+    /// Removes one library row. The id is the library entry id.
+    pub async fn delete_evidence(
+        &self,
+        id: &str,
+        entity: duet_wire::models::evidence_item::Entity,
+    ) -> Result<(), String> {
+        let mut item = duet_wire::models::EvidenceItem::new(entity, id.to_owned());
+        item.operation = Some(duet_wire::models::evidence_item::Operation::Delete);
+        let mut request = duet_wire::models::EvidenceBatchRequest::new();
+        request.items = Some(vec![item]);
+        duet_wire::apis::default_api::ingest_evidence_api_evidence_post(
+            &self.configuration,
+            request,
+        )
+        .await
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+    }
+
     /// Lists saved Plans.
     pub async fn list_saved_routines(&self) -> Result<duet_wire::models::SavedRoutineList, String> {
         duet_wire::apis::saved_routines_api::list_saved_routines_api_saved_routines_get(

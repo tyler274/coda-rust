@@ -1,9 +1,11 @@
 //! Physician projections for the Roger synthetic practice.
 //!
 //! The FHIR corpus stays in coda-agents. These files are the physician JSON the
-//! React site already renders. With `CODA_LOCAL_MODEL_EXECUTION` unset, commands
-//! are rejected and no model runs. `api` answers `message.submit` through the
-//! Rust local product. `PHYSICIAN_UPSTREAM` still forwards physician routes to
+//! React site already renders. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`:
+//! `message.submit` runs through the Codex CLI (`codex login`) and does not
+//! read an API key. `record` and `replay` use a cassette on that same path.
+//! `api` answers `message.submit` through OpenAI Responses. Projections stay
+//! on the recording. `PHYSICIAN_UPSTREAM` still forwards physician routes to
 //! the Node server when api mode is unset. The same server serves the Dioxus
 //! page, which mounts into `#main`.
 //! Book: `book/src/north-star.md`.
@@ -467,33 +469,85 @@ pub async fn serve_with_store(
 fn router_from_env() -> Result<Router, String> {
     let execution =
         local_product::model_execution(env::var("CODA_LOCAL_MODEL_EXECUTION").ok().as_deref())?;
-    if execution != local_product::ModelExecution::Api {
+    if execution != local_product::ModelExecution::Api
+        && (simulation_scenario_from_env().is_some() || upstream_from_env().is_some())
+    {
         return Ok(router());
     }
-    let key = local_product::open_ai_api_key(
-        env::var("CODA_ALLOW_MODEL_CALLS").ok().as_deref(),
-        env::var("OPENAI_API_KEY").ok().as_deref(),
-    )?;
+    let allow = env::var("CODA_ALLOW_MODEL_CALLS").ok();
+    let key = env::var("OPENAI_API_KEY").ok();
+    let authorization = env::var("CODA_CASSETTE_AUTHORIZATION").ok();
+    let output = env::var("CODA_CASSETTE_OUTPUT").ok();
+    let cassette = env::var("CODA_CASSETTE_PATH").ok();
     let owned = role_environment();
     let environment: Vec<(&str, &str)> = owned
         .iter()
         .map(|(key, value)| (*key, value.as_str()))
         .collect();
-    let roles = local_product::model_roles("openai-responses", &environment)?;
-    eprintln!(
-        "Model execution: api via OpenAI Responses (chat {} {}; background {} {}; worker {} {}; linking {} {})",
-        roles.chat.model,
-        roles.chat.effort,
-        roles.background.model,
-        roles.background.effort,
-        roles.worker.model,
-        roles.worker.effort,
-        roles.linking.model,
-        roles.linking.effort,
-    );
-    Ok(live_router(live::ChatModel::OpenAi {
-        key,
+    model_router(
+        execution,
+        allow.as_deref(),
+        key.as_deref(),
+        local_product::codex::CodexSettings {
+            cassette_authorization: authorization.as_deref(),
+            cassette_output: output.as_deref(),
+            cassette_path: cassette.as_deref(),
+        },
+        &environment,
+    )
+}
+
+fn model_router(
+    execution: local_product::ModelExecution,
+    allow: Option<&str>,
+    key: Option<&str>,
+    settings: local_product::codex::CodexSettings<'_>,
+    environment: &[(&str, &str)],
+) -> Result<Router, String> {
+    if execution == local_product::ModelExecution::Api {
+        let key = local_product::open_ai_api_key(allow, key)?;
+        let roles = local_product::model_roles("openai-responses", environment)?;
+        eprintln!(
+            "Model execution: api via OpenAI Responses (chat {} {}; background {} {}; worker {} {}; linking {} {})",
+            roles.chat.model,
+            roles.chat.effort,
+            roles.background.model,
+            roles.background.effort,
+            roles.worker.model,
+            roles.worker.effort,
+            roles.linking.model,
+            roles.linking.effort,
+        );
+        return Ok(live_router(live::ChatModel::OpenAi {
+            key,
+            binding: roles.chat,
+        })
+        .layer(middleware::from_fn(cors)));
+    }
+    let transport = local_product::codex::open_codex(execution, settings)?;
+    let roles = local_product::model_roles("codex-exec", environment)?;
+    match execution {
+        local_product::ModelExecution::Live => eprintln!(
+            "Model execution: live via Codex CLI (chat {} {}). Sign in with `codex login`. No API key is read.",
+            roles.chat.model, roles.chat.effort
+        ),
+        local_product::ModelExecution::Record => eprintln!(
+            "Model execution: record via Codex CLI (chat {} {}). Sign in with `codex login`. Cassette: {}.",
+            roles.chat.model,
+            roles.chat.effort,
+            settings.cassette_output.unwrap_or("")
+        ),
+        local_product::ModelExecution::Replay => eprintln!(
+            "Model execution: replay via Codex cassette (chat {} {}). Cassette: {}. No CLI call and no API key.",
+            roles.chat.model,
+            roles.chat.effort,
+            settings.cassette_path.unwrap_or("")
+        ),
+        local_product::ModelExecution::Api => unreachable!("api is handled above"),
+    }
+    Ok(live_router(live::ChatModel::Codex {
         binding: roles.chat,
+        transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
     })
     .layer(middleware::from_fn(cors)))
 }
@@ -888,6 +942,96 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK);
         assert!(rejected.contains("Coda couldn’t resume that work."));
+    }
+
+    #[tokio::test]
+    async fn replay_answers_chat_from_a_cassette_without_an_api_key() {
+        let dir =
+            std::env::temp_dir().join(format!("coda-physician-cassette-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("cassette.json");
+        let roles = local_product::model_roles("codex-exec", &[]).unwrap();
+        let mut session = local_product::ChatSession::new(roles.chat);
+        let recorded = match session.submit("record-1", "pw", "chat", "Hello") {
+            local_product::Submit::Accepted { request } => request,
+            other => panic!("expected a recorded turn, got {other:?}"),
+        };
+        let mut recording = local_product::codex::CodexTransport::recording(
+            Box::new(ScriptedReply("Noted from the cassette.")),
+            "synthetic test",
+            path.clone(),
+        )
+        .unwrap();
+        assert_eq!(
+            recording.complete(&recorded).unwrap(),
+            "Noted from the cassette."
+        );
+        let app = model_router(
+            local_product::ModelExecution::Replay,
+            None,
+            None,
+            local_product::codex::CodexSettings {
+                cassette_authorization: None,
+                cassette_output: None,
+                cassette_path: Some(path.to_str().unwrap()),
+            },
+            &[],
+        )
+        .unwrap()
+        .layer(middleware::from_fn(cors));
+        let live = model_router(
+            local_product::ModelExecution::Live,
+            None,
+            None,
+            local_product::codex::CodexSettings::default(),
+            &[],
+        )
+        .unwrap();
+        let (status, health) = request(live, "GET", "/health", Body::empty()).await;
+        assert_eq!(status, StatusCode::OK, "{health}");
+        assert!(
+            model_router(
+                local_product::ModelExecution::Api,
+                None,
+                None,
+                local_product::codex::CodexSettings::default(),
+                &[],
+            )
+            .unwrap_err()
+            .contains("CODA_ALLOW_MODEL_CALLS=1")
+        );
+        let submit = r#"{"type":"message.submit","idempotency_key":"k-replay","payload":{"patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","chat_id":"chat-1","text":"Hello","physician_time_zone":"America/New_York"}}"#;
+        let (status, accepted) =
+            request(app.clone(), "POST", "/commands", Body::from(submit)).await;
+        assert_eq!(status, StatusCode::OK, "{accepted}");
+        assert!(accepted.contains("\"outcome\":\"accepted\""));
+        let snapshot_path =
+            "/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/chat-1/snapshot";
+        let mut snapshot = String::new();
+        for _ in 0..50 {
+            let (status, body) = request(app.clone(), "GET", snapshot_path, Body::empty()).await;
+            assert_eq!(status, StatusCode::OK);
+            snapshot = body;
+            if snapshot.contains("Noted from the cassette.") {
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+        assert!(snapshot.contains("Hello"), "{snapshot}");
+        assert!(snapshot.contains("Noted from the cassette."), "{snapshot}");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    struct ScriptedReply(&'static str);
+
+    impl local_product::codex::CodexExecutor for ScriptedReply {
+        fn run(
+            &mut self,
+            _request: &local_product::codex::CodexRequest,
+        ) -> Result<local_product::codex::CodexProcessResult, String> {
+            Ok(local_product::codex::CodexProcessResult::authored(self.0))
+        }
     }
 
     #[tokio::test]

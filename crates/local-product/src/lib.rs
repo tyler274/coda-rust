@@ -2,9 +2,11 @@
 //!
 //! The coda-agents checkout is the reference and is not modified. Chat,
 //! background, worker, and linking use the same bindings as
-//! `modelRoleConfiguration.ts`. `api` calls OpenAI Responses. The key is an
-//! argument from the environment; this crate does not read it from disk and
-//! does not call the provider.
+//! `modelRoleConfiguration.ts`. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`:
+//! physician chat runs through the Codex CLI subscription (`codex login`).
+//! `record` and `replay` use that same path and a cassette. They do not read
+//! an API key. `api` calls OpenAI Responses. The key is an argument from the
+//! environment; this crate does not read it from disk.
 //! Book: `book/src/north-star.md`.
 #![deny(missing_docs)]
 
@@ -14,6 +16,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
+pub mod codex;
 pub mod simulation;
 pub use simulation::*;
 

@@ -95,8 +95,14 @@ if [ -z "$java_dir" ] || [ ! -f "$bridge" ]; then
   echo "Health Connect bridge or generated manifest is missing" >&2
   exit 1
 fi
+notify="$root/platform/android/NotificationBridge.kt"
+if [ ! -f "$notify" ]; then
+  echo "the Android notification bridge is missing" >&2
+  exit 1
+fi
 mkdir -p "$java_dir/java/coda/duet"
 cp "$bridge" "$java_dir/java/coda/duet/HealthConnectBridge.kt"
+cp "$notify" "$java_dir/java/coda/duet/NotificationBridge.kt"
 app_gradle=$(find target/dx/mobile -path '*/app/build.gradle.kts' ! -path '*/build/*' | while IFS= read -r path; do
   if grep -q 'androidx.webkit' "$path"; then
     printf '%s\n' "$path"
@@ -108,6 +114,9 @@ if [ -z "$app_gradle" ]; then
 fi
 if ! grep -q 'connect-client' "$app_gradle"; then
   sed -i 's/dependencies {/dependencies {\n    implementation("androidx.health.connect:connect-client:1.1.0-alpha11")\n    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")/' "$app_gradle"
+fi
+if ! grep -q 'androidx.core:core' "$app_gradle"; then
+  sed -i 's/dependencies {/dependencies {\n    implementation("androidx.core:core-ktx:1.15.0")/' "$app_gradle"
 fi
 # UI Automator is copied in for the same reason: dx regenerates this project.
 test_src="$root/platform/android/ModeShellTest.kt"
@@ -160,6 +169,15 @@ if ! grep -q 'android.permission.health.READ_STEPS' "$manifest"; then
     <queries>\
         <package android:name="com.google.android.apps.healthdata" />\
     </queries>' "$manifest"
+fi
+if ! grep -q 'android.permission.POST_NOTIFICATIONS' "$manifest"; then
+  sed -i '/android.permission.INTERNET/a\
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />' "$manifest"
+fi
+if ! grep -q 'coda.duet.InsightAlertReceiver' "$manifest"; then
+  sed -i 's|</application>|    <receiver android:name="coda.duet.InsightAlertReceiver" android:exported="false" />\
+    </application>|' "$manifest"
 fi
 if ! grep -q 'VIEW_PERMISSION_USAGE' "$manifest"; then
   sed -i 's|</activity>|    <intent-filter>\

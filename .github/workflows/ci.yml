@@ -7,23 +7,81 @@ on:
 
 permissions:
   contents: read
+  # Saving the Rust build cache needs this. The default token is contents-only.
+  actions: write
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+      # Preinstalled SDKs are unused here and leave no room to archive target
+      # beside itself (run 39309157954, ENOSPC during cache save).
+      - name: Free runner disk
+        run: |
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache \
+            /usr/local/share/boost \
+            /usr/share/swift \
+            /usr/local/share/powershell \
+            /usr/local/share/chromium \
+            /usr/local/.ghcup
+          sudo docker image prune --all --force || true
+          df -h
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
           targets: wasm32-unknown-unknown
+      # Release binaries, not `cargo install`. wasm-bindgen 0.2.129 matches
+      # flake `wasm-bindgen-cli_0_2_129`. mdbook 0.4.52 is the pin this job
+      # already compiled. The locked nixpkgs mdbook is newer; CI stays on
+      # the version the book build already runs.
       - name: Install wasm-bindgen
-        run: cargo install wasm-bindgen-cli --version 0.2.129 --locked
+        run: |
+          version=0.2.129
+          archive="wasm-bindgen-${version}-x86_64-unknown-linux-musl.tar.gz"
+          url="https://github.com/wasm-bindgen/wasm-bindgen/releases/download/${version}/${archive}"
+          curl -fsSL "$url" -o "/tmp/${archive}"
+          echo "82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e  /tmp/${archive}" | sha256sum -c -
+          tar -xzf "/tmp/${archive}" -C /tmp
+          install -m 755 "/tmp/wasm-bindgen-${version}-x86_64-unknown-linux-musl/wasm-bindgen" "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
+          wasm-bindgen --version
+      - name: Install mdBook
+        run: |
+          version=0.4.52
+          archive="mdbook-v${version}-x86_64-unknown-linux-gnu.tar.gz"
+          url="https://github.com/rust-lang/mdBook/releases/download/v${version}/${archive}"
+          curl -fsSL "$url" -o "/tmp/${archive}"
+          echo "c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768  /tmp/${archive}" | sha256sum -c -
+          tar -xzf "/tmp/${archive}" -C /tmp
+          install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
+          mdbook --version
+      - name: Rustc version
+        id: rustc
+        run: |
+          version="$(rustc -vV | awk '/^release:/{r=$2} /^commit-hash:/{c=$2} END{print r "-" substr(c,1,12)}')"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+      - name: Restore Rust build cache
+        id: rust-cache
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-
+            rust-v2-${{ runner.os }}-
       - name: Install Chromium
         id: chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         with:
           install-dependencies: true
       - name: Check formatting
@@ -48,12 +106,83 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test -p mobile --test mode --test browser --test duet_journey
+      # The archive is written beside target, so free space has to hold that
+      # second copy. Drop proof outputs, then build-script dirs if it is
+      # still tight. Registry is always saved. A target that does not fit
+      # is not saved under the primary key, and the job fails.
+      - name: Prepare Rust cache payload
+        id: cache-payload
+        if: steps.rust-cache.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          rm -rf target/wasm32-unknown-unknown target/debug/incremental target/doc target/debug/examples
+          if [ -d target/debug ]; then
+            find target/debug -maxdepth 1 -type f -delete
+          fi
+          sudo rm -rf /opt/hostedtoolcache/setup-chrome || true
+          free_bytes() { df -B1 --output=avail / | awk 'NR==2 { print $1 }'; }
+          payload_bytes() {
+            local bytes=0 path size
+            for path in "$HOME/.cargo/registry/index" "$HOME/.cargo/registry/cache" "$HOME/.cargo/git/db" ${1:+target}; do
+              if [ -e "$path" ]; then
+                size="$(du -sb "$path" | awk '{ print $1 }')"
+                bytes=$((bytes + size))
+              fi
+            done
+            echo "$bytes"
+          }
+          fits() {
+            local payload free need
+            payload="$(payload_bytes "$1")"
+            free="$(free_bytes)"
+            # zstd of these artifacts is smaller than the payload. Require
+            # two thirds plus 1 GiB so the archive is not written into a full disk.
+            need=$((payload * 2 / 3 + 1073741824))
+            echo "include_target=${1:-false} payload=${payload} free=${free} need=${need}"
+            [ "$free" -ge "$need" ]
+          }
+          include_target=true
+          if ! fits true; then
+            rm -rf target/debug/build
+            if ! fits true; then
+              include_target=false
+              rm -rf target
+              fits false || true
+            fi
+          fi
+          echo "include_target=${include_target}" >> "$GITHUB_OUTPUT"
+          df -h
+      - name: Save Rust build cache
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}
+      - name: Save cargo registry without target
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+          key: ${{ steps.rust-cache.outputs.cache-primary-key }}-registry
+      - name: Require the dependency target in the cache
+        if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
+        run: |
+          echo "::error::Compiled target did not fit beside its archive. Registry was saved under a separate key; this run did not cache build artifacts."
+          exit 1
       # Debug and wasm artifacts from the proofs fill the runner disk.
-      # Documentation does not need them.
+      # Documentation does not need them. A full proof target left no room
+      # to compile mdbook (run 38686057176, ENOSPC). That install is now a
+      # prebuilt binary. cargo doc beside the proof target is still
+      # unmeasured, so this clean stays. The cache is saved first.
       - name: Free build artifacts
         run: cargo clean
-      - name: Install mdBook
-        run: cargo install mdbook --version 0.4.52 --locked
       - name: Check the Doppler installer
         run: bash -n scripts/gcp/install_doppler.sh
       - name: Build the book and the rustdoc
@@ -68,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Check dependency guardrails
         uses: EmbarkStudios/cargo-deny-action@v2
         with:

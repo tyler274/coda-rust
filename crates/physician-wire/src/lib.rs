@@ -455,6 +455,9 @@ pub struct PatientWorkspaceResponse {
     /// The `active_follow_ups` value.
     pub active_follow_ups: Vec<FollowUp>,
     #[serde(default)]
+    /// Whether this workspace has past work. The recording sets the flag and does not include history items.
+    pub has_past_work: bool,
+    #[serde(default)]
     /// When Coda last completed a review of the patient's whole care.
     pub last_reviewed_at: Option<String>,
     #[serde(default)]

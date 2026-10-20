@@ -1,7 +1,8 @@
-//! Alert permission and one local insight alert for the iPhone.
+//! Alert permission and one local insight alert.
 //! Only the Duet app imports this crate.
 //! The Swift binding is `platform/ios/NotificationBridge.swift`.
-//! A host or Android build has no center, schedules nothing, and does not invent a token.
+//! Android local alerts go through `platform/android/NotificationBridge.kt`.
+//! A host build has no center and schedules nothing. Android does not create a remote token.
 //! Book: `book/src/behaviour-contract.md`.
 #![deny(missing_docs)]
 
@@ -22,7 +23,7 @@ pub enum AlertState {
     Denied,
     /// The notification center could not be read.
     Unreadable,
-    /// This build has no iPhone notification center.
+    /// This build has no notification center.
     NoCenter,
 }
 
@@ -63,7 +64,7 @@ impl AlertSnapshot {
     }
 }
 
-/// Reads and requests iPhone notification alerts.
+/// Reads and requests notification alerts on this phone.
 #[derive(Debug, Default, Clone, Copy)]
 pub struct PlatformAlerts;
 
@@ -74,7 +75,11 @@ impl PlatformAlerts {
         {
             return ios_snapshot();
         }
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(target_os = "android")]
+        {
+            return android_snapshot();
+        }
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             AlertSnapshot {
                 state: AlertState::NoCenter,
@@ -86,9 +91,12 @@ impl PlatformAlerts {
     pub fn request_access(&self) {
         #[cfg(target_os = "ios")]
         ios_request();
+        #[cfg(target_os = "android")]
+        android_request();
     }
 
     /// Asks iOS to register for remote notifications. The token is not uploaded.
+    /// Android local alerts do not register a remote token.
     pub fn register_remote(&self) {
         #[cfg(target_os = "ios")]
         ios_register_remote();
@@ -100,17 +108,23 @@ impl PlatformAlerts {
         {
             return ios_last_planned();
         }
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(target_os = "android")]
+        {
+            return android_last_planned();
+        }
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             None
         }
     }
 
-    /// Submits one insight alert. A host or Android build does nothing.
+    /// Submits one insight alert. A host build does nothing.
     pub fn submit_insight(&self, delivery: &InsightDelivery) {
         #[cfg(target_os = "ios")]
         ios_submit(delivery);
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(target_os = "android")]
+        android_submit(delivery);
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             let _ = delivery;
         }
@@ -122,7 +136,11 @@ impl PlatformAlerts {
         {
             return ios_insights_enabled();
         }
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(target_os = "android")]
+        {
+            return android_insights_enabled();
+        }
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             false
         }
@@ -131,14 +149,18 @@ impl PlatformAlerts {
     /// Turns new insight notifications on or off.
     ///
     /// Turning them on asks for alerts when none have been asked, and saves
-    /// only when alerts are allowed. A host or Android build cannot turn them on.
+    /// only when alerts are allowed. A host build cannot turn them on.
     /// The returned value is whether they are on after the call.
     pub fn set_insights(&self, enabled: bool) -> bool {
         #[cfg(target_os = "ios")]
         {
             return ios_set_insights(enabled);
         }
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(target_os = "android")]
+        {
+            return android_set_insights(enabled);
+        }
+        #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             let _ = enabled;
             false
@@ -149,12 +171,16 @@ impl PlatformAlerts {
     pub fn cancel_insight(&self) {
         #[cfg(target_os = "ios")]
         ios_cancel_insight();
+        #[cfg(target_os = "android")]
+        android_cancel();
     }
 
     /// Opens the system Settings page for this app.
     pub fn open_settings(&self) {
         #[cfg(target_os = "ios")]
         ios_open_settings();
+        #[cfg(target_os = "android")]
+        android_open_settings();
     }
 }
 
@@ -226,9 +252,24 @@ pub fn plan_insight_delivery<Tz: TimeZone>(
     })
 }
 
+/// The JSON body the Android bridge schedules from one delivery.
+#[cfg(any(test, target_os = "android"))]
+fn insight_schedule_json(delivery: &InsightDelivery) -> String {
+    format!(
+        r#"{{"identifier":"{}","year":{},"month":{},"day":{},"hour":{},"minute":{},"cycle_id":"{}"}}"#,
+        delivery.identifier,
+        delivery.year,
+        delivery.month,
+        delivery.day,
+        delivery.hour,
+        delivery.minute,
+        delivery.cycle_id
+    )
+}
+
 /// Maps a notification status code onto the alert snapshot.
 /// An unknown or empty code is unreadable, not a denial.
-#[cfg(any(test, target_os = "ios"))]
+#[cfg(any(test, target_os = "ios", target_os = "android"))]
 fn alert_snapshot(code: &str) -> AlertSnapshot {
     let state = match code {
         "not_determined" => AlertState::NotDetermined,
@@ -362,6 +403,153 @@ fn bridge_string(
     text
 }
 
+#[cfg(target_os = "android")]
+fn android_snapshot() -> AlertSnapshot {
+    match android_call("status", "()Ljava/lang/String;", None) {
+        Ok(code) => alert_snapshot(&code),
+        Err(_) => AlertSnapshot {
+            state: AlertState::Unreadable,
+        },
+    }
+}
+
+#[cfg(target_os = "android")]
+fn android_request() {
+    let _ = android_call("requestPermission", "()V", None);
+}
+
+#[cfg(target_os = "android")]
+fn android_last_planned() -> Option<Uuid> {
+    let text = android_call("lastPlanned", "()Ljava/lang/String;", None).ok()?;
+    Uuid::parse_str(&text).ok()
+}
+
+#[cfg(target_os = "android")]
+fn android_submit(delivery: &InsightDelivery) {
+    let _ = android_call(
+        "schedule",
+        "(Landroid/content/Context;Ljava/lang/String;)V",
+        Some(&insight_schedule_json(delivery)),
+    );
+}
+
+#[cfg(target_os = "android")]
+fn android_insights_enabled() -> bool {
+    android_call("insightsEnabled", "()Ljava/lang/String;", None)
+        .ok()
+        .is_some_and(|value| value == "true")
+}
+
+#[cfg(target_os = "android")]
+fn android_set_insights(enabled: bool) -> bool {
+    let flag = if enabled { "true" } else { "false" };
+    android_call(
+        "setInsights",
+        "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+        Some(flag),
+    )
+    .ok()
+    .is_some_and(|value| value == "true")
+}
+
+#[cfg(target_os = "android")]
+fn android_cancel() {
+    let _ = android_call("cancelInsights", "()V", None);
+}
+
+#[cfg(target_os = "android")]
+fn android_open_settings() {
+    let _ = android_call("openSettings", "()V", None);
+}
+
+#[cfg(target_os = "android")]
+fn android_call(method: &str, signature: &str, extra: Option<&str>) -> Result<String, String> {
+    use jni::objects::{JClass, JObject, JString, JValue};
+    let ctx = ndk_context::android_context();
+    let vm =
+        unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }.map_err(|error| error.to_string())?;
+    let mut env = vm
+        .attach_current_thread()
+        .map_err(|error| error.to_string())?;
+    let context = unsafe { JObject::from_raw(ctx.context().cast()) };
+    let result = (|| -> Result<String, String> {
+        let activity_class = env
+            .get_object_class(&context)
+            .map_err(|error| error.to_string())?;
+        let loader = env
+            .call_method(
+                activity_class,
+                "getClassLoader",
+                "()Ljava/lang/ClassLoader;",
+                &[],
+            )
+            .map_err(|error| error.to_string())?
+            .l()
+            .map_err(|error| error.to_string())?;
+        let class_name = env
+            .new_string("coda.duet.NotificationBridge")
+            .map_err(|error| error.to_string())?;
+        let bridge = env
+            .call_method(
+                loader,
+                "loadClass",
+                "(Ljava/lang/String;)Ljava/lang/Class;",
+                &[JValue::Object(&class_name)],
+            )
+            .map_err(|error| error.to_string())?
+            .l()
+            .map_err(|error| error.to_string())?;
+        let bridge = JClass::from(bridge);
+        let argument = extra
+            .map(|text| env.new_string(text))
+            .transpose()
+            .map_err(|error| error.to_string())?;
+        let returns_void = signature.ends_with(")V");
+        let value = if let Some(argument) = argument.as_ref() {
+            let full = if returns_void {
+                "(Landroid/content/Context;Ljava/lang/String;)V"
+            } else {
+                "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;"
+            };
+            env.call_static_method(
+                bridge,
+                method,
+                full,
+                &[JValue::Object(&context), JValue::Object(argument)],
+            )
+        } else if returns_void {
+            env.call_static_method(
+                bridge,
+                method,
+                "(Landroid/content/Context;)V",
+                &[JValue::Object(&context)],
+            )
+        } else {
+            env.call_static_method(
+                bridge,
+                method,
+                "(Landroid/content/Context;)Ljava/lang/String;",
+                &[JValue::Object(&context)],
+            )
+        }
+        .map_err(|error| error.to_string())?;
+        if returns_void {
+            return Ok(String::new());
+        }
+        let object = value.l().map_err(|error| error.to_string())?;
+        let jstring = JString::from(object);
+        let text = env
+            .get_string(&jstring)
+            .map_err(|error| error.to_string())?;
+        Ok(text.to_str().map_err(|error| error.to_string())?.to_owned())
+    })();
+    if env.exception_check().unwrap_or(false) {
+        env.exception_clear().ok();
+    }
+    std::mem::forget(context);
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -466,6 +654,18 @@ mod tests {
         let now = offset.with_ymd_and_hms(2026, 10, 11, 8, 0, 0).unwrap();
         let cycle = Uuid::from_u128(2);
         assert!(plan_insight_delivery(now, &[(cycle, true)], Some(cycle)).is_none());
+    }
+
+    #[test]
+    fn an_insight_delivery_names_the_android_alarm() {
+        let offset = chrono::FixedOffset::east_opt(0).unwrap();
+        let now = offset.with_ymd_and_hms(2026, 10, 11, 8, 0, 0).unwrap();
+        let cycle = Uuid::nil();
+        let delivery = plan_insight_delivery(now, &[(cycle, true)], None).unwrap();
+        let body = insight_schedule_json(&delivery);
+        assert!(body.contains("\"identifier\":\"health.duet.notification.daily.2026-10-11\""));
+        assert!(body.contains("\"hour\":9"));
+        assert!(body.contains(&format!("\"cycle_id\":\"{cycle}\"")));
     }
 
     #[test]
