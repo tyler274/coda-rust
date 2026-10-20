@@ -27,9 +27,13 @@ async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
 
 /// Creates the per-test database and returns its URL; `None` skips quietly.
 async fn database(name: &str) -> Option<String> {
-    let url = std::env::var("FRONT_DOOR_DATABASE_URL").ok()?;
+    let url = std::env::var("FRONT_DOOR_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
+        assert!(
+            std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+            "FRONT_DOOR_DATABASE_URL is required for the Postgres CI proof"
+        );
         return None;
     }
     let mut split: Vec<_> = url.rsplitn(2, '/').collect();
