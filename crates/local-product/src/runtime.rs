@@ -18,6 +18,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// Explicit bounded restart activation, separate from construction.
+pub mod recovery;
+
 /// Authenticated product scope, supplied by the server, never the command body.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Scope {
@@ -83,6 +86,9 @@ pub struct Conversation {
     pub work: String,
     /// All retained attempts, including interrupted attempts.
     pub attempts: Vec<Attempt>,
+    /// Accepted session reference, never the bearer secret; absent legacy work is blocked.
+    #[serde(default)]
+    pub session_hash: Option<Vec<u8>>,
 }
 
 impl Default for Conversation {
@@ -93,6 +99,7 @@ impl Default for Conversation {
             status: "completed".into(),
             work: String::new(),
             attempts: vec![],
+            session_hash: None,
         }
     }
 }
@@ -175,7 +182,14 @@ impl Store {
         let tx = self.db.begin().await?;
         let row = tx.query_one_raw(sql("SELECT state, floor(extract(epoch FROM clock_timestamp()))::bigint AS now FROM physician_runtime_conversations WHERE practice=$1 AND physician=$2 AND workspace=$3 AND chat=$4 FOR UPDATE", keys(scope))).await?.ok_or_else(|| error("conversation not found"))?;
         let state: Value = row.try_get("", "state")?;
-        let now = row.try_get("", "now")?;
+        let now = tx
+            .query_one_raw(sql(
+                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
+                vec![],
+            ))
+            .await?
+            .ok_or_else(|| error("missing database clock"))?
+            .try_get("", "now")?;
         Ok((
             tx,
             serde_json::from_value(state).map_err(|_| error("corrupt conversation"))?,
@@ -200,6 +214,28 @@ impl Store {
 
     /// Atomically saves the command receipt and input. Colliding payloads fail.
     pub async fn accept(&self, scope: &Scope, input: &Input) -> Result<Accepted, DbErr> {
+        self.accept_inner(scope, input, None).await
+    }
+
+    /// Accepts hosted input with its original session reference for restart authorization.
+    pub async fn accept_authorized(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+    ) -> Result<Accepted, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        self.accept_inner(scope, input, Some(session_hash)).await
+    }
+
+    async fn accept_inner(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Option<Vec<u8>>,
+    ) -> Result<Accepted, DbErr> {
         if [
             &input.key,
             &input.text,
@@ -243,6 +279,7 @@ impl Store {
             attempt.status = "interrupted".into();
         }
         state.revision += 1;
+        state.session_hash = session_hash;
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
@@ -310,6 +347,20 @@ impl Store {
                 .is_some_and(|a| a.id == claim.attempt && a.status == "active" && a.expires > now)
     }
 
+    /// Revalidates the accepted session using the real auth owner's transaction locks.
+    pub async fn authorize(
+        &self,
+        scope: &Scope,
+        authority: &mut dyn Authority,
+    ) -> Result<(), DbErr> {
+        let (tx, state, _) = self.locked(scope).await?;
+        authority
+            .lock_publication(&tx, scope, state.session_hash.as_deref())
+            .await
+            .map_err(|e| error(&e))?;
+        tx.commit().await
+    }
+
     /// Rechecks the current attempt against durable Stop, steering and expiry.
     pub async fn assert_current(&self, claim: &Claim) -> Result<(), DbErr> {
         let (tx, state, now) = self.locked(&claim.scope).await?;
@@ -359,7 +410,42 @@ impl Store {
 
     /// Publishes a candidate only if its acknowledged evidence and claim still match.
     pub async fn commit(&self, claim: &Claim, candidate: &Candidate) -> Result<(), DbErr> {
-        let (tx, mut state, now) = self.locked(&claim.scope).await?;
+        self.commit_inner(claim, candidate, None).await
+    }
+
+    /// Locks the real auth owner on this same transaction through reply publication.
+    pub async fn commit_authorized(
+        &self,
+        claim: &Claim,
+        candidate: &Candidate,
+        authority: &mut dyn Authority,
+    ) -> Result<(), DbErr> {
+        self.commit_inner(claim, candidate, Some(authority)).await
+    }
+
+    async fn commit_inner(
+        &self,
+        claim: &Claim,
+        candidate: &Candidate,
+        authority: Option<&mut dyn Authority>,
+    ) -> Result<(), DbErr> {
+        let (tx, mut state, _) = self.locked(&claim.scope).await?;
+        if let Some(authority) = authority {
+            authority
+                .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
+                .await
+                .map_err(|e| error(&e))?;
+        } else if state.session_hash.is_some() {
+            return Err(error("hosted publication requires transactional authority"));
+        }
+        let now = tx
+            .query_one_raw(sql(
+                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
+                vec![],
+            ))
+            .await?
+            .ok_or_else(|| error("missing clock"))?
+            .try_get("", "now")?;
         if !Self::current(&state, claim, now) {
             return Err(error("stale completion"));
         }
@@ -416,7 +502,23 @@ impl Store {
     /// Enumerates durable pending/expired work for explicit server activation.
     /// Caller must reauthorize each scope; construction never starts execution.
     pub async fn pending(&self) -> Result<Vec<Scope>, DbErr> {
-        let rows = self.db.query_all_raw(sql("SELECT practice,physician,workspace,chat FROM physician_runtime_conversations WHERE state->>'status' IN ('pending','active')", vec![])).await?;
+        self.pending_batch(100, None).await
+    }
+
+    async fn pending_batch(
+        &self,
+        maximum: usize,
+        after: Option<&Scope>,
+    ) -> Result<Vec<Scope>, DbErr> {
+        let mut values = vec![(maximum as i64).into()];
+        let after = after.cloned().unwrap_or(Scope {
+            practice: String::new(),
+            physician: String::new(),
+            workspace: String::new(),
+            chat: String::new(),
+        });
+        values.extend(keys(&after));
+        let rows = self.db.query_all_raw(sql("SELECT practice,physician,workspace,chat FROM physician_runtime_conversations WHERE (practice,physician,workspace,chat) > ($2,$3,$4,$5) AND (state->>'status' = 'pending' OR (state->>'status' = 'active' AND (state->'attempts'->-1->>'expires')::bigint <= floor(extract(epoch FROM clock_timestamp()))::bigint)) ORDER BY practice,physician,workspace,chat LIMIT $1", values)).await?;
         rows.into_iter()
             .map(|r| {
                 Ok(Scope {
@@ -435,7 +537,20 @@ impl Store {
 pub trait Authority: Send {
     /// Revalidates physician/session and patient workspace access.
     async fn check(&mut self, scope: &Scope) -> Result<(), String>;
+    /// Hold the auth owner's revocation locks until the supplied transaction commits.
+    /// Default is fail-closed, never a separate preflight substituted for a fence.
+    async fn lock_publication(
+        &mut self,
+        _tx: &PublicationTransaction,
+        _scope: &Scope,
+        _session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Err("transactional publication authority is unavailable".into())
+    }
 }
+
+/// Transaction borrowed by the auth owner, never a separate connection.
+pub type PublicationTransaction = sea_orm::DatabaseTransaction;
 
 /// Physician Host for the one shared execution loop. Tools stay unavailable
 /// until their real product effect/read owners can be supplied, never fake success.
@@ -515,7 +630,7 @@ impl<A: Authority> PhysicianHost<A> {
             Ok(candidate) => {
                 self.assert_current().await?;
                 self.store
-                    .commit(&self.claim, &candidate)
+                    .commit_authorized(&self.claim, &candidate, &mut self.authority)
                     .await
                     .map_err(|e| e.to_string())
             }

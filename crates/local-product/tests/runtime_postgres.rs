@@ -100,6 +100,14 @@ async fn database_crash_restart_retains_acknowledged_command_and_event() {
 struct Allowed;
 #[async_trait]
 impl Authority for Allowed {
+    async fn lock_publication(
+        &mut self,
+        _: &local_product::runtime::PublicationTransaction,
+        _: &Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
     async fn check(&mut self, _: &Scope) -> Result<(), String> {
         Ok(())
     }

@@ -293,6 +293,24 @@ impl local_product::runtime::Authority for RuntimeAuthority {
     async fn check(&mut self, scope: &local_product::runtime::Scope) -> Result<(), String> {
         self.check_scope(scope).await
     }
+    async fn lock_publication(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &local_product::runtime::Scope,
+        session_hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        physician_auth::PostgresAuthStore::lock_runtime_authority(
+            tx,
+            session_hash.ok_or("accepted session is missing")?,
+            &physician_auth::PhysicianIdentity {
+                practice_id: scope.practice.clone(),
+                physician_id: scope.physician.clone(),
+            },
+            &scope.workspace,
+        )
+        .await
+        .map_err(|e| e.to_string())
+    }
 }
 
 async fn durable_submit(
@@ -306,6 +324,7 @@ async fn durable_submit(
         return StatusCode::UNAUTHORIZED.into_response();
     };
     let scope = durable_scope(&ctx, &payload.patient_workspace_id, &payload.chat_id);
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     let authority = RuntimeAuthority(ctx);
     if authority.check_scope(&scope).await.is_err() {
         return StatusCode::NOT_FOUND.into_response();
@@ -316,14 +335,14 @@ async fn durable_submit(
         text: payload.text,
         timezone: payload.physician_time_zone,
     };
-    let accepted = match store.accept(&scope, &input).await {
+    let accepted = match store.accept_authorized(&scope, &input, session_hash).await {
         Ok(accepted) => accepted,
         Err(error) if error.to_string().contains("idempotency collision") => {
             return StatusCode::CONFLICT.into_response();
         }
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    if accepted == Accepted::New {
+    if matches!(accepted, Accepted::New | Accepted::Duplicate) {
         let ChatModel::OpenAi { key, binding } = &live.model else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
@@ -361,6 +380,95 @@ async fn durable_submit(
         }
     }
     Json(json!({"outcome": "accepted", "patient_workspace_id": scope.workspace, "chat_id": scope.chat})).into_response()
+}
+
+/// Explicit recovery seam for coordinated composition. Intentionally not called
+/// during construction: hosted auth and clinical-tool qualification still gate start.
+impl Live {
+    pub(crate) async fn recover_pending(
+        self: &Arc<Self>,
+        after: Option<&local_product::runtime::Scope>,
+    ) -> Result<local_product::runtime::recovery::Report, String> {
+        let store = self.durable.clone().ok_or("durable runtime required")?;
+        store
+            .dispatch_page(&mut RecoveryExecutor(Arc::clone(self)), 32, 180, after)
+            .await
+            .map_err(|e| e.to_string())
+    }
+}
+
+struct RecoveryAuthority(local_product::runtime::Store);
+#[local_product::runtime::async_trait]
+impl local_product::runtime::Authority for RecoveryAuthority {
+    async fn check(&mut self, scope: &local_product::runtime::Scope) -> Result<(), String> {
+        let store = self.0.clone();
+        store
+            .authorize(scope, self)
+            .await
+            .map_err(|e| e.to_string())
+    }
+    async fn lock_publication(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &local_product::runtime::Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        physician_auth::PostgresAuthStore::lock_runtime_authority(
+            tx,
+            hash.ok_or("accepted session is missing")?,
+            &physician_auth::PhysicianIdentity {
+                practice_id: scope.practice.clone(),
+                physician_id: scope.physician.clone(),
+            },
+            &scope.workspace,
+        )
+        .await
+        .map_err(|e| e.to_string())
+    }
+}
+struct RecoveryExecutor(Arc<Live>);
+#[local_product::runtime::async_trait]
+impl local_product::runtime::recovery::Executor for RecoveryExecutor {
+    async fn authorize(
+        &mut self,
+        scope: &local_product::runtime::Scope,
+        _: &[u8],
+    ) -> Result<(), String> {
+        use local_product::runtime::Authority;
+        RecoveryAuthority(self.0.durable.clone().ok_or("durable runtime required")?)
+            .check(scope)
+            .await
+    }
+    async fn execute(
+        &mut self,
+        store: local_product::runtime::Store,
+        claim: local_product::runtime::Claim,
+        _: Vec<u8>,
+    ) -> Result<(), String> {
+        use local_product::runtime::{PhysicianHost, Responses, engine};
+        let ChatModel::OpenAi { key, binding } = &self.0.model else {
+            return Err("API mode required".into());
+        };
+        let mut provider = Responses::new(key.clone(), binding.model.clone())?;
+        let mut host = PhysicianHost { authority: RecoveryAuthority(store.clone()), store, claim,
+            instructions: "Physician chat runtime v1. No chart evidence or clinical action tools are available in this hosted slice. Do not claim to have read a chart or performed an action.".into() };
+        host.run(
+            &mut provider,
+            &engine::Limits {
+                model_calls: 8,
+                tool_calls: 0,
+                calls_per_turn: 8,
+                request_bytes: 256_000,
+                response_bytes: 128_000,
+                tool_result_bytes: 32_000,
+                total_tool_result_bytes: 128_000,
+                output_tokens: 4096,
+                elapsed: std::time::Duration::from_secs(120),
+            },
+            &engine::Cancellation::default(),
+        )
+        .await
+    }
 }
 
 async fn complete(model: &ChatModel, request: &Value) -> Result<String, String> {

@@ -72,6 +72,50 @@ impl PostgresAuthStore {
         crate::migration::Migrator::up(&self.db, None).await
     }
 
+    /// Non-secret reference to the existing session, usable for durable accepted work.
+    pub fn session_reference(token: &str) -> Vec<u8> {
+        token_hash(token).to_vec()
+    }
+
+    /// Checks clinical workspace authority on the caller's publication transaction.
+    /// Row SHARE locks conflict with session deletion, account deactivation/removal,
+    /// panel removal and patient reassignment. Keep this transaction open through
+    /// publication. The hash is a reference to an existing session, not a new grant.
+    pub async fn lock_runtime_authority(
+        tx: &sea_orm::DatabaseTransaction,
+        session_hash: &[u8],
+        identity: &PhysicianIdentity,
+        workspace: &str,
+    ) -> Result<(), DbErr> {
+        use sea_orm::{ConnectionTrait, DbBackend, Statement};
+        let row = tx
+            .query_one_raw(Statement::from_sql_and_values(
+                DbBackend::Postgres,
+                include_str!("runtime_authority.sql"),
+                [
+                    session_hash.to_vec().into(),
+                    identity.practice_id.clone().into(),
+                    identity.physician_id.clone().into(),
+                    workspace.to_owned().into(),
+                ],
+            ))
+            .await?
+            .ok_or_else(|| DbErr::Custom("runtime authority revoked".into()))?;
+        let expires: i64 = row.try_get("", "expires_at")?;
+        // Clock read follows lock acquisition, including time spent waiting.
+        let now = tx
+            .query_one_raw(Statement::from_string(
+                DbBackend::Postgres,
+                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
+            ))
+            .await?
+            .ok_or_else(|| DbErr::Custom("missing database clock".into()))?;
+        if expires <= now.try_get::<i64>("", "now")? {
+            return Err(DbErr::Custom("runtime session expired".into()));
+        }
+        Ok(())
+    }
+
     fn account_row(row: crate::migration::AccountRow) -> Account {
         Account {
             identity: PhysicianIdentity {
