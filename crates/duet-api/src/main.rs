@@ -18,12 +18,40 @@ async fn main() {
     let front_door = front_door::PostgresFrontDoorStore::connect_with_migrations(&front_door_url)
         .await
         .expect("front-door database");
-    let app = router_with_front_door(
+    let mut app = router_with_front_door(
         DuetApi::new(Arc::new(front_door)),
         Arc::new(PgMoments::new(pool)),
     );
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    if let Some(directory) = env::var_os("DUET_SITE_DIR") {
+        let directory = std::path::PathBuf::from(directory);
+        for name in ["index.html", "duet-app.js", "duet-app_bg.wasm"] {
+            assert!(directory.join(name).is_file(), "missing Duet asset: {name}");
+        }
+        app = app.merge(duet_api::site::router(directory));
+    }
+    let address = env::var("DUET_LISTEN_ADDR").unwrap_or_else(|_| {
+        env::var("PORT")
+            .map(|port| format!("0.0.0.0:{port}"))
+            .unwrap_or_else(|_| "127.0.0.1:8080".to_owned())
+    });
+    let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown())
         .await
-        .expect("bind");
-    axum::serve(listener, app).await.expect("serve");
+        .expect("serve");
+}
+
+async fn shutdown() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("SIGTERM handler");
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = terminate.recv() => {},
+        }
+    }
+    #[cfg(not(unix))]
+    tokio::signal::ctrl_c().await.expect("shutdown signal");
 }

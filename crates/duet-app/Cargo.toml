@@ -20,7 +20,7 @@ uuid = { version = "1", features = ["v4", "js"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 futures-timer = { version = "3", features = ["wasm-bindgen"] }
-web-sys = { version = "0.3", features = ["Window", "Storage"] }
+web-sys = { version = "0.3", features = ["Window", "Storage", "Location"] }
 
 [dev-dependencies]
 serde = { version = "1", features = ["derive"] }
@@ -28,5 +28,6 @@ serde_json = "1"
 
 [features]
 default = []
+web = ["dioxus/web", "dioxus/launch"]
 mobile = ["dioxus/mobile", "dioxus/launch"]
 desktop = ["dioxus/desktop", "dioxus/launch"]

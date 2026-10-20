@@ -2,13 +2,16 @@
   description = "Development shell for the Coda monorepo";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.rust-overlay.url = "github:oxalica/rust-overlay";
+  inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs =
-    { self, nixpkgs }:
+    { self, nixpkgs, rust-overlay }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
+        overlays = [ rust-overlay.overlays.default ];
         config.allowUnfree = true;
       };
       postgres = pkgs.postgresql_16.withPackages (ps: [ ps.pgvector ]);
@@ -48,7 +51,13 @@
       chromiumBin = "${pkgs.chromium}/bin/chromium";
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
+      packages.${system} = import ./nix/packages.nix { inherit pkgs self; };
+      # No credential-loading shellHook in release builds or CI packaging.
+      devShells.${system} = {
+      release = pkgs.mkShell {
+        packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny ];
+      };
+      default = pkgs.mkShell {
         packages = with pkgs; [
           rustc
           cargo
@@ -202,6 +211,7 @@ PGCTL
             git config core.hooksPath .githooks
           fi
         '';
+      };
       };
     };
 }

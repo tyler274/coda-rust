@@ -9,6 +9,7 @@
 
 pub mod care;
 pub mod session;
+pub mod site;
 
 use std::env;
 use std::sync::{Arc, Mutex};
