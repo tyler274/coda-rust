@@ -412,7 +412,13 @@ fn load_resource(folder: &Path, file_path: &str) -> Result<SkillResource, String
 /// Returns the sha256 identity of `bytes`.
 pub fn version_id(bytes: &[u8]) -> String {
     let digest = Sha256::digest(bytes);
-    format!("sha256:{digest:x}")
+    let mut out = String::with_capacity("sha256:".len() + digest.len() * 2);
+    out.push_str("sha256:");
+    for byte in digest {
+        use std::fmt::Write as _;
+        let _ = write!(&mut out, "{byte:02x}");
+    }
+    out
 }
 
 fn split_frontmatter(content: &str) -> Option<(&str, &str)> {
