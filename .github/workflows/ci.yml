@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       # Preinstalled SDKs are unused here and leave no room to archive target
       # beside itself (run 39309157954, ENOSPC during cache save).
       - name: Free runner disk
@@ -68,7 +68,7 @@ jobs:
           echo "version=${version}" >> "$GITHUB_OUTPUT"
       - name: Restore Rust build cache
         id: rust-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: |
             ~/.cargo/registry/index
@@ -81,7 +81,7 @@ jobs:
             rust-v2-${{ runner.os }}-
       - name: Install Chromium
         id: chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         with:
           install-dependencies: true
       - name: Check formatting
@@ -154,7 +154,7 @@ jobs:
           df -h
       - name: Save Rust build cache
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             ~/.cargo/registry/index
@@ -164,7 +164,7 @@ jobs:
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
       - name: Save cargo registry without target
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             ~/.cargo/registry/index
@@ -197,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Check dependency guardrails
         uses: EmbarkStudios/cargo-deny-action@v2
         with:
