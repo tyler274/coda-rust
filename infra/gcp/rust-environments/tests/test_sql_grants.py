@@ -48,6 +48,11 @@ class SqlGrants(unittest.TestCase):
         self.assertEqual(self.sql("SELECT rolconnlimit FROM pg_roles WHERE rolname='runtime'").stdout.strip(), "40")
         self.assertEqual(self.sql("SELECT rolconnlimit FROM pg_roles WHERE rolname='migrator'").stdout.strip(), "4")
 
+    def test_function_execution_is_not_public_by_default(self):
+        self.sql("SET SESSION AUTHORIZATION migrator; CREATE FUNCTION private_probe() RETURNS integer LANGUAGE sql AS 'SELECT 1';")
+        self.assertEqual(self.sql("SELECT private_probe()", user="migrator").stdout.strip(), "1")
+        self.assertNotEqual(self.sql("SELECT private_probe()", check=False, user="runtime").returncode, 0)
+
     def test_rerun(self):
         subprocess.run(self.psql + ["-d", "app", "-v", "database=app", "-v", "runtime_user=runtime", "-v", "migration_user=migrator", "-f", str(ROOT / "bootstrap-grants.sql")], check=True, capture_output=True)
 

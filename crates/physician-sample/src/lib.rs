@@ -867,6 +867,41 @@ mod tests {
         assert_eq!(health, "live-health");
     }
 
+    // Exercise real HTTP parsing in parallel, including vector-sized URIs.
+    // An inherited ElyLD -B prefix once misaligned httparse's AVX constants;
+    // an in-process oneshot-only proof would not catch that native link defect.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn proxy_preserves_long_queries_under_concurrent_http_parsing() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        let server = tokio::spawn(async move {
+            let app = Router::new().route(
+                "/health",
+                axum::routing::get(|uri: axum::http::Uri| async move { uri.to_string() }),
+            );
+            axum::serve(listener, app).await.unwrap();
+        });
+        let app = router_with(Some(format!("http://{address}")));
+        let mut requests = tokio::task::JoinSet::new();
+        for length in [0, 15, 16, 31, 32, 33, 63, 64, 65, 127, 128, 255] {
+            let app = app.clone();
+            requests.spawn(async move {
+                let path = format!("/health?probe={}", "a".repeat(length));
+                let (status, body) = request(app, "GET", &path, Body::empty()).await;
+                assert_eq!(status, StatusCode::OK);
+                assert_eq!(body, path);
+            });
+        }
+        tokio::time::timeout(std::time::Duration::from_secs(10), async {
+            while let Some(result) = requests.join_next().await {
+                result.unwrap();
+            }
+        })
+        .await
+        .expect("concurrent proxy requests finish");
+        server.abort();
+    }
+
     async fn request(router: Router, method: &str, path: &str, body: Body) -> (StatusCode, String) {
         let response = router
             .oneshot(
