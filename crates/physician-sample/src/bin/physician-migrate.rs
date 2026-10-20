@@ -1,5 +1,5 @@
 //! Runs the physician product's existing workspace-owned schema chains.
-//! Future durable conversation chains belong here, not in the runtime startup.
+//! Auth, front-door, and durable conversation chains run here, never on startup.
 
 #[tokio::main]
 async fn main() {
@@ -21,5 +21,11 @@ async fn migrate(url: &str) -> Result<(), String> {
     front_door::PostgresFrontDoorStore::connect_with_migrations(url)
         .await
         .map_err(|error| format!("front-door: {error}"))?;
+    local_product::runtime::Store::connect(url)
+        .await
+        .map_err(|error| format!("physician runtime connection: {error}"))?
+        .migrate()
+        .await
+        .map_err(|error| format!("physician runtime migration: {error}"))?;
     Ok(())
 }

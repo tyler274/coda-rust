@@ -92,6 +92,7 @@ let
   # Product entrypoints compose their owned chains; future conversation owners
   # extend these binaries, not the image wrapper or runtime startup.
   physicianProductMigration = native "physician-migrate" "physician-sample" "physician-migrate";
+  physicianRuntimeMigration = native "physician-runtime-migrate" "local-product" "physician-runtime-migrate";
   duetProductMigration = native "duet-migrate" "duet-api" "duet-migrate";
   physicianWeb = web "physician-app";
   duetWeb = web "duet-app";
@@ -103,11 +104,15 @@ in {
   physician-auth-migrate = physicianMigration;
   front-door-migrate = frontDoorMigration;
   physician-migrate = physicianProductMigration;
+  physician-runtime-migrate = physicianRuntimeMigration;
   duet-migrate = duetProductMigration;
   physician-migration-image = image {
     name = "coda-physician-migrate";
     binary = physicianProductMigration;
     executable = "physician-migrate";
+    # Retain the product owner's standalone migration binary for explicit jobs;
+    # default entrypoint composes its same Rust owner after auth/front-door.
+    extra = [ physicianRuntimeMigration ];
   };
   duet-migration-image = image {
     name = "coda-duet-migrate";

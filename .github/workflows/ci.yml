@@ -109,6 +109,8 @@ jobs:
         # closed when it runs; it is not counted as passed here. The Android
         # shell is proved by UI Automator on a local emulator, not by this job.
         run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
+      - name: Prove acknowledged neutral streaming
+        run: cargo test --locked -p harness --test execution --test responses --test streaming
       - name: Browser proof (physician auth journeys)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
@@ -222,7 +224,10 @@ jobs:
         run: |
           nix develop .#release --command python infra/gcp/rust-environments/tests/check_contract.py
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
-      # Release adapters are not integrated yet. No deployment job or credentials.
+      - name: Prove mocked release adapters (no cloud credentials)
+        run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      # Adapter tests do not authorize deployment. Artifact handoff, operator
+      # inputs and hosted runtime qualification remain blocking; no release job.
 
   images:
     name: Locked Nix images (build only)
@@ -292,6 +297,11 @@ jobs:
           PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
         run: nix develop --command bash scripts/check-postgres.sh
+      - name: Prove durable physician owner on Postgres
+        env:
+          PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+        # Crash/restart requires a dedicated disposable cluster, not this service.
+        run: nix develop --command cargo test --locked -p local-product --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
 
   # RustSec advisories, license allow-list, bans, and source checks.
   # deny.toml is the single policy file; the nix dev shell carries the same
