@@ -475,4 +475,42 @@ button.sidebar-expand { display: none; }
   justify-content: space-between;
   gap: var(--space-2);
 }
+.patient-identity-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.formatted-message { display: grid; gap: var(--space-2); min-width: 0; }
+.formatted-paragraph { margin: 0; }
+.formatted-list { margin: 0; padding-left: 1.2em; }
+.conversation-empty { margin: 0; color: var(--ink); font: var(--type-title-sm); }
+.citation-eyebrow { color: var(--muted); font: var(--type-label-md); }
+.citation-unavailable { margin: 0; color: var(--muted); }
+.citation-inspection { display: grid; gap: var(--space-3); width: min(var(--measure), 100%); }
+.citation-open { color: inherit; }
+.past-work-dialog { width: min(var(--measure), 100%); }
+.past-work-empty { margin: 0; color: var(--body); }
+.reply-review { min-width: 0; }
+.reply-review-actions, .reply-review-ask {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.reply-review-instruction {
+  flex: 1 1 12rem;
+  min-width: 0;
+  min-height: var(--control-compact-height);
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+}
+@media (max-width: 720px) {
+  .today-layout.has-schedule,
+  .today-layout.has-schedule:has(.schedule-rail.is-collapsed) {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+  }
+  .patient-facts, .reply-review-actions, .reply-review-ask { align-items: stretch; }
+  .reply-review-ask { flex-direction: column; }
+  .patient-identity-top { align-items: flex-start; }
+}
 

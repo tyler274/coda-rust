@@ -4,7 +4,7 @@
 use physician_wire::{
     AutomationRun, CitationDestination, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse,
     PracticeDayResponse, SourcePresentation, TodayConnection, TodayListResponse, TodayRow,
-    VisitPreparation,
+    VisitPreparation, WorkspaceReply,
 };
 
 pub const TODAY_LOADING: &str = "Loading Today…";
@@ -18,6 +18,22 @@ pub const WORKSPACE_UNAVAILABLE: &str = "Coda couldn’t load what needs you for
 #[allow(dead_code)]
 pub const READER_EMPTY: &str = "Nothing is open to read.";
 pub const TRY_AGAIN: &str = "Try again";
+/// Past work with no history dates or items on the projection.
+pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available.";
+/// An open conversation whose snapshot has no turns.
+pub const CONVERSATION_EMPTY: &str = "What would you like Coda to review?";
+/// A resolved citation whose preview prose is missing.
+pub const SOURCE_UNAVAILABLE: &str = "Source content is unavailable here.";
+/// Copies the reply draft as shown.
+pub const REPLY_COPY: &str = "Copy reply";
+/// Closes a ready reply without sending it.
+pub const REPLY_NO_NEEDED: &str = "No reply needed";
+/// The revise field's placeholder.
+pub const REPLY_TELL_CODA: &str = "Tell Coda what to change";
+/// Asks the server to revise the reply draft.
+pub const REPLY_ASK: &str = "Ask Coda to revise";
+/// Shown after the server accepts `reply.close`.
+pub const REPLY_CLOSED_NOTICE: &str = "Marked no reply needed";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TodayLine {
@@ -945,6 +961,222 @@ fn capitalize_first(value: &str) -> String {
     }
 }
 
+/// Past work is offered when the workspace says it has some and the physician can read the chart.
+/// The recording carries `has_past_work` and no history dates or items, so the screen uses [`PAST_WORK_EMPTY`].
+pub fn past_work_copy(workspace: &PatientWorkspaceResponse) -> Option<&'static str> {
+    if workspace.has_past_work && !workspace.is_clinic_demographic() {
+        Some(PAST_WORK_EMPTY)
+    } else {
+        None
+    }
+}
+
+/// One formatted piece of a message or reply draft.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum MessageBlock {
+    /// Prose, with breaks where the source kept a single newline.
+    Paragraph(Vec<Inline>),
+    /// A markdown-style list.
+    List(Vec<Vec<Inline>>),
+}
+
+/// Inline emphasis inside a formatted message. Markers the source did not close stay as text.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Inline {
+    /// Unstyled words.
+    Text(String),
+    /// `**bold**`.
+    Strong(String),
+    /// `*emphasis*`.
+    Emphasis(String),
+    /// A single newline inside a paragraph.
+    Break,
+}
+
+/// Formats the text a chat snapshot or reply draft already carries.
+/// Blank lines separate paragraphs. `- `, `* `, and `1. ` lines become a list.
+/// Citation markers and HTML stay as text; this does not fetch a source or run a model.
+pub fn format_message(text: &str) -> Vec<MessageBlock> {
+    let mut blocks = Vec::new();
+    let mut paragraph: Vec<&str> = Vec::new();
+    let mut list: Vec<&str> = Vec::new();
+    for line in text.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            flush_list(&mut list, &mut blocks);
+            flush_paragraph(&mut paragraph, &mut blocks);
+            continue;
+        }
+        if let Some(item) = list_item(trimmed) {
+            flush_paragraph(&mut paragraph, &mut blocks);
+            list.push(item);
+            continue;
+        }
+        flush_list(&mut list, &mut blocks);
+        paragraph.push(trimmed);
+    }
+    flush_list(&mut list, &mut blocks);
+    flush_paragraph(&mut paragraph, &mut blocks);
+    blocks
+}
+
+fn flush_paragraph(lines: &mut Vec<&str>, blocks: &mut Vec<MessageBlock>) {
+    if lines.is_empty() {
+        return;
+    }
+    let mut inlines = Vec::new();
+    for (index, line) in lines.iter().enumerate() {
+        if index > 0 {
+            inlines.push(Inline::Break);
+        }
+        inlines.extend(parse_inlines(line));
+    }
+    if !inlines.is_empty() {
+        blocks.push(MessageBlock::Paragraph(inlines));
+    }
+    lines.clear();
+}
+
+fn flush_list(items: &mut Vec<&str>, blocks: &mut Vec<MessageBlock>) {
+    if items.is_empty() {
+        return;
+    }
+    blocks.push(MessageBlock::List(
+        items.drain(..).map(parse_inlines).collect(),
+    ));
+}
+
+fn list_item(line: &str) -> Option<&str> {
+    let rest = if let Some(rest) = line.strip_prefix("- ").or_else(|| line.strip_prefix("* ")) {
+        rest.trim()
+    } else {
+        let digits = line.bytes().take_while(u8::is_ascii_digit).count();
+        if digits == 0 {
+            return None;
+        }
+        line[digits..].strip_prefix(". ")?.trim()
+    };
+    if rest.is_empty() { None } else { Some(rest) }
+}
+
+fn parse_inlines(line: &str) -> Vec<Inline> {
+    let mut inlines = Vec::new();
+    let mut plain = String::new();
+    let mut rest = line;
+    while !rest.is_empty() {
+        if let Some(after) = rest.strip_prefix("**")
+            && let Some(end) = after.find("**")
+            && end > 0
+        {
+            push_plain(&mut inlines, &mut plain);
+            inlines.push(Inline::Strong(after[..end].to_owned()));
+            rest = &after[end + 2..];
+            continue;
+        }
+        if let Some(after) = rest.strip_prefix('*')
+            && let Some(end) = after.find('*')
+            && end > 0
+        {
+            push_plain(&mut inlines, &mut plain);
+            inlines.push(Inline::Emphasis(after[..end].to_owned()));
+            rest = &after[end + 1..];
+            continue;
+        }
+        let Some(ch) = rest.chars().next() else {
+            break;
+        };
+        plain.push(ch);
+        rest = &rest[ch.len_utf8()..];
+    }
+    push_plain(&mut inlines, &mut plain);
+    inlines
+}
+
+fn push_plain(inlines: &mut Vec<Inline>, plain: &mut String) {
+    if !plain.is_empty() {
+        inlines.push(Inline::Text(std::mem::take(plain)));
+    }
+}
+
+/// What a ready reply lets the physician do with the draft already on the projection.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ReplyReviewAction {
+    /// Copy the draft text.
+    Copy,
+    /// Send `reply.close`.
+    NoReplyNeeded,
+    /// Send `reply.revise` with the physician's instruction.
+    Revise,
+}
+
+/// Actions for a reply the projection already lists.
+/// A ready draft can be copied, closed, or sent back for revision.
+/// A superseded or closed reply has no actions: the recording has no update, channel link, or reopen payload.
+pub fn reply_review_actions(reply: &WorkspaceReply) -> Vec<ReplyReviewAction> {
+    if reply.state != "ready" {
+        return Vec::new();
+    }
+    if reply.draft_text.trim().is_empty() {
+        return vec![ReplyReviewAction::NoReplyNeeded];
+    }
+    vec![
+        ReplyReviewAction::Copy,
+        ReplyReviewAction::NoReplyNeeded,
+        ReplyReviewAction::Revise,
+    ]
+}
+
+/// The channel name on a reply card. Unknown channels keep the server's word, capitalized.
+pub fn reply_channel_label(channel: &str) -> String {
+    match channel {
+        "spruce" => "Spruce".to_owned(),
+        "email" => "Email".to_owned(),
+        other => capitalize_first(other),
+    }
+}
+
+/// The citation inspection the reader shows from the preview already on the chip.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CitationInspection {
+    /// `Source {n}`.
+    pub eyebrow: String,
+    /// The source title.
+    pub title: String,
+    /// Preview paragraphs. Empty when the citation recorded none.
+    pub paragraphs: Vec<String>,
+    /// `Prepared by Coda · as of {date}` when the preview has a date.
+    pub provenance: Option<String>,
+    /// Set when a resolved citation has no preview prose.
+    pub unavailable: Option<&'static str>,
+    /// `Open in {chart}` or `Open original`.
+    pub open_label: Option<String>,
+    /// The native destination URI.
+    pub open_uri: Option<String>,
+}
+
+/// Builds the inspection surface from a chip. It does not fetch the record.
+pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
+    let paragraphs = preview_paragraphs(&chip.preview);
+    let unavailable = if chip.open && paragraphs.is_empty() {
+        Some(SOURCE_UNAVAILABLE)
+    } else {
+        None
+    };
+    CitationInspection {
+        eyebrow: format!("Source {}", chip.index),
+        title: chip.label.clone(),
+        paragraphs,
+        provenance: if unavailable.is_some() {
+            None
+        } else {
+            prepared_line(&chip.as_of)
+        },
+        open_label: chip.open_label.clone(),
+        open_uri: chip.open_uri.clone(),
+        unavailable,
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[allow(dead_code)]
 pub enum ReaderView {
@@ -1353,5 +1585,96 @@ mod tests {
         assert_eq!(card.sex_or_gender.as_deref(), Some("Male"));
         assert_eq!(card.mrn.as_deref(), Some("00000012"));
         assert_eq!(card.record_state.as_deref(), Some("Active"));
+        assert_eq!(past_work_copy(&workspace), None);
+    }
+
+    #[test]
+    fn recorded_past_work_is_the_empty_history_screen() {
+        let mary: PatientWorkspaceResponse = serde_json::from_str(include_str!(
+            "../../physician-sample/fixtures/workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json"
+        ))
+        .unwrap();
+        assert!(mary.has_past_work);
+        assert_eq!(past_work_copy(&mary), Some(PAST_WORK_EMPTY));
+        let synopsis = mary.patient_synopsis.as_ref().unwrap();
+        let chips: Vec<_> = synopsis_pieces(&synopsis.segments)
+            .into_iter()
+            .filter_map(|piece| match piece {
+                SynopsisPiece::Chips(chips) => Some(chips),
+                SynopsisPiece::Text(_) => None,
+            })
+            .flatten()
+            .collect();
+        let discharge = chips.iter().find(|chip| chip.index == 2).expect("chip 2");
+        let inspection = citation_inspection(discharge);
+        assert_eq!(inspection.eyebrow, "Source 2");
+        assert_eq!(inspection.title, "Discharge Summary");
+        assert!(inspection.unavailable.is_none());
+        assert_eq!(
+            inspection.provenance.as_deref(),
+            Some("Prepared by Coda · as of April 13, 2026")
+        );
+        assert_eq!(inspection.open_label.as_deref(), Some("Open in Demo chart"));
+        let mut closed = discharge.clone();
+        closed.preview.clear();
+        closed.as_of.clear();
+        let missing = citation_inspection(&closed);
+        assert_eq!(missing.unavailable, Some(SOURCE_UNAVAILABLE));
+        assert!(missing.provenance.is_none());
+    }
+
+    #[test]
+    fn messages_format_and_ready_replies_can_be_reviewed() {
+        assert_eq!(
+            format_message("Please review **this**.\n\n- First\n- Second"),
+            vec![
+                MessageBlock::Paragraph(vec![
+                    Inline::Text("Please review ".to_owned()),
+                    Inline::Strong("this".to_owned()),
+                    Inline::Text(".".to_owned()),
+                ]),
+                MessageBlock::List(vec![
+                    vec![Inline::Text("First".to_owned())],
+                    vec![Inline::Text("Second".to_owned())],
+                ]),
+            ]
+        );
+        assert_eq!(
+            format_message("Line one\nLine two"),
+            vec![MessageBlock::Paragraph(vec![
+                Inline::Text("Line one".to_owned()),
+                Inline::Break,
+                Inline::Text("Line two".to_owned()),
+            ])]
+        );
+        assert!(format_message("   ").is_empty());
+        assert_eq!(
+            format_message("[[patient_source|a|b]] stays text"),
+            vec![MessageBlock::Paragraph(vec![Inline::Text(
+                "[[patient_source|a|b]] stays text".to_owned()
+            )])]
+        );
+
+        let ready: WorkspaceReply = serde_json::from_str(
+            r#"{"reply_work_id":"r1","patient_workspace_id":"p1","patient_display_name":"Jake Smith","channel":"spruce","headline":"Urgent potassium","draft_text":"Go to the ED.","urgency":"urgent_ed","created_at":"2026-08-27T12:05:00Z","state":"ready"}"#,
+        )
+        .unwrap();
+        assert_eq!(reply_channel_label(&ready.channel), "Spruce");
+        assert_eq!(
+            reply_review_actions(&ready),
+            vec![
+                ReplyReviewAction::Copy,
+                ReplyReviewAction::NoReplyNeeded,
+                ReplyReviewAction::Revise,
+            ]
+        );
+        let superseded = WorkspaceReply {
+            state: "superseded_by_correction".to_owned(),
+            draft_text: String::new(),
+            superseded_reason: Some("Corrected labs".to_owned()),
+            ..ready
+        };
+        assert!(reply_review_actions(&superseded).is_empty());
+        assert_eq!(reply_channel_label("email"), "Email");
     }
 }
