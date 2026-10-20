@@ -5,7 +5,7 @@ import {join,resolve} from 'node:path';
 import {tmpdir} from 'node:os';
 import {runInNewContext} from 'node:vm';
 import {execFileSync} from 'node:child_process';
-const source=readFileSync('submodules/kytos/app/scheduling/dev/opengraph-image.tsx','utf8');
+const source=readFileSync(new URL('./fixtures/original/app/scheduling/dev/opengraph-image.tsx',import.meta.url),'utf8');
 let html=source.slice(source.indexOf('      <div'),source.lastIndexOf('      </div>')+'      </div>'.length);
 html=html.replace(/style=\{\{([\s\S]*?)\}\}/g,(_,body)=>{
   const style=runInNewContext('({'+body+'})');

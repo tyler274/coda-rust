@@ -1,8 +1,9 @@
-// Read-only reference extraction. Fails when the required kytos checkout is absent.
+// Extract expected data from frozen original source, never generated application data.
+// Provenance and update policy: book/src/public-site.md; no submodule required.
 import {readFileSync} from 'node:fs';
 import {stripTypeScriptTypes} from 'node:module';
 import vm from 'node:vm';
-const root = new URL('../../../submodules/kytos/', import.meta.url);
+const root = new URL('./fixtures/original/', import.meta.url);
 const read = path => readFileSync(new URL(path, root), 'utf8');
 function evaluate(path, names, context = {}) {
   const code = stripTypeScriptTypes(read(path).replace(/^import[\s\S]*?;\n/gm, '').replace(/export /g, ''));

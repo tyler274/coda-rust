@@ -3,7 +3,8 @@
 `crates/public-site` is the Rust public marketing site. It is separate from the
 physician runtime and Duet: no database, physician accounts, model execution, or
 clinical types are introduced by the site. `PHYSICIAN_APP_URL` is a navigation
-link, not a backend connection. `submodules/kytos` is read-only reference copy.
+link, not a backend connection. `submodules/kytos` is an optional read-only
+developer reference, never a build, test, CI, or runtime dependency.
 
 This is implementation and deployment preparation, **not a production release**.
 Vercel remains the existing hosting boundary until an operator approves cutover.
@@ -45,63 +46,56 @@ nix develop --command bash crates/public-site/island/build.sh
 nix develop --command cargo run -p public-site --bin public-site
 ```
 
-## CI private-reference credential
+## Self-contained CI and original-source snapshots
 
-Source parity requires the private `Coda-Health/kytos` repository. The normal
-`coda-rust` `GITHUB_TOKEN` cannot read another private repository. The workflow is
-prepared for a dedicated read-only GitHub App, but **the App and configuration
-must be provisioned by an operator before CI can pass**. These names are required
-configuration, not a claim that credentials already exist.
+Ordinary builds, tests, and CI do not fetch or access the old private repository.
+The primary checkout explicitly disables submodules and credential persistence.
+No GitHub App, private-reference credential, Doppler CI config, or service token is
+needed. Fork and Dependabot changes run the same parity tests without application
+secrets; the workflow uses `pull_request`, not `pull_request_target`. Existing
+runtime/deployment secrets remain managed by Doppler; this removes no deployment
+protection and copies no `dev`, `stg`, or `prd` secrets into CI.
 
-Operator setup:
+`crates/public-site/tests/fixtures/original/` contains 17 narrowly selected
+original-source snapshots from `Coda-Health/kytos` commit
+`5012bb749e29104e00ccb208a14a810f93fa420f`. `provenance.json` records the source
+path, original SHA-256, snapshot SHA-256, and extraction policy for each input.
+HTML, page/legal TypeScript, archive JSON, notices, CSS, and the scheduling social
+image definition are verbatim source files. Only the deterministic painter is
+sliced: the exact bytes from `function rng` through the end of `paint`, excluding
+`var artCache` and unrelated browser interaction code. No Next application,
+package dependencies, private credentials, or rendered Rust output are imported.
 
-1. Create a dedicated GitHub App with repository **Contents: read-only** (GitHub
-   also grants mandatory Metadata read). Do not grant write, organization, or
-   Actions administration permissions. Webhooks are not needed.
-2. Install it in **Coda-Health**, choosing **Only select repositories: kytos**.
-   The App does not need installation access to `coda-rust`; the primary checkout
-   continues to use that repository's normal `GITHUB_TOKEN`.
-3. In `coda-rust` Actions variables, set **`KYTOS_APP_ID`** to the numeric App ID
-   (not its client ID), and **`KYTOS_APP_INSTALLATION_ID`** to the numeric ID of
-   the Coda-Health installation. The latter is visible in the installation's
-   settings URL. Both values are non-secret.
-4. Generate an App private key. Store its canonical value in Doppler under the
-   organization's secret policy, and provision the PEM as the **`KYTOS_APP_PRIVATE_KEY`**
-   Actions secret for `coda-rust` through the approved operator process. An
-   organization secret restricted to `coda-rust` is also acceptable. Never paste
-   the key into chat, commit it, or put it in Actions variables. The workflow
-   does not retrieve Doppler secrets or require a Doppler login.
-5. Ensure organization Actions policy permits the SHA-pinned
-   `actions/create-github-app-token` action and `actions/checkout@v7`, then run CI
-   on a trusted branch. Confirm the reference checkout and all source parity
-   tests pass before treating this prerequisite as satisfied.
+These are test oracles, separate from generated application `data/`, CSS, and
+assets. The normal parity suite verifies snapshot integrity, compares homepage
+and page copy, evaluates the original legal definitions and archives, compares
+CSS, and evaluates the original JavaScript painter against Rust for all eight
+palette/seed pairs. Missing or changed fixtures fail; there is no submodule
+fallback or parity skip. Hashes detect accidental fixture edits, not malicious
+co-edits to the provenance manifest: source updates require manual review.
 
-The token action is pinned to `fee1f7d63c2ff003460e3d139729b119787bc349`
-(the verified v2 line, whose supported interface uses App ID). It requests only
-`Coda-Health/kytos` and `permission-contents: read`, discovers that installation,
-then checks the returned installation ID against the configured expected ID.
-The installation token is short-lived (GitHub's normal one-hour lifetime), is
-masked by the action, and is revoked by its post-job cleanup; token revocation
-is not disabled. The private key is never printed. Reference checkout sets
-`persist-credentials: false`; the token is not saved in Git credential config
-or passed to build/test commands.
+### Deliberate reference updates (optional developer operation)
 
-The reference SHA is resolved from `git ls-tree HEAD -- submodules/kytos` after
-the primary checkout, with gitlink mode/type/path/SHA validation. Thus PR merge
-checkouts use their own recorded pin, not the latest `kytos` branch. A second
-checkout fetches exactly that commit and verifies its resulting HEAD. The
-submodule gitlink and all new crate inputs must be included in the eventual
-commit; local staged-but-uncommitted pins are not visible to remote CI.
+The `submodules/kytos` gitlink remains pinned and read-only. Only developers who
+choose to inspect or update the historical source need repository access:
 
-Missing variables/key, a wrong installation, an inaccessible reference, or a bad
-pin fails closed. Fork PRs cannot receive this credential; Dependabot PR secrets
-may also be withheld. A maintainer must review the changes and run approved code
-on a trusted branch in `coda-rust`. Do not enable `pull_request_target` to execute
-untrusted PR code with the private key, expose credentials to forks, or skip
-parity. App private keys are available to authorized same-repository workflow
-runs, so maintain normal trusted-branch/workflow review and secret rotation
-controls. The prepared wiring has been statically checked; token issuance and
-private checkout cannot be proved until the operator configures the App.
+```bash
+nix develop --command git submodule update --init -- submodules/kytos
+nix develop --command node crates/public-site/tests/import-snapshots.mjs --import
+nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
+```
+
+The importer reads Git blobs at the explicit reviewed commit, checks that the
+optional checkout is clean and pinned, and writes only allowlisted fixture paths.
+It is never invoked with `--import` by builds or tests. To adopt a new publication,
+review the original changes first, explicitly update the importer's commit and
+optional gitlink, then import and review the fixture/provenance diff. Do not
+regenerate expected fixtures from Rust output or copy generated `data/` back into
+them to make tests pass. Legal publication changes require their normal review.
+Application generation (`data/import-reference.mjs` and `tests/generate-social.mjs`)
+reads these frozen originals and is a separate, explicit operation. Normal tests
+only use `--check`, so they also work in source exports without Git metadata or
+initialized submodules.
 
 ## Image
 

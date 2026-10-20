@@ -1,9 +1,10 @@
 // One-time, reproducible source port. Run from the worktree root with node.
-// Reads kytos as reference only; all output remains in this crate.
+// Reads frozen original snapshots; all generated output remains separate in this crate.
+// Updating snapshots is a distinct, manually reviewed tests/import-snapshots.mjs operation.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import vm from 'node:vm';
 import { stripTypeScriptTypes } from 'node:module';
-const source = 'submodules/kytos/';
+const source = 'crates/public-site/tests/fixtures/original/';
 const dest = 'crates/public-site/';
 const read = p => readFileSync(source + p, 'utf8');
 const output = (p, text) => writeFileSync(dest + p, text);

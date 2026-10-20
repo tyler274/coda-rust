@@ -7,7 +7,7 @@ fn root() -> PathBuf {
 }
 fn read(path: &str) -> String {
     fs::read_to_string(root().join(path))
-        .unwrap_or_else(|e| panic!("required reference {path}: {e}; initialize submodules/kytos"))
+        .unwrap_or_else(|e| panic!("required committed source snapshot {path}: {e}"))
 }
 fn visible(html: &str) -> String {
     let mut result = String::new();
@@ -48,11 +48,26 @@ fn visible(html: &str) -> String {
     result.chars().filter(|ch| !ch.is_whitespace()).collect()
 }
 #[test]
-fn homepage_visible_copy_equals_reference_including_phone_demos() {
-    let source = read("submodules/kytos/app/_homepage/main.html").replace(
-        "<!-- include duet-phones.html -->",
-        &read("submodules/kytos/app/_homepage/duet-phones.html"),
+fn original_source_snapshots_match_reviewed_provenance() {
+    let output = Command::new("node")
+        .arg(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/import-snapshots.mjs"))
+        .arg("--check")
+        .output()
+        .expect("Node from the dev shell");
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
     );
+}
+
+#[test]
+fn homepage_visible_copy_equals_reference_including_phone_demos() {
+    let source = read("crates/public-site/tests/fixtures/original/app/_homepage/main.html")
+        .replace(
+            "<!-- include duet-phones.html -->",
+            &read("crates/public-site/tests/fixtures/original/app/_homepage/duet-phones.html"),
+        );
     let pages = prerender(&Config::default());
     let html = std::str::from_utf8(&pages.pages["/"].html).unwrap();
     let main = html
@@ -74,7 +89,9 @@ fn duet_and_scheduling_preserve_source_visible_copy() {
         ("/duet", "app/duet/page.tsx"),
         ("/scheduling/dev", "app/scheduling/dev/page.tsx"),
     ] {
-        let source = read(&format!("submodules/kytos/{file}"));
+        let source = read(&format!(
+            "crates/public-site/tests/fixtures/original/{file}"
+        ));
         let rendered = visible(std::str::from_utf8(&pages.pages[path].html).unwrap());
         let main = source
             .split("<main>")
@@ -207,7 +224,9 @@ fn original_styles_and_all_eight_paint_assets_match_source() {
     ] {
         assert_eq!(
             read(&format!("crates/public-site/{port}")),
-            read(&format!("submodules/kytos/{source}"))
+            read(&format!(
+                "crates/public-site/tests/fixtures/original/{source}"
+            ))
         );
     }
     let result = Command::new("node")
