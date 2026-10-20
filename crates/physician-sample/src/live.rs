@@ -1,8 +1,9 @@
 //! Physician chat on the Rust local product.
 //!
 //! `message.submit` records the physician turn, calls the chat role, and
-//! publishes `workspace_changed` when that call finishes. A scripted model
-//! stands in for OpenAI in tests.
+//! publishes `workspace_changed` when that call finishes. Codex `live`,
+//! `record`, and `replay` do not use an API key. A scripted model stands in
+//! for the CLI in tests.
 
 use std::convert::Infallible;
 use std::sync::{Arc, Mutex};
@@ -13,6 +14,7 @@ use axum::extract::{Extension, Path, State};
 use axum::http::{HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Response};
 use futures_util::stream;
+use local_product::codex::CodexTransport;
 use local_product::{ChatSession, ModelBinding, Submit};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -33,6 +35,13 @@ pub(crate) enum ChatModel {
         /// The chat role.
         binding: ModelBinding,
     },
+    /// Codex CLI live, record, or replay. No API key.
+    Codex {
+        /// The chat role.
+        binding: ModelBinding,
+        /// The Codex transport. Record and replay mutate the cassette.
+        transport: Arc<Mutex<CodexTransport>>,
+    },
 }
 
 /// In-memory chats and the event other subscribers are waiting on.
@@ -52,7 +61,7 @@ impl Live {
                 effort: "high".to_owned(),
                 adapter: "openai-responses".to_owned(),
             },
-            ChatModel::OpenAi { binding, .. } => binding.clone(),
+            ChatModel::OpenAi { binding, .. } | ChatModel::Codex { binding, .. } => binding.clone(),
         };
         let (events, _) = broadcast::channel(64);
         Arc::new(Self {
@@ -126,19 +135,22 @@ pub(crate) async fn submit(
         let chat = payload.chat_id.clone();
         let auth_ctx = auth_ctx.map(|Extension(ctx)| ctx);
         tokio::spawn(async move {
-            if let Ok(text) = complete(&live.model, &request).await {
-                if let Some(ref ctx) = auth_ctx {
-                    let session_ok = ctx.auth.store.session(&ctx.token, now()).await.is_ok();
-                    let allowed = allows_workspace(&ctx.auth, &ctx.identity, &workspace).await;
-                    if !session_ok || !allowed {
-                        return;
+            match complete(&live.model, &request).await {
+                Ok(text) => {
+                    if let Some(ref ctx) = auth_ctx {
+                        let session_ok = ctx.auth.store.session(&ctx.token, now()).await.is_ok();
+                        let allowed = allows_workspace(&ctx.auth, &ctx.identity, &workspace).await;
+                        if !session_ok || !allowed {
+                            return;
+                        }
                     }
+                    live.session
+                        .lock()
+                        .expect("chat session")
+                        .record_reply(&workspace, &chat, &text);
+                    let _ = live.events.send(workspace);
                 }
-                live.session
-                    .lock()
-                    .expect("chat session")
-                    .record_reply(&workspace, &chat, &text);
-                let _ = live.events.send(workspace);
+                Err(error) => eprintln!("physician chat: {error}"),
             }
         });
     }
@@ -219,6 +231,18 @@ async fn complete(model: &ChatModel, request: &Value) -> Result<String, String> 
                 .map_err(|_| "OpenAI responses returned unreadable JSON".to_owned())?;
             local_product::authored_text(&body)
                 .ok_or_else(|| "OpenAI responses returned no authored text".to_owned())
+        }
+        ChatModel::Codex { transport, .. } => {
+            let transport = Arc::clone(transport);
+            let request = request.clone();
+            match tokio::task::spawn_blocking(move || {
+                transport.lock().expect("codex").complete(&request)
+            })
+            .await
+            {
+                Ok(result) => result,
+                Err(_) => Err("Codex exec task stopped".to_owned()),
+            }
         }
     }
 }

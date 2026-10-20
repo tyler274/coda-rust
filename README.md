@@ -4,7 +4,7 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 ## Layout
 
-- `crates/` is one Cargo workspace. Duet is `duet-app` and `duet-api`. The physician page is `physician-app`. `physician-sample` serves that page and a recorded projection of the synthetic practice. `local-product` is the model-execution owner: `CODA_LOCAL_MODEL_EXECUTION=api` answers physician chat through OpenAI Responses, and the recorded server does not run a model. `ui` and `http` are the only crates the two products share.
+- `crates/` is one Cargo workspace. Duet is `duet-app` and `duet-api`. The physician page is `physician-app`. `physician-sample` serves that page and a recorded projection of the synthetic practice. `local-product` is the model-execution owner. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat uses the Codex CLI subscription. `record` and `replay` use a cassette and do not read an API key. `api` answers physician chat through OpenAI Responses when `CODA_ALLOW_MODEL_CALLS=1`. `ui` and `http` are the only crates the two products share.
 - `platform/` holds the iPhone and Android bindings for the shared Duet client.
 - `skills/` is the clinical skill catalog, loaded by `harness`.
 - `book/` is the navigation book over the product documents. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`.
@@ -22,6 +22,39 @@ cargo test --workspace
 ```
 
 `nix develop` is the shell for this checkout. Tests and the sample server do not need a Doppler account.
+
+### Physician chat (Codex CLI)
+
+Local physician chat uses the Codex CLI subscription. Projections stay on the recording. Live, record, and replay do not read `OPENAI_API_KEY`.
+
+Sign in once, outside this repo's nix shell if that is where the CLI is installed:
+
+```sh
+codex login
+```
+
+Then start the sample server. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`.
+
+```sh
+cargo run -p physician-sample
+```
+
+Record a cassette outside the repository, then replay it. Replay makes no model call.
+
+```sh
+CODA_LOCAL_MODEL_EXECUTION=record \
+CODA_CASSETTE_AUTHORIZATION='who approved this synthetic run' \
+CODA_CASSETTE_OUTPUT=/absolute/path/cassette.json \
+cargo run -p physician-sample
+
+CODA_LOCAL_MODEL_EXECUTION=replay \
+CODA_CASSETTE_PATH=/absolute/path/cassette.json \
+cargo run -p physician-sample
+```
+
+`CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
+
+A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
 
 ### Dev container
 
