@@ -130,7 +130,14 @@ pub fn fingerprint(protocol: Protocol, directory: &Path) -> Result<String, Strin
             digest.update(&buffer[..read]);
         }
     }
-    Ok(format!("{}{:x}", protocol.prefix(), digest.finalize()))
+    let digest = digest.finalize();
+    let mut fingerprint = String::with_capacity(protocol.prefix().len() + digest.len() * 2);
+    fingerprint.push_str(protocol.prefix());
+    for byte in digest {
+        use std::fmt::Write as _;
+        let _ = write!(&mut fingerprint, "{byte:02x}");
+    }
+    Ok(fingerprint)
 }
 
 fn read_json(path: &Path) -> Result<Option<serde_json::Value>, String> {
