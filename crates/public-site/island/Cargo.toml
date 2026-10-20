@@ -1,0 +1,29 @@
+[package]
+name = "public-site-motion"
+version = "0.1.0"
+edition = "2024"
+license = "UNLICENSED"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+# Deliberately isolated: crates/* does not register this nested package. Build
+# with --manifest-path; no Dioxus runtime or parent-workspace changes required.
+[workspace]
+
+[dependencies]
+wasm-bindgen = "=0.2.129"
+js-sys = "=0.3.106"
+web-sys = { version = "=0.3.106", features = [
+    "Window", "Document", "Element", "HtmlElement", "Node", "NodeList",
+    "DomTokenList", "CssStyleDeclaration", "DomRect", "MediaQueryList",
+    "Event", "EventTarget", "Performance",
+] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

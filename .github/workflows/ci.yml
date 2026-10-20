@@ -19,6 +19,75 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+      # Primary checkout keeps its normal GITHUB_TOKEN. Only this reference
+      # checkout receives the App token; never persist it into Git config.
+      - name: Require private-reference App configuration
+        env:
+          APP_ID: ${{ vars.KYTOS_APP_ID }}
+          INSTALLATION_ID: ${{ vars.KYTOS_APP_INSTALLATION_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.KYTOS_APP_PRIVATE_KEY }}
+          IS_FORK: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+        run: |
+          if [ "$IS_FORK" = true ]; then
+            echo "::error::Fork PRs cannot receive the private-reference App credential. A maintainer must review the changes and run them on a trusted branch in this repository. Do not use pull_request_target or skip parity."
+            exit 1
+          fi
+          if [[ ! "$APP_ID" =~ ^[0-9]+$ || ! "$INSTALLATION_ID" =~ ^[0-9]+$ || -z "$APP_PRIVATE_KEY" ]]; then
+            echo "::error::Configure KYTOS_APP_ID and KYTOS_APP_INSTALLATION_ID Actions variables and KYTOS_APP_PRIVATE_KEY Actions secret. See book/src/public-site.md. Secrets may be withheld for fork/Dependabot PRs; parity remains required."
+            exit 1
+          fi
+      - name: Resolve pinned public-site reference
+        id: kytos-ref
+        run: |
+          entry="$(git ls-tree HEAD -- submodules/kytos)"
+          read -r mode type sha path <<< "$entry"
+          if [[ "$mode" != 160000 || "$type" != commit || ! "$sha" =~ ^[0-9a-f]{40}$ || "$path" != submodules/kytos ]]; then
+            echo "::error::Expected a pinned gitlink at submodules/kytos in the checked-out revision."
+            exit 1
+          fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - name: Create read-only reference token
+        id: kytos-token
+        # Verified actions/create-github-app-token v2; App ID input is supported.
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.KYTOS_APP_ID }}
+          private-key: ${{ secrets.KYTOS_APP_PRIVATE_KEY }}
+          owner: Coda-Health
+          repositories: kytos
+          permission-contents: read
+          skip-token-revoke: false
+      - name: Verify expected App installation
+        env:
+          EXPECTED: ${{ vars.KYTOS_APP_INSTALLATION_ID }}
+          ACTUAL: ${{ steps.kytos-token.outputs.installation-id }}
+        run: |
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::GitHub App installation does not match KYTOS_APP_INSTALLATION_ID; check the Coda-Health installation and selected repositories."
+            exit 1
+          fi
+      - name: Check out pinned public-site parity reference
+        uses: actions/checkout@v7
+        with:
+          repository: Coda-Health/kytos
+          ref: ${{ steps.kytos-ref.outputs.sha }}
+          path: submodules/kytos
+          token: ${{ steps.kytos-token.outputs.token }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+      - name: Verify reference checkout pin
+        env:
+          EXPECTED: ${{ steps.kytos-ref.outputs.sha }}
+        run: |
+          if [ "$(git -C submodules/kytos rev-parse HEAD)" != "$EXPECTED" ]; then
+            echo "::error::Reference checkout does not match the parent gitlink."
+            exit 1
+          fi
+      - name: Install Node for public-site asset and browser proofs
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
       # Preinstalled SDKs are unused here and leave no room to archive target
       # beside itself (run 39309157954, ENOSPC during cache save). The build,
       # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
@@ -95,6 +164,8 @@ jobs:
         uses: browser-actions/setup-chrome@v2
         with:
           install-dependencies: true
+      - name: Build public-site motion island (60 KB brotli budget)
+        run: bash crates/public-site/island/build.sh
       - name: Check formatting
         run: cargo fmt --check
       # CI parity with the pre-commit hook (.githooks/pre-commit): a commit
@@ -113,6 +184,18 @@ jobs:
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         run: cargo test -p physician-sample --test auth_browser --test site --test react -- --skip the_live_react_practice_matches_the_rust_page
+      - name: Browser and reference proof (public site)
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+          PUBLIC_SITE_SCREENSHOTS: ${{ runner.temp }}/public-site-screenshots
+        run: cargo test -p public-site
+      - name: Upload public-site browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: public-site-browser
+          path: ${{ runner.temp }}/public-site-screenshots
+          if-no-files-found: ignore
       - name: Browser proof (mode shells)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}

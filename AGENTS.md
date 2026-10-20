@@ -9,6 +9,7 @@ copy them.
 | Work | Contract |
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
+| Public marketing site, its Rust server, and prepared deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is read-only reference; no DNS or Vercel cutover |
 | Physician product, clinical runtime, and the clinical skill catalog | [Hoisted Coda Agents contract](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
 | Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |

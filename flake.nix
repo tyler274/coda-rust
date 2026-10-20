@@ -75,6 +75,7 @@
           google-cloud-sdk
           act
           actionlint
+          oha
           mdbook
           opentofu
           wasm-bindgen-cli_0_2_129
@@ -194,6 +195,21 @@ PGCTL
               [ -n "$line" ] && export "$line"
             done < <(doppler secrets download --no-file --format env-no-quotes --project coda-rust --config dev 2>/dev/null || true)
           fi
+          # A host ElyLD override can survive `nix develop` in this wrapper
+          # variable. ElyLD 1.0.0 misaligns AVX2 constants in unoptimized Rust
+          # binaries (CRC32 and ChaCha both fault). Remove only that foreign
+          # linker-prefix override, including GCC's joined/separate -B forms.
+          # Keep all other wrapper flags and NIX_LDFLAGS: Nix uses those for
+          # library paths, hardening and runtime search paths. Do this after
+          # sourcing host tooling and Doppler so they cannot reintroduce it.
+          coda_foreign_linker='(^|[[:space:]])-B[[:space:]]*/nix/store/[^/[:space:]]+-elyld-ld/ld-prefix/?([[:space:]]|$)'
+          while [[ "''${NIX_CFLAGS_LINK-}" =~ $coda_foreign_linker ]]; do
+            NIX_CFLAGS_LINK="''${NIX_CFLAGS_LINK/"''${BASH_REMATCH[0]}"/ }"
+          done
+          if [[ -v NIX_CFLAGS_LINK ]]; then
+            export NIX_CFLAGS_LINK
+          fi
+          unset coda_foreign_linker
           # Git hooks live in .githooks (pre-commit runs rustfmt + clippy).
           # Idempotent: only set when not already configured, so a local
           # override survives.
