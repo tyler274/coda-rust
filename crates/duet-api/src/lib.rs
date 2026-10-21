@@ -28,15 +28,8 @@ use uuid::Uuid;
 /// The `REQUIRED_MIGRATION` constant.
 pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
 
-const LIST_SQL: &str = "\
-select id, kind, occurred_at \
-from public.account_moments \
-where user_id = $1 \
-order by occurred_at desc, id desc";
-
-const DELETE_SQL: &str = "\
-delete from public.account_moments \
-where id = $1 and user_id = $2";
+const LIST_SQL: &str = include_str!("sql/list_moments.sql");
+const DELETE_SQL: &str = include_str!("sql/delete_moment.sql");
 
 #[derive(Debug)]
 /// The `ApiError` cases.
@@ -513,7 +506,7 @@ pub(crate) fn account_id(state: &AppState, headers: &HeaderMap) -> Result<Uuid, 
 
 /// Reports whether the required migration is applied.
 pub async fn schema_is_ready(pool: &sqlx::PgPool) -> Result<bool, sqlx::Error> {
-    sqlx::query_scalar("select exists (select 1 from public.schema_migrations where version = $1)")
+    sqlx::query_scalar(include_str!("sql/has_migration.sql"))
         .bind(REQUIRED_MIGRATION)
         .fetch_one(pool)
         .await
@@ -599,9 +592,11 @@ mod tests {
 
     #[test]
     fn sql_matches_the_python_moment_store() {
-        assert!(LIST_SQL.contains("from public.account_moments"));
-        assert!(LIST_SQL.contains("order by occurred_at desc, id desc"));
-        assert!(DELETE_SQL.contains("delete from public.account_moments"));
+        let list = LIST_SQL.split_whitespace().collect::<Vec<_>>().join(" ");
+        let delete = DELETE_SQL.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert!(list.contains("from public.account_moments"));
+        assert!(list.contains("order by occurred_at desc, id desc"));
+        assert!(delete.contains("delete from public.account_moments"));
         assert_eq!(REQUIRED_MIGRATION, "0120_one_review_bookmark");
     }
 

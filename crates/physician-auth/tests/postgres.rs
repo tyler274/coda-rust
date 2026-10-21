@@ -17,9 +17,13 @@ const NOW: u64 = 1_760_000_000;
 /// the test's unique suffix — so parallel tests and repeated runs never share
 /// migration state. The database is dropped when the store is dropped.
 async fn store(name: &str) -> Option<PostgresAuthStore> {
-    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok()?;
+    let url = std::env::var("PHYSICIAN_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
+        assert!(
+            std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+            "PHYSICIAN_DATABASE_URL is required for the Postgres CI proof"
+        );
         return None;
     }
     let mut split: Vec<_> = url.rsplitn(2, '/').collect();

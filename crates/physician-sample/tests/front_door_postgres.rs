@@ -15,6 +15,7 @@ use serde_json::Value;
 use tower::ServiceExt;
 
 const NOW: u64 = 1_760_000_000;
+const STAGING_EMAIL: &str = "physician@codahealth.test";
 
 /// Builds the practice's authed router on one Postgres database, returning
 /// the router, the auth store's email lookup, and the front-door store.
@@ -30,9 +31,13 @@ async fn router(
     std::sync::Arc<dyn physician_auth::AuthStore>,
     std::sync::Arc<dyn FrontDoorStore>,
 )> {
-    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok()?;
+    let url = std::env::var("PHYSICIAN_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
+        assert!(
+            std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+            "PHYSICIAN_DATABASE_URL is required for the Postgres CI proof"
+        );
         return None;
     }
     let mut split: Vec<_> = url.rsplitn(2, '/').collect();
@@ -56,6 +61,22 @@ async fn router(
             .await
             .expect("auth store"),
     );
+    // The server seeds the staging physician only into its memory store; a
+    // Postgres deployment's accounts arrive by invitation. The fixture does
+    // the same, so the journey runs as the practice's admin.
+    let token = auth
+        .invite(
+            STAGING_PRACTICE_ID,
+            STAGING_EMAIL,
+            "Staging Physician",
+            true,
+            NOW,
+        )
+        .await
+        .expect("staging admin invitation");
+    auth.redeem_invitation(STAGING_EMAIL, &token, NOW)
+        .await
+        .expect("staging admin account");
     let front_door: std::sync::Arc<dyn FrontDoorStore> = std::sync::Arc::new(
         front_door::PostgresFrontDoorStore::connect_with_migrations(&url)
             .await
@@ -132,11 +153,11 @@ async fn the_practice_invite_redeems_once_and_reads_premium_on_postgres() {
         return;
     };
     let account = auth
-        .account_by_email("physician@codahealth.test")
+        .account_by_email(STAGING_EMAIL)
         .await
         .expect("staging account");
     assert!(account.admin, "the staging physician administers");
-    let session = session_for(&app, "physician@codahealth.test").await;
+    let session = session_for(&app, STAGING_EMAIL).await;
     let workspace = WORKSPACE_IDS[0];
     let (status, body) = send(
         &app,

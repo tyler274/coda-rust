@@ -18,9 +18,22 @@ const NOW: u64 = 1_760_000_000;
 /// the test's unique suffix — so parallel tests and repeated runs never share
 /// migration state. The database is dropped when the store is dropped.
 async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
-    let url = std::env::var("FRONT_DOOR_DATABASE_URL").ok()?;
+    let url = database(name).await?;
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .expect("connect with migrations");
+    Some(store)
+}
+
+/// Creates the per-test database and returns its URL; `None` skips quietly.
+async fn database(name: &str) -> Option<String> {
+    let url = std::env::var("FRONT_DOOR_DATABASE_URL").unwrap_or_default();
     let url = url.trim();
     if url.is_empty() {
+        assert!(
+            std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+            "FRONT_DOOR_DATABASE_URL is required for the Postgres CI proof"
+        );
         return None;
     }
     let mut split: Vec<_> = url.rsplitn(2, '/').collect();
@@ -38,14 +51,60 @@ async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
         .execute_unprepared(&format!("CREATE DATABASE {test_db}"))
         .await
         .expect("create test database");
-    let store = PostgresFrontDoorStore::connect_with_migrations(&format!("{base}/{test_db}"))
-        .await
-        .expect("connect with migrations");
     admin.close().await.expect("close admin connection");
-    Some(store)
+    Some(format!("{base}/{test_db}"))
     // The per-test database is intentionally left in place after the test;
     // the next run's `DROP DATABASE IF EXISTS` clears any stale leftover,
     // so a crashed or failed test never wedges the suite.
+}
+
+#[tokio::test]
+async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
+    let Some(url) = database("legacy_init").await else {
+        return;
+    };
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .expect("first migrate");
+    let (patient, id, _) = invited_account(&store, "pg-proof").await;
+    // Rewind the records to what the chain wrote before it had its own
+    // table: the init as `mod` in SeaORM's default `seaql_migrations`.
+    let db = sea_orm::Database::connect(&url).await.expect("connection");
+    db.execute_unprepared(&format!(
+        "DROP TABLE {table}; \
+         CREATE TABLE seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
+         INSERT INTO seaql_migrations VALUES ('mod', 42);",
+        table = front_door::migration::MIGRATION_TABLE,
+    ))
+    .await
+    .expect("legacy records");
+
+    // Migrating again adopts the init rather than re-running it over the
+    // existing tables, and the rows the init's tables hold survive.
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .expect("migrate over the legacy records");
+    assert_eq!(store.link(id).await.unwrap(), patient);
+    let recorded = db
+        .query_all_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            format!(
+                "SELECT version, applied_at FROM {}",
+                front_door::migration::MIGRATION_TABLE
+            ),
+        ))
+        .await
+        .expect("front-door records")
+        .into_iter()
+        .map(|row| {
+            (
+                row.try_get::<String>("", "version").unwrap(),
+                row.try_get::<i64>("", "applied_at").unwrap(),
+            )
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(recorded, [("mod".to_owned(), 42)]);
+    store.migrate().await.expect("a second migrate is a no-op");
 }
 
 fn patient(practice: &str, id: &str) -> RosterPatient {

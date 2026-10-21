@@ -65,6 +65,7 @@
           uv
           poppler-utils
           postgres
+          pgformatter
           gcc
           gnumake
           jq
