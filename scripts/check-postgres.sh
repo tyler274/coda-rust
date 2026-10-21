@@ -20,6 +20,7 @@ cargo test --locked -p front-door --test postgres
 cargo test --locked -p physician-sample --test front_door_postgres
 # These identity targets must never silently return without exercising Postgres.
 cargo test --locked -p front-door --test identity
+cargo test --locked -p front-door --test luna_journal
 cargo test --locked -p duet-api --test identity
 cargo test --locked -p duet-api --test durable_routes
 # Explicitly select ignored real-database proofs; serial execution prevents

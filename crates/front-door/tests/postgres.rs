@@ -70,6 +70,9 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // Rewind the records to what the chain wrote before it had its own
     // table: the init as `mod` in SeaORM's default `seaql_migrations`.
     let db = sea_orm::Database::connect(&url).await.expect("connection");
+    // Fixture-only removal of the new empty outbox. Production rollback refuses
+    // to destroy retained privacy receipts.
+    db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_seaql_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
     // Recreate the actual old schema before simulating its legacy ledger.
     <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(&db, Some(1))
         .await
@@ -121,7 +124,11 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         })
         .collect::<Vec<_>>();
     assert!(recorded.contains(&("mod".to_owned(), 42)));
-    assert_eq!(recorded.len(), 2, "legacy init plus identity extension");
+    assert_eq!(
+        recorded.len(),
+        3,
+        "legacy init plus identity and journal extensions"
+    );
     assert!(
         recorded
             .iter()
@@ -185,6 +192,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "front_door_identities",
         "front_door_invitations",
         "front_door_links",
+        "front_door_luna_restrictions",
         "front_door_permissions",
         "front_door_premium",
         "front_door_seaql_migrations",

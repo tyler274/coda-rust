@@ -20,8 +20,11 @@ pub mod account;
 #[allow(missing_docs)]
 pub mod identity;
 mod m20261020_identity;
+mod m20261021_luna_journal;
 #[allow(missing_docs)]
 pub mod permission;
+#[allow(missing_docs)]
+pub mod restriction;
 
 #[allow(missing_docs)]
 pub mod consent;
@@ -85,6 +88,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20260101_000001_init),
             Box::new(m20261020_identity::Migration),
+            Box::new(m20261021_luna_journal::Migration),
         ]
     }
 
@@ -494,7 +498,10 @@ mod tests {
             .iter()
             .map(|migration| migration.name().to_owned())
             .collect();
-        assert_eq!(names, ["mod", "m20261020_identity"]);
+        assert_eq!(
+            names,
+            ["mod", "m20261020_identity", "m20261021_luna_journal"]
+        );
     }
 
     /// `physician-auth` records into SeaORM's default table on the same

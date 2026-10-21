@@ -55,6 +55,15 @@ impl PostgresFrontDoorStore {
         Premiums::find().one(&self.db).await?;
         Sessions::find().one(&self.db).await?;
         SignInTokens::find().one(&self.db).await?;
+        crate::migration::identity::Entity::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::permission::Entity::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::restriction::Entity::find()
+            .one(&self.db)
+            .await?;
         Ok(())
     }
 

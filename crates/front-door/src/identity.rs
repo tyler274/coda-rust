@@ -71,7 +71,7 @@ impl Access {
     }
 }
 
-async fn locked(
+pub(crate) async fn locked(
     tx: &DatabaseTransaction,
     principal: &Principal,
 ) -> Result<(account::Model, permission::Model), AuthorityError> {
@@ -249,7 +249,8 @@ impl PostgresFrontDoorStore {
 
     /// Withdrawals persist immediately and cannot be undone before journal
     /// confirmation. There is deliberately no public 'clear pending' shortcut.
-    /// Full journal confirmation/replay is ENG-113, not implemented by this store.
+    /// Each transition records an immutable outbox event in the same transaction.
+    /// Retrying an already withdrawn scope preserves its original event identity.
     pub async fn set_identity_luna(
         &self,
         principal: &Principal,
@@ -268,7 +269,23 @@ impl PostgresFrontDoorStore {
         if allowed && permissions.restriction_pending {
             return Err(AuthorityError::RestrictionPending);
         }
-        let revision = permissions.revision + 1;
+        if (!allowed && permissions.restriction_pending)
+            || (permissions.luna_version.as_deref() == Some(version)
+                && permissions.luna_allowed == allowed)
+        {
+            tx.commit().await?;
+            return Ok(Access {
+                account_id: account.id,
+                permissions,
+            });
+        }
+        let revision = permissions
+            .revision
+            .checked_add(1)
+            .ok_or(AuthorityError::Refused)?;
+        if !allowed {
+            crate::journal::record(&tx, account.id, revision, now).await?;
+        }
         let pending = permissions.restriction_pending || !allowed;
         let mut update = permissions.into_active_model();
         update.luna_version = Set(Some(version.to_owned()));

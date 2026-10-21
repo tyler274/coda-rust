@@ -30,6 +30,8 @@ pub use store::PostgresFrontDoorStore;
 
 /// Durable Identity Platform mapping and Duet permission authority.
 pub mod identity;
+/// Transactional Luna privacy restrictions and independent receipt reconciliation.
+pub mod journal;
 /// The SeaORM entities and the migration chain.
 pub mod migration;
 
