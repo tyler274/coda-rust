@@ -39,9 +39,12 @@ pub struct Browser {
 
 impl Browser {
     /// Launches headless Chromium on an ephemeral port with one blank page.
+    // Success transfers the child into Browser; its Drop kills and waits.
+    // Startup failure paths below also kill and wait before panicking.
+    #[allow(clippy::zombie_processes)]
     pub fn launch() -> Self {
         let port = free_port().expect("a free local port for the DevTools endpoint");
-        let child = std::process::Command::new(chromium_path())
+        let mut child = std::process::Command::new(chromium_path())
             .env_remove("LD_LIBRARY_PATH")
             .args([
                 "--headless=new",
@@ -59,18 +62,27 @@ impl Browser {
         let deadline = Instant::now() + Duration::from_secs(20);
         loop {
             if Instant::now() > deadline {
+                let _ = child.kill();
+                let _ = child.wait();
                 panic!("chromium did not open a DevTools page on port {port}");
             }
-            if let Ok(pages) = targets(port) {
-                if let Some(target) = pages.into_iter().next() {
-                    let page = connect(port, &target.socket_path).expect("chromium DevTools");
-                    return Self {
-                        child,
-                        port,
-                        page,
-                        base: "about:blank".to_owned(),
-                    };
-                }
+            if let Ok(pages) = targets(port)
+                && let Some(target) = pages.into_iter().next()
+            {
+                let page = match connect(port, &target.socket_path) {
+                    Ok(page) => page,
+                    Err(error) => {
+                        let _ = child.kill();
+                        let _ = child.wait();
+                        panic!("chromium DevTools: {error}");
+                    }
+                };
+                return Self {
+                    child,
+                    port,
+                    page,
+                    base: "about:blank".to_owned(),
+                };
             }
             std::thread::sleep(Duration::from_millis(100));
         }

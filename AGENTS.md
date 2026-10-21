@@ -25,7 +25,30 @@ disagree.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, or servers. Shared crates are `ui` and `http` only.
+Duet and the physician product do not share clinical types, accounts, or servers.
+Shared product-neutral crates are `ui`, `http`, and the execution mechanics in
+`harness` (including its `agent-skills` admission dependency). ENG-46 authorizes
+shared structured provider exchanges, tool dispatch, context handling,
+cancellation/currentness hooks, usage bounds, streaming, and execution-record
+interfaces. Product adapters retain instructions, tool authority, clinical state,
+effect transactions, recovery policy, and completion decisions. The harness
+must not depend on either product or introduce a competing durable run ledger;
+Duet must not import `local-product` to reuse physician transport.
+
+Duet SQL migrations belong to `crates/duet-api/migrations`; the explicit
+`duet-migrate` binary uses `DUET_MIGRATION_DATABASE_URL` and `DUET_RUNTIME_ROLE`,
+separate from runtime credentials. `database::AccountDatabase` admits only
+non-owner runtime roles and starts account-local transactions. Preserve existing
+`public.users` IDs, evidence revision identities, and doctor workspace generations;
+never replay the reference beta reset. Owner phases append additive migrations
+and test upgrades as well as fresh installs. The foundation alone is not the
+full reference schema or a replacement for its runtime readiness gate.
+
+Rust API additions belong to `crates/duet-api/openapi/additions.json`; regenerate
+`duet-wire` with `scripts/generate-duet-wire.sh`. Its additive composer refuses
+replacement of reference definitions. Do not edit generated DTOs or the
+reference specification. An empty additions file reserves ownership, not new
+endpoint behavior.
 
 The physician site is a client of the physician projections. `crates/physician-sample` serves the page and a recorded projection of the synthetic practice on one origin. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat runs through the Codex CLI subscription (`codex login`) and does not read an API key. `record` writes a cassette and `replay` answers from that cassette, also without a key. `api` answers physician chat through `crates/local-product` and OpenAI Responses; the key comes from the environment (`CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`, loaded by Doppler in the nix shell) and is not stored in the page. The page mounts into `#main`. On the web build, an unset `PHYSICIAN_API_URL` uses that origin; `?api=` still points the same build at the Node server. A physician-site change is not done unless `cargo test -p physician-sample --test site` passed. That Chromium test fails when the document is blank.
 
