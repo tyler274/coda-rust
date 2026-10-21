@@ -163,7 +163,9 @@ impl Accounts {
     }
 }
 
-fn explicit_display_name(body: &AccountIdentityRequest) -> Result<Option<String>, ApiError> {
+pub(crate) fn explicit_display_name(
+    body: &AccountIdentityRequest,
+) -> Result<Option<String>, ApiError> {
     let Some(Some(name)) = &body.display_name else {
         return Ok(None);
     };
@@ -182,7 +184,7 @@ fn normalize_display_name(value: &str) -> Option<String> {
     }
 }
 
-fn validate_stat_ids(values: &[String]) -> Result<Vec<String>, ApiError> {
+pub(crate) fn validate_stat_ids(values: &[String]) -> Result<Vec<String>, ApiError> {
     if values.is_empty() || values.len() > MAX_TODAY_STATS {
         return Err(ApiError::Unprocessable("invalid Today stat identifier"));
     }
