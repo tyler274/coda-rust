@@ -188,8 +188,8 @@ docker_digest_exists() {
 if [[ $CHECK_GROUP -eq 1 ]]; then
   step "Check the IAP group exists and whether ${DEPLOYER_USER} is a transitive member"
   note "Needs a Google Workspace / Cloud Identity admin (groups reader). Read-only."
-  run gcloud identity groups describe "$IAP_GROUP"
-  run gcloud identity groups memberships check-transitive-membership \
+  run "${G[@]}" identity groups describe "$IAP_GROUP"
+  run "${G[@]}" identity groups memberships check-transitive-membership \
     --group-email="$IAP_GROUP" --member-email="$DEPLOYER_USER"
   exit 0
 fi
@@ -330,18 +330,20 @@ if [[ $SKIP_TOKEN -eq 1 ]]; then
 elif [[ -n "$enabled_version" ]]; then
   note "enabled version ${enabled_version} already exists; pass --rotate-doppler-token to add another"
 else
-  # The token goes straight from Doppler's stdout into gcloud's stdin: it is
-  # never echoed, assigned to a variable, or written to disk.
+  # Doppler --plain ends with a newline, which is invalid in the runtime's
+  # Authorization header. Strip line endings before Secret Manager; the token
+  # is never echoed, assigned to a variable, or written to disk.
   printf '+ doppler configs tokens create %q --project %q --config %q --access read --plain \\\n' \
     "$TOKEN_NAME" "$TOKEN_DOPPLER_PROJECT" "$TOKEN_DOPPLER_CONFIG"
-  printf '    | gcloud --project=%q secrets versions add %q --data-file=-\n' "$PROJECT_ID" "$SECRET_ID"
+  printf '    | tr -d "\\r\\n" | gcloud --project=%q secrets versions add %q --data-file=-\n' "$PROJECT_ID" "$SECRET_ID"
   if [[ $PRINT -eq 0 ]]; then
     command -v doppler >/dev/null || { echo "doppler not on PATH; use nix develop" >&2; exit 1; }
     doppler configs tokens create "$TOKEN_NAME" \
       --project "$TOKEN_DOPPLER_PROJECT" --config "$TOKEN_DOPPLER_CONFIG" --access read --plain \
+      | tr -d '\r\n' \
       | "${G[@]}" secrets versions add "$SECRET_ID" --data-file=- --format='value(name)'
   fi
-  note "env/staging.tfvars pins doppler_token_secret_version = \"1\"; bump it if the version printed above differs."
+  note "Pin doppler_token_secret_version in env/staging.tfvars to the version printed above."
 fi
 
 # --- 5. CI deployer service account (no keys) ----------------------------------

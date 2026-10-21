@@ -30,7 +30,7 @@ RUN test -s crates/public-site/island/dist/bootstrap.js \
     && readelf -lW target/x86_64-unknown-linux-musl/release/public-site > /tmp/site-elf \
     && ! grep -q INTERP /tmp/site-elf
 
-# Same pinned release/checksum as scripts/gcp/install_doppler.sh. No unpinned
+# Same pinned release/checksum as `workspace-tools install-doppler`. No unpinned
 # package installation is required in either the builder or runtime image.
 RUN wget -O /tmp/doppler.tar 'https://cli.doppler.com/download?os=linux&arch=amd64&format=tar&version=v3.77.0' \
     && printf '%s  %s\n' '92587cb89c2ff82fc2ddec2b2a9f275ff320994a44e16cd9310b55a429a82084' /tmp/doppler.tar | sha256sum -c - \

@@ -266,8 +266,6 @@ jobs:
           else
             echo "${avail_gib} GiB free; keeping target for cargo doc"
           fi
-      - name: Check the Doppler installer
-        run: bash -n scripts/gcp/install_doppler.sh
       - name: Build the book and the rustdoc
         run: |
           mdbook build book

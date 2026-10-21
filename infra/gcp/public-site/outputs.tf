@@ -12,6 +12,11 @@ output "iap_audience" {
   value       = local.staging ? local.iap_audience : null
 }
 
+output "staging_domain_records" {
+  description = "DNS records required by the staging domain mapping; no DNS records are changed by this root."
+  value       = try(google_cloud_run_domain_mapping.staging[0].status[0].resource_records, [])
+}
+
 output "load_balancer_ip" {
   description = "Production reserved address only; null for staging. No DNS or traffic change is performed by this root."
   value       = local.staging ? null : google_compute_global_address.site[0].address

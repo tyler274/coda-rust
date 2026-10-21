@@ -48,13 +48,12 @@ async fn main() {
             }
         }
     }
-    if let Ok(front_url) = std::env::var("FRONT_DOOR_DATABASE_URL") {
-        if let Err(error) =
+    if let Ok(front_url) = std::env::var("FRONT_DOOR_DATABASE_URL")
+        && let Err(error) =
             front_door::PostgresFrontDoorStore::connect_with_migrations(&front_url).await
-        {
-            eprintln!("front-door migration coverage incomplete: {error}");
-            std::process::exit(1);
-        }
+    {
+        eprintln!("front-door migration coverage incomplete: {error}");
+        std::process::exit(1);
     }
     println!("Duet workspace migrations applied");
 }

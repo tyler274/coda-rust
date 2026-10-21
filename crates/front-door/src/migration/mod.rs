@@ -458,7 +458,7 @@ mod tests {
         assert_eq!(
             names,
             [
-                "mod",
+                INIT_MIGRATION_NAME,
                 "m20261020_identity",
                 "m20261021_luna_journal",
                 "m20261021_duet_conversation",

@@ -72,15 +72,16 @@ let
   '';
 
   # Production processes start under `doppler run --` (AGENTS.md). This is the
-  # same release, URL and SHA-256 that scripts/gcp/install_doppler.sh installs
-  # on runners: one pin, read from that script, verified by fetchurl. The
-  # upstream binary is static, so it adds no libraries to the closure.
+  # same release, URL and SHA-256 that `workspace-tools install-doppler`
+  # installs on runners: one pin, read from crates/workspace-tools/src/doppler.rs,
+  # verified by fetchurl. The upstream binary is static, so it adds no
+  # libraries to the closure.
   dopplerPin =
     let
-      script = builtins.readFile ../scripts/gcp/install_doppler.sh;
-      pin = name: builtins.head (builtins.match ".*readonly ${name}=\"([^\"]+)\".*" script);
+      source = builtins.readFile ../crates/workspace-tools/src/doppler.rs;
+      pin = name: builtins.head (builtins.match ".*pub const ${name}: &str = \"([^\"]+)\";.*" source);
     in
-    { version = pin "DOPPLER_VERSION"; sha256 = pin "DOPPLER_SHA256"; };
+    { version = pin "VERSION"; sha256 = pin "SHA256"; };
   doppler = pkgs.stdenvNoCC.mkDerivation {
     pname = "doppler-cli";
     version = lib.removePrefix "v" dopplerPin.version;

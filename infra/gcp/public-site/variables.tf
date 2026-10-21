@@ -29,6 +29,12 @@ variable "region" {
   default = "us-east1"
 }
 
+variable "staging_domain" {
+  description = "Verified custom hostname for the IAP-protected staging service. DNS remains operator-managed; production does not use this mapping."
+  type        = string
+  default     = null
+}
+
 variable "environment" {
   type    = string
   default = "staging"
@@ -81,7 +87,7 @@ variable "physician_app_url" {
 }
 
 variable "certificate_ids" {
-  description = "Existing global Compute SSL certificate self-links, required only for production. Staging uses protected run.app and needs no certificate or DNS."
+  description = "Existing global Compute SSL certificate self-links, required only for production. Staging uses native IAP; its optional domain mapping manages TLS automatically."
   type        = list(string)
   default     = []
   nullable    = false

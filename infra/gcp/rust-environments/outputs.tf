@@ -52,7 +52,7 @@ output "activation_blockers" {
     "Operator creates protected GitHub dev/staging/production environments; production requires independent reviewers. No CI infrastructure credentials.",
     "Operator provisions foundations, publishes immutable images, and separately enables databases (two continuously billed instances).",
     "Operator bootstraps per-app SQL grants; runtime owners prove IAM token refresh/private TLS, durable auth/chat, no auto-migrate, bounded pool <=4 and enforced model usage limits/provider quotas.",
-    "Operator creates least-scope per-app/per-role Doppler tokens and pins numeric Secret Manager versions; no secret values in plans.",
+    "Operator creates least-scope per-app/per-role Doppler tokens and pins numeric Secret Manager versions; no secret values in plans. `doppler configs tokens create --plain` ends with a newline that breaks the runtime's Authorization header: pipe through `tr -d '\\r\\n'` before `gcloud secrets versions add --data-file=-` (public-site staging bootstrap, PR #42).",
     "Runtime env names and migration/image interfaces require owner agreement; /readyz and port 8080 must work before activation.",
     "Only then may an authorized operator enable workloads; prod additionally requires production_activation_approved. Hosted acceptance remains a later phase.",
     "Budget alerts are not hard caps; logs retained 30 days, backups/PITR seven days, state history 90 days/ten versions, rollback images retained until release keep-set policy exists.",
