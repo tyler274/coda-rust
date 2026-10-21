@@ -3,6 +3,12 @@
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
+pub mod doctor;
+pub mod identity;
+pub mod retention;
+pub mod session;
+pub mod streaming;
+
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
 pub use duet_wire::models::ConversationAcceptance;
@@ -72,19 +78,6 @@ pub struct LunaNoteProposal {
     pub saved_record_id: Option<String>,
 }
 
-/// Expiring, revocable read-only share link for `For my doctor` (`ENG-46`).
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct ForMyDoctorShareLink {
-    /// The opaque share token.
-    pub token: String,
-    /// Relative share path (`/shared/for-my-doctor/{token}`).
-    pub share_path: String,
-    /// Unix timestamp (seconds) when the link expires.
-    pub expires_at_unix: u64,
-    /// Whether the patient has revoked the link.
-    pub revoked: bool,
-}
-
 /// One item in `"your doctor's plan"` (`ENG-54`).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DoctorPlanItemView {
@@ -123,10 +116,16 @@ pub const BUILD_HEADER: &str = "X-Duet-App-Build";
 /// The `VERSION_HEADER` constant.
 pub const VERSION_HEADER: &str = "X-Duet-App-Version";
 
-#[derive(Debug, Clone)]
-/// The `DuetClient` value exchanged by this crate.
+#[derive(Clone)]
+/// The `DuetClient` value exchanged by this crate. Debug output deliberately omits credentials.
 pub struct DuetClient {
     configuration: Configuration,
+}
+
+impl std::fmt::Debug for DuetClient {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("DuetClient { credentials: [REDACTED] }")
+    }
 }
 
 impl DuetClient {
@@ -402,11 +401,7 @@ impl DuetClient {
 
     /// Reads the For my doctor collection.
     pub async fn doctor_collection(&self) -> Result<duet_wire::models::DoctorCollection, String> {
-        duet_wire::apis::doctor_workspace_api::get_doctor_collection_api_doctor_collection_get(
-            &self.configuration,
-        )
-        .await
-        .map_err(|error| error.to_string())
+        self.doctor_workspace().await.map_err(|e| e.to_string())
     }
 
     /// Saves one medication the person typed. `id` is reused when the save fails.
@@ -456,26 +451,34 @@ impl DuetClient {
     }
 
     /// Saves the For my doctor page the person is reviewing.
+    pub async fn checked_doctor_page(
+        &self,
+        expected_generation: i32,
+    ) -> Result<duet_wire::models::DoctorCollection, String> {
+        self.check_doctor_workspace(expected_generation)
+            .await
+            .map_err(|e| e.to_string())
+    }
+
+    /// Save only the explicit patient-approved content with its original generation fence.
     pub async fn save_doctor_page(
         &self,
         save: duet_wire::models::DoctorPageSave,
     ) -> Result<duet_wire::models::DoctorCollection, String> {
-        duet_wire::apis::doctor_workspace_api::save_doctor_page_api_doctor_collection_page_put(
-            &self.configuration,
-            save,
-        )
-        .await
-        .map_err(|error| error.to_string())
+        self.save_doctor_workspace(&save)
+            .await
+            .map_err(|e| e.to_string())
     }
 
-    /// Clears the saved For my doctor page.
-    pub async fn clear_doctor_page(&self) -> Result<(), String> {
-        duet_wire::apis::doctor_workspace_api::clear_doctor_workspace_api_doctor_collection_delete(
-            &self.configuration,
-        )
-        .await
-        .map(|_| ())
-        .map_err(|error| error.to_string())
+    /// Clears the approved page using the same privacy-event identity and generation on retry.
+    pub async fn clear_doctor_page(
+        &self,
+        operation_id: uuid::Uuid,
+        generation: i64,
+    ) -> Result<(), String> {
+        self.clear_doctor_workspace(operation_id, generation)
+            .await
+            .map_err(|e| e.to_string())
     }
 
     async fn store_evidence(
@@ -837,45 +840,6 @@ impl DuetClient {
             .client
             .post(&url)
             .json(&serde_json::json!({}))
-            .send()
-            .await
-            .map_err(|error| error.to_string())?;
-        if !response.status().is_success() {
-            return Err(format!("status {}", response.status()));
-        }
-        response.json().await.map_err(|error| error.to_string())
-    }
-
-    /// Creates an expiring, revocable read-only share link for `For my doctor` (`ENG-46`).
-    pub async fn create_doctor_share_link(&self) -> Result<ForMyDoctorShareLink, String> {
-        let url = format!(
-            "{}/api/doctor-collection/share-link",
-            self.configuration.base_path.trim_end_matches('/')
-        );
-        let response = self
-            .configuration
-            .client
-            .post(&url)
-            .json(&serde_json::json!({}))
-            .send()
-            .await
-            .map_err(|error| error.to_string())?;
-        if !response.status().is_success() {
-            return Err(format!("status {}", response.status()));
-        }
-        response.json().await.map_err(|error| error.to_string())
-    }
-
-    /// Revokes the active `For my doctor` share link (`ENG-46`).
-    pub async fn revoke_doctor_share_link(&self) -> Result<ForMyDoctorShareLink, String> {
-        let url = format!(
-            "{}/api/doctor-collection/share-link",
-            self.configuration.base_path.trim_end_matches('/')
-        );
-        let response = self
-            .configuration
-            .client
-            .delete(&url)
             .send()
             .await
             .map_err(|error| error.to_string())?;
