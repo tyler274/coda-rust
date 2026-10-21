@@ -90,15 +90,19 @@ resource "google_sql_database" "app" {
 }
 
 resource "google_sql_user" "app" {
-  for_each        = var.enable_databases ? local.identities : {}
-  project         = google_project.environment.project_id
-  instance        = google_sql_database_instance.app[each.value.app].name
-  name            = trimsuffix(google_service_account.app[each.key].email, ".gserviceaccount.com")
-  type            = "CLOUD_IAM_SERVICE_ACCOUNT"
-  deletion_policy = "ABANDON"
-  # IAM users get no SQL grants here, and MUST NOT receive cloudsqlsuperuser.
-  # An authorized DB operator runs bootstrap-grants.sql independently before
-  # acknowledging runtime_and_database_contract_approved.
+  for_each            = var.enable_databases ? local.identities : {}
+  project             = google_project.environment.project_id
+  instance            = google_sql_database_instance.app[each.value.app].name
+  name                = "${each.value.app}-${each.value.role}"
+  type                = "BUILT_IN"
+  password_wo         = try(var.database_passwords[each.key], "bootstrap-replaced-out-of-band")
+  password_wo_version = try(var.database_password_versions[each.key], 1)
+  deletion_policy     = "ABANDON"
+  # Passwords are write-only: they are set out of band and stored only in
+  # Doppler, so no password value enters this state. These users get no SQL
+  # grants here and MUST NOT receive cloudsqlsuperuser. An authorized DB
+  # operator runs bootstrap-grants.sql before acknowledging
+  # runtime_and_database_contract_approved.
 }
 
 resource "google_project_iam_member" "sql_login" {

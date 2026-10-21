@@ -122,10 +122,23 @@ variable "production_activation_approved" {
   description = "Separate operator authorization for ANY prod database or workload activation; never controlled by staging CI."
 }
 
+variable "database_passwords" {
+  type        = map(string)
+  default     = {}
+  description = "Write-only passwords for the four per-app, per-role database users, keyed physician-runtime, physician-migration, duet-runtime, duet-migration. Set out of band; stored only in Doppler. Write-only values never enter state. An empty or missing value keeps the bootstrap placeholder, which the operator replaces before any workload connects."
+  sensitive   = true
+}
+
+variable "database_password_versions" {
+  type        = map(number)
+  default     = {}
+  description = "Bump the number for a key to apply a rotated database_passwords value. Only the version is stored, never the password."
+}
+
 variable "runtime_and_database_contract_approved" {
   type        = bool
   default     = false
-  description = "Operator attests SQL grants were installed, runtime supports refreshing IAM DB tokens/private TLS, durable per-account auth/chat, no auto-migrate, enforced pool/model bounds, and verified readiness. This is a prerequisite, not implemented by infrastructure."
+  description = "Operator attests SQL grants were installed, database passwords live only in Doppler and the runtime connects with sslmode=require over the private IP, durable per-account auth/chat, no auto-migrate, enforced pool/model bounds, and verified readiness. This is a prerequisite, not implemented by infrastructure."
 }
 
 variable "images" {
