@@ -239,6 +239,11 @@ async fn real_asset_bundle_is_immutable_and_sibling_resolvable() {
 async fn staging_denies_pages_and_assets_without_access() {
     let runtime = RuntimeConfig {
         staging: true,
+        access: public_site::access::AccessConfig {
+            audience: Some(
+                "/projects/134570912572/locations/us-east1/services/public-site-staging".into(),
+            ),
+        },
         ..RuntimeConfig::default()
     };
     let app = router_with_options(

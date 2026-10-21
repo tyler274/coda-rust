@@ -6,8 +6,11 @@ terraform {
       version = "= 7.43.0"
     }
   }
-  # Deliberately no backend. This new root is validation-only until an operator
-  # approves state ownership and deployment; never apply with local state.
+  # Partial GCS backend. Staging state is owned by this root:
+  #   tofu init -backend-config=backend/staging.gcs.tfbackend
+  # Mocked tests and validation use `tofu init -backend=false` and need no
+  # credentials. Never apply with local state; never initialize production here.
+  backend "gcs" {}
 }
 
 provider "google" {

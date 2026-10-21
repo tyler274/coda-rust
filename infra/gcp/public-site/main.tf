@@ -1,12 +1,17 @@
 locals {
   name           = "${var.name}-${var.environment}"
-  doppler_config = var.environment == "staging" ? "stg" : "prd"
-  runtime_env = {
+  staging        = var.environment == "staging"
+  doppler_config = local.staging ? "stg" : "prd"
+  iap_audience   = "/projects/${var.project_number}/locations/${var.region}/services/${local.name}"
+  # API enablement and creation of this Google-managed identity belong to the
+  # existing project's operator, not this service-only root.
+  iap_service_agent = "service-${var.project_number}@gcp-sa-iap.iam.gserviceaccount.com"
+  runtime_env = merge({
     PUBLIC_SITE_LISTEN_ADDR = "0.0.0.0:8080"
     PHYSICIAN_APP_URL       = var.physician_app_url
     APP_ENV                 = var.environment
     RELEASE_SHA             = var.release_sha
-  }
+  }, local.staging ? { PUBLIC_SITE_IAP_AUDIENCE = local.iap_audience } : {})
 }
 
 resource "google_service_account" "site" {
@@ -26,8 +31,10 @@ resource "google_cloud_run_v2_service" "site" {
   name                 = local.name
   location             = var.region
   deletion_protection  = true
-  ingress              = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
-  default_uri_disabled = true
+  ingress              = local.staging ? "INGRESS_TRAFFIC_ALL" : "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+  default_uri_disabled = !local.staging
+  iap_enabled          = local.staging
+  invoker_iam_disabled = false
 
   template {
     service_account                  = google_service_account.site.email
@@ -44,7 +51,7 @@ resource "google_cloud_run_v2_service" "site" {
       command = ["/doppler"]
       args = [
         "run", "--no-fallback", "--no-check-version", "--config-dir=/tmp/doppler", "--project", "coda-rust", "--config", local.doppler_config,
-        "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA",
+        "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA${local.staging ? ",PUBLIC_SITE_IAP_AUDIENCE" : ""}",
         "--", "/public-site"
       ]
       ports {
@@ -96,9 +103,30 @@ resource "google_cloud_run_v2_service" "site" {
   depends_on = [google_secret_manager_secret_iam_member.doppler]
 }
 
-# The external ALB does not authenticate to Cloud Run. Network ingress and the
-# disabled run.app URL constrain this grant; staging also verifies Access at origin.
+# Authoritative, service-scoped bindings: staging has no public invoker and no
+# implicit deployer/CI website access. Separate smoke access needs authorization.
+resource "google_cloud_run_v2_service_iam_binding" "iap_invoker" {
+  count    = local.staging ? 1 : 0
+  project  = var.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.site.name
+  role     = "roles/run.invoker"
+  members  = ["serviceAccount:${local.iap_service_agent}"]
+}
+
+resource "google_iap_web_cloud_run_service_iam_binding" "team" {
+  count                  = local.staging ? 1 : 0
+  project                = var.project_id
+  location               = var.region
+  cloud_run_service_name = google_cloud_run_v2_service.site.name
+  role                   = "roles/iap.httpsResourceAccessor"
+  members                = ["group:${var.iap_group}"]
+}
+
+# Production's external ALB does not authenticate to Cloud Run. Network ingress
+# and the disabled run.app URL constrain this production-only public grant.
 resource "google_cloud_run_v2_service_iam_member" "load_balancer" {
+  count    = local.staging ? 0 : 1
   project  = var.project_id
   location = var.region
   name     = google_cloud_run_v2_service.site.name
@@ -107,6 +135,7 @@ resource "google_cloud_run_v2_service_iam_member" "load_balancer" {
 }
 
 resource "google_compute_region_network_endpoint_group" "site" {
+  count                 = local.staging ? 0 : 1
   name                  = local.name
   region                = var.region
   network_endpoint_type = "SERVERLESS"
@@ -116,59 +145,102 @@ resource "google_compute_region_network_endpoint_group" "site" {
 }
 
 resource "google_compute_backend_service" "site" {
+  count                 = local.staging ? 0 : 1
   name                  = local.name
   protocol              = "HTTP"
   load_balancing_scheme = "EXTERNAL_MANAGED"
-  # A staging CDN hit would bypass origin-side Cloudflare Access verification.
-  # Never offer an override enabling CDN for staging, including for static assets.
-  enable_cdn = var.environment == "production"
+  enable_cdn            = true
 
   backend {
-    group = google_compute_region_network_endpoint_group.site.id
+    group = google_compute_region_network_endpoint_group.site[0].id
   }
-  dynamic "cdn_policy" {
-    for_each = var.environment == "production" ? [1] : []
-    content {
-      cache_mode       = "USE_ORIGIN_HEADERS"
-      negative_caching = false
-      # No FORCE_CACHE_ALL, cookie bypass assumptions, or authentication caching.
-      cache_key_policy {
-        include_host         = true
-        include_protocol     = true
-        include_query_string = true
-      }
+  cdn_policy {
+    cache_mode       = "USE_ORIGIN_HEADERS"
+    negative_caching = false
+    # No FORCE_CACHE_ALL, cookie bypass assumptions, or authentication caching.
+    cache_key_policy {
+      include_host         = true
+      include_protocol     = true
+      include_query_string = true
     }
   }
   # Serverless NEGs support neither backend health checks nor timeout_sec.
 }
 
 resource "google_compute_url_map" "site" {
+  count           = local.staging ? 0 : 1
   name            = local.name
-  default_service = google_compute_backend_service.site.id
+  default_service = google_compute_backend_service.site[0].id
 }
 
 resource "google_compute_ssl_policy" "site" {
+  count           = local.staging ? 0 : 1
   name            = local.name
   profile         = "MODERN"
   min_tls_version = "TLS_1_2"
 }
 
 resource "google_compute_target_https_proxy" "site" {
+  count            = local.staging ? 0 : 1
   name             = local.name
-  url_map          = google_compute_url_map.site.id
+  url_map          = google_compute_url_map.site[0].id
   ssl_certificates = var.certificate_ids
-  ssl_policy       = google_compute_ssl_policy.site.id
+  ssl_policy       = google_compute_ssl_policy.site[0].id
+
+  lifecycle {
+    precondition {
+      condition     = var.environment != "production" || length(var.certificate_ids) > 0
+      error_message = "Production requires an operator-provisioned TLS certificate."
+    }
+  }
 }
 
 resource "google_compute_global_address" "site" {
-  name = local.name
+  count = local.staging ? 0 : 1
+  name  = local.name
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
+  count                 = local.staging ? 0 : 1
   name                  = local.name
-  ip_address            = google_compute_global_address.site.id
-  target                = google_compute_target_https_proxy.site.id
+  ip_address            = google_compute_global_address.site[0].id
+  target                = google_compute_target_https_proxy.site[0].id
   port_range            = "443"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   network_tier          = "PREMIUM"
+}
+
+# Preserve existing production addresses when making the ALB production-only.
+# For staging, existing ALB resources are removed rather than recreated.
+moved {
+  from = google_cloud_run_v2_service_iam_member.load_balancer
+  to   = google_cloud_run_v2_service_iam_member.load_balancer[0]
+}
+moved {
+  from = google_compute_region_network_endpoint_group.site
+  to   = google_compute_region_network_endpoint_group.site[0]
+}
+moved {
+  from = google_compute_backend_service.site
+  to   = google_compute_backend_service.site[0]
+}
+moved {
+  from = google_compute_url_map.site
+  to   = google_compute_url_map.site[0]
+}
+moved {
+  from = google_compute_ssl_policy.site
+  to   = google_compute_ssl_policy.site[0]
+}
+moved {
+  from = google_compute_target_https_proxy.site
+  to   = google_compute_target_https_proxy.site[0]
+}
+moved {
+  from = google_compute_global_address.site
+  to   = google_compute_global_address.site[0]
+}
+moved {
+  from = google_compute_global_forwarding_rule.https
+  to   = google_compute_global_forwarding_rule.https[0]
 }

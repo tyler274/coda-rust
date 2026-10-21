@@ -83,6 +83,10 @@ def main():
             reservation.bind(("127.0.0.1", 0))
             port = reservation.getsockname()[1]
         env = dict(clean_env, APP_ENV=environment, PUBLIC_SITE_LISTEN_ADDR=f"127.0.0.1:{port}")
+        if environment == "staging":
+            # Staging refuses to start without the direct Cloud Run IAP audience.
+            # The local child never receives a signed assertion, so it stays deny-all.
+            env["PUBLIC_SITE_IAP_AUDIENCE"] = "/projects/134570912572/locations/us-east1/services/public-site-staging"
         with (args.output / f"{environment}-server.log").open("w") as log:
             server = subprocess.Popen([str(binary)], env=env, stdout=log, stderr=log)
             try:

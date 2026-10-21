@@ -31,29 +31,28 @@ impl Default for RuntimeConfig {
 }
 impl RuntimeConfig {
     pub fn from_env() -> Result<Self, Box<dyn std::error::Error>> {
-        fn nonempty(name: &str) -> Option<String> {
-            std::env::var(name)
-                .ok()
-                .filter(|value| !value.trim().is_empty())
-        }
+        Self::from_lookup(|name| std::env::var(name).ok())
+    }
+
+    fn from_lookup(
+        lookup: impl Fn(&str) -> Option<String>,
+    ) -> Result<Self, Box<dyn std::error::Error>> {
+        let nonempty = |name: &str| lookup(name).filter(|value| !value.trim().is_empty());
         let environment = nonempty("APP_ENV")
             .or_else(|| nonempty("NODE_ENV"))
             .unwrap_or_else(|| "unknown".into());
         let environment = environment.trim().to_owned();
         let staging = environment.eq_ignore_ascii_case("staging");
-        let issuer = match nonempty("CLOUDFLARE_ACCESS_TEAM_DOMAIN") {
-            Some(value) => Some(AccessConfig::normalize_issuer(&value)?),
-            None => None,
+        let access = AccessConfig {
+            audience: nonempty("PUBLIC_SITE_IAP_AUDIENCE"),
         };
+        if staging {
+            access.validate()?;
+        }
         let mut config = Self {
             environment,
             staging,
-            access: AccessConfig {
-                issuer,
-                audience: nonempty("CLOUDFLARE_ACCESS_AUD"),
-                service_client_id: nonempty("CF_ACCESS_CLIENT_ID"),
-                service_client_secret: nonempty("CF_ACCESS_CLIENT_SECRET"),
-            },
+            access,
             health_token: nonempty("STAGING_HEALTH_TOKEN"),
             release_sha: nonempty("RELEASE_SHA").or_else(|| nonempty("VERCEL_GIT_COMMIT_SHA")),
             ..Default::default()
@@ -78,8 +77,76 @@ impl RuntimeConfig {
             }
             config.internal_probe_addr = Some(addr);
         }
-        // Missing credentials do NOT disable staging. It remains deny-all until
-        // configured. Malformed issuer configuration aborts startup above.
+        // Missing or malformed staging audience aborts startup above. Local and
+        // public production do not require IAP configuration.
         Ok(config)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn load(values: &[(&str, &str)]) -> Result<RuntimeConfig, Box<dyn std::error::Error>> {
+        RuntimeConfig::from_lookup(|name| {
+            values
+                .iter()
+                .find(|(key, _)| *key == name)
+                .map(|(_, value)| (*value).to_owned())
+        })
+    }
+    #[test]
+    fn staging_requires_well_formed_direct_cloud_run_audience() {
+        let good = crate::access::tests::AUDIENCE;
+        assert!(
+            load(&[("APP_ENV", "StAgInG"), ("PUBLIC_SITE_IAP_AUDIENCE", good)])
+                .unwrap()
+                .staging
+        );
+        assert!(
+            load(&[("NODE_ENV", "staging"), ("PUBLIC_SITE_IAP_AUDIENCE", good)])
+                .unwrap()
+                .staging
+        );
+        for bad in [
+            "",
+            " ",
+            "audience",
+            "https://service.run.app",
+            "123.apps.googleusercontent.com",
+            "/projects/123/global/backendServices/456",
+            "/projects/id/locations/us-east1/services/site",
+            "/projects/123/locations//services/site",
+            "/projects/123/locations/us-east1/services/site/",
+            "/projects/123/locations/us-east1/services/site?x=1",
+            "/projects/123/locations/us-east1/services/../site",
+            &format!(" {good}"),
+            &format!("{good} "),
+        ] {
+            assert!(
+                load(&[("APP_ENV", "staging"), ("PUBLIC_SITE_IAP_AUDIENCE", bad)]).is_err(),
+                "{bad}"
+            );
+        }
+        assert!(load(&[("APP_ENV", "staging")]).is_err());
+        assert!(
+            load(&[
+                ("APP_ENV", "staging"),
+                ("CF_ACCESS_CLIENT_ID", "id"),
+                ("CF_ACCESS_CLIENT_SECRET", "secret"),
+                ("CLOUDFLARE_ACCESS_TEAM_DOMAIN", "team.cloudflareaccess.com"),
+                ("CLOUDFLARE_ACCESS_AUD", "legacy")
+            ])
+            .is_err()
+        );
+    }
+    #[test]
+    fn local_production_and_probe_contract_remain_explicit() {
+        for env in ["local", "production", "unknown"] {
+            assert!(!load(&[("APP_ENV", env)]).unwrap().staging);
+        }
+        assert!(load(&[("PUBLIC_SITE_INTERNAL_PROBE_ADDR", "0.0.0.0:8081")]).is_err());
+        assert!(load(&[("PUBLIC_SITE_INTERNAL_PROBE_ADDR", "127.0.0.1:8081")]).is_ok());
+        assert!(load(&[("PUBLIC_SITE_MAX_CONCURRENCY", "0")]).is_err());
+        assert!(load(&[("PUBLIC_SITE_REQUEST_TIMEOUT_MS", "30001")]).is_err());
     }
 }

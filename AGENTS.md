@@ -40,7 +40,7 @@ Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in on
 
 Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `scripts/gcp/install_doppler.sh` installs the pinned, checksum-verified CLI for images and runners.
 
-`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots.
+`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots. The exception is `infra/gcp/public-site`. This workspace owns its staging state (GCS prefix `public-site/staging`) and may init, plan and apply it for staging only, from a reviewed saved plan. Production is never planned or applied from here.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

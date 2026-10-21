@@ -1,6 +1,18 @@
 # Build from the workspace root with --platform=linux/amd64.
-# Both base images are content-addressed; Cargo.lock and --locked pin Rust deps.
-FROM rust:1.95.0-alpine3.23@sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db7ed2 AS build
+# Base images come from private Artifact Registry repositories in
+# coda-health-staging, never straight from a public registry:
+#   public-site-dockerhub  remote (pull-through) repository for Docker Hub
+#   public-site-base       standard repository holding a digest-identical copy
+#                          of gcr.io/distroless/static-debian12:nonroot
+# Authenticate once: gcloud auth configure-docker us-east1-docker.pkg.dev
+# The digests are fixed below; the ARGs choose only the registry path, so an
+# override can relocate a base image but cannot change its content.
+# Cargo.lock and --locked pin the Rust dependencies.
+ARG RUST_REPO=us-east1-docker.pkg.dev/coda-health-staging/public-site-dockerhub/library/rust
+ARG RUNTIME_REPO=us-east1-docker.pkg.dev/coda-health-staging/public-site-base/distroless/static-debian12
+
+# rust:1.95.0-alpine3.23
+FROM ${RUST_REPO}@sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db7ed2 AS build
 WORKDIR /src
 ENV CARGO_INCREMENTAL=0 \
     CARGO_BUILD_TARGET=x86_64-unknown-linux-musl \
@@ -27,7 +39,8 @@ RUN wget -O /tmp/doppler.tar 'https://cli.doppler.com/download?os=linux&arch=amd
     && readelf -lW /tmp/doppler > /tmp/doppler-elf \
     && ! grep -q INTERP /tmp/doppler-elf
 
-FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+# distroless/static-debian12:nonroot
+FROM ${RUNTIME_REPO}@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
 COPY --from=build --chown=65532:65532 /src/target/x86_64-unknown-linux-musl/release/public-site /public-site
 COPY --from=build --chown=65532:65532 /tmp/doppler /doppler
 ENV PUBLIC_SITE_LISTEN_ADDR=0.0.0.0:8080

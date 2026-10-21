@@ -13,7 +13,7 @@ import sys
 import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 
 def docker(*args):
@@ -42,9 +42,9 @@ class Document(HTMLParser):
             self.modules.append(attrs["src"])
 
 
-def fetch(base, path):
+def fetch(base, path, headers=None):
     try:
-        response = urlopen(urljoin(base, path), timeout=5)
+        response = urlopen(Request(urljoin(base, path), headers=headers or {}), timeout=5)
     except HTTPError as error:
         response = error
     with response:
@@ -52,12 +52,19 @@ def fetch(base, path):
 
 
 def container(image, environment):
+    staging_env = []
+    if environment == "staging":
+        # Startup requires the direct Cloud Run signed-header audience. Local
+        # image tests never substitute a trust endpoint or fetch cloud tokens.
+        staging_env = [
+            "-e", "PUBLIC_SITE_IAP_AUDIENCE=/projects/134570912572/locations/us-east1/services/public-site-staging",
+        ]
     return docker(
         "run", "-d", "--read-only", "--cap-drop=ALL",
         "--security-opt=no-new-privileges", "--memory=512m", "--cpus=1",
         "-p", "127.0.0.1::8080", "-e", f"APP_ENV={environment}",
         "-e", "RELEASE_SHA=" + "a" * 40,
-        "-e", "PHYSICIAN_APP_URL=https://physician.example.test", image,
+        "-e", "PHYSICIAN_APP_URL=https://physician.example.test", *staging_env, image,
     )
 
 
@@ -156,7 +163,20 @@ def main():
             assert status in (401, 403), (path, status)
             assert "no-store" in headers["Cache-Control"], path
             assert "noindex" in headers["X-Robots-Tag"], path
-        print("Staging without credentials: pages, CSS, JS/WASM, health and 404 deny access with no-store/noindex")
+        for credentials in [
+            {"x-goog-authenticated-user-email": "accounts.google.com:engineer@example.test",
+             "x-goog-authenticated-user-id": "accounts.google.com:123"},
+            {"cf-access-client-id": "id", "cf-access-client-secret": "secret"},
+            {"cf-access-jwt-assertion": "legacy"},
+            {"x-goog-iap-jwt-assertion": "not-a-signed-jwt"},
+            {"x-coda-staging-token": "probe"},
+        ]:
+            for path in ["/", "/api/health", "/readyz"]:
+                status, headers, _ = fetch(base, path, credentials)
+                assert status == 403 and "no-store" in headers["Cache-Control"], path
+                assert "noindex" in headers["X-Robots-Tag"], path
+        print("Staging: missing/invalid IAP, unsigned identity and legacy credentials denied with no-store/noindex")
+        print("Signed allow/rotation proof uses Rust public local fixtures; live IAP member/nonmember qualification remains separate")
         stop(cid)
     finally:
         docker("rm", "-f", cid)

@@ -3,6 +3,27 @@ variable "project_id" {
   type        = string
 }
 
+variable "project_number" {
+  description = "Numeric number of the existing project (coda-health-staging: 134570912572), not its project ID; used for the IAP service agent and signed assertion audience."
+  type        = string
+  nullable    = false
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.project_number))
+    error_message = "project_number must be a positive numeric string for the existing project."
+  }
+}
+
+variable "iap_group" {
+  description = "Engineering Google Group email for service-scoped staging IAP access. Membership is operator-managed; no CI or smoke identity is implicitly granted access."
+  type        = string
+  default     = "gcp-engineering@codahealth.ai"
+  nullable    = false
+  validation {
+    condition     = can(regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", var.iap_group))
+    error_message = "iap_group must be a Google Group email, not a domain, wildcard, or IAM principal prefix."
+  }
+}
+
 variable "region" {
   type    = string
   default = "us-east1"
@@ -13,7 +34,7 @@ variable "environment" {
   default = "staging"
   validation {
     condition     = contains(["staging", "production"], var.environment)
-    error_message = "Only staging and production are supported; staging must enable the origin Access gate."
+    error_message = "Only staging and production are supported; staging must enable native IAP and origin assertion verification."
   }
 }
 
@@ -27,11 +48,18 @@ variable "name" {
 }
 
 variable "image" {
-  description = "Published linux/amd64 image pinned by digest; never a mutable tag."
+  description = "Published linux/amd64 image pinned by digest, from the private public-site Artifact Registry repository in this project and region (staging: us-east1-docker.pkg.dev/coda-health-staging/public-site/...)."
   type        = string
   validation {
     condition     = can(regex("^[^@]+@sha256:[0-9a-f]{64}$", var.image))
     error_message = "image must be an immutable sha256 image reference."
+  }
+  # The repository is created private by scripts/staging-admin-bootstrap.sh.
+  # Same-project images let the Cloud Run service agent pull without any
+  # cross-project grant, and no public registry or shared repository is used.
+  validation {
+    condition     = startswith(var.image, "${var.region}-docker.pkg.dev/${var.project_id}/public-site/") && can(regex("^[a-z0-9-]+-docker\\.pkg\\.dev/[a-z0-9-]+/public-site/[a-z0-9]+([._/-][a-z0-9]+)*(:[A-Za-z0-9_][A-Za-z0-9_.-]{0,127})?@sha256:[0-9a-f]{64}$", var.image))
+    error_message = "image must come from the private Artifact Registry repository REGION-docker.pkg.dev/PROJECT_ID/public-site/ (staging: us-east1-docker.pkg.dev/coda-health-staging/public-site/), never a public registry or another repository."
   }
 }
 
@@ -53,12 +81,10 @@ variable "physician_app_url" {
 }
 
 variable "certificate_ids" {
-  description = "Existing global Compute SSL certificate self-links. Certificate issuance/DNS are outside this root."
+  description = "Existing global Compute SSL certificate self-links, required only for production. Staging uses protected run.app and needs no certificate or DNS."
   type        = list(string)
-  validation {
-    condition     = length(var.certificate_ids) > 0
-    error_message = "An operator-provisioned TLS certificate is required."
-  }
+  default     = []
+  nullable    = false
 }
 
 variable "doppler_token_secret_id" {

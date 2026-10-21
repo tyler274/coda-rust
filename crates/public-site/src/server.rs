@@ -76,7 +76,24 @@ pub fn router_with_options(
     extra_assets: impl IntoIterator<Item = (String, Bytes)>,
     ready: Readiness,
 ) -> Router {
+    let gate = AccessGate::new(runtime.access.clone());
+    router_with_gate(pages, runtime, extra_assets, ready, gate)
+}
+
+fn router_with_gate(
+    pages: PageTable,
+    runtime: RuntimeConfig,
+    extra_assets: impl IntoIterator<Item = (String, Bytes)>,
+    ready: Readiness,
+    gate: AccessGate,
+) -> Router {
     assert!(runtime.max_concurrency > 0, "concurrency must be positive");
+    if runtime.staging {
+        runtime
+            .access
+            .validate()
+            .expect("invalid staging IAP configuration");
+    }
     let generated = crate::paint::assets()
         .into_iter()
         .map(|asset| (asset.path, Bytes::from(asset.bytes)));
@@ -130,7 +147,7 @@ pub fn router_with_options(
         sitemap: Representation::new(sitemap, "application/xml; charset=utf-8"),
         robots: Representation::new(robots, "text/plain; charset=utf-8"),
         health: Representation::new(health, "application/json"),
-        gate: AccessGate::new(runtime.access.clone()),
+        gate,
         permits: Arc::new(Semaphore::new(runtime.max_concurrency)),
         runtime,
         ready,
@@ -158,7 +175,7 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
     let mut response = if let Ok(_permit) = state.permits.clone().try_acquire_owned() {
         match tokio::time::timeout(state.runtime.request_timeout, async {
             if state.runtime.staging && !state.gate.allows(request.headers()).await {
-                return (StatusCode::FORBIDDEN, "Cloudflare Access required").into_response();
+                return (StatusCode::FORBIDDEN, "Google IAP assertion required").into_response();
             }
             next.run(request).await
         })
@@ -324,6 +341,21 @@ pub fn internal_probe_router(ready: Readiness) -> Router {
 mod tests {
     use super::*;
     use tower::ServiceExt;
+    // Route tests use the same signature verifier with a public local key cache.
+    fn router_with_options(
+        pages: PageTable,
+        runtime: RuntimeConfig,
+        assets: impl IntoIterator<Item = (String, Bytes)>,
+        ready: Readiness,
+    ) -> Router {
+        super::router_with_gate(
+            pages,
+            runtime,
+            assets,
+            ready,
+            crate::access::tests::cached_gate(),
+        )
+    }
     fn pages() -> PageTable {
         let meta = crate::Route::Home {}.meta();
         let page = crate::Page {
@@ -340,9 +372,7 @@ mod tests {
             staging: true,
             environment: "staging".into(),
             access: crate::access::AccessConfig {
-                service_client_id: Some("id".into()),
-                service_client_secret: Some("secret".into()),
-                ..Default::default()
+                audience: Some(crate::access::tests::AUDIENCE.into()),
             },
             ..Default::default()
         }
@@ -350,9 +380,10 @@ mod tests {
     fn request(path: &str, authorized: bool) -> Request {
         let mut request = Request::builder().uri(path);
         if authorized {
-            request = request
-                .header("cf-access-client-id", "id")
-                .header("cf-access-client-secret", "secret");
+            request = request.header(
+                "x-goog-iap-jwt-assertion",
+                crate::access::tests::assertion(),
+            );
         }
         request.body(Body::empty()).unwrap()
     }
@@ -528,7 +559,7 @@ mod tests {
             robots: Representation::new("", "text/plain"),
             health: Representation::new("", "text/plain"),
             ready: Readiness::ready(),
-            gate: AccessGate::new(runtime.access.clone()),
+            gate: crate::access::tests::cached_gate(),
             permits: Arc::new(Semaphore::new(1)),
             runtime,
         });
