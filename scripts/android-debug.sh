@@ -103,6 +103,9 @@ fi
 mkdir -p "$java_dir/java/coda/duet"
 cp "$bridge" "$java_dir/java/coda/duet/HealthConnectBridge.kt"
 cp "$notify" "$java_dir/java/coda/duet/NotificationBridge.kt"
+# Native protected credentials/drafts: no plaintext persistence fallback.
+cp "$root/platform/android/SecureRetentionBridge.kt" "$java_dir/java/coda/duet/SecureRetentionBridge.kt"
+cp "$root/platform/android/DoctorPdfProvider.kt" "$java_dir/java/coda/duet/DoctorPdfProvider.kt"
 app_gradle=$(find target/dx/mobile -path '*/app/build.gradle.kts' ! -path '*/build/*' | while IFS= read -r path; do
   if grep -q 'androidx.webkit' "$path"; then
     printf '%s\n' "$path"
@@ -146,6 +149,7 @@ fi
 sed -i 's/compileSdk = 34/compileSdk = 35/' "$app_gradle"
 sed -i 's/minSdk = 24/minSdk = 26/' "$app_gradle"
 manifest="$java_dir/AndroidManifest.xml"
+python "$root/scripts/wire-duet-android.py" "$manifest"
 if ! grep -q 'android.permission.health.READ_STEPS' "$manifest"; then
   sed -i '/android.permission.INTERNET/a\
     <uses-permission android:name="android.permission.health.READ_STEPS" />\
