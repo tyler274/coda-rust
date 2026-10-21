@@ -1,6 +1,5 @@
-//! Runs existing Duet-owned chains and verifies the remaining external schema.
-//! This deliberately fails on an empty database: the legacy moments schema is
-//! not workspace-owned yet. Never advertise front-door alone as a full install.
+//! Runs the Duet-owned chains: the front-door migrations, then the vendored
+//! Duet schema (`crates/duet-api/migrations`). A rerun applies nothing.
 
 #[tokio::main]
 async fn main() {
@@ -20,7 +19,10 @@ async fn migrate(url: &str) -> Result<(), String> {
     front_door::PostgresFrontDoorStore::connect_with_migrations(&front_url)
         .await
         .map_err(|error| format!("front-door: {error}"))?;
-    // Product-owned conversation/account migration chains will be composed here.
+    let applied = duet_api::schema::apply(url)
+        .await
+        .map_err(|error| format!("duet schema: {error}"))?;
+    eprintln!("duet schema applied {applied} migrations");
     let pool = sqlx::PgPool::connect(url)
         .await
         .map_err(|error| error.to_string())?;
@@ -29,7 +31,7 @@ async fn migrate(url: &str) -> Result<(), String> {
         .map_err(|error| error.to_string())?
     {
         return Err(format!(
-            "legacy schema {} is not packaged; hosted activation remains blocked",
+            "schema chain completed without {}",
             duet_api::REQUIRED_MIGRATION
         ));
     }

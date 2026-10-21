@@ -111,22 +111,17 @@ done
 grep -q physician_runtime_commands <<<"${states[0]}" || { echo "runtime chain missing" >&2; exit 1; }
 echo "physician migration rerun is idempotent"
 
-# duet-migrate applies the workspace-owned front-door chain, then refuses to
-# report success while the legacy Duet schema (REQUIRED_MIGRATION, owned by
-# coda-app) is not packaged in this workspace. Both runs must behave alike.
+# duet-migrate applies the front-door chain and then the vendored Duet schema
+# chain. Both runs must record the same schema.
+duet_states=()
 for attempt in 1 2; do
-  expect_failure "duet migration run $attempt" "Duet migration coverage incomplete" \
-    run_job "${tag_of[coda-duet-migrate]}" -e DATABASE_URL="$duet_db"
+  run_job "${tag_of[coda-duet-migrate]}" -e DATABASE_URL="$duet_db"
+  duet_states+=("$(psql -At "$duet_db" -c 'select count(*) from public.schema_migrations')")
+  printf 'duet migration run %s: ok (%s schema versions)\n' "$attempt" "${duet_states[-1]}"
 done
-front_door_rows=$(psql -At "$duet_db" -c 'select count(*) from public.front_door_seaql_migrations')
-[ "$front_door_rows" -gt 0 ] || { echo "front-door chain was not applied" >&2; exit 1; }
-printf 'duet front-door chain recorded %s migrations\n' "$front_door_rows"
-
-# Readiness smoke only: a stand-in row for the external legacy chain lets the
-# runtime pass its schema gate in this throwaway database. It is not a
-# migration and proves nothing about the legacy schema.
-psql -q "$duet_db" -c 'create table public.schema_migrations (version text primary key)' \
-  -c "insert into public.schema_migrations values ('0120_one_review_bookmark')"
+[ "${duet_states[0]}" = "${duet_states[1]}" ] || { echo "duet rerun changed the schema" >&2; exit 1; }
+[ "${duet_states[0]}" -gt 0 ] || { echo "duet schema chain was not applied" >&2; exit 1; }
+echo "duet migration rerun is idempotent"
 
 serve() {
   local name=$1 port=$2; shift 2
@@ -169,17 +164,20 @@ physician_port=$(free_port)
 # API mode needs an explicit allowance and a key value to construct the
 # router; this placeholder is never sent anywhere because no chat is submitted.
 serve coda-physician-sample "$physician_port" \
-  -e PHYSICIAN_DATABASE_URL="$physician_db" -e CODA_ALLOW_MODEL_CALLS=1 \
-  -e OPENAI_API_KEY=image-smoke-placeholder
+  -e PHYSICIAN_DATABASE_URL="$physician_db" -e PHYSICIAN_AUTH=required \
+  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
+  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder
 expect_status "http://127.0.0.1:$physician_port/health" 200
-expect_status "http://127.0.0.1:$physician_port/readyz" 503
+expect_status "http://127.0.0.1:$physician_port/readyz" 200
 expect_status "http://127.0.0.1:$physician_port/" 200
 expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 
 duet_port=$(free_port)
-serve coda-duet-api "$duet_port" -e DATABASE_URL="$duet_db"
+serve coda-duet-api "$duet_port" -e DATABASE_URL="$duet_db" \
+  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
+  -e DUET_IDENTITY_PROJECT_ID=image-smoke
 expect_status "http://127.0.0.1:$duet_port/health" 200
-expect_status "http://127.0.0.1:$duet_port/readyz" 503
+expect_status "http://127.0.0.1:$duet_port/readyz" 200
 expect_status "http://127.0.0.1:$duet_port/" 200
 expect_status "http://127.0.0.1:$duet_port/duet-app_bg.wasm" 200
 

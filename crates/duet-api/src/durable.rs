@@ -77,8 +77,18 @@ fn routes() -> Router<Durable> {
         .route("/api/auth/account", get(read).put(provision))
         .route("/api/auth/account/terms", put(terms))
         .route("/api/auth/session/revoke", post(revoke))
-        .route("/readyz", get(crate::hosting::ready))
+        .route("/readyz", get(durable_ready))
         .layer(DefaultBodyLimit::max(4096))
+}
+
+/// Readiness for the durable router: the front-door schema answers. The moments
+/// schema is checked by the process-level `/readyz` in `main`.
+async fn durable_ready(State(state): State<Durable>) -> StatusCode {
+    if state.store.check_schema().await.is_ok() {
+        StatusCode::OK
+    } else {
+        StatusCode::SERVICE_UNAVAILABLE
+    }
 }
 
 async fn principal(state: &Durable, headers: &HeaderMap) -> Result<Principal, StatusCode> {

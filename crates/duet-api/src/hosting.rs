@@ -1,19 +1,46 @@
-//! Hosting qualification is distinct from building a runnable local application.
+//! Hosting boundary for the Duet runtime.
+//!
+//! Local runs are unrestricted. Hosted runs (Cloud Run sets `K_SERVICE`, or
+//! `CODA_HOSTED` is set) start only under the explicit staging-preview profile:
+//! `CODA_ENVIRONMENT=stg`, `CODA_HOSTED_PROFILE=staging-preview`, `DATABASE_URL`
+//! and `DUET_IDENTITY_PROJECT_ID` (the Identity Platform project whose tokens are
+//! verified). Production and every other combination refuse to start. The model
+//! execution switch stays off and no health-data attestation is implied.
 
-/// Refuses hosted execution until the product-owned durable/auth gates land.
-/// Presence of Cloud Run's marker cannot be overridden by a local flag.
-pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), &'static str> {
-    if get("K_SERVICE").is_some() || get("CODA_HOSTED").is_some() {
-        return Err(
-            "Duet hosted activation is not qualified: durable account-scoped routes, conversation execution, and complete workspace-owned migrations are required",
-        );
+/// The only hosted profile this binary will start under.
+pub const STAGING_PROFILE: &str = "staging-preview";
+
+/// Refuses hosted execution unless the staging-preview profile is complete.
+pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), String> {
+    if get("K_SERVICE").is_none() && get("CODA_HOSTED").is_none() {
+        return Ok(());
     }
-    Ok(())
+    let environment = get("CODA_ENVIRONMENT").unwrap_or_default();
+    let profile = get("CODA_HOSTED_PROFILE").unwrap_or_default();
+    let database = get("DATABASE_URL").unwrap_or_default();
+    let project = get("DUET_IDENTITY_PROJECT_ID").unwrap_or_default();
+    if environment == "stg"
+        && profile == STAGING_PROFILE
+        && !database.trim().is_empty()
+        && !project.trim().is_empty()
+    {
+        return Ok(());
+    }
+    Err(format!(
+        "Duet hosted activation is not qualified: hosted runs require CODA_ENVIRONMENT=stg, CODA_HOSTED_PROFILE={STAGING_PROFILE}, DATABASE_URL and DUET_IDENTITY_PROJECT_ID; production and every other profile refuse to start"
+    ))
 }
 
-/// Readiness is deliberately unavailable until the actual product runtime qualifies.
-pub async fn ready() -> axum::http::StatusCode {
-    axum::http::StatusCode::SERVICE_UNAVAILABLE
+/// Readiness for a hosted revision: the moments schema and the front-door schema
+/// both answer. A failed check is 503, never a crash.
+pub async fn ready(
+    moments: &sqlx::PgPool,
+    front_door: &front_door::PostgresFrontDoorStore,
+) -> axum::http::StatusCode {
+    match crate::schema_is_ready(moments).await {
+        Ok(true) if front_door.check_schema().await.is_ok() => axum::http::StatusCode::OK,
+        _ => axum::http::StatusCode::SERVICE_UNAVAILABLE,
+    }
 }
 
 /// Process liveness only (the `GET /health` of the Duet wire contract). It says
@@ -26,22 +53,74 @@ pub async fn live() -> axum::Json<serde_json::Value> {
 mod tests {
     use super::*;
 
+    fn hosted(extra: &[(&str, &str)]) -> Result<(), String> {
+        validate_startup(|name| {
+            if name == "K_SERVICE" {
+                return Some("duet".to_owned());
+            }
+            extra
+                .iter()
+                .find(|(key, _)| *key == name)
+                .map(|(_, value)| (*value).to_owned())
+        })
+    }
+
     #[test]
-    fn cloud_marker_and_even_false_hosted_flags_cannot_bypass_qualification() {
+    fn local_runs_start_without_any_profile() {
         assert!(validate_startup(|_| None).is_ok());
-        for key in ["K_SERVICE", "CODA_HOSTED"] {
-            assert!(validate_startup(|name| (name == key).then(|| "0".to_owned())).is_err());
+    }
+
+    #[test]
+    fn staging_preview_is_the_only_hosted_profile() {
+        let complete = [
+            ("CODA_ENVIRONMENT", "stg"),
+            ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+            ("DATABASE_URL", "postgres://db/duet"),
+            ("DUET_IDENTITY_PROJECT_ID", "coda-rust-stg"),
+        ];
+        assert!(hosted(&complete).is_ok());
+        for index in 0..complete.len() {
+            let dropped: Vec<_> = complete
+                .iter()
+                .enumerate()
+                .filter(|(i, _)| *i != index)
+                .map(|(_, pair)| *pair)
+                .collect();
+            assert!(hosted(&dropped).is_err(), "missing {}", complete[index].0);
         }
     }
 
-    #[tokio::test]
-    async fn unqualified_runtime_never_reports_ready() {
-        assert_eq!(ready().await, axum::http::StatusCode::SERVICE_UNAVAILABLE);
+    #[test]
+    fn production_and_other_profiles_refuse_even_when_complete() {
+        for (environment, profile) in [
+            ("prd", STAGING_PROFILE),
+            ("stg", "production"),
+            ("dev", STAGING_PROFILE),
+            ("", STAGING_PROFILE),
+        ] {
+            assert!(
+                hosted(&[
+                    ("CODA_ENVIRONMENT", environment),
+                    ("CODA_HOSTED_PROFILE", profile),
+                    ("DATABASE_URL", "postgres://db/duet"),
+                    ("DUET_IDENTITY_PROJECT_ID", "coda-rust-stg"),
+                ])
+                .is_err(),
+                "{environment}/{profile} must refuse"
+            );
+        }
+    }
+
+    #[test]
+    fn a_false_cloud_marker_is_still_hosted() {
+        assert!(
+            validate_startup(|name| (name == "K_SERVICE").then(|| "false".to_owned())).is_err()
+        );
+        assert!(validate_startup(|name| (name == "CODA_HOSTED").then(|| "0".to_owned())).is_err());
     }
 
     #[tokio::test]
-    async fn liveness_is_not_readiness() {
+    async fn liveness_says_nothing_about_readiness() {
         assert_eq!(live().await.0["status"], "ok");
-        assert_eq!(ready().await, axum::http::StatusCode::SERVICE_UNAVAILABLE);
     }
 }

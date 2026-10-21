@@ -22,6 +22,9 @@ sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio",
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "fs", "signal"] }
 uuid = { version = "1", features = ["serde", "v4"] }
 
+[build-dependencies]
+sha2 = "0.11"
+
 [dev-dependencies]
 chrono = { version = "0.4", features = ["serde"] }
 http-body-util = "0.1"

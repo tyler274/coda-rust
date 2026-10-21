@@ -452,9 +452,8 @@ pub async fn serve(listener: tokio::net::TcpListener) {
             std::process::exit(1);
         }
     };
-    let app = auth::authed_router(base)
-        .await
-        .route("/readyz", get(hosting::ready));
+    let app = auth::authed_router(base).await;
+    let app = route_readiness(app).await;
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())
         .await
@@ -476,6 +475,38 @@ async fn shutdown() {
     }
     #[cfg(not(unix))]
     tokio::signal::ctrl_c().await.expect("shutdown signal");
+}
+
+/// Adds `/readyz`, which answers from the same stores the process serves with.
+/// Without `PHYSICIAN_DATABASE_URL` there is nothing to check, so it stays 503.
+async fn route_readiness(app: Router) -> Router {
+    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok();
+    let stores = match url.as_deref() {
+        Some(url) => {
+            let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url).await;
+            let front = front_door::PostgresFrontDoorStore::connect_without_migrations(url).await;
+            match (auth, front) {
+                (Ok(auth), Ok(front)) => Some((auth, front)),
+                (Err(error), _) | (_, Err(error)) => {
+                    eprintln!("readiness stores unavailable: {error}");
+                    None
+                }
+            }
+        }
+        None => None,
+    };
+    let (auth, front) = match stores {
+        Some((auth, front)) => (Some(auth), Some(front)),
+        None => (None, None),
+    };
+    app.route(
+        "/readyz",
+        get(move || {
+            let auth = auth.clone();
+            let front = front.clone();
+            async move { hosting::ready(auth.as_ref(), front.as_ref()).await }
+        }),
+    )
 }
 
 /// Serves the recorded practice on `listener` with authentication required

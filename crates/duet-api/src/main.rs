@@ -27,9 +27,12 @@ async fn main() {
         .check_schema()
         .await
         .expect("front-door schema; run the migration job first");
+    let front_door = Arc::new(front_door);
+    let pool = Arc::new(pool);
+    let api_store: Arc<dyn front_door::FrontDoorStore> = front_door.clone();
     let mut app = router_with_front_door(
-        DuetApi::new(Arc::new(front_door)),
-        Arc::new(PgMoments::new(pool)),
+        DuetApi::new(api_store),
+        Arc::new(PgMoments::new((*pool).clone())),
     );
     if let Some(directory) = env::var_os("DUET_SITE_DIR") {
         let directory = std::path::PathBuf::from(directory);
@@ -45,7 +48,14 @@ async fn main() {
     });
     let app = app
         .route("/health", axum::routing::get(duet_api::hosting::live))
-        .route("/readyz", axum::routing::get(duet_api::hosting::ready));
+        .route(
+            "/readyz",
+            axum::routing::get(move || {
+                let front_door = Arc::clone(&front_door);
+                let pool = Arc::clone(&pool);
+                async move { duet_api::hosting::ready(&pool, &front_door).await }
+            }),
+        );
     let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())
