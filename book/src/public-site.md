@@ -14,7 +14,8 @@ browser access checks passed, as described in
 [Staging deployment status](#staging-deployment-status-2026-10-21). Production
 resources and DNS are unchanged. [ENG-79](https://linear.app/coda-health/issue/ENG-79)
 remains open for visual qualification, release-workflow integration, production
-hosting approval, recovery-window and retirement work.
+hosting approval and production recovery/retirement work. The old public-staging
+Vercel project and Cloudflare Access application have been retired.
 
 Staging access uses Google Identity-Aware Proxy (IAP) directly on Cloud Run, in
 the existing `coda-health-staging` project (number `134570912572`). The earlier
@@ -731,8 +732,11 @@ available directly.
   `cname.vercel-dns.com` (proxied) to `ghs.googlehosted.com` (DNS only), as returned
   by Cloud Run. DNS readback confirmed the target. Root and `www` production
   records were unchanged, and no production resources were planned or applied.
-  The old Vercel deployment and Cloudflare Access configuration remain available
-  for rollback; no Vercel deployment was changed.
+  The old public-staging Vercel project and its Cloudflare Access application
+  were then deleted at Dev's request. Readback confirmed both absent. Shared
+  Cloudflare policies and service tokens were preserved because the separate
+  `app-staging.codahealth.ai` application still uses them. Production remained
+  on the same Vercel deployment.
 - Google reported the custom hostname certificate provisioned at 20:29 UTC.
   After edge propagation, normal HTTPS, engineering-member page access,
   signed-in nonmember denial, anonymous page/health/asset redirects and
@@ -748,19 +752,23 @@ The existing Sign in link points back to the marketing staging site;
 physician/Duet application staging is separate work under ENG-167.
 
 CI and deployment identities have no website-access grant; no Rust release
-workflow has been added. The legacy Vercel project and workflows are retained,
-not retired: the [old production promotion script](https://github.com/Coda-Health/kytos/blob/main/scripts/promote-production.mjs)
-requires its Deploy Staging and Staging Smoke workflows, and the
-[old staging smoke](https://github.com/Coda-Health/kytos/blob/main/.github/workflows/staging-smoke.yml)
-defaults to `staging.codahealth.ai` with Cloudflare credentials. Those checks do
-not qualify the new IAP deployment. Reconcile that release-process dependency
-before the next legacy production promotion; no production workflow was changed.
+workflow has been added. The legacy kytos Deploy Staging and Staging Smoke
+workflows are disabled, and their staging-only repository variables and secrets
+are removed. Their Cloudflare headers and Next.js source comparisons cannot
+qualify this deployment; do not retarget them to the IAP hostname.
 
-For a staging-only DNS rollback, restore the `staging` CNAME to
-`cname.vercel-dns.com` with proxying enabled. Do not change the root, `www`, app or
-work records. The Cloud Run URL remains available behind IAP during certificate
-provisioning or rollback. Production cutover remains a separate decision under
-ENG-79 and is never planned or applied from this workspace.
+The [legacy production promotion script](https://github.com/Coda-Health/kytos/blob/main/scripts/promote-production.mjs)
+and production workflow are unchanged. They still require successful legacy
+staging checks for the exact kytos `origin/main` SHA, so new commits cannot pass
+those retired gates. Historical greens and this Rust site's access checks do
+not qualify a new Next.js release. The next production release needs an
+explicitly agreed qualification path under ENG-79 before those gates change.
+
+There is no DNS-only rollback to Vercel after deleting its public-staging
+project. Keep the `staging` CNAME on `ghs.googlehosted.com` with proxying disabled;
+the protected Cloud Run URL is also available for diagnosis. Do not change the
+root, `www`, app or work records. Production cutover remains a separate decision
+under ENG-79 and is never planned or applied from this workspace.
 
 ## Local release load check (2026-10-20)
 
