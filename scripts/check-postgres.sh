@@ -23,6 +23,7 @@ cargo test --locked -p front-door --test identity
 cargo test --locked -p front-door --test luna_journal
 cargo test --locked -p duet-api --test identity
 cargo test --locked -p duet-api --test durable_routes
+cargo test --locked -p duet-api --test durable_permissions
 # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
 cargo test --locked -p duet-api --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
 # Explicitly select ignored real-database proofs; serial execution prevents

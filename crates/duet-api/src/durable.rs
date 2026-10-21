@@ -2,14 +2,16 @@
 //!
 //! Never merge this router with the local/dev or legacy front-door router. Only
 //! account provisioning/readback, terms acceptance and LOCAL session fencing are
-//! converted. All clinical, privacy, linking, preference and execution operations
-//! remain absent. A permission snapshot never grants an effect or makes us ready.
+//! converted. An explicit separate constructor adds journal-backed Luna withdrawal.
+//! Grants await restore/coverage qualification; clinical, linking, preferences and
+//! execution remain absent. A permission snapshot never grants an effect.
 use crate::identity::{IdentityError, google::GoogleIdentity};
 use async_trait::async_trait;
 use axum::{
     Json, Router,
     extract::{DefaultBodyLimit, State},
     http::{HeaderMap, StatusCode},
+    response::{IntoResponse, Response},
     routing::{get, post, put},
 };
 use duet_wire::models::{AccountState, LunaConsentDecision, SessionRevocationResponse};
@@ -37,19 +39,46 @@ impl IdentityProvider for GoogleIdentity {
 struct Durable {
     identity: Arc<dyn IdentityProvider>,
     store: Arc<PostgresFrontDoorStore>,
+    archive: Option<Arc<dyn front_door::journal::ReceiptArchive>>,
 }
 
 /// Construct the narrow durable composition. Construction does not migrate,
 /// enable hosted startup, or assert readiness. Runtime pools must be nonmigrating.
 /// Injectable identity is a trusted dependency, not an endpoint/config override.
 pub fn router(store: Arc<PostgresFrontDoorStore>, identity: Arc<dyn IdentityProvider>) -> Router {
+    routes().with_state(Durable {
+        identity,
+        store,
+        archive: None,
+    })
+}
+
+/// Separately construct the durable withdrawal route. The archive is a trusted
+/// dependency (production: `GcsReceiptArchive`), never client input or qualification.
+/// `None` still commits withdrawals but reports pending; it never skips receipts.
+/// Neither this constructor nor archive success enables acceptance or hosted mode.
+pub fn router_with_permissions(
+    store: Arc<PostgresFrontDoorStore>,
+    identity: Arc<dyn IdentityProvider>,
+    archive: Option<Arc<dyn front_door::journal::ReceiptArchive>>,
+) -> Router {
+    routes()
+        .route("/api/intelligence/consent", put(luna_consent))
+        .layer(DefaultBodyLimit::max(4096))
+        .with_state(Durable {
+            identity,
+            store,
+            archive,
+        })
+}
+
+fn routes() -> Router<Durable> {
     Router::new()
         .route("/api/auth/account", get(read).put(provision))
         .route("/api/auth/account/terms", put(terms))
         .route("/api/auth/session/revoke", post(revoke))
         .route("/readyz", get(crate::hosting::ready))
         .layer(DefaultBodyLimit::max(4096))
-        .with_state(Durable { identity, store })
 }
 
 async fn principal(state: &Durable, headers: &HeaderMap) -> Result<Principal, StatusCode> {
@@ -197,6 +226,86 @@ async fn terms(
         .map_err(authority)?;
     view(&state, &p, access).await
 }
+// Same wire shape as LunaConsentRequest, but reject unknown owner/qualification
+// fields instead of silently accepting a client-supplied authority claim.
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LunaConsent {
+    decision: LunaConsentDecision,
+    version: String,
+}
+fn pending_privacy() -> Response {
+    (StatusCode::SERVICE_UNAVAILABLE,
+     [("Retry-After", "30")],
+     Json(serde_json::json!({"detail": "This privacy change is pending confirmation. Please retry."})))
+        .into_response()
+}
+async fn luna_consent(
+    State(state): State<Durable>,
+    headers: HeaderMap,
+    Json(body): Json<LunaConsent>,
+) -> Response {
+    let p = match principal(&state, &headers).await {
+        Ok(p) => p,
+        Err(status) => return status.into_response(),
+    };
+    // Resolve canonical ownership even for unsupported acceptance. No provisioning
+    // or dev fallback, and no cached Access can authorize an effect.
+    if let Err(error) = state.store.identity_access(&p).await {
+        return authority(error).into_response();
+    }
+    if body.version != LUNA_VERSION {
+        return (
+            StatusCode::CONFLICT,
+            Json(serde_json::json!({"detail":"Luna consent version changed"})),
+        )
+            .into_response();
+    }
+    if body.decision == LunaConsentDecision::Undecided {
+        return (
+            StatusCode::CONFLICT,
+            Json(serde_json::json!({"detail":"Luna consent requires a decision"})),
+        )
+            .into_response();
+    }
+    if body.decision == LunaConsentDecision::Accepted {
+        // No restore/coverage authority has been implemented or qualified. An
+        // archive dependency, successful readback or mutable boolean cannot stand
+        // in for it. Keep the grant path absent, even after receipts are delivered.
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    }
+    if let Err(error) = state
+        .store
+        .set_identity_luna(&p, &body.version, false, now())
+        .await
+    {
+        return authority(error).into_response();
+    }
+    let Some(archive) = &state.archive else {
+        return pending_privacy();
+    };
+    match state
+        .store
+        .confirm_luna_restriction(&p, archive.as_ref(), now())
+        .await
+    {
+        Ok(()) => (),
+        Err(AuthorityError::Absent | AuthorityError::Refused) => {
+            return StatusCode::UNAUTHORIZED.into_response();
+        }
+        Err(_) => return pending_privacy(),
+    }
+    // Re-resolve after external I/O. Concurrent sign-out cannot return an
+    // authenticated success, though the committed restriction stays effective.
+    match state.store.identity_access(&p).await {
+        Ok(access) => match view(&state, &p, access).await {
+            Ok(account) => account.into_response(),
+            Err(status) => status.into_response(),
+        },
+        Err(error) => authority(error).into_response(),
+    }
+}
+
 async fn revoke(
     State(state): State<Durable>,
     headers: HeaderMap,
