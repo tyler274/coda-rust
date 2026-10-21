@@ -317,6 +317,107 @@ jobs:
           nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
           nix develop --command bash scripts/check-postgres.sh
 
+  # Publishes the four images by digest and runs the release state machine.
+  # Only a push to main, and only after every check job is green. The staging
+  # environment must exist with its variables and the three gcloud identities
+  # (deployer, IAM verifier, smoke) before this can succeed; until then it
+  # fails closed rather than deploying anything.
+  deploy-staging:
+    name: Deploy staging
+    needs: [ci, foundations, images, postgres, cargo-deny]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 120
+    concurrency:
+      group: rust-staging-release
+      cancel-in-progress: false
+    environment: staging
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+      id-token: write
+      deployments: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Authenticate the deployer to Artifact Registry
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+      - name: Build the four images and push them by digest
+        env:
+          REGISTRY: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/apps
+        run: |
+          set -euo pipefail
+          gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
+          declare -A attr=(
+            [physician-runtime]=physician-sample-image
+            [physician-migration]=physician-migration-image
+            [duet-runtime]=duet-api-image
+            [duet-migration]=duet-migration-image
+          )
+          declare -A name=(
+            [physician-runtime]=coda-physician-sample
+            [physician-migration]=coda-physician-migrate
+            [duet-runtime]=coda-duet-api
+            [duet-migration]=coda-duet-migrate
+          )
+          mkdir -p release
+          for key in "${!attr[@]}"; do
+            archive=$(nix build ".#${attr[$key]}" --print-out-paths --no-link)
+            skopeo copy "docker-archive:$archive" "docker://$REGISTRY/${name[$key]}:${GITHUB_SHA}"
+            digest=$(skopeo inspect "docker://$REGISTRY/${name[$key]}:${GITHUB_SHA}" | jq -r .Digest)
+            echo "$REGISTRY/${name[$key]}@$digest" > "release/$key"
+            echo "${name[$key]} -> $digest"
+          done
+      - name: Assemble the release bundle
+        env:
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          # Operator-approved contract, resource specs, IAM baselines and the
+          # command config. No secret values; the release engine rejects a
+          # bundle that does not match the live infrastructure.
+          RELEASE_ENVIRONMENT: ${{ vars.RELEASE_ENVIRONMENT }}
+        run: |
+          set -euo pipefail
+          test -n "$RELEASE_ENVIRONMENT" || { echo "RELEASE_ENVIRONMENT is not set; staging is not configured" >&2; exit 1; }
+          # The release engine verifies each check family against the job that
+          # produced it. Map the families to this run's job database IDs.
+          number="${RUN_ID%-*}"
+          job_id() { gh api "repos/$GITHUB_REPOSITORY/actions/runs/$number/jobs?per_page=100" --jq ".jobs[] | select(.name==\"$1\") | .id"; }
+          checks=$(jq -n \
+            --arg apps "$(job_id CI)" --arg audit "$(job_id 'cargo-deny')" \
+            --arg lint "$(job_id 'Offline cloud foundation contracts')" \
+            --arg database "$(job_id 'Fresh Postgres migrations and tests')" \
+            --arg images "$(job_id 'Locked Nix images (build, run, migrate; no push)')" \
+            '{"apps": $apps, "audit": $audit, "format-lint": $lint, "database": $database, "browser": $apps, "images": $images}')
+          image() { cat "release/$1"; }
+          jq -n \
+            --arg sha "$GITHUB_SHA" --arg run "$RUN_ID" \
+            --arg pr "$(image physician-runtime)" --arg pm "$(image physician-migration)" \
+            --arg dr "$(image duet-runtime)" --arg dm "$(image duet-migration)" \
+            --argjson environment "$RELEASE_ENVIRONMENT" \
+            --argjson checks "$checks" \
+            '{environment: ($environment | del(.commands)),
+              candidate: {sha: $sha, run_id: $run,
+                images: {physician: {runtime: $pr, migration: $pm}, duet: {runtime: $dr, migration: $dm}},
+                builds: {physician: {runtime: $sha, migration: $sha}, duet: {runtime: $sha, migration: $sha}},
+                checks: $checks, compatibility_evidence: $sha},
+              commands: $environment.commands}' > release/bundle.json
+      - name: Release to staging
+        run: |
+          nix develop .#release --command python scripts/gcp/release.py \
+            --input release/bundle.json --execute
+      - name: Save the release receipt
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release/
+
   # RustSec advisories, license allow-list, bans, and source checks.
   # deny.toml is the single policy file; the nix dev shell carries the same
   # cargo-deny so `nix develop --command cargo deny check` matches this job.
