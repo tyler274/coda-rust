@@ -54,14 +54,24 @@ pub struct Migrator;
 
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
+    fn migration_table_name() -> DynIden {
+        Alias::new("front_door_migrations").into_iden()
+    }
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![Box::new(m20260101_000001_init)]
     }
 }
 
-#[derive(DeriveMigrationName)]
+/// Verified adoption and migration entrypoint.
+pub mod upgrade;
+
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000001_init;
+impl MigrationName for m20260101_000001_init {
+    fn name(&self) -> &str {
+        "front_door_20260101_000001_init"
+    }
+}
 
 #[async_trait::async_trait]
 impl MigrationTrait for m20260101_000001_init {

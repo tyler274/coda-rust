@@ -7,6 +7,8 @@
 //! bearer per sign-in, no refresh-token family or rotation.
 
 use sea_orm_migration::prelude::*;
+mod upgrade;
+pub use upgrade::migrate;
 
 // The entity models below carry field docs; the generated struct and relation
 // types are mechanical SeaORM shapes, so the crate-wide doc lint stays off
@@ -49,6 +51,9 @@ pub struct Migrator;
 
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
+    fn migration_table_name() -> DynIden {
+        Alias::new("physician_auth_migrations").into_iden()
+    }
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![
             Box::new(m20260101_000001_init),
@@ -57,9 +62,13 @@ impl MigratorTrait for Migrator {
     }
 }
 
-#[derive(DeriveMigrationName)]
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000001_init;
+impl MigrationName for m20260101_000001_init {
+    fn name(&self) -> &str {
+        "physician_auth_20260101_000001_init"
+    }
+}
 
 #[async_trait::async_trait]
 impl MigrationTrait for m20260101_000001_init {
@@ -438,9 +447,13 @@ impl MigrationTrait for m20260101_000001_init {
     }
 }
 
-#[derive(DeriveMigrationName)]
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000002_practice_patients;
+impl MigrationName for m20260101_000002_practice_patients {
+    fn name(&self) -> &str {
+        "physician_auth_20260101_000002_practice_patients"
+    }
+}
 
 #[async_trait::async_trait]
 impl MigrationTrait for m20260101_000002_practice_patients {
