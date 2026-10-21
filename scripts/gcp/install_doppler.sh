@@ -18,8 +18,10 @@ output_path="$1"
 tarball="$(mktemp -d)/doppler-${DOPPLER_VERSION}.tar"
 curl --fail --silent --show-error --location "$DOPPLER_URL" --output "$tarball"
 echo "${DOPPLER_SHA256}  ${tarball}" | sha256sum --check --status
-# The tarball's binary entry is `doppler`; extract only it to the exact path.
+# The tarball's binary entry is `doppler` (no `./` prefix); extract only it to
+# the exact path. nix/packages.nix reads the version and SHA-256 above, so the
+# container images carry this same verified release.
 tar --extract --file="$tarball" --directory="$(dirname -- "$output_path")" \
-  --transform="s|^doppler$|$(basename -- "$output_path")|" ./doppler
+  --transform="s|^doppler$|$(basename -- "$output_path")|" doppler
 chmod 0755 "$output_path"
 echo "Installed Doppler CLI ${DOPPLER_VERSION}."
