@@ -6,10 +6,13 @@ publish.workspace = true
 version.workspace = true
 
 [dependencies]
+sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+sha2 = "0.11"
 axum = "0.8"
 front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
 local-product = { path = "../local-product" }
+harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
 physician-auth = { path = "../physician-auth" }
 physician-wire = { path = "../physician-wire" }

@@ -657,6 +657,9 @@ dependencies = [
 [[package]]
 name = "boundaries"
 version = "0.1.0"
+dependencies = [
+ "toml",
+]
 
 [[package]]
 name = "brotli"
@@ -4296,9 +4299,11 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 name = "local-product"
 version = "0.1.0"
 dependencies = [
+ "harness",
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "tokio",
 ]
 
 [[package]]
@@ -5327,6 +5332,7 @@ dependencies = [
  "axum",
  "front-door",
  "futures-util",
+ "harness",
  "local-product",
  "patient-work",
  "physician-auth",
@@ -5335,6 +5341,7 @@ dependencies = [
  "sea-orm",
  "serde",
  "serde_json",
+ "sha2 0.11.0",
  "tokio",
  "tower",
  "uuid",

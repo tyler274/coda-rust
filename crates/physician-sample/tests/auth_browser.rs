@@ -8,8 +8,8 @@
 
 use std::path::PathBuf;
 use std::sync::OnceLock;
-use std::time::Duration;
 
+mod common;
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
 
@@ -19,8 +19,8 @@ const STAGING_EMAIL: &str = "physician@codahealth.test";
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn sign_in_and_sign_out_walk_the_browser() {
-    let address = spawn_required_server().await;
-    let base = format!("http://{address}");
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
 
     let mut browser = Browser::launch();
 
@@ -73,8 +73,8 @@ async fn sign_in_and_sign_out_walk_the_browser() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn the_sign_in_screen_holds_the_phone_and_reduced_motion_viewports() {
-    let address = spawn_required_server().await;
-    let base = format!("http://{address}");
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
 
     let mut browser = Browser::launch();
 
@@ -122,24 +122,20 @@ async fn sign_in_token(base: &str) -> String {
 }
 
 /// Boots the recorded practice with `PHYSICIAN_AUTH=required`. The server
-/// seeds its staging account and panel itself on the memory store.
-async fn spawn_required_server() -> std::net::SocketAddr {
+/// seeds its staging account and panel itself on the memory store. Its
+/// physician session is a temporary file and its execution is offline replay.
+async fn spawn_required_server() -> common::IsolatedServer {
     let site = shared_site();
-    // SAFETY: this test process owns these variables before the server starts;
-    // every test in this binary sets the same values.
-    unsafe {
-        std::env::set_var("PHYSICIAN_SITE_DIR", &site);
-        std::env::set_var("PHYSICIAN_AUTH", "required");
-        std::env::remove_var("PHYSICIAN_DATABASE_URL");
-        std::env::remove_var("PHYSICIAN_UPSTREAM");
-        std::env::remove_var("CODA_LOCAL_MODEL_EXECUTION");
-        std::env::remove_var("CODA_ALLOW_MODEL_CALLS");
-    }
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { physician_sample::serve(listener).await });
-    wait_until_ready(address).await;
-    address
+    common::serve_isolated(|| {
+        // SAFETY: `serve_isolated` holds its start lock while this runs.
+        unsafe {
+            std::env::set_var("PHYSICIAN_SITE_DIR", &site);
+            std::env::set_var("PHYSICIAN_AUTH", "required");
+            std::env::remove_var("PHYSICIAN_DATABASE_URL");
+            std::env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await
 }
 
 /// Builds the WASM site once for this test binary; the two browser tests
@@ -227,17 +223,4 @@ fn find_on_path(name: &str) -> Option<PathBuf> {
     std::env::split_paths(&paths)
         .map(|dir| dir.join(name))
         .find(|path| path.is_file())
-}
-
-async fn wait_until_ready(address: std::net::SocketAddr) {
-    let started = std::time::Instant::now();
-    loop {
-        if started.elapsed() > Duration::from_secs(10) {
-            panic!("physician site did not accept connections on {address}");
-        }
-        if tokio::net::TcpStream::connect(address).await.is_ok() {
-            return;
-        }
-        tokio::time::sleep(Duration::from_millis(50)).await;
-    }
 }

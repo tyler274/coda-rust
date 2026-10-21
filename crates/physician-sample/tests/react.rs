@@ -9,6 +9,10 @@ use std::process::{Child, Command};
 use std::thread;
 use std::time::{Duration, Instant};
 
+mod common;
+
+// This target uses only the shared CDP transport, not its mobile Browser wrapper.
+#[allow(dead_code)]
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
 
@@ -16,7 +20,9 @@ use devtools::{Page, connect, targets};
 
 const MARY: &str = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
 
-#[tokio::test]
+// The browser calls below block this thread; the in-process Rust server
+// needs another worker to answer them.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn the_live_react_practice_matches_the_rust_page() {
     assert!(
         std::net::TcpStream::connect("127.0.0.1:8787").is_ok(),
@@ -28,12 +34,13 @@ async fn the_live_react_practice_matches_the_rust_page() {
         "the Rust physician page has not been built at {}",
         site.display()
     );
-    // SAFETY: this test process is the only one that reads the variable.
-    unsafe { env::set_var("PHYSICIAN_SITE_DIR", &site) };
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { physician_sample::serve(listener).await });
-    wait_until_ready(address).await;
+    // A temporary physician session and offline replay, as in `site`.
+    let server = common::serve_isolated(|| {
+        // SAFETY: this test process is the only one that reads the variable.
+        unsafe { env::set_var("PHYSICIAN_SITE_DIR", &site) };
+    })
+    .await;
+    let address = server.address;
 
     let mut browser = Browser::launch();
     let react_today = browser.text_until("http://127.0.0.1:8787/", "Today");
@@ -176,17 +183,4 @@ fn find_on_path(name: &str) -> Option<PathBuf> {
     env::split_paths(&paths)
         .map(|dir| dir.join(name))
         .find(|path| path.is_file())
-}
-
-async fn wait_until_ready(address: std::net::SocketAddr) {
-    let started = Instant::now();
-    loop {
-        if started.elapsed() > Duration::from_secs(10) {
-            panic!("the Rust practice did not accept connections on {address}");
-        }
-        if tokio::net::TcpStream::connect(address).await.is_ok() {
-            return;
-        }
-        tokio::time::sleep(Duration::from_millis(50)).await;
-    }
 }

@@ -71,6 +71,9 @@ pub(crate) struct AuthContext {
 pub(crate) struct Auth {
     /// The durable store: Postgres when configured, memory otherwise.
     pub(crate) store: Arc<dyn AuthStore>,
+    /// Serializes local authority mutations with publication. PostgreSQL also
+    /// holds row locks against mutations from other server instances.
+    pub(crate) publication: tokio::sync::Mutex<()>,
     /// Sign-in tokens are returned to the caller here instead of email.
     pub(crate) delivery: std::sync::Mutex<Vec<String>>,
     /// The Duet front door this practice invites patients through. One
@@ -113,6 +116,7 @@ impl Auth {
         let (events, _) = broadcast::channel(64);
         Arc::new(Self {
             store,
+            publication: tokio::sync::Mutex::new(()),
             delivery: std::sync::Mutex::new(Vec::new()),
             front_door,
             events,
@@ -829,6 +833,7 @@ async fn verify(State(auth): State<Arc<Auth>>, body: axum::body::Bytes) -> Respo
 
 /// Ends the presented session.
 async fn sign_out(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
+    let _publication = auth.publication.lock().await;
     if let Some(token) = request
         .headers()
         .get(axum::http::header::AUTHORIZATION)
@@ -968,6 +973,7 @@ async fn apply_panel_change(
     patient_workspace_id: String,
     allowed: bool,
 ) -> Response {
+    let _publication = auth.publication.lock().await;
     let caller_admin = auth
         .store
         .account_by_identity(&caller)
