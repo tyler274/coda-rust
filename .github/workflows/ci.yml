@@ -229,8 +229,11 @@ jobs:
       # Adapter tests do not authorize deployment. Artifact handoff, operator
       # inputs and hosted runtime qualification remain blocking; no release job.
 
+  # Builds every runtime, migration and job image with Nix on PRs and main and
+  # runs them locally; nothing is pushed. Publishing to Artifact Registry is a
+  # later release step behind operator-provisioned OIDC (ENG-167).
   images:
-    name: Locked Nix images (build only)
+    name: Locked Nix images (build, run, migrate; no push)
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 90
     permissions:
@@ -240,9 +243,20 @@ jobs:
         uses: actions/checkout@v7
       - name: Install Nix
         uses: cachix/install-nix-action@v31
-      - name: Build native, WASM, runtime and migration images
+      # Archives, Doppler entrypoint and fail-closed starts, disposable
+      # Postgres migrations run twice, /health 200, /readyz 503, SIGTERM.
+      # Hosted readiness and live journeys remain separate gates.
+      - name: Build and prove runtime, migration and job images
         run: nix develop .#release --command bash scripts/check-images.sh
-      # Archive/closure proof only. Hosted readiness and live journeys are separate gates.
+      - name: Record image sizes and store paths
+        run: |
+          {
+            echo '| Image archive | Size |'
+            echo '| --- | --- |'
+            while read -r archive; do
+              echo "| \`$archive\` | $(du -h --apparent-size "$archive" | cut -f1) |"
+            done < image-paths
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Save immutable build output references
         uses: actions/upload-artifact@v7
         with:

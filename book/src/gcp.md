@@ -2,6 +2,23 @@
 
 Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, and <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>. This workspace does not apply them.
 
+## Rust container images
+
+`nix/packages.nix` builds the Rust Cloud Run images from `Cargo.lock` and `flake.lock`. Each image tag is the git revision, and the build sets `created` to the epoch, so a revision always produces the same archive.
+
+| Flake output | Image | Role | Entrypoint binary |
+| --- | --- | --- | --- |
+| `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
+| `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
+| `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
+| `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: front-door chain, then the Duet coverage check |
+| `duet-privacy-delivery-image` | `coda-duet-privacy-delivery` | job | `duet-privacy-delivery`, a bounded Luna receipt job |
+
+- The runtime servers never migrate. They bind `0.0.0.0:$PORT`, where `PORT` defaults to 8080. `/health` reports liveness. `/readyz` answers 503 until hosted qualification exists. When `K_SERVICE` or `CODA_HOSTED` is set, the server refuses to start.
+- Each image contains the binary and the libraries it links, Doppler, CA roots, tzdata and a passwd entry for uid `65532`. The image has no shell or toolchain. It runs as `65532:65532` with working directory `/tmp`.
+- Every entrypoint is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in `scripts/gcp/install_doppler.sh`. Nix reads the version and SHA-256 from that script, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
+- `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and proves that each one fails closed without a token, hosting qualification or a database. Against a disposable PostgreSQL it runs both migration images twice, then starts both servers to check `/health` 200, `/readyz` 503, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
+
 ## Release procedure
 
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#environments">Environments</a>
