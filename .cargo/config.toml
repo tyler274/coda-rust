@@ -1,0 +1,8 @@
+# The Nix shell already provides LLD. An inherited NIX_CFLAGS_LINK -B prefix
+# can otherwise select ElyLD even when `ld --version` reports GNU ld. ElyLD
+# 1.0.0 misaligned a .rodata.cst32 constant used by httparse/memchr AVX2,
+# causing layout-dependent SIGSEGVs in native HTTP/PostgreSQL tests.
+# Select ld.lld through the existing compiler driver; retain Nix link flags.
+# Scope to this shell's native target, leaving wasm, iOS and Android unchanged.
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
