@@ -22,6 +22,7 @@ pub mod identity;
 mod m20261020_identity;
 mod m20261021_duet_conversation;
 mod m20261021_luna_journal;
+mod m20261022_duet_execution;
 #[allow(missing_docs)]
 pub mod permission;
 #[allow(missing_docs)]
@@ -91,6 +92,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261020_identity::Migration),
             Box::new(m20261021_luna_journal::Migration),
             Box::new(m20261021_duet_conversation::Migration),
+            Box::new(m20261022_duet_execution::Migration),
         ]
     }
 
@@ -506,7 +508,8 @@ mod tests {
                 "mod",
                 "m20261020_identity",
                 "m20261021_luna_journal",
-                "m20261021_duet_conversation"
+                "m20261021_duet_conversation",
+                "m20261022_duet_execution"
             ]
         );
     }

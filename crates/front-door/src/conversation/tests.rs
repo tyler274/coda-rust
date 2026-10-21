@@ -164,12 +164,29 @@ async fn postgres_acceptance_isolation_dedup_restart_and_withdrawal() {
             .unwrap(),
         page
     );
+    let old_claim = store
+        .claim_conversation(&alice, a.run_id)
+        .await
+        .unwrap()
+        .unwrap();
     let second = input("new direction");
     let newer = store
         .accept_conversation(&alice, &second, Some(&admission))
         .await
         .unwrap();
     assert!(newer.revision > a.revision);
+    assert!(store.assert_conversation_claim(&old_claim).await.is_err());
+    assert!(
+        store
+            .complete_conversation(&old_claim, "late reply")
+            .await
+            .is_err()
+    );
+    let active = store
+        .claim_conversation(&alice, newer.run_id)
+        .await
+        .unwrap()
+        .unwrap();
     assert_eq!(
         store
             .conversation_acceptance(&alice, first.id)
@@ -195,6 +212,13 @@ async fn postgres_acceptance_isolation_dedup_restart_and_withdrawal() {
         store.set_identity_luna(&alice, LUNA_VERSION, false, 30)
     );
     withdrawn.unwrap();
+    assert!(store.assert_conversation_claim(&active).await.is_err());
+    assert!(
+        store
+            .complete_conversation(&active, "late after withdrawal")
+            .await
+            .is_err()
+    );
     if accepted.is_ok() {
         assert_eq!(
             store
@@ -417,6 +441,82 @@ async fn postgres_acceptance_isolation_dedup_restart_and_withdrawal() {
             .await
             .is_err()
     );
+    // Accepted-input -> claim -> candidate races use the real owner, not SQL
+    // authority synthesis. If a control wins, a late candidate cannot publish.
+    for control in ["withdraw", "revoke", "new-input"] {
+        let p = principal();
+        store.provision_identity(&p, 20).await.unwrap();
+        store
+            .accept_identity_terms(&p, TERMS_VERSION, 20)
+            .await
+            .unwrap();
+        store
+            .set_identity_luna(&p, LUNA_VERSION, true, 20)
+            .await
+            .unwrap();
+        let accepted = store
+            .accept_conversation(&p, &input("raced work"), Some(&admission))
+            .await
+            .unwrap();
+        let claim = store
+            .claim_conversation(&p, accepted.run_id)
+            .await
+            .unwrap()
+            .unwrap();
+        let event = execution::StoredEvent {
+            sequence: 1,
+            body: "fixture candidate".into(),
+            delta: None,
+            candidate: Some("candidate".into()),
+        };
+        store
+            .acknowledge_conversation_event(&claim, &event)
+            .await
+            .unwrap();
+        let mutate = async {
+            match control {
+                "withdraw" => {
+                    store
+                        .set_identity_luna(&p, LUNA_VERSION, false, 30)
+                        .await
+                        .unwrap();
+                }
+                "revoke" => {
+                    store.revoke_identity_sessions(&p, 30).await.unwrap();
+                }
+                _ => {
+                    store
+                        .accept_conversation(&p, &input("new direction"), Some(&admission))
+                        .await
+                        .unwrap();
+                }
+            }
+        };
+        let (completion, ()) =
+            tokio::join!(store.complete_conversation(&claim, "candidate"), mutate);
+        let mut reader = p.clone();
+        reader.authenticated_at = 31;
+        let stored = store
+            .conversation_acceptance(&reader, accepted.message_id)
+            .await
+            .unwrap()
+            .unwrap();
+        if completion.is_ok() {
+            assert_eq!(stored.state, "completed");
+        } else {
+            assert_ne!(stored.state, "completed");
+        }
+        // Even when the revoked run is still marked running until recovery,
+        // its original principal is fenced; reauthentication cannot revive it.
+        if control == "revoke" || completion.is_err() {
+            assert!(
+                store
+                    .complete_conversation(&claim, "candidate")
+                    .await
+                    .is_err()
+            );
+        }
+    }
     drop(store);
     admin
         .execute_unprepared(&format!("DROP DATABASE {name} WITH (FORCE)"))

@@ -1,5 +1,6 @@
 //! Duet's plain-text accepted-work owner, sharing the canonical account transaction.
-//! No physician types, provider execution, claim/dispatch, effects or HTTP routes.
+//! No physician types, provider execution, effects or HTTP routes. The execution
+//! submodule owns claims, acknowledged events and completion, not model mechanics.
 //! New acceptance requires an admission capability that cannot yet be constructed
 //! in production: operator-switch, usage and runtime qualification are not ported.
 use crate::{
@@ -54,7 +55,7 @@ pub struct Accepted {
     pub text: String,
     /// Original timezone; changing timezone on retry never changes acceptance.
     pub timezone: String,
-    /// Queued or interrupted, never falsely completed.
+    /// Product lifecycle state; completed only by the transactional result owner.
     pub state: String,
     /// Account conversation revision at this read.
     pub revision: i64,
@@ -134,6 +135,7 @@ impl PostgresFrontDoorStore {
         let reply = Uuid::new_v4();
         tx.execute_raw(sql("INSERT INTO duet_conversation_inputs(account_id,message_id,run_id,reply_id,timezone,state,permission_revision,revision) VALUES($1,$2,$3,$4,$5,'queued',$6,$7)", vec![account.id.into(),input.id.into(),run.into(),reply.into(),input.timezone.clone().into(),access.permissions.revision.into(),revision.into()])).await?;
         tx.execute_raw(sql("INSERT INTO duet_conversation_messages(account_id,id,input_id,sequence,revision,role,text,state) VALUES($1,$2,$2,$4,$5,'user',$6,'complete'),($1,$3,$2,$4+1,$5,'assistant','','pending')",vec![account.id.into(),input.id.into(),reply.into(),sequence.into(),revision.into(),input.text.clone().into()])).await?;
+        tx.execute_raw(sql("UPDATE duet_conversation_inputs SET origin_project=$3,origin_subject=$4,origin_authenticated_at=$5 WHERE account_id=$1 AND message_id=$2",vec![account.id.into(),input.id.into(),principal.project.clone().into(),principal.subject.clone().into(),principal.authenticated_at.into()])).await?;
         let result = accepted(&tx, account.id, input.id)
             .await?
             .ok_or(AuthorityError::Refused)?;
@@ -184,5 +186,7 @@ impl PostgresFrontDoorStore {
         Ok(messages)
     }
 }
+/// Durable Duet claims, acknowledged events and transactional completion.
+pub mod execution;
 #[cfg(test)]
 mod tests;
