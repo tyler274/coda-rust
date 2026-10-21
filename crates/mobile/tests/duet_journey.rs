@@ -1,4 +1,9 @@
-//! Suite 2: the mobile shell's Duet journey on a live in-process backend.
+//! Suite 2: mobile Duet journeys, with separate stub and durable-service proofs.
+//!
+//! `durable_doctor` uses isolated PostgreSQL, real durable API routes, compiled
+//! patient UI and an independent unauthenticated WebCrypto SHL reader. Its
+//! identity is synthetic and proposals are staged directly by the real owner;
+//! it does not qualify hosted login or live model generation.
 //!
 //! The client mode talks to `duet-stub` mounted in the same process under
 //! `/api`: the conversation tab shows the recorded thread, a send is accepted
@@ -16,11 +21,27 @@ use devtools::{Browser, DESKTOP, PHONE};
 
 const SEND_TEXT: &str = "How is my sleep this week?";
 
+#[path = "common/durable_doctor.rs"]
+mod durable_doctor;
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn the_duet_journey_runs_on_a_live_stub_backend() {
     let address = spawn_site().await;
     let base = format!("http://{address}");
-
+    let http = reqwest::Client::new();
+    for credential in [None, Some("invalid-synthetic-credential")] {
+        for path in ["/api/auth/account", "/api/auth/account/context"] {
+            let mut request = if path.ends_with("/context") {
+                http.get(format!("{base}{path}"))
+            } else {
+                http.put(format!("{base}{path}"))
+            };
+            if let Some(credential) = credential {
+                request = request.bearer_auth(credential);
+            }
+            assert_eq!(request.send().await.unwrap().status(), 401);
+        }
+    }
     let mut browser = Browser::launch();
     browser.resize(PHONE);
 
@@ -35,6 +56,12 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         "client mode leaked the physician shell:\n{text}"
     );
 
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("Object.keys(localStorage).filter(k => k !== 'coda-mode')"),
+        serde_json::json!([])
+    );
     // The Duet tab renders the recorded thread through the live backend.
     browser.click(r#"nav.tabs button:nth-of-type(1)"#);
     let text = browser.wait_for("About seven hours.");
@@ -63,11 +90,20 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     wait_for_selector(&mut browser, r#"input[aria-label="Question"]"#);
     browser.type_into(r#"input[aria-label="Question"]"#, "What changed this week?");
     browser.click(r#"button[aria-label="Save page"]"#);
-    let text = browser.wait_for("1. What changed this week?");
+    let text = browser.wait_for("Saved page preview");
     assert!(
-        text.contains("Ada Lovelace") && text.contains("Preview"),
+        text.contains("What changed this week?"),
         "the doctor page did not show the letter layout:\n{text}"
     );
+    let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(saved["page"]["name"], "Ada Lovelace");
+    assert_eq!(saved["page"]["date_of_birth"], "1990-04-02");
+    assert_eq!(saved["page"]["questions"][0], "What changed this week?");
     browser.click(r#"button[aria-label="Close page"]"#);
     browser.wait_for("About seven hours.");
 
@@ -207,7 +243,7 @@ fn wait_until(browser: &mut Browser, ready: impl Fn(&str) -> bool) -> String {
 
 /// One site per spawn: the mobile page at `/` and the stub router plus the
 /// in-process front door mounted under `/api` in this same process. The
-/// browser starts with a redeemed front-door invitation and bearer session.
+/// browser uses an explicitly verified synthetic standalone account adapter.
 /// The WASM build is shared through the process-wide cell; the two servers
 /// stay independent.
 async fn spawn_site() -> std::net::SocketAddr {
@@ -216,7 +252,7 @@ async fn spawn_site() -> std::net::SocketAddr {
     let address = listener.local_addr().unwrap();
     let store = Arc::new(Mutex::new(
         duet_stub::Store::open(
-            std::env::temp_dir().join(format!("duet-stub-browser-{}.json", std::process::id())),
+            std::env::temp_dir().join(format!("duet-stub-browser-{}.json", uuid::Uuid::new_v4())),
         )
         .expect("stub store"),
     ));
@@ -246,10 +282,42 @@ async fn spawn_site() -> std::net::SocketAddr {
     )
     .await
     .expect("front-door redeem");
-    let api = duet_stub::router(store).merge(duet_api::front_door_router(duet_api::DuetApi::new(
-        front_door_store,
-    )));
-    let app = site_router(site, api, session);
+    // Test-only identity adapter. It verifies the synthetic build credential, then
+    // supplies a stable account/incarnation. It never modifies production routing.
+    let context = serde_json::json!({"account_id":uuid::Uuid::new_v4(),"incarnation":uuid::Uuid::new_v4(),"permission_revision":0,"authenticated_at":"2026-10-20T00:00:00Z"});
+    let identity = axum::Router::new()
+        .route(
+            "/api/auth/account",
+            axum::routing::put(|headers: axum::http::HeaderMap| async move {
+                if headers.get("authorization").and_then(|h| h.to_str().ok())
+                    != Some("Bearer synthetic-stub-browser-only")
+                {
+                    return Err(axum::http::StatusCode::UNAUTHORIZED);
+                }
+                Ok(axum::Json(serde_json::json!({})))
+            }),
+        )
+        .route(
+            "/api/auth/account/context",
+            axum::routing::get(move |headers: axum::http::HeaderMap| {
+                let context = context.clone();
+                async move {
+                    if headers.get("authorization").and_then(|h| h.to_str().ok())
+                        != Some("Bearer synthetic-stub-browser-only")
+                    {
+                        return Err(axum::http::StatusCode::UNAUTHORIZED);
+                    }
+                    Ok(axum::Json(context))
+                }
+            }),
+        );
+    let api = duet_stub::router(store)
+        .merge(duet_api::front_door_router(duet_api::DuetApi::new(
+            front_door_store,
+        )))
+        .merge(identity);
+    let _ = session; // The legacy front-door session is not used as standalone identity.
+    let app = site_router(site, api);
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
     address
@@ -257,11 +325,10 @@ async fn spawn_site() -> std::net::SocketAddr {
 
 /// The mobile page at `/` and the stub under `/api`. The stub keeps its own
 /// `/api/...` route paths, so the request is forwarded unchanged.
-fn site_router(site_root: PathBuf, api: axum::Router, session: String) -> axum::Router {
+fn site_router(site_root: PathBuf, api: axum::Router) -> axum::Router {
     axum::Router::new().fallback(move |request: axum::http::Request<axum::body::Body>| {
         let site_root = site_root.clone();
         let mut api = api.clone();
-        let session = session.clone();
         async move {
             if request.uri().path().starts_with("/api/")
                 || request.uri().path().starts_with("/front-door/")
@@ -272,7 +339,7 @@ fn site_router(site_root: PathBuf, api: axum::Router, session: String) -> axum::
                     .await
                     .unwrap_or_else(|never| match never {});
             }
-            match static_file(&site_root, request.uri().path(), &session).await {
+            match static_file(&site_root, request.uri().path(), "").await {
                 Ok(response) => response,
                 Err(_) => axum::http::Response::builder()
                     .status(axum::http::StatusCode::NOT_FOUND)
@@ -286,7 +353,7 @@ fn site_router(site_root: PathBuf, api: axum::Router, session: String) -> axum::
 async fn static_file(
     root: &std::path::Path,
     path: &str,
-    session: &str,
+    _session: &str,
 ) -> Result<axum::response::Response, std::io::Error> {
     use tokio::io::AsyncReadExt;
 
@@ -306,14 +373,6 @@ async fn static_file(
     let mut bytes = Vec::new();
     let mut opened = tokio::fs::File::open(&file).await?;
     opened.read_to_end(&mut bytes).await?;
-    if relative == "index.html"
-        && let Ok(html) = String::from_utf8(bytes.clone())
-    {
-        let script = format!(
-            r#"<script>window.localStorage.setItem("coda-duet-session", {session:?});</script></head>"#
-        );
-        bytes = html.replacen("</head>", &script, 1).into_bytes();
-    }
     let mime = match file.extension().and_then(|ext| ext.to_str()) {
         Some("js") => "text/javascript",
         Some("wasm") => "application/wasm",
@@ -334,17 +393,36 @@ fn shared_site() -> PathBuf {
 }
 
 fn build_site() -> PathBuf {
+    build_site_with_bearer(None)
+}
+
+fn build_site_with_bearer(bearer: Option<&str>) -> PathBuf {
     let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let target = std::env::temp_dir().join("coda-mobile-wasm");
+    let target = workspace.join("target").join(if bearer.is_some() {
+        "coda-mobile-durable-wasm"
+    } else {
+        "coda-mobile-wasm"
+    });
+    let output = workspace.join(if bearer.is_some() {
+        "target/mobile-durable-web"
+    } else {
+        "target/mobile-web"
+    });
     let wasm = target.join("wasm32-unknown-unknown/debug/mobile.wasm");
     let mut cargo =
         std::process::Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     cargo_without_parent_package(&mut cargo);
+    cargo.env(
+        "DUET_BEARER",
+        bearer.unwrap_or("synthetic-stub-browser-only"),
+    );
     let status = cargo
         .current_dir(&workspace)
         .env("CARGO_TARGET_DIR", &target)
         .args([
             "build",
+            "--locked",
+            "--offline",
             "-p",
             "mobile",
             "--target",
@@ -355,10 +433,10 @@ fn build_site() -> PathBuf {
         .status()
         .expect("cargo build");
     assert!(status.success(), "mobile wasm build failed");
-    std::fs::create_dir_all(workspace.join("target/mobile-web")).unwrap();
+    std::fs::create_dir_all(output.clone()).unwrap();
     std::fs::copy(
         workspace.join("crates/mobile/index.html"),
-        workspace.join("target/mobile-web/index.html"),
+        output.join("index.html"),
     )
     .unwrap();
     let status = std::process::Command::new(wasm_bindgen())
@@ -366,13 +444,13 @@ fn build_site() -> PathBuf {
             "--target",
             "web",
             "--out-dir",
-            workspace.join("target/mobile-web").to_str().unwrap(),
+            output.clone().to_str().unwrap(),
             wasm.to_str().unwrap(),
         ])
         .status()
         .expect("wasm-bindgen");
     assert!(status.success(), "wasm-bindgen failed");
-    workspace.join("target/mobile-web")
+    output.clone()
 }
 
 fn cargo_without_parent_package(command: &mut std::process::Command) {
