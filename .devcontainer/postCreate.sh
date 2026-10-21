@@ -66,7 +66,6 @@ nix develop --command true
 # Fail closed: duet-api refuses to serve a database missing its migration.
 # With network_mode: host the postgres service listens on host loopback 5433,
 # and POSTGRES_HOST_AUTH_METHOD=trust admits the local connection.
-bash scripts/devcontainer-apply-migrations.sh \
-  psql -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 5433 -U coda -d duet
+nix develop --command cargo run -p workspace-tools -- apply-migrations -- psql -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 5433 -U coda -d duet
 
 echo "dev container ready"

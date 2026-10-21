@@ -1,6 +1,8 @@
-//! Opens the duet Android emulator in a window and runs one UI Automator class.
+//! Opens the duet Android emulator in a window, builds the debug APK, and runs
+//! one UI Automator class.
 //!
 //! ```text
+//! cargo run -p android -- build
 //! cargo run -p android -- window
 //! cargo run -p android -- test coda.duet.ModeShellTest
 //! cargo run -p android -- test coda.duet.ModeShellTest#clientThenPhysician
@@ -24,12 +26,15 @@ const LOCK_UN: i32 = 8;
 const SIGTERM: i32 = 15;
 const SIGKILL: i32 = 9;
 
+mod build;
+
 unsafe extern "C" {
     fn flock(fd: i32, operation: i32) -> i32;
     fn setsid() -> i32;
     fn kill(pid: i32, signal: i32) -> i32;
 }
 
+#[derive(Debug)]
 struct Failure {
     message: String,
     code: u8,
@@ -57,10 +62,14 @@ fn main() -> ExitCode {
 fn run(args: impl Iterator<Item = String>) -> Result<(), Failure> {
     let args: Vec<String> = args.collect();
     let command = parse(&args)?;
-    let _lock = Lock::acquire()?;
     match command {
-        Request::Window => open_window(),
+        Request::Build => build::build(&build::workspace_root()),
+        Request::Window => {
+            let _lock = Lock::acquire()?;
+            open_window()
+        }
         Request::Test(class_name) => {
+            let _lock = Lock::acquire()?;
             open_window()?;
             run_instrumentation(&class_name)
         }
@@ -68,12 +77,14 @@ fn run(args: impl Iterator<Item = String>) -> Result<(), Failure> {
 }
 
 enum Request {
+    Build,
     Window,
     Test(String),
 }
 
 fn parse(args: &[String]) -> Result<Request, Failure> {
     match args {
+        [command] if command == "build" => Ok(Request::Build),
         [command] if command == "window" => Ok(Request::Window),
         [command, class_name] if command == "test" && valid_selector(class_name) => {
             Ok(Request::Test(class_name.clone()))
@@ -81,10 +92,11 @@ fn parse(args: &[String]) -> Result<Request, Failure> {
         _ => Err(Failure::new(
             2,
             "\
-android opens the duet emulator window and runs one UI Automator class.
+android builds the debug APK, opens the duet emulator window, and runs one UI Automator class.
 
 There is intentionally no no-argument suite.
 
+  cargo run -p android -- build
   cargo run -p android -- window
   cargo run -p android -- test coda.duet.ModeShellTest
   cargo run -p android -- test coda.duet.ModeShellTest#clientThenPhysician",
@@ -359,26 +371,17 @@ fn process_alive(pid: u32) -> bool {
 }
 
 fn run_instrumentation(class_name: &str) -> Result<(), Failure> {
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let root = build::workspace_root();
     let mut gradle = find_gradlew(&root.join("target/dx/mobile"));
     if gradle.is_none() {
-        println!("Generating the Android project with scripts/android-debug.sh");
-        let status = Command::new(root.join("scripts/android-debug.sh"))
-            .current_dir(&root)
-            .status()
-            .map_err(|error| Failure::new(1, format!("could not run android-debug.sh: {error}")))?;
-        if !status.success() {
-            return Err(Failure::new(
-                1,
-                "scripts/android-debug.sh failed".to_owned(),
-            ));
-        }
+        println!("Generating the Android project");
+        build::build(&root)?;
         gradle = find_gradlew(&root.join("target/dx/mobile"));
     }
     let Some(gradle) = gradle else {
         return Err(Failure::new(
             1,
-            "scripts/android-debug.sh did not generate an Android project".to_owned(),
+            "the Android build did not generate an Android project".to_owned(),
         ));
     };
     println!("Running {class_name} on the duet emulator window");
@@ -530,9 +533,10 @@ mod tests {
     }
 
     #[test]
-    fn window_and_test_are_the_only_commands() {
+    fn build_window_and_test_are_the_commands() {
         assert!(parse(&[]).is_err());
         assert!(parse(&["test".to_owned()]).is_err());
+        assert!(matches!(parse(&["build".to_owned()]), Ok(Request::Build)));
         assert!(matches!(parse(&["window".to_owned()]), Ok(Request::Window)));
         assert!(matches!(
             parse(&["test".to_owned(), "coda.duet.ModeShellTest".to_owned()]),

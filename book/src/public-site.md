@@ -205,7 +205,7 @@ and copies it into distroless static Debian 12 as UID/GID 65532. Builder/runtime
 images are digest-pinned, Cargo uses `--locked`, and no mutable OS package
 installation occurs during the build. Only workspace manifests/crates are copied,
 not reference submodules, local credentials, or Terraform state. The Doppler CLI
-is pinned to the same version and checksum as `scripts/gcp/install_doppler.sh`.
+is pinned to the same version and checksum as `cargo run -p workspace-tools -- install-doppler`.
 Both executables are checked for a dynamic ELF interpreter during the build.
 Pinned inputs improve repeatability; bit-for-bit image reproducibility is not
 claimed without a repeated-build comparison.
