@@ -17,7 +17,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | The four tab roots and the join and consent screens | [North Star](north-star.md), [UI surface map](ui-surface-map.md) |
 | `duet-api` | [`src/lib.rs`](/crates/duet-api/src/lib.rs), [`src/main.rs`](/crates/duet-api/src/main.rs) | Axum owner for moments, account, and session routes, with the front door embedded for join, consent, and premium | [Backend architecture](backend-architecture.md), [Patient front door](front-door.md) |
 | `duet-client` | [`src/lib.rs`](/crates/duet-client/src/lib.rs) | Duet caller over the generated client, adding the app-build headers | [Backend architecture](backend-architecture.md) |
-| `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs) | Models and operations generated from <a href="/submodules/coda-app/docs/openapi%2Ejson">coda-app's <code>openapi.json</code></a> by [`scripts/generate-duet-wire.sh`](/scripts/generate-duet-wire.sh). Regenerate it; do not edit it by hand. | [Backend architecture](backend-architecture.md) |
+| `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs) | Models and operations generated from <a href="/submodules/coda-app/docs/openapi%2Ejson">coda-app's <code>openapi.json</code></a> by `cargo run -p workspace-tools -- generate-duet-wire` ([`wire.rs`](/crates/workspace-tools/src/wire.rs)). Regenerate it; do not edit it by hand. | [Backend architecture](backend-architecture.md) |
 | `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs) | On-device health samples from HealthKit and Health Connect | [Behaviour contract](behaviour-contract.md) |
 | `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Behaviour contract](behaviour-contract.md) |
 | `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [North Star](north-star.md), [Insight visual contract](visual-contract.md) |
@@ -64,7 +64,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | [`android/HealthConnectBridge.kt`](/platform/android/HealthConnectBridge.kt) | `duet-health` |
 | [`android/NotificationBridge.kt`](/platform/android/NotificationBridge.kt) | `duet-notify` |
 | [`android/StatWidget.kt`](/platform/android/StatWidget.kt) | `duet-widget` snapshot |
-| [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by [`scripts/android-debug.sh`](/scripts/android-debug.sh) |
+| [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
 
 ## Not in Rust yet

@@ -11,7 +11,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Secrets: Doppler
 
-<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. The process starts under `doppler run --`. [`scripts/gcp/install_doppler.sh`](/scripts/gcp/install_doppler.sh) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
+<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. The process starts under `doppler run --`. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
 
 ## Physician hosting
 
@@ -37,6 +37,6 @@ Duet's production composition, staging windows, release runner, and rollback bel
 
 ## Android and Google Play
 
-- [`scripts/android-debug.sh`](/scripts/android-debug.sh) builds the debug APK for the `mobile` mode shell. Its header comment explains the toolchain it needs.
+- `cargo run -p android -- build` ([`crates/android`](/crates/android/src/main.rs)) builds the debug APK for the `mobile` mode shell. Its module comment explains the toolchain it needs.
 - `cargo run -p duet-stub` serves the host stand-in that the emulator calls. `cargo run -p android -- window` opens the emulator, and `cargo run -p android -- test coda.duet.ModeShellTest` runs UI Automator (see [`crates/android`](/crates/android/src/main.rs)). CI does not run the emulator.
 - This repository has no signed release build and no Google Play procedure yet. Do not treat a debug APK as a Play upload.
