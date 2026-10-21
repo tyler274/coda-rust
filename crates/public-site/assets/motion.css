@@ -1,0 +1,46 @@
+/* Load after site.css and the startup-generated paint stylesheet. */
+[data-art]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--paint) center / cover no-repeat;
+  z-index: -1;
+  pointer-events: none;
+}
+/* Never hide the document while downloading (or if Wasm fails). Reveals are a
+   progressive enhancement; content remains selectable and keyboard reachable. */
+html:not(.motion-ready) .rv { opacity: 1; transform: none; }
+html:not(.motion-ready) :is(.a-pre .a-row, .a-msg, .a-lines li, .a-also, .a-updates, .a-arrive, .cm, .ps, .ph-attach, .ph-stat) {
+  opacity: 1; transform: none; visibility: visible;
+}
+html:not(.motion-ready) .mt-row [data-d] { opacity: 1; }
+html:not(.motion-ready) .mt-clip { clip-path: none; }
+/* Reserve frame space before the island measures the design canvas. */
+.stage-wrap { aspect-ratio: 1280 / 720; container-type: inline-size; }
+.stage-wrap[data-w="420"] { aspect-ratio: 420 / 300; }
+.stage-wrap[data-w="760"] { aspect-ratio: 760 / 570; }
+.stage-wrap[data-w="1280"][data-h="760"] { aspect-ratio: 1280 / 760; }
+@supports (transform: scale(calc(100cqw / 1280px))) {
+  html:not(.motion-ready) .stage-wrap[data-w="1280"] > .stage { transform: scale(calc(100cqw / 1280px)); }
+  html:not(.motion-ready) .stage-wrap[data-w="420"] > .stage { transform: scale(calc(100cqw / 420px)); }
+  html:not(.motion-ready) .stage-wrap[data-w="760"] > .stage { transform: scale(calc(100cqw / 760px)); }
+}
+/* The timeline owns class changes; CSS owns interpolation and fades. */
+.motion-ready .stage > * { transition: opacity 700ms ease; }
+.motion-ready .stage.motion-reset > * { opacity: 0 !important; }
+.motion-ready .mt-row.upd .mt-v { animation: memory-update 460ms ease-out; }
+.motion-ready .mt-row.upd .mt-s { animation: memory-source 420ms cubic-bezier(.2,.8,.2,1); }
+@keyframes memory-update { from { opacity: .1; } to { opacity: 1; } }
+@keyframes memory-source { from { transform: scale(.4); } 60% { transform: scale(1.15); } to { transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .frame-hero[data-art]::before, .closer[data-art]::before { animation: landscape-drift 38s ease-in-out infinite alternate; }
+}
+@keyframes landscape-drift { from { background-size: 100% 100%; } to { background-size: 106% 106%; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .rv { opacity: 1 !important; transform: none !important; }
+  .stage *, [data-art]::before, .art { animation: none !important; transition: none !important; }
+  .motion-ready .stage.motion-reset > * { opacity: 1 !important; }
+  .pointer, .mt-reach { display: none !important; }
+}
