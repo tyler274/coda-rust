@@ -5,13 +5,6 @@
 
 use std::time::Duration;
 
-use async_trait::async_trait;
-use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection, DbErr,
-    EntityTrait, QueryFilter, Set, TransactionTrait,
-};
-use sea_orm_migration::MigratorTrait;
-
 use crate::migration::{
     Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens,
 };
@@ -19,6 +12,11 @@ use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
     PhysicianIdentity, ReviewCadence, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError,
     SignInError, mint_patient_token, mint_token, token_hash,
+};
+use async_trait::async_trait;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
+    DbBackend, DbErr, EntityTrait, QueryFilter, Set, Statement, TransactionTrait,
 };
 
 /// The SQL-backed store.
@@ -41,13 +39,13 @@ impl PostgresAuthStore {
     /// Connects and applies the crate's migration chain.
     pub async fn connect_with_migrations(database_url: &str) -> Result<Self, DbErr> {
         let store = Self::connect(database_url).await?;
-        crate::migration::Migrator::up(&store.db, None).await?;
+        crate::migration::migrate(&store.db).await?;
         Ok(store)
     }
 
     /// Applies the migration chain on an existing connection.
     pub async fn migrate(&self) -> Result<(), DbErr> {
-        crate::migration::Migrator::up(&self.db, None).await
+        crate::migration::migrate(&self.db).await
     }
 
     fn account_row(row: crate::migration::AccountRow) -> Account {
@@ -168,6 +166,33 @@ impl AuthStore for PostgresAuthStore {
         })
     }
 
+    async fn publish_authorized(
+        &self,
+        token: &str,
+        identity: &PhysicianIdentity,
+        workspace: &str,
+        now: u64,
+        publish: &mut (dyn FnMut() -> Result<(), String> + Send),
+    ) -> Result<(), String> {
+        let txn = self.db.begin().await.map_err(|e| e.to_string())?;
+        let row = txn.query_one_raw(Statement::from_sql_and_values(
+            DbBackend::Postgres,
+            "SELECT a.id FROM physician_sessions s \
+             JOIN physician_accounts a ON a.id=s.account_id \
+             JOIN physician_memberships m ON m.practice_id=a.practice_id AND m.physician_id=a.physician_id \
+             JOIN physician_patients p ON p.patient_workspace_id=m.patient_workspace_id AND p.practice_id=a.practice_id \
+             WHERE s.token_hash=$1 AND s.expires_at>$2 AND s.created_at>=a.sessions_ended_before \
+             AND a.active=true AND a.practice_id=$3 AND a.physician_id=$4 \
+             AND m.patient_workspace_id=$5 AND m.allowed=true FOR UPDATE OF s,a,m,p",
+            vec![token_hash(token).to_vec().into(), (now as i64).into(), identity.practice_id.clone().into(), identity.physician_id.clone().into(), workspace.to_owned().into()],
+        )).await.map_err(|e| e.to_string())?;
+        if row.is_none() {
+            return Err("physician authority changed".into());
+        }
+        // All direct SQL deletes/updates conflict with these authority row locks.
+        publish()?;
+        txn.commit().await.map_err(|e| e.to_string())
+    }
     async fn end_session(&self, token: &str) {
         let _ = Sessions::delete_many()
             .filter(crate::migration::session::Column::TokenHash.eq(token_hash(token).to_vec()))

@@ -5,17 +5,16 @@
 
 use std::time::Duration;
 
-use async_trait::async_trait;
-use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection, DbErr,
-    EntityTrait, QueryFilter, Set, TransactionTrait,
-};
-
 use crate::migration::{Accounts, Consents, Invitations, Links, Premiums, Sessions, SignInTokens};
 use crate::{
     Account, Consent, FrontDoorStore, Invitation, InviteError, LinkError, Premium, RosterPatient,
     SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, cadence_for,
     mint_token, token_hash,
+};
+use async_trait::async_trait;
+use sea_orm::{
+    ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection, DbErr,
+    EntityTrait, QueryFilter, Set, TransactionTrait,
 };
 
 /// The SQL-backed store.
@@ -38,13 +37,13 @@ impl PostgresFrontDoorStore {
     /// Connects and applies the crate's migration chain.
     pub async fn connect_with_migrations(database_url: &str) -> Result<Self, DbErr> {
         let store = Self::connect(database_url).await?;
-        crate::migration::up(&store.db).await?;
+        crate::migration::upgrade::migrate(&store.db).await?;
         Ok(store)
     }
 
     /// Applies the migration chain on an existing connection.
     pub async fn migrate(&self) -> Result<(), DbErr> {
-        crate::migration::up(&self.db).await
+        crate::migration::upgrade::migrate(&self.db).await
     }
 
     fn account_row(row: crate::migration::AccountRow) -> Account {
@@ -87,10 +86,9 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         now: u64,
     ) -> Result<String, InviteError> {
         let key = email.to_lowercase();
-        let txn = self.db.begin().await.map_err(|_| InviteError::Conflict)?;
         if Accounts::find()
             .filter(crate::migration::account::Column::Email.eq(&key))
-            .one(&txn)
+            .one(&self.db)
             .await
             .map_err(|_| InviteError::Conflict)?
             .is_some()
@@ -98,14 +96,6 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             // The email already holds a front-door account.
             return Err(InviteError::Conflict);
         }
-        // One pending invitation per email: re-inviting replaces the last
-        // one, so its token stops redeeming. The email column is unique, so
-        // the old row goes first, inside the same transaction.
-        Invitations::delete_many()
-            .filter(crate::migration::invitation::Column::Email.eq(&key))
-            .exec(&txn)
-            .await
-            .map_err(|_| InviteError::Conflict)?;
         let token = mint_token();
         let active = crate::migration::InvitationActiveModel {
             id: Default::default(),
@@ -117,11 +107,22 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             created_at: Set(now as i64),
             expires_at: Set((now + crate::INVITATION_TTL_SECONDS) as i64),
         };
-        active
-            .insert(&txn)
+        Invitations::insert(active)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(crate::migration::invitation::Column::Email)
+                    .update_columns([
+                        crate::migration::invitation::Column::PracticeId,
+                        crate::migration::invitation::Column::PatientId,
+                        crate::migration::invitation::Column::DisplayName,
+                        crate::migration::invitation::Column::TokenHash,
+                        crate::migration::invitation::Column::CreatedAt,
+                        crate::migration::invitation::Column::ExpiresAt,
+                    ])
+                    .to_owned(),
+            )
+            .exec(&self.db)
             .await
             .map_err(|_| InviteError::Conflict)?;
-        txn.commit().await.map_err(|_| InviteError::Conflict)?;
         Ok(token)
     }
 
@@ -398,29 +399,34 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .one(&self.db)
             .await
             .map_err(|_| LinkError::Unlinked)?;
-        // The key is the account id, always set, so `save` would always pick
-        // UPDATE and miss the first grant. Each branch names its statement.
-        match existing {
+        let active = match existing {
             Some(row) => {
                 let mut update: crate::migration::ConsentActiveModel = row.into();
                 update.consented_at = Set(now as i64);
                 update.withdrawn_at = Set(None);
                 update
-                    .update(&self.db)
-                    .await
-                    .map_err(|_| LinkError::Unlinked)?;
             }
-            None => {
-                crate::migration::ConsentActiveModel {
-                    account_id: Set(account_id),
-                    consented_at: Set(now as i64),
-                    withdrawn_at: Set(None),
-                }
-                .insert(&self.db)
-                .await
-                .map_err(|_| LinkError::Unlinked)?;
-            }
-        }
+            None => crate::migration::ConsentActiveModel {
+                account_id: Set(account_id),
+                consented_at: Set(now as i64),
+                withdrawn_at: Set(None),
+            },
+        };
+        // Explicit upsert: a natural primary key must not make a new row an UPDATE.
+        Consents::insert(active)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::consent::Column::AccountId,
+                )
+                .update_columns([
+                    crate::migration::consent::Column::ConsentedAt,
+                    crate::migration::consent::Column::WithdrawnAt,
+                ])
+                .to_owned(),
+            )
+            .exec(&self.db)
+            .await
+            .map_err(|_| LinkError::Unlinked)?;
         Ok(())
     }
 
@@ -485,31 +491,34 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .one(&self.db)
             .await
             .map_err(|_| LinkError::Unlinked)?;
-        // The key is the patient key, always set, so `save` would always
-        // pick UPDATE and miss the first status. Each branch names its
-        // statement.
-        match existing {
+        let active = match existing {
             Some(row) => {
                 let mut update: crate::migration::PremiumActiveModel = row.into();
                 update.premium = Set(premium);
                 update.cadence = Set(cadence_for(premium).to_owned());
                 update
-                    .update(&self.db)
-                    .await
-                    .map_err(|_| LinkError::Unlinked)?;
             }
-            None => {
-                crate::migration::PremiumActiveModel {
-                    patient_key: Set(patient_key(patient)),
-                    premium: Set(premium),
-                    cadence: Set(cadence_for(premium).to_owned()),
-                    created_at: Set(now as i64),
-                }
-                .insert(&self.db)
-                .await
-                .map_err(|_| LinkError::Unlinked)?;
-            }
-        }
+            None => crate::migration::PremiumActiveModel {
+                patient_key: Set(patient_key(patient)),
+                premium: Set(premium),
+                cadence: Set(cadence_for(premium).to_owned()),
+                created_at: Set(now as i64),
+            },
+        };
+        Premiums::insert(active)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::premium::Column::PatientKey,
+                )
+                .update_columns([
+                    crate::migration::premium::Column::Premium,
+                    crate::migration::premium::Column::Cadence,
+                ])
+                .to_owned(),
+            )
+            .exec(&self.db)
+            .await
+            .map_err(|_| LinkError::Unlinked)?;
         Ok(())
     }
 
