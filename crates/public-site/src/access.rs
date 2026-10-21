@@ -288,15 +288,19 @@ mod tests {
     #[tokio::test]
     async fn validates_signature_issuer_audience_expiry_and_algorithm_from_cached_jwks() {
         use base64::Engine;
-        use rsa::{pkcs1::EncodeRsaPrivateKey, traits::PublicKeyParts};
-        let private = rsa::RsaPrivateKey::new(
-            &mut <rand::rngs::StdRng as rand::SeedableRng>::seed_from_u64(42),
-            2048,
-        )
-        .unwrap();
-        let public = private.to_public_key();
+        // PUBLIC, TEST-ONLY key pair generated once with OpenSSL. This private
+        // key is deliberately disclosed; NEVER use it for real credentials.
+        // Only the key is fixed: claims are freshly signed below on every run.
+        const PUBLIC_TEST_PRIVATE_KEY_DER_BASE64: &str = concat!(
+            "MIIEpQIBAAKCAQEAz6LPGEUVhGgvmjPpNr7E9/KntAAggMTaT74nI8U7ng8vWRxd4q5G0fcbqaxJ+nAO7ZORHjYOICC0PJVRX7h5F3AZjiFaXRgBkV8Ozew7FDVOmS+4jG38wGpx5jn7jH1+exQXiI9C21mK5aY0OA88WLuC9fAsZUgH+sJY2/bfoRTsr2DBr2farm1guRTga7xg3qNHdu8cJ+uz8PA6g7Fh6+EqkAkR4Lf19sTm7tHiRDW5F06wzNYeaqpYl3S9+cQxqWVU/zPQsFkIkAZVqtCkMsecKGH5LEj5UnhqUHGtRsnLaqi7hxjigbNjBjRTFjOUm1cjlhYxQN8puHxJHzJ00QIDAQAB",
+            "AoIBAAE6ui3vO8hByyqx3RMY8vwyWeiZ5Gy1ba2m8d73TsnvQP/OsuYck3iwX+qDuwOSTgj9VJDDRRcO29kCJn4R+YKTDvhYLXYrZhf6TNFukS9753wb9pm7QtG7V524u8BE/nPusPslo6xTkIauqB9pr1kUUXtQuZyRvigE5lHgGXUf/TrLuHTqrVXvBkrj5IbsC9iyh/scSDerJrGUbs7MsWsEXJIUjU8QoWeyhaVZmOeUBWlNffq5I9NlGr20+fOr/vtGUostFhp6RFF3zQO7MH1WFgFTKgm5oOM883hMQkaHbCeY3l4IdS35z47wWM9OQ86Z8jbSURWpq30V9TO1Z4E",
+            "CgYEA+A+vGTD0ATy4poH0coxlXtZsGTrLpyNyZ2LZQOyTPYI0rZYjzgaKwRABug6QI9ytO9yioxYHVLCCpN+KxlcKwCmD5xszA1xQM651ChuGSeRVyLrzF6ectoCCMfCSlPIBuaeHgbACmm2MAdeI9PyWE1la87tPFkxLdLwjIKH2/UECgYEA1kftvw3MjZXc7mPBdMjHSTs7fRabsfbmFEx5Sve9NjlibnIToPYB55R7iKlzBwzz5Lq/4Qpub6bne1OaQYlqF8qA7VsGXNu4euTXtGEq7NuhZy6Jqab6h1q9pjELjOmHRJNP3qu+QrwdWezzt9TmW36RS8x2oEKrMTPM4xvFQ5E",
+            "CgYEAtOBi0eCTG0/WaHs77kaXKAb7vY3Ur6O2KNK4DZIzbtdBaA2hP/ofNNViHPO/gJbJrmucH4TRhZxLNsNVYnhXe3UKG/sGQH4QcQ7VgrA9RCX9syc2WFo8eArOZHHBwF+SiHgy44qe61HTlAhAcjq3h5ZRLoW3DlBFePIyPvo6qcECgYEAzjVSGbXRz78UaWUeWqCNB3A1A1+qXUzYhVhCsV5Pe8slalvlf9S+aHl/mDhZNcPFQaxl0s8TD+dyhEAkBkWTD2oVQFWEfgAEPF/VJQUNJfsGDCHA4L6MAY3VTAWOtABX6CpLhmGIKviU1mEs+Q+szweyE1ukHP2LeUH8PeIPp8E",
+            "CgYEA5trhQk1XrIr27BdGChdvlKfUhudn/qqk8VaxSNMy9CoWHBEGXqtaTT+PCIL4X9I2xUEiUZ6Ap9xbuZ6V61x/STcgNEbN0spFKvxPILiLMzmqtbLq6Mk3+lT2qJZaQIgVZlYeyLrTeYF1tJH6pk2b4oN94qXXGy2gRYyf38pYuO4=",
+        );
+        const PUBLIC_TEST_MODULUS: &str = "z6LPGEUVhGgvmjPpNr7E9_KntAAggMTaT74nI8U7ng8vWRxd4q5G0fcbqaxJ-nAO7ZORHjYOICC0PJVRX7h5F3AZjiFaXRgBkV8Ozew7FDVOmS-4jG38wGpx5jn7jH1-exQXiI9C21mK5aY0OA88WLuC9fAsZUgH-sJY2_bfoRTsr2DBr2farm1guRTga7xg3qNHdu8cJ-uz8PA6g7Fh6-EqkAkR4Lf19sTm7tHiRDW5F06wzNYeaqpYl3S9-cQxqWVU_zPQsFkIkAZVqtCkMsecKGH5LEj5UnhqUHGtRsnLaqi7hxjigbNjBjRTFjOUm1cjlhYxQN8puHxJHzJ00Q";
         let b64 = base64::engine::general_purpose::URL_SAFE_NO_PAD;
-        let keys: JwkSet = serde_json::from_value(serde_json::json!({"keys": [{"kty": "RSA", "alg": "RS256", "use": "sig", "kid": "test", "n": b64.encode(public.n().to_bytes_be()), "e": b64.encode(public.e().to_bytes_be())}]})).unwrap();
+        let keys: JwkSet = serde_json::from_value(serde_json::json!({"keys": [{"kty": "RSA", "alg": "RS256", "use": "sig", "kid": "test", "n": PUBLIC_TEST_MODULUS, "e": "AQAB"}]})).unwrap();
         let issuer = "https://test.cloudflareaccess.com";
         let gate = AccessGate::new(AccessConfig {
             issuer: Some(issuer.into()),
@@ -309,8 +313,10 @@ mod tests {
             cache.fetched = Some(Instant::now());
             cache.attempted = Some(Instant::now());
         }
-        let private_der = private.to_pkcs1_der().unwrap();
-        let key = jsonwebtoken::EncodingKey::from_rsa_der(private_der.as_bytes());
+        let private_der = base64::engine::general_purpose::STANDARD
+            .decode(PUBLIC_TEST_PRIVATE_KEY_DER_BASE64)
+            .unwrap();
+        let key = jsonwebtoken::EncodingKey::from_rsa_der(&private_der);
         let mut header = jsonwebtoken::Header::new(Algorithm::RS256);
         header.kid = Some("test".into());
         let now = std::time::SystemTime::now()

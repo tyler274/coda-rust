@@ -739,17 +739,19 @@ pub fn start() -> Result<(), JsValue> {
             click.forget();
         }
     }
-    class(&root, "motion-ready", true);
+    let ready_root = root.clone();
     let mut last = window.performance().map(|p| p.now()).unwrap_or(0.0);
     let mut old_width = -1.0;
     let mut total = 0.0;
-    let mut previous_reduced = !reduced();
-    let callback = Closure::<dyn FnMut()>::new(move || {
+    let mut previous_reduced = None;
+    let mut draw = move || {
         let Some(w) = web_sys::window() else { return };
         let now = w.performance().map(|p| p.now()).unwrap_or(last + 50.0);
         let dt = (now - last).clamp(0.0, 100.0);
         last = now;
-        if document.hidden() {
+        // Initialization must draw even in a background document. Later ticks
+        // still pause while hidden, including pending preference changes.
+        if document.hidden() && previous_reduced.is_some() {
             return;
         }
         let height = w
@@ -767,8 +769,8 @@ pub fn start() -> Result<(), JsValue> {
             old_width = width;
         }
         let static_view = reduced();
-        let changed = static_view != previous_reduced;
-        previous_reduced = static_view;
+        let changed = previous_reduced != Some(static_view);
+        previous_reduced = Some(static_view);
         total += dt;
         for rv in all(&root, ".rv:not(.in)") {
             if visible(&rv, height) {
@@ -851,11 +853,16 @@ pub fn start() -> Result<(), JsValue> {
                 }
             }
         }
-    });
+    };
+    // Publish readiness only after every stage has its initial frame. Sharing
+    // this draw with the timer also keeps preference changes on the same path.
+    draw();
+    let callback = Closure::<dyn FnMut()>::new(draw);
     window.set_interval_with_callback_and_timeout_and_arguments_0(
         callback.as_ref().unchecked_ref(),
         50,
     )?;
+    class(&ready_root, "motion-ready", true);
     callback.forget();
     Ok(())
 }

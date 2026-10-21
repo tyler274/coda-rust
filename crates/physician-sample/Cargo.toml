@@ -21,7 +21,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync",
 [dev-dependencies]
 physician-auth = { path = "../physician-auth" }
 front-door = { path = "../front-door" }
-sea-orm = { version = "1", default-features = false, features = [
+sea-orm = { version = "2", default-features = false, features = [
     "sqlx-postgres",
     "runtime-tokio-rustls",
     "with-uuid",
