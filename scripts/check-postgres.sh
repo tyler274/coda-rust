@@ -21,6 +21,8 @@ cargo test --locked -p physician-sample --test front_door_postgres
 # These identity targets must never silently return without exercising Postgres.
 cargo test --locked -p front-door --test identity
 cargo test --locked -p front-door --test luna_journal
+# Admission capability exists only in cfg(test); real SQL proof is mandatory.
+cargo test --locked -p front-door --lib conversation::tests::postgres_acceptance_isolation_dedup_restart_and_withdrawal -- --exact
 cargo test --locked -p duet-api --test identity
 cargo test --locked -p duet-api --test durable_routes
 cargo test --locked -p duet-api --test durable_permissions

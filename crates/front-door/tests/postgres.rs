@@ -70,6 +70,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // Rewind the records to what the chain wrote before it had its own
     // table: the init as `mod` in SeaORM's default `seaql_migrations`.
     let db = sea_orm::Database::connect(&url).await.expect("connection");
+    db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_seaql_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
     // Fixture-only removal of the new empty outbox. Production rollback refuses
     // to destroy retained privacy receipts.
     db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_seaql_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
@@ -126,8 +127,8 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     assert!(recorded.contains(&("mod".to_owned(), 42)));
     assert_eq!(
         recorded.len(),
-        3,
-        "legacy init plus identity and journal extensions"
+        4,
+        "legacy init plus identity, journal and conversation extensions"
     );
     assert!(
         recorded
@@ -187,6 +188,9 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     };
     migrate();
     let expected = vec![
+        "duet_conversation_inputs",
+        "duet_conversation_messages",
+        "duet_conversation_state",
         "front_door_accounts",
         "front_door_consents",
         "front_door_identities",
