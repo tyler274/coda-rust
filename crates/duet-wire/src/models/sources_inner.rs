@@ -12,7 +12,7 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(tag = "kind")]
+#[serde(untagged)]
 pub enum SourcesInner {
     #[serde(rename = "record")]
     Record(Box<models::CanonicalRecordSelection>),

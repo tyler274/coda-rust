@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**alerts_enabled** | **bool** |  | 
+**alerts_enabled** | **bool** |  |
 **environment** | Option<**Environment**> |  (enum: sandbox, production) | [optional]
 **revision** | Option<**i32**> |  | [optional]
 **token** | Option<**String**> |  | [optional]

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**can_send** | **bool** |  | 
+**can_send** | **bool** |  |
 **reason** | Option<**Reason**> |  (enum: permission_required, disabled, unavailable, daily_limit) | [optional]
 **resets_at** | Option<**chrono::DateTime<chrono::FixedOffset>**> |  | [optional]
 
