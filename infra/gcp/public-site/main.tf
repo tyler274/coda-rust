@@ -123,6 +123,24 @@ resource "google_iap_web_cloud_run_service_iam_binding" "team" {
   members                = ["group:${var.iap_group}"]
 }
 
+# Keep direct Cloud Run IAP as the access owner for the custom staging hostname.
+# The mapping provisions TLS, not a public invoker, proxy, CDN, or load balancer.
+resource "google_cloud_run_domain_mapping" "staging" {
+  count    = local.staging && var.staging_domain != null ? 1 : 0
+  name     = var.staging_domain
+  location = var.region
+  metadata {
+    namespace = var.project_id
+  }
+  spec {
+    route_name = google_cloud_run_v2_service.site.name
+  }
+  depends_on = [
+    google_cloud_run_v2_service_iam_binding.iap_invoker,
+    google_iap_web_cloud_run_service_iam_binding.team,
+  ]
+}
+
 # Production's external ALB does not authenticate to Cloud Run. Network ingress
 # and the disabled run.app URL constrain this production-only public grant.
 resource "google_cloud_run_v2_service_iam_member" "load_balancer" {

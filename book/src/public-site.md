@@ -8,11 +8,13 @@ developer reference, never a build, test, CI, or runtime dependency.
 
 [PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged this implementation
 into `main` as `ee8ae88c9675bd008ff91e45dc799c88f13d5f24`. This is implementation
-and deployment preparation, **not a production release**. Vercel remains the
-existing hosting boundary until an operator approves cutover. The deployment root
-has not been applied; no DNS, IAM, IAP policy, certificate, secret value, or
-production service is changed by validation. [ENG-79](https://linear.app/coda-health/issue/ENG-79)
-remains open for the hosting, approval, recovery-window and retirement work.
+and deployment preparation, **not a production release**. Production remains on
+Vercel. The staging root and hostname cutover are applied, and authenticated
+browser access checks passed, as described in
+[Staging deployment status](#staging-deployment-status-2026-10-21). Production
+resources and DNS are unchanged. [ENG-79](https://linear.app/coda-health/issue/ENG-79)
+remains open for visual qualification, release-workflow integration, production
+hosting approval, recovery-window and retirement work.
 
 Staging access uses Google Identity-Aware Proxy (IAP) directly on Cloud Run, in
 the existing `coda-health-staging` project (number `134570912572`). The earlier
@@ -323,7 +325,7 @@ No host tooling or flake changes are introduced by the deployment artifacts.
 [Staging state and deployment](#staging-state-and-deployment)); production has
 no backend configuration here and is never initialized from this workspace.
 Both environments get a separate Cloud Run service and a dedicated service account.
-The root creates no DNS records, certificates, project, API enablement, service
+The root creates no DNS records, standalone certificates, project, API enablement, service
 identity, Google Group, database, or physician runtime dependency. Defaults are
 min 0 / max 10 instances, concurrency 1000, one vCPU, and 512 MiB; these are bounded
 configuration defaults, not demonstrated load capacity. Startup uses a TCP probe
@@ -345,8 +347,14 @@ no load balancer:
 - `PUBLIC_SITE_IAP_AUDIENCE` comes from `project_number`, `region` and the service
   name, and it is passed through Doppler with `--preserve-env`. The output
   `iap_audience` exposes the same value.
+- `staging_domain` optionally maps a verified hostname to this same service.
+  `env/staging.tfvars` sets it to `staging.codahealth.ai`. Cloud Run manages TLS;
+  the operator configures the CNAME returned by `staging_domain_records`.
+  Native IAP remains the access owner on both hostnames.
+  This uses Google's [preview domain mapping](https://docs.cloud.google.com/run/docs/mapping-custom-domains#run)
+  for staging only; it does not change the production topology.
 - There is no serverless NEG, backend service, Cloud CDN, URL map, TLS policy,
-  HTTPS proxy, reserved IP or forwarding rule, so no certificate is needed.
+  HTTPS proxy, reserved IP or forwarding rule. No standalone certificate is needed.
 
 **Production** keeps its previous topology unchanged. Ingress is
 `INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER` and the `run.app` URI is disabled. It
@@ -356,7 +364,7 @@ precondition), Cloud CDN, and the `allUsers` invoker grant the ALB needs. IAP is
 off. `moved` blocks map the former unindexed load-balancer resources to `[0]`, so
 existing production state keeps its addresses. Existing staging load-balancer
 resources, if any, would be planned for destruction, not recreated. No Cloud Run
-custom-domain mapping is created.
+custom-domain mapping is created for production.
 
 ### Cloud CDN support and staging safety
 
@@ -501,7 +509,9 @@ keep their product-repository apply authority; this ownership covers only
 - **Inputs.** `env/staging.tfvars` holds the non-secret staging inputs: the
   published image digest in the private `public-site` repository, release SHA,
   secret ID and pinned version, and
-  `physician_app_url = "https://staging.codahealth.ai"` (the staging sign-in link).
+  `physician_app_url = "https://staging.codahealth.ai"`. That existing sign-in
+  value points back to the marketing site, not a physician application. It is an
+  unresolved product-staging destination, not proof of physician sign-in.
   That image reference resolves only after the bootstrap copies it there.
 - **Doppler.** Config `coda-rust/stg` holds the same non-secret deploy values
   under `PUBLIC_SITE_DEPLOY_*` (project, number, region, service, image, release
@@ -563,12 +573,14 @@ In order, it:
    references the secret by ID and numeric version, so either replication works;
    user-managed keeps it in the service's region. If no enabled version exists it
    runs
-   `doppler configs tokens create public-site-staging-runtime --project coda-rust --config stg --access read --plain | gcloud secrets versions add public-site-stg-doppler-token --data-file=-`.
-   The token goes from one process's stdout to the other's stdin. It is never
-   echoed, assigned to a variable or written to disk. The project and config are
-   fixed in the script (the dev shell exports `DOPPLER_CONFIG=dev`). The first
-   version is `1`, which `env/staging.tfvars` already pins. `--rotate-doppler-token`
-   adds another version; then bump `doppler_token_secret_version`.
+   `doppler configs tokens create public-site-staging-runtime --project coda-rust --config stg --access read --plain | tr -d '\r\n' | gcloud secrets versions add public-site-stg-doppler-token --data-file=-`.
+   Line endings from Doppler's CLI are removed before storing the token; a
+   trailing newline makes the runtime Authorization header invalid. The token
+   stays in the pipe and is never echoed, assigned to a variable or written to
+   disk. The project and config are fixed in the script (the dev shell exports
+   `DOPPLER_CONFIG=dev`). Pin the resulting numeric version in
+   `env/staging.tfvars`; deployed staging uses version `2`.
+   `--rotate-doppler-token` adds another version; then update that pin.
 5. **CI deployer.** Creates `public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`
    with no keys. Its roles follow what this root manages (see the table below).
    If a `roles/artifactregistry.writer` grant for it exists on `coda-agents`, it
@@ -639,9 +651,10 @@ can confirm the group exists and whether Tyler is in it (read-only):
 ```bash
 bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --check-group
 # runs:
-gcloud identity groups describe gcp-engineering@codahealth.ai
+gcloud identity groups describe gcp-engineering@codahealth.ai --project=coda-health-staging
 gcloud identity groups memberships check-transitive-membership \
-  --group-email=gcp-engineering@codahealth.ai --member-email=tyler@codahealth.ai
+  --project=coda-health-staging --group-email=gcp-engineering@codahealth.ai \
+  --member-email=tyler@codahealth.ai
 ```
 
 ### First apply (after the bootstrap)
@@ -653,12 +666,12 @@ as the admin, or as Tyler while his temporary grant is valid:
 
 ```bash
 nix develop
-export GOOGLE_OAUTH_ACCESS_TOKEN="$(gcloud auth print-access-token)"
+export GOOGLE_OAUTH_ACCESS_TOKEN="$(gcloud auth print-access-token --project=coda-health-staging)"
 tofu -chdir=infra/gcp/public-site init -input=false -reconfigure \
   -backend-config=backend/staging.gcs.tfbackend
 tofu -chdir=infra/gcp/public-site plan -input=false \
   -var-file=env/staging.tfvars -out=staging.tfplan
-# Read the plan: expect 5 to add, 0 to change, 0 to destroy.
+# Read the plan: a new deployment has 6 resources, including the domain mapping.
 # Apply only that saved plan; never apply production.
 tofu -chdir=infra/gcp/public-site apply staging.tfplan
 tofu -chdir=infra/gcp/public-site output staging_url
@@ -679,62 +692,75 @@ doppler secrets set \
   --project coda-rust --config stg
 ```
 
-### Staging deployment status (2026-10-20)
+### Staging deployment status (2026-10-21)
 
-Done in `coda-health-staging`:
+The admin bootstrap and first deployment are applied in `coda-health-staging`.
+Cloud Run reports revision `public-site-staging-00002-rwr` Ready at
+[staging.codahealth.ai](https://staging.codahealth.ai), with the
+[protected Cloud Run URL](https://public-site-staging-5yiq4mt4lq-ue.a.run.app)
+available directly.
 
-- IAP service agent `service-134570912572@gcp-sa-iap.iam.gserviceaccount.com`
-  created (`gcloud beta services identity create --service=iap.googleapis.com`).
-- Image built from `b18760e`, smoked locally, and pushed to the existing
-  immutable-tag repository `coda-agents` as
-  `us-east1-docker.pkg.dev/coda-health-staging/coda-agents/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140`
-  (tag = release SHA). That shared repository is a temporary location only.
-  `coda-agents` is `STANDARD_REPOSITORY` with Google-managed encryption.
-  Tyler cannot read its IAM policy, so whether it is public is **unverified**.
-  The bootstrap checks it, copies the image by digest into the private
-  `public-site` repository, and `env/staging.tfvars` already points there. The
-  private repositories do not exist yet.
-- A reviewed plan against the earlier (empty) backend was **5 to add, 0 to
-  change, 0 to destroy**: the runtime service account, the secret accessor on the
-  Doppler token secret, the IAP-enabled Cloud Run service, the authoritative
-  IAP-agent invoker binding and the authoritative group accessor binding. Nothing
-  preexisted to import: no Cloud Run services, `public-site-*` service accounts,
-  load balancer resources or Secret Manager secrets.
-
-**Not applied, and the bootstrap has not run.** `tyler@codahealth.ai` holds only
-`run.services.create/update`, Artifact Registry upload, log read and state object
-read/write on this project. He lacks every permission the bootstrap needs:
-
-| Need | Permission (example role) |
-| --- | --- |
-| Enable `secretmanager.googleapis.com` | `serviceusage.services.enable` (Service Usage Admin) |
-| Create the state bucket | `storage.buckets.create` (Storage Admin) |
-| Create the `public-site-stg-doppler-token` secret and its accessor binding | `secretmanager.secrets.create` / `setIamPolicy` (Secret Manager Admin) |
-| Create `public-site-staging` and act as it | `iam.serviceAccounts.create`, `iam.serviceAccounts.actAs` (Service Account Admin, Service Account User) |
-| Cloud Run service invoker binding | `run.services.setIamPolicy` (Cloud Run Admin) |
-| IAP accessor binding on the service | `iap.webServices.setIamPolicy` (IAP Policy Admin) |
-| CI deployer service account and GitHub WIF pool | `iam.serviceAccounts.create`, `iam.workloadIdentityPools.create` (Workload Identity Pool Admin) |
-| Create the private repositories, copy images in, set repository IAM, read `coda-agents` IAM | `artifactregistry.repositories.create` / `setIamPolicy` / `getIamPolicy` (Artifact Registry Admin) |
-| Review project IAM | `resourcemanager.projects.getIamPolicy` (Security Reviewer) |
+- The dedicated versioned state bucket, three private image repositories,
+  read-only `coda-rust/stg` token, CI service account, and restricted GitHub WIF
+  provider exist. The CI account has the documented service-scoped post-apply
+  grants. No deploy workflow has been added.
+- The site image and distroless base were copied with identical digests. The
+  Docker Hub cache resolves the pinned Rust base. Repository IAM readback found
+  no `allUsers` or `allAuthenticatedUsers` grants, including on `coda-agents`.
+  Doppler's image setting now uses `public-site/public-site`.
+- The first revision failed because `doppler --plain` appended a newline to the
+  token. Version `2` contains the same token without that line ending; it was
+  authenticated against Doppler before deployment. The bootstrap now strips
+  line endings, and `env/staging.tfvars` pins version `2`.
+- Cloud Run's invoker binding contains only the IAP service agent. IAP website
+  access is limited to `gcp-engineering@codahealth.ai`; Cloud Identity confirmed
+  Dev and Tyler are members. An authenticated Chrome session as Dev rendered
+  the homepage and Clinical Transparency page. The motion JS/WASM and image/CSS
+  assets loaded successfully. Observed page and asset responses were HTTP 200,
+  `Cache-Control: private, no-store, max-age=0` and
+  `X-Robots-Tag: noindex, nofollow`; assets were not served from disk cache or a
+  service worker. A signed-in personal Google account was denied by IAP.
+  Anonymous homepage, health and hashed-asset requests redirect to Google sign-in.
+  Google's signed-assertion test with an invalid signature returned HTTP 403
+  from the application (`Google IAP assertion required`), with no-store/noindex.
+  These checks do not claim Tyler has tested his own browser.
+- The first apply used Dev's existing admin account. No temporary project-wide
+  grant was made to Tyler.
+- On October 21, a reviewed saved plan added only the staging domain mapping:
+  1 added, 0 changed, 0 destroyed. Cloudflare's staging CNAME changed from
+  `cname.vercel-dns.com` (proxied) to `ghs.googlehosted.com` (DNS only), as returned
+  by Cloud Run. DNS readback confirmed the target. Root and `www` production
+  records were unchanged, and no production resources were planned or applied.
+  The old Vercel deployment and Cloudflare Access configuration remain available
+  for rollback; no Vercel deployment was changed.
+- Google reported the custom hostname certificate provisioned at 20:29 UTC.
+  After edge propagation, normal HTTPS, engineering-member page access,
+  signed-in nonmember denial, anonymous page/health/asset redirects and
+  no-store/noindex page and asset responses also passed on `staging.codahealth.ai`.
+  The post-apply staging plan had no changes.
 
 ### Remaining qualification
 
-1. **OAuth and smoke principal.** Confirm the project's IAP OAuth configuration
-   (Google-managed or custom client) for browser sign-in. Authenticated smoke needs
-   a separately approved principal. That is a member of the engineering group
-   using a user session, or a dedicated service account added on purpose. Its
-   token audience comes from the IAP OAuth client, not from
-   `PUBLIC_SITE_IAP_AUDIENCE`. CI and deploy identities get no website access
-   implicitly. The project's existing brand is internal-only ("Coda local
-   testing", support `dev@codahealth.ai`).
-2. **Member and nonmember qualification.** After deployment, run the checks
-   listed above under "Do not declare staging live". The group address
-   `gcp-engineering@codahealth.ai` is still unverified: Cloud Identity lookups as
-   `tyler@codahealth.ai` return "no such group", which can also mean he lacks
-   permission to see it. Whether Tyler is a member is unknown.
+Access checks passed on both staging hostnames. This does not establish visual
+or performance parity: Dev observed that staging animations stutter relative to
+production. Tyler's handoff should include that observation for motion review.
+The existing Sign in link points back to the marketing staging site;
+physician/Duet application staging is separate work under ENG-167.
 
-Cutover from Vercel, production deployment and DNS remain separate decisions under
-ENG-79. Production is never planned or applied from this workspace.
+CI and deployment identities have no website-access grant; no Rust release
+workflow has been added. The legacy Vercel project and workflows are retained,
+not retired: the [old production promotion script](https://github.com/Coda-Health/kytos/blob/main/scripts/promote-production.mjs)
+requires its Deploy Staging and Staging Smoke workflows, and the
+[old staging smoke](https://github.com/Coda-Health/kytos/blob/main/.github/workflows/staging-smoke.yml)
+defaults to `staging.codahealth.ai` with Cloudflare credentials. Those checks do
+not qualify the new IAP deployment. Reconcile that release-process dependency
+before the next legacy production promotion; no production workflow was changed.
+
+For a staging-only DNS rollback, restore the `staging` CNAME to
+`cname.vercel-dns.com` with proxying enabled. Do not change the root, `www`, app or
+work records. The Cloud Run URL remains available behind IAP during certificate
+provisioning or rollback. Production cutover remains a separate decision under
+ENG-79 and is never planned or applied from this workspace.
 
 ## Local release load check (2026-10-20)
 
