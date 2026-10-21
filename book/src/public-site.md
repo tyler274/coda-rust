@@ -6,10 +6,13 @@ clinical types are introduced by the site. `PHYSICIAN_APP_URL` is a navigation
 link, not a backend connection. `submodules/kytos` is an optional read-only
 developer reference, never a build, test, CI, or runtime dependency.
 
-This is implementation and deployment preparation, **not a production release**.
-Vercel remains the existing hosting boundary until an operator approves cutover.
-The deployment root has not been applied; no DNS, Cloudflare policy, certificate,
-secret value, or production service is changed by validation.
+[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged this implementation
+into `main` as `ee8ae88c9675bd008ff91e45dc799c88f13d5f24`. This is implementation
+and deployment preparation, **not a production release**. Vercel remains the
+existing hosting boundary until an operator approves cutover. The deployment root
+has not been applied; no DNS, Cloudflare policy, certificate, secret value, or
+production service is changed by validation. [ENG-79](https://linear.app/coda-health/issue/ENG-79)
+remains open for the hosting, approval, recovery-window and retirement work.
 
 ## Application contract
 
@@ -21,13 +24,24 @@ archived Duet privacy/terms, `/duet/consumer-health-data`, `/privacy`, `/terms`,
 requests, Access verification, and motion integration have separate crate tests;
 passing infrastructure tests does not establish any of those behaviors.
 
-The intended caching contract is content-addressed immutable assets and HTML
-with bounded public/shared-cache lifetimes. Staging must instead emit `no-store`
-and `X-Robots-Tag: noindex` and verify Cloudflare Access at the origin before
-serving pages, assets, redirects, and error responses. Health-only exemptions,
-if any, must return no site content. Missing or invalid staging Access
-configuration must fail closed. Verify these behaviors in the final server
-implementation before any deployment; this chapter does not substitute for proof.
+Startup builds the page/asset tables and their identity, gzip and Brotli
+representations once; requests do not render Dioxus or query a database. The server
+serves content-addressed immutable assets and HTML with bounded public/shared-cache
+lifetimes, encoding-specific ETags, conditional requests and bodyless HEAD responses.
+A deferred `web-sys` WASM island adds motion, not full-page Dioxus hydration. Static
+painted art remains visible until the first motion frame is drawn synchronously
+and readiness is published. Blocked/failed WASM and reduced motion retain a usable
+static page; live motion-preference transitions are covered by browser tests.
+
+Staging applies its origin Access gate to pages, assets, redirects, health routes
+and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
+headers, `Vary: *` and `X-Robots-Tag: noindex, nofollow`. The gate accepts a verified
+RS256 Access JWT (issuer, audience, expiry and bounded JWKS refresh) or the explicitly
+configured service-token pair. Missing credentials deny access; malformed issuer
+configuration aborts startup. An optional separate loopback-only probe listener
+serves no site content. Local tests prove this application boundary, not a deployed
+Cloudflare/ALB configuration; repeat direct-origin and cache-bypass proofs before
+any deployment.
 
 Runtime configuration:
 
@@ -38,6 +52,15 @@ Runtime configuration:
 - `APP_ENV`: deployment root permits only `staging` or `production`; staging
   selects the origin Access gate. Do not use a misspelled environment to disable it.
 - `RELEASE_SHA`: full Git revision, supplied at runtime for the health response.
+- `CLOUDFLARE_ACCESS_TEAM_DOMAIN` and `CLOUDFLARE_ACCESS_AUD`: staging JWT issuer
+  and audience. `CF_ACCESS_CLIENT_ID` plus `CF_ACCESS_CLIENT_SECRET` optionally
+  authorize the configured service-token path; neither value belongs in source.
+- `STAGING_HEALTH_TOKEN`: when configured, `/api/health` requires it in addition
+  to staging Access; it is not an Access bypass.
+- `PUBLIC_SITE_MAX_CONCURRENCY`: default 1024, accepted range 1–65536; excess
+  concurrent requests receive 503 with `Retry-After: 1`.
+- `PUBLIC_SITE_REQUEST_TIMEOUT_MS`: default 5000, accepted range 100–30000.
+- `PUBLIC_SITE_INTERNAL_PROBE_ADDR`: optional, loopback-only probe address.
 
 Local startup (from the workspace root):
 
@@ -45,6 +68,51 @@ Local startup (from the workspace root):
 nix develop --command bash crates/public-site/island/build.sh
 nix develop --command cargo run -p public-site --bin public-site
 ```
+
+## Merged implementation verification
+
+The final repair commits were `153e689` (motion readiness, browser/Access proofs
+and database-client dependency alignment) and `59695be` (integration with current
+main and the SeaORM 2 migration-proof API). All three jobs in the
+[final PR CI run](https://github.com/Coda-Health/coda-rust/actions/runs/39521784174)
+passed: main CI, fresh PostgreSQL migrations/tests and cargo-deny. This is evidence
+for the reviewed PR head `59695be6d7f1fb14b40de022ffadbd827638a63f`, not a separate
+post-merge deployment or capacity proof.
+
+Recorded final-tree local proof:
+
+- Workspace tests and all-targets Clippy passed. Optional encoder model variables
+  were unset and the live React practice comparison was explicitly excluded, as
+  in CI; neither optional comparison is claimed as passed.
+- All 35 public-site tests passed, including four Access tests, original-source
+  parity and Chromium desktop/mobile, reduced-motion, delayed-initialization,
+  motion-preference transitions and blocked-WASM coverage. Three further browser
+  suite repetitions passed after the repair.
+- The rebuilt motion island totaled **51,446 Brotli bytes / 60,000-byte budget**.
+- The real disposable PostgreSQL proof passed **18 checks**: one fresh isolated
+  and shared migration-chain/idempotence test, seven physician-auth tests, eight
+  front-door tests and two physician-sample front-door tests. Upstream main fixes
+  resolved the earlier pre-integration database failures; there is no outstanding
+  database blocker from those runs. See [database-client versions and proof](backend-architecture.md#rust-database-client-versions-and-proof).
+- The rebuilt production/staging image passed nonroot/read-only HTTP and shutdown
+  smoke checks, as detailed below. It was not published or deployed.
+- cargo-deny passed under inherited main policy. ZIP 8.6.0 is **not remediated**:
+  the unchanged exceptions for RUSTSEC-2026-0367/0368/0369 remain tracked in
+  [ENG-108](https://linear.app/coda-health/issue/ENG-108).
+
+Reproduce the site checks from the workspace root, inside the dev shell:
+
+```bash
+nix develop --command bash crates/public-site/island/build.sh
+nix develop --command cargo test --locked -p public-site
+nix develop --command cargo test --locked -p public-site --test site -- --nocapture
+nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
+nix develop --command mdbook build book
+```
+
+Use the shell's Chromium (or set `CHROMIUM` to the approved browser executable).
+The default startup uses port 8791; choose another `PUBLIC_SITE_LISTEN_ADDR` if a
+preview already owns it rather than stopping that preview.
 
 ## Self-contained CI and original-source snapshots
 
@@ -171,8 +239,8 @@ Documentation was checked on 2026-10-20 rather than assuming the proposed topolo
 was supported.
 
 - **Production:** Cloud CDN is enabled with `USE_ORIGIN_HEADERS`, no forced
-  caching and no negative caching. The final application must emit the intended
-  cache headers; the infrastructure does not manufacture application cacheability.
+  caching and no negative caching. The server emits the cache headers described
+  above; the infrastructure does not manufacture application cacheability.
 - **Staging:** Cloud CDN is unconditionally disabled, including for assets. A
   public cache hit would otherwise bypass origin JWT verification. There is no
   variable that can enable staging CDN.
@@ -214,35 +282,35 @@ nix develop --command docker build --network=host --platform=linux/amd64 \
 nix develop --command python infra/gcp/public-site/smoke.py public-site:deployment-check
 ```
 
-The tested local image ID is
-`sha256:250977b78cf8d74779105648dc035396ac760f86f57ebabfcecd75d0e1889839`
-(24,865,964 bytes). This is a local Docker image/config digest, **not** a published
+The final-lockfile repair build recorded in
+[the PR verification](https://github.com/Coda-Health/coda-rust/pull/36#issuecomment-6304841069)
+has local image ID
+`sha256:df89fead5baa71d16ee496f4dc2b04d1fbb066bc2d29aaa69e225d45fd7434e2`
+(24,870,060 bytes). This is a local Docker image/config digest, **not** a published
 registry manifest digest suitable for the deployment variable. The image was not
-pushed. The initial proof used the snapshot built at 19:12 UTC on 2026-10-20.
-Finalization rebuilt the current sources and repeated the HTTP smoke at 19:34 UTC;
-the resulting image ID and size matched the earlier image. Production/staging
-SIGTERM exits were 0 in 0.21/0.25 seconds. Subsequent integration changes still
-require another build and smoke run.
+pushed. It supersedes the earlier 24,865,964-byte image as repair-build evidence;
+it is not a claim of a separately rebuilt merge-commit image. Production/staging
+SIGTERM exits were 0 in 0.22/0.23 seconds. Build and smoke the exact release tree
+again before publishing a release image.
 
 `smoke.py` starts disposable, nonroot, read-only containers with all capabilities
 dropped, no-new-privileges, one CPU, 512 MiB memory, and random host-loopback ports.
 It checks the image entrypoint/user/listen configuration and restricts image
 environment names to `PATH`, `SSL_CERT_FILE`, and `PUBLIC_SITE_LISTEN_ADDR`.
-The successful run demonstrated:
+The successful repair-build run demonstrated:
 
-- Homepage HTTP 200 (44,669 bytes), nonempty title/canonical/description, main and
-  footer content, and the explicit physician sign-in link.
+- Homepage HTTP 200, nonempty title/canonical/description, main and footer
+  content, and the explicit physician sign-in link.
 - Five hashed CSS files returning CSS and immutable caching; bootstrap JS,
   generated JS, and WASM returning the correct content types with sibling paths
-  intact. WASM was 112,641 uncompressed bytes, SHA-256
-  `2706135bc3ef35c3ec8cefeec0cef44b26cd137e1f83c3319c4164d192263db6`.
+  intact and valid WASM magic bytes.
 - `/healthz`, `/readyz`, and `/api/health` returning 200 with the expected runtime
   environment/release, unknown paths returning 404, and the container listening
   on reachable port 8080.
 - Credential-free staging denying pages, CSS, JS/WASM, health, and unknown paths
   with `no-store` and `noindex`; no authenticated staging positive path is claimed.
-- SIGTERM exit code 0 in 0.24 seconds for production and 0.77 seconds for staging.
-  Both containers were removed after the run.
+- SIGTERM exit code 0 for both environments, with the timings above. Both
+  containers were removed after the run.
 
 This HTTP proof does not replace browser animation/parity tests, a deep secret
 scan of embedded source assets, a load test, cloud ingress verification, or an

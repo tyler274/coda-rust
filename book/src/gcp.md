@@ -2,6 +2,24 @@
 
 Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, and <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>. This workspace does not apply them.
 
+## Public marketing site preparation
+
+The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
+stateless Rust marketing server on Cloud Run behind a global external HTTPS load
+balancer, with production Cloud CDN and no staging CDN. It has no backend and has
+not been applied. It does not share physician/Duet databases or authorize a product
+cutover. See [Public site](public-site.md) for the startup-rendered architecture,
+Access and cache controls, runtime configuration, image build/smoke procedure,
+verification evidence and operator prerequisites.
+
+[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged the implementation;
+[ENG-79](https://linear.app/coda-health/issue/ENG-79) still owns hosting migration
+completion. Dev's staging review and production approval, hostname/Access/analytics
+decisions, verified cutover/recovery procedures and the agreed recovery window
+precede removal of website-only Vercel resources and credentials. Neither this
+chapter nor passing local/CI validation authorizes deployment, DNS changes or
+Vercel retirement.
+
 ## Release procedure
 
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#environments">Environments</a>
