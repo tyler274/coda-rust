@@ -45,6 +45,14 @@ pub enum AuthorityError {
     RestrictionPending,
     /// Durable state could not be established. Never grant on this error.
     Storage(DbErr),
+    /// An operator switched Duet model execution off; nothing new is admitted
+    /// and no model output is published while it stays off.
+    ModelExecutionOff,
+    /// The person's daily reply allowance (or its rolling backstop) is used.
+    DailyLimit {
+        /// Unix seconds when every reached bound has released.
+        resets_at: i64,
+    },
 }
 impl From<DbErr> for AuthorityError {
     fn from(error: DbErr) -> Self {

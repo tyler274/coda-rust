@@ -112,6 +112,8 @@ fn authority(e: AuthorityError) -> StatusCode {
             StatusCode::CONFLICT
         }
         AuthorityError::Absent | AuthorityError::Refused => StatusCode::UNAUTHORIZED,
+        AuthorityError::ModelExecutionOff => StatusCode::SERVICE_UNAVAILABLE,
+        AuthorityError::DailyLimit { .. } => StatusCode::TOO_MANY_REQUESTS,
     }
 }
 fn now() -> i64 {

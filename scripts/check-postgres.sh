@@ -23,6 +23,8 @@ cargo test --locked -p front-door --test identity
 cargo test --locked -p front-door --test luna_journal
 # Admission capability exists only in cfg(test); real SQL proof is mandatory.
 cargo test --locked -p front-door --lib conversation::tests::postgres_acceptance_isolation_dedup_restart_and_withdrawal -- --exact
+cargo test --locked -p front-door --lib conversation::tests::postgres_operator_switch_allowance_and_context -- --exact
+cargo test --locked -p front-door --lib conversation::tests::postgres_retry_context_reports_earlier_attempt -- --exact
 cargo test --locked -p duet-api --test identity
 cargo test --locked -p duet-api --test durable_routes
 cargo test --locked -p duet-api --test durable_permissions

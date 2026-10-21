@@ -1,8 +1,9 @@
 //! Duet's plain-text accepted-work owner, sharing the canonical account transaction.
 //! No physician types, provider execution, effects or HTTP routes. The execution
 //! submodule owns claims, acknowledged events and completion, not model mechanics.
-//! New acceptance requires an admission capability that cannot yet be constructed
-//! in production: operator-switch, usage and runtime qualification are not ported.
+//! New acceptance requires an [`Admission`] capability, constructible only with an
+//! operator health-data attestation; the operator switch, consent and allowance
+//! are then rechecked under the account lock on every acceptance.
 use crate::{
     PostgresFrontDoorStore,
     identity::{self, Access, AuthorityError, Principal},
@@ -10,12 +11,10 @@ use crate::{
 use sea_orm::{ConnectionTrait, DatabaseTransaction, DbBackend, Statement, TransactionTrait};
 use uuid::Uuid;
 
-/// Future admission owner must establish operator switch, allowance and runtime
-/// eligibility transactionally. No public constructor, deserialization or boolean
-/// bypass exists. This is NOT a reusable model/effect permission grant.
-pub struct Admission {
-    _private: (),
-}
+pub use admission::{
+    Admission, DEFAULT_DAILY_REPLY_LIMIT, DailyLimit, OperatorAttestation, PHI_READY_ENV,
+    SwitchChange,
+};
 /// A plain text submission only. Selected context and reply-to are deliberately
 /// not supported yet; no owner/account selector can be supplied.
 pub struct Input {
@@ -105,7 +104,10 @@ impl PostgresFrontDoorStore {
             account_id: account.id,
             permissions,
         };
-        if !access.allows_luna() || admission.is_none() {
+        let Some(admission) = admission else {
+            return Err(AuthorityError::Refused);
+        };
+        if !access.allows_luna() {
             return Err(AuthorityError::Refused);
         }
         if tx
@@ -118,6 +120,15 @@ impl PostgresFrontDoorStore {
         {
             return Err(AuthorityError::Refused);
         }
+        // Refused while switched off, so no message waits behind the switch.
+        if !admission::enabled(&tx).await? {
+            return Err(AuthorityError::ModelExecutionOff);
+        }
+        // Counted under the account lock after the same-ID lookup: a resend
+        // never counts twice and concurrent sends serialize here. The input
+        // records the exact instant it was counted against.
+        let admitted_at =
+            admission::allowance(&tx, account.id, &input.timezone, admission.limit).await?;
         tx.execute_raw(sql(
             "INSERT INTO duet_conversation_state(account_id) VALUES($1) ON CONFLICT DO NOTHING",
             vec![account.id.into()],
@@ -133,7 +144,7 @@ impl PostgresFrontDoorStore {
         let sequence: i64 = row.try_get("", "sequence")?;
         let run = Uuid::new_v4();
         let reply = Uuid::new_v4();
-        tx.execute_raw(sql("INSERT INTO duet_conversation_inputs(account_id,message_id,run_id,reply_id,timezone,state,permission_revision,revision) VALUES($1,$2,$3,$4,$5,'queued',$6,$7)", vec![account.id.into(),input.id.into(),run.into(),reply.into(),input.timezone.clone().into(),access.permissions.revision.into(),revision.into()])).await?;
+        tx.execute_raw(sql("INSERT INTO duet_conversation_inputs(account_id,message_id,run_id,reply_id,timezone,state,permission_revision,revision,admitted_at) VALUES($1,$2,$3,$4,$5,'queued',$6,$7,$8::timestamptz)", vec![account.id.into(),input.id.into(),run.into(),reply.into(),input.timezone.clone().into(),access.permissions.revision.into(),revision.into(),admitted_at.into()])).await?;
         tx.execute_raw(sql("INSERT INTO duet_conversation_messages(account_id,id,input_id,sequence,revision,role,text,state) VALUES($1,$2,$2,$4,$5,'user',$6,'complete'),($1,$3,$2,$4+1,$5,'assistant','','pending')",vec![account.id.into(),input.id.into(),reply.into(),sequence.into(),revision.into(),input.text.clone().into()])).await?;
         tx.execute_raw(sql("UPDATE duet_conversation_inputs SET origin_project=$3,origin_subject=$4,origin_authenticated_at=$5 WHERE account_id=$1 AND message_id=$2",vec![account.id.into(),input.id.into(),principal.project.clone().into(),principal.subject.clone().into(),principal.authenticated_at.into()])).await?;
         let result = accepted(&tx, account.id, input.id)
@@ -186,6 +197,10 @@ impl PostgresFrontDoorStore {
         Ok(messages)
     }
 }
+/// Operator switch, allowance and attested admission capability.
+pub mod admission;
+/// Duet-owned model context projection for one claimed attempt.
+pub mod context;
 /// Durable Duet claims, acknowledged events and transactional completion.
 pub mod execution;
 #[cfg(test)]

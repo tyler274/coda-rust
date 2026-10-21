@@ -6,9 +6,9 @@ use sea_orm::QueryResult;
 #[derive(Clone, Debug)]
 pub struct Claim {
     pub(super) principal: Principal,
-    account: Uuid,
-    run: Uuid,
-    token: Uuid,
+    pub(super) account: Uuid,
+    pub(super) run: Uuid,
+    pub(super) token: Uuid,
 }
 impl Claim {
     /// Stable accepted run, retained across successor attempts.
@@ -58,8 +58,15 @@ async fn end(
     tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state=$2,failure=$2,lease_until=NULL,revision=$3 WHERE run_id=$1",vec![run.into(),state.into(),rev.into()])).await?;
     Ok(())
 }
-async fn fence(tx: &DatabaseTransaction, claim: &Claim) -> Result<QueryResult, AuthorityError> {
+pub(super) async fn fence(
+    tx: &DatabaseTransaction,
+    claim: &Claim,
+) -> Result<QueryResult, AuthorityError> {
     let (account, permissions) = identity::locked(tx, &claim.principal).await?;
+    // Publication fence: holds the switch's shared lock until this write commits.
+    if !super::admission::enabled(tx).await? {
+        return Err(AuthorityError::ModelExecutionOff);
+    }
     if account.id != claim.account
         || !(Access {
             account_id: account.id,
@@ -125,6 +132,11 @@ impl PostgresFrontDoorStore {
         if !access.allows_luna() {
             end(&tx, account.id, run, "failed").await?;
             tx.commit().await?;
+            return Ok(None);
+        }
+        // Switched-off work stays paused as the same accepted run; nothing is
+        // claimed while the operator switch is off.
+        if !super::admission::enabled(&tx).await? {
             return Ok(None);
         }
         if state == "paused"

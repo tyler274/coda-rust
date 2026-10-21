@@ -80,6 +80,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                     "m20261021_duet_conversation",
                     "m20261021_luna_journal",
                     "m20261022_duet_execution",
+                    "m20261023_duet_admission",
                     "mod"
                 ]
             );

@@ -98,6 +98,10 @@ async fn postgres_dispatch_claim_stream_completion_and_recovery() {
         .await
         .unwrap();
     store.provision_identity(&b, 20).await.unwrap();
+    store
+        .set_model_execution(true, "fixture-operator", "controlled test")
+        .await
+        .unwrap();
     // Controlled SQL fixture seeds already-accepted work. It does NOT expose
     // an Admission constructor or enable a production qualification bypass.
     async fn seed(db: &mut sqlx::PgConnection, a: Uuid) -> Uuid {
