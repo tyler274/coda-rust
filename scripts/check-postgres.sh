@@ -21,6 +21,7 @@ cargo test --locked -p physician-sample --test front_door_postgres
 # These identity targets must never silently return without exercising Postgres.
 cargo test --locked -p front-door --test identity
 cargo test --locked -p duet-api --test identity
+cargo test --locked -p duet-api --test durable_routes
 # Explicitly select ignored real-database proofs; serial execution prevents
 # migration and recovery scans racing other suites. Cluster crash/restart is
 # deliberately excluded: it requires an independently owned disposable cluster.

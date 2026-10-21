@@ -181,6 +181,25 @@ impl PostgresFrontDoorStore {
         })
     }
 
+    /// Update only the verified identity's canonical account, under its session
+    /// fence. No caller-supplied account ID or email participates in ownership.
+    pub async fn set_identity_display_name(
+        &self,
+        principal: &Principal,
+        name: &str,
+    ) -> Result<(), AuthorityError> {
+        if name.is_empty() || name.chars().count() > 80 {
+            return Err(AuthorityError::Refused);
+        }
+        let tx = self.db.begin().await?;
+        let (account, _) = locked(&tx, principal).await?;
+        let mut update = account.into_active_model();
+        update.display_name = Set(name.to_owned());
+        update.update(&tx).await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
     /// Revoke all sessions through the next whole second. The stored cutoff never
     /// moves backwards. This is LOCAL enforcement, not a provider-confirmation receipt.
     pub async fn revoke_identity_sessions(
