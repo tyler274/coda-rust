@@ -16,6 +16,12 @@ pub async fn ready() -> axum::http::StatusCode {
     axum::http::StatusCode::SERVICE_UNAVAILABLE
 }
 
+/// Process liveness only (the `GET /health` of the Duet wire contract). It says
+/// nothing about qualification; `/readyz` stays the only readiness answer.
+pub async fn live() -> axum::Json<serde_json::Value> {
+    axum::Json(serde_json::json!({ "status": "ok" }))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -30,6 +36,12 @@ mod tests {
 
     #[tokio::test]
     async fn unqualified_runtime_never_reports_ready() {
+        assert_eq!(ready().await, axum::http::StatusCode::SERVICE_UNAVAILABLE);
+    }
+
+    #[tokio::test]
+    async fn liveness_is_not_readiness() {
+        assert_eq!(live().await.0["status"], "ok");
         assert_eq!(ready().await, axum::http::StatusCode::SERVICE_UNAVAILABLE);
     }
 }

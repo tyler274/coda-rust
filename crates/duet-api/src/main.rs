@@ -43,7 +43,9 @@ async fn main() {
             .map(|port| format!("0.0.0.0:{port}"))
             .unwrap_or_else(|_| "127.0.0.1:8080".to_owned())
     });
-    let app = app.route("/readyz", axum::routing::get(duet_api::hosting::ready));
+    let app = app
+        .route("/health", axum::routing::get(duet_api::hosting::live))
+        .route("/readyz", axum::routing::get(duet_api::hosting::ready));
     let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
     axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())

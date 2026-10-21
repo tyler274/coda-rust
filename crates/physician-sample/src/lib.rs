@@ -455,7 +455,27 @@ pub async fn serve(listener: tokio::net::TcpListener) {
     let app = auth::authed_router(base)
         .await
         .route("/readyz", get(hosting::ready));
-    axum::serve(listener, app).await.expect("sample server");
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown())
+        .await
+        .expect("sample server");
+}
+
+/// Resolves on SIGTERM (Cloud Run's stop signal) or Ctrl-C, so in-flight
+/// requests drain instead of the process being killed after the grace period.
+async fn shutdown() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("SIGTERM handler");
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = terminate.recv() => {},
+        }
+    }
+    #[cfg(not(unix))]
+    tokio::signal::ctrl_c().await.expect("shutdown signal");
 }
 
 /// Serves the recorded practice on `listener` with authentication required
