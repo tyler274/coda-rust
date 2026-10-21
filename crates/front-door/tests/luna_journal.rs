@@ -303,6 +303,89 @@ async fn transactional_withdrawal_delivery_restart_replay_and_isolation() {
             .await
             .is_err()
     );
+    // Recovery drains retained events without requiring an active end-user
+    // session, but never transfers their authority to a recreated account.
+    let old_account = Uuid::new_v4();
+    let corrupt = Uuid::new_v4();
+    for revision in 1..=66 {
+        restriction::ActiveModel {
+            id: Set(if revision == 1 {
+                corrupt
+            } else {
+                Uuid::new_v4()
+            }),
+            account_id: Set(old_account),
+            revision: Set(revision),
+            occurred_at: Set(NOW),
+            confirmed: Set(false),
+            lease: Set(None),
+            due_at: Set(0),
+            attempts: Set(0),
+        }
+        .insert(&db)
+        .await
+        .unwrap();
+    }
+    archive
+        .objects
+        .lock()
+        .unwrap()
+        .insert(corrupt, b"corruption".to_vec());
+    let first = store
+        .recover_luna_restrictions(&archive, NOW + 501)
+        .await
+        .unwrap();
+    assert_eq!(first.attempted, 64);
+    assert!(first.pending >= 2);
+    let second = store
+        .recover_luna_restrictions(&archive, NOW + 501)
+        .await
+        .unwrap();
+    assert_eq!(second.attempted, 2);
+    let pending = restriction::Entity::find_by_id(corrupt)
+        .one(&db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert!(!pending.confirmed);
+    assert!(store.identity_access(&alice).await.unwrap().allows_luna());
+    assert!(
+        store
+            .identity_access(&bob)
+            .await
+            .unwrap()
+            .permissions
+            .restriction_pending
+    );
+    // An expired persisted lease is reclaimed with the same immutable ID.
+    let mut retry = pending.into_active_model();
+    retry.lease = Set(Some(Uuid::new_v4()));
+    retry.due_at = Set(NOW + 600);
+    retry.update(&db).await.unwrap();
+    assert_eq!(
+        store
+            .recover_luna_restrictions(&archive, NOW + 599)
+            .await
+            .unwrap()
+            .attempted,
+        0
+    );
+    archive.objects.lock().unwrap().remove(&corrupt);
+    drop(store);
+    let store = PostgresFrontDoorStore::connect(&url).await.unwrap();
+    let (left, right) = tokio::join!(
+        store.recover_luna_restrictions(&archive, NOW + 601),
+        store.recover_luna_restrictions(&archive, NOW + 601)
+    );
+    assert_eq!(left.unwrap().confirmed + right.unwrap().confirmed, 1);
+    assert!(
+        restriction::Entity::find_by_id(corrupt)
+            .one(&db)
+            .await
+            .unwrap()
+            .unwrap()
+            .confirmed
+    );
     drop(store);
     db.close().await.unwrap();
     admin

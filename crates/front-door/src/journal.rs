@@ -1,7 +1,7 @@
 //! Luna's bounded privacy owner, not a general lifecycle or recovery service.
 //! SQL commits the restriction and immutable event together. Only exact independent
-//! readback may clear pending; upload acknowledgments are insufficient. No runtime
-//! storage adapter is installed here, and hosted activation remains refused.
+//! readback may clear pending; upload acknowledgments are insufficient.
+//! Hosted activation and restore qualification remain separate gates.
 use crate::{
     PostgresFrontDoorStore,
     identity::{self, AuthorityError, Principal},
@@ -10,7 +10,7 @@ use crate::{
 use async_trait::async_trait;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseTransaction, DbBackend, EntityTrait,
-    IntoActiveModel, QueryFilter, QuerySelect, Set, Statement, TransactionTrait,
+    IntoActiveModel, QueryFilter, QueryOrder, QuerySelect, Set, Statement, TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -92,7 +92,103 @@ pub(crate) async fn record(
     Ok(())
 }
 
+/// Aggregate one-pass report, with no account/event labels or sensitive errors.
+/// An empty batch is NOT proof of journal or restore completeness.
+#[derive(Debug, Default, Serialize)]
+pub struct DeliveryReport {
+    /// Rows actually attempted under a durable lease.
+    pub attempted: u32,
+    /// Exact readbacks durably acknowledged in SQL.
+    pub confirmed: u32,
+    /// Failed attempts or SQL acknowledgement failures; work remains retryable.
+    pub failed: u32,
+    /// Pass budget expired or delivery slots were occupied.
+    pub budget_exhausted: bool,
+    /// Snapshot count, not a completeness or coverage guarantee.
+    pub pending: i64,
+    /// Oldest pending receipt age in seconds, without account/event labels.
+    pub oldest_pending_age_seconds: Option<i64>,
+}
+
 impl PostgresFrontDoorStore {
+    /// One recovery pass: at most 64 events, a 30-second total budget, and the
+    /// same process-wide four-delivery limit as foreground confirmation. Intended
+    /// for the existing recovery job, not middleware or an API background loop.
+    /// Selects only due rows; a failed/leased row cannot starve later accounts.
+    /// Callers must run under explicitly scoped recovery SQL authority.
+    pub async fn recover_luna_restrictions(
+        &self,
+        archive: &dyn ReceiptArchive,
+        now: i64,
+    ) -> Result<DeliveryReport, AuthorityError> {
+        let mut report = DeliveryReport::default();
+        let start = tokio::time::Instant::now();
+        let deadline = start + std::time::Duration::from_secs(30);
+        for _ in 0..64 {
+            let remaining = deadline.saturating_duration_since(tokio::time::Instant::now());
+            if remaining.is_zero() {
+                report.budget_exhausted = true;
+                break;
+            }
+            let Ok(_slot) = DELIVERY_SLOTS.try_acquire() else {
+                report.budget_exhausted = true;
+                break;
+            };
+            let time = now.saturating_add(start.elapsed().as_secs() as i64);
+            let attempt = tokio::time::timeout(remaining, async {
+                let tx = self.db.begin().await?;
+                // Claim holds only the outbox lock. It never waits for the account
+                // while holding this lock: publication uses account -> outbox.
+                let row = restriction::Entity::find()
+                    .filter(restriction::Column::Confirmed.eq(false))
+                    .filter(restriction::Column::DueAt.lte(time))
+                    .order_by_asc(restriction::Column::DueAt)
+                    .order_by_asc(restriction::Column::Id)
+                    .lock_exclusive()
+                    .one(&tx)
+                    .await?;
+                let Some(row) = row else {
+                    return Ok::<_, AuthorityError>(None);
+                };
+                let lease = Uuid::new_v4();
+                let mut claim = row.clone().into_active_model();
+                claim.lease = Set(Some(lease));
+                claim.due_at = Set(time.saturating_add(300));
+                claim.attempts = Set(row.attempts.saturating_add(1));
+                claim.update(&tx).await?;
+                tx.commit().await?;
+                report.attempted += 1;
+                Ok(Some(
+                    self.deliver_luna_receipt(row, lease, archive, time).await,
+                ))
+            })
+            .await;
+            match attempt {
+                Ok(Ok(None)) => break,
+                Ok(Ok(Some(Ok(_)))) => report.confirmed += 1,
+                Ok(Ok(Some(Err(_)))) => report.failed += 1,
+                Ok(Err(error)) => return Err(error),
+                Err(_) => {
+                    report.budget_exhausted = true;
+                    break;
+                }
+            }
+        }
+        let remaining = deadline.saturating_duration_since(tokio::time::Instant::now());
+        let stats = tokio::time::timeout(remaining, self.db.query_one_raw(Statement::from_string(
+            DbBackend::Postgres,
+            "SELECT count(*)::bigint AS pending, min(occurred_at)::bigint AS oldest FROM front_door_luna_restrictions WHERE NOT confirmed",
+        ))).await.map_err(|_| AuthorityError::RestrictionPending)??.ok_or(AuthorityError::Refused)?;
+        report.pending = stats.try_get("", "pending")?;
+        let oldest: Option<i64> = stats.try_get("", "oldest")?;
+        report.oldest_pending_age_seconds = oldest.map(|at| {
+            now.saturating_add(start.elapsed().as_secs() as i64)
+                .saturating_sub(at)
+                .max(0)
+        });
+        Ok(report)
+    }
+
     /// Attempt one account-scoped receipt. Caller retries through this same owner;
     /// ordinary reads and unrelated accounts never drain the journal. Concurrent
     /// workers are excluded by a five-minute persisted lease. Failed/abandoned
@@ -132,6 +228,20 @@ impl PostgresFrontDoorStore {
         claim.attempts = Set(row.attempts.saturating_add(1));
         claim.update(&tx).await?;
         tx.commit().await?;
+        if self.deliver_luna_receipt(row, lease, archive, now).await? {
+            Ok(())
+        } else {
+            Err(AuthorityError::RestrictionPending)
+        }
+    }
+
+    async fn deliver_luna_receipt(
+        &self,
+        row: restriction::Model,
+        lease: Uuid,
+        archive: &dyn ReceiptArchive,
+        now: i64,
+    ) -> Result<bool, AuthorityError> {
         let body = serde_json::to_vec(&LunaReceipt::from_row(&row))
             .map_err(|_| AuthorityError::RestrictionPending)?;
         let timeout = std::time::Duration::from_secs(10);
@@ -140,7 +250,7 @@ impl PostgresFrontDoorStore {
         let tx = self.db.begin().await?;
         // Same lock order as mutation/claim; do not require an unrevoked session to
         // acknowledge delivery of a restriction already committed by its owner.
-        let owner = account::Entity::find_by_id(account.id)
+        let owner = account::Entity::find_by_id(row.account_id)
             .lock_exclusive()
             .one(&tx)
             .await?;
@@ -163,14 +273,14 @@ impl PostgresFrontDoorStore {
         let mut scope_complete = verified;
         if verified && owner.is_some() {
             let pending = restriction::Entity::find()
-                .filter(restriction::Column::AccountId.eq(account.id))
+                .filter(restriction::Column::AccountId.eq(row.account_id))
                 .filter(restriction::Column::Confirmed.eq(false))
                 .one(&tx)
                 .await?
                 .is_some();
             scope_complete = !pending;
             if !pending {
-                let permission = permission::Entity::find_by_id(account.id)
+                let permission = permission::Entity::find_by_id(row.account_id)
                     .one(&tx)
                     .await?
                     .ok_or(AuthorityError::Refused)?;
@@ -180,8 +290,8 @@ impl PostgresFrontDoorStore {
             }
         }
         tx.commit().await?;
-        if scope_complete {
-            Ok(())
+        if verified {
+            Ok(scope_complete)
         } else {
             Err(AuthorityError::RestrictionPending)
         }
