@@ -96,3 +96,36 @@ run "the_database_parks_outside_a_proof_window" {
     error_message = "The database must stay parked until an approved window turns it on."
   }
 }
+
+run "the_site_exports_telemetry_to_the_private_collector_without_content" {
+  command = plan
+
+  variables {
+    sql_activation_policy    = "ALWAYS"
+    physician_site_enabled   = true
+    physician_site_image     = "us-east1-docker.pkg.dev/coda-health-staging/physician-site/physician-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    physician_browser_origin = "https://physician.example.com"
+  }
+
+  assert {
+    condition = {
+      for env in kubernetes_deployment.physician_site[0].spec[0].template[0].spec[0].container[0].env : env.name => env.value
+      } == {
+      OTEL_EXPORTER_OTLP_ENDPOINT = "http://otel-collector.observability.svc.cluster.local:4318"
+      DD_ENV                      = "staging"
+      DD_VERSION                  = "aaaaaaaaaaaa"
+      CODA_TELEMETRY_CONTENT      = "none"
+    }
+    error_message = "The site must send spans to the observability collector with content off by default."
+  }
+}
+
+run "reject_a_public_collector_endpoint" {
+  command = plan
+
+  variables {
+    otel_collector_endpoint = "https://collector.example.com:4318"
+  }
+
+  expect_failures = [var.otel_collector_endpoint]
+}

@@ -29,6 +29,12 @@ policy to `NEVER` when the window ends.
   tokens with a 30-day TTL and deactivation fencing. Delivery in this
   deployment is `proof` (the token returns in the sign-in response); a real
   email delivery is a separate authorized step.
+- The site sends OTLP spans to the in-cluster collector that
+  [`infra/gcp/observability`](/infra/gcp/observability) runs
+  (`otel_collector_endpoint`, which must be a `*.svc.cluster.local` address),
+  with `DD_ENV = var.environment`, `DD_VERSION` taken from the image digest,
+  and `CODA_TELEMETRY_CONTENT = var.telemetry_content` (default `none`, so no
+  prompt or completion text leaves the pod).
 
 ## Testing
 

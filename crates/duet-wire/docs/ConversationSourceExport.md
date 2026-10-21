@@ -5,10 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **current_revision** | Option<**i32**> |  | [optional]
-**message_id** | **uuid::Uuid** |  | 
-**reference** | [**models::ConversationSource**](ConversationSource.md) |  | 
+**message_id** | **uuid::Uuid** |  |
+**reference** | [**models::ConversationSource**](ConversationSource.md) |  |
 **superseded** | Option<**bool**> |  | [optional]
-**text** | **String** |  | 
+**text** | **String** |  |
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -757,6 +757,14 @@ impl SimulationSession {
 
     /// Runs or reruns a named simulation scenario from a clean panel baseline.
     pub fn run_scenario(&mut self, scenario_key: &str) -> Result<SimulationRunRecord, String> {
+        let span = tracing::info_span!(
+            "coda.simulation",
+            coda.origin = "simulation",
+            langfuse.environment = "simulation",
+            coda.scenario_id = %scenario_key,
+            coda.job = "simulation",
+        );
+        let _entered = span.enter();
         let scenario = local_simulation_scenarios()
             .into_iter()
             .find(|item| item.key == scenario_key)

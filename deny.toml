@@ -33,6 +33,12 @@ allow = [
     # It is an image-optimizer dev path through dioxus-desktop, never shipped.
     "NCSA",
 ]
+# Font data is licensed per crate, never workspace-wide. duet-page embeds the
+# Noto faces from oxifont-bundled in the doctor-page PDF; the OFL permits
+# embedding and redistribution with the software (ENG-46).
+exceptions = [
+    { allow = ["OFL-1.1"], crate = "oxifont-bundled" },
+]
 # Confidence threshold for license detection inside files.
 confidence-threshold = 0.93
 
@@ -53,6 +59,10 @@ ignore = [
     { id = "RUSTSEC-2024-0449", reason = "proc-macro-error is unmaintained; transitive via darling/syn struct generators" },
     { id = "RUSTSEC-2025-0057", reason = "fxhash is unmaintained; transitive via rustc-hash users" },
     { id = "RUSTSEC-2024-0436", reason = "paste is unmaintained; transitive via strum macros" },
+    # duet-page reads glyph outlines from its bundled fonts only; cosmic-text
+    # (fontdb) and oxifont-parser pin the same crate. Replace with skrifa when
+    # those move (ENG-46).
+    { id = "RUSTSEC-2026-0192", reason = "ttf-parser is unmaintained; parses only bundled fonts in duet-page, also via fontdb/oxifont-parser (ENG-46)" },
     # zip 8.6.0 is pinned by candle-core 0.11.0 (latest, requires zip ^8.6.0).
     # All three advisories are in ZipArchive/ZipStreamReader::extract(); candle
     # only reads entries in memory via by_name/by_index and never extracts, and

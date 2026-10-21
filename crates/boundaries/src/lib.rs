@@ -32,6 +32,81 @@ mod tests {
         assert!(shell.contains("physician-app"));
     }
 
+    /// Follow local dependencies, including renamed dependencies, rather than
+    /// trusting direct package-name string checks. No generated clinical crate
+    /// can slip into the neutral mechanics through a transitive dependency.
+    fn local_closure(crate_name: &str) -> std::collections::BTreeSet<String> {
+        fn visit(name: &str, seen: &mut std::collections::BTreeSet<String>) {
+            if !seen.insert(name.to_owned()) {
+                return;
+            }
+            fn paths(value: &toml::Value, found: &mut Vec<String>) {
+                if let Some(table) = value.as_table() {
+                    if let Some(path) = table.get("path").and_then(toml::Value::as_str) {
+                        found.push(path.to_owned());
+                    }
+                    // Resolve workspace-inherited dependencies explicitly before
+                    // allowing them into the boundary (currently none are used).
+                    assert!(
+                        table.get("workspace").and_then(toml::Value::as_bool) != Some(true),
+                        "workspace-inherited dependencies need boundary resolution"
+                    );
+                    for child in table.values() {
+                        paths(child, found);
+                    }
+                }
+            }
+            let document: toml::Value = manifest(name).parse().unwrap();
+            let mut dependencies = Vec::new();
+            for section in [
+                "dependencies",
+                "dev-dependencies",
+                "build-dependencies",
+                "target",
+            ] {
+                if let Some(value) = document.get(section) {
+                    paths(value, &mut dependencies);
+                }
+            }
+            for path in dependencies {
+                let dependency = path.strip_prefix("../").expect("local crate dependency");
+                assert!(
+                    !dependency.contains('/'),
+                    "unexpected local dependency path"
+                );
+                visit(dependency, seen);
+            }
+        }
+        let mut seen = std::collections::BTreeSet::new();
+        visit(crate_name, &mut seen);
+        seen
+    }
+
+    #[test]
+    fn shared_harness_is_product_neutral_and_has_no_product_store() {
+        let allowed = ["harness", "agent-skills", "http"];
+        for dependency in local_closure("harness") {
+            assert!(
+                allowed.contains(&dependency.as_str()),
+                "neutral harness imported product-owned crate {dependency}"
+            );
+        }
+        for duet in ["duet-api", "duet-app", "duet-client", "duet-page"] {
+            for dependency in local_closure(duet) {
+                assert!(!dependency.starts_with("physician-"));
+                assert!(
+                    !["local-product", "patient-work"].contains(&dependency.as_str()),
+                    "Duet must reuse harness mechanics, not physician state/transport"
+                );
+            }
+        }
+        for physician in ["physician-app", "physician-sample", "local-product"] {
+            for dependency in local_closure(physician) {
+                assert!(!dependency.starts_with("duet-"));
+            }
+        }
+    }
+
     #[test]
     fn shipping_clients_stay_until_the_rust_journeys_match() {
         let root = root();

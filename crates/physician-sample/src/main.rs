@@ -9,6 +9,7 @@ async fn main() {
         eprintln!("{reason}");
         std::process::exit(1);
     }
+    let _telemetry = telemetry::init("physician-sample");
     let args: Vec<String> = env::args().skip(1).collect();
 
     if args.iter().any(|arg| arg == "--list-simulations") {
@@ -39,8 +40,9 @@ async fn main() {
         unsafe {
             env::set_var("CODA_LOCAL_SIMULATION", scenario);
         }
-        eprintln!(
-            "local simulation active: scenario={scenario} (rerunnable from the physician UI)"
+        tracing::info!(
+            %scenario,
+            "local simulation active (rerunnable from the physician UI)"
         );
     }
 
@@ -52,7 +54,7 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&bind_addr)
         .await
         .unwrap_or_else(|err| panic!("failed to bind {bind_addr}: {err}"));
-    eprintln!(
+    tracing::info!(
         "physician site on http://{}",
         listener.local_addr().unwrap()
     );
@@ -93,7 +95,7 @@ fn run_cli_simulation(scenario: &str) {
             }
         }
         Err(error) => {
-            eprintln!("{error}");
+            tracing::error!(%error, "simulation failed");
             std::process::exit(1);
         }
     }

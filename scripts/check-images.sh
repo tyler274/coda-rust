@@ -68,7 +68,7 @@ for name in coda-physician-sample coda-duet-api; do
 done
 expect_failure "${tag_of[coda-physician-migrate]} without database" "PHYSICIAN_DATABASE_URL is required" \
   run "${locked[@]}" --network none --entrypoint "$(binary_of "${tag_of[coda-physician-migrate]}")" "${tag_of[coda-physician-migrate]}"
-expect_failure "${tag_of[coda-duet-migrate]} without database" "DATABASE_URL is required" \
+expect_failure "${tag_of[coda-duet-migrate]} without database" "DUET_MIGRATION_DATABASE_URL and DUET_RUNTIME_ROLE are required" \
   run "${locked[@]}" --network none --entrypoint "$(binary_of "${tag_of[coda-duet-migrate]}")" "${tag_of[coda-duet-migrate]}"
 expect_failure "${tag_of[coda-duet-privacy-delivery]} without configuration" "privacy_journal_delivery_unavailable" \
   run "${locked[@]}" --network none --entrypoint "$(binary_of "${tag_of[coda-duet-privacy-delivery]}")" "${tag_of[coda-duet-privacy-delivery]}"
@@ -111,12 +111,17 @@ done
 grep -q physician_runtime_commands <<<"${states[0]}" || { echo "runtime chain missing" >&2; exit 1; }
 echo "physician migration rerun is idempotent"
 
-# duet-migrate applies the front-door chain and then the vendored Duet schema
-# chain. Both runs must record the same schema.
+# duet-migrate applies the doctor-page chain as the unprivileged runtime role,
+# then the front-door chain. Both runs must record the same ledger.
+psql -q "$admin" -c "create role duet_runtime login nosuperuser nobypassrls nocreatedb nocreaterole"
+psql -q "$duet_db" -c "revoke create on schema public from public"
 duet_states=()
 for attempt in 1 2; do
-  run_job "${tag_of[coda-duet-migrate]}" -e DATABASE_URL="$duet_db"
-  duet_states+=("$(psql -At "$duet_db" -c 'select count(*) from public.schema_migrations')")
+  run_job "${tag_of[coda-duet-migrate]}" \
+    -e DUET_MIGRATION_DATABASE_URL="$duet_db" \
+    -e DUET_RUNTIME_ROLE=duet_runtime \
+    -e FRONT_DOOR_DATABASE_URL="$duet_db"
+  duet_states+=("$(psql -At "$duet_db" -c 'select count(*) from public.duet_schema_migrations')")
   printf 'duet migration run %s: ok (%s schema versions)\n' "$attempt" "${duet_states[-1]}"
 done
 [ "${duet_states[0]}" = "${duet_states[1]}" ] || { echo "duet rerun changed the schema" >&2; exit 1; }
@@ -173,9 +178,17 @@ expect_status "http://127.0.0.1:$physician_port/" 200
 expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 
 duet_port=$(free_port)
-serve coda-duet-api "$duet_port" -e DATABASE_URL="$duet_db" \
+publication_key=$(python3 -c 'import base64; print(base64.urlsafe_b64encode(b"0123456789abcdef0123456789abcdef").decode().rstrip("="))')
+serve coda-duet-api "$duet_port" \
+  -e DATABASE_URL="postgres://duet_runtime@127.0.0.1:$pgport/duet" \
+  -e FRONT_DOOR_DATABASE_URL="$duet_db" \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
-  -e DUET_IDENTITY_PROJECT_ID=image-smoke
+  -e IDENTITY_PLATFORM_PROJECT_ID=image-smoke \
+  -e IDENTITY_PLATFORM_API_KEY=image-smoke \
+  -e DUET_PRIVACY_JOURNAL_DIRECTORY=/tmp/duet-journal \
+  -e DUET_PUBLICATION_MASTER_KEY="$publication_key" \
+  -e DUET_PUBLIC_ORIGIN=http://127.0.0.1 \
+  -e DUET_SHL_VIEWER_URL=http://127.0.0.1/shl
 expect_status "http://127.0.0.1:$duet_port/health" 200
 expect_status "http://127.0.0.1:$duet_port/readyz" 200
 expect_status "http://127.0.0.1:$duet_port/" 200

@@ -4,10 +4,13 @@
 Run: nix develop --command python scripts/check-sql.py [--write]
 The three required Duet queries are included by Rust at compile time. All other
 tracked .sql files outside read-only submodules are included automatically.
-The vendored Duet schema under crates/duet-api/migrations is excluded: those
-files stay byte-for-byte with coda-app and are applied by the SeaORM chain.
+Duet migrations under crates/duet-api/migrations are excluded: each file is
+checksummed into duet_schema_migrations, so formatting must not change it.
 Migration builders, dynamic Rust templates and test-fixture strings are not
 parsed or reformatted. No migration/checksum inputs are changed by this check.
+Formatting is not an endorsement of raw SQL: AGENTS.md requires ORM-first CRUD.
+These required files describe current coverage, not a permanent SQL quota; update
+REQUIRED and the query tests when a bounded ORM conversion removes a query.
 """
 
 import argparse

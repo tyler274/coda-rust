@@ -4,7 +4,13 @@
 set -eu
 root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 cd "$root"
-spec=submodules/coda-app/docs/openapi.json
+# A worktree can use the pinned reference file in another checkout, without
+# copying or modifying a submodule. The default remains the local submodule.
+reference=${DUET_REFERENCE_OPENAPI:-submodules/coda-app/docs/openapi.json}
+current=$(mktemp -d)
+trap 'rm -rf "$current"' EXIT
+spec=$current/openapi.json
+python3 scripts/compose-duet-openapi.py "$reference" crates/duet-api/openapi/additions.json "$spec"
 props=packageName=duet_wire,packageVersion=0.1.0,reqwestDefaultFeatures=rustls,supportAsync=true,hideGenerationTimestamp=true
 
 generate() {
@@ -19,11 +25,13 @@ generate() {
 pub struct Null;
 EOF
   rm -rf "$out/.openapi-generator" "$out/git_push.sh" "$out/README.md"
+  # Normalize once before the compatibility pass so its markers are stable.
+  cargo fmt --manifest-path "$out/Cargo.toml"
+  python3 scripts/finalize-duet-wire.py "$spec" "$out"
+  cargo fmt --manifest-path "$out/Cargo.toml"
 }
 
 if [ "${1:-}" = "--check" ]; then
-  current=$(mktemp -d)
-  trap 'rm -rf "$current"' EXIT
   cp -a crates/duet-wire/. "$current/committed"
   generate "$current/fresh"
   diff -ru "$current/committed/src" "$current/fresh/src"

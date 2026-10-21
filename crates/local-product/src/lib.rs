@@ -17,6 +17,8 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
 pub mod codex;
+pub mod execution;
+pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;
 pub mod simulation;

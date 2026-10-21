@@ -15,6 +15,12 @@ ui = { path = "../ui" }
 web-sys = { version = "0.3", features = ["Window", "Storage", "Location"] }
 
 [dev-dependencies]
+futures-util = "0.3"
+async-trait = "0.1"
+chrono = "0.4"
+uuid = { version = "1", features = ["v4"] }
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "postgres", "uuid", "chrono", "json", "tls-rustls"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 serde_json = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "fs"] }
 axum = { version = "0.8", default-features = false, features = ["json", "tokio", "http1"] }

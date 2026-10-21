@@ -14,12 +14,14 @@ async fn physician_and_client_modes_render() {
     let address = serve(site);
     let chrome = chromium();
     let client = dump_dom(&chrome, &format!("http://{address}/?mode=client")).await;
-    // ENG-44: without a joined session Duet is gated by the front door, so
-    // client mode shows the join screen, not the tab shell. The joined
-    // journey (tabs, send) is covered by duet_journey on the live stub.
+    // Patient sign-in is independent of practice invitations. Without an
+    // authenticated account the tabs remain gated; duet_journey proves the
+    // authenticated shell against the live synthetic identity adapter.
     assert!(
-        client.contains("Join your practice") && !client.contains("Find patient"),
-        "client mode did not show the join gate:\n{client}"
+        client.contains("Sign in to your Duet account")
+            && client.contains("A practice invitation is not required")
+            && !client.contains("Find patient"),
+        "client mode did not show the account sign-in gate:\n{client}"
     );
     assert!(
         !client.contains("Find patient"),

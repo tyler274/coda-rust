@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**canonical_revisions** | [**Vec<models::CanonicalRecordRevision>**](CanonicalRecordRevision.md) |  | 
+**canonical_revisions** | [**Vec<models::CanonicalRecordRevision>**](CanonicalRecordRevision.md) |  |
 **canonicalized_health_evidence** | Option<**Vec<std::collections::HashMap<String, serde_json::Value>>**> |  | [optional]
 **skipped** | Option<**Vec<uuid::Uuid>**> |  | [optional]
 **stored** | Option<**Vec<uuid::Uuid>**> |  | [optional]

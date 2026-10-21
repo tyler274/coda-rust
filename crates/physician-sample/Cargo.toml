@@ -7,19 +7,28 @@ publish.workspace = true
 version.workspace = true
 
 [dependencies]
+sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
+sha2 = "0.11"
 axum = "0.8"
 front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
 local-product = { path = "../local-product" }
+harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
 physician-auth = { path = "../physician-auth" }
 physician-wire = { path = "../physician-wire" }
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+telemetry = { path = "../telemetry" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
+tracing = "0.1"
 
 [dev-dependencies]
+opentelemetry = { version = "0.31", default-features = false, features = ["trace"] }
+opentelemetry_sdk = { version = "0.31", default-features = false, features = ["trace", "testing"] }
+tracing-opentelemetry = { version = "0.32", default-features = false }
+tracing-subscriber = { version = "0.3", features = ["registry"] }
 physician-auth = { path = "../physician-auth" }
 front-door = { path = "../front-door" }
 sea-orm = { version = "2", default-features = false, features = [

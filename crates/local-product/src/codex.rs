@@ -9,7 +9,9 @@
 //! The cassette schema is version 1. It stores one logical request and the
 //! CLI's last message. It is not the coda-agents full-runtime cassette.
 
-use std::collections::{HashMap, HashSet, VecDeque};
+#[cfg(test)]
+use std::collections::VecDeque;
+use std::collections::{HashMap, HashSet};
 use std::fs::{self, File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
@@ -221,8 +223,7 @@ impl CodexRequest {
                 })
                 .collect(),
         };
-        let bytes = serde_json::to_vec(&body).expect("request key");
-        sha256_hex(&bytes)
+        harness::transport::request_key(&body).expect("request key")
     }
 
     fn prompt(&self) -> String {
@@ -283,6 +284,16 @@ impl CodexProcessResult {
 pub trait CodexExecutor: Send {
     /// Runs `request` once.
     fn run(&mut self, request: &CodexRequest) -> Result<CodexProcessResult, String>;
+    /// Cancellable invocation. Controlled legacy executors may only check
+    /// before dispatch; the live process overrides this to stop its group.
+    fn run_cancellable(
+        &mut self,
+        request: &CodexRequest,
+        cancel: &harness::execution::Cancellation,
+    ) -> Result<CodexProcessResult, String> {
+        cancel.check()?;
+        self.run(request)
+    }
 }
 
 /// Live, record, or replay execution for one physician chat.
@@ -381,18 +392,44 @@ impl CodexTransport {
 
     /// Answers one Responses-shaped physician turn.
     pub fn complete(&mut self, responses_body: &Value) -> Result<String, String> {
+        self.complete_cancellable(responses_body, &harness::execution::Cancellation::default())
+    }
+
+    /// Stops a live process on cancellation while retaining its cassette result.
+    pub fn complete_cancellable(
+        &mut self,
+        responses_body: &Value,
+        cancel: &harness::execution::Cancellation,
+    ) -> Result<String, String> {
+        cancel.check()?;
         let request = CodexRequest::from_responses(responses_body)?;
         self.next_id += 1;
         let provider_call_id = format!("physician-chat-{}", self.next_id);
-        match &mut self.kind {
+        let span = tracing::info_span!(
+            "codex.exec",
+            provider_call_id = %provider_call_id,
+            coda.run_id = %provider_call_id,
+            execution = ?self.mode(),
+            duration_ms = tracing::field::Empty,
+            exit_code = tracing::field::Empty,
+            timed_out = tracing::field::Empty,
+            otel.status_code = tracing::field::Empty,
+        );
+        let _entered = span.enter();
+        let outcome = match &mut self.kind {
             Kind::Replay(replayer) => replayer.complete(&provider_call_id, &request),
             Kind::Run {
                 executor,
                 recording,
             } => {
                 let started = Instant::now();
-                let result = executor.run(&request)?;
+                let result = executor.run_cancellable(&request, cancel)?;
                 let duration_ms = u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX);
+                span.record("duration_ms", duration_ms);
+                span.record("timed_out", result.timed_out);
+                if let Some(code) = result.exit_code {
+                    span.record("exit_code", code);
+                }
                 if let Some(recording) = recording {
                     recording
                         .recorder
@@ -401,7 +438,11 @@ impl CodexTransport {
                 }
                 admit(&result)
             }
+        };
+        if outcome.is_err() {
+            span.record("otel.status_code", "ERROR");
         }
+        outcome
     }
 }
 
@@ -633,49 +674,32 @@ impl CassetteRecorder {
                 )
             })?;
         }
-        let tmp = path.with_extension(format!("tmp-{}", random_id()));
         let body = serde_json::to_string_pretty(&self.cassette)
             .map_err(|error| format!("Could not encode Codex cassette: {error}"))?;
-        fs::write(&tmp, format!("{body}\n")).map_err(|error| {
-            format!("Could not write Codex cassette {}: {error}", tmp.display())
-        })?;
-        fs::rename(&tmp, path).map_err(|error| {
-            format!(
-                "Could not publish Codex cassette {}: {error}",
-                path.display()
-            )
-        })?;
-        Ok(())
+        harness::transport::write_atomic(path, format!("{body}\n").as_bytes())
     }
 }
 
 struct CassetteReplayer {
-    remaining: HashMap<String, VecDeque<Exchange>>,
-    total: usize,
-    consumed: usize,
+    queue: harness::transport::ReplayQueue<Exchange>,
     seen_calls: HashSet<String>,
 }
 
 impl CassetteReplayer {
     fn new(cassette: Cassette) -> Self {
-        let total = cassette.exchanges.len();
-        let mut remaining: HashMap<String, VecDeque<Exchange>> = HashMap::new();
-        for exchange in cassette.exchanges {
-            remaining
-                .entry(exchange.request_key.clone())
-                .or_default()
-                .push_back(exchange);
-        }
         Self {
-            remaining,
-            total,
-            consumed: 0,
+            queue: harness::transport::ReplayQueue::new(
+                cassette
+                    .exchanges
+                    .into_iter()
+                    .map(|exchange| (exchange.request_key.clone(), exchange)),
+            ),
             seen_calls: HashSet::new(),
         }
     }
 
     fn remaining(&self) -> usize {
-        self.total - self.consumed
+        self.queue.remaining()
     }
 
     fn complete(
@@ -687,14 +711,9 @@ impl CassetteReplayer {
             return Err("Replay repeats a current provider call identity".to_owned());
         }
         let key = request.request_key();
-        let exchange = self
-            .remaining
-            .get_mut(&key)
-            .and_then(VecDeque::pop_front)
-            .ok_or_else(|| {
-                "Codex exec cassette has no exchange for this logical request".to_owned()
-            })?;
-        self.consumed += 1;
+        let exchange = self.queue.take(provider_call_id, &key).map_err(|_| {
+            "Codex exec cassette has no exchange for this logical request".to_owned()
+        })?;
         admit(&exchange.result)
     }
 }
@@ -725,6 +744,14 @@ impl CodexProcess {
 
 impl CodexExecutor for CodexProcess {
     fn run(&mut self, request: &CodexRequest) -> Result<CodexProcessResult, String> {
+        self.run_cancellable(request, &harness::execution::Cancellation::default())
+    }
+    fn run_cancellable(
+        &mut self,
+        request: &CodexRequest,
+        cancel: &harness::execution::Cancellation,
+    ) -> Result<CodexProcessResult, String> {
+        cancel.check()?;
         ensure_catalog(request)?;
         if !self.auth_file.is_file() {
             return Err(
@@ -734,14 +761,19 @@ impl CodexExecutor for CodexProcess {
         }
         let cwd = call_directory()?;
         let cleanup = RemoveDir(cwd.clone());
-        let result = self.run_in(&cwd, request);
+        let result = self.run_in(&cwd, request, cancel);
         drop(cleanup);
         Ok(result)
     }
 }
 
 impl CodexProcess {
-    fn run_in(&self, cwd: &Path, request: &CodexRequest) -> CodexProcessResult {
+    fn run_in(
+        &self,
+        cwd: &Path,
+        request: &CodexRequest,
+        cancel: &harness::execution::Cancellation,
+    ) -> CodexProcessResult {
         let codex_home = cwd.join("codex-home");
         let instructions = cwd.join("instructions.md");
         let schema = cwd.join("agent-message.schema.json");
@@ -807,8 +839,8 @@ impl CodexProcess {
         let status = loop {
             match child.try_wait() {
                 Ok(Some(status)) => break status,
-                Ok(None) if started.elapsed() >= self.timeout => {
-                    timed_out = true;
+                Ok(None) if cancel.is_cancelled() || started.elapsed() >= self.timeout => {
+                    timed_out = started.elapsed() >= self.timeout;
                     signal_group(pid, 15);
                     thread::sleep(Duration::from_millis(250));
                     if child.try_wait().ok().flatten().is_none() {
@@ -835,7 +867,7 @@ impl CodexProcess {
             stdout,
             stderr,
             exit_code,
-            cancelled: false,
+            cancelled: cancel.is_cancelled(),
             timed_out,
             error: None,
             violation: None,
@@ -953,6 +985,7 @@ fn codex_exec_args(
         "--config".to_owned(),
         "include_environment_context=false".to_owned(),
     ];
+    // Codex's own OTel exporter is off by default; Coda's `codex.exec` span is the record of the call.
     for setting in ISOLATED_CONFIG {
         args.push("--config".to_owned());
         args.push((*setting).to_owned());

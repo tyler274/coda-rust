@@ -1,0 +1,220 @@
+# Local observability stack for ENG-65: self-hosted Langfuse v3, the shared
+# OpenTelemetry Collector, and (profile `datadog`) the Datadog Agent.
+#
+#   scripts/observability-up.sh                 # Langfuse + collector, debug exporter
+#   scripts/observability-up.sh --datadog       # also the Datadog Agent (needs DD_API_KEY)
+#
+# Then run a service with OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318.
+# Langfuse UI: http://localhost:3000 (dev@coda.local / coda-local-dev).
+#
+# Every credential below is a fixed LOCAL DEVELOPMENT value, not a secret:
+# the stack binds to 127.0.0.1, holds synthetic data only, and the keys are
+# worthless anywhere else. Deployed Langfuse takes its keys from Doppler
+# through infra/gcp/observability. DD_API_KEY is the one real secret; it comes
+# from Doppler `dev` (scripts/observability-up.sh) and is never written here.
+name: coda-observability
+
+x-langfuse-env: &langfuse-env
+  NEXTAUTH_URL: http://localhost:${LANGFUSE_PORT:-3000}
+  DATABASE_URL: postgresql://langfuse:langfuse-local-dev@postgres:5432/langfuse
+  # Local-only constants. openssl rand output is required in any real deploy.
+  SALT: coda-local-dev-salt
+  ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
+  TELEMETRY_ENABLED: "false"
+  CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+  CLICKHOUSE_URL: http://clickhouse:8123
+  CLICKHOUSE_USER: clickhouse
+  CLICKHOUSE_PASSWORD: clickhouse-local-dev
+  CLICKHOUSE_CLUSTER_ENABLED: "false"
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  REDIS_AUTH: redis-local-dev
+  LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+  LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
+  LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+  LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: minio-local-dev
+  LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
+  LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+  LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+  LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+  LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
+  LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: minio
+  LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: minio-local-dev
+  LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://localhost:9090
+  LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
+  LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+
+services:
+  langfuse-worker:
+    image: docker.io/langfuse/langfuse-worker:3.225.11
+    restart: unless-stopped
+    depends_on: &langfuse-depends-on
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+    ports:
+      - 127.0.0.1:3030:3030
+    environment:
+      <<: *langfuse-env
+
+  langfuse-web:
+    image: docker.io/langfuse/langfuse:3.225.11
+    restart: unless-stopped
+    depends_on: *langfuse-depends-on
+    ports:
+      # LANGFUSE_PORT moves the UI when another dev server holds 3000.
+      - 127.0.0.1:${LANGFUSE_PORT:-3000}:3000
+    environment:
+      <<: *langfuse-env
+      NEXTAUTH_SECRET: coda-local-dev-nextauth
+      # Headless init: one org, one project, one user, and the fixed project
+      # keys the collector uses below. Local-only values.
+      LANGFUSE_INIT_ORG_ID: coda-local
+      LANGFUSE_INIT_ORG_NAME: Coda (local)
+      LANGFUSE_INIT_PROJECT_ID: coda-local-agents
+      LANGFUSE_INIT_PROJECT_NAME: coda-agents
+      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: pk-lf-coda-local-dev
+      LANGFUSE_INIT_PROJECT_SECRET_KEY: sk-lf-coda-local-dev
+      LANGFUSE_INIT_USER_EMAIL: dev@coda.local
+      LANGFUSE_INIT_USER_NAME: Coda Dev
+      LANGFUSE_INIT_USER_PASSWORD: coda-local-dev
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://$$(hostname):3000/api/public/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  clickhouse:
+    image: docker.io/clickhouse/clickhouse-server:25.8.33
+    restart: unless-stopped
+    user: "101:101"
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse-local-dev
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_logs:/var/log/clickhouse-server
+    ports:
+      - 127.0.0.1:8123:8123
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 1s
+
+  minio:
+    # Chainguard publishes only rolling tags; pinned by digest.
+    image: cgr.dev/chainguard/minio@sha256:32c504bea4574d8f29d719b37bc0dad920ecf3e22b81dc5cea0bb105af2ce10f
+    restart: unless-stopped
+    entrypoint: sh
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio-local-dev
+    ports:
+      # Langfuse hands browsers presigned media URLs on this port.
+      - 127.0.0.1:9090:9000
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 1s
+
+  redis:
+    image: docker.io/valkey/valkey:8.1.10-alpine
+    restart: unless-stopped
+    command: >
+      --requirepass redis-local-dev
+      --maxmemory-policy noeviction
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "redis-local-dev", "ping"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+
+  postgres:
+    image: docker.io/postgres:17.6-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse-local-dev
+      POSTGRES_DB: langfuse
+      TZ: UTC
+      PGTZ: UTC
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse -d langfuse"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  otel-collector:
+    # Matches nixpkgs opentelemetry-collector-contrib in flake.lock, so the
+    # shell's `otelcol-contrib validate` checks the binary that runs here.
+    image: docker.io/otel/opentelemetry-collector-contrib:0.155.0
+    restart: unless-stopped
+    # COLLECTOR_OVERLAY picks the Datadog-pipeline exporter: `debug` (default,
+    # no Agent) or `datadog` (set by observability-up.sh --datadog).
+    command:
+      - --config=/etc/otelcol/collector.yaml
+      - --config=/etc/otelcol/collector.${COLLECTOR_OVERLAY:-debug}.yaml
+    volumes:
+      - ./collector.yaml:/etc/otelcol/collector.yaml:ro
+      - ./collector.debug.yaml:/etc/otelcol/collector.debug.yaml:ro
+      - ./collector.datadog.yaml:/etc/otelcol/collector.datadog.yaml:ro
+    environment:
+      DATADOG_OTLP_ENDPOINT: datadog-agent:4317
+      LANGFUSE_OTLP_ENDPOINT: http://langfuse-web:3000/api/public/otel
+      LANGFUSE_PUBLIC_KEY: pk-lf-coda-local-dev
+      LANGFUSE_SECRET_KEY: sk-lf-coda-local-dev
+    ports:
+      - 127.0.0.1:4317:4317
+      - 127.0.0.1:4318:4318
+      - 127.0.0.1:13133:13133
+    depends_on:
+      langfuse-web:
+        condition: service_started
+
+  datadog-agent:
+    profiles: [datadog]
+    image: docker.io/datadog/agent:7.84.4
+    restart: unless-stopped
+    environment:
+      # Real secret: supplied by `doppler run --` (Doppler coda-rust/dev).
+      # Compose interpolates inactive profiles too, so the presence check
+      # lives in scripts/observability-up.sh --datadog, not a `:?` here.
+      DD_API_KEY: ${DD_API_KEY:-}
+      DD_SITE: ${DD_SITE:-datadoghq.com}
+      DD_ENV: ${DD_ENV:-local}
+      DD_HOSTNAME: coda-local-observability
+      DD_APM_ENABLED: "true"
+      DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_ENDPOINT: 0.0.0.0:4317
+      DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: 0.0.0.0:4318
+      DD_LOGS_ENABLED: "true"
+      DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "false"
+      DD_PROCESS_AGENT_ENABLED: "false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+
+volumes:
+  postgres_data:
+  clickhouse_data:
+  clickhouse_logs:
+  minio_data:
+  redis_data:

@@ -24,6 +24,8 @@
 - [Insight visual contract](visual-contract.md)
 - [GCP deployment](gcp.md)
 - [Physician site](physician-site.md)
+- [Observability](observability.md)
+- [Public site](public-site.md)
 - [Coda Gym](coda-gym.md)
 - [Computer use](computer-use.md)
 - [Agent contracts, hoisted](agent-contracts.md)

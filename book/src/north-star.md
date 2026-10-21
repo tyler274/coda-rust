@@ -2,6 +2,20 @@
 
 Shipped Duet tabs are [`DuetRoot`](/crates/duet-app/src/lib.rs). Today, the library, and sharing are `today_root`, `library_root`, and `shared_root` in [`roots.rs`](/crates/duet-app/src/roots.rs). The physician shell is the other side of the Coda Agents boundary, in [`physician-app`](/crates/physician-app/src/lib.rs). SwiftUI remains the shipping iPhone app.
 
+## Doctor page
+
+[ENG-46](https://linear.app/coda-health/issue/ENG-46). The saved page is one approved snapshot: the page generation, the selected evidence, and the rendered PDF. Later edits do not change a publication. One publication is active per patient and expires (seven days unless a shorter bound is set). Republishing replaces it.
+
+HTML, the PDF, and a SMART Health Link recheck authorization on every retrieval. Revocation stops later retrieval. Account deletion and starting fresh invalidate the publication. Withdrawing, deleting, or correcting a source blocks retrieval until the person approves a new snapshot.
+
+Luna may propose wording. Opening or reviewing a proposal does not save it, and a stale proposal does not overwrite newer wording. Editing, preview, and sharing work when the model is off. The PDF is one US Letter page; overflow blocks export, not saving. The cover note stays off the PDF.
+
+The SMART Health Link carries that same PDF, encrypted, as a FHIR DocumentReference attachment. It is not a second reading of the record. The link secret has at least 256 bits of entropy. File locations expire within an hour and never outlive the publication.
+
+`harness` is shared execution mechanics. It does not hold clinical state, accounts, or a second run ledger. This is the workspace rule. It is not a production cutover.
+
+## Canonical product references
+
 - <a href="/submodules/coda-app/docs/north-star%2Emd#duet-product-north-star">Duet product north star</a>
 - <a href="/submodules/coda-app/docs/north-star%2Emd#north-star">North star</a>
 - <a href="/submodules/coda-app/docs/north-star%2Emd#product-structure">Product structure</a>

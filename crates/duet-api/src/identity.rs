@@ -1,200 +1,271 @@
-//! Identity Platform authentication, separate from IAP access admission.
-//!
-//! Production integration must supply fresh Google signing keys and an authoritative
-//! Identity Platform account/revocation lookup. Neither a decoded JWT nor an IAP
-//! header is enough. The `google` adapter supplies bounded trusted transport;
-//! credential issuance remains outside this owner.
-//! Email credential issuance (the existing front-door uses one-time proofs) and
-//! reauthenticated provider linking remain client/provider-owner integrations.
-/// Trusted Google key refresh and service-identity revocation lookup.
-pub mod google;
-
+//! Durable standalone Identity Platform account boundary, independent of practice invitations.
+use crate::{ApiError, database::AccountDatabase};
 use async_trait::async_trait;
-use front_door::{
-    PostgresFrontDoorStore,
-    identity::{Access, AuthorityError, Principal},
-};
-use jsonwebtoken::{Algorithm, DecodingKey, Validation, decode, decode_header};
-use serde::Deserialize;
-use std::collections::BTreeMap;
+use base64::Engine;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use sqlx::Row;
+use std::sync::Arc;
+use uuid::Uuid;
 
-/// Fail-closed authentication failures; never log tokens or provider responses.
-#[derive(Debug)]
-pub enum IdentityError {
-    /// Configuration or signing key freshness is unavailable.
-    Unavailable,
-    /// Invalid signed identity or disallowed provider.
-    Invalid,
-    /// Provider or durable account authority revoked the session.
-    Revoked,
-    /// Durable authority refused or could not establish the account.
-    Account(AuthorityError),
-}
-
-/// Authoritative current identity state, not token claims or email lookup.
-pub struct ProviderState {
-    /// Explicit project whose user was fetched.
-    pub project: String,
-    /// Exact UID whose user was fetched.
+/// Verified provider identity. Never constructed from an email or a front-door UUID.
+#[derive(Clone, Debug)]
+pub struct VerifiedIdentity {
+    /// Identity Platform immutable localId/sub.
     pub subject: String,
-    /// Disabled/deleted accounts must not authenticate.
-    pub disabled: bool,
-    /// Provider cutoff in Unix seconds, compared against original auth_time.
-    pub valid_since: i64,
+    /// Provider authentication time, not token refresh time.
+    pub authenticated_at: DateTime<Utc>,
 }
-
-/// Production must implement this through the configured project's authenticated
-/// Identity Platform Admin API. Errors/unknown state NEVER authorize a request.
+/// Injectable verifier; adapters must validate signature, project, expiry and disabled/revoked users.
 #[async_trait]
-pub trait RevocationCheck: Send + Sync {
-    /// Read current state for this exact project/subject, not matching email.
-    async fn current(&self, project: &str, subject: &str) -> Result<ProviderState, IdentityError>;
+pub trait IdentityVerifier: Send + Sync {
+    /// Verify the bearer using the provider authority.
+    async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError>;
 }
-
-/// Explicitly configured Google verification keys with a bounded freshness lease.
-/// Key refresh must use Google's fixed trusted endpoint, never JWT jku/x5u URLs.
-pub struct Verifier {
+/// Identity Platform's accounts:lookup validates the supplied ID token online.
+/// This keeps provider revocation/disabled state authoritative, without accepting development tokens.
+pub struct IdentityPlatform {
+    client: reqwest::Client,
     project: String,
-    keys: BTreeMap<String, DecodingKey>,
-    keys_valid_until: i64,
+    api_key: String,
 }
-
-#[derive(Clone, Deserialize)]
-struct Claims {
-    sub: String,
-    exp: i64,
-    iat: i64,
-    auth_time: i64,
-    email: String,
-    email_verified: bool,
-    firebase: Firebase,
-}
-#[derive(Clone, Deserialize)]
-struct Firebase {
-    sign_in_provider: String,
-    #[serde(default)]
-    tenant: Option<String>,
-}
-
-impl Verifier {
-    /// Construct only from an explicit Identity Platform project and trusted keys.
-    pub fn new(
-        project: String,
-        keys: BTreeMap<String, DecodingKey>,
-        keys_valid_until: i64,
-    ) -> Result<Self, IdentityError> {
-        if project.is_empty()
-            || project.trim() != project
-            || project.contains('/')
-            || keys.is_empty()
-        {
-            return Err(IdentityError::Unavailable);
+impl IdentityPlatform {
+    /// Configure the existing Firebase project and public Identity Platform API key.
+    pub fn new(project: String, api_key: String) -> Result<Self, ApiError> {
+        if project.is_empty() || api_key.is_empty() {
+            return Err(ApiError::Unavailable("Identity Platform is not configured"));
         }
         Ok(Self {
+            client: reqwest::Client::builder()
+                .timeout(std::time::Duration::from_secs(10))
+                .build()
+                .map_err(|_| ApiError::Unavailable("Identity transport unavailable"))?,
             project,
-            keys,
-            keys_valid_until,
+            api_key,
         })
     }
-
-    /// Signature, issuer, audience, expiry, provider, and live revocation validation.
-    /// The returned principal uses project/UID, never an email-based account lookup.
-    pub async fn verify(
-        &self,
-        token: &str,
-        now: i64,
-        revocation: &dyn RevocationCheck,
-    ) -> Result<Principal, IdentityError> {
-        if now <= 0 || now >= self.keys_valid_until {
-            return Err(IdentityError::Unavailable);
+}
+#[async_trait]
+impl IdentityVerifier for IdentityPlatform {
+    async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError> {
+        let response = self
+            .client
+            .post("https://identitytoolkit.googleapis.com/v1/accounts:lookup")
+            .query(&[("key", &self.api_key)])
+            .json(&serde_json::json!({"idToken":bearer}))
+            .send()
+            .await
+            .map_err(|_| ApiError::Unavailable("Identity verification unavailable"))?;
+        if !response.status().is_success() {
+            return Err(ApiError::Unauthorized);
         }
-        if token.len() > 16384 {
-            return Err(IdentityError::Invalid);
+        let lookup: serde_json::Value =
+            response.json().await.map_err(|_| ApiError::Unauthorized)?;
+        // Parse claims only AFTER the provider has verified this exact bearer.
+        let parts: Vec<_> = bearer.split('.').collect();
+        if parts.len() != 3 {
+            return Err(ApiError::Unauthorized);
         }
-        let header = decode_header(token).map_err(|_| IdentityError::Invalid)?;
-        if header.alg != Algorithm::RS256 {
-            return Err(IdentityError::Invalid);
-        }
-        let key = header
-            .kid
-            .as_ref()
-            .and_then(|kid| self.keys.get(kid))
-            .ok_or(IdentityError::Invalid)?;
-        let mut validation = Validation::new(Algorithm::RS256);
-        validation.set_audience(&[&self.project]);
-        validation.set_issuer(&[format!("https://securetoken.google.com/{}", self.project)]);
-        validation.set_required_spec_claims(&["exp", "iat", "sub", "iss", "aud"]);
-        // Use the same explicit clock for every time check, including fixtures.
-        validation.validate_exp = false;
-        let claims = decode::<Claims>(token, key, &validation)
-            .map_err(|_| IdentityError::Invalid)?
-            .claims;
-        if claims.sub.is_empty()
-            || claims.sub.len() > 128
-            || claims.sub.trim() != claims.sub
-            || claims.exp <= now
-            || claims.iat > now
-            || claims.iat <= 0
-            || claims.auth_time <= 0
-            || claims.auth_time > claims.iat
-            || claims.exp <= claims.iat
-            || claims.firebase.tenant.is_some()
-            || !claims.email_verified
-            || claims.email.trim().is_empty()
-            || !matches!(
-                claims.firebase.sign_in_provider.as_str(),
-                "apple.com" | "google.com" | "password"
-            )
+        let claims: serde_json::Value = serde_json::from_slice(
+            &base64::engine::general_purpose::URL_SAFE_NO_PAD
+                .decode(parts[1])
+                .map_err(|_| ApiError::Unauthorized)?,
+        )
+        .map_err(|_| ApiError::Unauthorized)?;
+        let user = lookup
+            .get("users")
+            .and_then(|x| x.get(0))
+            .ok_or(ApiError::Unauthorized)?;
+        let subject = claims["sub"]
+            .as_str()
+            .filter(|s| !s.is_empty() && s.len() <= 128)
+            .ok_or(ApiError::Unauthorized)?;
+        let auth = claims["auth_time"].as_i64().ok_or(ApiError::Unauthorized)?;
+        let now = Utc::now().timestamp();
+        let valid_since = user["validSince"]
+            .as_str()
+            .and_then(|x| x.parse::<i64>().ok())
+            .unwrap_or(0);
+        if user["localId"].as_str() != Some(subject)
+            || user["disabled"].as_bool() == Some(true)
+            || claims["aud"].as_str() != Some(&self.project)
+            || claims["iss"].as_str()
+                != Some(&format!("https://securetoken.google.com/{}", self.project))
+            || claims["exp"].as_i64().unwrap_or(0) <= now
+            || auth > now + 30
+            || auth < valid_since
         {
-            return Err(IdentityError::Invalid);
+            return Err(ApiError::Unauthorized);
         }
-        // Identity Platform uses 'password' for email/password AND email-link
-        // ID tokens; credential issuance policy belongs to the configured client.
-        let current = revocation.current(&self.project, &claims.sub).await?;
-        if current.project != self.project
-            || current.subject != claims.sub
-            || current.valid_since < 0
-        {
-            return Err(IdentityError::Unavailable);
-        }
-        if current.disabled || claims.auth_time < current.valid_since {
-            return Err(IdentityError::Revoked);
-        }
-        Ok(Principal {
-            project: self.project.clone(),
-            subject: claims.sub,
-            authenticated_at: claims.auth_time,
-            email: claims.email,
+        Ok(VerifiedIdentity {
+            subject: subject.to_owned(),
+            authenticated_at: DateTime::from_timestamp(auth, 0).ok_or(ApiError::Unauthorized)?,
         })
     }
-
-    /// Ordinary authenticated reads never create a durable account.
-    pub async fn resolve(
-        &self,
-        token: &str,
-        now: i64,
-        revocation: &dyn RevocationCheck,
-        store: &PostgresFrontDoorStore,
-    ) -> Result<Access, IdentityError> {
-        let principal = self.verify(token, now, revocation).await?;
-        store
-            .identity_access(&principal)
-            .await
-            .map_err(IdentityError::Account)
+}
+/// An account incarnation and permission/session fence captured for a request.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct AccountContext {
+    /// Existing public.users primary key.
+    pub account_id: Uuid,
+    /// Distinguishes a restored/deleted/recreated account from a current owner.
+    pub incarnation: Uuid,
+    /// Permission revision for accepted work and late-output fencing.
+    pub permission_revision: i64,
+    /// Authentication time checked again by mutation owners.
+    pub authenticated_at: DateTime<Utc>,
+}
+/// Durable identity and account settings owner.
+#[derive(Clone)]
+pub struct IdentityStore {
+    /// Shared account transaction boundary.
+    pub database: AccountDatabase,
+    verifier: Arc<dyn IdentityVerifier>,
+}
+impl IdentityStore {
+    /// Construct with a production or explicit test verifier.
+    pub fn new(database: AccountDatabase, verifier: Arc<dyn IdentityVerifier>) -> Self {
+        Self { database, verifier }
     }
-
-    /// The explicit provisioning endpoint is the only path that creates an owner.
-    pub async fn provision(
+    /// Verify and map a subject; provisioning is explicit and never invitation gated.
+    pub async fn authenticate(
         &self,
-        token: &str,
-        now: i64,
-        revocation: &dyn RevocationCheck,
-        store: &PostgresFrontDoorStore,
-    ) -> Result<Access, IdentityError> {
-        let principal = self.verify(token, now, revocation).await?;
-        store
-            .provision_identity(&principal, now)
-            .await
-            .map_err(IdentityError::Account)
+        bearer: &str,
+        provision: bool,
+    ) -> Result<AccountContext, ApiError> {
+        let identity = self.verifier.verify(bearer).await?;
+        if self.database.subject_deleted(&identity.subject).await? {
+            return Err(ApiError::AbsentAccount);
+        }
+        let account = match self.database.resolve_subject(&identity.subject).await? {
+            Some(id) => id,
+            None if provision => {
+                let id = Uuid::new_v4();
+                let mut tx = self.database.begin(id).await?;
+                // Serialize first provisioning by immutable subject, not email.
+                sqlx::query("select pg_advisory_xact_lock(hashtextextended($1,4602))")
+                    .bind(&identity.subject)
+                    .execute(&mut *tx)
+                    .await?;
+                let existing: Option<Uuid> = sqlx::query_scalar(
+                    "select id from public.duet_identity_directory where auth_user_id=$1",
+                )
+                .bind(&identity.subject)
+                .fetch_optional(&mut *tx)
+                .await?;
+                if let Some(existing) = existing {
+                    tx.rollback().await?;
+                    existing
+                } else {
+                    sqlx::query("insert into public.users(id,auth_user_id,sharing_label) values($1,$2,'Duet')").bind(id).bind(&identity.subject).execute(&mut *tx).await?;
+                    tx.commit().await?;
+                    id
+                }
+            }
+            None => return Err(ApiError::AbsentAccount),
+        };
+        let mut tx = self.database.begin(account).await?;
+        let row=sqlx::query("select duet_incarnation,intelligence_control_revision,sessions_revoked_before from public.users where id=$1").bind(account).fetch_one(&mut *tx).await?;
+        let fence: Option<DateTime<Utc>> = row.get("sessions_revoked_before");
+        if fence.is_some_and(|f| identity.authenticated_at <= f) {
+            return Err(ApiError::SessionRevoked);
+        }
+        Ok(AccountContext {
+            account_id: account,
+            incarnation: row.get("duet_incarnation"),
+            permission_revision: row.get("intelligence_control_revision"),
+            authenticated_at: identity.authenticated_at,
+        })
     }
+    /// Verify provider identity for readback of an already committed privacy action.
+    /// This does not authorize a new mutation; `PrivacyStore` checks the session before creating an event.
+    pub async fn authenticate_receipt_retry(
+        &self,
+        bearer: &str,
+    ) -> Result<AccountContext, ApiError> {
+        let identity = self.verifier.verify(bearer).await?;
+        if let Some((account_id, incarnation)) =
+            self.database.deleted_subject(&identity.subject).await?
+        {
+            return Ok(AccountContext {
+                account_id,
+                incarnation,
+                permission_revision: 0,
+                authenticated_at: identity.authenticated_at,
+            });
+        }
+        let account = self
+            .database
+            .resolve_subject(&identity.subject)
+            .await?
+            .ok_or(ApiError::AbsentAccount)?;
+        let mut tx = self.database.begin(account).await?;
+        let row = sqlx::query(
+            "select duet_incarnation,intelligence_control_revision from public.users where id=$1",
+        )
+        .bind(account)
+        .fetch_one(&mut *tx)
+        .await?;
+        Ok(AccountContext {
+            account_id: account,
+            incarnation: row.get("duet_incarnation"),
+            permission_revision: row.get("intelligence_control_revision"),
+            authenticated_at: identity.authenticated_at,
+        })
+    }
+    /// Explicit operator migration mapping. Caller must prove both identities; never infer from email.
+    pub async fn map_front_door(
+        &self,
+        context: &AccountContext,
+        front_door_account: Uuid,
+    ) -> Result<(), ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, false).await?;
+        sqlx::query("insert into public.duet_front_door_mapping(front_door_account_id,user_id) values($1,$2) on conflict(user_id) do nothing").bind(front_door_account).bind(context.account_id).execute(&mut *tx).await?;
+        let actual: Uuid = sqlx::query_scalar(
+            "select front_door_account_id from public.duet_front_door_mapping where user_id=$1",
+        )
+        .bind(context.account_id)
+        .fetch_one(&mut *tx)
+        .await?;
+        if actual != front_door_account {
+            return Err(ApiError::Conflict("identity mapping already exists"));
+        }
+        tx.commit().await?;
+        Ok(())
+    }
+}
+/// Lock the account before mutations/accepted work; denies stale authentication, permissions or incarnations.
+pub async fn check_current(
+    tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+    context: &AccountContext,
+    require_luna: bool,
+) -> Result<(), ApiError> {
+    let row=sqlx::query("select duet_incarnation,intelligence_control_revision,sessions_revoked_before,terms_version,luna_consent_decision,luna_consent_version,intelligence_enabled from public.users where id=$1 for update").bind(context.account_id).fetch_optional(&mut **tx).await?.ok_or(ApiError::AbsentAccount)?;
+    if row.get::<Uuid, _>("duet_incarnation") != context.incarnation {
+        return Err(ApiError::SessionRevoked);
+    }
+    if row
+        .get::<Option<DateTime<Utc>>, _>("sessions_revoked_before")
+        .is_some_and(|f| context.authenticated_at <= f)
+    {
+        return Err(ApiError::SessionRevoked);
+    }
+    if require_luna
+        && (row.get::<i64, _>("intelligence_control_revision") != context.permission_revision
+            || !row.get::<bool, _>("intelligence_enabled")
+            || row.get::<Option<String>, _>("terms_version").as_deref()
+                != Some(crate::session::CURRENT_TERMS_VERSION)
+            || row
+                .get::<Option<String>, _>("luna_consent_decision")
+                .as_deref()
+                != Some("accepted")
+            || row
+                .get::<Option<String>, _>("luna_consent_version")
+                .as_deref()
+                != Some("2026-09-24"))
+    {
+        return Err(ApiError::Forbidden);
+    }
+    Ok(())
 }

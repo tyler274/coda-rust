@@ -108,7 +108,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         .await
         .expect("migrate over the legacy records");
     assert_eq!(store.link(id).await.unwrap(), patient);
-    let recorded = db
+    let versions = db
         .query_all_raw(sea_orm::Statement::from_string(
             sea_orm::DbBackend::Postgres,
             format!(
@@ -126,18 +126,70 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
             )
         })
         .collect::<Vec<_>>();
-    assert!(recorded.contains(&("mod".to_owned(), 42)));
+    assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
     assert_eq!(
-        recorded.len(),
+        versions.len(),
         6,
         "legacy init plus identity, journal, conversation and admission extensions"
     );
     assert!(
-        recorded
+        versions
             .iter()
             .any(|(name, _)| name == "m20261020_identity")
     );
     store.migrate().await.expect("a second migrate is a no-op");
+
+    // The interim front-door ledger also recorded the init as `mod`. When it
+    // exists beside the shared table, its own receipt is the one adopted, and
+    // neither legacy ledger is renamed or deleted.
+    db.execute_unprepared(&format!(
+        "DROP TABLE {table}; \
+         CREATE TABLE front_door_seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
+         INSERT INTO front_door_seaql_migrations VALUES ('mod', 43);",
+        table = front_door::migration::MIGRATION_TABLE,
+    ))
+    .await
+    .expect("interim records");
+    let store = PostgresFrontDoorStore::connect_with_migrations(&url)
+        .await
+        .expect("migrate over the interim records");
+    assert_eq!(store.link(id).await.unwrap(), patient);
+    let adopted = recorded(&db).await;
+    assert!(adopted.iter().any(|(name, applied_at)| {
+        name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
+    }));
+    assert_eq!(adopted.len(), 6);
+    for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
+        let rows = db
+            .query_all_raw(sea_orm::Statement::from_string(
+                sea_orm::DbBackend::Postgres,
+                format!("SELECT version FROM {legacy}"),
+            ))
+            .await
+            .expect("legacy ledger kept");
+        assert_eq!(rows.len(), 1, "{legacy} keeps its row");
+    }
+    store.migrate().await.expect("a second migrate is a no-op");
+}
+
+async fn recorded(db: &sea_orm::DatabaseConnection) -> Vec<(String, i64)> {
+    db.query_all_raw(sea_orm::Statement::from_string(
+        sea_orm::DbBackend::Postgres,
+        format!(
+            "SELECT version, applied_at FROM {}",
+            front_door::migration::MIGRATION_TABLE
+        ),
+    ))
+    .await
+    .expect("front-door records")
+    .into_iter()
+    .map(|row| {
+        (
+            row.try_get::<String>("", "version").unwrap(),
+            row.try_get::<i64>("", "applied_at").unwrap(),
+        )
+    })
+    .collect()
 }
 
 /// Catalog read only: unlike Migrator status helpers, never installs a ledger.

@@ -7,15 +7,34 @@
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
+pub mod accounting;
 pub mod care;
+pub mod conversation;
+mod conversation_context;
 pub mod conversation_execution;
+pub mod conversation_routes;
+pub mod database;
+pub mod doctor_routes;
 pub mod durable;
+pub mod evidence;
+pub mod evidence_paging;
+pub mod evidence_routes;
+pub mod follow_up;
+pub mod health_context;
 pub mod hosting;
 pub mod identity;
+pub mod journal_gcs;
 pub mod luna;
+pub mod privacy;
 pub mod privacy_archive;
+pub mod producer_database;
+pub mod producer_routes;
+pub mod publication;
 pub mod session;
 pub mod site;
+pub mod skills;
+pub mod today;
+pub mod workspace;
 
 use std::env;
 use std::sync::{Arc, Mutex};
@@ -32,8 +51,6 @@ use front_door::http::{ConsentView, FrontDoorState, SessionView};
 use front_door::{FrontDoorStore, LinkError, Premium, SessionError, SignInError};
 use uuid::Uuid;
 
-pub mod migration;
-
 /// The `REQUIRED_MIGRATION` constant.
 pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
 
@@ -45,6 +62,8 @@ const DELETE_SQL: &str = include_str!("sql/delete_moment.sql");
 pub enum ApiError {
     /// The `Unauthorized` case.
     Unauthorized,
+    /// A stale or mismatched operation cannot replace newer state.
+    Conflict(&'static str),
     /// The bearer was valid, and sign out everywhere ended that session.
     SessionRevoked,
     /// The bearer is valid and this user has no account yet.
@@ -72,6 +91,13 @@ pub enum ApiError {
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
         let (status, detail) = match self {
+            Self::Conflict(message) => (
+                StatusCode::CONFLICT,
+                serde_json::json!({"code":match message {
+                    "selected_context_unavailable" | "selected_follow_up_unavailable" | "selected_insight_unavailable" | "reply_target_unavailable" => message,
+                    _ => "stale_state",
+                },"message":message}),
+            ),
             Self::Unauthorized => (
                 StatusCode::UNAUTHORIZED,
                 serde_json::json!("Invalid bearer token."),
@@ -126,6 +152,12 @@ impl IntoResponse for ApiError {
             ),
         };
         (status, Json(serde_json::json!({ "detail": detail }))).into_response()
+    }
+}
+
+impl From<sqlx::Error> for ApiError {
+    fn from(error: sqlx::Error) -> Self {
+        Self::Storage(error.to_string())
     }
 }
 
@@ -252,6 +284,11 @@ pub fn router_with_care(
     dev_bearer: bool,
     care: Arc<Mutex<care::ApiConnectedCare>>,
 ) -> Router {
+    // Explicit fixture-only surface. Never expose unauthenticated process-global
+    // care state when production authentication is selected.
+    if !dev_bearer {
+        return Router::new();
+    }
     Router::new()
         .route("/api/moments", get(list_moments))
         .route("/api/moments/{moment_id}", delete(remove_moment))

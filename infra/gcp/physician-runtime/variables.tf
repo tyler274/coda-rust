@@ -124,3 +124,36 @@ variable "sign_in_delivery" {
   type        = string
   default     = "proof"
 }
+
+variable "environment" {
+  description = "Deployment environment, used as the Datadog env tag (DD_ENV)."
+  type        = string
+  default     = "staging"
+
+  validation {
+    condition     = contains(["staging", "production"], var.environment)
+    error_message = "environment must be staging or production."
+  }
+}
+
+variable "otel_collector_endpoint" {
+  description = "OTLP/HTTP endpoint of the collector that infra/gcp/observability runs in namespace observability."
+  type        = string
+  default     = "http://otel-collector.observability.svc.cluster.local:4318"
+
+  validation {
+    condition     = can(regex("^http://[a-z0-9.-]+\\.svc\\.cluster\\.local:[0-9]+$", var.otel_collector_endpoint))
+    error_message = "otel_collector_endpoint must be an in-cluster service address, never a public collector."
+  }
+}
+
+variable "telemetry_content" {
+  description = "CODA_TELEMETRY_CONTENT for the site. none keeps prompt and completion text out of every trace."
+  type        = string
+  default     = "none"
+
+  validation {
+    condition     = contains(["none", "full"], var.telemetry_content)
+    error_message = "telemetry_content must be none or full."
+  }
+}

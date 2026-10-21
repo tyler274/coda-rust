@@ -3,8 +3,8 @@
 //! Local runs are unrestricted. Hosted runs (Cloud Run sets `K_SERVICE`, or
 //! `CODA_HOSTED` is set) start only under the explicit staging-preview profile:
 //! `CODA_ENVIRONMENT=stg`, `CODA_HOSTED_PROFILE=staging-preview`, `DATABASE_URL`
-//! and `DUET_IDENTITY_PROJECT_ID` (the Identity Platform project whose tokens are
-//! verified). Production and every other combination refuse to start. The model
+//! and `IDENTITY_PLATFORM_PROJECT_ID` (the Identity Platform project whose tokens
+//! are verified). Production and every other combination refuse to start. The model
 //! execution switch stays off and no health-data attestation is implied.
 
 /// The only hosted profile this binary will start under.
@@ -18,7 +18,7 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
     let environment = get("CODA_ENVIRONMENT").unwrap_or_default();
     let profile = get("CODA_HOSTED_PROFILE").unwrap_or_default();
     let database = get("DATABASE_URL").unwrap_or_default();
-    let project = get("DUET_IDENTITY_PROJECT_ID").unwrap_or_default();
+    let project = get("IDENTITY_PLATFORM_PROJECT_ID").unwrap_or_default();
     if environment == "stg"
         && profile == STAGING_PROFILE
         && !database.trim().is_empty()
@@ -27,20 +27,26 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
         return Ok(());
     }
     Err(format!(
-        "Duet hosted activation is not qualified: hosted runs require CODA_ENVIRONMENT=stg, CODA_HOSTED_PROFILE={STAGING_PROFILE}, DATABASE_URL and DUET_IDENTITY_PROJECT_ID; production and every other profile refuse to start"
+        "Duet hosted activation is not qualified: hosted runs require CODA_ENVIRONMENT=stg, CODA_HOSTED_PROFILE={STAGING_PROFILE}, DATABASE_URL and IDENTITY_PLATFORM_PROJECT_ID; production and every other profile refuse to start"
     ))
 }
 
-/// Readiness for a hosted revision: the moments schema and the front-door schema
-/// both answer. A failed check is 503, never a crash.
+/// Readiness for a hosted revision. The account schema must already have passed
+/// `AccountDatabase::connect`. When a front door is configured, its schema must
+/// answer too. A failed check is 503, never a crash.
 pub async fn ready(
-    moments: &sqlx::PgPool,
-    front_door: &front_door::PostgresFrontDoorStore,
+    accounts_ready: bool,
+    front_door: Option<&front_door::PostgresFrontDoorStore>,
 ) -> axum::http::StatusCode {
-    match crate::schema_is_ready(moments).await {
-        Ok(true) if front_door.check_schema().await.is_ok() => axum::http::StatusCode::OK,
-        _ => axum::http::StatusCode::SERVICE_UNAVAILABLE,
+    if !accounts_ready {
+        return axum::http::StatusCode::SERVICE_UNAVAILABLE;
     }
+    if let Some(front_door) = front_door
+        && front_door.check_schema().await.is_err()
+    {
+        return axum::http::StatusCode::SERVICE_UNAVAILABLE;
+    }
+    axum::http::StatusCode::OK
 }
 
 /// Process liveness only (the `GET /health` of the Duet wire contract). It says
@@ -76,7 +82,7 @@ mod tests {
             ("CODA_ENVIRONMENT", "stg"),
             ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
             ("DATABASE_URL", "postgres://db/duet"),
-            ("DUET_IDENTITY_PROJECT_ID", "coda-rust-stg"),
+            ("IDENTITY_PLATFORM_PROJECT_ID", "coda-rust-stg"),
         ];
         assert!(hosted(&complete).is_ok());
         for index in 0..complete.len() {
@@ -103,7 +109,7 @@ mod tests {
                     ("CODA_ENVIRONMENT", environment),
                     ("CODA_HOSTED_PROFILE", profile),
                     ("DATABASE_URL", "postgres://db/duet"),
-                    ("DUET_IDENTITY_PROJECT_ID", "coda-rust-stg"),
+                    ("IDENTITY_PLATFORM_PROJECT_ID", "coda-rust-stg"),
                 ])
                 .is_err(),
                 "{environment}/{profile} must refuse"

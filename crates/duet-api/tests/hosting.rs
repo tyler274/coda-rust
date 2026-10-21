@@ -19,7 +19,7 @@ fn production_refuses_to_start_even_with_the_staging_profile() {
         .env("CODA_ENVIRONMENT", "prd")
         .env("CODA_HOSTED_PROFILE", "staging-preview")
         .env("DATABASE_URL", "postgres://127.0.0.1/unused")
-        .env("DUET_IDENTITY_PROJECT_ID", "coda-rust-stg")
+        .env("IDENTITY_PLATFORM_PROJECT_ID", "coda-rust-stg")
         .output()
         .unwrap();
     assert!(!result.status.success());
@@ -33,5 +33,8 @@ fn product_migration_requires_explicit_database_authority() {
         .output()
         .unwrap();
     assert!(!result.status.success());
-    assert!(String::from_utf8_lossy(&result.stderr).contains("DATABASE_URL is required"));
+    assert!(
+        String::from_utf8_lossy(&result.stderr)
+            .contains("DUET_MIGRATION_DATABASE_URL and DUET_RUNTIME_ROLE are required")
+    );
 }

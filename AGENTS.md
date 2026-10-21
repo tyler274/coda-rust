@@ -9,6 +9,7 @@ copy them.
 | Work | Contract |
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
+| Public marketing site, its Rust server, and prepared deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; no DNS or Vercel cutover |
 | Physician product, clinical runtime, and the clinical skill catalog | [Hoisted Coda Agents contract](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
 | Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
@@ -26,26 +27,40 @@ reference-repository ownership does not override that boundary.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, servers, or
-durable application state. Shared crates are `ui`, `http`, and `harness`;
-`harness` is limited to product-neutral execution mechanics and neutral supporting
-libraries. Product crates supply clinical context, admitted tools,
-authority/currentness checks, persistence, effects, commit and recovery policy.
-`harness` may not depend on either product's domain or server crates.
+Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, and `harness`. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
 
-This boundary was explicitly user-approved on 2026-10-20 in
-[ENG-159](https://linear.app/coda-health/issue/ENG-159#comment-0bb61a83-8e56-40d9-aa2c-f8b9960393eb).
-The dependency direction is `physician-sample -> local-product -> harness <- duet-api`:
-one engine, separate product owners, no shared runtime service or second engine.
-Neutral execution events go to each product's existing durable owner; required
-acknowledgments precede dependent execution. Engine completion is a candidate,
-not permission to publish or commit. Distinct product semantics and the approved
-P1/D1 restart/idempotency proofs remain required; approval is not qualification,
-cloud-apply authority, or authorization to redesign Duet product sign-in.
+Duet schema changes go in `crates/duet-api/migrations` and run through `duet-migrate` (`DUET_MIGRATION_DATABASE_URL`, `DUET_RUNTIME_ROLE`), not on API startup. Do not replay the coda-app ledger. Additive wire types go in `crates/duet-api/openapi/additions.json`; regenerate with `scripts/generate-duet-wire.sh` and do not edit generated DTOs.
 
 The physician site is a client of the physician projections. `crates/physician-sample` serves the page and a recorded projection of the synthetic practice on one origin. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat runs through the Codex CLI subscription (`codex login`) and does not read an API key. `record` writes a cassette and `replay` answers from that cassette, also without a key. `api` answers physician chat through `crates/local-product` and OpenAI Responses; the key comes from the environment (`CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`, loaded by Doppler in the nix shell) and is not stored in the page. The page mounts into `#main`. On the web build, an unset `PHYSICIAN_API_URL` uses that origin; `?api=` still points the same build at the Node server. A physician-site change is not done unless `cargo test -p physician-sample --test site` passed. That Chromium test fails when the document is blank.
 
 The live Node projection server moves into `physician-sample` route family by route family. Duet stays in `duet-api` and `duet-app`. Gym and computer use get their own crates after those, and neither imports the other's clinical types.
+
+## Persistence: ORM first
+
+- New or changed ordinary CRUD uses the owning product's ORM entities and typed
+  query APIs, not hand-authored SQL. `physician-auth` and `front-door` already use
+  SeaORM 2 / SeaQuery; extend their existing owners. Use migration builders for
+  schema changes where supported, preserving recorded migration history.
+- Raw SQL is an exception for database-specific functionality unsupported by those
+  APIs or a demonstrated performance need. Document the reason at the call site
+  and test the behavior against Postgres. Bind all runtime values; never
+  interpolate user values. Keep dynamic identifiers code-owned and allowlisted.
+- `duet-api`'s moments/schema adapter still uses `sqlx`, a database driver/query
+  library, not an ORM. Its three `src/sql/*.sql` files are migration debt, not the
+  pattern for new CRUD. Adopt a Duet-owned ORM/entity layer in a bounded change;
+  do not import physician entities, combine product stores, or mass-convert
+  persistence merely to comply with this preference.
+- The first Duet slice is `PgMoments`: preserve user-scoped list/delete, descending
+  `(occurred_at, id)` order, unknown-kind errors, affected-row semantics, and the
+  privacy-journal deletion gate. Prove these on disposable Postgres, including
+  cross-account refusal. Coordinate schema readiness/ownership with
+  [ENG-111](https://linear.app/coda-health/issue/ENG-111) under
+  [ENG-161](https://linear.app/coda-health/issue/ENG-161); do not silently replace
+  the externally managed `schema_migrations` contract or rewrite its history.
+- SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
+  coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
+  removes a query, update the formatter's required-file inventory and its tests
+  together; never keep dummy SQL or report an empty scan as meaningful coverage.
 
 ## Dev shell
 
@@ -55,7 +70,7 @@ Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in on
 
 Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `scripts/gcp/install_doppler.sh` installs the pinned, checksum-verified CLI for images and runners.
 
-`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots.
+`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots. The exception is `infra/gcp/public-site`. This workspace owns its staging state (GCS prefix `public-site/staging`) and may init, plan and apply it for staging only, from a reviewed saved plan. Production is never planned or applied from here.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

@@ -1,0 +1,6 @@
+# Preserve the reference SVG's CRLF bytes while checking whitespace correctly.
+crates/public-site/assets/homepage/assets/yale-new-haven-health.svg whitespace=cr-at-eol
+# Preserve exact reviewed original snapshot bytes (including trailing blank lines).
+crates/public-site/tests/fixtures/original/** -text
+crates/public-site/tests/fixtures/original/app/_homepage/main.html whitespace=-blank-at-eof
+crates/public-site/tests/fixtures/original/public/homepage/site.js whitespace=-blank-at-eof

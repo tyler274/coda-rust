@@ -418,7 +418,7 @@ pub fn doctor_page(collection: &DoctorCollection) -> DoctorPage {
         if let Some(cover) = supplied(&page.cover_note) {
             entries.push(ConversationEntry {
                 title: cover,
-                detail: None,
+                detail: Some("Cover note (not included in PDF)".into()),
             });
         }
     }
@@ -794,6 +794,7 @@ fn library_record(entry: &duet_wire::models::EvidenceLibraryEntry) -> LibraryRec
     }
 }
 
+#[cfg(test)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DoctorPreview {
     Fits(Vec<String>),
@@ -802,6 +803,7 @@ pub enum DoctorPreview {
 
 /// Places the saved For my doctor page with the letter layout.
 /// A collection that has no page content yet returns nothing.
+#[cfg(test)]
 pub fn doctor_preview(collection: &DoctorCollection) -> Option<DoctorPreview> {
     let content = collection.page.as_ref()?;
     let page = content.as_ref();
@@ -985,32 +987,17 @@ pub fn api_bearer() -> String {
 #[cfg(target_arch = "wasm32")]
 const SESSION_KEY: &str = "coda-duet-session";
 
-/// Reads a joined front-door session saved by this browser origin.
+/// Remove the old insecure browser credential. Native refresh is owned by AccountRoot.
 pub fn recalled_session() -> Option<String> {
     #[cfg(target_arch = "wasm32")]
-    {
-        return web_sys::window()?
-            .local_storage()
-            .ok()??
-            .get_item(SESSION_KEY)
-            .ok()?
-            .filter(|value| !value.trim().is_empty());
+    if let Some(storage) = web_sys::window().and_then(|w| w.local_storage().ok().flatten()) {
+        let _ = storage.remove_item(SESSION_KEY);
     }
-    #[cfg(not(target_arch = "wasm32"))]
     None
 }
 
-/// Saves a joined front-door session so mode switches and reloads keep it.
-pub fn remember_session(session: &str) {
-    #[cfg(target_arch = "wasm32")]
-    if !session.trim().is_empty()
-        && let Some(storage) = web_sys::window().and_then(|w| w.local_storage().ok().flatten())
-    {
-        let _ = storage.set_item(SESSION_KEY, session);
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    let _ = session;
-}
+/// Legacy invitation credentials remain memory-only; never write browser storage.
+pub fn remember_session(_session: &str) {}
 
 /// The join screen's copy: what the practice sent and where the token goes.
 pub const JOIN_HEADING: &str = "Join your practice";
@@ -1089,6 +1076,7 @@ pub fn sharing_root(consent: Result<crate::ConsentState, crate::FrontDoorError>)
 
 /// Whether the app shows the join screen: joining happens once, at the
 /// front door, before any other journey works.
+#[cfg(test)]
 pub fn shows_join(result: Result<crate::ConsentState, crate::FrontDoorError>) -> bool {
     matches!(sharing_root(result), SharingRoot::NotJoined)
 }
@@ -1299,10 +1287,26 @@ mod tests {
             Some(DoctorPreview::Fits(lines)) => {
                 assert!(lines.iter().any(|line| line.contains("Ada Lovelace")));
                 assert!(lines.iter().any(|line| line.contains("1. What changed?")));
-                assert!(lines.iter().any(|line| line.contains("Please review.")));
+                assert!(!lines.iter().any(|line| line.contains("Please review.")));
             }
             other => panic!("expected a fitted page, got {other:?}"),
         }
+        // The opened saved-page summary is rendered outside DoctorLetter's printable preview.
+        let DoctorPage::Lines(entries) = doctor_page(&collection) else {
+            panic!("expected the saved-page summary");
+        };
+        assert!(entries.iter().any(|entry| entry.title == "Please review."
+            && entry.detail.as_deref() == Some("Cover note (not included in PDF)")));
+        // Exercise the actual current preview path too, not just the legacy layout adapter.
+        let preview = crate::saved_preview(&collection).unwrap();
+        assert!(preview.layout.text().contains("Ada Lovelace"));
+        assert!(preview.layout.text().contains("What changed?"));
+        assert!(!preview.layout.text().contains("Please review."));
+        let mut without_cover = collection.clone();
+        without_cover.page.as_mut().unwrap().cover_note = None;
+        let plain = crate::saved_preview(&without_cover).unwrap();
+        assert_eq!(preview.layout.preview_svg(), plain.layout.preview_svg());
+        assert_eq!(preview.layout.pdf().unwrap(), plain.layout.pdf().unwrap());
         let overflow = json::<DoctorCollection>(
             r#"{"items":[],"note_generation":1,"page":{"name":"Ada","date_of_birth":"1815-12-10","questions":["One","Two","Three","Four","Five","Six"]}}"#,
         );

@@ -164,6 +164,20 @@ pub trait AuthStore: Send + Sync {
     ) -> Result<(PhysicianIdentity, String), SignInError>;
     /// Resolves a bearer token to its physician's identity.
     async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError>;
+    /// Executes synchronous publication while holding the actual session,
+    /// account, panel and patient authority fence. Implementations must exclude
+    /// direct mutations too, not only HTTP handlers. The callback must not call
+    /// this store recursively. Default denies unsupported store adapters.
+    async fn publish_authorized(
+        &self,
+        _token: &str,
+        _identity: &PhysicianIdentity,
+        _workspace: &str,
+        _now: u64,
+        _publish: &mut (dyn FnMut() -> Result<(), String> + Send),
+    ) -> Result<(), String> {
+        Err("authority store does not support fenced publication".into())
+    }
     /// Ends one session so its token stops resolving.
     async fn end_session(&self, token: &str);
     /// Reads one account by email.
@@ -500,6 +514,43 @@ impl AuthStore for MemoryAuthStore {
         Ok(account.identity.clone())
     }
 
+    async fn publish_authorized(
+        &self,
+        token: &str,
+        identity: &PhysicianIdentity,
+        workspace: &str,
+        now: u64,
+        publish: &mut (dyn FnMut() -> Result<(), String> + Send),
+    ) -> Result<(), String> {
+        let state = self.state.lock().expect("auth state");
+        let session = state
+            .sessions
+            .get(&token_hash(token))
+            .ok_or("session ended")?;
+        let account = state
+            .accounts
+            .values()
+            .find(|a| a.identity == *identity)
+            .ok_or("account unavailable")?;
+        if session.identity != *identity
+            || session.expires_at <= now
+            || !account.active
+            || session.created_at < account.sessions_ended_before
+            || state
+                .patients
+                .get(workspace)
+                .is_some_and(|p| p != &identity.practice_id)
+            || state.memberships.get(&(
+                identity.practice_id.clone(),
+                identity.physician_id.clone(),
+                workspace.into(),
+            )) != Some(&Membership::Allowed)
+        {
+            return Err("physician authority changed".into());
+        }
+        // Every direct memory mutation takes this same mutex.
+        publish()
+    }
     async fn end_session(&self, token: &str) {
         self.state
             .lock()

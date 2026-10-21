@@ -1,0 +1,411 @@
+//! One account lifecycle above every private route. Keyed remount drops old UI/tasks.
+use dioxus::prelude::*;
+use duet_client::{
+    DuetClient,
+    identity::{IdentityPlatformClient, ProviderCredential},
+    retention::{RetainedIdentity, RetentionOwner},
+};
+use std::sync::Arc;
+
+/// Account-scoped owner available to editor controls and delayed-response checks.
+#[derive(Clone)]
+pub struct PatientSession {
+    /// Protected draft owner and request fences.
+    pub retention: RetentionOwner,
+    /// Captured before dispatch; check before applying responses.
+    pub fence: duet_client::session::SessionFence,
+    /// Current ID token; never persisted. New requests observe rotations; no mutation is replayed.
+    pub access_token: Signal<String>,
+}
+#[derive(Clone)]
+struct Active {
+    bearer: String,
+    fence: duet_client::session::SessionFence,
+    expires_at: Option<std::time::Instant>,
+}
+fn provider() -> IdentityPlatformClient {
+    IdentityPlatformClient::new(
+        option_env!("DUET_IDENTITY_PLATFORM_API_KEY")
+            .unwrap_or_default()
+            .into(),
+        option_env!("DUET_IOS_BUNDLE_ID").map(str::to_owned),
+    )
+}
+async fn verify(
+    base: &str,
+    credential: ProviderCredential,
+    owner: &RetentionOwner,
+    current: impl Fn() -> bool,
+) -> Result<Active, String> {
+    let client = DuetClient::new(base, &credential.id_token, "0", "0.1.0")?;
+    client
+        .ensure_account()
+        .await
+        .map_err(|_| "Duet could not verify your account. Your saved draft is unchanged.")?;
+    let context = client
+        .account_context()
+        .await
+        .map_err(|_| "Duet could not read your account context.")?;
+    if !current() {
+        return Err("Account changed; sign-in ignored".into());
+    }
+    let fence = owner.activate(RetainedIdentity {
+        subject: credential.subject,
+        owner: context.owner(),
+        refresh_token: credential.refresh_token,
+    })?;
+    Ok(Active {
+        bearer: credential.id_token,
+        fence,
+        expires_at: Some(
+            std::time::Instant::now() + std::time::Duration::from_secs(credential.expires_in),
+        ),
+    })
+}
+
+/// Standalone verified Identity Platform entry. Practice linking is optional, never a login gate.
+#[component]
+pub fn DuetRoot(base_url: String, bearer: String) -> Element {
+    let retention = use_hook(|| {
+        #[cfg(target_arch = "wasm32")]
+        {
+            RetentionOwner::new(Arc::new(
+                duet_client::retention::VolatileSessionStore::default(),
+            ))
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            RetentionOwner::new(Arc::new(duet_client::retention::NativeProtectedStore))
+        }
+    });
+    let drop_session = retention.session();
+    use_drop(move || {
+        drop_session.switch(None);
+    });
+    let mut offline_draft = use_signal(|| None::<duet_client::retention::DoctorDraft>);
+    let mut active = use_signal(|| None::<Active>);
+    let mut message = use_signal(String::new);
+    let mut busy = use_signal(|| true);
+    let mut retry = use_signal(|| 0u64);
+    let mut signed_out = use_signal(|| false);
+    let mut cleanup_pending = use_signal(|| false);
+    let mut lifecycle = use_signal(|| 0u64);
+    let restore_owner = retention.clone();
+    let restore_url = base_url.clone();
+    let supplied = bearer;
+    use_effect(move || {
+        let _ = retry();
+        if *signed_out.peek() {
+            busy.set(false);
+            return;
+        }
+        let epoch = *lifecycle.peek();
+        let owner = restore_owner.clone();
+        let base = restore_url.clone();
+        let supplied = supplied.clone();
+        busy.set(true);
+        spawn(async move {
+            // Remove historical browser storage; never use its contents as credentials.
+            let _ = crate::roots::recalled_session();
+            if owner.cleanup_required().unwrap_or(true) {
+                cleanup_pending.set(true);
+                signed_out.set(true);
+                message.set("Complete secure sign-out cleanup before opening an account.".into());
+                busy.set(false);
+                return;
+            }
+            let result = if !supplied.is_empty() {
+                match DuetClient::new(&base, supplied.clone(), "0", "0.1.0") {
+                    Ok(api) => match api.ensure_account().await {
+                        Ok(_) => match api.account_context().await {
+                            Ok(context) if lifecycle() == epoch => Ok(Active {
+                                bearer: supplied,
+                                fence: owner.activate_ephemeral(context.owner()),
+                                expires_at: None,
+                            }),
+                            _ => Err("Could not verify account context. Try again.".into()),
+                        },
+                        Err(_) => Err("Sign in to Duet to continue.".into()),
+                    },
+                    Err(_) => Err("Duet is unavailable.".into()),
+                }
+            } else {
+                match owner.retained_identity() {
+                    Ok(Some(identity)) => match provider().refresh(&identity.subject, &identity.refresh_token).await {
+                        Ok(credential) if lifecycle() == epoch => verify(&base, credential, &owner, || lifecycle() == epoch).await,
+                        _ => Err("Could not restore sign-in. Your protected draft has not been discarded. Unlock your device or retry when online.".into()),
+                    },
+                    Ok(None) => Err(String::new()),
+                    Err(error) => Err(error),
+                }
+            };
+            if lifecycle() != epoch {
+                return;
+            }
+            match result {
+                Ok(value) => {
+                    active.set(Some(value));
+                    message.set(String::new());
+                }
+                Err(error) => message.set(error),
+            }
+            busy.set(false);
+        });
+    });
+    // Independent expiry watchdog: a hung provider request must not keep expired routes open.
+    let expiry_owner = retention.clone();
+    use_future(move || {
+        let owner = expiry_owner.clone();
+        async move {
+            loop {
+                futures_timer::Delay::new(std::time::Duration::from_secs(5)).await;
+                let snapshot = active.peek().clone();
+                if let Some(current) = snapshot
+                    && current
+                        .expires_at
+                        .is_some_and(|deadline| std::time::Instant::now() >= deadline)
+                {
+                    owner.session().switch(None);
+                    active.set(None);
+                    message.set("Sign-in expired. Your draft remains retained; no pending operation was replayed.".into());
+                }
+            }
+        }
+    });
+    let refresh_owner = retention.clone();
+    let refresh_url = base_url.clone();
+    use_future(move || {
+        let owner = refresh_owner.clone();
+        let base = refresh_url.clone();
+        async move {
+            loop {
+                futures_timer::Delay::new(std::time::Duration::from_secs(30)).await;
+                let Some(current) = active.peek().clone() else {
+                    continue;
+                };
+                let Some(expiry) = current.expires_at else {
+                    continue;
+                };
+                if expiry
+                    .saturating_duration_since(std::time::Instant::now())
+                    .as_secs()
+                    > 120
+                {
+                    continue;
+                }
+                let identity = match owner.retained_identity() {
+                    Ok(Some(i)) => i,
+                    _ => {
+                        if std::time::Instant::now() >= expiry {
+                            owner.session().switch(None);
+                            active.set(None);
+                            message.set("Sign-in expired while secure storage was unavailable. Your draft remains protected.".into());
+                        }
+                        continue;
+                    }
+                };
+                let result = provider()
+                    .refresh(&identity.subject, &identity.refresh_token)
+                    .await;
+                if !owner.session().is_current(&current.fence) {
+                    continue;
+                }
+                match result {
+                    Ok(token) => {
+                        let context = match DuetClient::new(&base, &token.id_token, "0", "0.1.0") {
+                            Ok(api) => api.account_context().await,
+                            Err(_) => Err(duet_client::identity::IdentityError::Unavailable),
+                        };
+                        if !owner.session().is_current(&current.fence) {
+                            continue;
+                        }
+                        if let Ok(context) = context
+                            && context.owner() == current.fence.owner()
+                            && owner
+                                .rotate_credential(
+                                    &current.fence,
+                                    &token.subject,
+                                    token.refresh_token,
+                                )
+                                .is_ok()
+                        {
+                            active.set(Some(Active {
+                                bearer: token.id_token,
+                                fence: current.fence,
+                                expires_at: Some(
+                                    std::time::Instant::now()
+                                        + std::time::Duration::from_secs(token.expires_in),
+                                ),
+                            }));
+                            continue;
+                        }
+                    }
+                    Err(duet_client::identity::IdentityError::Expired) => {
+                        owner.session().switch(None);
+                        active.set(None);
+                        message.set("Your sign-in expired or was revoked. Sign in again; your draft is retained. No pending save was replayed.".into());
+                        continue;
+                    }
+                    Err(_) => (),
+                }
+                if std::time::Instant::now() >= expiry {
+                    owner.session().switch(None);
+                    active.set(None);
+                    message.set("Sign-in could not be refreshed. Reconnect or sign in again; uncertain saves were not replayed.".into());
+                }
+            }
+        }
+    });
+    let logout_owner = retention.clone();
+    let sign_out = move |_| {
+        lifecycle.set(lifecycle() + 1);
+        signed_out.set(true);
+        active.set(None); // Unmount every private component before disk cleanup.
+        offline_draft.set(None);
+        busy.set(false);
+        #[cfg(target_arch = "wasm32")]
+        let cleanup = logout_owner.sign_out();
+        #[cfg(not(target_arch = "wasm32"))]
+        let cleanup = logout_owner.sign_out();
+        match cleanup {
+            Ok(()) => {
+                cleanup_pending.set(false);
+                message.set(String::new());
+            }
+            Err(error) => {
+                cleanup_pending.set(true);
+                message.set(format!(
+                    "Signed out on this screen. Secure cleanup needs retry: {error}"
+                ));
+            }
+        }
+    };
+    let login_owner = retention.clone();
+    let login_url = base_url.clone();
+    let login = move |_| {
+        if busy() || cleanup_pending() {
+            return;
+        }
+        busy.set(true);
+        lifecycle.set(lifecycle() + 1);
+        let epoch = lifecycle();
+        let owner = login_owner.clone();
+        let base = login_url.clone();
+        spawn(async move {
+            #[cfg(target_arch = "wasm32")]
+            let result = async {
+                let apple = crate::browser_identity::sign_in().await?;
+                let credential = provider()
+                    .apple(
+                        apple,
+                        option_env!("DUET_APPLE_REDIRECT_URI").unwrap_or_default(),
+                    )
+                    .await
+                    .map_err(|_| "Apple sign-in could not be verified".to_owned())?;
+                verify(&base, credential, &owner, || lifecycle() == epoch).await
+            }
+            .await;
+            #[cfg(not(target_arch = "wasm32"))]
+            let result = async {
+                duet_client::identity::start_native_sign_in().map_err(|_| {
+                    "Native Sign in with Apple is not available in this host.".to_owned()
+                })?;
+                for _ in 0..240 {
+                    futures_timer::Delay::new(std::time::Duration::from_millis(500)).await;
+                    if lifecycle() != epoch {
+                        return Err("Sign-in cancelled.".into());
+                    }
+                    match duet_client::identity::poll_native_sign_in() {
+                        Ok(Some(apple)) => {
+                            let credential = provider()
+                                .apple(
+                                    apple,
+                                    option_env!("DUET_APPLE_REDIRECT_URI").unwrap_or_default(),
+                                )
+                                .await
+                                .map_err(|_| "Apple sign-in could not be verified.".to_owned())?;
+                            if lifecycle() != epoch {
+                                return Err("Sign-in cancelled.".into());
+                            }
+                            return verify(&base, credential, &owner, || lifecycle() == epoch)
+                                .await;
+                        }
+                        Ok(None) => (),
+                        Err(_) => return Err("Sign-in cancelled or unavailable.".into()),
+                    }
+                }
+                Err("Sign-in timed out. Try again.".into())
+            }
+            .await;
+            if lifecycle() != epoch {
+                return;
+            }
+            match result {
+                Ok(value) => {
+                    active.set(Some(value));
+                    message.set(String::new());
+                }
+                Err(error) => message.set(error),
+            }
+            busy.set(false);
+        });
+    };
+    let offline_owner = retention.clone();
+    rsx! {
+        style { "{ui::STYLESHEET}" }
+        if let Some(current) = active() {
+            AccountRoutes { key: "{current.fence.generation()}", base_url, bearer: current.bearer, retention: retention.clone(), fence: current.fence }
+            if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }
+            button { onclick: sign_out, "Sign out" }
+        } else {
+            main { class: "duet",
+                h1 { "Duet" }
+                p { "Sign in to your Duet account. A practice invitation is not required." }
+                if !message().is_empty() { p { role: "alert", "{message}" } }
+                if busy() { p { "Checking sign-in…" } }
+                button { disabled: busy() || cleanup_pending(), onclick: login, "Sign in with Apple" }
+                button { disabled: busy() || cleanup_pending(), onclick: move |_| { signed_out.set(false); retry.set(retry() + 1); }, "Retry saved sign-in" }
+                if cleanup_pending() { button { onclick: sign_out, "Retry secure cleanup" } }
+                button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
+                    match offline_owner.recover_offline() {
+                        Ok(duet_client::retention::DraftRecovery::Draft(draft)) => offline_draft.set(Some(*draft)),
+                        Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
+                        Ok(_) => message.set("No retained draft on this device.".into()),
+                        Err(error) => message.set(error),
+                    }
+                }, "View protected draft offline" }
+                if let Some(draft) = offline_draft() {
+                    section {
+                        h2 { "Unsaved doctor draft — offline" }
+                        p { "This is not the approved page. Reconnect and verify your account before saving or sharing." }
+                        p { "{crate::field_text(&draft.save.page.name)}" }
+                        p { "{crate::field_text(&draft.save.note)}" }
+                        for question in draft.save.page.questions.iter().flatten() { p { "{question}" } }
+                        for item in draft.base.items.iter().flatten().filter(|item| draft.save.item_ids.contains(&item.id)) { p { "{item.title}" } }
+                        button { onclick: move |_| offline_draft.set(None), "Close protected draft" }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn AccountRoutes(
+    base_url: String,
+    bearer: String,
+    retention: RetentionOwner,
+    fence: duet_client::session::SessionFence,
+) -> Element {
+    let mut access_token = use_signal(|| bearer.clone());
+    let fresh = bearer.clone();
+    use_effect(use_reactive(&fresh, move |value| {
+        access_token.set(value);
+    }));
+    use_context_provider(|| PatientSession {
+        retention,
+        fence,
+        access_token,
+    });
+    rsx! { crate::PrivateRoot { base_url, bearer } }
+}

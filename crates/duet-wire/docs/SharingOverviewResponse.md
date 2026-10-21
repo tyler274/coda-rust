@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**account_label** | **String** |  | 
+**account_label** | **String** |  |
 **incoming** | Option<[**Vec<models::SharingGrantSummary>**](SharingGrantSummary.md)> |  | [optional]
 **invitations** | Option<[**Vec<models::SharingInvitationSummary>**](SharingInvitationSummary.md)> |  | [optional]
 **outgoing** | Option<[**Vec<models::SharingGrantSummary>**](SharingGrantSummary.md)> |  | [optional]

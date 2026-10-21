@@ -1,6 +1,35 @@
 # GCP deployment
 
-Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, and <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>. This workspace does not apply them.
+Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, and <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>. This workspace does not apply them. The one exception is public-site staging, described below.
+
+## Public marketing site preparation
+
+The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
+stateless Rust marketing server on Cloud Run. Staging runs in the existing
+`coda-health-staging` project with direct Cloud Run IAP and no load balancer or
+CDN. Access is a service-scoped `roles/iap.httpsResourceAccessor` binding for
+`group:gcp-engineering@codahealth.ai`, and the IAP service agent is the only
+invoker. The origin also verifies the signed IAP assertion. Production stays behind
+a global external HTTPS load balancer with Cloud CDN. There is no Cloudflare
+dependency. Unlike the physician roots, this root owns its **staging** state
+(GCS prefix `public-site/staging` in the existing state bucket) and may be planned
+and applied for staging from this workspace. It is never planned or applied for
+production here. The image is published and a staging plan has been reviewed, but
+the apply is blocked on project IAM (see
+[deployment status](public-site.md#staging-deployment-status-2026-10-20)). The
+root does not share physician/Duet databases or authorize a product cutover. See
+[Public site](public-site.md) for the architecture, IAP and cache controls, runtime
+configuration, image build/smoke procedure, verification evidence and the
+[staging state and deployment](public-site.md#staging-state-and-deployment)
+procedure.
+
+[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged the implementation;
+[ENG-79](https://linear.app/coda-health/issue/ENG-79) still owns hosting migration
+completion. Dev's staging review and production approval, hostname/IAP/analytics
+decisions, verified cutover/recovery procedures and the agreed recovery window
+precede removal of website-only Vercel resources and credentials. Neither this
+chapter nor passing local/CI validation authorizes deployment, DNS changes or
+Vercel retirement.
 
 ## Rust container images
 

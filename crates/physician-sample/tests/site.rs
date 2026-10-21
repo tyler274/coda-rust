@@ -13,6 +13,8 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 
+mod common;
+
 static TEST_MUTEX: OnceLock<Mutex<()>> = OnceLock::new();
 static BUILT_SITE: OnceLock<PathBuf> = OnceLock::new();
 
@@ -24,19 +26,20 @@ fn test_lock() -> &'static Mutex<()> {
 async fn the_recorded_practice_is_visible() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
-    unsafe {
-        env::set_var("PHYSICIAN_SITE_DIR", &site);
-        env::remove_var("PHYSICIAN_AUTH");
-        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-        env::remove_var("PHYSICIAN_UPSTREAM");
-        env::remove_var("CODA_LOCAL_MODEL_EXECUTION");
-        env::remove_var("CODA_ALLOW_MODEL_CALLS");
-    }
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { physician_sample::serve(listener).await });
-    wait_until_ready(address).await;
+    // A temporary physician session and offline replay: never the operator's
+    // XDG session, never Codex or OpenAI.
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let address = server.address;
 
     let chrome = chromium();
     let dom = dump_dom(&chrome, &format!("http://{address}/")).await;

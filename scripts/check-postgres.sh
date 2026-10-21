@@ -25,11 +25,8 @@ cargo test --locked -p front-door --test luna_journal
 cargo test --locked -p front-door --lib conversation::tests::postgres_acceptance_isolation_dedup_restart_and_withdrawal -- --exact
 cargo test --locked -p front-door --lib conversation::tests::postgres_operator_switch_allowance_and_context -- --exact
 cargo test --locked -p front-door --lib conversation::tests::postgres_retry_context_reports_earlier_attempt -- --exact
-cargo test --locked -p duet-api --test identity
-cargo test --locked -p duet-api --test durable_routes
-cargo test --locked -p duet-api --test durable_permissions
 cargo test --locked -p duet-api --lib conversation_execution::tests::postgres_dispatch_claim_stream_completion_and_recovery -- --exact
-DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" cargo test --locked -p duet-api --test schema -- --exact fresh_install_reaches_the_required_migration_and_rerun_applies_nothing
+DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" cargo test --locked -p duet-api --test database_foundation -- --exact fresh_and_upgrade_keep_identity_and_enforce_account_scope
 # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
 cargo test --locked -p duet-api --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
 # Explicitly select ignored real-database proofs; serial execution prevents

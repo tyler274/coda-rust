@@ -1,14 +1,17 @@
 //! Product-neutral bounded execution and the existing skill catalog surface.
 //!
-//! [`engine`] supplies one provider/tool loop; [`responses`] supplies an API
-//! adapter. Product hosts retain authority, effects, persistence and recovery.
-//! [`Harness`] remains the compatible skill-view-only admission surface. A
-//! skill never authorizes a tool or a patient read. Book:
+//! [`engine`] and [`execution`] are the provider/tool loops. [`responses`] and
+//! [`provider`] are API adapters. Product hosts retain authority, effects,
+//! persistence, and recovery. [`Harness`] admits only `skill_view`. A skill
+//! never authorizes a tool or a patient read. Book:
 //! `book/src/personal-agent-program.md`.
 #![deny(missing_docs)]
 
 pub mod engine;
+pub mod execution;
+pub mod provider;
 pub mod responses;
+pub mod transport;
 
 use std::path::Path;
 
