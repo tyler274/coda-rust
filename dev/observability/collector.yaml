@@ -1,0 +1,105 @@
+# One OpenTelemetry Collector config for the local compose stack and for
+# infra/gcp/observability (mounted there through a ConfigMap). Every endpoint
+# and credential is an environment variable, so the file carries no secret
+# and no environment-specific address.
+#
+#   DATADOG_OTLP_ENDPOINT   Datadog Agent OTLP gRPC address (host:port).
+#   LANGFUSE_OTLP_ENDPOINT  Langfuse OTLP/HTTP base, ending in /api/public/otel.
+#   LANGFUSE_PUBLIC_KEY     Langfuse project public key (Basic auth user).
+#   LANGFUSE_SECRET_KEY     Langfuse project secret key (Basic auth password).
+#
+# Two pipelines fan out from one OTLP receiver:
+#   traces/datadog   every span, with prompt and completion content removed.
+#   traces/langfuse  generation spans only, content as the service sent it
+#                    (the service gates it with CODA_TELEMETRY_CONTENT).
+#
+# The deployed collector runs this file alone. Locally, compose merges one
+# overlay on top: collector.debug.yaml (default, no Datadog Agent) swaps the
+# Datadog exporter for the debug exporter so the content-free span is still
+# visible; collector.datadog.yaml keeps the Agent exporter.
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  basicauth/langfuse:
+    client_auth:
+      username: ${env:LANGFUSE_PUBLIC_KEY}
+      password: ${env:LANGFUSE_SECRET_KEY}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 20
+
+  batch: {}
+
+  # Datadog never receives agent content until the Datadog BAA scope is
+  # confirmed. This runs whatever CODA_TELEMETRY_CONTENT says, on span
+  # attributes and on span event attributes (gen_ai content events).
+  transform/strip_content:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          - delete_matching_keys(attributes, "^gen_ai\\.prompt.*")
+          - delete_matching_keys(attributes, "^gen_ai\\.completion.*")
+          - delete_matching_keys(attributes, "^gen_ai\\.(input|output)\\.messages.*")
+          - delete_matching_keys(attributes, "^langfuse\\.(observation|trace)\\.(input|output).*")
+      - context: spanevent
+        statements:
+          - delete_matching_keys(attributes, "^gen_ai\\.prompt.*")
+          - delete_matching_keys(attributes, "^gen_ai\\.completion.*")
+          - delete_matching_keys(attributes, "^gen_ai\\.(input|output)\\.messages.*")
+          - delete_matching_keys(attributes, "^langfuse\\.(observation|trace)\\.(input|output).*")
+
+  # Langfuse is the agent-run workbench: HTTP server spans and other
+  # infrastructure spans stay in Datadog. A span is kept when it carries the
+  # Langfuse observation type or a gen_ai attribute the telemetry crate sets
+  # on every generation span; the filter drops spans matching the condition.
+  filter/langfuse_generations:
+    error_mode: ignore
+    traces:
+      span:
+        - >-
+          attributes["langfuse.observation.type"] == nil and
+          attributes["gen_ai.system"] == nil and
+          attributes["gen_ai.request.model"] == nil and
+          attributes["gen_ai.operation.name"] == nil and
+          attributes["gen_ai.usage.input_tokens"] == nil and
+          attributes["gen_ai.usage.output_tokens"] == nil
+
+exporters:
+  otlp/datadog:
+    endpoint: ${env:DATADOG_OTLP_ENDPOINT:-datadog-agent:4317}
+    tls:
+      insecure: true
+
+  otlphttp/langfuse:
+    # The exporter appends /v1/traces to this base.
+    endpoint: ${env:LANGFUSE_OTLP_ENDPOINT:-http://langfuse-web:3000/api/public/otel}
+    auth:
+      authenticator: basicauth/langfuse
+
+  debug:
+    verbosity: detailed
+
+service:
+  extensions: [health_check, basicauth/langfuse]
+  pipelines:
+    traces/datadog:
+      receivers: [otlp]
+      processors: [memory_limiter, transform/strip_content, batch]
+      exporters: [otlp/datadog]
+    traces/langfuse:
+      receivers: [otlp]
+      processors: [memory_limiter, filter/langfuse_generations, batch]
+      exporters: [otlphttp/langfuse]

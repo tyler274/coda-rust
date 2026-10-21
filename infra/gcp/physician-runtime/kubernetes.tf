@@ -98,6 +98,17 @@ resource "kubernetes_deployment" "physician_site" {
             }
           }
 
+          # Telemetry (ENG-65): spans go to the in-cluster collector owned by
+          # infra/gcp/observability, which strips content before Datadog.
+          dynamic "env" {
+            for_each = local.site_telemetry_env
+
+            content {
+              name  = env.key
+              value = env.value
+            }
+          }
+
           readiness_probe {
             http_get {
               path = "/health"

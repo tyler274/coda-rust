@@ -384,7 +384,18 @@ impl CodexTransport {
         let request = CodexRequest::from_responses(responses_body)?;
         self.next_id += 1;
         let provider_call_id = format!("physician-chat-{}", self.next_id);
-        match &mut self.kind {
+        let span = tracing::info_span!(
+            "codex.exec",
+            provider_call_id = %provider_call_id,
+            coda.run_id = %provider_call_id,
+            execution = ?self.mode(),
+            duration_ms = tracing::field::Empty,
+            exit_code = tracing::field::Empty,
+            timed_out = tracing::field::Empty,
+            otel.status_code = tracing::field::Empty,
+        );
+        let _entered = span.enter();
+        let outcome = match &mut self.kind {
             Kind::Replay(replayer) => replayer.complete(&provider_call_id, &request),
             Kind::Run {
                 executor,
@@ -393,6 +404,11 @@ impl CodexTransport {
                 let started = Instant::now();
                 let result = executor.run(&request)?;
                 let duration_ms = u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX);
+                span.record("duration_ms", duration_ms);
+                span.record("timed_out", result.timed_out);
+                if let Some(code) = result.exit_code {
+                    span.record("exit_code", code);
+                }
                 if let Some(recording) = recording {
                     recording
                         .recorder
@@ -401,7 +417,11 @@ impl CodexTransport {
                 }
                 admit(&result)
             }
+        };
+        if outcome.is_err() {
+            span.record("otel.status_code", "ERROR");
         }
+        outcome
     }
 }
 
@@ -953,6 +973,7 @@ fn codex_exec_args(
         "--config".to_owned(),
         "include_environment_context=false".to_owned(),
     ];
+    // Codex's own OTel exporter is off by default; Coda's `codex.exec` span is the record of the call.
     for setting in ISOLATED_CONFIG {
         args.push("--config".to_owned());
         args.push((*setting).to_owned());

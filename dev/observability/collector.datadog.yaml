@@ -1,0 +1,7 @@
+# Merged on top of collector.yaml when the Datadog Agent runs (compose profile
+# `datadog`). It restates the base exporter so the local stack always passes
+# exactly two --config files; collector.debug.yaml is the other choice.
+service:
+  pipelines:
+    traces/datadog:
+      exporters: [otlp/datadog]

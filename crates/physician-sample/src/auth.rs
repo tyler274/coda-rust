@@ -1217,7 +1217,7 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         (AuthMode::Required, Some(url)) => match Auth::postgres(&url).await {
             Ok(auth) => auth,
             Err(error) => {
-                eprintln!("{error}");
+                tracing::error!(%error, "physician auth store unavailable");
                 std::process::exit(1);
             }
         },

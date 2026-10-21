@@ -6,6 +6,7 @@
 //! for the CLI in tests.
 
 use std::convert::Infallible;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
 use axum::Json;
@@ -18,7 +19,9 @@ use local_product::codex::CodexTransport;
 use local_product::{ChatSession, ModelBinding, Submit};
 use serde::Deserialize;
 use serde_json::{Value, json};
+use telemetry::genai;
 use tokio::sync::broadcast;
+use tracing::Instrument;
 
 use crate::auth::{AuthContext, allows_workspace, now};
 use crate::rejection_message;
@@ -49,6 +52,7 @@ pub(crate) struct Live {
     model: ChatModel,
     session: Mutex<ChatSession>,
     events: broadcast::Sender<String>,
+    turns: AtomicU64,
 }
 
 impl Live {
@@ -68,7 +72,37 @@ impl Live {
             model,
             session: Mutex::new(ChatSession::new(binding)),
             events,
+            turns: AtomicU64::new(0),
         })
+    }
+
+    /// The `gen_ai.generation` span for one chat turn. Its parent is the
+    /// current (request) span.
+    fn generation_span(&self, chat_id: &str) -> tracing::Span {
+        let turn = self.turns.fetch_add(1, Ordering::Relaxed) + 1;
+        let scenario_id = crate::simulation_scenario_from_env();
+        let ctx = genai::RunContext {
+            // The Codex transport numbers its provider calls the same way.
+            run_id: format!("physician-chat-{turn}"),
+            job: "physician_chat",
+            recipe_version: genai::recipe_version(),
+            origin: if scenario_id.is_some() {
+                genai::Origin::Simulation
+            } else {
+                genai::Origin::Real
+            },
+            scenario_id,
+            session_id: Some(chat_id.to_owned()),
+        };
+        let (system, model, adapter) = match &self.model {
+            #[cfg(test)]
+            ChatModel::Fixed(_) => ("fixed", "gpt-6-sol", "fixed"),
+            ChatModel::OpenAi { binding, .. } => {
+                ("openai", binding.model.as_str(), "openai-responses")
+            }
+            ChatModel::Codex { binding, .. } => ("codex", binding.model.as_str(), "codex"),
+        };
+        genai::generation_span(&ctx, system, model, adapter)
     }
 }
 
@@ -134,25 +168,37 @@ pub(crate) async fn submit(
         let workspace = payload.patient_workspace_id.clone();
         let chat = payload.chat_id.clone();
         let auth_ctx = auth_ctx.map(|Extension(ctx)| ctx);
-        tokio::spawn(async move {
-            match complete(&live.model, &request).await {
-                Ok(text) => {
-                    if let Some(ref ctx) = auth_ctx {
-                        let session_ok = ctx.auth.store.session(&ctx.token, now()).await.is_ok();
-                        let allowed = allows_workspace(&ctx.auth, &ctx.identity, &workspace).await;
-                        if !session_ok || !allowed {
-                            return;
+        let span = live.generation_span(&chat);
+        genai::record_input(&span, &payload.text);
+        let turn = span.clone();
+        tokio::spawn(
+            async move {
+                match complete(&live.model, &request).await {
+                    Ok(text) => {
+                        genai::record_output(&turn, &text);
+                        if let Some(ref ctx) = auth_ctx {
+                            let session_ok =
+                                ctx.auth.store.session(&ctx.token, now()).await.is_ok();
+                            let allowed =
+                                allows_workspace(&ctx.auth, &ctx.identity, &workspace).await;
+                            if !session_ok || !allowed {
+                                return;
+                            }
                         }
+                        live.session
+                            .lock()
+                            .expect("chat session")
+                            .record_reply(&workspace, &chat, &text);
+                        let _ = live.events.send(workspace);
                     }
-                    live.session
-                        .lock()
-                        .expect("chat session")
-                        .record_reply(&workspace, &chat, &text);
-                    let _ = live.events.send(workspace);
+                    Err(error) => {
+                        genai::record_error(&turn, &error);
+                        tracing::error!(%error, "physician chat failed");
+                    }
                 }
-                Err(error) => eprintln!("physician chat: {error}"),
             }
-        });
+            .instrument(span),
+        );
     }
     Json(json!({
         "outcome": "accepted",

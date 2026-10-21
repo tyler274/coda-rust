@@ -19,6 +19,16 @@ locals {
   migration_account      = google_service_account.database_migrator.email
   physician_site_gsa_urn = "serviceAccount:${local.site_account}"
   migration_gsa_urn      = "serviceAccount:${local.migration_account}"
+
+  # The same three values infra/gcp/observability publishes as
+  # service_telemetry_env; DD_VERSION is the image digest prefix so Datadog
+  # deployment tracking follows the pinned image.
+  site_telemetry_env = {
+    OTEL_EXPORTER_OTLP_ENDPOINT = var.otel_collector_endpoint
+    DD_ENV                      = var.environment
+    DD_VERSION                  = try(substr(split("@sha256:", var.physician_site_image)[1], 0, 12), "unversioned")
+    CODA_TELEMETRY_CONTENT      = var.telemetry_content
+  }
 }
 
 data "google_project" "physician_runtime" {

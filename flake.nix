@@ -79,6 +79,9 @@
           oha
           mdbook
           opentofu
+          # `otelcol-contrib validate` checks dev/observability/collector.yaml,
+          # which the compose stack and infra/gcp/observability both run.
+          opentelemetry-collector-contrib
           wasm-bindgen-cli_0_2_129
           # The proof tests drive this through CDP; CHROMIUM points at it.
           chromium

@@ -1,0 +1,10 @@
+{{- /*
+Custom resources (DatadogAgent, DopplerSecret, Gateway API objects) go
+through Helm instead of kubernetes_manifest. kubernetes_manifest reads the
+CRD at plan time, before the operator release in the same root has installed
+it. Helm resolves the kinds at apply time.
+*/ -}}
+{{- range .Values.manifests }}
+---
+{{ toYaml . }}
+{{- end }}

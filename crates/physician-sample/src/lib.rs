@@ -112,7 +112,7 @@ pub fn simulation_router_with_scenario(scenario: &str) -> Router {
         .layer(middleware::from_fn(cors))
 }
 
-fn simulation_scenario_from_env() -> Option<String> {
+pub(crate) fn simulation_scenario_from_env() -> Option<String> {
     let raw = env::var("CODA_LOCAL_SIMULATION").ok()?;
     let trimmed = raw.trim();
     if trimmed.is_empty() || trimmed == "0" || trimmed.eq_ignore_ascii_case("false") {
@@ -447,12 +447,31 @@ pub async fn serve(listener: tokio::net::TcpListener) {
     let base = match router_from_env() {
         Ok(app) => app,
         Err(error) => {
-            eprintln!("{error}");
+            tracing::error!(%error, "physician site cannot start");
             std::process::exit(1);
         }
     };
-    let app = auth::authed_router(base).await;
+    let app = traced(auth::authed_router(base).await);
     axum::serve(listener, app).await.expect("sample server");
+}
+
+/// Wraps the whole router in the `http.server` tracing layer.
+pub fn traced(router: Router) -> Router {
+    router.layer(telemetry::http_layer())
+}
+
+/// The chat router on one Codex transport (record or a scripted executor),
+/// traced like `serve`. For integration tests.
+#[doc(hidden)]
+pub fn codex_chat_router(transport: local_product::codex::CodexTransport) -> Router {
+    let roles = local_product::model_roles("codex-exec", &[]).expect("default roles");
+    traced(
+        live_router(live::ChatModel::Codex {
+            binding: roles.chat,
+            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
+        })
+        .layer(middleware::from_fn(cors)),
+    )
 }
 
 /// Serves the recorded practice on `listener` with authentication required
@@ -462,7 +481,7 @@ pub async fn serve_with_store(
     store: std::sync::Arc<dyn physician_auth::AuthStore>,
 ) {
     let base = router();
-    let app = auth::authed_router_with_store(base, store).await;
+    let app = traced(auth::authed_router_with_store(base, store).await);
     axum::serve(listener, app).await.expect("sample server");
 }
 
@@ -507,7 +526,7 @@ fn model_router(
     if execution == local_product::ModelExecution::Api {
         let key = local_product::open_ai_api_key(allow, key)?;
         let roles = local_product::model_roles("openai-responses", environment)?;
-        eprintln!(
+        tracing::info!(
             "Model execution: api via OpenAI Responses (chat {} {}; background {} {}; worker {} {}; linking {} {})",
             roles.chat.model,
             roles.chat.effort,
@@ -527,17 +546,18 @@ fn model_router(
     let transport = local_product::codex::open_codex(execution, settings)?;
     let roles = local_product::model_roles("codex-exec", environment)?;
     match execution {
-        local_product::ModelExecution::Live => eprintln!(
+        local_product::ModelExecution::Live => tracing::info!(
             "Model execution: live via Codex CLI (chat {} {}). Sign in with `codex login`. No API key is read.",
-            roles.chat.model, roles.chat.effort
+            roles.chat.model,
+            roles.chat.effort
         ),
-        local_product::ModelExecution::Record => eprintln!(
+        local_product::ModelExecution::Record => tracing::info!(
             "Model execution: record via Codex CLI (chat {} {}). Sign in with `codex login`. Cassette: {}.",
             roles.chat.model,
             roles.chat.effort,
             settings.cassette_output.unwrap_or("")
         ),
-        local_product::ModelExecution::Replay => eprintln!(
+        local_product::ModelExecution::Replay => tracing::info!(
             "Model execution: replay via Codex cassette (chat {} {}). Cassette: {}. No CLI call and no API key.",
             roles.chat.model,
             roles.chat.effort,
