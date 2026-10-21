@@ -182,8 +182,10 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     let expected = vec![
         "front_door_accounts",
         "front_door_consents",
+        "front_door_identities",
         "front_door_invitations",
         "front_door_links",
+        "front_door_permissions",
         "front_door_premium",
         "front_door_seaql_migrations",
         "front_door_sessions",

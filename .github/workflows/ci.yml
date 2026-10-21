@@ -296,12 +296,12 @@ jobs:
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
           PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
-        run: nix develop --command bash scripts/check-postgres.sh
-      - name: Prove durable physician owner on Postgres
-        env:
+          DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
-        # Crash/restart requires a dedicated disposable cluster, not this service.
-        run: nix develop --command cargo test --locked -p local-product --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
+        run: |
+          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          nix develop --command bash scripts/check-postgres.sh
 
   # RustSec advisories, license allow-list, bans, and source checks.
   # deny.toml is the single policy file; the nix dev shell carries the same

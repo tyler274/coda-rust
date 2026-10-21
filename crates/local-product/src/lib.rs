@@ -913,7 +913,11 @@ mod tests {
         // Without active consent, ingestion is rejected.
         assert!(
             store
-                .ingest_consented_items("pw-elena", false, &[approved_luna_note.clone()])
+                .ingest_consented_items(
+                    "pw-elena",
+                    false,
+                    std::slice::from_ref(&approved_luna_note)
+                )
                 .is_err()
         );
 

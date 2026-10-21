@@ -6,6 +6,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 : "${MIGRATION_DATABASE_URL:?Set the disposable Postgres admin URL}"
 : "${PHYSICIAN_DATABASE_URL:?Set the physician test database URL}"
 : "${FRONT_DOOR_DATABASE_URL:?Set the front-door test database URL}"
+: "${DUET_IDENTITY_TEST_DATABASE_URL:?Set the dedicated disposable Duet identity database URL}"
+: "${PHYSICIAN_RUNTIME_TEST_DATABASE_URL:?Set the dedicated disposable physician runtime database URL}"
 export CODA_REQUIRE_POSTGRES_TESTS=1
 
 # This ignored test fails closed if its URL is missing. It tests each of the
@@ -16,3 +18,12 @@ cargo test --locked -p physician-sample --test migrations_postgres -- --ignored
 cargo test --locked -p physician-auth --test postgres
 cargo test --locked -p front-door --test postgres
 cargo test --locked -p physician-sample --test front_door_postgres
+# These identity targets must never silently return without exercising Postgres.
+cargo test --locked -p front-door --test identity
+cargo test --locked -p duet-api --test identity
+# Explicitly select ignored real-database proofs; serial execution prevents
+# migration and recovery scans racing other suites. Cluster crash/restart is
+# deliberately excluded: it requires an independently owned disposable cluster.
+cargo test --locked -p local-product --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
+cargo test --locked -p local-product --test runtime_publication -- --ignored --test-threads=1
+cargo test --locked -p local-product --test runtime_recovery -- --ignored --test-threads=1

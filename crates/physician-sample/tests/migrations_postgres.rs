@@ -75,7 +75,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
             let rows = history(&db, "front_door_seaql_migrations").await;
             assert_eq!(
                 rows.iter().map(|row| row.0.as_str()).collect::<Vec<_>>(),
-                ["mod"]
+                ["m20261020_identity", "mod"]
             );
             histories.push(("front_door_seaql_migrations", rows));
         }
