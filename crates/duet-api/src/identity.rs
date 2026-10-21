@@ -2,9 +2,13 @@
 //!
 //! Production integration must supply fresh Google signing keys and an authoritative
 //! Identity Platform account/revocation lookup. Neither a decoded JWT nor an IAP
-//! header is enough. No network adapter or credential issuer is implemented here.
+//! header is enough. The `google` adapter supplies bounded trusted transport;
+//! credential issuance remains outside this owner.
 //! Email credential issuance (the existing front-door uses one-time proofs) and
 //! reauthenticated provider linking remain client/provider-owner integrations.
+/// Trusted Google key refresh and service-identity revocation lookup.
+pub mod google;
+
 use async_trait::async_trait;
 use front_door::{
     PostgresFrontDoorStore,
