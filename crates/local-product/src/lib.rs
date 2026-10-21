@@ -17,6 +17,8 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
 pub mod codex;
+pub mod execution;
+pub mod physician_sources;
 pub mod simulation;
 pub use simulation::*;
 
@@ -911,7 +913,11 @@ mod tests {
         // Without active consent, ingestion is rejected.
         assert!(
             store
-                .ingest_consented_items("pw-elena", false, &[approved_luna_note.clone()])
+                .ingest_consented_items(
+                    "pw-elena",
+                    false,
+                    std::slice::from_ref(&approved_luna_note)
+                )
                 .is_err()
         );
 
