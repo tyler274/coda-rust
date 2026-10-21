@@ -6,6 +6,9 @@ The three required Duet queries are included by Rust at compile time. All other
 tracked .sql files outside read-only submodules are included automatically.
 Migration builders, dynamic Rust templates and test-fixture strings are not
 parsed or reformatted. No migration/checksum inputs are changed by this check.
+Formatting is not an endorsement of raw SQL: AGENTS.md requires ORM-first CRUD.
+These required files describe current coverage, not a permanent SQL quota; update
+REQUIRED and the query tests when a bounded ORM conversion removes a query.
 """
 
 import argparse

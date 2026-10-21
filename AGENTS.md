@@ -32,6 +32,33 @@ The physician site is a client of the physician projections. `crates/physician-s
 
 The live Node projection server moves into `physician-sample` route family by route family. Duet stays in `duet-api` and `duet-app`. Gym and computer use get their own crates after those, and neither imports the other's clinical types.
 
+## Persistence: ORM first
+
+- New or changed ordinary CRUD uses the owning product's ORM entities and typed
+  query APIs, not hand-authored SQL. `physician-auth` and `front-door` already use
+  SeaORM 2 / SeaQuery; extend their existing owners. Use migration builders for
+  schema changes where supported, preserving recorded migration history.
+- Raw SQL is an exception for database-specific functionality unsupported by those
+  APIs or a demonstrated performance need. Document the reason at the call site
+  and test the behavior against Postgres. Bind all runtime values; never
+  interpolate user values. Keep dynamic identifiers code-owned and allowlisted.
+- `duet-api`'s moments/schema adapter still uses `sqlx`, a database driver/query
+  library, not an ORM. Its three `src/sql/*.sql` files are migration debt, not the
+  pattern for new CRUD. Adopt a Duet-owned ORM/entity layer in a bounded change;
+  do not import physician entities, combine product stores, or mass-convert
+  persistence merely to comply with this preference.
+- The first Duet slice is `PgMoments`: preserve user-scoped list/delete, descending
+  `(occurred_at, id)` order, unknown-kind errors, affected-row semantics, and the
+  privacy-journal deletion gate. Prove these on disposable Postgres, including
+  cross-account refusal. Coordinate schema readiness/ownership with
+  [ENG-111](https://linear.app/coda-health/issue/ENG-111) under
+  [ENG-161](https://linear.app/coda-health/issue/ENG-161); do not silently replace
+  the externally managed `schema_migrations` contract or rewrite its history.
+- SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
+  coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
+  removes a query, update the formatter's required-file inventory and its tests
+  together; never keep dummy SQL or report an empty scan as meaningful coverage.
+
 ## Dev shell
 
 `nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`.
