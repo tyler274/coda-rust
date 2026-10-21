@@ -13,11 +13,29 @@ use crate::{apis::ResponseContent, models};
 use reqwest;
 use serde::{Deserialize, Serialize, de::Error as _};
 
+/// struct for typed errors of method [`accept_durable_conversation_command`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum AcceptDurableConversationCommandError {
+    Status409(),
+    Status503(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`apple_health_source_api_evidence_apple_health_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum AppleHealthSourceApiEvidenceAppleHealthGetError {
     Status422(models::HttpValidationError),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`commit_durable_privacy_restriction`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum CommitDurablePrivacyRestrictionError {
+    Status409(),
+    Status503(),
     UnknownValue(serde_json::Value),
 }
 
@@ -147,6 +165,14 @@ pub enum EvidenceTimelineApiEvidenceTimelinePostError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`export_approved_doctor_page`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ExportApprovedDoctorPageError {
+    Status409(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`health_health_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -159,6 +185,14 @@ pub enum HealthHealthGetError {
 #[serde(untagged)]
 pub enum HealthRecordsSourceApiEvidenceHealthRecordsGetError {
     Status422(models::HttpValidationError),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`ingest_canonical_evidence`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum IngestCanonicalEvidenceError {
+    Status409(),
     UnknownValue(serde_json::Value),
 }
 
@@ -182,6 +216,148 @@ pub enum PortalOrganizationsApiConnectorsPortalsOrganizationsGetError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum PortalStatusApiConnectorsPortalsGetError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`preview_approved_doctor_page`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PreviewApprovedDoctorPageError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`publish_approved_doctor_page`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PublishApprovedDoctorPageError {
+    Status409(),
+    Status503(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_canonical_evidence_exact`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadCanonicalEvidenceExactError {
+    Status404(),
+    Status409(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_canonical_evidence_snapshot`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadCanonicalEvidenceSnapshotError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_canonical_health_context`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadCanonicalHealthContextError {
+    Status409(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_doctor_publication`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDoctorPublicationError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_doctor_save_receipt`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDoctorSaveReceiptError {
+    Status404(),
+    Status503(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_durable_account_context`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDurableAccountContextError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_durable_conversation`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDurableConversationError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_durable_conversation_events`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDurableConversationEventsError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_durable_conversation_usage`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadDurableConversationUsageError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_today_assessment_status`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadTodayAssessmentStatusError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`reject_durable_doctor_proposal`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RejectDurableDoctorProposalError {
+    Status409(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`resume_durable_conversation_command`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ResumeDurableConversationCommandError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`retrieve_published_doctor_pdf`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RetrievePublishedDoctorPdfError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`retrieve_smart_health_link_file`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RetrieveSmartHealthLinkFileError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`retrieve_smart_health_link_manifest`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RetrieveSmartHealthLinkManifestError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`revoke_doctor_publication`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RevokeDoctorPublicationError {
+    Status409(),
+    Status428(),
+    Status422(),
+    Status503(),
     UnknownValue(serde_json::Value),
 }
 
@@ -233,6 +409,74 @@ pub enum SyncOracleApiConnectorsOracleOrganizationIdSyncPostError {
     UnknownValue(serde_json::Value),
 }
 
+pub async fn accept_durable_conversation_command(
+    configuration: &configuration::Configuration,
+    id: &str,
+    accept_durable_conversation_command_request: models::AcceptDurableConversationCommandRequest,
+) -> Result<
+    std::collections::HashMap<String, serde_json::Value>,
+    Error<AcceptDurableConversationCommandError>,
+> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_accept_durable_conversation_command_request =
+        accept_durable_conversation_command_request;
+
+    let uri_str = format!(
+        "{}/api/conversation/{id}/commands",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_accept_durable_conversation_command_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<AcceptDurableConversationCommandError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
 pub async fn apple_health_source_api_evidence_apple_health_get(
     configuration: &configuration::Configuration,
     x_duet_source_key: &str,
@@ -281,6 +525,64 @@ pub async fn apple_health_source_api_evidence_apple_health_get(
     } else {
         let content = resp.text().await?;
         let entity: Option<AppleHealthSourceApiEvidenceAppleHealthGetError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn commit_durable_privacy_restriction(
+    configuration: &configuration::Configuration,
+    durable_restriction_request: models::DurableRestrictionRequest,
+) -> Result<models::DurablePrivacyReceipt, Error<CommitDurablePrivacyRestrictionError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_durable_restriction_request = durable_restriction_request;
+
+    let uri_str = format!("{}/api/auth/privacy-restrictions", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_durable_restriction_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::DurablePrivacyReceipt`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::DurablePrivacyReceipt`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<CommitDurablePrivacyRestrictionError> =
             serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
@@ -1256,6 +1558,37 @@ pub async fn evidence_timeline_api_evidence_timeline_post(
     }
 }
 
+pub async fn export_approved_doctor_page(
+    configuration: &configuration::Configuration,
+) -> Result<reqwest::Response, Error<ExportApprovedDoctorPageError>> {
+    let uri_str = format!("{}/api/doctor-collection/pdf", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(resp)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ExportApprovedDoctorPageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
 pub async fn health_health_get(
     configuration: &configuration::Configuration,
 ) -> Result<std::collections::HashMap<String, String>, Error<HealthHealthGetError>> {
@@ -1356,6 +1689,63 @@ pub async fn health_records_source_api_evidence_health_records_get(
         let content = resp.text().await?;
         let entity: Option<HealthRecordsSourceApiEvidenceHealthRecordsGetError> =
             serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn ingest_canonical_evidence(
+    configuration: &configuration::Configuration,
+    canonical_evidence_mutation: models::CanonicalEvidenceMutation,
+) -> Result<models::CanonicalSourceAddress, Error<IngestCanonicalEvidenceError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_canonical_evidence_mutation = canonical_evidence_mutation;
+
+    let uri_str = format!("{}/api/canonical-evidence", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_canonical_evidence_mutation);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CanonicalSourceAddress`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CanonicalSourceAddress`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<IngestCanonicalEvidenceError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -1531,6 +1921,968 @@ pub async fn portal_status_api_connectors_portals_get(
         let content = resp.text().await?;
         let entity: Option<PortalStatusApiConnectorsPortalsGetError> =
             serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn preview_approved_doctor_page(
+    configuration: &configuration::Configuration,
+) -> Result<String, Error<PreviewApprovedDoctorPageError>> {
+    let uri_str = format!("{}/api/doctor-collection/preview", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `String`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `String`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<PreviewApprovedDoctorPageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn publish_approved_doctor_page(
+    configuration: &configuration::Configuration,
+    durable_publish_request: models::DurablePublishRequest,
+) -> Result<models::DurablePublicationView, Error<PublishApprovedDoctorPageError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_durable_publish_request = durable_publish_request;
+
+    let uri_str = format!(
+        "{}/api/doctor-collection/share-link",
+        configuration.base_path
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_durable_publish_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::DurablePublicationView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::DurablePublicationView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<PublishApprovedDoctorPageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_canonical_evidence_exact(
+    configuration: &configuration::Configuration,
+    read_canonical_evidence_exact_request: models::ReadCanonicalEvidenceExactRequest,
+) -> Result<models::CanonicalExactEvidence, Error<ReadCanonicalEvidenceExactError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_read_canonical_evidence_exact_request = read_canonical_evidence_exact_request;
+
+    let uri_str = format!("{}/api/canonical-evidence/exact", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_read_canonical_evidence_exact_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CanonicalExactEvidence`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CanonicalExactEvidence`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadCanonicalEvidenceExactError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_canonical_evidence_snapshot(
+    configuration: &configuration::Configuration,
+    after: Option<i64>,
+) -> Result<models::CanonicalEvidenceSnapshot, Error<ReadCanonicalEvidenceSnapshotError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_query_after = after;
+
+    let uri_str = format!("{}/api/canonical-evidence", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_after {
+        req_builder = req_builder.query(&[("after", &param_value.to_string())]);
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CanonicalEvidenceSnapshot`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CanonicalEvidenceSnapshot`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadCanonicalEvidenceSnapshotError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_canonical_health_context(
+    configuration: &configuration::Configuration,
+) -> Result<(), Error<ReadCanonicalHealthContextError>> {
+    let uri_str = format!("{}/api/health-context", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(())
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadCanonicalHealthContextError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_doctor_publication(
+    configuration: &configuration::Configuration,
+) -> Result<models::DurablePublicationView, Error<ReadDoctorPublicationError>> {
+    let uri_str = format!(
+        "{}/api/doctor-collection/share-link",
+        configuration.base_path
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::DurablePublicationView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::DurablePublicationView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDoctorPublicationError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_doctor_save_receipt(
+    configuration: &configuration::Configuration,
+    generation: i64,
+) -> Result<models::DoctorCollection, Error<ReadDoctorSaveReceiptError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_generation = generation;
+
+    let uri_str = format!(
+        "{}/api/doctor-collection/save-receipts/{generation}",
+        configuration.base_path,
+        generation = p_path_generation
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::DoctorCollection`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::DoctorCollection`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDoctorSaveReceiptError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_durable_account_context(
+    configuration: &configuration::Configuration,
+) -> Result<models::ReadDurableAccountContext200Response, Error<ReadDurableAccountContextError>> {
+    let uri_str = format!("{}/api/auth/account/context", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::ReadDurableAccountContext200Response`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::ReadDurableAccountContext200Response`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDurableAccountContextError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_durable_conversation(
+    configuration: &configuration::Configuration,
+    id: &str,
+) -> Result<std::collections::HashMap<String, serde_json::Value>, Error<ReadDurableConversationError>>
+{
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/conversation/{id}",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDurableConversationError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_durable_conversation_events(
+    configuration: &configuration::Configuration,
+    id: &str,
+    last_event_id: Option<i64>,
+    after: Option<i64>,
+) -> Result<String, Error<ReadDurableConversationEventsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_header_last_event_id = last_event_id;
+    let p_query_after = after;
+
+    let uri_str = format!(
+        "{}/api/conversation/commands/{id}/events",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref param_value) = p_query_after {
+        req_builder = req_builder.query(&[("after", &param_value.to_string())]);
+    }
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(param_value) = p_header_last_event_id {
+        req_builder = req_builder.header("Last-Event-ID", param_value.to_string());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `String`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `String`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDurableConversationEventsError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_durable_conversation_usage(
+    configuration: &configuration::Configuration,
+    id: Option<&str>,
+) -> Result<
+    std::collections::HashMap<String, serde_json::Value>,
+    Error<ReadDurableConversationUsageError>,
+> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/conversation/commands/{id}/usage",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id.unwrap())
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadDurableConversationUsageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_today_assessment_status(
+    configuration: &configuration::Configuration,
+    durable_today_slot: models::DurableTodaySlot,
+) -> Result<(), Error<ReadTodayAssessmentStatusError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_durable_today_slot = durable_today_slot;
+
+    let uri_str = format!("{}/api/insight-cycles/status", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_durable_today_slot);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(())
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadTodayAssessmentStatusError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn reject_durable_doctor_proposal(
+    configuration: &configuration::Configuration,
+    id: &str,
+    reject_durable_doctor_proposal_request: models::RejectDurableDoctorProposalRequest,
+) -> Result<models::DoctorCollection, Error<RejectDurableDoctorProposalError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_reject_durable_doctor_proposal_request = reject_durable_doctor_proposal_request;
+
+    let uri_str = format!(
+        "{}/api/doctor-collection/proposals/{id}/reject",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_reject_durable_doctor_proposal_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::DoctorCollection`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::DoctorCollection`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RejectDurableDoctorProposalError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn resume_durable_conversation_command(
+    configuration: &configuration::Configuration,
+    id: &str,
+) -> Result<(), Error<ResumeDurableConversationCommandError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/conversation/commands/{id}/resume",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(())
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ResumeDurableConversationCommandError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn retrieve_published_doctor_pdf(
+    configuration: &configuration::Configuration,
+    token: &str,
+) -> Result<reqwest::Response, Error<RetrievePublishedDoctorPdfError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_token = token;
+
+    let uri_str = format!(
+        "{}/shared/for-my-doctor/{token}/pdf",
+        configuration.base_path,
+        token = crate::apis::urlencode(p_path_token)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(resp)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RetrievePublishedDoctorPdfError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn retrieve_smart_health_link_file(
+    configuration: &configuration::Configuration,
+    location: &str,
+) -> Result<String, Error<RetrieveSmartHealthLinkFileError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_location = location;
+
+    let uri_str = format!(
+        "{}/shl-file/{location}",
+        configuration.base_path,
+        location = crate::apis::urlencode(p_path_location)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `String`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `String`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RetrieveSmartHealthLinkFileError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn retrieve_smart_health_link_manifest(
+    configuration: &configuration::Configuration,
+    token: &str,
+    request_body: std::collections::HashMap<String, serde_json::Value>,
+) -> Result<
+    std::collections::HashMap<String, serde_json::Value>,
+    Error<RetrieveSmartHealthLinkManifestError>,
+> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_token = token;
+    let p_body_request_body = request_body;
+
+    let uri_str = format!(
+        "{}/shl/{token}/manifest",
+        configuration.base_path,
+        token = crate::apis::urlencode(p_path_token)
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    req_builder = req_builder.json(&p_body_request_body);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `std::collections::HashMap&lt;String, serde_json::Value&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RetrieveSmartHealthLinkManifestError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn revoke_doctor_publication(
+    configuration: &configuration::Configuration,
+    idempotency_key: Option<&str>,
+    if_match: Option<&str>,
+) -> Result<(), Error<RevokeDoctorPublicationError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_header_idempotency_key = idempotency_key;
+    let p_header_if_match = if_match;
+
+    let uri_str = format!(
+        "{}/api/doctor-collection/share-link",
+        configuration.base_path
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::DELETE, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    match p_header_idempotency_key {
+        Some(param_value) => {
+            req_builder = req_builder.header("Idempotency-Key", param_value.to_string());
+        }
+        None => {
+            req_builder = req_builder.header("Idempotency-Key", "");
+        }
+    }
+    match p_header_if_match {
+        Some(param_value) => {
+            req_builder = req_builder.header("If-Match", param_value.to_string());
+        }
+        None => {
+            req_builder = req_builder.header("If-Match", "");
+        }
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(())
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RevokeDoctorPublicationError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,

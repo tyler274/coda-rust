@@ -64,20 +64,23 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
         migrate(&url, physician, front_door).await;
         let mut histories = Vec::new();
         if physician {
-            let rows = history(&db, "seaql_migrations").await;
+            let rows = history(&db, "physician_auth_migrations").await;
             assert_eq!(
                 rows.iter().map(|row| row.0.as_str()).collect::<Vec<_>>(),
-                ["m20260101_000002_practice_patients", "mod"]
+                [
+                    "physician_auth_20260101_000001_init",
+                    "physician_auth_20260101_000002_practice_patients"
+                ]
             );
-            histories.push(("seaql_migrations", rows));
+            histories.push(("physician_auth_migrations", rows));
         }
         if front_door {
-            let rows = history(&db, "front_door_seaql_migrations").await;
+            let rows = history(&db, front_door::migration::MIGRATION_TABLE).await;
             assert_eq!(
                 rows.iter().map(|row| row.0.as_str()).collect::<Vec<_>>(),
-                ["mod"]
+                [front_door::migration::INIT_MIGRATION_NAME]
             );
-            histories.push(("front_door_seaql_migrations", rows));
+            histories.push((front_door::migration::MIGRATION_TABLE, rows));
         }
         // Two reruns, not just the initial application. Neither migration
         // versions nor their original timestamps may change.

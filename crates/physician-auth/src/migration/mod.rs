@@ -7,6 +7,8 @@
 //! bearer per sign-in, no refresh-token family or rotation.
 
 use sea_orm_migration::prelude::*;
+mod upgrade;
+pub use upgrade::migrate;
 
 // The entity models below carry field docs; the generated struct and relation
 // types are mechanical SeaORM shapes, so the crate-wide doc lint stays off
@@ -45,14 +47,13 @@ pub use sign_in_token::Model as SignInTokenRow;
 pub use sign_in_token::{ActiveModel as SignInTokenActiveModel, Entity as SignInTokens};
 
 /// Every migration, oldest first.
-///
-/// The chain records into SeaORM's default `seaql_migrations` table. The
-/// front door shares the physician database but records into its own table,
-/// so neither chain reads the other's rows as missing migrations.
 pub struct Migrator;
 
 #[async_trait::async_trait]
 impl MigratorTrait for Migrator {
+    fn migration_table_name() -> DynIden {
+        Alias::new("physician_auth_migrations").into_iden()
+    }
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
         vec![
             Box::new(m20260101_000001_init),
@@ -61,24 +62,11 @@ impl MigratorTrait for Migrator {
     }
 }
 
-/// The name `m20260101_000001_init` has recorded since the chain began.
-///
-/// `DeriveMigrationName` names a migration after its source file's stem, and
-/// every migration here lives in `mod.rs`, so the derive answered `mod`. A
-/// database that already applied this migration holds `mod`, and it must
-/// keep matching or the init would run again over existing tables.
-pub const INIT_MIGRATION_NAME: &str = "mod";
-
-/// The name `m20260101_000002_practice_patients` records. It is not `mod`,
-/// so it never collides with the init.
-pub const PRACTICE_PATIENTS_MIGRATION_NAME: &str = "m20260101_000002_practice_patients";
-
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000001_init;
-
 impl MigrationName for m20260101_000001_init {
     fn name(&self) -> &str {
-        INIT_MIGRATION_NAME
+        "physician_auth_20260101_000001_init"
     }
 }
 
@@ -461,10 +449,9 @@ impl MigrationTrait for m20260101_000001_init {
 
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20260101_000002_practice_patients;
-
 impl MigrationName for m20260101_000002_practice_patients {
     fn name(&self) -> &str {
-        PRACTICE_PATIENTS_MIGRATION_NAME
+        "physician_auth_20260101_000002_practice_patients"
     }
 }
 
@@ -521,9 +508,10 @@ impl MigrationTrait for m20260101_000002_practice_patients {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use sea_orm_migration::seaql_migrations;
 
-    /// SeaORM keys `seaql_migrations` by name, so two migrations sharing one
-    /// fail every fresh migrate on a duplicate key. No database needed.
+    /// SeaORM keys its ledger by name, so two migrations sharing one fail
+    /// every fresh migrate on a duplicate key. No database needed.
     #[test]
     fn every_migration_records_a_distinct_name() {
         let names: Vec<String> = Migrator::migrations()
@@ -536,14 +524,13 @@ mod tests {
         assert_eq!(unique.len(), names.len(), "duplicate names in {names:?}");
     }
 
-    /// Deployed databases hold these names. Renaming one re-runs its
-    /// migration, or fails the migrate as an unknown applied version.
+    /// The chain no longer records into SeaORM's default table, which the
+    /// front door's legacy init also wrote `mod` into.
     #[test]
-    fn recorded_names_stay_what_databases_hold() {
-        let names: Vec<String> = Migrator::migrations()
-            .iter()
-            .map(|migration| migration.name().to_owned())
-            .collect();
-        assert_eq!(names, ["mod", "m20260101_000002_practice_patients"]);
+    fn the_chain_records_apart_from_the_shared_default_table() {
+        assert_ne!(
+            Migrator::migration_table_name(),
+            seaql_migrations::Entity.into_iden()
+        );
     }
 }

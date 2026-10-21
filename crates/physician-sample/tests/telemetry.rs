@@ -53,6 +53,12 @@ async fn a_chat_turn_is_one_trace_with_the_run_contract_and_no_content() {
     let dir = std::env::temp_dir().join(format!("coda-telemetry-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).unwrap();
+    // The physician session is durable; a fresh file keeps this turn new on
+    // every run instead of replaying an idempotency key from the user's state.
+    // SAFETY: single-test binary, set before the router reads it.
+    unsafe {
+        std::env::set_var("CODA_PHYSICIAN_SESSION_PATH", dir.join("session.json"));
+    }
     let transport = CodexTransport::recording(
         Box::new(Scripted),
         "synthetic telemetry test",

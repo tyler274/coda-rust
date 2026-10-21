@@ -6,9 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **generated_at** | Option<**chrono::DateTime<chrono::FixedOffset>**> |  | [optional]
 **id** | Option<**uuid::Uuid**> |  | [optional]
-**projections** | [**Vec<models::HealthContextProjectionOutput>**](HealthContextProjectionOutput.md) |  | 
+**projections** | [**Vec<models::HealthContextProjectionOutput>**](HealthContextProjectionOutput.md) |  |
 **schema_version** | Option<**i32**> |  | [optional][default to 1]
-**source_boundary_id** | **uuid::Uuid** |  | 
+**source_boundary_id** | **uuid::Uuid** |  |
 **source_generations** | Option<**std::collections::HashMap<String, i32>**> |  | [optional]
 **timezone** | Option<**String**> |  | [optional][default to UTC]
 

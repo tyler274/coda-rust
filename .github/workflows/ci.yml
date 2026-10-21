@@ -16,7 +16,32 @@ jobs:
     # actions/cache talks to Blacksmith's colocated cache with no change.
     # Roll back by setting runs-on to ubuntu-latest again.
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    # The Duet, physician and front-door PostgreSQL proofs fail closed without
+    # a disposable loopback server; they never skip (ENG-46). Each test creates
+    # and drops its own database and role on this throwaway container.
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.2-pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     steps:
+      - name: Point the PostgreSQL proofs at the service
+        run: |
+          url="postgresql://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres"
+          {
+            echo "DUET_TEST_DATABASE_URL=${url}"
+            echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
+            echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
+          } >> "$GITHUB_ENV"
       - name: Check out repository
         uses: actions/checkout@v7
         with:
@@ -104,6 +129,14 @@ jobs:
         uses: browser-actions/setup-chrome@v2
         with:
           install-dependencies: true
+      # The doctor-page PDF proof reads the rendered file with an independent
+      # extractor and rasterizer (pdftotext, pdfinfo, pdftoppm). The Nix
+      # shell carries poppler-utils; this job is not in that shell (ENG-46).
+      - name: Install poppler-utils
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends poppler-utils
+          pdftotext -v
       - name: Build public-site motion island (60 KB brotli budget)
         run: bash crates/public-site/island/build.sh
       - name: Check formatting
@@ -152,6 +185,11 @@ jobs:
           rm -rf target/wasm32-unknown-unknown target/debug/incremental target/doc target/debug/examples
           if [ -d target/debug ]; then
             find target/debug -maxdepth 1 -type f -delete
+            # Linked test and bin executables are workspace outputs, relinked
+            # on the next run; the cache exists for dependency artifacts.
+            # They doubled the payload once the Duet suites landed (ENG-46).
+            # Extensionless only: rlibs, rmeta and proc-macro .so stay.
+            find target/debug/deps -maxdepth 1 -type f -perm -u+x ! -name '*.*' -delete
           fi
           sudo rm -rf /opt/hostedtoolcache/setup-chrome || true
           free_bytes() { df -B1 --output=avail / | awk 'NR==2 { print $1 }'; }

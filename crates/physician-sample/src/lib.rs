@@ -14,6 +14,12 @@
 mod auth;
 mod care;
 mod live;
+#[cfg(test)]
+mod live_tests;
+mod publication;
+#[cfg(test)]
+mod publication_tests;
+mod reply;
 mod simulation;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
@@ -145,14 +151,22 @@ pub fn recorded() -> Router {
 }
 
 fn live_router(model: live::ChatModel) -> Router {
+    live_router_on(live::Live::new(model))
+}
+
+fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
     site()
         .route("/commands", post(live::submit))
+        .route(
+            "/physician-state/reply-drafts/{workspace}/{reply}",
+            get(reply::read).put(reply::save),
+        )
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
         )
         .route("/patient-workspaces/events", get(live::events))
-        .with_state(live::Live::new(model))
+        .with_state(live)
 }
 
 fn site<S>() -> Router<S>
@@ -542,6 +556,22 @@ fn model_router(
             binding: roles.chat,
         })
         .layer(middleware::from_fn(cors)));
+    }
+    if execution == local_product::ModelExecution::Replay
+        && let Some(path) = settings.cassette_path
+    {
+        let bytes = fs::read(path).map_err(|_| "could not read replay cassette")?;
+        let value: Value = serde_json::from_slice(&bytes).map_err(|_| "invalid replay cassette")?;
+        if value.get("schema_version").and_then(Value::as_u64) == Some(2) {
+            let cassette =
+                serde_json::from_value(value).map_err(|_| "invalid structured cassette")?;
+            let replay = harness::transport::Replay::new(cassette)?;
+            let roles = local_product::model_roles("structured-replay", environment)?;
+            return Ok(live_router(live::ChatModel::StructuredReplay {
+                binding: roles.chat,
+                replay: tokio::sync::Mutex::new(replay),
+            }));
+        }
     }
     let transport = local_product::codex::open_codex(execution, settings)?;
     let roles = local_product::model_roles("codex-exec", environment)?;
