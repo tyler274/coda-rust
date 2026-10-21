@@ -1,5 +1,5 @@
-//! Runs the Duet-owned chains: the front-door migrations, then the vendored
-//! Duet schema (`crates/duet-api/migrations`). A rerun applies nothing.
+//! Runs the Duet-owned chains: the front-door SeaORM migrations, then the
+//! vendored Duet schema as its own SeaORM chain. A rerun applies nothing.
 
 #[tokio::main]
 async fn main() {
@@ -19,10 +19,10 @@ async fn migrate(url: &str) -> Result<(), String> {
     front_door::PostgresFrontDoorStore::connect_with_migrations(&front_url)
         .await
         .map_err(|error| format!("front-door: {error}"))?;
-    let applied = duet_api::schema::apply(url)
+    duet_api::migration::up(url)
         .await
         .map_err(|error| format!("duet schema: {error}"))?;
-    eprintln!("duet schema applied {applied} migrations");
+    eprintln!("duet schema chain is current");
     let pool = sqlx::PgPool::connect(url)
         .await
         .map_err(|error| error.to_string())?;

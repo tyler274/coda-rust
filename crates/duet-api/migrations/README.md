@@ -1,8 +1,8 @@
 # Vendored Duet schema
 
 Copied verbatim from coda-app commit `ebd1788ef0023160cc2b0de04678386c45b0c0fe` (`backend/migrations`).
-Each file is one transaction that records its own version in `public.schema_migrations`.
-Never edit a file here; a newer coda-app schema arrives as a new file plus a regenerated manifest.
+`crates/duet-api/src/migration.rs` applies each file as one SeaORM migration, in filename order, and records it in `duet_seaql_migrations`. Each file is its own transaction and also records its version in `public.schema_migrations`.
+Never edit a file here; a newer coda-app schema arrives as a new file plus one line in the migration chain.
 
 | File | SHA-256 |
 | --- | --- |

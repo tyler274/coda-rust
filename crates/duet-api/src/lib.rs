@@ -32,7 +32,7 @@ use front_door::http::{ConsentView, FrontDoorState, SessionView};
 use front_door::{FrontDoorStore, LinkError, Premium, SessionError, SignInError};
 use uuid::Uuid;
 
-pub mod schema;
+pub mod migration;
 
 /// The `REQUIRED_MIGRATION` constant.
 pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
