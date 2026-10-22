@@ -70,16 +70,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // Rewind the records to what the chain wrote before it had its own
     // table: the init as `mod` in SeaORM's default `seaql_migrations`.
     let db = sea_orm::Database::connect(&url).await.expect("connection");
-    db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_seaql_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
-    db.execute_unprepared("DROP TABLE duet_conversation_events,duet_conversation_attempts; DELETE FROM front_door_seaql_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
-    db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_seaql_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
-    // Fixture-only removal of the new empty outbox. Production rollback refuses
-    // to destroy retained privacy receipts.
-    db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_seaql_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
-    // Recreate the actual old schema before simulating its legacy ledger.
-    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(&db, Some(1))
-        .await
-        .expect("remove new identity extension for legacy upgrade proof");
+    rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
          CREATE TABLE seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
@@ -142,6 +133,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // The interim front-door ledger also recorded the init as `mod`. When it
     // exists beside the shared table, its own receipt is the one adopted, and
     // neither legacy ledger is renamed or deleted.
+    rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
          CREATE TABLE front_door_seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
@@ -170,6 +162,19 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         assert_eq!(rows.len(), 1, "{legacy} keeps its row");
     }
     store.migrate().await.expect("a second migrate is a no-op");
+}
+
+/// Remove every post-init extension so the schema matches what legacy ledgers
+/// recorded. Fixture-only: production rollback of these extensions is refused
+/// because they hold durable history and privacy receipts.
+async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
+    db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
+    db.execute_unprepared("DROP TABLE duet_conversation_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
+    db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
+    db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(1))
+        .await
+        .expect("remove new identity extension for legacy upgrade proof");
 }
 
 async fn recorded(db: &sea_orm::DatabaseConnection) -> Vec<(String, i64)> {
@@ -254,9 +259,9 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "front_door_invitations",
         "front_door_links",
         "front_door_luna_restrictions",
+        "front_door_migrations",
         "front_door_permissions",
         "front_door_premium",
-        "front_door_seaql_migrations",
         "front_door_sessions",
         "front_door_sign_in_tokens",
     ];

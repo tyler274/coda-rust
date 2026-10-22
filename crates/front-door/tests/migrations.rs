@@ -1,6 +1,6 @@
 //! Real PostgreSQL fresh/legacy/co-resident migration adoption, never silently skipped.
 use sea_orm::{ConnectionTrait, Database, DbBackend, Statement};
-use sea_orm_migration::{MigrationTrait, SchemaManager};
+use sea_orm_migration::{MigrationTrait, MigratorTrait, SchemaManager};
 #[tokio::test]
 async fn fresh_legacy_and_co_resident() {
     let url = std::env::var("FRONT_DOOR_TEST_DATABASE_URL").expect("isolated PostgreSQL required");
@@ -31,7 +31,15 @@ async fn fresh_legacy_and_co_resident() {
         .unwrap()
         .try_get::<i64>("", "n")
         .unwrap();
-    assert_eq!(count, 1);
+    // A fresh install records every migration in the chain exactly once, and
+    // the rerun adds nothing.
+    assert_eq!(
+        count,
+        i64::try_from(front_door::migration::Migrator::migrations().len()).unwrap()
+    );
+    // Rewind to the legacy init-only schema (fixture-only; production rollback
+    // of these extensions is refused) before simulating its shared ledger.
+    db.execute_unprepared("drop table duet_model_execution_switch, duet_conversation_events, duet_conversation_attempts, duet_conversation_messages, duet_conversation_inputs, duet_conversation_state, front_door_luna_restrictions; drop trigger duet_permission_interrupt on front_door_permissions; drop function duet_permission_interrupt(); drop function duet_interrupt_accepted(uuid); drop function duet_switch_append_only(); drop table front_door_permissions, front_door_identities").await.unwrap();
     db.execute_unprepared("insert into front_door_accounts(id,email,display_name,created_at) values('00000000-0000-0000-0000-000000000001','preserved@example.test','Preserved',1); drop table front_door_migrations; create table seaql_migrations(version text primary key,applied_at bigint not null); insert into seaql_migrations values('mod',123); create table physician_auth_migrations(version text primary key,applied_at bigint not null); insert into physician_auth_migrations values('unrelated',456)").await.unwrap();
     front_door::migration::upgrade::migrate(&db).await.unwrap();
     let name = db

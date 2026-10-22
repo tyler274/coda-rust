@@ -48,6 +48,22 @@ Vercel retirement.
 - Every entrypoint is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in [`crates/workspace-tools/src/doppler.rs`](/crates/workspace-tools/src/doppler.rs). Nix reads the version and SHA-256 from that file, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
 - `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and proves that each one fails closed without a token, hosting qualification or a database. Against a disposable PostgreSQL it runs both migration images twice, then starts both servers to check `/health` 200, `/readyz` 503, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
 
+## Rust staging deploy switch
+
+The `deploy-staging` job in [`.github/workflows/ci.yml`](/.github/workflows/ci.yml)
+runs on pushes to `main` only when the repository variable
+`RUST_STAGING_DEPLOY` is `enabled`. Leave it unset until an administrator has
+bootstrapped the Rust staging resources in `coda-health-staging`, the saved-plan
+applies have succeeded, and the GitHub `staging` environment holds
+`GCP_WORKLOAD_IDENTITY_PROVIDER`, `GCP_DEPLOYER_SERVICE_ACCOUNT`,
+`GCP_PROJECT_ID`, `GCP_REGION` and `RELEASE_ENVIRONMENT`. Then enable it:
+
+```bash
+gh variable set RUST_STAGING_DEPLOY --body enabled
+```
+
+Unsetting the variable stops staging deploys without editing the workflow.
+
 ## Release procedure
 
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#environments">Environments</a>

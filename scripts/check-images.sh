@@ -98,8 +98,8 @@ run_job() {
 
 schema_state() {
   psql -At "$1" -c "select string_agg(table_name, ',' order by table_name) from information_schema.tables where table_schema = 'public'" \
-    -c "select 'physician-auth=' || count(*) from public.seaql_migrations" \
-    -c "select 'front-door=' || count(*) from public.front_door_seaql_migrations"
+    -c "select 'physician-auth=' || count(*) from public.physician_auth_migrations" \
+    -c "select 'front-door=' || count(*) from public.front_door_migrations"
 }
 states=()
 for attempt in 1 2; do

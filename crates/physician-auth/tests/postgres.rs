@@ -108,13 +108,13 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     migrate();
     let expected = vec![
         "physician_accounts",
+        "physician_auth_migrations",
         "physician_invitations",
         "physician_memberships",
         "physician_patient_links",
         "physician_patients",
         "physician_sessions",
         "physician_sign_in_tokens",
-        "seaql_migrations",
     ];
     assert_eq!(schema_tables(&url).await, expected);
     let (email, session) = invited_account(&runtime, "separation-proof").await;

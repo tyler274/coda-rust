@@ -382,7 +382,10 @@ jobs:
   deploy-staging:
     name: Deploy staging
     needs: [ci, foundations, images, postgres, cargo-deny]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Off until an admin has bootstrapped coda-health-staging and created the
+    # GitHub `staging` environment; then set the repository variable
+    # RUST_STAGING_DEPLOY=enabled (book/src/gcp.md). Main stays green meanwhile.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 120
     concurrency:
