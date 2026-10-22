@@ -139,6 +139,12 @@ variable "runtime_environment" {
   description = "Approved NONSECRET per-app runtime settings, including product auth/API mode and enforced model/pool limits agreed with runtime owners. All secrets remain in Doppler. No invented runtime flags are supplied."
 }
 
+variable "migration_environment" {
+  type        = map(map(string))
+  default     = {}
+  description = "Approved NONSECRET per-app migration-job settings, such as the staging-preview profile and its seeded sign-in account list. Secrets remain in the migration Doppler config."
+}
+
 variable "doppler_token_versions" {
   type = map(object({
     runtime   = string

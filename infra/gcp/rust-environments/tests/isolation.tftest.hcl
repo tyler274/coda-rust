@@ -158,6 +158,13 @@ run "active_staging_contract" {
       physician = { TEST_CONTRACT_ONLY = "true" }
       duet      = { TEST_CONTRACT_ONLY = "true" }
     }
+    migration_environment = {
+      physician = { PHYSICIAN_STAGING_ACCOUNTS = "doc@example.invalid|Doc|admin" }
+    }
+  }
+  assert {
+    condition     = contains([for env in google_cloud_run_v2_job.migration["physician"].template[0].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_STAGING_ACCOUNTS=doc@example.invalid|Doc|admin") && !contains([for env in google_cloud_run_v2_job.migration["duet"].template[0].template[0].containers[0].env : env.name], "PHYSICIAN_STAGING_ACCOUNTS")
+    error_message = "Migration settings reach only their own app's job."
   }
   assert {
     condition     = alltrue([for service in google_cloud_run_v2_service.app : service.iap_enabled && !service.invoker_iam_disabled && service.template[0].scaling[0].min_instance_count == 0 && service.template[0].scaling[0].max_instance_count == 2 && service.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY"])
@@ -175,4 +182,41 @@ run "active_staging_contract" {
     condition     = !contains(google_project_iam_custom_role.release_service.permissions, "run.services.setIamPolicy") && !contains(google_project_iam_custom_role.release_service.permissions, "run.services.create") && !contains(google_project_iam_custom_role.release_job.permissions, "run.jobs.runWithOverrides")
     error_message = "Release roles must not create resources, change IAM or override migration execution."
   }
+}
+
+run "reject_migration_bootstrap_override" {
+  command = plan
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+    migration_environment = {
+      physician = { DOPPLER_CONFIG = "stg_physician_runtime" }
+    }
+  }
+  expect_failures = [google_project.environment]
 }

@@ -38,7 +38,7 @@ resource "google_project" "environment" {
       condition = !var.enable_workloads || (
         length(distinct(values(var.doppler_configs))) == 4 &&
         alltrue([for key in keys(local.identities) : startswith(try(var.doppler_configs[key], ""), "${var.environment}_")]) &&
-        alltrue(flatten([for config in values(var.runtime_environment) : [for key in keys(config) : !contains(["DOPPLER_TOKEN", "DOPPLER_PROJECT", "DOPPLER_CONFIG", "PORT"], key)]]))
+        alltrue(flatten([for config in concat(values(var.runtime_environment), values(var.migration_environment)) : [for key in keys(config) : !contains(["DOPPLER_TOKEN", "DOPPLER_PROJECT", "DOPPLER_CONFIG", "PORT"], key)]]))
       )
       error_message = "Active workloads need four distinct environment-derived least-scope Doppler configs and may not override bootstrap/port settings."
     }

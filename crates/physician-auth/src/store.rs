@@ -70,6 +70,44 @@ impl PostgresAuthStore {
         crate::migration::migrate(&self.db).await
     }
 
+    /// Creates one account when its email is absent; returns whether it did.
+    ///
+    /// An existing account is left exactly as it is, so a deactivation or
+    /// removal-and-reinvite an administrator made is never undone by a rerun.
+    /// The staging migration job uses this to seed its preview accounts.
+    pub async fn ensure_account(
+        &self,
+        practice_id: &str,
+        physician_id: &str,
+        email: &str,
+        display_name: &str,
+        admin: bool,
+        now: u64,
+    ) -> Result<bool, DbErr> {
+        let key = email.trim().to_lowercase();
+        let account = crate::migration::AccountActiveModel {
+            id: Set(uuid::Uuid::new_v4()),
+            practice_id: Set(practice_id.to_owned()),
+            physician_id: Set(physician_id.to_owned()),
+            email: Set(key),
+            display_name: Set(display_name.to_owned()),
+            active: Set(true),
+            admin: Set(admin),
+            sessions_ended_before: Set(0),
+            created_at: Set(now as i64),
+        };
+        let inserted = Accounts::insert(account)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(crate::migration::account::Column::Email)
+                    .do_nothing()
+                    .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await?;
+        Ok(matches!(inserted, sea_orm::TryInsertResult::Inserted(_)))
+    }
+
     /// Non-secret reference to the existing session, usable for durable accepted work.
     pub fn session_reference(token: &str) -> Vec<u8> {
         token_hash(token).to_vec()

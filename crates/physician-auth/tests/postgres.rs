@@ -443,3 +443,57 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
         .expect("revoke consent");
     assert!(!revoked.sharing_consented);
 }
+
+#[tokio::test]
+async fn ensure_account_seeds_once_and_never_undoes_an_admin_change() {
+    let Some(store) = store("ensure_account").await else {
+        return;
+    };
+    let email = "Seeded@Practice.test";
+    assert!(
+        store
+            .ensure_account("pg-proof", "staging-physician", email, "Seeded", true, NOW)
+            .await
+            .expect("seed")
+    );
+    let account = store
+        .account_by_email("seeded@practice.test")
+        .await
+        .expect("seeded account");
+    assert_eq!(account.identity.physician_id, "staging-physician");
+    assert!(account.admin);
+
+    // The seeded account signs in through the ordinary token flow.
+    let token = store.begin_sign_in(email, NOW).await.expect("token");
+    let (who, _) = store
+        .complete_sign_in(email, &token, NOW)
+        .await
+        .expect("verify");
+    assert_eq!(who.practice_id, "pg-proof");
+
+    // A rerun neither duplicates nor reactivates the account.
+    assert!(store.deactivate(email).await);
+    assert!(
+        !store
+            .ensure_account(
+                "pg-proof",
+                "staging-physician",
+                email,
+                "Renamed",
+                false,
+                NOW + 1
+            )
+            .await
+            .expect("rerun")
+    );
+    let account = store
+        .account_by_email(email)
+        .await
+        .expect("still one account");
+    assert!(!account.active, "a rerun leaves the deactivation in place");
+    assert_eq!(account.display_name, "Seeded");
+    assert_eq!(
+        store.begin_sign_in(email, NOW + 2).await.unwrap_err(),
+        SignInError::Inactive
+    );
+}
