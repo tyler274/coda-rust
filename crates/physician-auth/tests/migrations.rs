@@ -13,7 +13,8 @@ fn names_are_stable_and_distinct() {
         names,
         [
             "physician_auth_20260101_000001_init",
-            "physician_auth_20260101_000002_practice_patients"
+            "physician_auth_20260101_000002_practice_patients",
+            "physician_auth_20261022_000003_npi_association"
         ]
     );
 }
@@ -84,7 +85,7 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
                 .unwrap()
                 .try_get::<i64>("", "n")
                 .unwrap();
-            assert_eq!(count, 2);
+            assert_eq!(count, 3);
             assert!(
                 SchemaManager::new(&db)
                     .has_table("physician_patients")

@@ -1,6 +1,6 @@
 # Crate map
 
-Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The product-neutral crates the two products share are `ui`, `http`, and the execution mechanics in `harness` (with its `agent-skills` admission dependency); <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns that boundary.
+Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The product-neutral crates the two products share are `ui`, `http`, the public directory adapter `npi-registry`, and the execution mechanics in `harness` (with its `agent-skills` admission dependency); <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns that boundary.
 
 ## Shared
 
@@ -12,6 +12,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus loading `skills/` once and admitting `skill_view`. Products keep authority, effects, persistence, and recovery. | [Agent contracts, hoisted](agent-contracts.md) |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
 | `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services | [Observability](observability.md) |
+| `npi-registry` | [`src/lib.rs`](/crates/npi-registry/src/lib.rs) | Public NPPES directory DTOs, validation and lookup; no product state | [Clinician directory](clinician-directory.md) |
 
 ## Duet (patient app)
 
