@@ -390,6 +390,124 @@ jobs:
           nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
           nix develop --command bash scripts/check-postgres.sh
 
+  # Rebuilds the public marketing site from this main commit, pushes it by
+  # digest to the private public-site repository and applies the staging
+  # OpenTofu root (book/src/public-site.md). It authenticates through the
+  # github-actions WIF provider, which admits only main in environment
+  # `staging`, as public-site-ci-deployer, whose grants are scoped to this
+  # one service. The saved plan may only update the Cloud Run service in
+  # place; anything else fails before apply. Off unless the repository
+  # variable PUBLIC_SITE_STAGING_DEPLOY is `enabled`.
+  deploy-public-site-staging:
+    name: Deploy public site to staging
+    needs: [ci, cargo-deny]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 45
+    concurrency:
+      group: public-site-staging-release
+      cancel-in-progress: false
+    environment:
+      name: staging
+      url: https://staging.codahealth.ai
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REGION: us-east1
+      PROJECT: coda-health-staging
+      SERVICE: public-site-staging
+      REPOSITORY: us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site
+      ROOT: infra/gcp/public-site
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Authenticate as the public-site CI deployer
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/134570912572/locations/global/workloadIdentityPools/github-actions/providers/github-oidc
+          service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com
+          token_format: access_token
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Build the image from the private base repositories
+        run: |
+          set -euo pipefail
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          docker build --platform=linux/amd64 -f crates/public-site/Dockerfile \
+            -t "public-site:${GITHUB_SHA}" .
+      - name: Smoke the image locally
+        run: nix develop .#release --command python3 infra/gcp/public-site/smoke.py "public-site:${GITHUB_SHA}"
+      - name: Push by digest
+        id: push
+        run: |
+          set -euo pipefail
+          # Tags are immutable. A rerun of this commit reuses its published
+          # digest instead of overwriting it.
+          if ! gcloud artifacts docker images describe "${REPOSITORY}:${GITHUB_SHA}" >/dev/null 2>&1; then
+            docker tag "public-site:${GITHUB_SHA}" "${REPOSITORY}:${GITHUB_SHA}"
+            docker push "${REPOSITORY}:${GITHUB_SHA}"
+          fi
+          digest=$(gcloud artifacts docker images describe "${REPOSITORY}:${GITHUB_SHA}" --format='value(image_summary.digest)')
+          [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::no digest for ${GITHUB_SHA}"; exit 1; }
+          echo "image=${REPOSITORY}@${digest}" >> "$GITHUB_OUTPUT"
+          echo "Published ${REPOSITORY}@${digest}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Plan the staging root
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          IMAGE: ${{ steps.push.outputs.image }}
+        run: |
+          set -euo pipefail
+          tofu() { nix develop .#release --command tofu -chdir="$ROOT" "$@"; }
+          tofu init -input=false -backend-config=backend/staging.gcs.tfbackend
+          # env/staging.tfvars holds the reviewed non-secret inputs; this run
+          # supplies only the new image digest and release SHA.
+          tofu plan -input=false -lock-timeout=5m -var-file=env/staging.tfvars \
+            -var "image=${IMAGE}" -var "release_sha=${GITHUB_SHA}" -out=staging.tfplan
+          tofu show -json staging.tfplan > plan.json
+          # Allow only an in-place update of the Cloud Run service (or nothing).
+          unexpected=$(jq -r '[.resource_changes[]
+            | select(.change.actions != ["no-op"] and .change.actions != ["read"])
+            | select(.address != "google_cloud_run_v2_service.site" or .change.actions != ["update"])
+            | "\(.address): \(.change.actions | join(","))"] | .[]' plan.json)
+          if [ -n "$unexpected" ]; then
+            echo "::error::The plan changes more than the site service:"
+            echo "$unexpected"
+            exit 1
+          fi
+      - name: Apply the saved plan
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: nix develop .#release --command tofu -chdir="$ROOT" apply -input=false -lock-timeout=5m staging.tfplan
+      - name: Verify the revision and the IAP gate
+        env:
+          IMAGE: ${{ steps.push.outputs.image }}
+        run: |
+          set -euo pipefail
+          service=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" --format=json)
+          ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
+          created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
+          served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
+          [ "$ready" = "$created" ] || { echo "::error::latest revision $created is not Ready ($ready is)"; exit 1; }
+          [ "$served" = "$IMAGE" ] || { echo "::error::service image $served, expected $IMAGE"; exit 1; }
+          jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
+            || { echo "::error::the latest revision does not serve all traffic"; exit 1; }
+          url=$(jq -r '.status.url' <<<"$service")
+          for target in "$url/" "$url/health" "https://staging.codahealth.ai/"; do
+            location=$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' "$target")
+            case "$location" in
+              "302 https://accounts.google.com/"*) echo "$target -> Google sign-in" ;;
+              *) echo "::error::$target answered '$location' without IAP sign-in"; exit 1 ;;
+            esac
+          done
+          echo "Revision $ready serves $IMAGE behind IAP" >> "$GITHUB_STEP_SUMMARY"
+
   # Publishes the four images by digest and runs the release state machine.
   # Only a push to main, and only after every check job is green. The staging
   # environment must exist with its variables and the three gcloud identities

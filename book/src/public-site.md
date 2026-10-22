@@ -675,11 +675,46 @@ account: the first apply is a human apply), no project-wide `run.admin`,
 it has no website access. The service-scoped rows need the service and runtime
 account to exist; the script skips them until then and adds them on a rerun.
 Tofu's authoritative bindings cover only `roles/run.invoker` and
-`roles/iap.httpsResourceAccessor`, so they do not remove these grants. No deploy
-workflow exists yet. Its job must declare `environment: staging` and run on
-`main`, using `google-github-actions/auth` with
+`roles/iap.httpsResourceAccessor`, so they do not remove these grants. The
+`deploy-public-site-staging` job (below) declares `environment: staging`, runs on
+`main` and uses `google-github-actions/auth` with
 `workload_identity_provider: projects/134570912572/locations/global/workloadIdentityPools/github-actions/providers/github-oidc`
 and `service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`.
+
+### CI deploy on push to main
+
+The `deploy-public-site-staging` job in
+[`.github/workflows/ci.yml`](/.github/workflows/ci.yml) redeploys staging from every
+push to `main`, after `ci` (which includes the public-site browser proof) and
+`cargo-deny` pass. It runs only when the repository variable
+`PUBLIC_SITE_STAGING_DEPLOY` is `enabled`; unset it to stop deploys without
+editing the workflow. The GitHub `staging` environment allows only the `main`
+branch to deploy, which matches the provider's attribute condition. The job:
+
+1. Builds `crates/public-site/Dockerfile` with the private base-image defaults
+   and runs `smoke.py` on the result.
+2. Pushes the image to `public-site/public-site:<sha>`. Tags are immutable, so a
+   rerun of the same commit reuses the digest it already published.
+3. Runs `tofu plan` with `env/staging.tfvars` plus `-var image=<digest>` and
+   `-var release_sha=<sha>`, and fails unless the saved plan is empty or an
+   in-place update of `google_cloud_run_v2_service.site` alone. Then it applies
+   that saved plan.
+4. Requires the latest revision to be Ready, serve 100% of traffic and report
+   the new digest. It also requires anonymous requests to the run.app homepage
+   and `/health` and to `staging.codahealth.ai` to redirect to Google sign-in.
+
+`env/staging.tfvars` keeps the last operator-reviewed digest; a local plan run
+from it after a CI deploy shows the image going back. Pass the current digest
+with `-var image=...` (read it from `gcloud run services describe`) when
+planning by hand.
+
+Before the job was enabled, a rehearsal impersonated the CI account under a
+3-hour conditional `roles/iam.serviceAccountTokenCreator` grant to Tyler. As
+that identity it initialized the backend, refreshed the full state (including
+the domain mapping) with no changes, read the image digest, and held
+`uploadArtifacts` on `public-site`, `run.services.update` on the service and
+`actAs` on the runtime account. The grant was then removed; the account's policy
+again holds only the GitHub `workloadIdentityUser` binding.
 
 **Group check (Workspace admin).** The IAP accessor is
 `group:gcp-engineering@codahealth.ai`. A Google Workspace or Cloud Identity admin
@@ -740,7 +775,8 @@ available directly.
 - The dedicated versioned state bucket, three private image repositories,
   read-only `coda-rust/stg` token, CI service account, and restricted GitHub WIF
   provider exist. The CI account has the documented service-scoped post-apply
-  grants. No deploy workflow has been added.
+  grants. The CI deploy job is described in
+  [CI deploy on push to main](#ci-deploy-on-push-to-main).
 - The site image and distroless base were copied with identical digests. The
   Docker Hub cache resolves the pinned Rust base. Repository IAM readback found
   no `allUsers` or `allAuthenticatedUsers` grants, including on `coda-agents`.
@@ -803,8 +839,9 @@ motion script replaces. Staging needs a redeploy before it shows that change.
 The existing Sign in link points back to the marketing staging site;
 physician/Duet application staging is separate work under ENG-167.
 
-CI and deployment identities have no website-access grant; no Rust release
-workflow has been added. The legacy kytos Deploy Staging and Staging Smoke
+CI and deployment identities have no website-access grant, so the CI deploy job
+checks only that anonymous requests are sent to sign-in; an authenticated render
+is still a manual check. The legacy kytos Deploy Staging and Staging Smoke
 workflows are disabled, and their staging-only repository variables and secrets
 are removed. Their Cloudflare headers and Next.js source comparisons cannot
 qualify this deployment; do not retarget them to the IAP hostname.
