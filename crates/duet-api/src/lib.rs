@@ -9,6 +9,8 @@
 
 pub mod accounting;
 pub mod care;
+pub mod care_team;
+pub mod care_team_routes;
 pub mod conversation;
 mod conversation_context;
 pub mod conversation_execution;

@@ -22,6 +22,13 @@ pub enum AcceptDurableConversationCommandError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`add_care_team_member`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum AddCareTeamMemberError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`apple_health_source_api_evidence_apple_health_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -79,6 +86,21 @@ pub enum ConnectHealthRecordsApiEvidenceHealthRecordsConnectPostError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`create_release_authorization`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum CreateReleaseAuthorizationError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`delete_care_team_member`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DeleteCareTeamMemberError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`disconnect_apple_health_api_evidence_apple_health_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -114,6 +136,14 @@ pub enum DisconnectHealthRecordsApiEvidenceHealthRecordsDeleteError {
 #[serde(untagged)]
 pub enum DisconnectOracleApiConnectorsOracleOrganizationIdDeleteError {
     Status422(models::HttpValidationError),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`download_release_authorization_pdf`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DownloadReleaseAuthorizationPdfError {
+    Status404(),
     UnknownValue(serde_json::Value),
 }
 
@@ -204,6 +234,21 @@ pub enum IngestEvidenceApiEvidencePostError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`list_care_team`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListCareTeamError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`patch_care_team_member`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PatchCareTeamMemberError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`portal_organizations_api_connectors_portals_organizations_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -223,6 +268,14 @@ pub enum PortalStatusApiConnectorsPortalsGetError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum PreviewApprovedDoctorPageError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`preview_release_authorization`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PreviewReleaseAuthorizationError {
+    Status404(),
     UnknownValue(serde_json::Value),
 }
 
@@ -311,6 +364,14 @@ pub enum ReadTodayAssessmentStatusError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`refresh_care_team_member`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RefreshCareTeamMemberError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`reject_durable_doctor_proposal`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -361,6 +422,13 @@ pub enum RevokeDoctorPublicationError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`search_clinicians`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SearchCliniciansError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`start_epic_api_connectors_epic_start_post`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -406,6 +474,14 @@ pub enum SyncHealowApiConnectorsHealowOrganizationIdSyncPostError {
 #[serde(untagged)]
 pub enum SyncOracleApiConnectorsOracleOrganizationIdSyncPostError {
     Status422(models::HttpValidationError),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`update_release_authorization`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum UpdateReleaseAuthorizationError {
+    Status404(),
     UnknownValue(serde_json::Value),
 }
 
@@ -469,6 +545,63 @@ pub async fn accept_durable_conversation_command(
         let content = resp.text().await?;
         let entity: Option<AcceptDurableConversationCommandError> =
             serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn add_care_team_member(
+    configuration: &configuration::Configuration,
+    care_team_add_request: models::CareTeamAddRequest,
+) -> Result<models::CareTeamMember, Error<AddCareTeamMemberError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_care_team_add_request = care_team_add_request;
+
+    let uri_str = format!("{}/api/care-team", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_care_team_add_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CareTeamMember`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CareTeamMember`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<AddCareTeamMemberError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -837,6 +970,104 @@ pub async fn connect_health_records_api_evidence_health_records_connect_post(
     }
 }
 
+pub async fn create_release_authorization(
+    configuration: &configuration::Configuration,
+    release_authorization_request: models::ReleaseAuthorizationRequest,
+) -> Result<models::ReleaseAuthorizationView, Error<CreateReleaseAuthorizationError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_release_authorization_request = release_authorization_request;
+
+    let uri_str = format!("{}/api/release-authorizations", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_release_authorization_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::ReleaseAuthorizationView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::ReleaseAuthorizationView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<CreateReleaseAuthorizationError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn delete_care_team_member(
+    configuration: &configuration::Configuration,
+    id: Option<&str>,
+) -> Result<(), Error<DeleteCareTeamMemberError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/care-team/{id}",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id.unwrap())
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::DELETE, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(())
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<DeleteCareTeamMemberError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
 pub async fn disconnect_apple_health_api_evidence_apple_health_delete(
     configuration: &configuration::Configuration,
 ) -> Result<
@@ -1132,6 +1363,46 @@ pub async fn disconnect_oracle_api_connectors_oracle_organization_id_delete(
     } else {
         let content = resp.text().await?;
         let entity: Option<DisconnectOracleApiConnectorsOracleOrganizationIdDeleteError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn download_release_authorization_pdf(
+    configuration: &configuration::Configuration,
+    id: &str,
+) -> Result<reqwest::Response, Error<DownloadReleaseAuthorizationPdfError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/release-authorizations/{id}/pdf",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        Ok(resp)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<DownloadReleaseAuthorizationPdfError> =
             serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
@@ -1812,6 +2083,119 @@ pub async fn ingest_evidence_api_evidence_post(
     }
 }
 
+pub async fn list_care_team(
+    configuration: &configuration::Configuration,
+) -> Result<Vec<models::CareTeamMember>, Error<ListCareTeamError>> {
+    let uri_str = format!("{}/api/care-team", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `Vec&lt;models::CareTeamMember&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `Vec&lt;models::CareTeamMember&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ListCareTeamError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn patch_care_team_member(
+    configuration: &configuration::Configuration,
+    id: Option<&str>,
+    care_team_patch_request: models::CareTeamPatchRequest,
+) -> Result<models::CareTeamMember, Error<PatchCareTeamMemberError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_care_team_patch_request = care_team_patch_request;
+
+    let uri_str = format!(
+        "{}/api/care-team/{id}",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id.unwrap())
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::PATCH, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_care_team_patch_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CareTeamMember`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CareTeamMember`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<PatchCareTeamMemberError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
 /// One search across every available patient-portal vendor.
 pub async fn portal_organizations_api_connectors_portals_organizations_get(
     configuration: &configuration::Configuration,
@@ -1971,6 +2355,64 @@ pub async fn preview_approved_doctor_page(
     } else {
         let content = resp.text().await?;
         let entity: Option<PreviewApprovedDoctorPageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn preview_release_authorization(
+    configuration: &configuration::Configuration,
+    id: &str,
+) -> Result<String, Error<PreviewReleaseAuthorizationError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/release-authorizations/{id}/preview",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `String`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `String`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<PreviewReleaseAuthorizationError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -2476,7 +2918,7 @@ pub async fn read_durable_conversation_events(
 
 pub async fn read_durable_conversation_usage(
     configuration: &configuration::Configuration,
-    id: Option<&str>,
+    id: &str,
 ) -> Result<
     std::collections::HashMap<String, serde_json::Value>,
     Error<ReadDurableConversationUsageError>,
@@ -2487,7 +2929,7 @@ pub async fn read_durable_conversation_usage(
     let uri_str = format!(
         "{}/api/conversation/commands/{id}/usage",
         configuration.base_path,
-        id = crate::apis::urlencode(p_path_id.unwrap())
+        id = crate::apis::urlencode(p_path_id)
     );
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
@@ -2565,6 +3007,66 @@ pub async fn read_today_assessment_status(
     } else {
         let content = resp.text().await?;
         let entity: Option<ReadTodayAssessmentStatusError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn refresh_care_team_member(
+    configuration: &configuration::Configuration,
+    id: &str,
+) -> Result<models::CareTeamMember, Error<RefreshCareTeamMemberError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+
+    let uri_str = format!(
+        "{}/api/care-team/{id}/refresh",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::CareTeamMember`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::CareTeamMember`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RefreshCareTeamMemberError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -2883,6 +3385,63 @@ pub async fn revoke_doctor_publication(
     } else {
         let content = resp.text().await?;
         let entity: Option<RevokeDoctorPublicationError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn search_clinicians(
+    configuration: &configuration::Configuration,
+    clinician_search_request: models::ClinicianSearchRequest,
+) -> Result<Vec<models::DirectoryClinician>, Error<SearchCliniciansError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_clinician_search_request = clinician_search_request;
+
+    let uri_str = format!("{}/api/clinicians/search", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_clinician_search_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `Vec&lt;models::DirectoryClinician&gt;`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `Vec&lt;models::DirectoryClinician&gt;`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<SearchCliniciansError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -3251,6 +3810,67 @@ pub async fn sync_oracle_api_connectors_oracle_organization_id_sync_post(
         let content = resp.text().await?;
         let entity: Option<SyncOracleApiConnectorsOracleOrganizationIdSyncPostError> =
             serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn update_release_authorization(
+    configuration: &configuration::Configuration,
+    id: &str,
+    release_authorization_request: models::ReleaseAuthorizationRequest,
+) -> Result<models::ReleaseAuthorizationView, Error<UpdateReleaseAuthorizationError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_id = id;
+    let p_body_release_authorization_request = release_authorization_request;
+
+    let uri_str = format!(
+        "{}/api/release-authorizations/{id}",
+        configuration.base_path,
+        id = crate::apis::urlencode(p_path_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::PUT, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_release_authorization_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::ReleaseAuthorizationView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::ReleaseAuthorizationView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<UpdateReleaseAuthorizationError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,

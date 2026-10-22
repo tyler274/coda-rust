@@ -134,6 +134,14 @@ async fn main() {
         Err(_) => None,
     };
     let mut app = router(state.clone())
+        .merge(duet_api::care_team_routes::router(
+            duet_api::care_team::CareTeamStore {
+                durable: state.clone(),
+                directory: Arc::new(
+                    npi_registry::Client::new().expect("NPI directory client configuration"),
+                ),
+            },
+        ))
         .merge(duet_api::evidence_routes::router(state))
         .merge(duet_api::doctor_routes::router(doctor))
         .merge(duet_api::conversation_routes::router(conversation))
