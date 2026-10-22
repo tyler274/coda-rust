@@ -676,3 +676,65 @@ async fn duplicate_physician_ids_keep_the_earliest_account_and_its_panel() {
     assert_eq!(surviving, 1);
     assert_eq!(reassigned, 0);
 }
+
+/// Two replicas share one database: a read cached on one must not survive a
+/// write the other makes. The authority trigger's notification moves the
+/// first replica's feed, and the next read goes back to Postgres.
+#[tokio::test]
+async fn a_cached_read_drops_when_another_replica_writes() {
+    let Some(url) = fresh_database("authority_feed").await else {
+        return;
+    };
+    let writer = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .expect("migrations");
+    let (email, session) = invited_account(&writer, "pg-feed").await;
+    let reader = physician_auth::CachedAuthStore::postgres(
+        PostgresAuthStore::connect_without_migrations(&url)
+            .await
+            .expect("runtime pool"),
+    );
+    let mut feed = reader.authority_changes().expect("feed");
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.live),
+    )
+    .await
+    .expect("listener connects")
+    .expect("feed open");
+    let who = reader
+        .session(&session, NOW)
+        .await
+        .expect("session resolves");
+    assert!(reader.membership(&who, "ws-feed").await == Membership::Denied);
+
+    let seen = feed.borrow_and_update().generation;
+    writer
+        .set_membership(&who, "ws-feed", Membership::Allowed)
+        .await;
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.generation > seen),
+    )
+    .await
+    .expect("trigger notifies")
+    .expect("feed open");
+    assert_eq!(
+        reader.membership(&who, "ws-feed").await,
+        Membership::Allowed
+    );
+
+    let seen = feed.borrow_and_update().generation;
+    assert!(writer.deactivate(&email).await);
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.generation > seen),
+    )
+    .await
+    .expect("trigger notifies")
+    .expect("feed open");
+    assert_eq!(
+        reader.session(&session, NOW).await,
+        Err(SessionError::Inactive)
+    );
+}

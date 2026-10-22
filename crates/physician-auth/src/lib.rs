@@ -18,12 +18,15 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
+mod cache;
 mod error;
 mod store;
 
+pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
 pub use error::{PanelError, SessionError, SignInError};
 pub use patient_work::ReviewCadence;
 pub use store::PostgresAuthStore;
+pub use tokio::sync::watch;
 
 /// The SeaORM entities and the migration chain.
 pub mod migration;
@@ -93,7 +96,7 @@ pub struct PatientLink {
 }
 
 /// A physician's practice-scoped identity, as the projections key it.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhysicianIdentity {
     /// The practice this physician belongs to.
     pub practice_id: String,
@@ -133,6 +136,20 @@ pub struct Account {
     pub sessions_ended_before: u64,
 }
 
+/// The authority change feed: sessions, accounts, panels, or patient
+/// ownership changed somewhere.
+///
+/// `generation` moves on every change. `live` says whether changes are being
+/// observed at all; while it is false a reader must not trust anything it
+/// learned earlier and should re-read the store.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct AuthorityFeed {
+    /// Moves forward on every observed change and on every reconnect.
+    pub generation: u64,
+    /// Whether the feed is currently following the store's changes.
+    pub live: bool,
+}
+
 /// One browser session a sign-in minted.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Session {
@@ -153,6 +170,12 @@ pub struct Session {
 /// `Arc<dyn AuthStore>` and picks the SQL or memory store at startup.
 #[async_trait]
 pub trait AuthStore: Send + Sync {
+    /// Follows authority changes, when this store can observe them. Holders of
+    /// long-lived grants (event streams, running work) re-check on each change
+    /// instead of polling. `None` means the caller must poll.
+    fn authority_changes(&self) -> Option<watch::Receiver<AuthorityFeed>> {
+        None
+    }
     /// Issues a sign-in token for an existing active account's email.
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError>;
     /// Verifies a sign-in token and mints one bearer session from it.
@@ -358,16 +381,51 @@ struct InvitationPending {
     expires_at: u64,
 }
 
+/// Announces one memory-store mutation on drop.
+struct Announce<'a>(&'a MemoryAuthStore);
+
+impl Drop for Announce<'_> {
+    fn drop(&mut self) {
+        self.0.changed();
+    }
+}
+
 /// The process-memory store. A deployment's SQL store replaces it.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct MemoryAuthStore {
     state: Mutex<MemoryState>,
+    /// Every mutation is observed in-process, so the feed is always live.
+    changes: watch::Sender<AuthorityFeed>,
+}
+
+impl Default for MemoryAuthStore {
+    fn default() -> Self {
+        Self {
+            state: Mutex::default(),
+            changes: watch::Sender::new(AuthorityFeed {
+                generation: 0,
+                live: true,
+            }),
+        }
+    }
 }
 
 impl MemoryAuthStore {
     /// Creates an empty store.
     pub fn new() -> Self {
         Self::default()
+    }
+
+    /// Announces one authority mutation to followers.
+    fn changed(&self) {
+        self.changes.send_modify(|feed| feed.generation += 1);
+    }
+
+    /// Announces a mutation when the returned guard drops. Declared before
+    /// the state lock, it drops after it, so followers never re-read while
+    /// the mutation still holds the lock, and every early return announces.
+    fn announce(&self) -> Announce<'_> {
+        Announce(self)
     }
 
     /// Seeds one account directly, for fixtures and the staging practice.
@@ -379,6 +437,7 @@ impl MemoryAuthStore {
         display_name: &str,
         admin: bool,
     ) {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         state.accounts.insert(
             email.to_lowercase(),
@@ -411,6 +470,7 @@ impl MemoryAuthStore {
 
     /// Mints a session for one account directly, for proof setups.
     pub fn seed_session(&self, email: &str, now: u64) -> Option<String> {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         let identity = state
             .accounts
@@ -444,6 +504,10 @@ impl MemoryAuthStore {
 
 #[async_trait]
 impl AuthStore for MemoryAuthStore {
+    fn authority_changes(&self) -> Option<watch::Receiver<AuthorityFeed>> {
+        Some(self.changes.subscribe())
+    }
+
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError> {
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("auth state");
@@ -472,6 +536,7 @@ impl AuthStore for MemoryAuthStore {
         token: &str,
         now: u64,
     ) -> Result<(PhysicianIdentity, String), SignInError> {
+        let _announce = self.announce();
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("auth state");
         // Remove-then-commit: the pending token is consumed once, even if the
@@ -552,6 +617,7 @@ impl AuthStore for MemoryAuthStore {
         publish()
     }
     async fn end_session(&self, token: &str) {
+        let _announce = self.announce();
         self.state
             .lock()
             .expect("auth state")
@@ -616,6 +682,7 @@ impl AuthStore for MemoryAuthStore {
         patient_workspace_id: &str,
         membership: Membership,
     ) {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         if membership == Membership::ClinicDemographic {
             state
@@ -660,6 +727,7 @@ impl AuthStore for MemoryAuthStore {
         patient_workspace_id: &str,
         membership: Membership,
     ) -> Result<(), PanelError> {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         let caller = state
             .accounts
@@ -699,6 +767,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         state
             .patients
@@ -745,6 +814,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn set_patient_cadence(&self, patient_workspace_id: &str, cadence: ReviewCadence) {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         state
             .cadences
@@ -789,6 +859,7 @@ impl AuthStore for MemoryAuthStore {
         token: &str,
         now: u64,
     ) -> Result<(PhysicianIdentity, String), SignInError> {
+        let _announce = self.announce();
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("auth state");
         if state.accounts.contains_key(&key) {
@@ -826,6 +897,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn deactivate(&self, email: &str) -> bool {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         let Some(identity) = state
             .accounts
@@ -855,6 +927,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn reactivate(&self, email: &str) -> bool {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         let Some(account) = state.accounts.get_mut(&email.to_lowercase()) else {
             return false;
@@ -864,6 +937,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn remove_account(&self, email: &str) -> bool {
+        let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         let Some(account) = state.accounts.remove(&email.to_lowercase()) else {
             return false;
@@ -1003,6 +1077,7 @@ impl AuthStore for MemoryAuthStore {
         patient_workspace_id: &str,
         premium: bool,
     ) {
+        let _announce = self.announce();
         let cadence = if premium {
             Cadence::DailyWhenChanged
         } else {
