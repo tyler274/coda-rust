@@ -1,8 +1,10 @@
 //! Faithful, measured US Letter doctor pages. Approval/currentness belongs to the
 //! caller; this crate only renders the supplied snapshot, without clinical inference.
 //!
-//! Use [`layout_approved`] for new callers. It retains the complete text and an
+//! Use [`layout_approved`] for doctor pages. It retains the complete text and an
 //! extended preview even on overflow, while [`PageLayout::pdf`] refuses export.
+//! Use [`layout_release`] for paginated release templates; rendering does not
+//! establish legal compliance, clinic acceptance or a valid signature.
 //! The cover note is deliberately absent from [`ApprovedPage`]. Noto Sans Regular
 //! and Bold are embedded by `oxifont-bundled` under SIL OFL 1.1. Additional
 //! mathematical/script fallback fonts come from `typst-assets` (see its bundled
@@ -24,6 +26,12 @@
 //! let pdf = layout.pdf().expect("the full snapshot fits and all glyphs exist");
 //! ```
 #![deny(missing_docs)]
+
+mod release;
+pub use release::{
+    ReleaseAuthorization, ReleaseExpiration, ReleaseParty, ReleasePatient, ReleaseRecipient,
+    ReleaseScope, SensitiveDisclosure, layout_release,
+};
 
 use cosmic_text::{Attrs, Buffer, Family, FontSystem, Metrics, Shaping, Weight, Wrap, fontdb};
 use krilla::{
@@ -106,7 +114,8 @@ pub struct PageEntry {
 /// A reason that the complete snapshot cannot be exported faithfully.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ExportBlocker {
-    /// The full text exceeds the one-page area at the smallest permitted size.
+    /// Content leaves its permitted page area. Doctor pages also use this when
+    /// the full text exceeds one page at the smallest permitted size.
     Overflow,
     /// All questions remain in the preview, but at most five may be exported.
     TooManyQuestions,
@@ -168,6 +177,9 @@ pub struct PageLayout {
     glyphs: Vec<PreviewGlyph>,
     fonts: Vec<EmbeddedFont>,
     blockers: Vec<ExportBlocker>,
+    title: &'static str,
+    // Glyph offsets for physical pages; preview coordinates remain document-global.
+    page_starts: Vec<usize>,
 }
 
 impl PageLayout {
@@ -199,60 +211,39 @@ impl PageLayout {
     pub fn blockers(&self) -> &[ExportBlocker] {
         &self.blockers
     }
-    /// Whether a complete, one-page export is possible.
+    /// Number of physical pages (doctor pages remain single-page).
+    pub fn page_count(&self) -> usize {
+        self.page_starts.len()
+    }
+    /// Whether a complete export is possible. This does not validate authorization.
     pub fn fits(&self) -> bool {
         self.blockers.is_empty()
     }
 
-    /// Emit one US Letter page from the exact preview glyphs. Never clips, elides,
+    /// Emit US Letter pages from the exact preview glyphs. Never clips, elides,
     /// truncates, or emits a partially supported document.
     pub fn pdf(&self) -> Result<Vec<u8>, Vec<ExportBlocker>> {
         if !self.fits() {
             return Err(self.blockers.clone());
         }
         let mut document = Document::new();
-        let mut page =
-            document.start_page_with(PageSettings::from_wh(PAGE_WIDTH, PAGE_HEIGHT).unwrap());
-        let mut surface = page.surface();
-        let mut start = 0;
-        while start < self.glyphs.len() {
-            let first = &self.glyphs[start];
-            let mut end = start + 1;
-            while end < self.glyphs.len() {
-                let next = &self.glyphs[end];
-                if next.font_index != first.font_index
-                    || next.size != first.size
-                    || !Arc::ptr_eq(&next.source, &first.source)
-                {
-                    break;
-                }
-                end += 1;
+        for (index, &start) in self.page_starts.iter().enumerate() {
+            let end = self
+                .page_starts
+                .get(index + 1)
+                .copied()
+                .unwrap_or(self.glyphs.len());
+            let mut glyphs = self.glyphs[start..end].to_vec();
+            for glyph in &mut glyphs {
+                glyph.y -= index as f32 * PAGE_HEIGHT;
             }
-            // Keep clusters together for ToUnicode/ActualText (ligatures and
-            // combining marks must not duplicate their source text on extraction).
-            let mut pen = first.x;
-            let glyphs: Vec<_> = self.glyphs[start..end]
-                .iter()
-                .map(|positioned| {
-                    let mut glyph = positioned.glyph.clone();
-                    glyph.x_offset = (positioned.x - pen) / first.size;
-                    glyph.y_offset = (first.y - positioned.y) / first.size;
-                    pen += glyph.x_advance * first.size;
-                    glyph
-                })
-                .collect();
-            surface.draw_glyphs(
-                Point::from_xy(first.x, first.y),
-                &glyphs,
-                self.fonts[first.font_index].pdf.clone(),
-                &first.source,
-                first.size,
-                false,
-            );
-            start = end;
+            let mut page =
+                document.start_page_with(PageSettings::from_wh(PAGE_WIDTH, PAGE_HEIGHT).unwrap());
+            let mut surface = page.surface();
+            draw_glyph_runs(&mut surface, &glyphs, &self.fonts);
+            surface.finish();
+            page.finish();
         }
-        surface.finish();
-        page.finish();
         document
             .finish()
             .map_err(|_| vec![ExportBlocker::PdfEncoding])
@@ -264,46 +255,97 @@ impl PageLayout {
     /// The escaped complete logical text is included for accessibility.
     pub fn preview_svg(&self) -> String {
         let mut svg = format!(
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{PAGE_WIDTH}\" height=\"{}\" viewBox=\"0 0 {PAGE_WIDTH} {}\" role=\"img\"><title>For my doctor</title><desc>{}</desc><rect width=\"100%\" height=\"100%\" fill=\"white\"/>",
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{PAGE_WIDTH}\" height=\"{}\" viewBox=\"0 0 {PAGE_WIDTH} {}\" role=\"img\"><title>{}</title><desc>{}</desc><rect width=\"100%\" height=\"100%\" fill=\"white\"/>",
             self.height,
             self.height,
+            self.title,
             escape_xml(&self.text)
         );
-        let faces: Vec<_> = self
-            .fonts
-            .iter()
-            .map(|font| {
-                ttf_parser::Face::parse(font.bytes.as_slice(), font.index)
-                    .expect("validated bundled font")
-            })
-            .collect();
-        for glyph in &self.glyphs {
-            let face = &faces[glyph.font_index];
-            let mut path = SvgPath(String::new());
-            if glyph.glyph_id == 0 {
-                let _ = write!(
-                    svg,
-                    "<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"none\" stroke=\"red\"><title>Unsupported: {}</title></rect>",
-                    glyph.x,
-                    glyph.y - glyph.size,
-                    glyph.size,
-                    glyph.size,
-                    escape_xml(&glyph.source[glyph.glyph.text_range.clone()])
-                );
-            } else if face
-                .outline_glyph(ttf_parser::GlyphId(glyph.glyph_id), &mut path)
-                .is_some()
-            {
-                let scale = glyph.size / f32::from(face.units_per_em());
-                let _ = write!(
-                    svg,
-                    "<path fill=\"black\" transform=\"translate({} {}) scale({} {})\" d=\"{}\"/>",
-                    glyph.x, glyph.y, scale, -scale, path.0
-                );
-            }
-        }
+        svg_glyphs(&mut svg, &self.glyphs, &self.fonts, 0.0);
         svg.push_str("</svg>");
         svg
+    }
+}
+
+/// Draw positioned glyphs onto a PDF surface, one run per font/size/source.
+fn draw_glyph_runs(
+    surface: &mut krilla::surface::Surface<'_>,
+    positioned: &[PreviewGlyph],
+    fonts: &[EmbeddedFont],
+) {
+    let mut start = 0;
+    while start < positioned.len() {
+        let first = &positioned[start];
+        let mut end = start + 1;
+        while end < positioned.len() {
+            let next = &positioned[end];
+            if next.font_index != first.font_index
+                || next.size != first.size
+                || !Arc::ptr_eq(&next.source, &first.source)
+            {
+                break;
+            }
+            end += 1;
+        }
+        // Keep clusters together for ToUnicode/ActualText (ligatures and
+        // combining marks must not duplicate their source text on extraction).
+        let mut pen = first.x;
+        let glyphs: Vec<_> = positioned[start..end]
+            .iter()
+            .map(|positioned| {
+                let mut glyph = positioned.glyph.clone();
+                glyph.x_offset = (positioned.x - pen) / first.size;
+                glyph.y_offset = (first.y - positioned.y) / first.size;
+                pen += glyph.x_advance * first.size;
+                glyph
+            })
+            .collect();
+        surface.draw_glyphs(
+            Point::from_xy(first.x, first.y),
+            &glyphs,
+            fonts[first.font_index].pdf.clone(),
+            &first.source,
+            first.size,
+            false,
+        );
+        start = end;
+    }
+}
+
+/// Append glyph outlines to an SVG document, shifted down by `y_offset`.
+fn svg_glyphs(svg: &mut String, glyphs: &[PreviewGlyph], fonts: &[EmbeddedFont], y_offset: f32) {
+    let faces: Vec<_> = fonts
+        .iter()
+        .map(|font| {
+            ttf_parser::Face::parse(font.bytes.as_slice(), font.index)
+                .expect("validated bundled font")
+        })
+        .collect();
+    for glyph in glyphs {
+        let face = &faces[glyph.font_index];
+        let mut path = SvgPath(String::new());
+        let y = glyph.y + y_offset;
+        if glyph.glyph_id == 0 {
+            let _ = write!(
+                svg,
+                "<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"none\" stroke=\"red\"><title>Unsupported: {}</title></rect>",
+                glyph.x,
+                y - glyph.size,
+                glyph.size,
+                glyph.size,
+                escape_xml(&glyph.source[glyph.glyph.text_range.clone()])
+            );
+        } else if face
+            .outline_glyph(ttf_parser::GlyphId(glyph.glyph_id), &mut path)
+            .is_some()
+        {
+            let scale = glyph.size / f32::from(face.units_per_em());
+            let _ = write!(
+                svg,
+                "<path fill=\"black\" transform=\"translate({} {}) scale({} {})\" d=\"{}\"/>",
+                glyph.x, y, scale, -scale, path.0
+            );
+        }
     }
 }
 
@@ -456,92 +498,158 @@ impl Engine {
         for block in blocks {
             result.text.push_str(&block.text);
             result.text.push('\n');
-            for character in block
-                .text
-                .chars()
-                .filter(|c| c.is_control() && !matches!(c, '\n' | '\r' | '\t'))
-            {
-                add_blocker(
-                    &mut result.blockers,
-                    ExportBlocker::UnsupportedText(character.to_string()),
-                );
-            }
-            let mut buffer = Buffer::new(
-                &mut self.system,
-                Metrics::new(block.size, block.size * 1.35),
+            let shaped = self.shape_block(
+                &block.text,
+                block.size,
+                block.bold,
+                MARGIN,
+                y,
+                PAGE_WIDTH - 2.0 * MARGIN,
+                &mut result.blockers,
             );
-            buffer.set_size(Some(PAGE_WIDTH - 2.0 * MARGIN), None);
-            buffer.set_wrap(Wrap::WordOrGlyph);
-            let attrs = Attrs::new()
-                .family(Family::Name("Noto Sans"))
-                .weight(if block.bold {
-                    Weight::BOLD
-                } else {
-                    Weight::NORMAL
-                });
-            buffer.set_text(&block.text, &attrs, Shaping::Advanced, None);
-            buffer.shape_until_scroll(&mut self.system, false);
-            let mut height: f32 = 0.0;
-            for run in buffer.layout_runs() {
-                height = height.max(run.line_top + run.line_height);
-                if run.line_w > PAGE_WIDTH - 2.0 * MARGIN + 0.01 {
-                    add_blocker(&mut result.blockers, ExportBlocker::Overflow);
-                }
-                let start = run.glyphs.iter().map(|g| g.start).min().unwrap_or(0);
-                let end = run.glyphs.iter().map(|g| g.end).max().unwrap_or(0);
+            for line in shaped.lines {
                 result.lines.push(PreviewLine {
-                    text: run.text[start..end].into(),
+                    text: line.text,
                     x: MARGIN,
-                    y: y + run.line_y,
-                    width: run.line_w,
+                    y: y + line.baseline,
+                    width: line.width,
                     size: block.size,
                     bold: block.bold,
                 });
-                let source: Arc<str> = run.text.into();
-                for glyph in run.glyphs {
-                    if glyph.glyph_id == 0 {
-                        add_blocker(
-                            &mut result.blockers,
-                            ExportBlocker::UnsupportedText(run.text[glyph.start..glyph.end].into()),
-                        );
-                    }
-                    let font_index = *self.font_indices.entry(glyph.font_id).or_insert_with(|| {
-                        let (bytes, index) = self
-                            .system
-                            .db()
-                            .with_face_data(glyph.font_id, |data, index| {
-                                (Arc::new(data.to_vec()), index)
-                            })
-                            .expect("shaped font exists");
-                        let pdf = Font::new(bytes.clone().into(), index)
-                            .expect("bundled font supported by PDF encoder");
-                        let font_index = self.fonts.len();
-                        self.fonts.push(EmbeddedFont { bytes, index, pdf });
-                        font_index
-                    });
-                    result.glyphs.push(PreviewGlyph {
-                        font_index,
-                        glyph_id: glyph.glyph_id,
-                        x: MARGIN + glyph.x + glyph.x_offset * glyph.font_size,
-                        y: y + run.line_y + glyph.y - glyph.y_offset * glyph.font_size,
-                        size: glyph.font_size,
-                        glyph: KrillaGlyph::new(
-                            GlyphId::new(u32::from(glyph.glyph_id)),
-                            glyph.w / glyph.font_size,
-                            0.0,
-                            0.0,
-                            0.0,
-                            glyph.start..glyph.end,
-                            None,
-                        ),
-                        source: source.clone(),
-                    });
-                }
+                result.glyphs.extend(line.glyphs);
             }
-            y += height + block.gap;
+            y += shaped.height + block.gap;
         }
         y
     }
+
+    /// Shape one wrapped text block whose top-left corner is `(x, y)` and whose
+    /// wrap width is `width`. Line metrics are relative to `y`; glyphs are absolute.
+    #[allow(clippy::too_many_arguments)]
+    fn shape_block(
+        &mut self,
+        text: &str,
+        size: f32,
+        bold: bool,
+        x: f32,
+        y: f32,
+        width: f32,
+        blockers: &mut Vec<ExportBlocker>,
+    ) -> Shaped {
+        for character in text
+            .chars()
+            .filter(|c| c.is_control() && !matches!(c, '\n' | '\r' | '\t'))
+        {
+            add_blocker(
+                blockers,
+                ExportBlocker::UnsupportedText(character.to_string()),
+            );
+        }
+        let mut buffer = Buffer::new(&mut self.system, Metrics::new(size, size * 1.35));
+        buffer.set_size(Some(width), None);
+        buffer.set_wrap(Wrap::WordOrGlyph);
+        let attrs = Attrs::new()
+            .family(Family::Name("Noto Sans"))
+            .weight(if bold { Weight::BOLD } else { Weight::NORMAL });
+        buffer.set_text(text, &attrs, Shaping::Advanced, None);
+        buffer.shape_until_scroll(&mut self.system, false);
+        let mut shaped = Shaped {
+            lines: Vec::new(),
+            height: 0.0,
+        };
+        for run in buffer.layout_runs() {
+            shaped.height = shaped.height.max(run.line_top + run.line_height);
+            if run.line_w > width + 0.01 {
+                add_blocker(blockers, ExportBlocker::Overflow);
+            }
+            let start = run.glyphs.iter().map(|g| g.start).min().unwrap_or(0);
+            let end = run.glyphs.iter().map(|g| g.end).max().unwrap_or(0);
+            let mut line = ShapedLine {
+                text: run.text[start..end].into(),
+                baseline: run.line_y,
+                top: run.line_top,
+                height: run.line_height,
+                width: run.line_w,
+                glyphs: Vec::new(),
+            };
+            let source: Arc<str> = run.text.into();
+            for glyph in run.glyphs {
+                if glyph.glyph_id == 0 {
+                    add_blocker(
+                        blockers,
+                        ExportBlocker::UnsupportedText(run.text[glyph.start..glyph.end].into()),
+                    );
+                }
+                let font_index = *self.font_indices.entry(glyph.font_id).or_insert_with(|| {
+                    let (bytes, index) = self
+                        .system
+                        .db()
+                        .with_face_data(glyph.font_id, |data, index| {
+                            (Arc::new(data.to_vec()), index)
+                        })
+                        .expect("shaped font exists");
+                    let pdf = Font::new(bytes.clone().into(), index)
+                        .expect("bundled font supported by PDF encoder");
+                    let font_index = self.fonts.len();
+                    self.fonts.push(EmbeddedFont { bytes, index, pdf });
+                    font_index
+                });
+                line.glyphs.push(PreviewGlyph {
+                    font_index,
+                    glyph_id: glyph.glyph_id,
+                    x: x + glyph.x + glyph.x_offset * glyph.font_size,
+                    y: y + run.line_y + glyph.y - glyph.y_offset * glyph.font_size,
+                    size: glyph.font_size,
+                    glyph: KrillaGlyph::new(
+                        GlyphId::new(u32::from(glyph.glyph_id)),
+                        glyph.w / glyph.font_size,
+                        0.0,
+                        0.0,
+                        0.0,
+                        glyph.start..glyph.end,
+                        None,
+                    ),
+                    source: source.clone(),
+                });
+            }
+            shaped.lines.push(line);
+        }
+        shaped
+    }
+}
+
+/// One visual line of a shaped block. `baseline`/`top` are relative to the block top.
+struct ShapedLine {
+    text: String,
+    baseline: f32,
+    top: f32,
+    height: f32,
+    width: f32,
+    glyphs: Vec<PreviewGlyph>,
+}
+
+/// A shaped block of wrapped text.
+struct Shaped {
+    lines: Vec<ShapedLine>,
+    height: f32,
+}
+
+/// Whether any glyph outline leaves the margin box of a page of `height` points.
+/// Advances alone do not bound ink (e.g. italic overhangs or stacked combining accents).
+fn ink_overflows(fonts: &[EmbeddedFont], glyphs: &[PreviewGlyph], height: f32) -> bool {
+    glyphs.iter().any(|glyph| {
+        let font = &fonts[glyph.font_index];
+        let face = ttf_parser::Face::parse(font.bytes.as_slice(), font.index)
+            .expect("validated bundled font");
+        face.glyph_bounding_box(ttf_parser::GlyphId(glyph.glyph_id))
+            .is_some_and(|bounds| {
+                let scale = glyph.size / f32::from(face.units_per_em());
+                glyph.x + f32::from(bounds.x_min) * scale < MARGIN - 0.01
+                    || glyph.x + f32::from(bounds.x_max) * scale > PAGE_WIDTH - MARGIN + 0.01
+                    || glyph.y - f32::from(bounds.y_max) * scale < MARGIN - 0.01
+                    || glyph.y - f32::from(bounds.y_min) * scale > height - MARGIN + 0.01
+            })
+    })
 }
 fn add_blocker(blockers: &mut Vec<ExportBlocker>, blocker: ExportBlocker) {
     if !blockers.contains(&blocker) {
@@ -563,6 +671,8 @@ pub fn layout_approved(page: &ApprovedPage) -> PageLayout {
             glyphs: Vec::new(),
             fonts: Vec::new(),
             blockers: Vec::new(),
+            title: "For my doctor",
+            page_starts: vec![0],
         };
         if page.questions.len() > 5 {
             result.blockers.push(ExportBlocker::TooManyQuestions);
@@ -583,22 +693,9 @@ pub fn layout_approved(page: &ApprovedPage) -> PageLayout {
         for glyph in &mut result.glyphs[footer_start_glyph..] {
             glyph.y += footer_y;
         }
-        // Advances alone do not bound ink (e.g. italic overhangs or stacked
-        // combining accents). Refuse export if an outline leaves the page area.
-        for glyph in &result.glyphs {
-            let font = &engine.fonts[glyph.font_index];
-            let face = ttf_parser::Face::parse(font.bytes.as_slice(), font.index)
-                .expect("validated bundled font");
-            if let Some(bounds) = face.glyph_bounding_box(ttf_parser::GlyphId(glyph.glyph_id)) {
-                let scale = glyph.size / f32::from(face.units_per_em());
-                if glyph.x + f32::from(bounds.x_min) * scale < MARGIN - 0.01
-                    || glyph.x + f32::from(bounds.x_max) * scale > PAGE_WIDTH - MARGIN + 0.01
-                    || glyph.y - f32::from(bounds.y_max) * scale < MARGIN - 0.01
-                    || glyph.y - f32::from(bounds.y_min) * scale > result.height - MARGIN + 0.01
-                {
-                    add_blocker(&mut result.blockers, ExportBlocker::Overflow);
-                }
-            }
+        // Refuse export if an outline leaves the page area.
+        if ink_overflows(&engine.fonts, &result.glyphs, result.height) {
+            add_blocker(&mut result.blockers, ExportBlocker::Overflow);
         }
         if !result.blockers.contains(&ExportBlocker::Overflow) || size == SIZES[2] {
             result.fonts = engine.fonts;
