@@ -7,6 +7,9 @@ version.workspace = true
 
 [dependencies]
 async-trait = "0.1"
+npi-registry = { path = "../npi-registry" }
+serde_json = "1"
+unicode-normalization = "0.1"
 patient-work = { path = "../patient-work" }
 sea-orm = { version = "2", default-features = false, features = [
     "macros",

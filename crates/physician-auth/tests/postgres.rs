@@ -11,6 +11,69 @@ use sea_orm::ConnectionTrait;
 
 const NOW: u64 = 1_760_000_000;
 
+#[tokio::test]
+async fn npi_association_round_trips_conflicts_and_clears() {
+    let Some(store) = store("npi").await else {
+        return;
+    };
+    let (first_email, _) = invited_account(&store, "first").await;
+    let (second_email, _) = invited_account(&store, "second").await;
+    let first = store.account_by_email(&first_email).await.unwrap();
+    let second = store.account_by_email(&second_email).await.unwrap();
+    let mut clinician = npi_registry::FixtureDirectory::sample()
+        .clinicians()
+        .remove(0);
+    clinician.person.as_mut().unwrap().last = "Proof".into();
+    let claim = store
+        .claim_npi(&first.identity, clinician.clone(), NOW, false)
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .account_by_identity(&first.identity)
+            .await
+            .unwrap()
+            .npi,
+        Some(claim)
+    );
+    assert_eq!(
+        store
+            .claim_npi(&second.identity, clinician.clone(), NOW, false)
+            .await,
+        Err(physician_auth::NpiAssociationError::Conflict)
+    );
+    assert!(
+        !store
+            .account_by_identity(&first.identity)
+            .await
+            .unwrap()
+            .admin
+    );
+    store.clear_npi(&second.identity).await.unwrap();
+    assert!(
+        store
+            .account_by_identity(&first.identity)
+            .await
+            .unwrap()
+            .npi
+            .is_some()
+    );
+    store.clear_npi(&first.identity).await.unwrap();
+    assert!(
+        store
+            .account_by_identity(&first.identity)
+            .await
+            .unwrap()
+            .npi
+            .is_none()
+    );
+    store
+        .claim_npi(&second.identity, clinician, NOW, false)
+        .await
+        .unwrap();
+    store.migrate().await.unwrap();
+}
+
 /// Connects when the gate is set; `None` skips the suite quietly.
 ///
 /// Each test gets its own database — named after the gate URL's database plus

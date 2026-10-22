@@ -50,6 +50,26 @@ button, input { font: inherit; }
   box-shadow: var(--elevation-2);
   cursor: pointer;
 }
+.npi-profile {
+  position: fixed;
+  z-index: 10;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  width: min(36rem, calc(100vw - 2 * var(--space-4)));
+  overflow-y: auto;
+  padding: var(--space-4);
+  box-sizing: border-box;
+  border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: var(--elevation-2);
+}
+.npi-profile form, .npi-profile label { display: grid; gap: var(--space-2); }
+.npi-profile form { margin-block: var(--space-4); }
+.npi-profile input { min-width: 0; }
+.npi-profile p { overflow-wrap: anywhere; }
 .citation-chip { font-variant-numeric: tabular-nums; }
 button.citation-chip {
   border: 0;
