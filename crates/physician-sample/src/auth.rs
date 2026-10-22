@@ -40,8 +40,8 @@ use tokio::sync::broadcast;
 
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
 use physician_auth::{
-    AuthStore, Membership, MemoryAuthStore, PanelError, PhysicianIdentity, PostgresAuthStore,
-    ReviewCadence, SessionError, SignInError,
+    AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
+    PhysicianIdentity, PostgresAuthStore, ReviewCadence, SessionError, SignInError,
 };
 
 /// The staging practice the recorded fixture workspaces are seeded into by default.
@@ -171,6 +171,9 @@ impl Auth {
             .check_schema()
             .await
             .map_err(|error| format!("front-door schema; run migration job: {error}"))?;
+        // Authority reads are answered from memory between changes; the
+        // database trigger feed invalidates them across replicas.
+        let store = CachedAuthStore::postgres(store);
         Ok(Self::configured(Arc::new(store), Arc::new(front_door), mail).await)
     }
 }
@@ -592,9 +595,11 @@ async fn guard_event_stream(
     let (parts, body) = response.into_parts();
     let inner = body.into_data_stream();
     let auth_rx = auth.events.subscribe();
+    let feed = auth.store.authority_changes();
     let state = (
         Box::pin(inner),
         auth_rx,
+        feed,
         auth,
         token,
         identity,
@@ -607,6 +612,7 @@ async fn guard_event_stream(
         |(
             mut inner,
             mut auth_rx,
+            mut feed,
             auth,
             token,
             identity,
@@ -617,7 +623,7 @@ async fn guard_event_stream(
             loop {
                 tokio::select! {
                     biased;
-                    _ = tokio::time::sleep(Duration::from_millis(50)) => {
+                    () = authority_moved(&mut feed) => {
                         if !stream_still_authorized(
                             &auth,
                             &token,
@@ -656,6 +662,7 @@ async fn guard_event_stream(
                                     (
                                         inner,
                                         auth_rx,
+                                        feed,
                                         auth,
                                         token,
                                         identity,
@@ -702,6 +709,7 @@ async fn guard_event_stream(
                                 (
                                     inner,
                                     auth_rx,
+                                    feed,
                                     auth,
                                     token,
                                     identity,
@@ -756,6 +764,31 @@ fn sse_event_names_disallowed_workspace(event: &str, allowed: impl Fn(&str) -> b
     match workspace_id {
         Some(ws) => !allowed(&ws),
         None => false,
+    }
+}
+
+/// How often an open stream re-checks its grant while the authority feed is
+/// live. Changes wake it at once; this tick covers session expiry, which is a
+/// clock edge rather than a write.
+const LIVE_RECHECK: Duration = Duration::from_secs(30);
+/// How often an open stream re-checks while no feed is following changes.
+const OFFLINE_RECHECK: Duration = Duration::from_secs(1);
+
+/// Resolves when an open stream should re-check its grant: on an authority
+/// change, on reconnect of the feed, or on the fallback tick.
+async fn authority_moved(feed: &mut Option<physician_auth::watch::Receiver<AuthorityFeed>>) {
+    let live = feed.as_ref().is_some_and(|rx| rx.borrow().live);
+    let Some(rx) = feed.as_mut() else {
+        return tokio::time::sleep(OFFLINE_RECHECK).await;
+    };
+    let tick = if live { LIVE_RECHECK } else { OFFLINE_RECHECK };
+    tokio::select! {
+        changed = rx.changed() => {
+            if changed.is_err() {
+                *feed = None;
+            }
+        }
+        () = tokio::time::sleep(tick) => {}
     }
 }
 

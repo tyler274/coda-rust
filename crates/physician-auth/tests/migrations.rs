@@ -14,7 +14,8 @@ fn names_are_stable_and_distinct() {
         [
             "physician_auth_20260101_000001_init",
             "physician_auth_20260101_000002_practice_patients",
-            "physician_auth_20261023_000003_unique_physician_identity"
+            "physician_auth_20261023_000003_unique_physician_identity",
+            "physician_auth_20261022_000003_authority_notify",
         ]
     );
 }

@@ -59,6 +59,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260101_000001_init),
             Box::new(m20260101_000002_practice_patients),
             Box::new(m20261023_000003_unique_physician_identity),
+            Box::new(m20261022_000003_authority_notify),
         ]
     }
 }
@@ -563,6 +564,44 @@ impl MigrationTrait for m20261023_000003_unique_physician_identity {
                     .to_owned(),
             )
             .await
+    }
+}
+
+/// The authority tables announce every write on the `physician_authority`
+/// channel, so each replica's cached reads drop what a write made stale.
+///
+/// Raw SQL by exception: SeaQuery has no trigger or PL/pgSQL builder. The
+/// statements carry no runtime values.
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261022_000003_authority_notify;
+impl MigrationName for m20261022_000003_authority_notify {
+    fn name(&self) -> &str {
+        "physician_auth_20261022_000003_authority_notify"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261022_000003_authority_notify {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .get_connection()
+            .execute_unprepared(include_str!("../authority_notify.sql"))
+            .await
+            .map(|_| ())
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .get_connection()
+            .execute_unprepared(
+                "DROP TRIGGER IF EXISTS physician_accounts_authority_notify ON physician_accounts; \
+                 DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions; \
+                 DROP TRIGGER IF EXISTS physician_memberships_authority_notify ON physician_memberships; \
+                 DROP TRIGGER IF EXISTS physician_patients_authority_notify ON physician_patients; \
+                 DROP FUNCTION IF EXISTS physician_authority_notify();",
+            )
+            .await
+            .map(|_| ())
     }
 }
 
