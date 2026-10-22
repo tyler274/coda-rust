@@ -628,8 +628,11 @@ In order, it:
    `Coda-Health/coda-rust` (name, repository ID `1412706552` and owner ID
    `306538119`), ref `refs/heads/main` and GitHub environment `staging`. The CI
    service account grants `roles/iam.workloadIdentityUser` only to
-   `principal://iam.googleapis.com/projects/134570912572/locations/global/workloadIdentityPools/github-actions/subject/repo:Coda-Health/coda-rust:environment:staging`.
-   A rerun reasserts the condition.
+   `principal://iam.googleapis.com/projects/134570912572/locations/global/workloadIdentityPools/github-actions/subject/repo:Coda-Health@306538119/coda-rust@1412706552:environment:staging`.
+   The repository uses GitHub's immutable subject claim, so `sub` carries the
+   owner and repository IDs; a `repo:Coda-Health/coda-rust:...` binding never
+   matches and the token exchange fails with `iam.serviceAccounts.getAccessToken`
+   denied. A rerun reasserts the condition.
 7. **Base images, by digest.** Runs `gcloud auth configure-docker us-east1-docker.pkg.dev`.
    Copies `gcr.io/distroless/static-debian12@sha256:afa5c872…` into
    `public-site-base/distroless/static-debian12` (tag `nonroot-afa5c872c891`) and

@@ -420,7 +420,9 @@ note "No iam.serviceAccountAdmin: CI never creates or edits the runtime SA."
 WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.repository_id == '${WIF_REPOSITORY_ID}' && assertion.repository_owner_id == '${WIF_OWNER_ID}' && assertion.ref == '${WIF_REF}' && assertion.environment == '${WIF_ENVIRONMENT}'"
 WIF_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_id=assertion.repository_id,attribute.repository_owner_id=assertion.repository_owner_id,attribute.ref=assertion.ref,attribute.environment=assertion.environment"
 POOL_NAME="projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WIF_POOL}"
-WIF_SUBJECT="repo:${WIF_REPOSITORY}:environment:${WIF_ENVIRONMENT}"
+# The repository opts into GitHub's immutable subject claim, which carries the
+# owner and repository IDs: repo:Coda-Health@306538119/coda-rust@1412706552:...
+WIF_SUBJECT="repo:${WIF_REPOSITORY%%/*}@${WIF_OWNER_ID}/${WIF_REPOSITORY#*/}@${WIF_REPOSITORY_ID}:environment:${WIF_ENVIRONMENT}"
 
 step "Create WIF pool ${WIF_POOL} and GitHub OIDC provider ${WIF_PROVIDER}"
 if missing "${G[@]}" iam workload-identity-pools describe "$WIF_POOL" --location=global; then
