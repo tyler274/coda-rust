@@ -336,57 +336,6 @@ jobs:
           name: image-paths-${{ github.sha }}
           path: image-paths
 
-  foundations:
-    name: Offline cloud foundation contracts
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v7
-      - uses: cachix/install-nix-action@v31
-      - name: Check infrastructure source and SQL authority contracts
-        run: |
-          nix develop .#release --command python infra/gcp/rust-environments/tests/check_contract.py
-          nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
-      - name: Prove mocked release adapters (no cloud credentials)
-        run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
-      # Adapter tests do not authorize deployment. Artifact handoff, operator
-      # inputs and hosted runtime qualification remain blocking; no release job.
-
-  # Builds every runtime, migration and job image with Nix on PRs and main and
-  # runs them locally; nothing is pushed. Publishing to Artifact Registry is a
-  # later release step behind operator-provisioned OIDC (ENG-167).
-  images:
-    name: Locked Nix images (build, run, migrate; no push)
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    timeout-minutes: 90
-    permissions:
-      contents: read
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v7
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
-      # Archives, Doppler entrypoint and fail-closed starts, disposable
-      # Postgres migrations run twice, /health 200, /readyz 503, SIGTERM.
-      # Hosted readiness and live journeys remain separate gates.
-      - name: Build and prove runtime, migration and job images
-        run: nix develop .#release --command bash scripts/check-images.sh
-      - name: Record image sizes and store paths
-        run: |
-          {
-            echo '| Image archive | Size |'
-            echo '| --- | --- |'
-            while read -r archive; do
-              echo "| \`$archive\` | $(du -h --apparent-size "$archive" | cut -f1) |"
-            done < image-paths
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Save immutable build output references
-        uses: actions/upload-artifact@v7
-        with:
-          name: image-paths-${{ github.sha }}
-          path: image-paths
-
   postgres:
     name: Fresh Postgres migrations and tests
     runs-on: blacksmith-2vcpu-ubuntu-2404
