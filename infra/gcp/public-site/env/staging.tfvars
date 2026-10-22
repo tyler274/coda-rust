@@ -9,6 +9,8 @@ staging_domain               = "staging.codahealth.ai"
 iap_group                    = "gcp-engineering@codahealth.ai"
 image                        = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:5a8693ef4801ca73a661cb7c018f743495c86ba4b681ac6e4a34135709133e29"
 release_sha                  = "3609430a18194fd489bf39d39337b53cdd5fbfbd"
-physician_app_url            = "https://staging.codahealth.ai"
+# Physician preview lives in coda-rust-staging (836508863523), behind its own IAP.
+# Point at its UI root, not the marketing origin or the POST /auth/sign-in API.
+physician_app_url            = "https://physician-836508863523.us-east1.run.app"
 doppler_token_secret_id      = "public-site-stg-doppler-token"
 doppler_token_secret_version = "2"

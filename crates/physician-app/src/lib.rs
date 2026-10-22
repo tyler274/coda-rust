@@ -1310,8 +1310,11 @@ fn SignInScreen(
             let email_value = email.read().trim().to_owned();
             match client.begin_sign_in(&email_value).await {
                 Ok(answer) if answer.status == "token_issued" => {
+                    // Without email delivery (the staging preview) the server
+                    // returns the code itself; fill it in so the person who
+                    // asked for it can sign in. A mailed code arrives empty.
+                    token.set(answer.token.clone().unwrap_or_default());
                     proof_token.set(answer.token);
-                    token.set(String::new());
                     stage.set(SignInStage::Verify);
                 }
                 Ok(answer) => {
@@ -1387,7 +1390,13 @@ fn SignInScreen(
                         }
                     },
                     SignInStage::Verify => rsx! {
-                        p { class: "sign-in-sub", "Paste the code from the sign-in link we sent." }
+                        if proof_token().is_some() {
+                            p { class: "sign-in-sub sign-in-note",
+                                "Staging preview: no email is sent; your code is filled in."
+                            }
+                        } else {
+                            p { class: "sign-in-sub", "Paste the code from the sign-in link we sent." }
+                        }
                         label { "Sign-in code"
                             input {
                                 class: "sign-in-input",

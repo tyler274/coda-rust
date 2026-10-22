@@ -79,21 +79,20 @@ let
   dopplerPin =
     let
       source = builtins.readFile ../crates/workspace-tools/src/doppler.rs;
-      pin = name: builtins.head (builtins.match ".*pub const ${name}: &str = \"([^\"]+)\";.*" source);
+      pin = name: builtins.head (builtins.match ".*pub const ${name}: &str =[[:space:]]*\"([^\"]+)\";.*" source);
     in
-    { version = pin "VERSION"; sha256 = pin "SHA256"; };
+    { version = pin "VERSION"; sha256 = pin "SHA256"; url = pin "URL"; };
   doppler = pkgs.stdenvNoCC.mkDerivation {
     pname = "doppler-cli";
     version = lib.removePrefix "v" dopplerPin.version;
     src = pkgs.fetchurl {
-      name = "doppler-${dopplerPin.version}.tar";
-      url = "https://cli.doppler.com/download?os=linux&arch=amd64&format=tar&version=${dopplerPin.version}";
-      inherit (dopplerPin) sha256;
+      name = "doppler-${dopplerPin.version}.tar.gz";
+      inherit (dopplerPin) url sha256;
     };
     dontUnpack = true;
     dontFixup = true;
     installPhase = ''
-      tar -xf $src doppler
+      tar -xzf $src doppler
       install -Dm755 doppler $out/bin/doppler
     '';
   };

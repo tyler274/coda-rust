@@ -173,6 +173,13 @@ resource "google_cloud_run_v2_job" "migration" {
             }
           }
         }
+        dynamic "env" {
+          for_each = try(var.migration_environment[each.key], {})
+          content {
+            name  = env.key
+            value = env.value
+          }
+        }
       }
     }
   }

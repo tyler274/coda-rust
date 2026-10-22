@@ -47,6 +47,15 @@ doppler_token_versions = {
   physician = { runtime = "1", migration = "1" }
   duet      = { runtime = "1", migration = "1" }
 }
+# physician-migrate ensures these preview sign-in accounts exist in the
+# synthetic practice on the staging physician's panel; it never reactivates or
+# edits an existing account. Invite anyone else from the admin surface.
+migration_environment = {
+  physician = {
+    CODA_HOSTED_PROFILE        = "staging-preview"
+    PHYSICIAN_STAGING_ACCOUNTS = "tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin"
+  }
+}
 runtime_environment = {
   physician = {
     CODA_ENVIRONMENT    = "stg"

@@ -10,8 +10,12 @@ use tar::Archive;
 
 use crate::failure::Failure;
 
-pub const VERSION: &str = "v3.77.0";
-pub const SHA256: &str = "92587cb89c2ff82fc2ddec2b2a9f275ff320994a44e16cd9310b55a429a82084";
+pub const VERSION: &str = "v3.77.1";
+// The convenience download endpoint can serve latest despite a version query.
+// Pin the release asset itself; Nix reads this same URL and checksum.
+pub const URL: &str =
+    "https://github.com/DopplerHQ/cli/releases/download/3.77.1/doppler_3.77.1_linux_amd64.tar.gz";
+pub const SHA256: &str = "001f89a42629f9cb827cd86683c4c2dbf87c6299a8d6130643b98044bf5ed80a";
 
 pub fn from_args(args: &[String]) -> Result<(), Failure> {
     let [output] = args else {
@@ -29,14 +33,11 @@ pub fn install(output: &Path) -> Result<(), Failure> {
 }
 
 fn download() -> Result<Vec<u8>, Failure> {
-    let url = format!(
-        "https://cli.doppler.com/download?os=linux&arch=amd64&format=tar&version={VERSION}"
-    );
     let client = reqwest::blocking::Client::builder()
         .build()
         .map_err(|error| Failure::new(1, format!("could not build the HTTP client: {error}")))?;
     let bytes = client
-        .get(url)
+        .get(URL)
         .send()
         .map_err(|error| Failure::new(1, format!("could not download Doppler: {error}")))?
         .error_for_status()
@@ -70,7 +71,8 @@ fn sha256_hex(bytes: &[u8]) -> String {
 }
 
 fn extract_doppler(bytes: &[u8], output: &Path) -> Result<(), Failure> {
-    let mut archive = Archive::new(Cursor::new(bytes));
+    // Verify the compressed release asset before decoding or writing anything.
+    let mut archive = Archive::new(flate2::read::GzDecoder::new(Cursor::new(bytes)));
     let entries = archive
         .entries()
         .map_err(|error| Failure::new(1, format!("could not read the Doppler archive: {error}")))?;
@@ -152,7 +154,28 @@ mod tests {
         header.set_mode(0o644);
         header.set_cksum();
         builder.append(&header, &data[..]).unwrap();
-        builder.into_inner().unwrap()
+        let tar = builder.into_inner().unwrap();
+        let mut gzip = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
+        gzip.write_all(&tar).unwrap();
+        gzip.finish().unwrap()
+    }
+
+    #[test]
+    fn release_pins_stay_in_sync() {
+        let version = VERSION.trim_start_matches('v');
+        assert_eq!(
+            URL,
+            format!(
+                "https://github.com/DopplerHQ/cli/releases/download/{version}/doppler_{version}_linux_amd64.tar.gz"
+            )
+        );
+        let dockerfile = include_str!("../../public-site/Dockerfile");
+        assert!(dockerfile.contains(URL));
+        assert!(dockerfile.contains(SHA256));
+        assert!(!dockerfile.contains("cli.doppler.com/download"));
+        let nix = include_str!("../../../nix/packages.nix");
+        assert!(nix.contains("url = pin \"URL\""));
+        assert!(nix.contains("inherit (dopplerPin) url sha256"));
     }
 
     #[test]

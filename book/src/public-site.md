@@ -49,6 +49,25 @@ sets the same values inline), `noscript.css` reveals content when scripts are
 disabled, and `chrome.js` floats the nav after 8px of scroll, as kytos' SiteNav
 does. Reduced motion is decided by the original script at load, as on production.
 
+The one deliberate exception is the Duet story (`src/pages/phones.rs`), which runs
+ahead of production and of the app. It replaces the original Duet phones on `/` and
+`/duet` with one story across three phones, drawn from the October 21 Duet mockups
+(ENG-168, ENG-169), in which Duet leads and Maya says yes: Today shows what Duet
+noticed about her home blood pressure; Duet offers a morning Check-in and she accepts
+it; on Monday the Check-in returns by itself and Duet prepares an update to her page
+for her doctor; she reviews it, saves it and previews it, and the story ends on the
+page her clinician receives (the same constants render the preview and that page).
+Each screen is laid out at the mockups' native width and scaled into the phone. It reuses
+`site.css` phone hardware and the stage scaling and landscapes `site.js` applies to
+every frame, but its classes (`duet-story`, `ds-*`) are its own, so the original Duet
+loop never binds to it. Its styles are `css/duet.css`, every selector scoped to
+`.duet-story`; its motion is `homepage/duet.js`, which plays only while the stage is
+on screen and, on narrow stages, brings the phone doing the work to the front. The
+markup is the story's last frame, which reduced-motion and no-script visitors see.
+The region is marked `data-owner="site"`: the parity suite compares the rest of the
+page with production and checks that production serves the original phones
+(`duet-phones.html`) where the story stands.
+
 An earlier `web-sys` WASM island re-implemented this choreography on a global
 50 ms timer. Frame sampling against production showed the drift: a stylesheet rule
 overrode stage children's transitions (the hero pointer and popups jumped), the
@@ -59,7 +78,8 @@ pointer jumps instead of gliding.
 The same rule covers everything else the original computes in a build or runtime
 step: the port consumes the output instead of re-implementing the step. Pages
 belong to one of the original's two systems (`Route::shell`). `/` and `/duet` use
-the homepage system: `chrome.css`, `site.css` and the motion script. Every other
+the homepage system: `chrome.css`, `site.css` and the motion script (plus the
+site-owned Duet story). Every other
 page uses the utility system: the original layout's shell markup and
 production's compiled Tailwind stylesheet, served verbatim as `css/utility.css`
 (it already contains `chrome.css`). The `/scheduling/dev` social image is the PNG
@@ -351,7 +371,7 @@ so Doppler cannot accidentally change the staging gate or listening address.
 **Motion in the image:** the server embeds `assets/`, including the original
 `/homepage/site.js`, so `docker build` alone produces the complete site; there is no
 separate motion build. The local image HTTP smoke below checks that the homepage
-references the content-addressed `chrome.js` and `site.js` and that the served
+references the content-addressed `chrome.js`, `site.js` and `duet.js` and that the served
 `site.js` has the reviewed original SHA-256. It does not execute browser animation
 or replace the browser proof. No host tooling or flake changes are introduced by the deployment artifacts.
 

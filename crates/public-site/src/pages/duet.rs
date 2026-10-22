@@ -49,5 +49,6 @@ pub fn Duet() -> Element {
             }
         }
         script { src: "/homepage/site.js", defer: true }
+        script { src: "/homepage/duet.js", defer: true }
     }
 }

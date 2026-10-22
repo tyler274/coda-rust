@@ -1,0 +1,112 @@
+name: Doppler release and security watch
+
+on:
+  schedule:
+    # Daily, off the hour. Also checks advisories when the version is current.
+    - cron: '23 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: doppler-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Recognize upstream releases and public security advisories
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('node:fs');
+            const source = fs.readFileSync('crates/workspace-tools/src/doppler.rs', 'utf8');
+            const pin = name => {
+              const match = source.match(new RegExp(`pub const ${name}: &str =\\s*"([^"]+)";`));
+              if (!match) throw new Error(`Missing Doppler ${name} pin`);
+              return match[1];
+            };
+            const pinned = pin('VERSION').replace(/^v/, '');
+            const version = value => {
+              if (!/^\d+\.\d+\.\d+$/.test(value)) throw new Error(`Unexpected stable release: ${value}`);
+              return value.split('.').map(Number);
+            };
+            const newer = (a, b) => {
+              const av = version(a), bv = version(b);
+              for (let i = 0; i < 3; i++) {
+                if (av[i] !== bv[i]) return av[i] > bv[i];
+              }
+              return false;
+            };
+            version(pinned);
+            const upstream = { owner: 'DopplerHQ', repo: 'cli' };
+            const { data: latest } = await github.rest.repos.getLatestRelease(upstream);
+            const candidate = latest.tag_name.replace(/^v/, '');
+            version(candidate);
+            // A missing/changed pinned digest is a failed watch, never a new trusted pin.
+            const { data: current } = await github.rest.repos.getReleaseByTag({ ...upstream, tag: pinned });
+            const asset = current.assets.find(a => a.name === `doppler_${pinned}_linux_amd64.tar.gz`);
+            const pinValid = asset?.digest === `sha256:${pin('SHA256')}` && asset?.browser_download_url === pin('URL');
+            const advisories = await github.paginate('GET /repos/{owner}/{repo}/security-advisories', {
+              ...upstream, per_page: 100
+            });
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'all', per_page: 100
+            });
+            const ensureIssue = async (key, title, body, revision = null) => {
+              const marker = `<!-- coda-doppler-watch:${key} -->`;
+              const revisionMarker = revision ? `<!-- upstream-updated:${revision} -->` : '';
+              const existing = issues.find(i => !i.pull_request && i.user?.login === 'github-actions[bot]' && i.body?.includes(marker));
+              if (!existing) {
+                const { data } = await github.rest.issues.create({
+                  ...context.repo, title, body: `${marker}\n${revisionMarker}\n${body}`
+                });
+                core.notice(`Doppler review required: ${data.html_url}`);
+              } else if (revision && !existing.body.includes(revisionMarker)) {
+                // Revised advisories need another review even after an earlier closure.
+                await github.rest.issues.update({
+                  ...context.repo, issue_number: existing.number, state: 'open',
+                  title, body: `${marker}\n${revisionMarker}\n${body}`
+                });
+                core.notice(`Doppler advisory updated: ${existing.html_url}`);
+              } else {
+                core.notice(`Already tracked: ${existing.html_url}`);
+              }
+            };
+            const checklist = `## Maintainer response\n` +
+              `- [ ] Triage security impact promptly: review upstream notes, public advisories, and bundled Go/dependency fixes. A release without an advisory is not proof of safety.\n` +
+              `- [ ] If affected, prioritize the upgrade according to severity; record applicability, urgency, and the owner here. Do not wait for CI to break.\n` +
+              `- [ ] Update VERSION, URL, and SHA256 in crates/workspace-tools/src/doppler.rs and the matching public-site Dockerfile pin together. Verify the exact release asset digest; never trust a moving download endpoint. Nix reads the Rust pin.\n` +
+              `- [ ] Run workspace-tools Doppler tests, install the verified CLI and check its version, build .#doppler-cli, and run the image/CI checks.\n` +
+              `- [ ] Merge a reviewed PR, verify staging, and coordinate any separately authorized production rollout. Close with PR/deployment evidence or a documented not-affected decision.\n` +
+              `\nThis watch never upgrades, merges, or deploys automatically. It covers GitHub stable releases and public repository advisories, not private disclosures or all transitive vulnerabilities.`;
+            if (!pinValid) {
+              await ensureIssue(`integrity-${pinned}`, `Doppler ${pinned}: pinned asset integrity requires review`,
+                `The published asset URL/digest no longer matches the committed pin. Preserve checksum enforcement and investigate upstream before changing it.\n\n${checklist}`);
+            }
+            if (newer(candidate, pinned)) {
+              await ensureIssue(`release-${candidate}`, `Doppler ${candidate}: update and security triage`,
+                `Pinned: **${pinned}**. New stable release: [${candidate}](${latest.html_url}).\n\n` +
+                `Review every intervening release at https://github.com/DopplerHQ/cli/releases, including security fixes in the Go toolchain.\n\n${checklist}`);
+            }
+            // Do not guess applicability from version-range strings or release-note keywords.
+            // Every public advisory is triaged; updated advisories reopen their tracking issue.
+            for (const advisory of advisories) {
+              await ensureIssue(`advisory-${advisory.ghsa_id}`,
+                `Doppler security review: ${advisory.ghsa_id} (${advisory.severity ?? 'unknown'})`,
+                `Pinned: **${pinned}**. [Upstream advisory](${advisory.html_url}).\n\n` +
+                `Check affected versions and patched versions in the advisory; this alert does not assert that the pin is affected.\n\n${checklist}`,
+                advisory.updated_at);
+            }
+            await core.summary.addHeading('Doppler watch')
+              .addRaw(`Pinned: ${pinned}; latest: ${candidate}; public advisories checked: ${advisories.length}.\n`)
+              .addRaw('Review tracking issues for required action. API errors fail this job rather than reporting no updates.\n')
+              .write();
+            if (!pinValid) core.setFailed('Pinned Doppler asset differs from upstream metadata; review the integrity issue.');

@@ -27,9 +27,9 @@ RUN cargo build --locked --release -p public-site --bin public-site \
 
 # Same pinned release/checksum as `workspace-tools install-doppler`. No unpinned
 # package installation is required in either the builder or runtime image.
-RUN wget -O /tmp/doppler.tar 'https://cli.doppler.com/download?os=linux&arch=amd64&format=tar&version=v3.77.0' \
-    && printf '%s  %s\n' '92587cb89c2ff82fc2ddec2b2a9f275ff320994a44e16cd9310b55a429a82084' /tmp/doppler.tar | sha256sum -c - \
-    && tar -xf /tmp/doppler.tar -C /tmp doppler \
+RUN wget -O /tmp/doppler.tar.gz 'https://github.com/DopplerHQ/cli/releases/download/3.77.1/doppler_3.77.1_linux_amd64.tar.gz' \
+    && printf '%s  %s\n' '001f89a42629f9cb827cd86683c4c2dbf87c6299a8d6130643b98044bf5ed80a' /tmp/doppler.tar.gz | sha256sum -c - \
+    && tar -xzf /tmp/doppler.tar.gz -C /tmp doppler \
     && chmod 0555 /tmp/doppler \
     && readelf -lW /tmp/doppler > /tmp/doppler-elf \
     && ! grep -q INTERP /tmp/doppler-elf

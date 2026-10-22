@@ -44,8 +44,9 @@ mod tests {
             "id=\"patients\"",
             "data-art=\"mist\"",
             "data-w=\"\"",
-            "class=\"stage duet-stage\"",
+            "class=\"stage duet-story\"",
             "src=\"/homepage/site.js\"",
+            "src=\"/homepage/duet.js\"",
         ] {
             assert!(html.contains(marker), "missing motion target {marker}");
         }
@@ -54,6 +55,9 @@ mod tests {
             std::str::from_utf8(&duet.html)
                 .unwrap()
                 .contains("src=\"/homepage/site.js\"")
+                && std::str::from_utf8(&duet.html)
+                    .unwrap()
+                    .contains("src=\"/homepage/duet.js\"")
         );
         let privacy = render_page(&Route::Privacy {}, &Config::default());
         assert!(

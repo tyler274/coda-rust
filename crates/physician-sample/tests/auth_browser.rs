@@ -35,22 +35,44 @@ async fn sign_in_and_sign_out_walk_the_browser() {
     browser.resize(DESKTOP);
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
-    let text = browser.wait_for("Paste the code from the sign-in link");
+    let text = browser.wait_for("no email is sent; your code is filled in");
     assert!(
         text.contains("Sign-in code"),
         "the verify stage did not appear:\n{text}"
     );
 
-    // The proof token: sign-in mints one for this account on demand.
-    let token = sign_in_token(&base).await;
-
-    browser.type_into(".sign-in-input", &token);
+    // Proof delivery: the issued code is already in the field, so signing
+    // in needs no paste. The field holds exactly the card's proof token.
+    let filled: serde_json::Value = browser.page().evaluate(
+        "(() => { const card = document.querySelector('.sign-in-card'); \
+         const input = document.querySelector('input.sign-in-input[type=\"text\"]'); \
+         return [card.getAttribute('data-proof-token'), input.value]; })()",
+    );
+    let (proof, value) = (
+        filled[0].as_str().unwrap_or(""),
+        filled[1].as_str().unwrap_or(""),
+    );
+    assert!(
+        !proof.is_empty() && proof == value,
+        "the issued code was not filled in: proof {proof:?}, field {value:?}"
+    );
     browser.click(".sign-in-primary");
     let text = browser.wait_for("Mary Louis");
     assert!(
         text.contains("Today"),
         "a signed-in Today did not show the practice:\n{text}"
     );
+
+    // A code minted out of band still signs in when pasted over the field.
+    browser.click(r#"button[aria-label="Sign out of Coda"]"#);
+    browser.wait_for("Sign in to Coda");
+    browser.type_into(".sign-in-input", STAGING_EMAIL);
+    browser.click(".sign-in-primary");
+    browser.wait_for("Sign-in code");
+    let token = sign_in_token(&base).await;
+    browser.type_into(".sign-in-input", &token);
+    browser.click(".sign-in-primary");
+    browser.wait_for("Mary Louis");
 
     // The panel workspace opens inside the running app: clicking the Today
     // schedule visit keeps the in-memory bearer session, so the workspace

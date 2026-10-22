@@ -111,23 +111,54 @@ Activating it took these operator steps, in order:
 Physician sign-in still returns proof tokens and Duet's Identity Platform API key
 is a placeholder, so this preview is not ENG-167's hosted acceptance.
 
+### Staging sign-in accounts
+
+`physician-migrate` ensures the accounts listed in `PHYSICIAN_STAGING_ACCOUNTS`
+(`email|Display Name|admin` or `…|physician`, comma-separated) exist in
+`roger-synthetic-practice` with `physician_id = staging-physician`, the panel the
+server seeds with the five synthetic workspaces on startup. The list and
+`CODA_HOSTED_PROFILE=staging-preview` come from `migration_environment` in
+[`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars); any
+other profile refuses the list. A rerun never reactivates or edits an existing
+account, so an administrator's deactivation sticks. Invite anyone else from the
+admin surface (`/auth/invitations`) rather than growing the list.
+
+There is no email delivery in the preview: `/auth/sign-in` returns the code and
+the sign-in screen fills it in, saying so. IAP still limits the site to
+`iap_group`.
+
+### Direct staging rollout
+
 The `deploy-staging` job in [`.github/workflows/ci.yml`](/.github/workflows/ci.yml)
-runs on pushes to `main` only when the repository variable
-`RUST_STAGING_DEPLOY` is `enabled`. Keep it unset until runtime acceptance and the
-release integration below are complete, saved-plan applies have succeeded, and
-the GitHub `staging` environment holds
-`GCP_WORKLOAD_IDENTITY_PROVIDER`, `GCP_DEPLOYER_SERVICE_ACCOUNT`,
-`GCP_PROJECT_ID`, `GCP_REGION` and the qualified `RELEASE_ENVIRONMENT`. Only after
-that work and deployment approval, enable it:
+runs on pushes to `main`, after every check job, when the repository variable
+`RUST_STAGING_DEPLOY` is `enabled`. It authenticates through the GitHub
+`staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
+`GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
+
+1. builds the four Nix images and pushes each to `apps/` tagged with the commit,
+   recording its digest;
+2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
+   and executes it to completion, then updates the `<app>` service to the runtime
+   digest and requires its latest Ready revision to serve that digest with all
+   traffic;
+3. uploads a receipt (digests, executions, revisions) as the
+   `release-receipt-*` artifact.
+
+Cloud Run moves traffic only to a revision that passes its `/readyz` startup
+probe, so a failed rollout leaves the previous revision serving; fix forward.
+OpenTofu ignores the image fields, so a later saved-plan apply does not roll
+the services back. Unsetting the variable stops staging deploys without editing
+the workflow:
 
 ```bash
-gh variable set RUST_STAGING_DEPLOY --body enabled
+gh variable set RUST_STAGING_DEPLOY --body enabled   # on
+gh variable delete RUST_STAGING_DEPLOY               # off
 ```
 
-Unsetting the variable stops staging deploys without editing the workflow.
-
-The first deployment remains gated. Bootstrap and green CI do not resolve these
-current owners' outstanding work:
+This direct rollout stands in for the
+[`release.py`](/scripts/gcp/release.py) evidence engine, which replaces it once
+the producers below exist. It is not ENG-167's hosted acceptance, and the work
+below remains outstanding:
 
 - **Hosted identity:** physician [`auth.rs`](/crates/physician-sample/src/auth.rs)
   still returns proof tokens from sign-in. Duet web requires a registered Apple
@@ -139,7 +170,7 @@ current owners' outstanding work:
   privacy journal and four Doppler configs/tokens are in place for the preview.
   Still verify private TLS, account isolation, retained conversations and the
   runtime's actual model/pool limits before accepting the activation gate.
-- **Release wiring:** the current workflow does not produce the immutable
+- **Release evidence:** the workflow does not produce the immutable
   build/runtime/compatibility manifests required by
   [`release_commands.py`](/scripts/gcp/release_commands.py), nor configure its
   deployer/verifier/smoke identities. Its region/token environment and `ci` job
@@ -147,9 +178,9 @@ current owners' outstanding work:
   so the first-release bootstrap must be explicitly implemented and verified;
   do not fabricate a previous release or weaken the evidence checks.
 
-These are deployment blockers, not evidence that ENG-167's hosted acceptance is
-complete. The preview services have IAP-gated `run.app` URLs only; no custom
-domain points at them.
+None of this is evidence that ENG-167's hosted acceptance is complete. The
+preview services have IAP-gated `run.app` URLs only; no custom domain points at
+them.
 
 ## Release procedure
 

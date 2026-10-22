@@ -10,6 +10,48 @@ use public_site::{
 use tower::ServiceExt;
 
 #[tokio::test]
+async fn staging_sign_in_reaches_the_physician_service() {
+    let inputs = include_str!("../../../infra/gcp/public-site/env/staging.tfvars");
+    let destination = inputs
+        .lines()
+        .find(|line| line.starts_with("physician_app_url"))
+        .and_then(|line| line.split('"').nth(1))
+        .expect("staging must configure physician_app_url");
+    let config = Config {
+        physician_app_url: destination.into(),
+        ..Config::default()
+    };
+    let app = router_with_options(
+        prerender(&config),
+        RuntimeConfig::default(),
+        [],
+        Readiness::ready(),
+    );
+    let response = app
+        .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    let html = String::from_utf8(
+        to_bytes(response.into_body(), usize::MAX)
+            .await
+            .unwrap()
+            .to_vec(),
+    )
+    .unwrap();
+    let rendered = html.contains(&format!("href=\"{destination}\">Sign in</a>"));
+    let correct = destination == "https://physician-836508863523.us-east1.run.app";
+    assert!(
+        rendered,
+        "the configured destination must reach the Sign in anchor"
+    );
+    assert!(
+        correct,
+        "staging Sign in must reach physician in coda-rust-staging, not the marketing site"
+    );
+}
+
+#[tokio::test]
 async fn every_route_metadata_sitemap_and_retired_routes() {
     let app = router_with_options(
         prerender(&Config::default()),
