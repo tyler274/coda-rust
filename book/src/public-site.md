@@ -28,7 +28,9 @@ pattern of [ENG-167](https://linear.app/coda-health/issue/ENG-167).
 The application design is Dioxus route components prerendered at startup, served
 by a stateless axum binary. The route inventory includes `/`, `/duet`, current and
 archived Duet privacy/terms, `/duet/consumer-health-data`, `/privacy`, `/terms`,
-`/clinical-transparency`, and `/scheduling/dev`. Retired `/physicians` and
+`/clinical-transparency`, and `/scheduling/dev`. The sitemap lists only the eight
+current documents, as production's does; archived versions stay reachable from
+their policy pages, and `/scheduling/dev` is noindex. Retired `/physicians` and
 `/api/physician-waitlist` remain 404. Pages, asset parity, compression, conditional
 requests, IAP assertion verification, and motion integration have separate crate tests;
 passing infrastructure tests does not establish any of those behaviors.
@@ -53,6 +55,21 @@ overrode stage children's transitions (the hero pointer and popups jumped), the
 memory chart advanced at 20 fps, loops visibly rewound, and loop lengths differed.
 It was replaced by the original script; the browser proof now fails if the hero
 pointer jumps instead of gliding.
+
+The same rule covers everything else the original computes in a build or runtime
+step: the port consumes the output instead of re-implementing the step. Pages
+belong to one of the original's two systems (`Route::shell`). `/` and `/duet` use
+the homepage system: `chrome.css`, `site.css` and the motion script. Every other
+page uses the utility system: the original layout's shell markup and
+production's compiled Tailwind stylesheet, served verbatim as `css/utility.css`
+(it already contains `chrome.css`). The `/scheduling/dev` social image is the PNG
+production's `ImageResponse` rendered. Head metadata and icons follow the
+original's `lib/metadata.ts` and root layout. URLs follow Next's default rule: a
+trailing slash is removed with a 308 that keeps the query. Earlier, hand-written
+equivalents (a Tailwind subset, a Chromium re-render of the social image, and a
+regex evaluation of the legal TypeScript that deleted the word "export" from
+three policy sentences) drifted from production without any test noticing,
+because the tests re-derived their expectations the same way.
 
 Staging applies its origin IAP gate to pages, assets, redirects, health routes
 and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
@@ -167,19 +184,30 @@ secrets; the workflow uses `pull_request`, not `pull_request_target`. Existing
 runtime/deployment secrets remain managed by Doppler; this removes no deployment
 protection and copies no `dev`, `stg`, or `prd` secrets into CI.
 
-`crates/public-site/tests/fixtures/original/` contains 17 narrowly selected
+`crates/public-site/tests/fixtures/original/` contains 18 narrowly selected
 original-source snapshots from `Coda-Health/kytos` commit
 `5012bb749e29104e00ccb208a14a810f93fa420f`. `provenance.json` records the source
 path, original SHA-256, snapshot SHA-256, and extraction policy for each input.
 HTML, page/legal TypeScript, archive JSON, notices, CSS, and the scheduling social
 image definition are verbatim source files, as is `public/homepage/site.js`, the
-motion script the site ships unchanged. No Next application,
-package dependencies, private credentials, or rendered Rust output are imported.
+motion script the site ships unchanged, and `lib/site.ts`, which the legal modules
+import. No Next application, package dependencies, private credentials, or
+rendered Rust output are imported.
+
+`crates/public-site/tests/fixtures/served/` records what production served at
+that same commit (its `/api/health` reports the release SHA, and the importer
+refuses any other): every page, the not-found page, the sitemap, the compiled utility
+stylesheet, the rendered social image, and the status and `Location` of each
+probe URL in `responses.json`. `provenance.json` records each file's URL and
+SHA-256 under `served`. These are the outputs of Next, Tailwind and
+`ImageResponse`, which the port must not re-implement.
 
 These are test oracles, separate from generated application `data/`, CSS, and
-assets. The normal parity suite verifies snapshot integrity, compares homepage
-and page copy, evaluates the original legal definitions and archives, compares
-CSS and the motion script byte-for-byte with what the site serves. Missing or changed fixtures fail; there is no submodule
+assets. The normal parity suite verifies snapshot integrity; compares every
+document with the page production served for it (head metadata and icons,
+visible text of main and footer, and which stylesheet it links); checks every
+probe URL's status and redirect; and compares CSS, the motion script and the
+social image byte-for-byte with what the site serves. Missing or changed fixtures fail; there is no submodule
 fallback or parity skip. Hashes detect accidental fixture edits, not malicious
 co-edits to the provenance manifest: source updates require manual review.
 
@@ -191,18 +219,25 @@ choose to inspect or update the historical source need repository access:
 ```bash
 nix develop --command git submodule update --init -- submodules/kytos
 nix develop --command node crates/public-site/tests/import-snapshots.mjs --import
+nix develop --command node crates/public-site/tests/import-snapshots.mjs --import-served
 nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
 ```
 
 The importer reads Git blobs at the explicit reviewed commit, checks that the
 optional checkout is clean and pinned, and writes only allowlisted fixture paths.
+`--import-served` reads `https://codahealth.ai` only while it reports that commit,
+so it works until production moves off kytos; after that the frozen snapshot is
+the record.
 It is never invoked with `--import` by builds or tests. To adopt a new publication,
 review the original changes first, explicitly update the importer's commit and
 optional gitlink, then import and review the fixture/provenance diff. Do not
 regenerate expected fixtures from Rust output or copy generated `data/` back into
 them to make tests pass. Legal publication changes require their normal review.
-Application generation (`data/import-reference.mjs` and `tests/generate-social.mjs`)
-reads these frozen originals and is a separate, explicit operation. Normal tests
+Application generation (`data/import-reference.mjs`) reads these frozen snapshots
+and is a separate, explicit operation. It imports the original TypeScript modules
+as modules (Node strips their types), so legal copy is exactly what Next
+evaluated, and copies the verbatim CSS, motion script and social image into
+`assets/`. Normal tests
 only use `--check`, so they also work in source exports without Git metadata or
 initialized submodules.
 

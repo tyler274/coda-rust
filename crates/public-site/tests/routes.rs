@@ -75,19 +75,17 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
             .to_vec(),
     )
     .unwrap();
-    let mut expected: Vec<_> = Route::pages()
-        .iter()
-        .map(Route::meta)
-        .filter(|meta| !meta.noindex)
-        .map(|meta| meta.canonical_url)
-        .collect();
-    expected.sort();
-    let actual: Vec<_> = sitemap
-        .split("<loc>")
-        .skip(1)
-        .map(|part| part.split("</loc>").next().unwrap().to_owned())
-        .collect();
-    assert_eq!(actual, expected);
+    // The same locations, in the same order, as production's sitemap.
+    let locations = |xml: &str| -> Vec<String> {
+        xml.split("<loc>")
+            .skip(1)
+            .map(|part| part.split("</loc>").next().unwrap().to_owned())
+            .collect()
+    };
+    assert_eq!(
+        locations(&sitemap),
+        locations(include_str!("fixtures/served/sitemap.xml"))
+    );
     for path in [
         "/physicians",
         "/api/physician-waitlist",
@@ -114,6 +112,40 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
                 && !html.contains("twitter:image")
         );
         assert!(html.contains("Page not found"));
+    }
+}
+
+/// Status and redirect target for every probe, as production served them (including
+/// Next's trailing-slash rule); see tests/fixtures/served/responses.json.
+#[tokio::test]
+async fn urls_resolve_and_redirect_as_production_serves_them() {
+    let app = router_with_options(
+        prerender(&Config::default()),
+        RuntimeConfig::default(),
+        [],
+        Readiness::ready(),
+    );
+    let served: serde_json::Value =
+        serde_json::from_str(include_str!("fixtures/served/responses.json")).unwrap();
+    for (path, expected) in served.as_object().unwrap() {
+        let response = app
+            .clone()
+            .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        assert_eq!(
+            response.status().as_u16(),
+            expected["status"].as_u64().unwrap() as u16,
+            "{path}"
+        );
+        assert_eq!(
+            response
+                .headers()
+                .get("location")
+                .map(|value| value.to_str().unwrap()),
+            expected["location"].as_str(),
+            "{path}"
+        );
     }
 }
 

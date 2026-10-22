@@ -41,7 +41,24 @@ pub struct PageMeta {
     pub noindex: bool,
 }
 
+/// The original's two page systems. Each decides a document's stylesheets and the
+/// markup around its main content, as the original's homepage and utility layouts do.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Shell {
+    /// The homepage and /duet: the original styles and motion script.
+    Homepage,
+    /// Every other page: the original's compiled Tailwind stylesheet.
+    Utility,
+}
+
 impl Route {
+    pub fn shell(&self) -> Shell {
+        match self {
+            Self::Home {} | Self::Duet {} => Shell::Homepage,
+            _ => Shell::Utility,
+        }
+    }
+
     /// Finite documents use the same frozen archive enumeration as their legal links.
     pub fn pages() -> Vec<Self> {
         let mut pages = vec![
@@ -67,6 +84,21 @@ impl Route {
             }
         }));
         pages
+    }
+
+    /// The pages the sitemap lists, in the original's order: current documents only.
+    /// Archived policy versions stay reachable from their policy pages, not advertised.
+    pub fn sitemap() -> Vec<Self> {
+        vec![
+            Self::Home {},
+            Self::Duet {},
+            Self::ClinicalTransparency {},
+            Self::Privacy {},
+            Self::Terms {},
+            Self::DuetPrivacy {},
+            Self::DuetTerms {},
+            Self::ConsumerHealthData {},
+        ]
     }
 
     pub fn meta(&self) -> PageMeta {

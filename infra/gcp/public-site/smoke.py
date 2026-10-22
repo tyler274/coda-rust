@@ -127,7 +127,9 @@ def main():
         assert "https://physician.example.test" in html
         assert len(body) > 10000, len(body)
         print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer/sign-in valid")
-        assert len(document.styles) >= 5, document.styles
+        # The homepage system: original styles, frame reservation and the no-script reveal.
+        assert [path.rsplit("/", 1)[1] for path in document.styles] == [
+            "chrome.css", "site.css", "stage.css", "noscript.css"], document.styles
         for path in document.styles:
             status, headers, css = fetch(base, path)
             assert path.startswith("/a/") and status == 200 and css, path

@@ -1,14 +1,38 @@
-use crate::{Config, Route, site};
+use crate::{Config, Route, route::Shell, site};
 use dioxus::prelude::*;
 
 /// Shared server-rendered layout. Ordinary anchors deliberately need no JS router.
+/// Each shell's markup is the original layout's, so the original stylesheets apply as-is.
 #[component]
 pub fn Chrome() -> Element {
-    let config = use_context::<Config>();
     let route = use_route::<Route>();
-    let utility = !matches!(route, Route::Home {} | Route::Duet {});
+    // The original's legal pages share one page component, which marks its main.
+    let main_class = match route {
+        Route::Home {} | Route::Duet {} | Route::Scheduling {} | Route::NotFound { .. } => None,
+        _ => Some("legal-page"),
+    };
+    match route.shell() {
+        Shell::Homepage => rsx! {
+            Nav {}
+            main { Outlet::<Route> {} }
+            Footer {}
+        },
+        Shell::Utility => rsx! {
+            div { class: "flex min-h-svh flex-col bg-bg text-ink",
+                Nav {}
+                div { class: "flex-1",
+                    main { class: main_class, Outlet::<Route> {} }
+                }
+                Footer {}
+            }
+        },
+    }
+}
+
+#[component]
+fn Nav() -> Element {
+    let config = use_context::<Config>();
     rsx! {
-        div { class: if utility { "utility-shell" } else { "marketing-shell" },
         nav { class: "nav", "aria-label": "Main navigation",
             div { class: "nav-in",
                 a { class: "logo", href: "/", "aria-label": "Coda Health home",
@@ -22,7 +46,12 @@ pub fn Chrome() -> Element {
                 a { class: "btn btn-sm", href: site::contact_mailto(), "Partner with us" }
             }
         }
-        main { id: "main", class: match route { Route::Home {} | Route::Duet {} => "", Route::Scheduling {} | Route::NotFound { .. } => "utility-page", _ => "utility-page legal-page" }, Outlet::<Route> {} }
+    }
+}
+
+#[component]
+fn Footer() -> Element {
+    rsx! {
         footer { class: "foot",
             div { class: "wrap foot-in",
                 div { class: "foot-side",
@@ -52,7 +81,6 @@ pub fn Chrome() -> Element {
                     }
                 }
             }
-        }
         }
     }
 }

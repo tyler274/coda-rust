@@ -1,4 +1,5 @@
-//! Source-backed parity: never compares a generated document with itself.
+//! Snapshot-backed parity: never compares a generated document with itself. The
+//! oracle is the original source, or what production served from it (fixtures/served).
 use public_site::{Config, prerender};
 use serde_json::Value;
 use std::{fs, path::PathBuf, process::Command};
@@ -61,159 +62,168 @@ fn original_source_snapshots_match_reviewed_provenance() {
     );
 }
 
-#[test]
-fn homepage_visible_copy_equals_reference_including_phone_demos() {
-    let source = read("crates/public-site/tests/fixtures/original/app/_homepage/main.html")
-        .replace(
-            "<!-- include duet-phones.html -->",
-            &read("crates/public-site/tests/fixtures/original/app/_homepage/duet-phones.html"),
-        );
-    let pages = prerender(&Config::default());
-    let html = std::str::from_utf8(&pages.pages["/"].html).unwrap();
-    let main = html
-        .split("<main id=\"main\"")
-        .nth(1)
-        .unwrap()
-        .split_once('>')
-        .unwrap()
-        .1
-        .split("</main>")
-        .next()
-        .unwrap();
-    assert_eq!(visible(main), visible(&source));
+/// The page production serves for a document, from the served snapshot.
+fn served_page(path: &str) -> String {
+    let file = match path {
+        "/" => "index".to_owned(),
+        "404" => "not-found".to_owned(),
+        _ => path.trim_start_matches('/').to_owned(),
+    };
+    read(&format!(
+        "crates/public-site/tests/fixtures/served/pages/{file}.html"
+    ))
 }
-#[test]
-fn duet_and_scheduling_preserve_source_visible_copy() {
-    let pages = prerender(&Config::default());
-    for (path, file) in [
-        ("/duet", "app/duet/page.tsx"),
-        ("/scheduling/dev", "app/scheduling/dev/page.tsx"),
-    ] {
-        let source = read(&format!(
-            "crates/public-site/tests/fixtures/original/{file}"
-        ));
-        let rendered = visible(std::str::from_utf8(&pages.pages[path].html).unwrap());
-        let main = source
-            .split("<main>")
-            .nth(1)
-            .unwrap()
-            .split("</main>")
-            .next()
-            .unwrap();
-        let mut count = 0;
-        for after in main.split('>').skip(1) {
-            let text = after.split('<').next().unwrap().trim();
-            if text.is_empty() || text.contains(['{', '}']) {
-                continue;
-            }
-            assert!(
-                rendered.contains(&visible(text)),
-                "{path} missing source text {text}"
-            );
-            count += 1;
+fn decode(value: &str) -> String {
+    value
+        .replace("&quot;", "\"")
+        .replace("&#x27;", "'")
+        .replace("&#39;", "'")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&amp;", "&")
+}
+/// Head facts a browser or crawler acts on, independent of tag order and of the
+/// framework: title, named metadata, and canonical/icon links. Content-addressed
+/// asset prefixes are the port's serving detail, not a different resource.
+fn head_facts(html: &str) -> Vec<String> {
+    let head = html.split("</head>").next().unwrap();
+    let mut facts = vec![format!(
+        "title {}",
+        decode(
+            head.split("<title>")
+                .nth(1)
+                .unwrap()
+                .split("</title>")
+                .next()
+                .unwrap()
+        )
+    )];
+    for tag in head.split('<').skip(1) {
+        let (name, rest) = tag.split_once(' ').unwrap_or((tag, ""));
+        if name != "meta" && name != "link" {
+            continue;
         }
-        assert!(count >= 4, "source extraction failed for {path}");
-        if path == "/duet" {
-            for line in source.lines().filter(|line| {
-                line.trim().starts_with("title:") || line.trim().starts_with("body:")
-            }) {
-                let value = line.split_once('"').unwrap().1.rsplit_once('"').unwrap().0;
-                assert!(
-                    rendered.contains(&visible(value)),
-                    "missing Duet principle: {value}"
-                );
+        let rest = rest.split('>').next().unwrap();
+        let mut attributes = Vec::new();
+        for part in rest.split("\" ").chain(std::iter::once("")) {
+            if let Some((key, value)) = part.trim().trim_end_matches('/').split_once("=\"") {
+                attributes.push((key.trim().to_owned(), decode(value.trim_end_matches('"'))));
             }
         }
+        let get = |key: &str| {
+            attributes
+                .iter()
+                .find(|(k, _)| k == key)
+                .map(|(_, v)| v.clone())
+        };
+        let fact = match (name, get("name").or_else(|| get("property")), get("rel")) {
+            ("meta", Some(key), _) => format!("meta {key}={}", get("content").unwrap_or_default()),
+            ("link", _, Some(rel)) if rel != "stylesheet" && !rel.contains("preload") => {
+                let mut href = get("href").unwrap_or_default();
+                if let Some(rest) = href.strip_prefix("/a/") {
+                    href = rest[rest.find('/').unwrap()..].to_owned();
+                }
+                format!(
+                    "link {rel} {href} {} {}",
+                    get("sizes").unwrap_or_default(),
+                    get("type").unwrap_or_default()
+                )
+            }
+            _ => continue,
+        };
+        facts.push(fact);
     }
+    // Crawlers apply the union of every robots directive (Next adds its own
+    // "noindex" to not-found pages), so compare that rather than the tag count.
+    let mut robots: Vec<_> = facts
+        .iter()
+        .filter_map(|fact| fact.strip_prefix("meta robots="))
+        .flat_map(|content| {
+            content
+                .split(',')
+                .map(|directive| directive.trim().to_owned())
+        })
+        .collect();
+    robots.sort();
+    robots.dedup();
+    facts.retain(|fact| !fact.starts_with("meta robots="));
+    if !robots.is_empty() {
+        facts.push(format!("robots {}", robots.join(",")));
+    }
+    facts.sort();
+    facts
+}
+fn element(html: &str, open: &str, close: &str) -> String {
+    let start = html.find(open).unwrap_or_else(|| panic!("missing {open}"));
+    let rest = &html[start..];
+    visible(&rest[..rest.find(close).unwrap() + close.len()])
 }
 
+/// Every document against the page production serves for it: head metadata and
+/// icons, the visible text of main and footer, and which compiled stylesheet it
+/// uses. The served snapshot is the oracle, never a re-derivation from source.
 #[test]
-fn legal_data_and_archives_equal_clean_source_and_render_all_sections() {
-    let output = Command::new("node")
-        .arg(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/reference.mjs"))
-        .output()
-        .expect("Node from the dev shell");
-    assert!(
-        output.status.success(),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    let source: Value = serde_json::from_slice(&output.stdout).unwrap();
-    for (key, file) in [
-        ("current", "current.json"),
-        ("archives", "archives.json"),
-        ("notices", "clinical-terminology-notices.json"),
-    ] {
-        let port: Value =
-            serde_json::from_str(&read(&format!("crates/public-site/data/{file}"))).unwrap();
-        assert_eq!(port, source[key], "{file} diverged from source");
-    }
+fn every_document_matches_what_production_serves() {
     let pages = prerender(&Config::default());
-    for (path, sections) in [
-        ("/privacy", &source["current"]["coda"]["privacySections"]),
-        ("/terms", &source["current"]["coda"]["termsSections"]),
-        (
-            "/duet/privacy",
-            &source["current"]["duet"]["duetPrivacySections"],
-        ),
-        (
-            "/duet/terms",
-            &source["current"]["duet"]["duetTermsSections"],
-        ),
-        (
-            "/duet/consumer-health-data",
-            &source["current"]["duet"]["duetConsumerHealthDataSections"],
-        ),
-        (
-            "/clinical-transparency",
-            &source["current"]["clinical"]["sections"],
-        ),
-    ] {
-        let html = visible(std::str::from_utf8(&pages.pages[path].html).unwrap());
-        assert_strings_rendered(sections, &html, path);
-    }
-    for (kind, key) in [
-        ("privacy", "duetPrivacyArchive"),
-        ("terms", "duetTermsArchive"),
-    ] {
-        for archive in source["archives"][key].as_array().unwrap() {
-            let path = format!("/duet/{kind}/{}", archive["slug"].as_str().unwrap());
-            let html = visible(std::str::from_utf8(&pages.pages[&path].html).unwrap());
-            assert_strings_rendered(&archive["sections"], &html, &path);
-        }
-    }
-}
-fn assert_strings_rendered(value: &Value, html: &str, path: &str) {
-    match value {
-        Value::String(text) if text.starts_with("https://") => {
-            let host = text
-                .strip_prefix("https://")
-                .unwrap()
-                .split('/')
-                .next()
-                .unwrap();
-            assert!(
-                html.contains(&visible(&format!("Source and license: {host}"))),
-                "{path}: missing license link label"
-            );
-        }
-        Value::String(text) => assert!(
-            html.contains(&visible(text)),
-            "{path} missing source copy: {text}"
-        ),
-        Value::Array(items) => {
-            for item in items {
-                assert_strings_rendered(item, html, path);
-            }
-        }
-        Value::Object(fields) => {
-            for (key, item) in fields {
-                if key != "id" && key != "href" {
-                    assert_strings_rendered(item, html, path);
-                }
-            }
-        }
-        _ => {}
+    let provenance: Value = serde_json::from_str(&read(
+        "crates/public-site/tests/fixtures/original/provenance.json",
+    ))
+    .unwrap();
+    let served_files = provenance["served"]["files"].as_array().unwrap();
+    let mut served: Vec<_> = served_files
+        .iter()
+        .filter_map(|entry| {
+            let page = entry["path"].as_str()?.strip_prefix("pages/")?;
+            Some(page.strip_suffix(".html")?.to_owned())
+        })
+        .collect();
+    served.sort();
+    let mut documents: Vec<_> = pages
+        .pages
+        .keys()
+        .map(|path| match path.as_str() {
+            "/" => "index".to_owned(),
+            _ => path[1..].to_owned(),
+        })
+        .chain(["not-found".to_owned()])
+        .collect();
+    documents.sort();
+    assert_eq!(
+        documents, served,
+        "the port serves exactly production's documents"
+    );
+    // The URL path of the compiled stylesheet production links on utility pages.
+    let utility_css = served_files
+        .iter()
+        .find(|entry| entry["path"] == "utility.css")
+        .and_then(|entry| entry["url"].as_str())
+        .unwrap()
+        .trim_start_matches(provenance["served"]["origin"].as_str().unwrap())
+        .to_owned();
+    for (path, page) in pages
+        .pages
+        .iter()
+        .map(|(path, page)| (path.as_str(), page))
+        .chain([("404", &pages.not_found)])
+    {
+        let port = std::str::from_utf8(&page.html).unwrap();
+        let original = served_page(path);
+        assert_eq!(head_facts(port), head_facts(&original), "{path} head");
+        assert_eq!(
+            element(port, "<main", "</main>"),
+            element(&original, "<main", "</main>"),
+            "{path} main"
+        );
+        assert_eq!(
+            element(port, "<footer", "</footer>"),
+            element(&original, "<footer", "</footer>"),
+            "{path} footer"
+        );
+        assert_eq!(
+            port.contains("rel=\"stylesheet\" href=\"/css/utility.css\""),
+            original.contains(&format!("rel=\"stylesheet\" href=\"{utility_css}\"")),
+            "{path} stylesheet"
+        );
     }
 }
 /// Motion parity holds by construction: the original styles and the original
@@ -231,6 +241,23 @@ fn original_styles_and_motion_script_ship_verbatim() {
                 "crates/public-site/tests/fixtures/original/{source}"
             )),
             "{port} must equal the original {source}"
+        );
+    }
+    // What production compiled (Tailwind) or rendered (ImageResponse), byte-for-byte.
+    for (port, served) in [
+        ("assets/css/utility.css", "utility.css"),
+        (
+            "assets/scheduling/dev/opengraph-image.png",
+            "scheduling/dev/opengraph-image.png",
+        ),
+    ] {
+        assert!(
+            fs::read(root().join(format!("crates/public-site/{port}"))).unwrap()
+                == fs::read(
+                    root().join(format!("crates/public-site/tests/fixtures/served/{served}"))
+                )
+                .unwrap(),
+            "{port} must equal what production serves"
         );
     }
     // Site-owned stylesheets may reserve layout, never compete with site.css motion

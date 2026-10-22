@@ -102,19 +102,16 @@ fn router_with_gate(
         ),
         noindex: page.meta.noindex,
     };
-    let mut locations: Vec<_> = pages
-        .pages
-        .values()
-        .filter(|page| !page.meta.noindex)
-        .map(|page| page.meta.canonical_url.clone())
-        .collect();
-    locations.sort();
-    locations.dedup();
+    // Each location resolves its path against the origin, as the original's sitemap
+    // does, so the homepage is listed with its slash.
     let sitemap = format!(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{}</urlset>",
-        locations
+        crate::Route::sitemap()
             .iter()
-            .map(|url| format!("<url><loc>{}</loc></url>", xml_escape(url)))
+            .map(|route| format!(
+                "<url><loc>{}</loc></url>",
+                xml_escape(&format!("{}{route}", crate::site::SITE_ORIGIN))
+            ))
             .collect::<String>()
     );
     let origin = reqwest::Url::parse(crate::site::SITE_ORIGIN)
@@ -224,6 +221,19 @@ async fn serve(
         return (
             StatusCode::METHOD_NOT_ALLOWED,
             [(header::ALLOW, "GET, HEAD")],
+        )
+            .into_response();
+    }
+    // The original's URL rule (Next's default): a trailing slash is removed with a
+    // permanent redirect that keeps the query, before any route or asset is matched.
+    if let Some(path) = uri.path().strip_suffix('/').filter(|path| !path.is_empty()) {
+        let location = match uri.query() {
+            Some(query) => format!("{path}?{query}"),
+            None => path.to_owned(),
+        };
+        return (
+            StatusCode::PERMANENT_REDIRECT,
+            [(header::LOCATION, location)],
         )
             .into_response();
     }
@@ -493,24 +503,8 @@ mod tests {
         assert!(body["release_sha"].is_null());
     }
     #[tokio::test]
-    async fn sitemap_excludes_noindex_and_head_assets_are_empty() {
-        let mut table = pages();
-        let mut private = table.not_found.clone();
-        private.meta.noindex = true;
-        private.meta.canonical_url = "https://codahealth.ai/scheduling/dev".into();
-        table.pages.insert("/scheduling/dev".into(), private);
-        let app = router_with_options(table, RuntimeConfig::default(), [], Readiness::ready());
-        let response = app
-            .clone()
-            .oneshot(request("/sitemap.xml", false))
-            .await
-            .unwrap();
-        let body = axum::body::to_bytes(response.into_body(), 10000)
-            .await
-            .unwrap();
-        let body = std::str::from_utf8(&body).unwrap();
-        assert!(body.contains("<loc>https://codahealth.ai</loc>"));
-        assert!(!body.contains("scheduling/dev"));
+    async fn head_assets_are_empty() {
+        let app = router_with_options(pages(), RuntimeConfig::default(), [], Readiness::ready());
         let mut req = request("/favicon.ico", false);
         *req.method_mut() = Method::HEAD;
         req.headers_mut()

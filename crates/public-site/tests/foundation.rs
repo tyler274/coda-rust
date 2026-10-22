@@ -31,7 +31,7 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
             html.contains("https://physicians.example.test/sign-in?from=public&#38;source=nav"),
             "{html}"
         );
-        assert!(html.contains("<main id=\"main\""));
+        assert!(html.contains("<main"));
         if path != "/" {
             assert!(
                 !html.contains("id=\"heroStage\""),
