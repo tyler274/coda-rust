@@ -109,6 +109,19 @@ mod tests {
     }
 
     #[test]
+    fn npi_registry_holds_only_public_directory_data() {
+        for dependency in local_closure("npi-registry") {
+            assert!(
+                !dependency.starts_with("duet-")
+                    && !dependency.starts_with("duet_")
+                    && !dependency.starts_with("physician-")
+                    && !["local-product", "patient-work"].contains(&dependency.as_str()),
+                "shared npi-registry imported product-owned crate {dependency}"
+            );
+        }
+    }
+
+    #[test]
     fn shipping_clients_stay_until_the_rust_journeys_match() {
         let root = root();
         let ios = root.join("submodules/coda-app/ios/DuetApp/Sources/DuetApp");
