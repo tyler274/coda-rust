@@ -79,7 +79,7 @@ Secret Manager holds only `DOPPLER_TOKEN`. OpenTofu reads it ephemerally and
 writes it into one Kubernetes Secret through a write-only attribute, so it is
 never in state. The Doppler Kubernetes Operator then syncs the rest into the
 `observability` namespace through `DopplerSecret` resources. The mapping table is in
-[`infra/gcp/observability`](/infra/gcp/observability/README.md).
+[`infra/gcp/observability`](/infra/gcp/observability).
 
 ## Local runbook
 
@@ -99,7 +99,7 @@ Send one physician chat. The trace then appears in Langfuse at
 (debug), or shows in Datadog APM under `env:local` with `--datadog`.
 `scripts/observability-up.sh down -v` removes the stack and its volumes. The
 compose credentials are fixed local development values, and every port binds to
-127.0.0.1. See [dev/observability](/dev/observability/README.md).
+127.0.0.1. See <a href="/dev/observability/README%2Emd">dev/observability</a>.
 
 ## From alert to run
 

@@ -1,6 +1,6 @@
 # GCP deployment
 
-Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, and <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>. This workspace does not apply them. The one exception is public-site staging, described below.
+Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply them. The one exception is public-site staging, described below. [Build, CI, and release](release.md#physician-hosting) says what each root owns.
 
 ## Public marketing site preparation
 
@@ -14,9 +14,8 @@ a global external HTTPS load balancer with Cloud CDN. There is no Cloudflare
 dependency. Unlike the physician roots, this root owns its **staging** state
 (GCS prefix `public-site/staging` in the existing state bucket) and may be planned
 and applied for staging from this workspace. It is never planned or applied for
-production here. The image is published and a staging plan has been reviewed, but
-the apply is blocked on project IAM (see
-[deployment status](public-site.md#staging-deployment-status-2026-10-20)). The
+production here. Staging is deployed at `staging.codahealth.ai` behind IAP (see
+[deployment status](public-site.md#staging-deployment-status-2026-10-21)). The
 root does not share physician/Duet databases or authorize a product cutover. See
 [Public site](public-site.md) for the architecture, IAP and cache controls, runtime
 configuration, image build/smoke procedure, verification evidence and the

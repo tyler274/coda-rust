@@ -1,6 +1,10 @@
 # Duet behaviour model (TLA+)
 
-The formal model checks the behaviour contract against the Python backend. No Rust crate runs that trace. The model stays in `submodules/coda-app/formal`.
+> **Retired upstream.** coda-app removed `formal/` and the backend trace check in [5a1dc47b](https://github.com/Coda-Health/coda-app/commit/5a1dc47b8feacb8db3fcc71522982f76822c0b01), "Retire the formal model and trace check; the rules page stays". The [behaviour contract](behaviour-contract.md) is still the rules page. The same change made coda-app's authority order name [Linear](https://linear.app/coda-health/team/ENG) as the home of product direction (see [How to use this book](reading.md#authority)). Do not start new work from this model.
+
+The links below resolve only while this workspace pins coda-app at a commit before the retirement. When the submodule moves past 5a1dc47b, the book link check fails on them, and this page should be removed in the same change.
+
+The model checked the behaviour contract against the Python backend. No Rust crate ran that trace.
 
 - <a href="/submodules/coda-app/formal/README%2Emd#duet-behaviour-model-tla">Duet behaviour model (TLA+)</a>
 - <a href="/submodules/coda-app/formal/README%2Emd#1-what-the-model-covers">1. What the model covers</a>

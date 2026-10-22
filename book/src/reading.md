@@ -1,57 +1,34 @@
-# How to read these topics
+# How to use this book
 
-Duet documentation is the reading order: <a href="/submodules/coda-app/docs/README%2Emd"><code>docs/README.md</code></a>. This page follows that order and links the chapter for each owner. Workspace routing stays in `AGENTS.md`.
+This book is navigation. Each page points at the file that owns a fact: a crate's entry file in this workspace, or the canonical document in a product repository. It is not a roadmap, and it does not copy contracts. [Agent contracts, hoisted](agent-contracts.md) is the one deliberate exception, and <a href="/AGENTS%2Emd"><code>AGENTS.md</code></a> routes to it. When a page here disagrees with its source, the source wins and the page needs fixing.
 
-## Authority order
+The book has four parts:
 
-Source: <a href="/submodules/coda-app/docs/README%2Emd#authority-order"><code>docs/README.md</code></a>.
+| Part | Use it to find |
+| --- | --- |
+| **Setup** | How to clone, enter the shell, run tests, and where each kind of change goes: [Set up the workspace](setup.md) |
+| **Product behavior** | What Duet and the physician product must do, from their product repositories |
+| **Ownership** | Which crate, script, or repository implements each part: start at the [crate map](crate-map.md) |
+| **Release** | CI, Doppler, the GCP roots, TestFlight, and Android: start at [Build, CI, and release](release.md) |
 
-- [North Star](north-star.md)
-- [Behaviour contract](behaviour-contract.md)
-- [Formal model](formal-model.md)
-- [Backend architecture](backend-architecture.md)
-- [iOS verification](ios-verification.md)
+## Authority
 
-## Current architecture and proof
+Product direction lives in [Linear](https://linear.app/coda-health/team/ENG). The ticket for a piece of work carries Dev's direction. coda-app added this to the authority order in its `docs/README.md` in [5a1dc47b](https://github.com/Coda-Health/coda-app/commit/5a1dc47b8feacb8db3fcc71522982f76822c0b01), the same change that retired the formal model. The coda-app commit this workspace pins is older than that change. When a ticket conflicts with a product document, follow the ticket and amend the document in the same change. Workspace routing stays in <a href="/AGENTS%2Emd"><code>AGENTS.md</code></a>.
 
-Source: <a href="/submodules/coda-app/docs/README%2Emd#current-architecture-and-proof"><code>docs/README.md</code></a>.
+## Product behavior: Duet
 
-- [UI surface map](ui-surface-map.md)
-- [Personal-agent program](personal-agent-program.md)
-- [Backend architecture](backend-architecture.md)
-- [Privacy recovery](privacy-recovery.md)
-- [Security posture](security-posture.md)
-- [Clinical catalog](clinical-catalog-migration.md)
-- [Terminology licenses](clinical-terminology-license-audit.md)
-- [Medication and vaccines](medication-vaccine-catalog-program.md)
-- [Sharing threat model](sharing-threat-model.md)
-- [Sharing privacy disclosure](sharing-privacy-disclosure.md)
-- [Insight visual contract](visual-contract.md)
+Duet's reading order is <a href="/submodules/coda-app/docs/README%2Emd">Duet documentation (<code>docs/README.md</code>)</a>. The chapters follow its sections:
 
-## Release packets and retained proof
+- <a href="/submodules/coda-app/docs/README%2Emd#authority-order">Authority order</a>: [North Star](north-star.md), [Behaviour contract](behaviour-contract.md), [Backend architecture](backend-architecture.md), and [iOS verification](ios-verification.md). The [formal model](formal-model.md) is retired upstream.
+- <a href="/submodules/coda-app/docs/README%2Emd#current-architecture-and-proof">Current architecture and proof</a>: [UI surface map](ui-surface-map.md), [Personal-agent program](personal-agent-program.md), [Privacy recovery](privacy-recovery.md), [Security posture](security-posture.md), [Clinical catalog](clinical-catalog-migration.md), [Terminology licenses](clinical-terminology-license-audit.md), [Medication and vaccines](medication-vaccine-catalog-program.md), [Sharing threat model](sharing-threat-model.md), [Sharing privacy disclosure](sharing-privacy-disclosure.md), and [Insight visual contract](visual-contract.md).
+- <a href="/submodules/coda-app/docs/README%2Emd#release-packets-and-retained-proof">Release packets and retained proof</a>: listed under **Release**.
+- <a href="/submodules/coda-app/docs/README%2Emd#product-research-and-calibration">Product research and calibration</a>: [Scenario lab](scenario-lab.md) and [Insight lab](insight-lab.md).
+- <a href="/submodules/coda-app/docs/README%2Emd#change-discipline">Change discipline</a> stays in coda-app.
 
-Source: <a href="/submodules/coda-app/docs/README%2Emd#release-packets-and-retained-proof"><code>docs/README.md</code></a>.
+## Product behavior: physician product
 
-- [Consumer-health release](consumer-health-release-approval.md)
-- [TestFlight](testflight-release.md)
-- [Epic MyChart](epic-mychart-release-approval.md)
-- [GCP deployment](gcp.md)
-
-## Product research and calibration
-
-Source: <a href="/submodules/coda-app/docs/README%2Emd#product-research-and-calibration"><code>docs/README.md</code></a>.
-
-- [Scenario lab](scenario-lab.md)
-- [Insight lab](insight-lab.md)
-
-## Change discipline
-
-Change discipline stays in <a href="/submodules/coda-app/docs/README%2Emd#change-discipline"><code>docs/README.md</code></a>.
+coda-agents owns the physician product. Its <a href="/submodules/coda-agents/README%2Emd#document-map">document map</a> answers "which document owns this?". The main owners are the <a href="/submodules/coda-agents/docs/architecture%2Emd">architecture</a>, <a href="/submodules/coda-agents/docs/physician-experience%2Emd">physician experience</a>, the <a href="/submodules/coda-agents/docs/ai-care-team-operating-contract%2Emd">care-team operating contract</a>, the <a href="/submodules/coda-agents/docs/runtime-protocol%2Emd">runtime protocol</a>, and <a href="/submodules/coda-agents/docs/readiness%2Emd">readiness</a>. [Physician site](physician-site.md) maps those documents to the Rust crates.
 
 ## The other checkouts
 
-The chapters above follow Duet's reading order. This checkout also holds the physician harness work, Gym, and computer use; which work belongs where stays in the routing table in `AGENTS.md`.
-
-- [Physician site](physician-site.md): the Rust physician page, the sample server, and the Coda Agents contracts it implements.
-- [Coda Gym](coda-gym.md): clinical case authoring, environments, and scoring.
-- [Computer use](computer-use.md): browser use for browser EHRs.
+Gym and computer use have no Rust crate yet. [Coda Gym](coda-gym.md) and [Computer use](computer-use.md) link their repositories.
