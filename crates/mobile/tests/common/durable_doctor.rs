@@ -114,6 +114,7 @@ async fn saved_page_publishes_and_revokes_through_real_durable_routes() {
     let site = build_site_with_bearer(Some(TOKEN));
     let mut server = BackendProcess::start(&runtime_url, &journal_path, &site, &base);
     wait_until_ready(address).await;
+    run_care_team_checks(&base).await;
     run_browser_checks(
         &base,
         &workspace,
@@ -169,6 +170,12 @@ async fn backend_process() {
     )
     .unwrap();
     let routes = duet_api::durable::router(state.clone())
+        .merge(duet_api::care_team_routes::router(
+            duet_api::care_team::CareTeamStore {
+                durable: state.clone(),
+                directory: Arc::new(npi_registry::FixtureDirectory::sample()),
+            },
+        ))
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::doctor_routes::router(
             duet_api::doctor_routes::DoctorState {
@@ -593,6 +600,114 @@ async fn prove_conversation_source(
     patient.page().evaluate("(() => { const chips = [...document.querySelectorAll('button[aria-label=\"Open source Retained browser note\"]')]; chips[chips.length-1].click(); return true; })()");
     patient.wait_for("couldn’t");
     patient.click("button[aria-label='Close source']");
+}
+
+/// Public fixture lookup, private real routes and the compiled patient UI.
+async fn run_care_team_checks(base: &str) {
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
+    browser.click("nav.tabs button:nth-of-type(3)");
+    browser.wait_for("Care team");
+    click_text(&mut browser, "Find a clinician");
+    browser.type_into(".care-team-search label:nth-of-type(2) input", "Quinlan");
+    click_text(&mut browser, "Search directory");
+    browser.wait_for("AVERY");
+    browser.click(".care-result button");
+    browser.wait_for("Call directory number");
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("document.querySelector('.care-member a').getAttribute('href')"),
+        serde_json::json!("tel:4135550142")
+    );
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("document.querySelector('.care-member a[target]').getAttribute('rel')"),
+        serde_json::json!("noopener noreferrer")
+    );
+    assert!(
+        browser
+            .body_text()
+            .unwrap()
+            .contains("aquinlan@direct.example-health.org")
+    );
+    click_text(&mut browser, "Copy fax");
+    // Headless clipboard permission may be denied: the fallback must be visible.
+    wait_until(&mut browser, |text| {
+        text.contains("Fax number copied") || text.contains("Select and copy")
+    });
+    click_text(&mut browser, "Edit labels");
+    browser.type_into(
+        ".care-member fieldset label:nth-of-type(2) input",
+        "Synthetic primary care",
+    );
+    click_text(&mut browser, "Save labels");
+    browser.wait_for("Your nickname: Synthetic primary care");
+    click_text(&mut browser, "Request my records");
+    browser.wait_for("Who should disclose the records?");
+    browser.page().evaluate("(() => { const s=document.querySelector('.care-release select'); s.value=s.options[1].value; s.dispatchEvent(new Event('change',{bubbles:true})); return true; })()");
+    browser.type_into(
+        ".care-release fieldset:nth-of-type(1) label:nth-of-type(2) input",
+        "Synthetic Patient",
+    );
+    browser.click(".care-release fieldset:nth-of-type(2) input[type=checkbox]");
+    browser.page().evaluate("(() => { const s=document.querySelector('.care-release fieldset:nth-of-type(3) select'); s.value='event'; s.dispatchEvent(new Event('change',{bubbles:true})); return true; })()");
+    wait_for_selector(
+        &mut browser,
+        ".care-release fieldset:nth-of-type(3) label:nth-of-type(3) input",
+    );
+    browser.type_into(
+        ".care-release fieldset:nth-of-type(3) label:nth-of-type(3) input",
+        "End of synthetic care",
+    );
+    click_text(&mut browser, "Save review template and preview");
+    browser.wait_for("4. Review before downloading");
+    assert_eq!(browser.page().evaluate("document.querySelector('.release-preview').getAttribute('src').startsWith('data:image/svg+xml')"), serde_json::json!(true));
+    let reference = browser
+        .page()
+        .evaluate("document.querySelector('.care-release .status-detail').textContent");
+    browser.type_into(
+        ".care-release fieldset:nth-of-type(1) label:nth-of-type(2) input",
+        "Edited Synthetic Patient",
+    );
+    browser.wait_for("Your edits have not been saved or reviewed");
+    click_text(&mut browser, "Save edits and preview same template");
+    browser.wait_for("4. Review before downloading");
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("document.querySelector('.care-release .status-detail').textContent"),
+        reference
+    );
+    // Observe the real download handoff without opening OS dialogs or navigating a tel URI.
+    browser.page().evaluate("window.__reviewPdf = null; const original=URL.createObjectURL; URL.createObjectURL=function(blob){ window.__reviewPdf=blob; return original.call(this,blob); }; true;");
+    browser.click(".care-release > label.care-check input");
+    click_text(&mut browser, "Download or share review PDF");
+    browser.wait_for("PDF handed to download/share");
+    assert_eq!(
+        browser.page().evaluate("window.__reviewPdf.type"),
+        serde_json::json!("application/pdf")
+    );
+    assert!(
+        browser
+            .page()
+            .evaluate("window.__reviewPdf.size")
+            .as_u64()
+            .unwrap()
+            > 1000
+    );
+    // No search/profile/template data is persisted to browser storage.
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("Object.keys(localStorage).filter(k => k !== 'coda-mode')"),
+        serde_json::json!([])
+    );
+    click_text(&mut browser, "Remove member");
+    click_text(&mut browser, "Confirm removal");
+    browser.wait_for("No care-team members yet");
 }
 
 async fn run_browser_checks(

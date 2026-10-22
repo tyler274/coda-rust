@@ -18,6 +18,7 @@
 - [Sharing threat model](sharing-threat-model.md)
 - [Privacy recovery](privacy-recovery.md)
 - [Security posture](security-posture.md)
+- [Clinician directory and care team](clinician-directory.md)
 - [Clinical catalog](clinical-catalog-migration.md)
 - [Terminology licenses](clinical-terminology-license-audit.md)
 - [Medication and vaccines](medication-vaccine-catalog-program.md)
