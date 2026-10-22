@@ -169,7 +169,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
 /// because they hold durable history and privacy receipts.
 async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
     db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
-    db.execute_unprepared("DROP TABLE duet_conversation_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
+    db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
     db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
     db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
     <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(1))
@@ -247,8 +247,8 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     };
     migrate();
     let expected = vec![
+        "duet_attempt_events",
         "duet_conversation_attempts",
-        "duet_conversation_events",
         "duet_conversation_inputs",
         "duet_conversation_messages",
         "duet_conversation_state",

@@ -1,4 +1,9 @@
 //! Additive Duet attempt/event ownership; no shared runtime tables.
+//!
+//! The attempt event log is `duet_attempt_events`, not
+//! `duet_conversation_events`: the Duet workspace chain
+//! (`duet-api/migrations/0005_conversations.sql`) already owns that name, and
+//! `duet-migrate` applies both chains to one database.
 use sea_orm_migration::prelude::*;
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -23,7 +28,7 @@ impl MigrationTrait for Migration {
                started_at timestamptz NOT NULL DEFAULT clock_timestamp(),
                UNIQUE(run_id,ordinal)
              );
-             CREATE TABLE duet_conversation_events (
+             CREATE TABLE duet_attempt_events (
                attempt_id uuid NOT NULL REFERENCES duet_conversation_attempts(id) ON DELETE CASCADE,
                sequence bigint NOT NULL CHECK (sequence BETWEEN 1 AND 4096),
                body text NOT NULL CHECK (octet_length(body)<=262144),

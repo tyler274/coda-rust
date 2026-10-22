@@ -328,7 +328,7 @@ async fn postgres_dispatch_claim_stream_completion_and_recovery() {
             .await
             .is_err()
     );
-    db.execute("ALTER TABLE duet_conversation_events ADD CONSTRAINT fixture_ack_failure CHECK (body NOT LIKE '%ProviderStarted%') NOT VALID").await.unwrap();
+    db.execute("ALTER TABLE duet_attempt_events ADD CONSTRAINT fixture_ack_failure CHECK (body NOT LIKE '%ProviderStarted%') NOT VALID").await.unwrap();
     let calls = fixture.calls;
     assert!(
         execute(
@@ -343,7 +343,7 @@ async fn postgres_dispatch_claim_stream_completion_and_recovery() {
         .is_err()
     );
     assert_eq!(fixture.calls, calls);
-    db.execute("ALTER TABLE duet_conversation_events DROP CONSTRAINT fixture_ack_failure")
+    db.execute("ALTER TABLE duet_attempt_events DROP CONSTRAINT fixture_ack_failure")
         .await
         .unwrap();
     // Completion rollback: candidate evidence is not a committed answer. A

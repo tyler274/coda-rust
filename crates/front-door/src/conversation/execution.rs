@@ -232,7 +232,7 @@ impl PostgresFrontDoorStore {
         fence(&tx, claim).await?;
         if let Some(r) = tx
             .query_one_raw(sql(
-                "SELECT * FROM duet_conversation_events WHERE attempt_id=$1 AND sequence=$2",
+                "SELECT * FROM duet_attempt_events WHERE attempt_id=$1 AND sequence=$2",
                 vec![claim.token.into(), event.sequence.into()],
             ))
             .await?
@@ -246,11 +246,11 @@ impl PostgresFrontDoorStore {
             tx.commit().await?;
             return Ok(());
         }
-        let n:i64=tx.query_one_raw(sql("SELECT coalesce(max(sequence),0) AS n FROM duet_conversation_events WHERE attempt_id=$1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?.try_get("","n")?;
+        let n:i64=tx.query_one_raw(sql("SELECT coalesce(max(sequence),0) AS n FROM duet_attempt_events WHERE attempt_id=$1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?.try_get("","n")?;
         if event.sequence != n + 1 {
             return Err(AuthorityError::Refused);
         }
-        tx.execute_raw(sql("INSERT INTO duet_conversation_events(attempt_id,sequence,body,delta,candidate) VALUES($1,$2,$3,$4,$5)",vec![claim.token.into(),event.sequence.into(),event.body.clone().into(),event.delta.clone().into(),event.candidate.clone().into()])).await?;
+        tx.execute_raw(sql("INSERT INTO duet_attempt_events(attempt_id,sequence,body,delta,candidate) VALUES($1,$2,$3,$4,$5)",vec![claim.token.into(),event.sequence.into(),event.body.clone().into(),event.delta.clone().into(),event.candidate.clone().into()])).await?;
         if let Some(delta) = &event.delta {
             let rev = revision(&tx, claim.account).await?;
             tx.execute_raw(sql("UPDATE duet_conversation_messages SET text=text||$3,revision=$4 WHERE account_id=$1 AND id=(SELECT reply_id FROM duet_conversation_inputs WHERE run_id=$2)",vec![claim.account.into(),claim.run.into(),delta.clone().into(),rev.into()])).await?;
@@ -291,7 +291,7 @@ impl PostgresFrontDoorStore {
             return Ok(());
         }
         fence(&tx, claim).await?;
-        let last=tx.query_one_raw(sql("SELECT candidate FROM duet_conversation_events WHERE attempt_id=$1 ORDER BY sequence DESC LIMIT 1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?;
+        let last=tx.query_one_raw(sql("SELECT candidate FROM duet_attempt_events WHERE attempt_id=$1 ORDER BY sequence DESC LIMIT 1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?;
         if last.try_get::<Option<String>>("", "candidate")?.as_deref() != Some(text) {
             return Err(AuthorityError::Refused);
         }
@@ -334,7 +334,7 @@ impl PostgresFrontDoorStore {
         }
         let tx = self.db.begin().await?;
         let (a, _) = identity::locked(&tx, principal).await?;
-        let rows=tx.query_all_raw(sql("SELECT e.* FROM duet_conversation_events e JOIN duet_conversation_attempts t ON t.id=e.attempt_id JOIN duet_conversation_inputs i ON i.run_id=t.run_id WHERE i.account_id=$1 AND e.attempt_id=$2 AND e.sequence>$3 ORDER BY e.sequence LIMIT 100",vec![a.id.into(),attempt.into(),after.into()])).await?;
+        let rows=tx.query_all_raw(sql("SELECT e.* FROM duet_attempt_events e JOIN duet_conversation_attempts t ON t.id=e.attempt_id JOIN duet_conversation_inputs i ON i.run_id=t.run_id WHERE i.account_id=$1 AND e.attempt_id=$2 AND e.sequence>$3 ORDER BY e.sequence LIMIT 100",vec![a.id.into(),attempt.into(),after.into()])).await?;
         let events = rows
             .into_iter()
             .map(|r| {
