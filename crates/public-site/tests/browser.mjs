@@ -45,7 +45,7 @@ try {
     await until(() => lifecycle.some(event => event.loaderId === navigation.loaderId && event.frameId === navigation.frameId && event.name === 'load'));
     assert.equal(await evaluate('location.pathname'),path);
   };
-  const stages = "#heroStage, #memStage, .f-today, .f-brief, .f-ask, .f-follow, .t-src, .t-you, .duet-stage";
+  const stages = "#heroStage, #memStage, .f-today, .f-brief, .f-ask, .f-follow, .t-src, .t-you, .duet-story";
   const snapshot = `JSON.stringify([...document.querySelectorAll(${JSON.stringify(stages)})].map(stage => stage.outerHTML))`;
   // The original site.js shows the hero's final frame under reduced motion.
   const staticContent = `(() => {
@@ -100,9 +100,14 @@ try {
     await navigate('/duet');
     assert.equal(await evaluate(`document.body.innerText.includes('A clearer picture of you.')`),true);
     assert.equal(await evaluate('document.documentElement.scrollWidth > innerWidth'),false,`${label}: Duet overflow`);
-    if (scripts) {
-      await evaluate(`(() => { const r = document.querySelector('.duet-stage').getBoundingClientRect(); scrollTo(0, scrollY + r.top + r.height / 2 - innerHeight / 2); })()`);
-      await until(reduced ? `[...document.querySelectorAll('.duet-stage .cm')].every(m => m.classList.contains('on'))` : `!!document.querySelector('.duet-stage .cm.on')`);
+    // The Duet story's markup is its last frame, ending on the page her clinician receives:
+    // reduced motion and no-script keep it, and duet.js otherwise plays from the start.
+    const lastFrame = `[...document.querySelectorAll('.duet-story .ds-insight, .duet-story .ds-msg, .duet-story .ds-clin')].every(e => getComputedStyle(e).opacity === '1')`;
+    if (scripts && !reduced) {
+      await evaluate(`(() => { const r = document.querySelector('.duet-story').getBoundingClientRect(); scrollTo(0, scrollY + r.top + r.height / 2 - innerHeight / 2); })()`);
+      await until(`!!document.querySelector('.duet-story .ds-msg.on')`);
+    } else {
+      assert.equal(await evaluate(lastFrame),true,`${label}: Duet story's last frame`);
     }
     assert.deepEqual(failures,[],`${label}: Duet failed local assets`); assert.deepEqual(errors,[],`${label}: Duet uncaught JavaScript errors`);
     console.log(`${label}: content, assets, overflow, navigation and motion passed`);

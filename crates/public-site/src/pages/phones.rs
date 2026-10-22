@@ -1,539 +1,534 @@
 use dioxus::prelude::*;
 
+/// The Duet section, shared by the homepage and /duet: one story told across three
+/// phones, drawn from the October 21 Duet mockups (ENG-168, ENG-169). Duet does the
+/// noticing and the following up; Maya says yes. Today shows what Duet noticed about
+/// her home blood pressure; in her conversation Duet offers a morning Check-in, which
+/// she accepts; on Monday the Check-in returns by itself and Duet prepares an update to
+/// her page for her doctor; she reviews it, saves it, previews it, and the story ends
+/// on the page a clinician receives.
+///
+/// Each screen is laid out at the mockups' native 390-point width and scaled into the
+/// phone, so its sizes are the mockups' own. Site-owned (see the Public site book):
+/// styled by /css/duet.css and played by /homepage/duet.js. The markup is the story's
+/// last frame, which reduced-motion and no-script visitors see; duet.js starts each
+/// pass from the opening frame. `data-owner="site"` marks it as outside the
+/// production-parity oracle.
 #[component]
 pub fn Phones() -> Element {
     rsx! {
-        div { class: "frame frame-wide rv", "data-art": "dawn", "data-seed": "5",
-            div {
-                class: "stage-wrap",
-                "data-ch": "820",
-                "data-cw": "640",
-                "data-h": "760",
-                "data-w": "1280",
-                div { class: "stage duet-stage", "data-play": "duet",
-                    div { class: "phone p1",
-                        div { class: "scr scr-chat",
-                            div { class: "ph-status",
-                                span { "9:41" }
-                                span { class: "ph-ic",
-                                    icons::icon_0 {}
-                                    i { class: "batt" }
-                                }
-                            }
-                            i { class: "island" }
-                            div { class: "ph-who",
-                                img { alt: "", src: "/homepage/assets/sprout.webp" }
-                                b { "Sprout" }
-                            }
-                            div { class: "chat",
-                                div { class: "cm me", "Can you help me get ready for Tuesday’s visit?" }
-                                div { class: "cm du",
-                                    "Sure. Your home blood pressure has stayed close to your recent average. What would you like your doctor to know?"
-                                }
-                                div { class: "cm me",
-                                    "I’m still on lisinopril 10 mg. I picked up the 20 mg but haven’t started it."
-                                }
-                                div { class: "cm du",
-                                    "I added that to For my doctor, in your words. You can edit the page before you share it."
-                                }
-                            }
-                            div { class: "ph-attach",
-                                span { class: "ic", icons::icon_1 {} }
-                                div {
-                                    b { "For my doctor" }
-                                    small { "Your saved page" }
-                                }
-                                icons::icon_2 {}
-                            }
-                            div { class: "ph-compose",
-                                span { "Message Sprout" }
-                                i { icons::icon_3 {} }
-                            }
-                            nav { class: "ph-tabs",
-                                span { class: "on",
-                                    icons::icon_4 {}
-                                    "Duet"
-                                }
-                                span {
-                                    icons::icon_5 {}
-                                    "Today"
-                                }
-                                span {
-                                    icons::icon_6 {}
-                                    "You"
-                                }
-                                span {
-                                    icons::icon_7 {}
-                                    "Shared"
-                                }
-                            }
-                        }
-                    }
-                    div { class: "phone p2",
-                        div { class: "scr scr-today",
-                            div { class: "ph-status",
-                                span { "9:41" }
-                                span { class: "ph-ic",
-                                    icons::icon_8 {}
-                                    i { class: "batt" }
-                                }
-                            }
-                            i { class: "island" }
-                            div { class: "ph-dateRow",
-                                span { "Thursday, October 8" }
-                                i { "Edit" }
-                            }
-                            b { class: "ph-large", "Good morning, Maya" }
-                            div { class: "ph-moment",
-                                div { class: "ph-mh",
-                                    img {
-                                        alt: "",
-                                        src: "/homepage/assets/sprout.webp",
-                                    }
-                                    span { "From Tuesday" }
-                                    icons::icon_9 {}
-                                }
-                                b { "Home blood pressure stayed close to your recent average" }
-                                div { class: "ph-pair",
-                                    div {
-                                        b {
-                                            "143/83 "
-                                            small { "mmHg" }
-                                        }
-                                        small { "7-day average" }
-                                    }
-                                    div {
-                                        b {
-                                            "12 "
-                                            small { "readings" }
-                                        }
-                                        small { "Home cuff" }
-                                    }
-                                }
-                                p { "Recorded readings were similar to the prior two weeks." }
-                            }
-                            div { class: "ph-stat",
-                                div { class: "ph-sh",
-                                    span {
-                                        icons::icon_10 {}
-                                        "Blood pressure"
-                                    }
-                                    small {
-                                        "Today "
-                                        icons::icon_11 {}
-                                    }
-                                }
-                                b {
-                                    "142/82 "
-                                    small { "mmHg" }
-                                }
-                                icons::icon_12 {}
-                            }
-                            div { class: "ph-stat ph-sleep",
-                                div { class: "ph-sh",
-                                    span {
-                                        icons::icon_13 {}
-                                        "Sleep"
-                                    }
-                                    small {
-                                        "Today "
-                                        icons::icon_14 {}
-                                    }
-                                }
-                                b {
-                                    "7 "
-                                    small { "hr" }
-                                    " 24 "
-                                    small { "min" }
-                                }
-                                div { class: "bars",
-                                    i { style: "height:78%" }
-                                    i { style: "height:84%" }
-                                    i { style: "height:70%" }
-                                    i { style: "height:88%" }
-                                    i { style: "height:82%" }
-                                    i { style: "height:76%" }
-                                    i { class: "last", style: "height:86%" }
-                                }
-                            }
-                            nav { class: "ph-tabs",
-                                span {
-                                    icons::icon_15 {}
-                                    "Duet"
-                                }
-                                span { class: "on",
-                                    icons::icon_16 {}
-                                    "Today"
-                                }
-                                span {
-                                    icons::icon_17 {}
-                                    "You"
-                                }
-                                span {
-                                    icons::icon_18 {}
-                                    "Shared"
-                                }
-                            }
-                        }
-                    }
-                    div { class: "phone p3",
-                        div { class: "scr scr-doc",
-                            div { class: "ph-status",
-                                span { "9:41" }
-                                span { class: "ph-ic",
-                                    icons::icon_19 {}
-                                    i { class: "batt" }
-                                }
-                            }
-                            i { class: "island" }
-                            div { class: "sheet",
-                                i { class: "grab" }
-                                div { class: "sheet-h",
-                                    b { "For my doctor" }
-                                    span { class: "xbtn", icons::icon_20 {} }
-                                }
-                                div { class: "sheet-body",
-                                    div { class: "doc-intro",
-                                        p {
-                                            "Your words and the information you choose, on one page for your visit."
-                                        }
-                                        a { "Edit page" }
-                                    }
-                                    span { class: "doc-lbl", "Page preview" }
-                                    div { class: "paper",
-                                        b { class: "paper-h", "For my doctor" }
-                                        div { class: "paper-who",
-                                            b { "Maya Bennett" }
-                                            span { "Prepared Oct 8, 2026" }
-                                        }
-                                        div { class: "ps",
-                                            small { "What I want to discuss" }
-                                            p {
-                                                "I’m still taking lisinopril 10 mg and haven’t started the 20 mg. I’d like to review my readings."
-                                            }
-                                        }
-                                        div { class: "ps",
-                                            small { "My questions" }
-                                            p { "1. Should I start the higher dose now?" }
-                                        }
-                                        div { class: "ps",
-                                            small { "From my records" }
-                                            p {
-                                                b { "Home blood pressure" }
-                                                br {}
-                                                "143/83 mmHg, 7-day average · Apple Health"
-                                            }
-                                        }
-                                        div { class: "ps",
-                                            small { "What I take (confirmed by me)" }
-                                            p {
-                                                b { "Lisinopril 10 mg" }
-                                                br {}
-                                                "Once daily"
-                                            }
-                                        }
-                                        p { class: "paper-foot",
-                                            "Prepared by me with help from Duet, an AI app, and reviewed by me"
-                                        }
-                                    }
-                                }
-                                div { class: "share-btn",
-                                    icons::icon_21 {}
-                                    "Share page"
-                                }
-                            }
-                        }
+        div { "data-owner": "site",
+            div { class: "frame frame-wide rv", "data-art": "dawn", "data-seed": "5",
+                div {
+                    class: "stage-wrap",
+                    "data-ch": "820",
+                    "data-cw": "640",
+                    "data-h": "760",
+                    "data-w": "1280",
+                    div {
+                        class: "stage duet-story",
+                        "data-day": "mon",
+                        "data-step": "preview",
+                        Today {}
+                        Chat {}
+                        Doctor {}
+                        Clinician {}
                     }
                 }
             }
-        }
-        div { class: "duet-labels",
-            div { class: "rv",
-                span { class: "idx",
-                    i {}
-                    "01"
+            div { class: "duet-labels",
+                div { class: "rv",
+                    span { class: "idx", i {} "01" }
+                    h3 { "Duet notices" }
                 }
-                h3 { "Talk with Duet" }
-            }
-            div { class: "rv", style: "--d:.06s",
-                span { class: "idx",
-                    i {}
-                    "02"
+                div { class: "rv", style: "--d:.06s",
+                    span { class: "idx", i {} "02" }
+                    h3 { "Duet follows up" }
                 }
-                h3 { "Today" }
-            }
-            div { class: "rv", style: "--d:.12s",
-                span { class: "idx",
-                    i {}
-                    "03"
+                div { class: "rv", style: "--d:.12s",
+                    span { class: "idx", i {} "03" }
+                    h3 { "You choose what to share" }
                 }
-                h3 { "For my doctor" }
             }
         }
     }
 }
 
-mod icons {
-    use super::*;
+/// Maya's page, which For my doctor shows and her clinician receives in the same words.
+const NAME: &str = "Maya Bennett";
+const BORN: &str = "March 14, 1968";
+const CONCERN: &str = "I want to know whether I should start the higher dose of lisinopril.";
+const MEDICINE: &str = "Maya takes lisinopril 10 mg each morning. She picked up a 20 mg prescription on October 1 and has not started it.";
+const READINGS: &str = "Her home cuff readings averaged 141/82 mmHg across October 6–12 (7 mornings), after 144/84 mmHg across September 22–October 5 (12 days).";
+const QUESTION: &str = "Should I start the 20 mg dose now, or keep recording at home first?";
+const SOURCES: [(&str, &str); 2] = [
+    ("Maya’s words", "Patient note · October 1, 2026"),
+    (
+        "Home blood pressure",
+        "Apple Health · Home cuff · September 22–October 12, 2026",
+    ),
+];
+/// The Check-in Duet offers and Maya accepts, as the conversation and Today show it.
+const CHECK_IN: &str = "Morning blood pressure";
 
-    pub(crate) fn icon_0() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 18 12",
-                path { d: "M9 11.2 7 9.1a2.8 2.8 0 0 1 4 0zM4.6 6.8a6.2 6.2 0 0 1 8.8 0l-1.3 1.3a4.4 4.4 0 0 0-6.2 0zM2.2 4.4a9.6 9.6 0 0 1 13.6 0l-1.3 1.3a7.8 7.8 0 0 0-11 0z" }
-            }
+#[component]
+fn Status() -> Element {
+    rsx! {
+        div { class: "ds-status",
+            span { "9:41" }
+            i { class: "ds-island" }
+            span { "▮▮▮ ◒ ▰" }
         }
     }
+}
 
-    pub(crate) fn icon_1() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                rect {
-                    height: "13",
-                    rx: "3",
-                    width: "18",
-                    x: "3",
-                    y: "7",
-                }
-                path { d: "M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M12 10.5v6M9 13.5h6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_2() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", class: "chev", view_box: "0 0 24 24",
-                path { d: "m9 5 7 7-7 7" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_3() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M12 19V5M6 11l6-6 6 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_4() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M3 5.5A2.5 2.5 0 0 1 5.5 3h8A2.5 2.5 0 0 1 16 5.5v5a2.5 2.5 0 0 1-2.5 2.5H8l-3.5 3v-3H5.5A2.5 2.5 0 0 1 3 10.5z" }
-                path { d: "M18 8.2h.5A2.5 2.5 0 0 1 21 10.7v4.8a2.5 2.5 0 0 1-2.5 2.5h-.5v3l-3.5-3H11a2.5 2.5 0 0 1-2.4-1.8" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_5() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle { cx: "12", cy: "12", r: "4.2" }
-                path { d: "M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_6() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle { cx: "12", cy: "12", r: "9.5" }
-                circle {
-                    class: "f",
-                    cx: "12",
-                    cy: "9.6",
-                    r: "3.3",
-                }
-                path {
-                    class: "f",
-                    d: "M5.8 18.4c1.3-2.3 3.6-3.6 6.2-3.6s4.9 1.3 6.2 3.6A8.6 8.6 0 0 1 12 21a8.6 8.6 0 0 1-6.2-2.6z",
+#[component]
+fn Tabs(on: &'static str) -> Element {
+    rsx! {
+        nav { class: "ds-tabs",
+            for (label , symbol) in [("Duet", "chat"), ("Today", "sun"), ("You", "you")] {
+                span { class: if on == label { "ds-tab ds-on" } else { "ds-tab" },
+                    Icon { name: symbol }
+                    span { "{label}" }
                 }
             }
         }
     }
+}
 
-    pub(crate) fn icon_7() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle {
-                    class: "f",
-                    cx: "8.5",
-                    cy: "8",
-                    r: "3.2",
+/// A navigation bar: back, title and a trailing Edit.
+#[component]
+fn Bar(title: &'static str) -> Element {
+    rsx! {
+        div { class: "ds-bar",
+            span { class: "ds-bar-side", Icon { name: "back" } }
+            span { class: "ds-bar-title", "{title}" }
+            span { class: "ds-bar-side ds-bar-edit", "Edit" }
+        }
+    }
+}
+
+#[component]
+fn Row(symbol: &'static str, title: &'static str, children: Element) -> Element {
+    rsx! {
+        div { class: "ds-row",
+            Icon { name: symbol, class: "ds-row-icon" }
+            span { class: "ds-copy",
+                strong { "{title}" }
+                small { {children} }
+            }
+            span { class: "ds-chevron", "›" }
+        }
+    }
+}
+
+/// Phone 1: Today, where the weekly review's insight appears without being asked
+/// for, and the care Duet keeps for Maya (her Check-in, her page) waits.
+#[component]
+fn Today() -> Element {
+    rsx! {
+        div { class: "phone p1",
+            div { class: "scr ds-scr",
+                div { class: "ds-app",
+                    Status {}
+                    div { class: "ds-bar",
+                        span { class: "ds-bar-date",
+                            span { class: "ds-thu", "Thursday, October 8" }
+                            span { class: "ds-mon", "Monday, October 12" }
+                        }
+                        span { class: "ds-bar-side ds-bar-edit", "Edit" }
+                    }
+                    div { class: "ds-scroll",
+                        h1 { class: "ds-hero",
+                            "Good morning,"
+                            br {}
+                            "Maya"
+                        }
+                        div { class: "ds-card ds-insight",
+                            div { class: "ds-card-h",
+                                img {
+                                    class: "ds-face",
+                                    alt: "",
+                                    src: "/homepage/assets/sprout.webp",
+                                }
+                                "What Duet noticed"
+                            }
+                            div { class: "ds-card-title",
+                                "Home blood pressure stayed close to your recent average"
+                            }
+                            div { class: "ds-compare",
+                                div { class: "ds-compare-cap",
+                                    span { "This week" }
+                                    span { "143/83" }
+                                }
+                                div { class: "ds-compare-line", style: "width:93%" }
+                                div { class: "ds-compare-cap",
+                                    span { "Previous 2 weeks" }
+                                    span { "144/84" }
+                                }
+                                div { class: "ds-compare-line ds-pale" }
+                            }
+                            div { class: "ds-insight-foot",
+                                Icon { name: "heart" }
+                                "9 readings · Apple Health"
+                                span { class: "ds-chevron", "↗" }
+                            }
+                        }
+                        div { class: "ds-coming",
+                            div {
+                                h2 { class: "ds-section", "Coming up" }
+                                div { class: "ds-card ds-flat",
+                                    Row { symbol: "clock", title: CHECK_IN, "Every morning · until Tuesday" }
+                                }
+                            }
+                        }
+                        h2 { class: "ds-section", "For my doctor" }
+                        div { class: "ds-card ds-flat",
+                            Row { symbol: "file", title: "My page for my doctor",
+                                span { class: "ds-fd-saved", "Saved · ready to preview" }
+                                span { class: "ds-fd-update", "An update is ready to review" }
+                            }
+                        }
+                        h2 { class: "ds-section", "Your measurements" }
+                        div { class: "ds-tiles",
+                            div { class: "ds-card",
+                                div { class: "ds-card-h",
+                                    Icon { name: "heart" }
+                                    "Blood pressure"
+                                }
+                                div { class: "ds-measure",
+                                    "141/82"
+                                    small { "mmHg" }
+                                }
+                                p { class: "ds-caption", "This morning · Home cuff" }
+                                Spark { d: "M2 14 20 10 38 16 56 11 74 18 92 12 110 16 128 13", y: "13" }
+                            }
+                            div { class: "ds-card",
+                                div { class: "ds-card-h",
+                                    Icon { name: "steps" }
+                                    "Steps"
+                                }
+                                div { class: "ds-measure", "4,280" }
+                                p { class: "ds-caption", "Today · Apple Health" }
+                                Spark { d: "M2 28 20 22 38 27 56 13 74 17 92 9 110 14 128 4", y: "4" }
+                            }
+                        }
+                    }
+                    Tabs { on: "Today" }
+                    i { class: "ds-home" }
                 }
-                circle {
-                    class: "f",
-                    cx: "16.5",
-                    cy: "8.5",
-                    r: "2.7",
+            }
+        }
+    }
+}
+
+#[component]
+fn Spark(d: &'static str, y: &'static str) -> Element {
+    rsx! {
+        svg {
+            class: "ds-spark",
+            view_box: "0 0 130 37",
+            preserve_aspect_ratio: "none",
+            "aria-hidden": "true",
+            path {
+                d,
+                fill: "none",
+                stroke: "currentColor",
+                stroke_width: "2.2",
+                stroke_linejoin: "round",
+            }
+            circle {
+                cx: "128",
+                cy: y,
+                r: "3",
+                fill: "currentColor",
+            }
+        }
+    }
+}
+
+/// Phone 2: the conversation with Maya's companion. Duet offers a Check-in, which she
+/// accepts in place; on Monday the Check-in returns on its own, and Duet prepares an
+/// update to her page for her doctor.
+#[component]
+fn Chat() -> Element {
+    rsx! {
+        div { class: "phone p2",
+            div { class: "scr ds-scr",
+                div { class: "ds-app",
+                    Status {}
+                    div { class: "ds-chat-h",
+                        img {
+                            class: "ds-face",
+                            alt: "",
+                            src: "/homepage/assets/sprout.webp",
+                        }
+                        span { "Sprout" }
+                    }
+                    div { class: "ds-chat",
+                        div { class: "ds-thread",
+                            div { class: "ds-date", "Thursday, October 8" }
+                            div { class: "ds-msg ds-bubble ds-offer ds-accepted",
+                                p {
+                                    "Your home readings this week averaged 143/83, close to 144/84 the two weeks before. With your visit on Tuesday, a reading each morning would give your doctor a steady week."
+                                }
+                                span { class: "ds-action ds-accept", "Check in each morning" }
+                                p { class: "ds-caption ds-added", "Check-in added." }
+                            }
+                            div { class: "ds-msg ds-object",
+                                div { class: "ds-receipt",
+                                    Icon { name: "clock" }
+                                    span {
+                                        strong { "{CHECK_IN}" }
+                                        small { "Check-in every morning until Tuesday · open current item" }
+                                    }
+                                    span { class: "ds-chevron", "›" }
+                                }
+                            }
+                            div { class: "ds-msg ds-date", "Monday, October 12" }
+                            div { class: "ds-msg ds-bubble",
+                                p {
+                                    "Good morning. Today’s reading is in, 7 mornings this week. Want me to add them to your page for your doctor?"
+                                }
+                            }
+                            div { class: "ds-msg ds-bubble ds-user",
+                                p { "Yes, add them" }
+                            }
+                            div { class: "ds-msg ds-bubble",
+                                p { "Here’s the update. Your saved page stays as it is until you save it." }
+                                span { class: "ds-object ds-review-link", "Review proposed update →" }
+                            }
+                            div { class: "ds-typing", i {} i {} i {} }
+                        }
+                    }
+                    div { class: "ds-compose-wrap",
+                        div { class: "ds-composer",
+                            span { class: "ds-input", "Message Sprout" }
+                            span { class: "ds-send", "↑" }
+                        }
+                    }
+                    Tabs { on: "Duet" }
+                    i { class: "ds-home" }
                 }
-                path {
-                    class: "f",
-                    d: "M2.5 18.5c.4-3.3 2.9-5.4 6-5.4s5.6 2.1 6 5.4zM15.2 18.5c-.2-1.9-.9-3.4-2-4.5a5 5 0 0 1 3.3-1c2.7 0 4.6 1.9 5 5.5z",
+            }
+        }
+    }
+}
+
+/// Phone 3: For my doctor, Maya's continuing page. The stage's `data-step` is where
+/// it stands: rest (her page as she saved it), ready (Duet's update waits for her),
+/// review (what changed, not saved), saved (saved, not shared) or preview. The markup
+/// is the last step.
+#[component]
+fn Doctor() -> Element {
+    rsx! {
+        div { class: "phone p3",
+            div { class: "scr ds-scr",
+                div { class: "ds-app",
+                    Status {}
+                    div { class: "ds-views",
+                        div { class: "ds-view ds-v-page",
+                            Bar { title: "For my doctor" }
+                            div { class: "ds-scroll",
+                                p { class: "ds-caption ds-kicker", "Your continuing page" }
+                                h1 { class: "ds-detail-title", "For my doctor" }
+                                div { class: "ds-fold ds-fold-saved",
+                                    div {
+                                        div { class: "ds-saved-receipt",
+                                            Icon { name: "check" }
+                                            div {
+                                                strong { "Page saved" }
+                                                small { "This update has not been shared." }
+                                            }
+                                        }
+                                    }
+                                }
+                                div { class: "ds-fold ds-fold-update",
+                                    div {
+                                        div { class: "ds-update",
+                                            div { class: "ds-card-h",
+                                                img {
+                                                    class: "ds-face",
+                                                    alt: "",
+                                                    src: "/homepage/assets/sprout.webp",
+                                                }
+                                                "An update is ready"
+                                            }
+                                            h2 {
+                                                "This week’s readings."
+                                                br {}
+                                                "Ready for Tuesday."
+                                            }
+                                            p { "Seven mornings of home readings are ready to add to your page." }
+                                            p { class: "ds-caption", "Prepared October 12 · Not saved" }
+                                            span { class: "ds-action ds-review", "Review update" }
+                                        }
+                                    }
+                                }
+                                div { class: "ds-saved-label",
+                                    span { "Saved page" }
+                                    span {
+                                        span { class: "ds-oct1", "October 1" }
+                                        span { class: "ds-oct12", "October 12" }
+                                    }
+                                }
+                                div { class: "ds-peek",
+                                    p { class: "ds-doc-label", "What I want to discuss" }
+                                    blockquote { "{CONCERN}" }
+                                    div { class: "ds-peek-foot",
+                                        Icon { name: "file" }
+                                        "Blood pressure"
+                                        span { class: "ds-text-link", "View page →" }
+                                    }
+                                }
+                                span { class: "ds-text-link", "Ask Duet about this page" }
+                            }
+                            div { class: "ds-footer ds-footer-preview",
+                                span { class: "ds-action ds-to-preview", "Preview before sharing" }
+                            }
+                        }
+                        div { class: "ds-view ds-v-review",
+                            Bar { title: "Review update" }
+                            div { class: "ds-scroll ds-white",
+                                h1 { class: "ds-detail-title", "Here’s what changed." }
+                                p { class: "ds-caption", "Proposed by Duet · Not saved" }
+                                section { class: "ds-change",
+                                    div { class: "ds-change-h",
+                                        span { class: "ds-tag", "Through Oct 12" }
+                                        h2 { "Home blood pressure" }
+                                    }
+                                    p { "{READINGS}" }
+                                    span { class: "ds-source",
+                                        Icon { name: "heart" }
+                                        "Apple Health · Home cuff · Oct 6–12 ↗"
+                                    }
+                                }
+                                section { class: "ds-unchanged",
+                                    p { class: "ds-doc-label", "Your words · unchanged" }
+                                    blockquote { "{CONCERN}" }
+                                    p { class: "ds-summary", "▸ Your question · unchanged" }
+                                }
+                            }
+                            div { class: "ds-footer",
+                                span { class: "ds-action ds-save", "Save updated page" }
+                                p { class: "ds-after", "Saving does not share this page." }
+                            }
+                        }
+                        div { class: "ds-view ds-v-preview",
+                            Bar { title: "Preview" }
+                            div { class: "ds-scroll ds-paper-bg",
+                                p { class: "ds-preview-cap", "Your saved page · October 12" }
+                                Document {}
+                            }
+                            div { class: "ds-footer",
+                                span { class: "ds-action ds-open",
+                                    "Open clinician preview"
+                                    Icon { name: "share" }
+                                }
+                                p { class: "ds-after", "Nothing is shared by opening this preview." }
+                            }
+                        }
+                    }
+                    i { class: "ds-home" }
                 }
             }
         }
     }
+}
 
-    pub(crate) fn icon_8() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 18 12",
-                path { d: "M9 11.2 7 9.1a2.8 2.8 0 0 1 4 0zM4.6 6.8a6.2 6.2 0 0 1 8.8 0l-1.3 1.3a4.4 4.4 0 0 0-6.2 0zM2.2 4.4a9.6 9.6 0 0 1 13.6 0l-1.3 1.3a7.8 7.8 0 0 0-11 0z" }
+/// Maya's saved page as her clinician receives it, word for word what she reviewed.
+#[component]
+fn Document() -> Element {
+    rsx! {
+        article { class: "ds-doc",
+            header {
+                p { class: "ds-doc-label", "For my doctor" }
+                h2 { "{NAME}" }
+                p { class: "ds-doc-meta", "Date of birth · {BORN}" }
             }
-        }
-    }
-
-    pub(crate) fn icon_9() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", class: "chev", view_box: "0 0 24 24",
-                path { d: "m9 5 7 7-7 7" }
+            section {
+                h3 { "What I want to discuss" }
+                blockquote { "{CONCERN}" }
             }
-        }
-    }
-
-    pub(crate) fn icon_10() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M12 20s-7-4.4-9-8.3C1.6 8.6 3.4 5 6.8 5c2 0 3.4 1.1 4.2 2.4h2c.8-1.3 2.2-2.4 4.2-2.4 3.4 0 5.2 3.6 3.8 6.7C19 15.6 12 20 12 20z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_11() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", class: "chev", view_box: "0 0 24 24",
-                path { d: "m9 5 7 7-7 7" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_12() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", class: "ph-chart", view_box: "0 0 260 74",
-                path { class: "grid", d: "M0 14H236M0 40H236M0 66H236" }
-                text { x: "242", y: "17", "150" }
-                text { x: "242", y: "43", "135" }
-                text { x: "242", y: "69", "120" }
-                path { class: "avg", d: "M0 26.1H236" }
-                text { class: "avgt", x: "0", y: "21.1", "avg" }
-                path {
-                    class: "bpl",
-                    d: "M28 20.9L61 33.1L94 15.7L127 29.6L160 24.4L193 34.8L226 27.9",
-                    path_length: "1",
+            section {
+                h3 { "Blood pressure" }
+                p {
+                    "{MEDICINE} "
+                    span { class: "ds-cite", "[1]" }
                 }
-                g { class: "dots",
-                    circle { cx: "28", cy: "20.9", r: "2.6" }
-                    circle { cx: "61", cy: "33.1", r: "2.6" }
-                    circle { cx: "94", cy: "15.7", r: "2.6" }
-                    circle { cx: "127", cy: "29.6", r: "2.6" }
-                    circle { cx: "160", cy: "24.4", r: "2.6" }
-                    circle { cx: "193", cy: "34.8", r: "2.6" }
-                    circle {
-                        class: "last",
-                        cx: "226",
-                        cy: "27.9",
-                        r: "4",
+                p {
+                    "{READINGS} "
+                    span { class: "ds-cite", "[2]" }
+                }
+            }
+            section {
+                h3 { "My questions" }
+                p { "{QUESTION}" }
+            }
+            section { class: "ds-sources",
+                h3 { "Sources included" }
+                for (n , (title , detail)) in SOURCES.iter().enumerate() {
+                    div { class: "ds-src",
+                        span { class: "ds-src-n", "{n + 1}" }
+                        span {
+                            "{title}"
+                            small { "{detail}" }
+                        }
+                        i { "+" }
                     }
                 }
             }
-        }
-    }
-
-    pub(crate) fn icon_13() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" }
+            div { class: "ds-doc-foot",
+                p { "Prepared with Duet · Reviewed by Maya" }
+                p { "October 12, 2026 · 8:14 am" }
             }
         }
     }
+}
 
-    pub(crate) fn icon_14() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", class: "chev", view_box: "0 0 24 24",
-                path { d: "m9 5 7 7-7 7" }
+/// The ending: the clinician page, in a browser window, slides up into the frame.
+#[component]
+fn Clinician() -> Element {
+    rsx! {
+        div { class: "ds-clin",
+            div { class: "ds-browser",
+                span { "• • •" }
+                "For my doctor · {NAME}"
             }
+            div { class: "ds-clin-body", Document {} }
         }
     }
+}
 
-    pub(crate) fn icon_15() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M3 5.5A2.5 2.5 0 0 1 5.5 3h8A2.5 2.5 0 0 1 16 5.5v5a2.5 2.5 0 0 1-2.5 2.5H8l-3.5 3v-3H5.5A2.5 2.5 0 0 1 3 10.5z" }
-                path { d: "M18 8.2h.5A2.5 2.5 0 0 1 21 10.7v4.8a2.5 2.5 0 0 1-2.5 2.5h-.5v3l-3.5-3H11a2.5 2.5 0 0 1-2.4-1.8" }
-            }
+/// The mockups' line icons, on a 24-point grid.
+#[component]
+fn Icon(name: &'static str, #[props(default = "ds-icon")] class: &'static str) -> Element {
+    let d = match name {
+        "chat" => "M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4H3V6a2 2 0 0 1 2-2Z",
+        "sun" => {
+            "M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17m10-10 1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
         }
-    }
-
-    pub(crate) fn icon_16() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle { cx: "12", cy: "12", r: "4.2" }
-                path { d: "M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" }
-            }
+        "you" => "M20 21a8 8 0 0 0-16 0m12-14a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+        "clock" => "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-5v6l4 2",
+        "steps" => {
+            "M7 3c3 0 3 6 1 8H5c-1-3-1-8 2-8Zm9 6c3 0 3 6 1 8h-3c-1-3-1-8 2-8ZM5 14h3v5H5v-5Zm9 6h3v3h-3v-3"
         }
-    }
-
-    pub(crate) fn icon_17() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle { cx: "12", cy: "12", r: "9.5" }
-                circle {
-                    class: "f",
-                    cx: "12",
-                    cy: "9.6",
-                    r: "3.3",
-                }
-                path {
-                    class: "f",
-                    d: "M5.8 18.4c1.3-2.3 3.6-3.6 6.2-3.6s4.9 1.3 6.2 3.6A8.6 8.6 0 0 1 12 21a8.6 8.6 0 0 1-6.2-2.6z",
-                }
-            }
-        }
-    }
-
-    pub(crate) fn icon_18() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                circle {
-                    class: "f",
-                    cx: "8.5",
-                    cy: "8",
-                    r: "3.2",
-                }
-                circle {
-                    class: "f",
-                    cx: "16.5",
-                    cy: "8.5",
-                    r: "2.7",
-                }
-                path {
-                    class: "f",
-                    d: "M2.5 18.5c.4-3.3 2.9-5.4 6-5.4s5.6 2.1 6 5.4zM15.2 18.5c-.2-1.9-.9-3.4-2-4.5a5 5 0 0 1 3.3-1c2.7 0 4.6 1.9 5 5.5z",
-                }
-            }
-        }
-    }
-
-    pub(crate) fn icon_19() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 18 12",
-                path { d: "M9 11.2 7 9.1a2.8 2.8 0 0 1 4 0zM4.6 6.8a6.2 6.2 0 0 1 8.8 0l-1.3 1.3a4.4 4.4 0 0 0-6.2 0zM2.2 4.4a9.6 9.6 0 0 1 13.6 0l-1.3 1.3a7.8 7.8 0 0 0-11 0z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_20() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M7 7l10 10M17 7 7 17" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_21() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M12 15V3M8 7l4-4 4 4M7 11H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1" }
-            }
+        "heart" => "M20 5c-3-3-6-1-8 1-2-2-5-4-8-1-5 5 4 11 8 15 4-4 13-10 8-15Z",
+        "check" => "m5 12 4 4L20 5",
+        "back" => "m14 5-7 7 7 7",
+        "share" => "M12 15V2m-5 5 5-5 5 5M5 11v10h14V11",
+        _ => "M5 3h10l4 4v14H5V3Zm10 0v5h4M8 12h8m-8 4h6",
+    };
+    rsx! {
+        svg {
+            class,
+            view_box: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            stroke_linecap: "round",
+            stroke_linejoin: "round",
+            "aria-hidden": "true",
+            path { d }
         }
     }
 }

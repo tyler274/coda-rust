@@ -129,7 +129,7 @@ def main():
         print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer/sign-in valid")
         # The homepage system: original styles, frame reservation and the no-script reveal.
         assert [path.rsplit("/", 1)[1] for path in document.styles] == [
-            "chrome.css", "site.css", "stage.css", "noscript.css"], document.styles
+            "chrome.css", "site.css", "stage.css", "duet.css", "noscript.css"], document.styles
         for path in document.styles:
             status, headers, css = fetch(base, path)
             assert path.startswith("/a/") and status == 200 and css, path
@@ -141,14 +141,17 @@ def main():
         assert chrome.startswith("/a/") and chrome.endswith("/chrome.js")
         status, headers, js = fetch(base, chrome)
         assert status == 200 and "javascript" in headers["Content-Type"] and b"scrolled" in js
-        assert len(document.scripts) == 1, document.scripts
-        motion = document.scripts[0]
+        assert len(document.scripts) == 2, document.scripts
+        motion, story = document.scripts
         assert motion.startswith("/a/") and motion.endswith("/homepage/site.js")
+        assert story.startswith("/a/") and story.endswith("/homepage/duet.js")
+        status, headers, js = fetch(base, story)
+        assert status == 200 and "javascript" in headers["Content-Type"] and b"duet-story" in js
         status, headers, js = fetch(base, motion)
         assert status == 200 and "javascript" in headers["Content-Type"]
         assert "immutable" in headers["Cache-Control"]
         assert hashlib.sha256(js).hexdigest() == ORIGINAL_SITE_JS_SHA256
-        print(f"Motion: chrome.js and the original site.js served; site.js sha256 {ORIGINAL_SITE_JS_SHA256}")
+        print(f"Motion: chrome.js, the original site.js and the site-owned duet.js served; site.js sha256 {ORIGINAL_SITE_JS_SHA256}")
         for path in ["/healthz", "/readyz"]:
             assert fetch(base, path)[0] == 200, path
         status, headers, body = fetch(base, "/api/health")

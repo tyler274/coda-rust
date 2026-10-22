@@ -153,6 +153,25 @@ fn head_facts(html: &str) -> Vec<String> {
     facts.sort();
     facts
 }
+/// The port without its site-owned region (`data-owner="site"`, through its matching
+/// close), and whether it had one. That region runs ahead of production on purpose.
+fn without_site_owned(html: &str) -> (String, bool) {
+    let Some(start) = html.find("<div data-owner=\"site\"") else {
+        return (html.to_owned(), false);
+    };
+    let (mut depth, mut at) = (0, start);
+    loop {
+        let open = html[at..].find("<div").map(|i| i + at);
+        let close = html[at..].find("</div>").map(|i| i + at).unwrap();
+        match open {
+            Some(open) if open < close => (depth, at) = (depth + 1, open + 4),
+            _ => (depth, at) = (depth - 1, close + 6),
+        }
+        if depth == 0 {
+            return (format!("{}{}", &html[..start], &html[at..]), true);
+        }
+    }
+}
 fn element(html: &str, open: &str, close: &str) -> String {
     let start = html.find(open).unwrap_or_else(|| panic!("missing {open}"));
     let rest = &html[start..];
@@ -209,9 +228,22 @@ fn every_document_matches_what_production_serves() {
         let port = std::str::from_utf8(&page.html).unwrap();
         let original = served_page(path);
         assert_eq!(head_facts(port), head_facts(&original), "{path} head");
+        // The site-owned Duet story stands where production serves its original phones.
+        let (port_main, site_owned) = without_site_owned(port);
+        let mut original_main = element(&original, "<main", "</main>");
+        if site_owned {
+            let phones = visible(&read(
+                "crates/public-site/tests/fixtures/original/app/_homepage/duet-phones.html",
+            ));
+            assert!(
+                original_main.contains(&phones),
+                "{path}: production serves the original Duet phones"
+            );
+            original_main = original_main.replacen(&phones, "", 1);
+        }
         assert_eq!(
-            element(port, "<main", "</main>"),
-            element(&original, "<main", "</main>"),
+            element(&port_main, "<main", "</main>"),
+            original_main,
             "{path} main"
         );
         assert_eq!(
@@ -271,4 +303,53 @@ fn original_styles_and_motion_script_ship_verbatim() {
             );
         }
     }
+}
+/// Every selector of a stylesheet, comments removed and keyframe steps skipped.
+fn selectors(css: &str) -> Vec<String> {
+    let mut text = css.to_owned();
+    while let Some(start) = text.find("/*") {
+        let end = text[start..].find("*/").unwrap() + start + 2;
+        text.replace_range(start..end, "");
+    }
+    let (mut found, mut prelude, mut skip) = (Vec::new(), String::new(), 0usize);
+    for ch in text.chars() {
+        match ch {
+            '{' if skip > 0 => skip += 1,
+            '{' if prelude.trim().starts_with("@keyframes") => skip = 1,
+            '{' if !prelude.trim().starts_with('@') => {
+                // Commas inside :is(...) belong to one selector.
+                let mut depth = 0;
+                let list = prelude.split(|c| {
+                    depth += i32::from(c == '(') - i32::from(c == ')');
+                    c == ',' && depth == 0
+                });
+                found.extend(list.map(|s| s.trim().to_owned()));
+                skip = 1;
+            }
+            '{' => {}
+            '}' => skip = skip.saturating_sub(1),
+            _ if skip > 0 => {}
+            _ => {
+                prelude.push(ch);
+                continue;
+            }
+        }
+        prelude.clear();
+    }
+    found
+}
+
+/// The Duet story is site-owned and reaches nothing outside its stage: every duet.css
+/// selector is scoped to `.duet-story`. Its markup is its last frame, so no-script
+/// needs no rules of its own for it.
+#[test]
+fn duet_story_styles_stay_inside_its_stage() {
+    for selector in selectors(&read("crates/public-site/assets/css/duet.css")) {
+        assert!(
+            selector.starts_with(".duet-story") || selector.starts_with(".compact .duet-story"),
+            "duet.css: {selector}"
+        );
+    }
+    let noscript = read("crates/public-site/assets/css/noscript.css");
+    assert!(!noscript.contains("duet-story") && !noscript.contains(".ds-"));
 }

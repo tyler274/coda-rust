@@ -99,6 +99,7 @@ fn Document(meta: PageMeta, shell: Shell) -> Element {
                     link { rel: "stylesheet", href: "/css/chrome.css" }
                     link { rel: "stylesheet", href: "/css/site.css" }
                     link { rel: "stylesheet", href: "/css/stage.css" }
+                    link { rel: "stylesheet", href: "/css/duet.css" }
                     noscript { link { rel: "stylesheet", href: "/css/noscript.css" } }
                 },
                 // Production's compiled Tailwind, which already contains chrome.css.
