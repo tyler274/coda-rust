@@ -15,7 +15,7 @@ use base64::{
     engine::general_purpose::{STANDARD, URL_SAFE_NO_PAD as B64},
 };
 use chrono::{DateTime, Duration, Utc};
-use rand::{RngCore, rngs::OsRng};
+use rand::{TryRng, rngs::SysRng};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -141,9 +141,9 @@ impl PublicationStore {
         })?;
         let digest = hash(&pdf);
         let id = Uuid::new_v4();
-        let token = random_secret();
-        let shl = random_secret();
-        let key = random_secret();
+        let token = random_secret()?;
+        let shl = random_secret()?;
+        let key = random_secret()?;
         let protected = seal(
             &self.master,
             serde_json::to_vec(&json!({"web":token,"shl":shl,"key":key}))
@@ -350,10 +350,17 @@ async fn validate_sources(
     }
     Ok(())
 }
-fn random_secret() -> String {
+/// Fill `dest` from the operating system's CSPRNG; an entropy failure refuses
+/// publication instead of panicking or falling back to a weaker source.
+fn os_random(dest: &mut [u8]) -> Result<(), ApiError> {
+    SysRng
+        .try_fill_bytes(dest)
+        .map_err(|_| ApiError::Unavailable("system randomness unavailable"))
+}
+fn random_secret() -> Result<String, ApiError> {
     let mut b = [0; 32];
-    OsRng.fill_bytes(&mut b);
-    B64.encode(b)
+    os_random(&mut b)?;
+    Ok(B64.encode(b))
 }
 /// Hash capability lookup without retaining plaintext lookup tokens.
 pub fn hash(bytes: &[u8]) -> String {
@@ -364,7 +371,7 @@ pub fn hash(bytes: &[u8]) -> String {
 }
 fn seal(key: &[u8; 32], bytes: &[u8], aad: &[u8]) -> Result<Vec<u8>, ApiError> {
     let mut nonce = [0; 12];
-    OsRng.fill_bytes(&mut nonce);
+    os_random(&mut nonce)?;
     let cipher =
         Aes256Gcm::new_from_slice(key).map_err(|_| ApiError::Unavailable("invalid key"))?;
     let encrypted = cipher
