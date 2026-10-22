@@ -10,7 +10,8 @@ locals {
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
     "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
     "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
-    "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "sts.googleapis.com",
+    "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
+    "sts.googleapis.com",
   ])
 }
 

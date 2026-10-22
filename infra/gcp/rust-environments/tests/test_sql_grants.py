@@ -53,6 +53,19 @@ class SqlGrants(unittest.TestCase):
         self.assertEqual(self.sql("SELECT private_probe()", user="migrator").stdout.strip(), "1")
         self.assertNotEqual(self.sql("SELECT private_probe()", check=False, user="runtime").returncode, 0)
 
+    def test_migrator_can_assume_runtime_without_inheriting(self):
+        # duet-migrate validates the runtime's effective grants under SET LOCAL ROLE.
+        self.assertEqual(self.sql("BEGIN; SET LOCAL ROLE runtime; SELECT current_user; COMMIT;", user="migrator").stdout.split()[-2], "runtime")
+        self.assertEqual(self.sql("SELECT pg_has_role('runtime', 'migrator', 'MEMBER')").stdout.strip(), "f")
+        self.assertEqual(self.sql("SELECT pg_has_role('migrator', 'runtime', 'USAGE')").stdout.strip(), "f")
+
+    def test_refuses_elevated_principal(self):
+        self.sql("CREATE ROLE elevated LOGIN BYPASSRLS;", database="postgres")
+        self.sql("CREATE DATABASE elevated_app;", database="postgres")
+        result = subprocess.run(self.psql + ["-d", "elevated_app", "-v", "database=elevated_app", "-v", "runtime_user=elevated", "-v", "migration_user=migrator", "-f", str(ROOT / "bootstrap-grants.sql")], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("refusing", result.stderr)
+
     def test_rerun(self):
         subprocess.run(self.psql + ["-d", "app", "-v", "database=app", "-v", "runtime_user=runtime", "-v", "migration_user=migrator", "-f", str(ROOT / "bootstrap-grants.sql")], check=True, capture_output=True)
 

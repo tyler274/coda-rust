@@ -67,6 +67,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value
         }
       }
+      dynamic "env" {
+        for_each = each.key == "duet" ? google_storage_bucket.duet_privacy_journal : {}
+        content {
+          name  = "DUET_PRIVACY_JOURNAL_BUCKET"
+          value = env.value.name
+        }
+      }
       startup_probe {
         initial_delay_seconds = 0
         period_seconds        = 5
@@ -82,7 +89,30 @@ resource "google_cloud_run_v2_service" "app" {
     # identity, secret version pins, resource caps and probes. Never ignore template.
     ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]
   }
-  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap]
+  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal]
+}
+
+# Duet's independent privacy receipt journal. Hosted Duet refuses to serve
+# without it (crates/duet-api/src/main.rs). Receipts are create-only
+# (ifGenerationMatch=0), so the runtime gets create + read, never delete or
+# overwrite. Physician has no journal and gets no binding.
+resource "google_storage_bucket" "duet_privacy_journal" {
+  for_each                    = contains(local.workloads, "duet") ? toset(["duet"]) : toset([])
+  project                     = google_project.environment.project_id
+  name                        = "${local.project_id}-duet-privacy-journal"
+  location                    = var.region
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+  force_destroy               = false
+  versioning { enabled = true }
+  lifecycle { prevent_destroy = true }
+}
+
+resource "google_storage_bucket_iam_member" "duet_privacy_journal" {
+  for_each = { for role in ["roles/storage.objectCreator", "roles/storage.objectViewer"] : role => role if contains(local.workloads, "duet") }
+  bucket   = google_storage_bucket.duet_privacy_journal["duet"].name
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.app["duet-runtime"].email}"
 }
 
 resource "google_cloud_run_v2_service_iam_binding" "iap_invoker" {

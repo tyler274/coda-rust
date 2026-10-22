@@ -83,7 +83,33 @@ secret slots with separate readers, CI grants and 30-day logs. Dev owns the
 separate `coda-rust-stg` $10 monthly budget alert in Cloud Billing, using the
 existing billing recipients; it is not a spending cap. Budgets are deliberately
 outside this state so an engineering plan does not need billing-account access.
-The committed inputs keep databases and workloads disabled.
+The committed staging inputs enable a staging-preview: two `db-f1-micro` SQL
+instances (`rust-physician`, `rust-duet`, private IP only), both migration jobs
+and the `physician` and `duet` Cloud Run services behind direct IAP for
+`iap_group`. Each service reaches Ready only through its `/readyz` startup probe
+against its own database.
+
+Activating it took these operator steps, in order:
+
+1. Create the per-role Doppler configs `stg_physician_runtime`,
+   `stg_physician_migration`, `stg_duet_runtime`, `stg_duet_migration` and
+   `stg_sql_admin`, each with a generated `DB_PASSWORD`. Plans read the four
+   application passwords into `TF_VAR_database_passwords`; no value is committed.
+2. Apply the databases, then set the `postgres` password from `stg_sql_admin`.
+3. Run [`bootstrap-grants.sql`](/infra/gcp/rust-environments/bootstrap-grants.sql)
+   once per database from a one-off `postgres:17` Cloud Run job on `rust-private`,
+   with the admin password mounted from a temporary secret. Before the script,
+   revoke `cloudsqlsuperuser` from both application users (Cloud SQL grants it to
+   API-created users) and grant the migration user to the administrator so it
+   can transfer schema ownership. Delete the job and temporary secret afterwards.
+4. Write the database URLs into the four role configs, mint a read-only Doppler
+   service token per config into the matching `*-doppler-token` secret, and
+   record the versions in `doppler_token_versions`.
+5. Apply the migration jobs, execute both (a second execution is a no-op), then
+   apply the services.
+
+Physician sign-in still returns proof tokens and Duet's Identity Platform API key
+is a placeholder, so this preview is not ENG-167's hosted acceptance.
 
 The `deploy-staging` job in [`.github/workflows/ci.yml`](/.github/workflows/ci.yml)
 runs on pushes to `main` only when the repository variable
@@ -109,11 +135,10 @@ current owners' outstanding work:
   build-time settings consumed by [`browser_identity.rs`](/crates/duet-app/src/browser_identity.rs)
   and [`account.rs`](/crates/duet-app/src/account.rs); the current Nix image builder
   does not supply those settings.
-- **Runtime and data setup:** activate the two separate SQL instances, install
-  the SQL grants, run the explicit migration images, configure the independent
-  Duet GCS privacy journal, and populate four least-scope Doppler configs/tokens.
-  Verify private TLS, account isolation, retained conversations, readiness and
-  the runtime's actual model/pool limits before accepting the activation gate.
+- **Runtime and data acceptance:** the SQL instances, grants, migrations, Duet
+  privacy journal and four Doppler configs/tokens are in place for the preview.
+  Still verify private TLS, account isolation, retained conversations and the
+  runtime's actual model/pool limits before accepting the activation gate.
 - **Release wiring:** the current workflow does not produce the immutable
   build/runtime/compatibility manifests required by
   [`release_commands.py`](/scripts/gcp/release_commands.py), nor configure its
@@ -123,7 +148,8 @@ current owners' outstanding work:
   do not fabricate a previous release or weaken the evidence checks.
 
 These are deployment blockers, not evidence that ENG-167's hosted acceptance is
-complete. No Rust application URL exists until the workloads are deployed.
+complete. The preview services have IAP-gated `run.app` URLs only; no custom
+domain points at them.
 
 ## Release procedure
 

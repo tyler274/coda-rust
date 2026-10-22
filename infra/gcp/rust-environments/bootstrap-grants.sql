@@ -10,10 +10,38 @@ REVOKE ALL ON DATABASE :"database" FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON DATABASE :"database" FROM :"runtime_user";
 GRANT CONNECT ON DATABASE :"database" TO :"runtime_user", :"migration_user";
-ALTER ROLE :"runtime_user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION;
-ALTER ROLE :"migration_user" NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION;
+-- Cloud SQL administrators are not superusers, and PostgreSQL refuses even a
+-- no-op SUPERUSER/REPLICATION change from them. Clear what the administrator
+-- may clear, then refuse to continue if either elevated attribute is present.
+ALTER ROLE :"runtime_user" NOCREATEDB NOCREATEROLE;
+ALTER ROLE :"migration_user" NOCREATEDB NOCREATEROLE;
+-- psql variables do not expand inside DO bodies; pass the names as settings.
+SELECT
+    set_config('coda.runtime_user', :'runtime_user', TRUE),
+    set_config('coda.migration_user', :'migration_user', TRUE);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT
+            1
+        FROM
+            pg_roles
+        WHERE
+            rolname IN (current_setting('coda.runtime_user'), current_setting('coda.migration_user'))
+            AND (rolsuper
+                OR rolreplication
+                OR rolbypassrls)) THEN
+    RAISE EXCEPTION 'refusing: an application principal has SUPERUSER, REPLICATION or BYPASSRLS';
+END IF;
+END
+$$;
 -- Runtime gets no schema ownership/CREATE or migration role membership.
 ALTER SCHEMA public OWNER TO :"migration_user";
+-- The migrator may assume (never inherit) the runtime role, so duet-migrate can
+-- prove the runtime's effective grants with SET LOCAL ROLE before committing.
+-- Grants flow migrator -> runtime only; the runtime gains nothing.
+GRANT :"runtime_user" TO :"migration_user" WITH INHERIT FALSE,
+SET TRUE;
 GRANT USAGE ON SCHEMA public TO :"runtime_user";
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO :"runtime_user";
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO :"runtime_user";
