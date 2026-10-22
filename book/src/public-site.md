@@ -37,10 +37,22 @@ Startup builds the page/asset tables and their identity, gzip and Brotli
 representations once; requests do not render Dioxus or query a database. The server
 serves content-addressed immutable assets and HTML with bounded public/shared-cache
 lifetimes, encoding-specific ETags, conditional requests and bodyless HEAD responses.
-A deferred `web-sys` WASM island adds motion, not full-page Dioxus hydration. Static
-painted art remains visible until the first motion frame is drawn synchronously
-and readiness is published. Blocked/failed WASM and reduced motion retain a usable
-static page; live motion-preference transitions are covered by browser tests.
+Motion is the original kytos `public/homepage/site.js`, served byte-for-byte as
+`/homepage/site.js` on `/` and `/duet`, exactly as the Next site loads it. It also
+paints the landscapes. Parity therefore holds by construction: `tests/parity.rs`
+fails if the shipped script, `site.css` or `chrome.css` differ from the reviewed
+snapshots. Site-owned additions are layout or fallback only, never motion:
+`stage.css` reserves and scales each product frame before the script runs (it then
+sets the same values inline), `noscript.css` reveals content when scripts are
+disabled, and `chrome.js` floats the nav after 8px of scroll, as kytos' SiteNav
+does. Reduced motion is decided by the original script at load, as on production.
+
+An earlier `web-sys` WASM island re-implemented this choreography on a global
+50 ms timer. Frame sampling against production showed the drift: a stylesheet rule
+overrode stage children's transitions (the hero pointer and popups jumped), the
+memory chart advanced at 20 fps, loops visibly rewound, and loop lengths differed.
+It was replaced by the original script; the browser proof now fails if the hero
+pointer jumps instead of gliding.
 
 Staging applies its origin IAP gate to pages, assets, redirects, health routes
 and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
@@ -97,7 +109,6 @@ Runtime configuration:
 Local startup (from the workspace root):
 
 ```bash
-nix develop --command bash crates/public-site/island/build.sh
 nix develop --command cargo run -p public-site --bin public-site
 ```
 
@@ -136,7 +147,6 @@ Recorded final-tree local proof:
 Reproduce the site checks from the workspace root, inside the dev shell:
 
 ```bash
-nix develop --command bash crates/public-site/island/build.sh
 nix develop --command cargo test --locked -p public-site
 nix develop --command cargo test --locked -p public-site --test site -- --nocapture
 nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
@@ -162,16 +172,14 @@ original-source snapshots from `Coda-Health/kytos` commit
 `5012bb749e29104e00ccb208a14a810f93fa420f`. `provenance.json` records the source
 path, original SHA-256, snapshot SHA-256, and extraction policy for each input.
 HTML, page/legal TypeScript, archive JSON, notices, CSS, and the scheduling social
-image definition are verbatim source files. Only the deterministic painter is
-sliced: the exact bytes from `function rng` through the end of `paint`, excluding
-`var artCache` and unrelated browser interaction code. No Next application,
+image definition are verbatim source files, as is `public/homepage/site.js`, the
+motion script the site ships unchanged. No Next application,
 package dependencies, private credentials, or rendered Rust output are imported.
 
 These are test oracles, separate from generated application `data/`, CSS, and
 assets. The normal parity suite verifies snapshot integrity, compares homepage
 and page copy, evaluates the original legal definitions and archives, compares
-CSS, and evaluates the original JavaScript painter against Rust for all eight
-palette/seed pairs. Missing or changed fixtures fail; there is no submodule
+CSS and the motion script byte-for-byte with what the site serves. Missing or changed fixtures fail; there is no submodule
 fallback or parity skip. Hashes detect accidental fixture edits, not malicious
 co-edits to the provenance manifest: source updates require manual review.
 
@@ -267,7 +275,6 @@ helper; no key file or password is involved:
 nix develop
 gcloud auth login
 gcloud auth configure-docker us-east1-docker.pkg.dev
-bash crates/public-site/island/build.sh
 docker build --platform=linux/amd64 \
   -f crates/public-site/Dockerfile -t public-site:local .
 docker run --rm -p 127.0.0.1:8791:8080 public-site:local
@@ -306,18 +313,12 @@ by OpenTofu or placed in its variables/state. Doppler fallback files are disable
 the four deployment-controlled environment values above are explicitly preserved
 so Doppler cannot accidentally change the staging gate or listening address.
 
-**Motion integration gate:** the Dockerfile builds the server and requires the
-three generated files in `island/dist` before Cargo runs. First execute the motion
-owner's `island/build.sh` in the pinned Nix shell; it builds the nested WASM crate,
-runs `wasm-bindgen`, and checks size. The image does not independently rebuild the
-island. This is a two-stage workflow, not a standalone Docker-only source build.
-The integrated server embeds `bootstrap.js`, `public_site_motion.js`, and
-`public_site_motion_bg.wasm` under one shared hashed directory preserving sibling
-URLs. The local image HTTP smoke below verifies those served URLs and WASM magic
-bytes. It does not execute browser animation, establish generated-asset freshness,
-or replace the motion budget and visual/browser proofs. Rebuild the island after
-motion source changes and repeat the image proof after final integration changes.
-No host tooling or flake changes are introduced by the deployment artifacts.
+**Motion in the image:** the server embeds `assets/`, including the original
+`/homepage/site.js`, so `docker build` alone produces the complete site; there is no
+separate motion build. The local image HTTP smoke below checks that the homepage
+references the content-addressed `chrome.js` and `site.js` and that the served
+`site.js` has the reviewed original SHA-256. It does not execute browser animation
+or replace the browser proof. No host tooling or flake changes are introduced by the deployment artifacts.
 
 ## Prepared Cloud Run: staging IAP, production load balancer
 
@@ -745,9 +746,10 @@ available directly.
 
 ### Remaining qualification
 
-Access checks passed on both staging hostnames. This does not establish visual
-or performance parity: Dev observed that staging animations stutter relative to
-production. Tyler's handoff should include that observation for motion review.
+Access checks passed on both staging hostnames. Dev observed that staging
+animations stuttered relative to production; the cause was the WASM island
+described in [Application contract](#application-contract), which the original
+motion script replaces. Staging needs a redeploy before it shows that change.
 The existing Sign in link points back to the marketing staging site;
 physician/Duet application staging is separate work under ENG-167.
 
@@ -779,7 +781,7 @@ listen address. It neither targets arbitrary URLs nor starts model/data services
 Production cache behavior is measured locally; no production traffic, cloud
 resource, staging policy, or deployed service is changed.
 
-Reproduce from this worktree root (build the motion island first if absent):
+Reproduce from this worktree root:
 
 ```bash
 nix develop --command env -u RUSTC_WRAPPER -u RUSTC_WORKSPACE_WRAPPER \

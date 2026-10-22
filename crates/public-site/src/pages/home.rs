@@ -1393,6 +1393,8 @@ pub fn Home() -> Element {
                 }
             }
         }
+        // The original motion script, served byte-for-byte (see tests/parity.rs).
+        script { src: "/homepage/site.js", defer: true }
     }
 }
 

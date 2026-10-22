@@ -85,12 +85,12 @@ fn Document(meta: PageMeta) -> Element {
                 link { rel: "stylesheet", href: "/css/chrome.css" }
                 link { rel: "stylesheet", href: "/css/site.css" }
                 link { rel: "stylesheet", href: "/css/utility.css" }
-                link { rel: "stylesheet", href: "/css/paint.css" }
-                link { rel: "stylesheet", href: "/motion.css" }
+                link { rel: "stylesheet", href: "/css/stage.css" }
+                noscript { link { rel: "stylesheet", href: "/css/noscript.css" } }
             }
             body {
                 Router::<Route> {}
-                script { r#type: "module", src: "/motion/bootstrap.js" }
+                script { r#type: "module", src: "/chrome.js" }
             }
     }
 }

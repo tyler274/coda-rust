@@ -4,7 +4,6 @@ pub mod assets;
 pub mod chrome;
 pub mod config;
 pub mod pages;
-pub mod paint;
 pub mod prerender;
 pub mod representation;
 pub mod route;
