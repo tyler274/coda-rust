@@ -135,13 +135,22 @@ variable "runtime_and_database_contract_approved" {
   description = "Operator attests SQL grants were installed, database passwords live only in Doppler and the runtime connects with sslmode=require over the private IP, durable per-account auth/chat, no auto-migrate, enforced pool/model bounds, and verified readiness. This is a prerequisite, not implemented by infrastructure."
 }
 
+variable "enable_physician_scale" {
+  type        = bool
+  default     = false
+  description = "Explicit cost gate for physician scaling: Memorystore Redis (workspace_changed fan-out), the Pub/Sub chat-turn queue with its dead-letter topic, the internal physician-worker service, and an always-allocated CPU on the physician site. Effective only when enable_workloads is true. Duet is never affected."
+}
+
 variable "images" {
   type = map(object({
     runtime   = string
     migration = string
+    # Physician only, required when enable_physician_scale is effective: the
+    # initial physician-worker digest. Subsequent images are release-owned.
+    worker = optional(string)
   }))
   default     = {}
-  description = "Initial physician/duet runtime and migration image digests from this environment's Artifact Registry. Subsequent images are release-owned."
+  description = "Initial physician/duet runtime and migration image digests (plus physician.worker when physician scaling is on) from this environment's Artifact Registry. Subsequent images are release-owned."
 }
 
 variable "runtime_environment" {

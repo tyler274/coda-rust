@@ -5,10 +5,19 @@ locals {
   databases          = var.enable_databases ? local.apps : toset([])
   workloads          = var.enable_workloads ? local.apps : toset([])
   identities         = { for pair in setproduct(local.apps, ["runtime", "migration"]) : "${pair[0]}-${pair[1]}" => { app = pair[0], role = pair[1] } }
+  # Physician scaling (cache.tf, queue.tf, the worker in workloads.tf). Keyed
+  # "physician" so the resources are physician-owned by construction; Duet has
+  # no scaling key and therefore no Redis, Pub/Sub or worker resources.
+  physician_scale      = var.enable_workloads && var.enable_physician_scale
+  physician_scale_apps = local.physician_scale ? toset(["physician"]) : toset([])
+  # Infrastructure-owned (or Doppler-owned) physician scaling settings that the
+  # nonsecret runtime_environment map may not set or override.
+  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM"]
   services = toset([
     "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
     "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
+    "pubsub.googleapis.com", "redis.googleapis.com",
     "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
     "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
     "sts.googleapis.com",
@@ -51,6 +60,19 @@ resource "google_project" "environment" {
         length(try(var.runtime_environment[app], {})) > 0
       ])
       error_message = "Each active app needs local registry SHA256 digests, pinned token versions, and approved nonsecret runtime config."
+    }
+    precondition {
+      condition = !local.physician_scale || (
+        can(regex("^${var.region}-docker\\.pkg\\.dev/${local.project_id}/apps/[^@]+@sha256:[a-f0-9]{64}$", coalesce(try(var.images["physician"].worker, null), "missing"))) &&
+        try(var.images["duet"].worker, null) == null
+      )
+      error_message = "Physician scaling needs an initial physician.worker registry SHA256 digest; Duet has no worker image."
+    }
+    precondition {
+      condition = alltrue(flatten([for app, config in var.runtime_environment : [
+        for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
+      ]]))
+      error_message = "Physician scaling settings are owned by infrastructure (topic, worker audience, push identity) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
     }
   }
 }
@@ -135,5 +157,10 @@ resource "google_secret_manager_secret_iam_binding" "bootstrap_reader" {
   project   = google_project.environment.project_id
   secret_id = google_secret_manager_secret.doppler[each.key].secret_id
   role      = "roles/secretmanager.secretAccessor"
-  members   = ["serviceAccount:${google_service_account.app[each.key].email}"]
+  # The physician-worker runs on the physician-runtime Doppler config, so it
+  # reads that one slot explicitly (workloads.tf explains why it is shared).
+  members = concat(
+    ["serviceAccount:${google_service_account.app[each.key].email}"],
+    each.key == "physician-runtime" ? [for worker in google_service_account.physician_worker : "serviceAccount:${worker.email}"] : [],
+  )
 }

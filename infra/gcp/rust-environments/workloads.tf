@@ -39,8 +39,12 @@ resource "google_cloud_run_v2_service" "app" {
       image = try(var.images[each.key].runtime, "")
       ports { container_port = 8080 }
       resources {
-        limits            = { cpu = "1", memory = "1Gi" }
-        cpu_idle          = true
+        limits = { cpu = "1", memory = "1Gi" }
+        # Physician keeps CPU allocated for the instance lifetime (instance-based
+        # billing): its Postgres authority listener and the Redis bus subscriber
+        # run between requests and stall under request-only CPU. Instances still
+        # scale to zero (min 0). Duet serves only request/response work.
+        cpu_idle          = each.key != "physician"
         startup_cpu_boost = false
       }
       env {
@@ -74,6 +78,16 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value.name
         }
       }
+      # Physician only, and only behind enable_physician_scale: the site
+      # publishes accepted chat turns here instead of running them inline.
+      # PHYSICIAN_REDIS_URL / PHYSICIAN_REDIS_CA_PEM come from Doppler.
+      dynamic "env" {
+        for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}
+        content {
+          name  = "PHYSICIAN_CHAT_TOPIC"
+          value = env.value.id
+        }
+      }
       startup_probe {
         initial_delay_seconds = 0
         period_seconds        = 5
@@ -89,7 +103,7 @@ resource "google_cloud_run_v2_service" "app" {
     # identity, secret version pins, resource caps and probes. Never ignore template.
     ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]
   }
-  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal, google_compute_router_nat.physician_mail]
+  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal, google_compute_router_nat.physician_mail, google_pubsub_topic_iam_binding.chat_turns_publisher]
 }
 
 # Duet's independent privacy receipt journal. Hosted Duet refuses to serve
@@ -192,4 +206,165 @@ resource "google_cloud_run_v2_job" "migration" {
     ignore_changes = [template[0].template[0].containers[0].image, client, client_version]
   }
   depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app]
+}
+
+# --- Physician chat-turn worker (enable_physician_scale) --------------------
+#
+# Receives Pub/Sub pushes for physician-chat-turns, claims the accepted turn in
+# Postgres, runs the model and publishes workspace_changed on Redis. It is not
+# a browser surface: no IAP, INTERNAL ingress (Pub/Sub in the same project is
+# internal when it calls the default run.app URL,
+# https://cloud.google.com/run/docs/securing/ingress#settings), IAM invoker
+# checks on, and the push identity is the only invoker.
+locals {
+  # Cloud Run's deterministic run.app URL. Known before the service exists, so
+  # the worker can be told its own OIDC audience without a self-reference:
+  # https://cloud.google.com/run/docs/triggering/https-request#deterministic
+  physician_worker_audience = "https://physician-worker-${google_project.environment.number}.${var.region}.run.app"
+}
+
+# Own identity so the worker's grants are visible and revocable on their own.
+# It reuses the physician-runtime Doppler config and token slot rather than a
+# separate one: the worker needs exactly that config's secrets (database URL,
+# model key, Redis URL), so a second token on the same config would add a
+# rotation step without narrowing authority. The slot's reader binding below
+# names both identities; Duet's slots are untouched.
+resource "google_service_account" "physician_worker" {
+  for_each     = local.physician_scale_apps
+  project      = google_project.environment.project_id
+  account_id   = "physician-worker-runtime"
+  display_name = "physician worker runtime (${var.environment})"
+  description  = "physician-worker Cloud Run identity: physician SQL, physician-runtime Doppler token. No Pub/Sub publish, no Duet access."
+  depends_on   = [google_project_service.api]
+}
+
+resource "google_project_iam_member" "physician_worker_sql" {
+  for_each = { for role in ["roles/cloudsql.client", "roles/cloudsql.instanceUser"] : role => role if local.physician_scale }
+  project  = google_project.environment.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.physician_worker["physician"].email}"
+  condition {
+    title      = "only-physician-instance"
+    expression = "resource.name == 'projects/${local.project_id}/instances/${local.sql_instance_names["physician"]}'"
+  }
+}
+
+resource "google_cloud_run_v2_service" "physician_worker" {
+  for_each             = local.physician_scale_apps
+  project              = google_project.environment.project_id
+  name                 = "physician-worker"
+  location             = var.region
+  description          = "Physician chat-turn worker; invoked only by Pub/Sub push."
+  ingress              = "INGRESS_TRAFFIC_INTERNAL_ONLY"
+  iap_enabled          = false
+  invoker_iam_disabled = false
+  custom_audiences     = [local.physician_worker_audience]
+  # Stateless (turns live in Postgres, the queue in Pub/Sub). Turning the gate
+  # off must remove it in one reviewed plan.
+  deletion_protection = false
+  template {
+    service_account       = google_service_account.physician_worker[each.key].email
+    execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
+    # Matches the subscription's 600 s ack deadline: a turn runs inside the push.
+    timeout = "600s"
+    # Turns wait on the model, so a few share an instance; the cap bounds model
+    # concurrency and keeps the shared physician-runtime DB role within its
+    # connection limit together with the site (2 x 4 + 2 x 4 pooled).
+    max_instance_request_concurrency = 4
+    scaling {
+      min_instance_count = 0
+      max_instance_count = var.max_instances
+    }
+    vpc_access {
+      egress = "PRIVATE_RANGES_ONLY"
+      network_interfaces {
+        network    = google_compute_network.private.name
+        subnetwork = google_compute_subnetwork.run.name
+      }
+    }
+    containers {
+      image = try(coalesce(var.images[each.key].worker), "")
+      ports { container_port = 8080 }
+      resources {
+        limits = { cpu = "1", memory = "1Gi" }
+        # Request-based CPU is enough: every unit of work is a push request held
+        # open until the turn commits, and the worker keeps no listener or
+        # subscriber between requests (it only PUBLISHes to Redis).
+        cpu_idle          = true
+        startup_cpu_boost = false
+      }
+      env {
+        name  = "DOPPLER_PROJECT"
+        value = "coda-rust"
+      }
+      env {
+        name  = "DOPPLER_CONFIG"
+        value = try(var.doppler_configs["physician-runtime"], "")
+      }
+      env {
+        name = "DOPPLER_TOKEN"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.doppler["physician-runtime"].secret_id
+            version = try(var.doppler_token_versions["physician"].runtime, "")
+          }
+        }
+      }
+      dynamic "env" {
+        for_each = try(var.runtime_environment["physician"], {})
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      env {
+        name  = "PHYSICIAN_WORKER_AUDIENCE"
+        value = local.physician_worker_audience
+      }
+      env {
+        name  = "PHYSICIAN_PUSH_SERVICE_ACCOUNT"
+        value = google_service_account.physician_pubsub_push[each.key].email
+      }
+      startup_probe {
+        initial_delay_seconds = 0
+        period_seconds        = 5
+        timeout_seconds       = 2
+        failure_threshold     = 24
+        http_get { path = "/readyz" }
+      }
+    }
+  }
+  lifecycle {
+    # Same release-owned fields as the app services; see above.
+    ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]
+  }
+  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_iam_member.physician_worker_sql]
+}
+
+# Authoritative for run.invoker: only the push identity, never allUsers, the
+# site runtime or the IAP agent.
+resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
+  for_each = local.physician_scale_apps
+  project  = google_project.environment.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.physician_worker[each.key].name
+  role     = "roles/run.invoker"
+  members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]
+}
+
+# Release updates the worker image like the app services (deploy-staging).
+resource "google_cloud_run_v2_service_iam_member" "physician_worker_release" {
+  for_each = local.physician_scale_apps
+  project  = google_project.environment.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.physician_worker[each.key].name
+  role     = google_project_iam_custom_role.release_service.name
+  member   = "serviceAccount:${google_service_account.deployer.email}"
+}
+
+resource "google_service_account_iam_member" "physician_worker_release_act_as" {
+  for_each           = local.physician_scale_apps
+  service_account_id = google_service_account.physician_worker[each.key].name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_service_account.deployer.email}"
 }
