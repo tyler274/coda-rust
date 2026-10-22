@@ -56,7 +56,8 @@ mod tests {
                     }
                 }
             }
-            let document: toml::Value = manifest(name).parse().unwrap();
+            // toml 1.x parses a whole document as a `Table`; `Value` parses one value.
+            let document: toml::Table = toml::from_str(&manifest(name)).unwrap();
             let mut dependencies = Vec::new();
             for section in [
                 "dependencies",
