@@ -16,10 +16,15 @@ async fn fresh_and_upgrade_keep_identity_and_enforce_account_scope() {
     let mut admin = PgConnection::connect(&admin_url).await.unwrap();
     let suffix = Uuid::new_v4().simple().to_string();
     let role = format!("duet_test_{suffix}");
-    sqlx::raw_sql(AssertSqlSafe(format!("create role {role} login")))
-        .execute(&mut admin)
-        .await
-        .unwrap();
+    // A per-run random password lets the role log in over TCP whether the
+    // disposable server trusts loopback (local) or requires passwords (CI).
+    let password = Uuid::new_v4().simple().to_string();
+    sqlx::raw_sql(AssertSqlSafe(format!(
+        "create role {role} login password '{password}'"
+    )))
+    .execute(&mut admin)
+    .await
+    .unwrap();
     for upgrade in [false, true] {
         let db = format!(
             "duet_{}_{}",
@@ -35,7 +40,12 @@ async fn fresh_and_upgrade_keep_identity_and_enforce_account_scope() {
         let options = options.database(&db);
         use sqlx::ConnectOptions;
         let owner_url = options.to_url_lossy().to_string();
-        let runtime_url = options.clone().username(&role).to_url_lossy().to_string();
+        let runtime_url = options
+            .clone()
+            .username(&role)
+            .password(&password)
+            .to_url_lossy()
+            .to_string();
         let mut owner = PgConnection::connect(&owner_url).await.unwrap();
         sqlx::raw_sql("revoke create on schema public from public")
             .execute(&mut owner)

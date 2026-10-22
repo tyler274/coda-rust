@@ -149,7 +149,7 @@ pub(crate) async fn launch(
         .provider
         .clone()
         .ok_or(ApiError::Unavailable("conversation provider not enabled"))?;
-    let mut provider = harness::responses::ResponsesProvider::new(endpoint, key)
+    let mut provider = harness::provider::ResponsesProvider::new(endpoint, key)
         .map_err(|_| ApiError::Unavailable("provider configuration invalid"))?;
     let mut owner = match s.store.claim(c, id).await {
         Ok(o) => o,

@@ -216,28 +216,32 @@ fn assert_strings_rendered(value: &Value, html: &str, path: &str) {
         _ => {}
     }
 }
+/// Motion parity holds by construction: the original styles and the original
+/// motion script (which also paints the landscapes) ship byte-for-byte.
 #[test]
-fn original_styles_and_all_eight_paint_assets_match_source() {
+fn original_styles_and_motion_script_ship_verbatim() {
     for (port, source) in [
         ("assets/css/chrome.css", "app/chrome.css"),
         ("assets/css/site.css", "app/_homepage/site.css"),
+        ("assets/homepage/site.js", "public/homepage/site.js"),
     ] {
         assert_eq!(
             read(&format!("crates/public-site/{port}")),
             read(&format!(
                 "crates/public-site/tests/fixtures/original/{source}"
-            ))
+            )),
+            "{port} must equal the original {source}"
         );
     }
-    let result = Command::new("node")
-        .args(["crates/public-site/island/check-paint.mjs"])
-        .current_dir(root())
-        .output()
-        .unwrap();
-    assert!(
-        result.status.success(),
-        "{}\n{}",
-        String::from_utf8_lossy(&result.stdout),
-        String::from_utf8_lossy(&result.stderr)
-    );
+    // Site-owned stylesheets may reserve layout, never compete with site.css motion
+    // (an override of a stage child's transition is what made staging stutter).
+    for css in ["assets/css/stage.css", "assets/css/noscript.css"] {
+        let text = read(&format!("crates/public-site/{css}"));
+        for property in ["transition", "animation", "@keyframes"] {
+            assert!(
+                !text.contains(property),
+                "{css} must not declare {property}"
+            );
+        }
+    }
 }

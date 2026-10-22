@@ -20,18 +20,50 @@ use sea_orm::{
 /// The SQL-backed store.
 #[derive(Debug, Clone)]
 pub struct PostgresFrontDoorStore {
-    db: DatabaseConnection,
+    pub(crate) db: DatabaseConnection,
 }
 
 impl PostgresFrontDoorStore {
-    /// Connects to `database_url` without applying migrations.
+    /// Connects without applying migrations; retained for existing callers.
     pub async fn connect(database_url: &str) -> Result<Self, DbErr> {
+        Self::connect_without_migrations(database_url).await
+    }
+
+    /// Opens a bounded runtime pool without creating or upgrading any schema.
+    ///
+    /// Run `front-door-migrate` with the migration identity first. This
+    /// constructor only establishes connectivity: callers must separately
+    /// check readiness before accepting traffic. It does not adopt legacy
+    /// migration records or repair tables; runtime credentials need no
+    /// schema-owner rights.
+    pub async fn connect_without_migrations(database_url: &str) -> Result<Self, DbErr> {
         let mut options = ConnectOptions::new(database_url.to_owned());
         options
-            .max_connections(8)
+            .max_connections(4)
             .connect_timeout(Duration::from_secs(10));
         let db = Database::connect(options).await?;
         Ok(Self { db })
+    }
+
+    /// Checks every owned table without creating a migration ledger or writing data.
+    pub async fn check_schema(&self) -> Result<(), DbErr> {
+        Accounts::find().one(&self.db).await?;
+        Consents::find().one(&self.db).await?;
+        Invitations::find().one(&self.db).await?;
+        Links::find().one(&self.db).await?;
+        Premiums::find().one(&self.db).await?;
+        Sessions::find().one(&self.db).await?;
+        SignInTokens::find().one(&self.db).await?;
+        crate::migration::identity::Entity::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::permission::Entity::find()
+            .one(&self.db)
+            .await?;
+        crate::migration::restriction::Entity::find()
+            .one(&self.db)
+            .await?;
+        Ok(())
     }
 
     /// Connects and applies the crate's migration chain.
@@ -227,6 +259,17 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         if !account.active {
             return Err(SignInError::Inactive);
         }
+        // Identity Platform accounts cannot fall back to the legacy email proof
+        // endpoint (which is not their credential authority).
+        if crate::migration::identity::Entity::find()
+            .filter(crate::migration::identity::Column::AccountId.eq(account.id))
+            .one(&self.db)
+            .await
+            .map_err(|_| SignInError::Invalid)?
+            .is_some()
+        {
+            return Err(SignInError::Invalid);
+        }
         // One pending token per account: re-requesting replaces the last one.
         let token = mint_token();
         let active = crate::migration::SignInTokenActiveModel {
@@ -275,6 +318,15 @@ impl FrontDoorStore for PostgresFrontDoorStore {
             .map_err(|_| SignInError::Invalid)?
             .ok_or(SignInError::Invalid)?;
         if account.email != key || !account.active {
+            return Err(SignInError::Invalid);
+        }
+        if crate::migration::identity::Entity::find()
+            .filter(crate::migration::identity::Column::AccountId.eq(account.id))
+            .one(&txn)
+            .await
+            .map_err(|_| SignInError::Invalid)?
+            .is_some()
+        {
             return Err(SignInError::Invalid);
         }
         // The pending row is deleted inside the transaction: a raced second

@@ -318,7 +318,7 @@ fn structured_wire_roundtrip_preserves_tool_ids_usage_and_incomplete_failure() {
         {"type": "message", "content": [{"type": "output_text", "text": "reading"}]},
         {"type": "function_call", "call_id": "read-1", "name": "exact_read", "arguments": "{\"revision\":7}"}
     ], "usage": {"input_tokens": 11, "output_tokens": 5}});
-    let result = harness::responses::decode(&body).unwrap();
+    let result = harness::provider::decode(&body).unwrap();
     assert_eq!(result.calls, vec![call("read-1")]);
     assert_eq!(result.usage.input_tokens, Some(11));
     let mut req = request();
@@ -329,13 +329,13 @@ fn structured_wire_roundtrip_preserves_tool_ids_usage_and_incomplete_failure() {
             value: json!({"value": 4}),
         },
     ];
-    let wire = harness::responses::encode(&req);
+    let wire = harness::provider::encode(&req);
     assert_eq!(wire["input"][0]["call_id"], "read-1");
     assert_eq!(wire["input"][1]["type"], "function_call_output");
     assert_eq!(wire["instructions"], "original");
     let mut incomplete = body;
     incomplete["status"] = json!("incomplete");
-    assert!(harness::responses::decode(&incomplete).is_err());
+    assert!(harness::provider::decode(&incomplete).is_err());
 }
 
 #[test]

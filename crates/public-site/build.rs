@@ -34,18 +34,6 @@ fn main() {
     let root = Path::new("assets");
     let mut assets = Vec::new();
     collect(root, root, &mut assets);
-    println!("cargo:rerun-if-changed=island/dist");
-    let island = Path::new("island/dist");
-    for name in [
-        "bootstrap.js",
-        "public_site_motion.js",
-        "public_site_motion_bg.wasm",
-    ] {
-        let path = island.join(name).canonicalize().unwrap_or_else(|_| {
-            panic!("missing motion bundle: run bash crates/public-site/island/build.sh before cargo build")
-        });
-        assets.push((format!("/motion/{name}"), path.to_str().unwrap().to_owned()));
-    }
     let mut generated = String::from("pub const EMBEDDED_ASSETS: &[(&str, &[u8])] = &[\n");
     for (url, path) in assets {
         generated.push_str(&format!("({url:?}, include_bytes!({path:?})),\n"));

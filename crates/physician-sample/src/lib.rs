@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+pub mod hosting;
 mod live;
 #[cfg(test)]
 mod live_tests;
@@ -465,8 +466,60 @@ pub async fn serve(listener: tokio::net::TcpListener) {
             std::process::exit(1);
         }
     };
-    let app = traced(auth::authed_router(base).await);
-    axum::serve(listener, app).await.expect("sample server");
+    let app = traced(route_readiness(auth::authed_router(base).await).await);
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown())
+        .await
+        .expect("sample server");
+}
+
+/// Resolves on SIGTERM (Cloud Run's stop signal) or Ctrl-C, so in-flight
+/// requests drain instead of the process being killed after the grace period.
+async fn shutdown() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("SIGTERM handler");
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = terminate.recv() => {},
+        }
+    }
+    #[cfg(not(unix))]
+    tokio::signal::ctrl_c().await.expect("shutdown signal");
+}
+
+/// Adds `/readyz`, which answers from the same stores the process serves with.
+/// Without `PHYSICIAN_DATABASE_URL` there is nothing to check, so it stays 503.
+async fn route_readiness(app: Router) -> Router {
+    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok();
+    let stores = match url.as_deref() {
+        Some(url) => {
+            let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url).await;
+            let front = front_door::PostgresFrontDoorStore::connect_without_migrations(url).await;
+            match (auth, front) {
+                (Ok(auth), Ok(front)) => Some((auth, front)),
+                (Err(error), _) | (_, Err(error)) => {
+                    eprintln!("readiness stores unavailable: {error}");
+                    None
+                }
+            }
+        }
+        None => None,
+    };
+    let (auth, front) = match stores {
+        Some((auth, front)) => (Some(auth), Some(front)),
+        None => (None, None),
+    };
+    app.route(
+        "/readyz",
+        get(move || {
+            let auth = auth.clone();
+            let front = front.clone();
+            async move { hosting::ready(auth.as_ref(), front.as_ref()).await }
+        }),
+    )
 }
 
 /// Wraps the whole router in the `http.server` tracing layer.
@@ -912,6 +965,41 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK);
         assert_eq!(health, "live-health");
+    }
+
+    // Exercise real HTTP parsing in parallel, including vector-sized URIs.
+    // An inherited ElyLD -B prefix once misaligned httparse's AVX constants;
+    // an in-process oneshot-only proof would not catch that native link defect.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn proxy_preserves_long_queries_under_concurrent_http_parsing() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        let server = tokio::spawn(async move {
+            let app = Router::new().route(
+                "/health",
+                axum::routing::get(|uri: axum::http::Uri| async move { uri.to_string() }),
+            );
+            axum::serve(listener, app).await.unwrap();
+        });
+        let app = router_with(Some(format!("http://{address}")));
+        let mut requests = tokio::task::JoinSet::new();
+        for length in [0, 15, 16, 31, 32, 33, 63, 64, 65, 127, 128, 255] {
+            let app = app.clone();
+            requests.spawn(async move {
+                let path = format!("/health?probe={}", "a".repeat(length));
+                let (status, body) = request(app, "GET", &path, Body::empty()).await;
+                assert_eq!(status, StatusCode::OK);
+                assert_eq!(body, path);
+            });
+        }
+        tokio::time::timeout(std::time::Duration::from_secs(10), async {
+            while let Some(result) = requests.join_next().await {
+                result.unwrap();
+            }
+        })
+        .await
+        .expect("concurrent proxy requests finish");
+        server.abort();
     }
 
     async fn request(router: Router, method: &str, path: &str, body: Body) -> (StatusCode, String) {

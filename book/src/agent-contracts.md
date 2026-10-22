@@ -4,8 +4,10 @@ The four product repositories keep their full contracts; this page hoists their
 operative rules into this workspace so an agent working on a Rust crate can
 follow them without opening a submodule. Submodules are read-only reference
 (see the <a href="/.cursor/rules/rust-repo-first%2Emdc">rust-repo-first</a> rule). When a
-rule here and a submodule source disagree, the submodule source wins and this
-page is a bug.
+product-semantic rule here and a submodule source disagree, the submodule source
+wins and this page is a bug. Rust crate sharing follows the explicitly
+user-approved boundary in <a href="/AGENTS%2Emd">AGENTS.md</a>; reference-repository
+ownership does not override that approval.
 
 ## Coda Agents (physician product, harness)
 
@@ -99,10 +101,25 @@ Source: <a href="/submodules/Coda-Computer-Use/AGENTS%2Emd">Coda-Computer-Use AG
 
 When porting a submodule behavior into a crate:
 
-- The Coda Agents invariants and failure doctrine govern `harness`,
-  `agent-skills`, `patient-work`, `local-product`, `physician-auth`, and
-  `physician-app`.
+- The Coda Agents invariants and failure doctrine govern the physician owners:
+  `patient-work`, `local-product`, `physician-auth`, and `physician-app`.
 - The Duet intelligence boundary governs `duet-api` and `duet-app`.
+- `harness` and its neutral supporting libraries, including the `agent-skills`
+  loader, share execution mechanics under the approved
+  [ENG-159 boundary](https://linear.app/coda-health/issue/ENG-159#comment-0bb61a83-8e56-40d9-aa2c-f8b9960393eb).
+  Common execution-integrity and failure-isolation invariants apply to both
+  consumers; physician clinical policy does not become Duet policy. Each product
+  supplies its own skills, context, admitted tools and authority checks.
+- Products retain accounts/sessions, clinical types, durable state and scheduling,
+  effects, commit/publication and recovery. The harness emits neutral events to
+  each product's existing durable owner and awaits required acknowledgments;
+  it owns neither a shared clinical journal nor a product terminal-state machine.
+- Preserve the distinct original semantics: physician revision forbids memory
+  writes/delegation, and interrupted work continues through successor attempts;
+  Duet may save routines before the reply and retries its accepted run. Product
+  context-preservation policies, Stop/steering/consent fences and completion
+  transactions remain distinct. P1/D1 must prove restart, idempotency and no
+  duplicate effects through their real owners before qualification is claimed.
 - Gym and computer-use crates (future) keep their clinical types separate from
   the physician and Duet crates, per the top-level boundary.
 - One owner per fact maps directly to crate/module ownership: the crate that

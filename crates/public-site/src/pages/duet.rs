@@ -48,5 +48,6 @@ pub fn Duet() -> Element {
                 p { "Duet is not emergency care and does not diagnose, prescribe, or replace your healthcare professional." }
             }
         }
+        script { src: "/homepage/site.js", defer: true }
     }
 }

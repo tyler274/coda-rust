@@ -14,8 +14,9 @@ jobs:
   ci:
     # Blacksmith runner (ENG-76): same image as GitHub's ubuntu-24.04, and
     # actions/cache talks to Blacksmith's colocated cache with no change.
-    # Roll back by setting runs-on to ubuntu-latest again.
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    # 4 vCPU because this job compiles the workspace; cargo-deny below stays
+    # on 2 vCPU. Roll back by setting runs-on to ubuntu-latest again.
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     # The Duet, physician and front-door PostgreSQL proofs fail closed without
     # a disposable loopback server; they never skip (ENG-46). Each test creates
     # and drops its own database and role on this throwaway container.
@@ -50,7 +51,7 @@ jobs:
           submodules: false
           persist-credentials: false
       - name: Install Node for public-site asset and browser proofs
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
       # Preinstalled SDKs are unused here and leave no room to archive target
@@ -149,8 +150,6 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends poppler-utils
           pdftotext -v
-      - name: Build public-site motion island (60 KB brotli budget)
-        run: bash crates/public-site/island/build.sh
       - name: Check formatting
         run: cargo fmt --check
       # CI parity with the pre-commit hook (.githooks/pre-commit): a commit
@@ -165,6 +164,8 @@ jobs:
         # closed when it runs; it is not counted as passed here. The Android
         # shell is proved by UI Automator on a local emulator, not by this job.
         run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
+      - name: Prove acknowledged neutral streaming
+        run: cargo test --locked -p harness --test execution --test responses --test streaming
       - name: Browser proof (physician auth journeys)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
@@ -284,6 +285,57 @@ jobs:
       - name: Build the rustdoc
         run: cargo doc --no-deps --workspace
 
+  foundations:
+    name: Offline cloud foundation contracts
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - name: Check infrastructure source and SQL authority contracts
+        run: |
+          nix develop .#release --command python infra/gcp/rust-environments/tests/check_contract.py
+          nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
+      - name: Prove mocked release adapters (no cloud credentials)
+        run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      # Adapter tests do not authorize deployment. Artifact handoff, operator
+      # inputs and hosted runtime qualification remain blocking; no release job.
+
+  # Builds every runtime, migration and job image with Nix on PRs and main and
+  # runs them locally; nothing is pushed. Publishing to Artifact Registry is a
+  # later release step behind operator-provisioned OIDC (ENG-167).
+  images:
+    name: Locked Nix images (build, run, migrate; no push)
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      # Archives, Doppler entrypoint and fail-closed starts, disposable
+      # Postgres migrations run twice, /health 200, /readyz 503, SIGTERM.
+      # Hosted readiness and live journeys remain separate gates.
+      - name: Build and prove runtime, migration and job images
+        run: nix develop .#release --command bash scripts/check-images.sh
+      - name: Record image sizes and store paths
+        run: |
+          {
+            echo '| Image archive | Size |'
+            echo '| --- | --- |'
+            while read -r archive; do
+              echo "| \`$archive\` | $(du -h --apparent-size "$archive" | cut -f1) |"
+            done < image-paths
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Save immutable build output references
+        uses: actions/upload-artifact@v7
+        with:
+          name: image-paths-${{ github.sha }}
+          path: image-paths
+
   postgres:
     name: Fresh Postgres migrations and tests
     runs-on: blacksmith-2vcpu-ubuntu-2404
@@ -331,7 +383,116 @@ jobs:
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
           PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
-        run: nix develop --command bash scripts/check-postgres.sh
+          DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
+          PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+        run: |
+          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          nix develop --command bash scripts/check-postgres.sh
+
+  # Publishes the four images by digest and runs the release state machine.
+  # Only a push to main, and only after every check job is green. The staging
+  # environment must exist with its variables and the three gcloud identities
+  # (deployer, IAM verifier, smoke) before this can succeed; until then it
+  # fails closed rather than deploying anything.
+  deploy-staging:
+    name: Deploy staging
+    needs: [ci, foundations, images, postgres, cargo-deny]
+    # Off until an admin has bootstrapped coda-health-staging and created the
+    # GitHub `staging` environment; then set the repository variable
+    # RUST_STAGING_DEPLOY=enabled (book/src/gcp.md). Main stays green meanwhile.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 120
+    concurrency:
+      group: rust-staging-release
+      cancel-in-progress: false
+    environment: staging
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+      id-token: write
+      deployments: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Authenticate the deployer to Artifact Registry
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+      - name: Build the four images and push them by digest
+        env:
+          REGISTRY: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/apps
+        run: |
+          set -euo pipefail
+          gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
+          declare -A attr=(
+            [physician-runtime]=physician-sample-image
+            [physician-migration]=physician-migration-image
+            [duet-runtime]=duet-api-image
+            [duet-migration]=duet-migration-image
+          )
+          declare -A name=(
+            [physician-runtime]=coda-physician-sample
+            [physician-migration]=coda-physician-migrate
+            [duet-runtime]=coda-duet-api
+            [duet-migration]=coda-duet-migrate
+          )
+          mkdir -p release
+          for key in "${!attr[@]}"; do
+            archive=$(nix build ".#${attr[$key]}" --print-out-paths --no-link)
+            skopeo copy "docker-archive:$archive" "docker://$REGISTRY/${name[$key]}:${GITHUB_SHA}"
+            digest=$(skopeo inspect "docker://$REGISTRY/${name[$key]}:${GITHUB_SHA}" | jq -r .Digest)
+            echo "$REGISTRY/${name[$key]}@$digest" > "release/$key"
+            echo "${name[$key]} -> $digest"
+          done
+      - name: Assemble the release bundle
+        env:
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          # Operator-approved contract, resource specs, IAM baselines and the
+          # command config. No secret values; the release engine rejects a
+          # bundle that does not match the live infrastructure.
+          RELEASE_ENVIRONMENT: ${{ vars.RELEASE_ENVIRONMENT }}
+        run: |
+          set -euo pipefail
+          test -n "$RELEASE_ENVIRONMENT" || { echo "RELEASE_ENVIRONMENT is not set; staging is not configured" >&2; exit 1; }
+          # The release engine verifies each check family against the job that
+          # produced it. Map the families to this run's job database IDs.
+          number="${RUN_ID%-*}"
+          job_id() { gh api "repos/$GITHUB_REPOSITORY/actions/runs/$number/jobs?per_page=100" --jq ".jobs[] | select(.name==\"$1\") | .id"; }
+          checks=$(jq -n \
+            --arg apps "$(job_id CI)" --arg audit "$(job_id 'cargo-deny')" \
+            --arg lint "$(job_id 'Offline cloud foundation contracts')" \
+            --arg database "$(job_id 'Fresh Postgres migrations and tests')" \
+            --arg images "$(job_id 'Locked Nix images (build, run, migrate; no push)')" \
+            '{"apps": $apps, "audit": $audit, "format-lint": $lint, "database": $database, "browser": $apps, "images": $images}')
+          image() { cat "release/$1"; }
+          jq -n \
+            --arg sha "$GITHUB_SHA" --arg run "$RUN_ID" \
+            --arg pr "$(image physician-runtime)" --arg pm "$(image physician-migration)" \
+            --arg dr "$(image duet-runtime)" --arg dm "$(image duet-migration)" \
+            --argjson environment "$RELEASE_ENVIRONMENT" \
+            --argjson checks "$checks" \
+            '{environment: ($environment | del(.commands)),
+              candidate: {sha: $sha, run_id: $run,
+                images: {physician: {runtime: $pr, migration: $pm}, duet: {runtime: $dr, migration: $dm}},
+                builds: {physician: {runtime: $sha, migration: $sha}, duet: {runtime: $sha, migration: $sha}},
+                checks: $checks, compatibility_evidence: $sha},
+              commands: $environment.commands}' > release/bundle.json
+      - name: Release to staging
+        run: |
+          nix develop .#release --command python scripts/gcp/release.py \
+            --input release/bundle.json --execute
+      - name: Save the release receipt
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release/
 
   # ENG-65: the shared collector config (deployed and local overlays) and the
   # OpenTofu roots it rides on. otelcol-contrib and tofu come from the nix

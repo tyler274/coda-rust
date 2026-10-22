@@ -1,5 +1,5 @@
 use harness::execution::*;
-use harness::responses::ResponsesProvider;
+use harness::provider::ResponsesProvider;
 use serde_json::{Value, json};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 

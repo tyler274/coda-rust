@@ -2,13 +2,16 @@
   description = "Development shell for the Coda monorepo";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.rust-overlay.url = "github:oxalica/rust-overlay";
+  inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs =
-    { self, nixpkgs }:
+    { self, nixpkgs, rust-overlay }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
+        overlays = [ rust-overlay.overlays.default ];
         config.allowUnfree = true;
       };
       postgres = pkgs.postgresql_16.withPackages (ps: [ ps.pgvector ]);
@@ -48,7 +51,13 @@
       chromiumBin = "${pkgs.chromium}/bin/chromium";
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
+      packages.${system} = import ./nix/packages.nix { inherit pkgs self; };
+      # No credential-loading shellHook in release builds or CI packaging.
+      devShells.${system} = {
+      release = pkgs.mkShell {
+        packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny postgres opentofu ];
+      };
+      default = pkgs.mkShell {
         packages = with pkgs; [
           rustc
           cargo
@@ -94,6 +103,15 @@
           code-cursor-fhs
         ];
 
+        # Do not inherit host linker search paths (notably ElyLD's -B prefix).
+        # ElyLD placed httparse's AVX constant at a 16-byte rather than 32-byte
+        # boundary, faulting on vmovaps in the physician HTTP proxy unit test.
+        env.NIX_CFLAGS_LINK = "";
+        # Select the existing stdenv BFD linker for native Rust links. Cargo
+        # fingerprints this target-specific flag, unlike NIX_CFLAGS_LINK, so
+        # entering the repaired shell also replaces cached mislinked binaries.
+        # Do not send GCC linker flags to wasm32 or other cross targets.
+        env.CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS = "-C link-arg=-fuse-ld=bfd";
         env.OPENSSL_NO_VENDOR = "1";
         env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
         # The browser proof tests (crates/mobile/tests, physician-sample/tests)
@@ -223,7 +241,12 @@ PGCTL
           if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
             git config core.hooksPath .githooks
           fi
+          # Set last, after every PATH and linker fix above, so a hook that
+          # sees it knows it runs in the complete shell. IN_NIX_SHELL is not
+          # enough: any nix shell, or a host swiftly PATH on top, sets it too.
+          export CODA_DEV_SHELL=1
         '';
+      };
       };
     };
 }

@@ -4,6 +4,8 @@
 Run: nix develop --command python scripts/check-sql.py [--write]
 The three required Duet queries are included by Rust at compile time. All other
 tracked .sql files outside read-only submodules are included automatically.
+Duet migrations under crates/duet-api/migrations are excluded: each file is
+checksummed into duet_schema_migrations, so formatting must not change it.
 Migration builders, dynamic Rust templates and test-fixture strings are not
 parsed or reformatted. No migration/checksum inputs are changed by this check.
 Formatting is not an endorsement of raw SQL: AGENTS.md requires ORM-first CRUD.
@@ -35,7 +37,11 @@ def main():
     tracked = subprocess.check_output(
         ["git", "ls-files", "-z", "--", "*.sql", ":!:submodules/**"], cwd=ROOT
     ).decode().split("\0")
-    paths = sorted(set(filter(None, tracked)))
+    paths = sorted(
+        name
+        for name in set(filter(None, tracked))
+        if not name.startswith("crates/duet-api/migrations/")
+    )
     missing = REQUIRED - set(paths)
     if missing:
         sys.exit(f"Required authored SQL is not tracked: {sorted(missing)}")

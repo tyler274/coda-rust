@@ -21,35 +21,15 @@ copy them.
 The operative rules of all four submodule contracts are hoisted into
 [Agent contracts, hoisted](book/src/agent-contracts.md) so work in this
 workspace can follow them without opening a submodule. Submodules stay
-read-only reference; their sources win over the hoisted page when they
-disagree.
+read-only reference; their sources win over the hoisted page on product semantics.
+The explicitly approved Rust-workspace sharing boundary below governs crate reuse;
+reference-repository ownership does not override that boundary.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, or servers.
-Shared product-neutral crates are `ui`, `http`, and the execution mechanics in
-`harness` (including its `agent-skills` admission dependency). ENG-46 authorizes
-shared structured provider exchanges, tool dispatch, context handling,
-cancellation/currentness hooks, usage bounds, streaming, and execution-record
-interfaces. Product adapters retain instructions, tool authority, clinical state,
-effect transactions, recovery policy, and completion decisions. The harness
-must not depend on either product or introduce a competing durable run ledger;
-Duet must not import `local-product` to reuse physician transport.
+Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, and `harness`. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
 
-Duet SQL migrations belong to `crates/duet-api/migrations`; the explicit
-`duet-migrate` binary uses `DUET_MIGRATION_DATABASE_URL` and `DUET_RUNTIME_ROLE`,
-separate from runtime credentials. `database::AccountDatabase` admits only
-non-owner runtime roles and starts account-local transactions. Preserve existing
-`public.users` IDs, evidence revision identities, and doctor workspace generations;
-never replay the reference beta reset. Owner phases append additive migrations
-and test upgrades as well as fresh installs. The foundation alone is not the
-full reference schema or a replacement for its runtime readiness gate.
-
-Rust API additions belong to `crates/duet-api/openapi/additions.json`; regenerate
-`duet-wire` with `cargo run -p workspace-tools -- generate-duet-wire`. Its additive composer refuses
-replacement of reference definitions. Do not edit generated DTOs or the
-reference specification. An empty additions file reserves ownership, not new
-endpoint behavior.
+Duet schema changes go in `crates/duet-api/migrations` and run through `duet-migrate` (`DUET_MIGRATION_DATABASE_URL`, `DUET_RUNTIME_ROLE`), not on API startup. Do not replay the coda-app ledger. Additive wire types go in `crates/duet-api/openapi/additions.json`; regenerate with `cargo run -p workspace-tools -- generate-duet-wire` and do not edit generated DTOs.
 
 The physician site is a client of the physician projections. `crates/physician-sample` serves the page and a recorded projection of the synthetic practice on one origin. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat runs through the Codex CLI subscription (`codex login`) and does not read an API key. `record` writes a cassette and `replay` answers from that cassette, also without a key. `api` answers physician chat through `crates/local-product` and OpenAI Responses; the key comes from the environment (`CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`, loaded by Doppler in the nix shell) and is not stored in the page. The page mounts into `#main`. On the web build, an unset `PHYSICIAN_API_URL` uses that origin; `?api=` still points the same build at the Node server. A physician-site change is not done unless `cargo test -p physician-sample --test site` passed. That Chromium test fails when the document is blank.
 
@@ -94,6 +74,6 @@ Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`,
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
-CI runs on Blacksmith runners (`blacksmith-2vcpu-ubuntu-2404`), which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. `.actrc` maps that label to the `act` image, and [`.github/actionlint.yaml`](.github/actionlint.yaml) declares it. To roll back, set `runs-on` to `ubuntu-latest`.
+CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. `.actrc` maps both labels to the `act` image, and [`.github/actionlint.yaml`](.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
 
 React and SwiftUI remain the shipping clients until a journey matches them. Do not claim a production cutover, a TestFlight release, or a physician production deploy from this repository.

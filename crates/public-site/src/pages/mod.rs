@@ -45,8 +45,21 @@ mod tests {
             "data-art=\"mist\"",
             "data-w=\"\"",
             "class=\"stage duet-stage\"",
+            "src=\"/homepage/site.js\"",
         ] {
             assert!(html.contains(marker), "missing motion target {marker}");
         }
+        let duet = render_page(&Route::Duet {}, &Config::default());
+        assert!(
+            std::str::from_utf8(&duet.html)
+                .unwrap()
+                .contains("src=\"/homepage/site.js\"")
+        );
+        let privacy = render_page(&Route::Privacy {}, &Config::default());
+        assert!(
+            !std::str::from_utf8(&privacy.html)
+                .unwrap()
+                .contains("site.js")
+        );
     }
 }

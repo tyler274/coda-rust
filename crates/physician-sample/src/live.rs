@@ -517,7 +517,7 @@ impl Provider for LiveProvider<'_> {
             return replay.lock().await.exchange(request, cancel, emit).await;
         }
         if let ChatModel::OpenAi { key, .. } = self.0 {
-            let mut provider = harness::responses::ResponsesProvider::new(
+            let mut provider = harness::provider::ResponsesProvider::new(
                 "https://api.openai.com/v1/responses".into(),
                 key.clone(),
             )?;

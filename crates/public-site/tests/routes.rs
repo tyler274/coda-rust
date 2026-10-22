@@ -118,7 +118,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
 }
 
 #[tokio::test]
-async fn real_asset_bundle_is_immutable_and_sibling_resolvable() {
+async fn real_scripts_are_content_addressed_and_immutable() {
     let app = router_with_options(
         prerender(&Config::default()),
         RuntimeConfig::default(),
@@ -137,24 +137,17 @@ async fn real_asset_bundle_is_immutable_and_sibling_resolvable() {
             .to_vec(),
     )
     .unwrap();
-    let bootstrap = html
-        .split('"')
-        .find(|value| value.starts_with("/a/") && value.ends_with("/motion/bootstrap.js"))
-        .unwrap();
-    let directory = bootstrap.rsplit_once('/').unwrap().0;
-    for (name, mime) in [
-        ("bootstrap.js", "javascript"),
-        ("public_site_motion.js", "javascript"),
-        ("public_site_motion_bg.wasm", "application/wasm"),
+    for (suffix, mime) in [
+        ("/chrome.js", "javascript"),
+        ("/homepage/site.js", "javascript"),
     ] {
+        let path = html
+            .split('"')
+            .find(|value| value.starts_with("/a/") && value.ends_with(suffix))
+            .unwrap_or_else(|| panic!("homepage must reference hashed {suffix}"));
         let response = app
             .clone()
-            .oneshot(
-                Request::builder()
-                    .uri(format!("{directory}/{name}"))
-                    .body(Body::empty())
-                    .unwrap(),
-            )
+            .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
             .await
             .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
@@ -175,7 +168,7 @@ async fn real_asset_bundle_is_immutable_and_sibling_resolvable() {
             .clone()
             .oneshot(
                 Request::builder()
-                    .uri(format!("{directory}/{name}"))
+                    .uri(path)
                     .header("if-none-match", etag)
                     .body(Body::empty())
                     .unwrap(),
@@ -252,7 +245,7 @@ async fn staging_denies_pages_and_assets_without_access() {
         [],
         Readiness::ready(),
     );
-    for path in ["/", "/api/health", "/motion/bootstrap.js"] {
+    for path in ["/", "/api/health", "/homepage/site.js"] {
         let response = app
             .clone()
             .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())

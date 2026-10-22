@@ -3,15 +3,31 @@
 # lands. Wired up by the flake shellHook via `git config core.hooksPath
 # .githooks`. Escape hatch for exceptional commits: `git commit --no-verify`.
 #
+# The checks always run in this checkout's dev shell. Outside it, host tools
+# shadow the flake's (swiftly's ld.lld fails without libxml2.so.2), so the
+# hook re-executes itself under `nix develop` instead of using host cargo.
+# The flake shellHook exports CODA_DEV_SHELL=1 as its last step.
+#
 # Note on strictness: clippy checks errors at CI severity; warnings are not
 # denied yet. Once the tree is clean, tighten this to `-D warnings` and add
 # the same to the CI lint step.
 set -euo pipefail
 
-if ! command -v cargo >/dev/null; then
-  echo "cargo not on PATH — run inside nix develop (or commit with --no-verify)" >&2
-  exit 1
+root=$(git rev-parse --show-toplevel)
+
+if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
+  if [ -n "${CODA_PRE_COMMIT_REEXEC:-}" ]; then
+    echo "pre-commit: nix develop did not provide the dev shell (CODA_DEV_SHELL unset)" >&2
+    exit 1
+  fi
+  if ! command -v nix >/dev/null; then
+    echo "pre-commit: nix is not on PATH; cannot enter the dev shell (or commit with --no-verify)" >&2
+    exit 1
+  fi
+  export CODA_PRE_COMMIT_REEXEC=1
+  exec nix develop "$root" --command "$0" "$@"
 fi
 
+cd "$root"
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --quiet

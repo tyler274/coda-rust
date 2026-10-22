@@ -2,43 +2,17 @@
 
 Shipped Duet tabs are [`DuetRoot`](/crates/duet-app/src/lib.rs). Today, the library, and sharing are `today_root`, `library_root`, and `shared_root` in [`roots.rs`](/crates/duet-app/src/roots.rs). The physician shell is the other side of the Coda Agents boundary, in [`physician-app`](/crates/physician-app/src/lib.rs). SwiftUI remains the shipping iPhone app.
 
-## Approved Rust doctor-page delivery delta
+## Doctor page
 
-[ENG-46](https://linear.app/coda-health/issue/ENG-46) authorizes durable saved
-pages and two account-free delivery formats: ordinary web/HTML with the exact
-PDF, and SMART Health Links v1. Publication pins an explicitly approved page
-generation, exact selected evidence and rendered PDF; later edits never change
-that snapshot. One active publication per patient has mandatory bounded expiry
-(seven days by default); explicit republishing revokes/replaces the old one.
-Every HTML, PDF, SHL manifest and SHL file retrieval rechecks authorization.
-Revocation stops future retrieval, but cannot erase already downloaded copies.
+[ENG-46](https://linear.app/coda-health/issue/ENG-46). The saved page is one approved snapshot: the page generation, the selected evidence, and the rendered PDF. Later edits do not change a publication. One publication is active per patient and expires (seven days unless a shorter bound is set). Republishing replaces it.
 
-Start fresh and account deletion invalidate publication. Source withdrawal,
-deletion, or correction requiring review blocks retrieval until reviewed
-republication, never silently rewriting the snapshot. SHL carries the same PDF
-as an embedded FHIR R4 DocumentReference attachment, encrypted using compact
-JWE `dir`/`A256GCM`; it is not a second clinical interpretation. Manifest
-capabilities have at least 256 bits of entropy. File locations expire within
-one hour and never outlive publication. No unimplemented dynamic/passcode flags
-or EHR compatibility claim accompanies standards conformance.
+HTML, the PDF, and a SMART Health Link recheck authorization on every retrieval. Revocation stops later retrieval. Account deletion and starting fresh invalidate the publication. Withdrawing, deleting, or correcting a source blocks retrieval until the person approves a new snapshot.
 
-Luna proposes; opening/reviewing is not saving. Only explicit patient approval
-changes the page, and stale proposals cannot overwrite newer patient wording.
-Manual editing, preview, and eligible sharing do not depend on AI availability
-or permission. PDF and preview share measured Unicode layout, the full selected
-evidence and one US Letter page at 10.5/10/9.5-point steps. Overflow blocks
-export/publication, not saving; the cover note stays outside the PDF.
+Luna may propose wording. Opening or reviewing a proposal does not save it, and a stale proposal does not overwrite newer wording. Editing, preview, and sharing work when the model is off. The PDF is one US Letter page; overflow blocks export, not saving. The cover note stays off the PDF.
 
-The approved neutral harness is shared execution mechanics, not shared clinical
-state, accounts, servers, instructions, effect authority, recovery policy or a
-second run ledger. Physician and Duet adapters retain those decisions. Design,
-implementation and interruption validation remain separate from production,
-paid calls, live-model quality and installed-device qualification.
+The SMART Health Link carries that same PDF, encrypted, as a FHIR DocumentReference attachment. It is not a second reading of the record. The link secret has at least 256 bits of entropy. File locations expire within an hour and never outlive the publication.
 
-**Canonical owner follow-up:** the `coda-app` North Star owner must fold this
-approved delta into the product repository. This workspace record neither edits
-the read-only submodule nor claims a shipping cutover. No production deploy,
-EHR write-back, physician reply, or premium plan delivery is authorized here.
+`harness` is shared execution mechanics. It does not hold clinical state, accounts, or a second run ledger. This is the workspace rule. It is not a production cutover.
 
 ## Canonical product references
 

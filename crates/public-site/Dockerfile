@@ -21,12 +21,7 @@ COPY Cargo.toml Cargo.lock ./
 # Cargo resolves all workspace manifests; no reference submodules or secrets are
 # copied into the build, and only the public-site package is compiled.
 COPY crates/ crates/
-# Build these with the pinned Nix wasm-bindgen tool before invoking Docker (see
-# book/src/public-site.md). Refuse a silently motion-less release image.
-RUN test -s crates/public-site/island/dist/bootstrap.js \
-    && test -s crates/public-site/island/dist/public_site_motion.js \
-    && test -s crates/public-site/island/dist/public_site_motion_bg.wasm \
-    && cargo build --locked --release -p public-site --bin public-site \
+RUN cargo build --locked --release -p public-site --bin public-site \
     && readelf -lW target/x86_64-unknown-linux-musl/release/public-site > /tmp/site-elf \
     && ! grep -q INTERP /tmp/site-elf
 
