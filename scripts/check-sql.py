@@ -2,7 +2,8 @@
 """Check tracked authored SQL (not generated SQL or arbitrary Rust strings).
 
 Run: nix develop --command python scripts/check-sql.py [--write]
-The required Duet schema-readiness query is included by Rust at compile time. All other
+The required Duet schema-readiness query and the physician authority NOTIFY
+trigger migration are included by Rust at compile time. All other
 tracked .sql files outside read-only submodules are included automatically.
 Duet migrations under crates/duet-api/migrations are excluded: each file is
 checksummed into duet_schema_migrations, so formatting must not change it.
@@ -22,6 +23,9 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 REQUIRED = {
     "crates/duet-api/src/sql/has_migration.sql",
+    # PostgreSQL-only exception: the physician authority NOTIFY trigger has no
+    # SeaQuery trigger/PL/pgSQL builder. Replicas LISTEN on physician_authority.
+    "crates/physician-auth/src/authority_notify.sql",
 }
 
 
