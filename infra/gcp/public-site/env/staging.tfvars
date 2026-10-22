@@ -1,14 +1,14 @@
 # Non-secret public-site staging inputs. No secret values belong here.
-# image: the b18760e build, copied by digest from coda-agents into the private
-# public-site repository by scripts/staging-admin-bootstrap.sh (which must run first).
+# image: the 3609430 (main) build, pushed by digest to the private public-site
+# repository; the earlier b18760e copy came from scripts/staging-admin-bootstrap.sh.
 project_id                   = "coda-health-staging"
 project_number               = "134570912572"
 region                       = "us-east1"
 environment                  = "staging"
 staging_domain               = "staging.codahealth.ai"
 iap_group                    = "gcp-engineering@codahealth.ai"
-image                        = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140"
-release_sha                  = "b18760ef98a82e68aef29ac7a20bc48796794bf9"
+image                        = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:5a8693ef4801ca73a661cb7c018f743495c86ba4b681ac6e4a34135709133e29"
+release_sha                  = "3609430a18194fd489bf39d39337b53cdd5fbfbd"
 physician_app_url            = "https://staging.codahealth.ai"
 doppler_token_secret_id      = "public-site-stg-doppler-token"
 doppler_token_secret_version = "2"

@@ -162,7 +162,7 @@ def main():
     cid = container(image, "staging")
     try:
         base = await_ready(cid)
-        for path in ["/", bootstrap, glue, wasm, document.styles[0], "/api/health", "/healthz", "/does-not-exist"]:
+        for path in ["/", chrome, motion, document.styles[0], "/api/health", "/healthz", "/does-not-exist"]:
             status, headers, body = fetch(base, path)
             assert status in (401, 403), (path, status)
             assert "no-store" in headers["Cache-Control"], path
