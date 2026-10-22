@@ -71,6 +71,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0015_legacy_privacy_cohort",
         include_str!("../migrations/0015_legacy_privacy_cohort.sql"),
     ),
+    (
+        "0016_care_team",
+        include_str!("../migrations/0016_care_team.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -145,6 +149,7 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select,insert on public.duet_deleted_identities to {role}; \
          grant select,insert,update,delete on public.doctor_collection_items,public.duet_doctor_proposals,public.duet_doctor_saves,public.duet_device_snapshots,public.duet_publications to {role}; \
          grant usage, select on sequence public.canonical_evidence_revisions_revision_seq to {role}; \
+         grant select,insert,update,delete on public.duet_care_team,public.duet_release_authorizations to {role}; \
          grant select,insert,update on public.duet_model_calls to {role}; \
          grant select,insert,update,delete on public.duet_conversations,public.duet_commands,public.duet_execution_records,public.duet_tool_effects,public.duet_private_memory,public.duet_conversation_events to {role}; \
          grant usage,select on sequence public.duet_execution_records_ordinal_seq, public.duet_conversation_events_sequence_seq to {role}; \
@@ -187,6 +192,42 @@ impl AccountDatabase {
         validate_runtime(&mut tx).await?;
         tx.rollback().await?;
         Ok(database)
+    }
+
+    /// Begin the bounded Duet ORM slice on the same SQLx 0.9 runtime pool.
+    /// PostgreSQL role validation and transaction-local RLS scope are boundary
+    /// operations, not ordinary CRUD; they intentionally use the existing SQL.
+    pub async fn begin_orm(
+        &self,
+        account_id: Uuid,
+    ) -> Result<sea_orm::DatabaseTransaction, crate::ApiError> {
+        use sea_orm::{ConnectionTrait, DbBackend, Statement, TransactionTrait};
+        let connection = sea_orm::SqlxPostgresConnector::from_sqlx_postgres_pool(self.pool.clone());
+        let tx = connection
+            .begin()
+            .await
+            .map_err(crate::care_team::database_error)?;
+        let safe = tx
+            .query_one_raw(Statement::from_string(
+                DbBackend::Postgres,
+                RUNTIME_VALIDATION,
+            ))
+            .await
+            .map_err(crate::care_team::database_error)?
+            .ok_or(crate::ApiError::Unavailable("Account boundary unavailable"))?
+            .try_get_by_index::<bool>(0)
+            .map_err(crate::care_team::database_error)?;
+        if !safe {
+            return Err(crate::ApiError::Unavailable("Account boundary unavailable"));
+        }
+        tx.execute_raw(Statement::from_sql_and_values(
+            DbBackend::Postgres,
+            "select set_config('app.account_id', $1, true)",
+            [account_id.to_string().into()],
+        ))
+        .await
+        .map_err(crate::care_team::database_error)?;
+        Ok(tx)
     }
 
     /// Producer-only due-work discovery; no instruction or clinical prose.
@@ -276,9 +317,7 @@ impl AccountDatabase {
     }
 }
 
-async fn validate_runtime(tx: &mut Transaction<'_, Postgres>) -> Result<(), sqlx::Error> {
-    let safe: bool = sqlx::query_scalar(
-        "select not (r.rolsuper or r.rolbypassrls or r.rolcreatedb or r.rolcreaterole) \
+const RUNTIME_VALIDATION: &str = "select not (r.rolsuper or r.rolbypassrls or r.rolcreatedb or r.rolcreaterole) \
          and not has_schema_privilege(current_user, 'public', 'CREATE') \
          and not exists(select 1 from pg_roles elevated where \
              (elevated.rolsuper or elevated.rolbypassrls) \
@@ -288,10 +327,12 @@ async fn validate_runtime(tx: &mut Transaction<'_, Postgres>) -> Result<(), sqlx
              and (pg_has_role(current_user, c.relowner, 'MEMBER') \
                   or has_table_privilege(current_user, c.oid, 'TRUNCATE'))) \
          and exists(select 1 from pg_class where oid = to_regclass('public.users') and relrowsecurity) \
-         from pg_roles r where r.rolname = current_user",
-    )
-    .fetch_one(&mut **tx)
-    .await?;
+         from pg_roles r where r.rolname = current_user";
+
+async fn validate_runtime(tx: &mut Transaction<'_, Postgres>) -> Result<(), sqlx::Error> {
+    let safe: bool = sqlx::query_scalar(RUNTIME_VALIDATION)
+        .fetch_one(&mut **tx)
+        .await?;
     if !safe {
         return Err(refused(
             "Duet runtime role can bypass the account boundary or schema is absent",

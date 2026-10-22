@@ -849,6 +849,8 @@ async fn apply(
             }
             sqlx::query("insert into duet_deleted_identities(auth_user_id,account_id,incarnation,deleted_at) select auth_user_id,id,duet_incarnation,$2 from users where id=$1 on conflict(auth_user_id) do nothing").bind(r.account_id).bind(r.occurred_at).execute(&mut **tx).await?;
             for table in [
+                "duet_release_authorizations",
+                "duet_care_team",
                 "doctor_collection_items",
                 "duet_doctor_saves",
                 "duet_doctor_proposals",

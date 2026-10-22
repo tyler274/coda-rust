@@ -3,6 +3,7 @@
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
+pub mod care_team;
 pub mod doctor;
 pub mod identity;
 pub mod retention;

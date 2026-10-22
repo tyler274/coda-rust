@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**accept_durable_conversation_command**](DefaultApi.md#accept_durable_conversation_command) | **POST** /api/conversation/{id}/commands |
+[**add_care_team_member**](DefaultApi.md#add_care_team_member) | **POST** /api/care-team |
 [**apple_health_source_api_evidence_apple_health_get**](DefaultApi.md#apple_health_source_api_evidence_apple_health_get) | **GET** /api/evidence/apple-health | Apple Health Source
 [**commit_durable_privacy_restriction**](DefaultApi.md#commit_durable_privacy_restriction) | **POST** /api/auth/privacy-restrictions |
 [**complete_epic_api_connectors_epic_complete_post**](DefaultApi.md#complete_epic_api_connectors_epic_complete_post) | **POST** /api/connectors/epic/complete | Complete Epic
@@ -12,11 +13,14 @@ Method | HTTP request | Description
 [**complete_oracle_api_connectors_oracle_complete_post**](DefaultApi.md#complete_oracle_api_connectors_oracle_complete_post) | **POST** /api/connectors/oracle/complete | Complete Oracle
 [**connect_apple_health_api_evidence_apple_health_connect_post**](DefaultApi.md#connect_apple_health_api_evidence_apple_health_connect_post) | **POST** /api/evidence/apple-health/connect | Connect Apple Health
 [**connect_health_records_api_evidence_health_records_connect_post**](DefaultApi.md#connect_health_records_api_evidence_health_records_connect_post) | **POST** /api/evidence/health-records/connect | Connect Health Records
+[**create_release_authorization**](DefaultApi.md#create_release_authorization) | **POST** /api/release-authorizations |
+[**delete_care_team_member**](DefaultApi.md#delete_care_team_member) | **DELETE** /api/care-team/{id} |
 [**disconnect_apple_health_api_evidence_apple_health_delete**](DefaultApi.md#disconnect_apple_health_api_evidence_apple_health_delete) | **DELETE** /api/evidence/apple-health | Disconnect Apple Health
 [**disconnect_epic_api_connectors_epic_organization_id_delete**](DefaultApi.md#disconnect_epic_api_connectors_epic_organization_id_delete) | **DELETE** /api/connectors/epic/{organization_id} | Disconnect Epic
 [**disconnect_healow_api_connectors_healow_organization_id_delete**](DefaultApi.md#disconnect_healow_api_connectors_healow_organization_id_delete) | **DELETE** /api/connectors/healow/{organization_id} | Disconnect Healow
 [**disconnect_health_records_api_evidence_health_records_delete**](DefaultApi.md#disconnect_health_records_api_evidence_health_records_delete) | **DELETE** /api/evidence/health-records | Disconnect Health Records
 [**disconnect_oracle_api_connectors_oracle_organization_id_delete**](DefaultApi.md#disconnect_oracle_api_connectors_oracle_organization_id_delete) | **DELETE** /api/connectors/oracle/{organization_id} | Disconnect Oracle
+[**download_release_authorization_pdf**](DefaultApi.md#download_release_authorization_pdf) | **GET** /api/release-authorizations/{id}/pdf |
 [**evidence_lab_api_evidence_labs_post**](DefaultApi.md#evidence_lab_api_evidence_labs_post) | **POST** /api/evidence/labs | Evidence Lab
 [**evidence_library_api_evidence_library_post**](DefaultApi.md#evidence_library_api_evidence_library_post) | **POST** /api/evidence/library | Evidence Library
 [**evidence_records_api_evidence_records_get**](DefaultApi.md#evidence_records_api_evidence_records_get) | **GET** /api/evidence/records | Evidence Records
@@ -28,9 +32,12 @@ Method | HTTP request | Description
 [**health_records_source_api_evidence_health_records_get**](DefaultApi.md#health_records_source_api_evidence_health_records_get) | **GET** /api/evidence/health-records | Health Records Source
 [**ingest_canonical_evidence**](DefaultApi.md#ingest_canonical_evidence) | **POST** /api/canonical-evidence |
 [**ingest_evidence_api_evidence_post**](DefaultApi.md#ingest_evidence_api_evidence_post) | **POST** /api/evidence | Ingest Evidence
+[**list_care_team**](DefaultApi.md#list_care_team) | **GET** /api/care-team |
+[**patch_care_team_member**](DefaultApi.md#patch_care_team_member) | **PATCH** /api/care-team/{id} |
 [**portal_organizations_api_connectors_portals_organizations_get**](DefaultApi.md#portal_organizations_api_connectors_portals_organizations_get) | **GET** /api/connectors/portals/organizations | Portal Organizations
 [**portal_status_api_connectors_portals_get**](DefaultApi.md#portal_status_api_connectors_portals_get) | **GET** /api/connectors/portals | Portal Status
 [**preview_approved_doctor_page**](DefaultApi.md#preview_approved_doctor_page) | **GET** /api/doctor-collection/preview |
+[**preview_release_authorization**](DefaultApi.md#preview_release_authorization) | **GET** /api/release-authorizations/{id}/preview |
 [**publish_approved_doctor_page**](DefaultApi.md#publish_approved_doctor_page) | **POST** /api/doctor-collection/share-link |
 [**read_canonical_evidence_exact**](DefaultApi.md#read_canonical_evidence_exact) | **POST** /api/canonical-evidence/exact |
 [**read_canonical_evidence_snapshot**](DefaultApi.md#read_canonical_evidence_snapshot) | **GET** /api/canonical-evidence |
@@ -42,18 +49,21 @@ Method | HTTP request | Description
 [**read_durable_conversation_events**](DefaultApi.md#read_durable_conversation_events) | **GET** /api/conversation/commands/{id}/events |
 [**read_durable_conversation_usage**](DefaultApi.md#read_durable_conversation_usage) | **GET** /api/conversation/commands/{id}/usage |
 [**read_today_assessment_status**](DefaultApi.md#read_today_assessment_status) | **POST** /api/insight-cycles/status |
+[**refresh_care_team_member**](DefaultApi.md#refresh_care_team_member) | **POST** /api/care-team/{id}/refresh |
 [**reject_durable_doctor_proposal**](DefaultApi.md#reject_durable_doctor_proposal) | **POST** /api/doctor-collection/proposals/{id}/reject |
 [**resume_durable_conversation_command**](DefaultApi.md#resume_durable_conversation_command) | **POST** /api/conversation/commands/{id}/resume |
 [**retrieve_published_doctor_pdf**](DefaultApi.md#retrieve_published_doctor_pdf) | **GET** /shared/for-my-doctor/{token}/pdf |
 [**retrieve_smart_health_link_file**](DefaultApi.md#retrieve_smart_health_link_file) | **GET** /shl-file/{location} |
 [**retrieve_smart_health_link_manifest**](DefaultApi.md#retrieve_smart_health_link_manifest) | **POST** /shl/{token}/manifest |
 [**revoke_doctor_publication**](DefaultApi.md#revoke_doctor_publication) | **DELETE** /api/doctor-collection/share-link |
+[**search_clinicians**](DefaultApi.md#search_clinicians) | **POST** /api/clinicians/search |
 [**start_epic_api_connectors_epic_start_post**](DefaultApi.md#start_epic_api_connectors_epic_start_post) | **POST** /api/connectors/epic/start | Start Epic
 [**start_healow_api_connectors_healow_start_post**](DefaultApi.md#start_healow_api_connectors_healow_start_post) | **POST** /api/connectors/healow/start | Start Healow
 [**start_oracle_api_connectors_oracle_start_post**](DefaultApi.md#start_oracle_api_connectors_oracle_start_post) | **POST** /api/connectors/oracle/start | Start Oracle
 [**sync_epic_api_connectors_epic_organization_id_sync_post**](DefaultApi.md#sync_epic_api_connectors_epic_organization_id_sync_post) | **POST** /api/connectors/epic/{organization_id}/sync | Sync Epic
 [**sync_healow_api_connectors_healow_organization_id_sync_post**](DefaultApi.md#sync_healow_api_connectors_healow_organization_id_sync_post) | **POST** /api/connectors/healow/{organization_id}/sync | Sync Healow
 [**sync_oracle_api_connectors_oracle_organization_id_sync_post**](DefaultApi.md#sync_oracle_api_connectors_oracle_organization_id_sync_post) | **POST** /api/connectors/oracle/{organization_id}/sync | Sync Oracle
+[**update_release_authorization**](DefaultApi.md#update_release_authorization) | **PUT** /api/release-authorizations/{id} |
 
 
 
@@ -73,6 +83,34 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## add_care_team_member
+
+> models::CareTeamMember add_care_team_member(care_team_add_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**care_team_add_request** | [**CareTeamAddRequest**](CareTeamAddRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CareTeamMember**](CareTeamMember.md)
 
 ### Authorization
 
@@ -282,6 +320,62 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## create_release_authorization
+
+> models::ReleaseAuthorizationView create_release_authorization(release_authorization_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**release_authorization_request** | [**ReleaseAuthorizationRequest**](ReleaseAuthorizationRequest.md) |  | [required] |
+
+### Return type
+
+[**models::ReleaseAuthorizationView**](ReleaseAuthorizationView.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## delete_care_team_member
+
+> delete_care_team_member(id)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | Option<**uuid::Uuid**> |  | [required] |
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## disconnect_apple_health_api_evidence_apple_health_delete
 
 > models::AppleHealthDisconnectResponse disconnect_apple_health_api_evidence_apple_health_delete()
@@ -412,6 +506,34 @@ Name | Type | Description  | Required | Notes
 
 - **Content-Type**: Not defined
 - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## download_release_authorization_pdf
+
+> std::path::PathBuf download_release_authorization_pdf(id)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **uuid::Uuid** |  | [required] |
+
+### Return type
+
+[**std::path::PathBuf**](std::path::PathBuf.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/pdf
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -729,6 +851,60 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## list_care_team
+
+> Vec<models::CareTeamMember> list_care_team()
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Vec<models::CareTeamMember>**](CareTeamMember.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## patch_care_team_member
+
+> models::CareTeamMember patch_care_team_member(id, care_team_patch_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | Option<**uuid::Uuid**> |  | [required] |
+**care_team_patch_request** | [**CareTeamPatchRequest**](CareTeamPatchRequest.md) |  | [required] |
+
+### Return type
+
+[**models::CareTeamMember**](CareTeamMember.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## portal_organizations_api_connectors_portals_organizations_get
 
 > models::PortalOrganizationsResponse portal_organizations_api_connectors_portals_organizations_get(query)
@@ -794,6 +970,34 @@ This endpoint does not need any parameter.
 ### Parameters
 
 This endpoint does not need any parameter.
+
+### Return type
+
+**String**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: image/svg+xml
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## preview_release_authorization
+
+> String preview_release_authorization(id)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **uuid::Uuid** |  | [required] |
 
 ### Return type
 
@@ -1066,7 +1270,7 @@ Name | Type | Description  | Required | Notes
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**id** | Option<**uuid::Uuid**> |  | [required] |
+**id** | **uuid::Uuid** |  | [required] |
 
 ### Return type
 
@@ -1108,6 +1312,34 @@ Name | Type | Description  | Required | Notes
 
 - **Content-Type**: application/json
 - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## refresh_care_team_member
+
+> models::CareTeamMember refresh_care_team_member(id)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **uuid::Uuid** |  | [required] |
+
+### Return type
+
+[**models::CareTeamMember**](CareTeamMember.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1283,6 +1515,34 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## search_clinicians
+
+> Vec<models::DirectoryClinician> search_clinicians(clinician_search_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**clinician_search_request** | [**ClinicianSearchRequest**](ClinicianSearchRequest.md) |  | [required] |
+
+### Return type
+
+[**Vec<models::DirectoryClinician>**](DirectoryClinician.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## start_epic_api_connectors_epic_start_post
 
 > models::EpicAuthorizationResponse start_epic_api_connectors_epic_start_post(epic_authorization_request)
@@ -1446,6 +1706,35 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_release_authorization
+
+> models::ReleaseAuthorizationView update_release_authorization(id, release_authorization_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**id** | **uuid::Uuid** |  | [required] |
+**release_authorization_request** | [**ReleaseAuthorizationRequest**](ReleaseAuthorizationRequest.md) |  | [required] |
+
+### Return type
+
+[**models::ReleaseAuthorizationView**](ReleaseAuthorizationView.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
