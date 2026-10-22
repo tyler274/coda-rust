@@ -233,6 +233,24 @@ button.thread-open > p.thread-card::after {
   .duet .tabs button { color: #bdc3cc; }
   .duet .tabs button[aria-current="page"] { background: #20372c; color: #8edab6; }
 }
+.care-team { margin: 28px 0; overflow-wrap: anywhere; }
+.care-team-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.care-progress { min-height: 1.5em; }
+.care-team-members { display: grid; gap: 12px; margin: 12px 0; }
+.care-team button, .care-team a { min-height: 44px; box-sizing: border-box; }
+.care-team button { margin: 4px 8px 4px 0; padding: 8px 12px; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 12px; }
+.care-team button:disabled { opacity: .55; }
+.care-team a { display: flex; align-items: center; color: inherit; }
+.care-team fieldset { min-width: 0; padding: 12px 0; border: 0; }
+.care-team legend { font-weight: bold; }
+.care-field { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.care-field input, .care-field select, .care-field textarea { min-height: 44px; width: 100%; box-sizing: border-box; padding: 8px; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 8px; }
+.care-field select option { color: #1c2429; background: #fff; }
+.care-check { display: flex; align-items: center; gap: 12px; min-height: 44px; margin: 8px 0; }
+.care-check input { flex-shrink: 0; width: 24px; height: 24px; }
+.care-result { padding: 12px 0; border-bottom: 1px solid currentColor; }
+.care-release, .care-team-search { margin: 12px 0; }
+.release-preview { width: 100%; height: auto; background: #fff; }
 @media (prefers-reduced-motion: reduce) {
   .duet, .duet::before { animation: none !important; transition: none !important; }
 }

@@ -1,6 +1,14 @@
 //! Ephemeral export presentation; bytes must come from a freshly source-checked saved page.
 /// Present checked PDF bytes; native share callbacks own removal of temporary files.
 pub fn present_pdf(bytes: &[u8]) -> Result<(), String> {
+    present_pdf_named(bytes, "for-my-doctor.pdf")
+}
+
+/// Present authenticated bytes through the existing web/native export owner.
+/// The filename is code-owned, never a patient-supplied path.
+pub(super) fn present_pdf_named(bytes: &[u8], filename: &str) -> Result<(), String> {
+    #[cfg(not(target_arch = "wasm32"))]
+    let _ = filename;
     #[cfg(target_arch = "wasm32")]
     {
         use wasm_bindgen::JsCast;
@@ -22,7 +30,7 @@ pub fn present_pdf(bytes: &[u8]) -> Result<(), String> {
                 .dyn_into::<web_sys::HtmlAnchorElement>()
                 .map_err(|_| "Download unavailable")?;
             link.set_href(&url);
-            link.set_download("for-my-doctor.pdf");
+            link.set_download(filename);
             document
                 .body()
                 .ok_or("Document unavailable")?
