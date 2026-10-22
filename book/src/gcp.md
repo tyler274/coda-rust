@@ -235,6 +235,133 @@ None of this is evidence that ENG-167's hosted acceptance is complete. The
 preview services have IAP-gated `run.app` URLs only; no custom domain points at
 them.
 
+### Physician scaling (Redis fan-out and Pub/Sub chat turns)
+
+`enable_physician_scale` ([ENG-177](https://linear.app/coda-health/issue/ENG-177))
+lets the physician site run on more than one instance. It takes effect only
+together with `enable_workloads`, and the committed staging inputs turn it on.
+Everything it creates belongs to physician; Duet gets no cache, topic, worker,
+grant or setting, and the root's tests check this.
+
+- [`cache.tf`](/infra/gcp/rust-environments/cache.tf) creates the Memorystore
+  instance `rust-physician-cache`: Basic tier, 1 GB, Redis 7.2, AUTH and TLS
+  (`SERVER_AUTHENTICATION`). It sits on the existing `rust-sql-private` peering,
+  so it has no public endpoint. It carries `workspace_changed` and
+  `workspace_settled` between instances. Sign-in and panel notices stay on the
+  Postgres `physician_authority` triggers.
+- [`queue.tf`](/infra/gcp/rust-environments/queue.tf) creates the topics
+  `physician-chat-turns` and `physician-chat-turns-dead-letter`. A push
+  subscription delivers each turn to the worker with an OIDC token for the
+  `physician-pubsub-push` service account. The ack deadline is 600 s and retries
+  back off from 10 s to 600 s. After 5 failed deliveries a message goes to the
+  dead-letter topic, which has a pull subscription of the same name for
+  inspection. Only the physician runtime identity may publish turns. The
+  Pub/Sub service agent may dead-letter, and it may mint tokens for the push
+  account and no other.
+- [`workloads.tf`](/infra/gcp/rust-environments/workloads.tf) adds the
+  `physician-worker` Cloud Run service. It has internal ingress and no IAP, IAM
+  invoker checks stay on, and `physician-pubsub-push` is its only invoker.
+  Pub/Sub counts as internal traffic when it calls the default `run.app` URL from
+  the same project
+  ([Cloud Run ingress](https://cloud.google.com/run/docs/securing/ingress)).
+  The worker runs as `physician-worker-runtime`, which may reach only the
+  physician SQL instance. It reads the `physician-runtime-doppler-token` slot
+  and runs on `stg_physician_runtime`, because it needs exactly those secrets;
+  a second token on the same config would add a rotation step without narrowing
+  anything. It is told its OIDC audience (the deterministic
+  `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
+  as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It keeps
+  request-based CPU, because every turn runs inside the push request it
+  answers.
+- The physician site gets `PHYSICIAN_CHAT_TOPIC` and `cpu_idle = false`, because
+  its Postgres listener and Redis subscriber must keep running between requests.
+  Duet keeps `cpu_idle = true`. `runtime_environment` may not set any of the
+  scaling keys, and Duet may not set any `PHYSICIAN_*` key.
+
+`PHYSICIAN_REDIS_URL` embeds the AUTH string, so it lives only in Doppler, as
+does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed. Activation, in
+order, from an authorized engineering account:
+
+1. **Publish the worker image.** Merge the worker change so that
+   `deploy-staging` pushes `coda-physician-worker`. Record its digest as
+   `images.physician.worker` in
+   [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars). The
+   plan refuses to run until that digest is set.
+2. **Plan, review, apply.** Run the saved plan from
+   [the bootstrap section](#rust-staging-bootstrap-and-deployment-gate) and
+   review it. It should create the cache, both topics, both subscriptions, the
+   push and worker identities with their grants, and the worker. It should also
+   update the physician service in place (`cpu_idle`, `PHYSICIAN_CHAT_TOPIC`),
+   add the worker to the `physician-runtime` token reader and enable
+   `redis.googleapis.com` and `pubsub.googleapis.com`. It must not touch Duet.
+   Apply exactly that file:
+
+   ```bash
+   nix develop .#release --command tofu -chdir="$root" apply staging.tfplan
+   ```
+
+   Creating Memorystore takes several minutes. Until step 4, the site already
+   queues turns, but the worker's events reach other instances only through
+   Redis.
+3. **Write Redis into Doppler.** Read the AUTH string straight into Doppler; it
+   never appears on screen, in argv or in a file. The CA bundle is public.
+
+   ```bash
+   tf() { nix develop .#release --command tofu -chdir="$root" "$@"; }
+   host=$(tf output -json physician_scale | jq -r .redis_host)
+   port=$(tf output -json physician_scale | jq -r .redis_port)
+   { printf 'rediss://:'; tf output -raw physician_redis_auth_string; printf '@%s:%s' "$host" "$port"; } |
+     doppler secrets set PHYSICIAN_REDIS_URL --project coda-rust --config stg_physician_runtime --silent
+   tf output -raw physician_redis_ca_pem |
+     doppler secrets set PHYSICIAN_REDIS_CA_PEM --project coda-rust --config stg_physician_runtime --silent
+   ```
+
+   The worker runs on the same config and token, so it needs no new Doppler
+   token and `doppler_token_versions` does not change. Run step 3 again if the
+   instance is ever replaced, because its host, AUTH string and CA change.
+4. **Deploy.** The runtimes read Doppler only at process start. Re-run
+   `deploy-staging` on `main`, or push to `main`, so the site and the worker
+   start revisions with the new values. From then on, the release updates the
+   worker image the same way it updates the other services.
+5. **Verify.**
+   - Open the site in two tabs, and keep opening tabs until the
+     `labels.instanceId` of the stream requests in the `physician` logs shows two
+     instances. Each SSE stream holds one of an instance's 8 request slots.
+     Send a turn from one tab; the reply must appear in a tab on the other
+     instance.
+   - In Cloud Monitoring, check these metrics:
+     - `physician-chat-turns-worker`: `subscription/push_request_count` grouped
+       by `response_class` (successes),
+       `subscription/oldest_unacked_message_age` (near zero) and
+       `subscription/dead_letter_message_count` (zero).
+     - `rust-physician-cache`: `redis.googleapis.com/clients/connected`, one
+       subscriber per site instance plus the workers.
+     - `run.googleapis.com/container/instance_count` for `physician` and
+       `physician-worker`.
+   - To inspect dead letters without acknowledging them, run
+     `gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
+
+To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
+saved plan. The plan removes the cache, topics, subscriptions and worker, and
+returns the site to `cpu_idle = true`. Then delete the two Doppler keys and
+redeploy.
+
+#### Cost
+
+These are list prices for `us-east1` in October 2026. The `coda-rust-stg` budget
+is a **$10/month alert**, not a cap, and this gate alone exceeds it. Dev should
+raise the alert, or accept that it fires, before applying.
+
+| Item | Billing | Estimate |
+| --- | --- | --- |
+| Memorystore Basic M1, 1 GB | $0.049 per GB-hour, always billed while the instance exists ([pricing](https://cloud.google.com/memorystore/docs/redis/pricing)) | about **$36/month** (730 h) |
+| Pub/Sub topics and subscriptions | Throughput billing with a monthly free tier; each turn message is a few hundred bytes (`{scope, input_id}`) | negligible, $0 at staging volume |
+| `physician` with `cpu_idle = false` (1 vCPU, 1 GiB, min 0, max 2) | Instance-based: $0.000018 per vCPU-second plus $0.000002 per GiB-second for the whole time an instance is up ([pricing](https://cloud.google.com/run/pricing)) | $0.072 per instance-hour. That is about $53/month per instance kept up all the time, so $105 at the cap of 2. At 4 busy hours a day it is about $9/month, before the free tier of 240,000 vCPU-seconds and 450,000 GiB-seconds per billing account. Instances still scale to zero when idle. |
+| `physician-worker` (`cpu_idle = true`) | Request-based, billed only while a turn runs | cents per month at staging volume; model tokens dominate |
+
+The two `db-f1-micro` SQL instances already cost about $20/month. With
+Memorystore, staging's fixed spend is about $56/month before any Cloud Run time.
+
 ## Release procedure
 
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#environments">Environments</a>
