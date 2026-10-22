@@ -15,6 +15,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 
+# kytos public/homepage/site.js at the reviewed snapshot commit (provenance.json).
+ORIGINAL_SITE_JS_SHA256 = "672b93cee690408b072033feb643a1e15dfe70d7022a5d5c2b5d79482bf59b80"
+
 
 def docker(*args):
     return subprocess.check_output(["docker", *args], text=True).strip()
@@ -25,6 +28,7 @@ class Document(HTMLParser):
         super().__init__()
         self.styles = []
         self.modules = []
+        self.scripts = []
         self.canonical = []
         self.description = []
         self.tags = []
@@ -40,6 +44,8 @@ class Document(HTMLParser):
             self.description.append(attrs.get("content", ""))
         if tag == "script" and attrs.get("type") == "module":
             self.modules.append(attrs["src"])
+        elif tag == "script" and "src" in attrs:
+            self.scripts.append(attrs["src"])
 
 
 def fetch(base, path, headers=None):
@@ -129,20 +135,18 @@ def main():
             assert "immutable" in headers["Cache-Control"], path
         print(f"CSS: {len(document.styles)} content-addressed stylesheets served with immutable caching")
         assert len(document.modules) == 1, document.modules
-        bootstrap = document.modules[0]
-        assert bootstrap.startswith("/a/") and bootstrap.endswith("/motion/bootstrap.js")
-        status, headers, js = fetch(base, bootstrap)
+        chrome = document.modules[0]
+        assert chrome.startswith("/a/") and chrome.endswith("/chrome.js")
+        status, headers, js = fetch(base, chrome)
+        assert status == 200 and "javascript" in headers["Content-Type"] and b"scrolled" in js
+        assert len(document.scripts) == 1, document.scripts
+        motion = document.scripts[0]
+        assert motion.startswith("/a/") and motion.endswith("/homepage/site.js")
+        status, headers, js = fetch(base, motion)
         assert status == 200 and "javascript" in headers["Content-Type"]
-        assert b"./public_site_motion.js" in js
-        glue = urljoin(bootstrap, "./public_site_motion.js")
-        status, headers, js = fetch(base, glue)
-        assert status == 200 and "javascript" in headers["Content-Type"]
-        assert b"public_site_motion_bg.wasm" in js and b"import.meta.url" in js
-        wasm = urljoin(glue, "./public_site_motion_bg.wasm")
-        status, headers, body = fetch(base, wasm)
-        assert status == 200 and headers["Content-Type"] == "application/wasm"
-        assert body.startswith(b"\x00asm") and "immutable" in headers["Cache-Control"]
-        print(f"Motion: sibling bootstrap/JS/WASM served; wasm {len(body)} bytes, sha256 {hashlib.sha256(body).hexdigest()}")
+        assert "immutable" in headers["Cache-Control"]
+        assert hashlib.sha256(js).hexdigest() == ORIGINAL_SITE_JS_SHA256
+        print(f"Motion: chrome.js and the original site.js served; site.js sha256 {ORIGINAL_SITE_JS_SHA256}")
         for path in ["/healthz", "/readyz"]:
             assert fetch(base, path)[0] == 200, path
         status, headers, body = fetch(base, "/api/health")

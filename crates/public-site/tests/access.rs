@@ -40,8 +40,8 @@ async fn staging_denies_every_page_and_resource_without_signed_iap() {
             "/favicon.ico",
             "/robots.txt",
             "/sitemap.xml",
-            "/motion/bootstrap.js",
-            "/motion/public_site_motion_bg.wasm",
+            "/homepage/site.js",
+            "/chrome.js",
             "/missing",
         ]
         .map(str::to_owned),

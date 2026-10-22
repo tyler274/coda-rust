@@ -94,14 +94,7 @@ fn router_with_gate(
             .validate()
             .expect("invalid staging IAP configuration");
     }
-    let generated = crate::paint::assets()
-        .into_iter()
-        .map(|asset| (asset.path, Bytes::from(asset.bytes)));
-    let paint_css = (
-        "/css/paint.css".to_owned(),
-        Bytes::from(crate::paint::stylesheet(str::to_owned)),
-    );
-    let assets = AssetTable::embedded_with(generated.chain([paint_css]).chain(extra_assets));
+    let assets = AssetTable::embedded_with(extra_assets);
     let document = |page: crate::Page| Document {
         representation: Representation::new(
             assets.rewrite(std::str::from_utf8(&page.html).expect("UTF-8 rendered page")),

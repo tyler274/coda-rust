@@ -30,20 +30,10 @@ if (process.argv[2] === '--import') {
   }
   const entries = files.map(source => {
     const original = git(['show', `${commit}:${source}`]);
-    let bytes = original;
-    let extraction = 'verbatim';
-    if (source === 'public/homepage/site.js') {
-      const text = original.toString();
-      const start = text.indexOf('  function rng(');
-      const end = text.indexOf('  var artCache');
-      if (start < 0 || end <= start) throw new Error('Original painter delimiters changed');
-      bytes = Buffer.from(text.slice(start, end));
-      extraction = 'Exact byte slice from "  function rng(" up to (excluding) "  var artCache"';
-    }
     const destination = new URL(source, root);
     mkdirSync(dirname(fileURLToPath(destination)), {recursive: true});
-    writeFileSync(destination, bytes);
-    return {path: source, extraction, originalSha256: digest(original), sha256: digest(bytes)};
+    writeFileSync(destination, original);
+    return {path: source, extraction: 'verbatim', originalSha256: digest(original), sha256: digest(original)};
   });
   writeFileSync(manifestPath, JSON.stringify({repository: 'Coda-Health/kytos', commit, files: entries}, null, 2) + '\n');
 } else if (process.argv[2] !== '--check') {

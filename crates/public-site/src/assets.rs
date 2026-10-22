@@ -16,8 +16,8 @@ pub struct AssetTable {
     pub aliases: HashMap<String, String>,
 }
 impl AssetTable {
-    /// Add deterministic generated assets (SVG, wasm and loader JS) before page
-    /// rewriting. Duplicate URLs fail startup rather than silently shadowing files.
+    /// Add deterministic generated assets before page rewriting. Duplicate URLs
+    /// fail startup rather than silently shadowing files.
     pub fn embedded_with(extra: impl IntoIterator<Item = (String, Bytes)>) -> Self {
         let mut raw = HashMap::new();
         for (path, bytes) in EMBEDDED_ASSETS {
@@ -33,23 +33,6 @@ impl AssetTable {
                 "duplicate generated asset URL"
             );
         }
-        // These modules use sibling-relative imports, including the wasm URL.
-        // Hash the complete bundle, not individual members, so every sibling
-        // remains in the same immutable directory after HTML URL rewriting.
-        let mut bundle_paths: Vec<_> = raw
-            .keys()
-            .filter(|path| path.starts_with("/motion/"))
-            .cloned()
-            .collect();
-        bundle_paths.sort();
-        let mut bundle_bytes = Vec::new();
-        for path in &bundle_paths {
-            bundle_bytes.extend_from_slice(path.as_bytes());
-            bundle_bytes.push(0);
-            bundle_bytes.extend_from_slice(&(raw[path].len() as u64).to_be_bytes());
-            bundle_bytes.extend_from_slice(&raw[path]);
-        }
-        let bundle_hash = digest(&bundle_bytes);
         let mut table = Self::default();
         // Build referenced images/fonts before stylesheets. Absolute root-relative
         // CSS URLs are rewritten to the same hashed references used by documents.
@@ -61,12 +44,7 @@ impl AssetTable {
                 let css = std::str::from_utf8(&bytes).expect("UTF-8 CSS asset");
                 bytes = Bytes::from(table.rewrite(css));
             }
-            let hash = if path.starts_with("/motion/") {
-                bundle_hash.clone()
-            } else {
-                digest(&bytes)
-            };
-            let hashed = format!("/a/{hash}{path}");
+            let hashed = format!("/a/{}{path}", digest(&bytes));
             let content_type = mime_guess::from_path(&path)
                 .first_or_octet_stream()
                 .to_string();

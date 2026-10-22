@@ -137,8 +137,6 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends poppler-utils
           pdftotext -v
-      - name: Build public-site motion island (60 KB brotli budget)
-        run: bash crates/public-site/island/build.sh
       - name: Check formatting
         run: cargo fmt --check
       # CI parity with the pre-commit hook (.githooks/pre-commit): a commit

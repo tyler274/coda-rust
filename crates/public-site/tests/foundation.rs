@@ -54,15 +54,7 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
 #[tokio::test]
 async fn axum_serves_only_startup_bytes_and_preserves_404s() {
     let table = prerender(&Config::default());
-    let asset_table = public_site::assets::AssetTable::embedded_with(
-        public_site::paint::assets()
-            .into_iter()
-            .map(|asset| (asset.path, axum::body::Bytes::from(asset.bytes)))
-            .chain([(
-                "/css/paint.css".into(),
-                axum::body::Bytes::from(public_site::paint::stylesheet(str::to_owned)),
-            )]),
-    );
+    let asset_table = public_site::assets::AssetTable::embedded_with([]);
     let expected = asset_table.rewrite(std::str::from_utf8(&table.pages["/duet"].html).unwrap());
     let app = router_with_pages(table);
     let response = app
