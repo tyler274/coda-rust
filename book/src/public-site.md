@@ -697,7 +697,7 @@ doppler secrets set \
 ### Staging deployment status (2026-10-21)
 
 The admin bootstrap and first deployment are applied in `coda-health-staging`.
-Cloud Run reports revision `public-site-staging-00002-rwr` Ready at
+Cloud Run reports revision `public-site-staging-00003-5mw` Ready at
 [staging.codahealth.ai](https://staging.codahealth.ai), with the
 [protected Cloud Run URL](https://public-site-staging-5yiq4mt4lq-ue.a.run.app)
 available directly.
@@ -743,6 +743,21 @@ available directly.
   signed-in nonmember denial, anonymous page/health/asset redirects and
   no-store/noindex page and asset responses also passed on `staging.codahealth.ai`.
   The post-apply staging plan had no changes.
+- Later on October 21, Tyler redeployed from main `3609430` (after the WASM island
+  was replaced by the original motion script). His account refreshed the full
+  state, including the domain mapping. The preflight plan showed no changes. A
+  local build passed `smoke.py`, which no longer looks for the removed WASM
+  assets in its staging leg. The image was pushed by digest as
+  `public-site@sha256:5a8693ef4801ca73a661cb7c018f743495c86ba4b681ac6e4a34135709133e29`.
+  The reviewed saved plan was 0 added, 1 changed, 0 destroyed: an in-place update
+  of `google_cloud_run_v2_service.site`. After apply, the replan showed no changes.
+  Revision `public-site-staging-00003-5mw` is Ready, serves 100% of traffic, and
+  reports that digest. Anonymous requests to the homepage and `/health` on
+  `staging.codahealth.ai`, and to the run.app URL, still redirect to Google
+  sign-in. Doppler `coda-rust/stg` `PUBLIC_SITE_DEPLOY_IMAGE` and
+  `PUBLIC_SITE_DEPLOY_RELEASE_SHA` match the new digest and SHA. No authenticated
+  browser render of this revision has been recorded yet: the automation browser
+  was signed in with a non-member account, and IAP correctly denied it.
 
 ### Remaining qualification
 
