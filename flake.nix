@@ -220,6 +220,10 @@ PGCTL
           if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
             git config core.hooksPath .githooks
           fi
+          # Set last, after every PATH and linker fix above, so a hook that
+          # sees it knows it runs in the complete shell. IN_NIX_SHELL is not
+          # enough: any nix shell, or a host swiftly PATH on top, sets it too.
+          export CODA_DEV_SHELL=1
         '';
       };
     };
