@@ -54,6 +54,8 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: '22'
+      - name: Test Doppler release and security watch
+        run: node --test crates/workspace-tools/tests/doppler-watch.test.cjs
       # Preinstalled SDKs are unused here and leave no room to archive target
       # beside itself (run 39309157954, ENOSPC during cache save). The build,
       # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
@@ -83,6 +85,11 @@ jobs:
         with:
           components: rustfmt, clippy
           targets: wasm32-unknown-unknown
+      - name: Verify pinned Doppler download and installed version
+        run: |
+          cargo run --locked -p workspace-tools -- install-doppler "$RUNNER_TEMP/doppler"
+          expected=$(python3 -c 'from pathlib import Path; print(Path("crates/workspace-tools/src/doppler.rs").read_text().split("pub const VERSION: &str = ")[1].split(chr(34))[1])')
+          test "$("$RUNNER_TEMP/doppler" --version)" = "$expected"
       # Release binaries, not `cargo install`. wasm-bindgen 0.2.129 matches
       # flake `wasm-bindgen-cli_0_2_129`. mdbook 0.4.52 is the pin this job
       # already compiled. The locked nixpkgs mdbook is newer; CI stays on
