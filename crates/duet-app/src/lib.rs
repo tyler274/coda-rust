@@ -5,9 +5,12 @@
 mod account;
 mod approval;
 mod browser_identity;
+mod care_team;
+mod care_team_model;
 mod export;
 mod preview;
 mod publication;
+mod release_form;
 mod resolution;
 mod roots;
 mod selection;
@@ -131,6 +134,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                 }
                 div { hidden: tab() != 2,
                     YouTab {
+                        active: tab() == 2,
                         base_url: base_url.clone(),
                         bearer: active_bearer.clone(),
                         consent: match &status {
@@ -2142,6 +2146,7 @@ fn TodayTab(
 
 #[component]
 fn YouTab(
+    active: bool,
     base_url: String,
     bearer: String,
     consent: Result<ConsentState, FrontDoorError>,
@@ -2177,6 +2182,7 @@ fn YouTab(
     let evidence_url = base_url.clone();
     let evidence_bearer = bearer.clone();
     let sharing = sharing_root(consent.clone());
+    let care_team_url = base_url.clone();
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
@@ -2311,6 +2317,7 @@ fn YouTab(
     };
     rsx! {
         TabHeading { name: "You".to_owned(), loading }
+        care_team::CareTeam { base_url: care_team_url, active }
         if let Some(kind) = editor() {
             HealthDraft {
                 kind,
