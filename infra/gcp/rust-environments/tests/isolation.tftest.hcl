@@ -295,3 +295,302 @@ run "physician_relay_routing" {
     error_message = "SMTP relay requires one explicit public IP, limited to the runtime subnet."
   }
 }
+
+run "physician_scale_gate_off" {
+  # Active workloads without the scaling gate: no Redis, Pub/Sub or worker.
+  # The physician site still keeps CPU between requests for the Postgres
+  # authority listener. Duet stays request-based.
+  command = plan
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+  assert {
+    condition     = length(google_redis_instance.physician) == 0 && length(google_pubsub_topic.chat_turns) == 0 && length(google_pubsub_topic.chat_turns_dead_letter) == 0 && length(google_pubsub_subscription.chat_turns) == 0 && length(google_pubsub_subscription.chat_turns_dead_letter) == 0
+    error_message = "Without enable_physician_scale there is no Redis, topic or subscription."
+  }
+  assert {
+    condition     = length(google_cloud_run_v2_service.physician_worker) == 0 && length(google_service_account.physician_worker) == 0 && length(google_service_account.physician_pubsub_push) == 0 && length(google_project_iam_member.physician_worker_sql) == 0 && length(google_project_service_identity.pubsub) == 0
+    error_message = "Without enable_physician_scale there is no worker, push identity or worker grant."
+  }
+  assert {
+    condition     = !contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_CHAT_TOPIC") && length(google_secret_manager_secret_iam_binding.bootstrap_reader["physician-runtime"].members) == 1
+    error_message = "Without the gate the site runs turns inline and only the site reads its Doppler slot."
+  }
+  assert {
+    condition     = output.physician_scale == null && output.physician_redis_ca_pem == null
+    error_message = "Scaling outputs are null while the gate is off."
+  }
+  assert {
+    condition     = !google_cloud_run_v2_service.app["physician"].template[0].containers[0].resources[0].cpu_idle && google_cloud_run_v2_service.app["duet"].template[0].containers[0].resources[0].cpu_idle
+    error_message = "The physician site keeps CPU for its Postgres listener with the scaling gate off. Duet stays request-based."
+  }
+}
+
+run "physician_scale_ineffective_without_workloads" {
+  command = plan
+  variables { enable_physician_scale = true }
+  assert {
+    condition     = length(google_redis_instance.physician) == 0 && length(google_pubsub_topic.chat_turns) == 0 && length(google_cloud_run_v2_service.physician_worker) == 0
+    error_message = "The scaling gate takes effect only with enable_workloads."
+  }
+}
+
+run "physician_scale_requires_worker_image" {
+  command = plan
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+  expect_failures = [google_project.environment]
+}
+
+run "reject_runtime_override_of_scale_settings" {
+  command = plan
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      # Duet must never be pointed at the physician bus.
+      duet = { PHYSICIAN_REDIS_URL = "rediss://example.invalid:6378" }
+    }
+  }
+  expect_failures = [google_project.environment]
+}
+
+run "physician_scale_active" {
+  command = plan
+  # Distinct identities so membership assertions cannot pass by coincidence
+  # (the provider mock gives every service account the same email).
+  override_resource {
+    target = google_service_account.physician_pubsub_push
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+  override_resource {
+    target = google_service_account.physician_worker
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+  override_resource {
+    target = google_project_service_identity.pubsub
+    values = { email = "service-123456789012@gcp-sa-pubsub.iam.gserviceaccount.com" }
+  }
+  override_resource {
+    target = google_project_service_identity.iap
+    values = { email = "service-123456789012@gcp-sa-iap.iam.gserviceaccount.com" }
+  }
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        worker    = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-worker@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+
+  # Memorystore: private, authenticated, TLS, on the existing peering.
+  assert {
+    condition = keys(google_redis_instance.physician) == ["physician"] && alltrue([for r in google_redis_instance.physician :
+      r.name == "rust-physician-cache" && r.tier == "BASIC" && r.memory_size_gb == 1 && r.redis_version == "REDIS_7_2" &&
+      r.connect_mode == "PRIVATE_SERVICE_ACCESS" && r.auth_enabled && r.transit_encryption_mode == "SERVER_AUTHENTICATION" &&
+      r.authorized_network == "projects/test-rust-stg-only/global/networks/rust-private" && r.reserved_ip_range == "rust-sql-private" && r.region == "us-east1"
+    ])
+    error_message = "The physician cache is one Basic 1 GB Redis 7.2 with AUTH and TLS on the rust-sql-private peering."
+  }
+
+  # Queue shape.
+  assert {
+    condition = google_pubsub_topic.chat_turns["physician"].name == "physician-chat-turns" && google_pubsub_topic.chat_turns_dead_letter["physician"].name == "physician-chat-turns-dead-letter" && alltrue([for s in google_pubsub_subscription.chat_turns :
+      s.ack_deadline_seconds == 600 && s.retry_policy[0].minimum_backoff == "10s" && s.retry_policy[0].maximum_backoff == "600s" && s.dead_letter_policy[0].max_delivery_attempts == 5 &&
+      s.push_config[0].oidc_token[0].service_account_email == "physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com" &&
+      s.push_config[0].oidc_token[0].audience == "https://physician-worker-123456789012.us-east1.run.app"
+    ])
+    error_message = "Chat turns push to the worker with the push identity's OIDC token, 600 s deadline, 10-600 s backoff and a DLQ after 5 attempts."
+  }
+
+  # Pub/Sub IAM: runtime publishes only to chat turns; the service agent
+  # dead-letters and mints push tokens for the push identity only.
+  assert {
+    condition     = google_pubsub_topic_iam_binding.chat_turns_publisher["physician"].members == toset(["serviceAccount:test-account@test-rust-stg-only.iam.gserviceaccount.com"]) && google_pubsub_topic_iam_binding.chat_turns_publisher["physician"].role == "roles/pubsub.publisher"
+    error_message = "Only the physician runtime publishes chat turns."
+  }
+  assert {
+    condition = (
+      google_pubsub_topic_iam_binding.chat_turns_dead_letter_publisher["physician"].members == toset(["serviceAccount:service-123456789012@gcp-sa-pubsub.iam.gserviceaccount.com"]) &&
+      google_pubsub_subscription_iam_binding.chat_turns_dead_letter_subscriber["physician"].members == toset(["serviceAccount:service-123456789012@gcp-sa-pubsub.iam.gserviceaccount.com"]) &&
+      google_pubsub_subscription_iam_binding.chat_turns_dead_letter_subscriber["physician"].role == "roles/pubsub.subscriber" &&
+      google_service_account_iam_member.pubsub_push_token["physician"].member == "serviceAccount:service-123456789012@gcp-sa-pubsub.iam.gserviceaccount.com" &&
+      google_service_account_iam_member.pubsub_push_token["physician"].role == "roles/iam.serviceAccountTokenCreator" &&
+      google_service_account_iam_member.pubsub_push_token["physician"].service_account_id == "projects/test-rust-stg-only/serviceAccounts/physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com"
+    )
+    error_message = "The Pub/Sub service agent may dead-letter and mint tokens only for the push identity."
+  }
+
+  # Worker: internal ingress, no IAP, IAM checks on, push identity only.
+  assert {
+    condition = keys(google_cloud_run_v2_service.physician_worker) == ["physician"] && alltrue([for w in google_cloud_run_v2_service.physician_worker :
+      w.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY" && !w.iap_enabled && !w.invoker_iam_disabled &&
+      w.template[0].service_account == "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com" &&
+      w.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" && w.template[0].scaling[0].min_instance_count == 0 && w.template[0].scaling[0].max_instance_count == 2 &&
+      w.template[0].containers[0].resources[0].cpu_idle &&
+      w.template[0].containers[0].image == var.images["physician"].worker
+    ])
+    error_message = "The worker is internal-only, IAM-checked, private-egress, scale-capped and runs the recorded worker digest."
+  }
+  assert {
+    condition     = google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].members == toset(["serviceAccount:physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com"])
+    error_message = "The push identity is the only invoker of the worker."
+  }
+  assert {
+    condition = (
+      contains([for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_WORKER_AUDIENCE=https://physician-worker-123456789012.us-east1.run.app") &&
+      contains([for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com") &&
+      contains([for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "DOPPLER_CONFIG=stg_physician_runtime") &&
+      google_cloud_run_v2_service.physician_worker["physician"].custom_audiences == tolist(["https://physician-worker-123456789012.us-east1.run.app"])
+    )
+    error_message = "The worker verifies its own audience and the push identity, and runs on the physician runtime Doppler config."
+  }
+  assert {
+    condition = (
+      google_secret_manager_secret_iam_binding.bootstrap_reader["physician-runtime"].members == toset(["serviceAccount:test-account@test-rust-stg-only.iam.gserviceaccount.com", "serviceAccount:physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"]) &&
+      alltrue([for key in ["physician-migration", "duet-runtime", "duet-migration"] : !contains(google_secret_manager_secret_iam_binding.bootstrap_reader[key].members, "serviceAccount:physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com")]) &&
+      alltrue([for grant in google_project_iam_member.physician_worker_sql : grant.condition[0].expression == "resource.name == 'projects/test-rust-stg-only/instances/rust-physician'"])
+    )
+    error_message = "The worker reads only the physician-runtime Doppler slot and reaches only the physician SQL instance."
+  }
+
+  # Site: physician keeps CPU between requests and learns the topic; Duet is unchanged.
+  assert {
+    condition     = !google_cloud_run_v2_service.app["physician"].template[0].containers[0].resources[0].cpu_idle && google_cloud_run_v2_service.app["duet"].template[0].containers[0].resources[0].cpu_idle
+    error_message = "Only the physician site keeps CPU allocated between requests."
+  }
+  assert {
+    condition     = contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_CHAT_TOPIC")
+    error_message = "The physician site publishes chat turns to the topic."
+  }
+  assert {
+    condition     = length([for env in google_cloud_run_v2_service.app["duet"].template[0].containers[0].env : env.name if startswith(env.name, "PHYSICIAN_") || strcontains(lower(env.name), "redis") || strcontains(lower(env.name), "pubsub")]) == 0
+    error_message = "Duet gets no Redis, Pub/Sub or physician settings."
+  }
+  assert {
+    # Every scaling resource is keyed "physician"; none exists for Duet. (The
+    # mock gives both runtime identities one email, so isolation is proven by
+    # the keys and by the publisher binding's single member above.)
+    condition = alltrue([for keyset in [
+      keys(google_redis_instance.physician), keys(google_pubsub_topic.chat_turns), keys(google_pubsub_topic.chat_turns_dead_letter),
+      keys(google_pubsub_subscription.chat_turns), keys(google_pubsub_subscription.chat_turns_dead_letter),
+      keys(google_pubsub_topic_iam_binding.chat_turns_publisher), keys(google_cloud_run_v2_service.physician_worker),
+      keys(google_cloud_run_v2_service_iam_binding.physician_worker_invoker), keys(google_service_account.physician_worker),
+    ] : keyset == ["physician"]]) && length(google_pubsub_topic_iam_binding.chat_turns_publisher["physician"].members) == 1
+    error_message = "Redis, Pub/Sub and the worker exist only for physician; Duet holds no grant on them."
+  }
+  assert {
+    condition     = alltrue([for b in google_cloud_run_v2_service_iam_binding.iap_invoker : b.members == toset(["serviceAccount:service-123456789012@gcp-sa-iap.iam.gserviceaccount.com"])])
+    error_message = "The IAP agent stays the only invoker of the sites."
+  }
+  assert {
+    condition     = alltrue([for service in google_cloud_run_v2_service.app : service.iap_enabled && !service.invoker_iam_disabled && service.ingress == "INGRESS_TRAFFIC_ALL"])
+    error_message = "The sites keep direct IAP."
+  }
+}

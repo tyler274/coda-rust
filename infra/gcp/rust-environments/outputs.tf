@@ -59,3 +59,31 @@ output "activation_blockers" {
     "Budget alerts are not hard caps; logs retained 30 days, backups/PITR seven days, state history 90 days/ten versions, rollback images retained until release keep-set policy exists.",
   ]
 }
+
+output "physician_scale" {
+  description = "Nonsecret physician scaling endpoints (null while enable_physician_scale is off or ineffective). The operator builds PHYSICIAN_REDIS_URL=rediss://:AUTH@host:port for Doppler stg_physician_runtime from this and physician_redis_auth_string."
+  value = local.physician_scale ? {
+    redis_host            = google_redis_instance.physician["physician"].host
+    redis_port            = google_redis_instance.physician["physician"].port
+    chat_topic            = google_pubsub_topic.chat_turns["physician"].id
+    chat_subscription     = google_pubsub_subscription.chat_turns["physician"].id
+    dead_letter_topic     = google_pubsub_topic.chat_turns_dead_letter["physician"].id
+    worker_service        = google_cloud_run_v2_service.physician_worker["physician"].name
+    worker_url            = google_cloud_run_v2_service.physician_worker["physician"].uri
+    worker_audience       = local.physician_worker_audience
+    push_service_account  = google_service_account.physician_pubsub_push["physician"].email
+    worker_identity       = google_service_account.physician_worker["physician"].email
+    worker_doppler_config = try(var.doppler_configs["physician-runtime"], "")
+  } : null
+}
+
+output "physician_redis_ca_pem" {
+  description = "Memorystore server CA bundle (public certificates, not secret) for PHYSICIAN_REDIS_CA_PEM. Read with `tofu output -raw physician_redis_ca_pem`."
+  value       = local.physician_scale ? join("", [for ca in google_redis_instance.physician["physician"].server_ca_certs : ca.cert]) : null
+}
+
+output "physician_redis_auth_string" {
+  description = "Memorystore AUTH string. Sensitive: read only with `tofu output -raw physician_redis_auth_string` straight into Doppler; never paste it into a plan review, log or commit."
+  value       = local.physician_scale ? google_redis_instance.physician["physician"].auth_string : null
+  sensitive   = true
+}
