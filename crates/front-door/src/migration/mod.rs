@@ -17,6 +17,18 @@ use sea_orm_migration::prelude::*;
 pub mod account;
 
 #[allow(missing_docs)]
+pub mod identity;
+mod m20261020_identity;
+mod m20261021_duet_conversation;
+mod m20261021_luna_journal;
+mod m20261022_duet_execution;
+mod m20261023_duet_admission;
+#[allow(missing_docs)]
+pub mod permission;
+#[allow(missing_docs)]
+pub mod restriction;
+
+#[allow(missing_docs)]
 pub mod consent;
 
 #[allow(missing_docs)]
@@ -68,7 +80,14 @@ impl MigratorTrait for Migrator {
         Alias::new(MIGRATION_TABLE).into_iden()
     }
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20260101_000001_init)]
+        vec![
+            Box::new(m20260101_000001_init),
+            Box::new(m20261020_identity::Migration),
+            Box::new(m20261021_luna_journal::Migration),
+            Box::new(m20261021_duet_conversation::Migration),
+            Box::new(m20261022_duet_execution::Migration),
+            Box::new(m20261023_duet_admission::Migration),
+        ]
     }
 }
 
@@ -436,7 +455,17 @@ mod tests {
             .iter()
             .map(|migration| migration.name().to_owned())
             .collect();
-        assert_eq!(names, [INIT_MIGRATION_NAME]);
+        assert_eq!(
+            names,
+            [
+                INIT_MIGRATION_NAME,
+                "m20261020_identity",
+                "m20261021_luna_journal",
+                "m20261021_duet_conversation",
+                "m20261022_duet_execution",
+                "m20261023_duet_admission"
+            ]
+        );
     }
 
     /// `physician-auth` shares the database; sharing a ledger makes each

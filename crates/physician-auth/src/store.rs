@@ -26,14 +26,36 @@ pub struct PostgresAuthStore {
 }
 
 impl PostgresAuthStore {
-    /// Connects to `database_url` without applying migrations.
+    /// Connects without applying migrations; retained for existing callers.
     pub async fn connect(database_url: &str) -> Result<Self, DbErr> {
+        Self::connect_without_migrations(database_url).await
+    }
+
+    /// Opens a bounded runtime pool without creating or upgrading any schema.
+    ///
+    /// Run `physician-auth-migrate` with the migration identity first. This
+    /// constructor only establishes connectivity: callers must separately
+    /// check readiness before accepting traffic. Missing or outdated tables
+    /// are not repaired, and runtime credentials need no schema-owner rights.
+    pub async fn connect_without_migrations(database_url: &str) -> Result<Self, DbErr> {
         let mut options = ConnectOptions::new(database_url.to_owned());
         options
             .max_connections(8)
             .connect_timeout(Duration::from_secs(10));
         let db = Database::connect(options).await?;
         Ok(Self { db })
+    }
+
+    /// Checks all owned tables without installing or updating a migration ledger.
+    pub async fn check_schema(&self) -> Result<(), DbErr> {
+        Accounts::find().one(&self.db).await?;
+        Invitations::find().one(&self.db).await?;
+        Memberships::find().one(&self.db).await?;
+        PatientLinks::find().one(&self.db).await?;
+        Patients::find().one(&self.db).await?;
+        Sessions::find().one(&self.db).await?;
+        SignInTokens::find().one(&self.db).await?;
+        Ok(())
     }
 
     /// Connects and applies the crate's migration chain.
@@ -46,6 +68,50 @@ impl PostgresAuthStore {
     /// Applies the migration chain on an existing connection.
     pub async fn migrate(&self) -> Result<(), DbErr> {
         crate::migration::migrate(&self.db).await
+    }
+
+    /// Non-secret reference to the existing session, usable for durable accepted work.
+    pub fn session_reference(token: &str) -> Vec<u8> {
+        token_hash(token).to_vec()
+    }
+
+    /// Checks clinical workspace authority on the caller's publication transaction.
+    /// Row SHARE locks conflict with session deletion, account deactivation/removal,
+    /// panel removal and patient reassignment. Keep this transaction open through
+    /// publication. The hash is a reference to an existing session, not a new grant.
+    pub async fn lock_runtime_authority(
+        tx: &sea_orm::DatabaseTransaction,
+        session_hash: &[u8],
+        identity: &PhysicianIdentity,
+        workspace: &str,
+    ) -> Result<(), DbErr> {
+        use sea_orm::{ConnectionTrait, DbBackend, Statement};
+        let row = tx
+            .query_one_raw(Statement::from_sql_and_values(
+                DbBackend::Postgres,
+                include_str!("runtime_authority.sql"),
+                [
+                    session_hash.to_vec().into(),
+                    identity.practice_id.clone().into(),
+                    identity.physician_id.clone().into(),
+                    workspace.to_owned().into(),
+                ],
+            ))
+            .await?
+            .ok_or_else(|| DbErr::Custom("runtime authority revoked".into()))?;
+        let expires: i64 = row.try_get("", "expires_at")?;
+        // Clock read follows lock acquisition, including time spent waiting.
+        let now = tx
+            .query_one_raw(Statement::from_string(
+                DbBackend::Postgres,
+                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
+            ))
+            .await?
+            .ok_or_else(|| DbErr::Custom("missing database clock".into()))?;
+        if expires <= now.try_get::<i64>("", "now")? {
+            return Err(DbErr::Custom("runtime session expired".into()));
+        }
+        Ok(())
     }
 
     fn account_row(row: crate::migration::AccountRow) -> Account {

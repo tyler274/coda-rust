@@ -9,12 +9,16 @@ use std::{env, sync::Arc};
 
 #[tokio::main]
 async fn main() {
+    if let Err(reason) = duet_api::hosting::validate_startup(|key| env::var(key).ok()) {
+        eprintln!("{reason}");
+        std::process::exit(1);
+    }
     let _telemetry = telemetry::init("duet-api");
     // Migrations are a separate operator command; runtime credentials cannot own schema.
-    let database =
-        AccountDatabase::connect(&env::var("DATABASE_URL").expect("runtime DATABASE_URL"))
-            .await
-            .expect("account database boundary");
+    let url = env::var("DATABASE_URL").expect("runtime DATABASE_URL");
+    let database = AccountDatabase::connect(&url)
+        .await
+        .expect("account database boundary");
     let verifier = IdentityPlatform::new(
         env::var("IDENTITY_PLATFORM_PROJECT_ID").expect("IDENTITY_PLATFORM_PROJECT_ID"),
         env::var("IDENTITY_PLATFORM_API_KEY").expect("IDENTITY_PLATFORM_API_KEY"),
@@ -121,18 +125,61 @@ async fn main() {
             }
         }
     });
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
+    let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
+        Ok(front_url) => Some(Arc::new(
+            front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)
+                .await
+                .expect("front-door database"),
+        )),
+        Err(_) => None,
+    };
+    let mut app = router(state.clone())
+        .merge(duet_api::evidence_routes::router(state))
+        .merge(duet_api::doctor_routes::router(doctor))
+        .merge(duet_api::conversation_routes::router(conversation))
+        .merge(producer_router)
+        .route("/health", axum::routing::get(duet_api::hosting::live))
+        .route(
+            "/readyz",
+            axum::routing::get({
+                let front_door = front_door.clone();
+                move || {
+                    let front_door = front_door.clone();
+                    async move { duet_api::hosting::ready(true, front_door.as_deref()).await }
+                }
+            }),
+        )
+        .layer(telemetry::http_layer());
+    if let Some(directory) = env::var_os("DUET_SITE_DIR") {
+        let directory = std::path::PathBuf::from(directory);
+        for name in ["index.html", "duet-app.js", "duet-app_bg.wasm"] {
+            assert!(directory.join(name).is_file(), "missing Duet asset: {name}");
+        }
+        app = app.merge(duet_api::site::router(directory));
+    }
+    let address = env::var("DUET_LISTEN_ADDR").unwrap_or_else(|_| {
+        env::var("PORT")
+            .map(|port| format!("0.0.0.0:{port}"))
+            .unwrap_or_else(|_| "127.0.0.1:8080".to_owned())
+    });
+    let listener = tokio::net::TcpListener::bind(address).await.expect("bind");
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown())
         .await
-        .expect("bind");
-    axum::serve(
-        listener,
-        router(state.clone())
-            .merge(duet_api::evidence_routes::router(state))
-            .merge(duet_api::doctor_routes::router(doctor))
-            .merge(duet_api::conversation_routes::router(conversation))
-            .merge(producer_router)
-            .layer(telemetry::http_layer()),
-    )
-    .await
-    .expect("serve");
+        .expect("serve");
+}
+
+async fn shutdown() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("SIGTERM handler");
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = terminate.recv() => {},
+        }
+    }
+    #[cfg(not(unix))]
+    tokio::signal::ctrl_c().await.expect("shutdown signal");
 }

@@ -1,12 +1,15 @@
-//! Loads `skills/` once and admits `skill_view` on a model message.
+//! Product-neutral bounded execution and the existing skill catalog surface.
 //!
-//! Skill admission and neutral execution mechanics. Product adapters retain
-//! authority, persistence, recovery and completion decisions. Skills never
-//! authorize a tool or a patient read. The legacy `Harness::admit` surface
-//! admits only `skill_view`; `execution` supplies the structured provider loop.
+//! [`engine`] and [`execution`] are the provider/tool loops. [`responses`] and
+//! [`provider`] are API adapters. Product hosts retain authority, effects,
+//! persistence, and recovery. [`Harness`] admits only `skill_view`. A skill
+//! never authorizes a tool or a patient read. Book:
+//! `book/src/personal-agent-program.md`.
 #![deny(missing_docs)]
 
+pub mod engine;
 pub mod execution;
+pub mod provider;
 pub mod responses;
 pub mod transport;
 

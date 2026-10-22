@@ -1,0 +1,12 @@
+# OPERATOR ONLY: for first bootstrap into a verified NEW project.
+# Copy to backend_override.tf (ignored), init with -backend=false, then init
+# the LOCAL backend and review a foundations-only plan. Never commit local state.
+# After approved bootstrap: remove backend_override.tf; init -migrate-state
+# with -backend-config for the emitted bucket/prefix. Keep the local backup
+# until remote state is verified. Use separate working directories for each env.
+# No operator bootstrap/apply/migration was performed during code validation.
+terraform {
+  backend "local" {
+    path = "bootstrap.tfstate"
+  }
+}

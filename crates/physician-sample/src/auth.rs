@@ -13,7 +13,7 @@
 //! status there. The auth routes themselves stay open (or resolve their own bearer
 //! token), and `/health` stays open because a load balancer needs it
 //! unauthenticated. The store is Postgres (SeaORM) when `PHYSICIAN_DATABASE_URL`
-//! is set — migrations apply on start — and process memory otherwise. The
+//! is set — schemas must already be migrated — and process memory otherwise. The
 //! front door rides the same database when it is set, so a practice's
 //! invitations and premium reads survive a restart.
 //!
@@ -136,15 +136,22 @@ impl Auth {
         Self::on(store, Arc::new(MemoryFrontDoorStore::new())).await
     }
 
-    /// Builds the Postgres auth state, applying the migration chain first.
-    /// The front door rides the same database, under its own tables.
+    /// Opens runtime pools without migration rights; the job owns both chains.
     pub(crate) async fn postgres(database_url: &str) -> Result<Arc<Self>, String> {
-        let store = PostgresAuthStore::connect_with_migrations(database_url)
+        let store = PostgresAuthStore::connect_without_migrations(database_url)
             .await
             .map_err(|error| format!("physician auth store: {error}"))?;
-        let front_door = PostgresFrontDoorStore::connect_with_migrations(database_url)
+        store
+            .check_schema()
+            .await
+            .map_err(|error| format!("physician auth schema; run migration job: {error}"))?;
+        let front_door = PostgresFrontDoorStore::connect_without_migrations(database_url)
             .await
             .map_err(|error| format!("front-door store: {error}"))?;
+        front_door
+            .check_schema()
+            .await
+            .map_err(|error| format!("front-door schema; run migration job: {error}"))?;
         Ok(Self::on(Arc::new(store), Arc::new(front_door)).await)
     }
 }

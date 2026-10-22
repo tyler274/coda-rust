@@ -78,7 +78,14 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
             let rows = history(&db, front_door::migration::MIGRATION_TABLE).await;
             assert_eq!(
                 rows.iter().map(|row| row.0.as_str()).collect::<Vec<_>>(),
-                [front_door::migration::INIT_MIGRATION_NAME]
+                [
+                    front_door::migration::INIT_MIGRATION_NAME,
+                    "m20261020_identity",
+                    "m20261021_duet_conversation",
+                    "m20261021_luna_journal",
+                    "m20261022_duet_execution",
+                    "m20261023_duet_admission",
+                ]
             );
             histories.push((front_door::migration::MIGRATION_TABLE, rows));
         }

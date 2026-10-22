@@ -1,0 +1,60 @@
+output "backend_configuration" {
+  description = "Operator-only backend config AFTER authorized bootstrap; migrate local state separately per environment. Do not give deployer bucket access."
+  value = {
+    bucket = google_storage_bucket.state.name
+    prefix = "rust-environments/${var.environment}"
+  }
+}
+
+output "release_contract" {
+  description = "Deployment interface. Only main push may enter staging; dev/prod require workflow_dispatch plus protected environment approval. Updates must preserve IAP/env/identity/network/caps; IAM cannot field-scope run.services.update."
+  value = {
+    project_id                  = google_project.environment.project_id
+    region                      = var.region
+    github_environment          = local.github_environment
+    oidc_provider               = google_iam_workload_identity_pool_provider.github.name
+    deployer_service_account    = google_service_account.deployer.email
+    artifact_repository         = "${var.region}-docker.pkg.dev/${local.project_id}/apps"
+    workloads_enabled           = var.enable_workloads
+    services                    = { for app, service in google_cloud_run_v2_service.app : app => service.name }
+    migration_jobs              = { for app, job in google_cloud_run_v2_job.migration : app => job.name }
+    urls                        = { for app, service in google_cloud_run_v2_service.app : app => service.uri }
+    release_managed_fields      = ["service image digest", "service revision name", "service traffic and tags", "job image digest", "client metadata"]
+    infrastructure_owned_fields = ["IAP", "IAM", "service accounts", "network", "env and secret pins", "caps", "probes"]
+    readiness_path              = "/readyz"
+    smoke_test_identity         = "No deployer IAP access granted. Operator must separately authorize a dedicated in-org test identity and OAuth audience for authenticated smoke tests."
+  }
+}
+
+output "database_contract" {
+  description = "No passwords. Operator installs SQL grants; owners implement private TLS + IAM token refresh (a mounted Cloud SQL socket alone does not enable automatic IAM authentication). Supply app-specific accepted DSN/config through scoped Doppler config."
+  value = { for app, instance in google_sql_database_instance.app : app => {
+    database                 = google_sql_database.app[app].name
+    private_ip               = instance.private_ip_address
+    connection_name          = instance.connection_name
+    runtime_principal        = google_sql_user.app["${app}-runtime"].name
+    migration_principal      = google_sql_user.app["${app}-migration"].name
+    required_pool_max        = 4
+    max_database_connections = 100
+    migration_schema         = "public"
+    operator_grant_script    = "bootstrap-grants.sql"
+  } }
+}
+
+output "doppler_bootstrap_secrets" {
+  description = "Operator supplies four read-only least-scope Doppler bootstrap token versions OUTSIDE Terraform. No application keys belong in Secret Manager."
+  value       = { for key, secret in google_secret_manager_secret.doppler : key => secret.id }
+}
+
+output "activation_blockers" {
+  value = [
+    "Operator verifies NEW IDs, organization/folder/billing authority, separate state access, region, in-organization IAP group, budget channels and approvals.",
+    "Operator creates protected GitHub dev/staging/production environments; production requires independent reviewers. No CI infrastructure credentials.",
+    "Operator provisions foundations, publishes immutable images, and separately enables databases (two continuously billed instances).",
+    "Operator bootstraps per-app SQL grants; runtime owners prove IAM token refresh/private TLS, durable auth/chat, no auto-migrate, bounded pool <=4 and enforced model usage limits/provider quotas.",
+    "Operator creates least-scope per-app/per-role Doppler tokens and pins numeric Secret Manager versions; no secret values in plans. `doppler configs tokens create --plain` ends with a newline that breaks the runtime's Authorization header: pipe through `tr -d '\\r\\n'` before `gcloud secrets versions add --data-file=-` (public-site staging bootstrap, PR #42).",
+    "Runtime env names and migration/image interfaces require owner agreement; /readyz and port 8080 must work before activation.",
+    "Only then may an authorized operator enable workloads; prod additionally requires production_activation_approved. Hosted acceptance remains a later phase.",
+    "Budget alerts are not hard caps; logs retained 30 days, backups/PITR seven days, state history 90 days/ten versions, rollback images retained until release keep-set policy exists.",
+  ]
+}

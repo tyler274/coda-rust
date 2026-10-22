@@ -16,7 +16,7 @@ const NOW: u64 = 1_760_000_000;
 ///
 /// Each test gets its own database — named after the gate URL's database plus
 /// the test's unique suffix — so parallel tests and repeated runs never share
-/// migration state. The database is dropped when the store is dropped.
+/// migration state. The next run removes the previous test database.
 async fn store(name: &str) -> Option<PostgresFrontDoorStore> {
     let url = database(name).await?;
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
@@ -70,6 +70,7 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     // Rewind the records to what the chain wrote before it had its own
     // table: the init as `mod` in SeaORM's default `seaql_migrations`.
     let db = sea_orm::Database::connect(&url).await.expect("connection");
+    rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
          CREATE TABLE seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
@@ -79,19 +80,60 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
     .await
     .expect("legacy records");
 
+    // Runtime startup must not perform the migration job's legacy adoption.
+    let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
+    let runtime = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
+        .await
+        .expect("runtime on legacy schema");
+    assert_eq!(runtime.link(id).await.unwrap(), patient);
+    assert!(
+        !schema_tables(&url)
+            .await
+            .iter()
+            .any(|table| table == front_door::migration::MIGRATION_TABLE)
+    );
+
     // Migrating again adopts the init rather than re-running it over the
     // existing tables, and the rows the init's tables hold survive.
     let store = PostgresFrontDoorStore::connect_with_migrations(&url)
         .await
         .expect("migrate over the legacy records");
     assert_eq!(store.link(id).await.unwrap(), patient);
-    let init = front_door::migration::INIT_MIGRATION_NAME.to_owned();
-    assert_eq!(recorded(&db).await, [(init.clone(), 42)]);
+    let versions = db
+        .query_all_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            format!(
+                "SELECT version, applied_at FROM {}",
+                front_door::migration::MIGRATION_TABLE
+            ),
+        ))
+        .await
+        .expect("front-door records")
+        .into_iter()
+        .map(|row| {
+            (
+                row.try_get::<String>("", "version").unwrap(),
+                row.try_get::<i64>("", "applied_at").unwrap(),
+            )
+        })
+        .collect::<Vec<_>>();
+    assert!(versions.contains(&(front_door::migration::INIT_MIGRATION_NAME.to_owned(), 42)));
+    assert_eq!(
+        versions.len(),
+        6,
+        "legacy init plus identity, journal, conversation and admission extensions"
+    );
+    assert!(
+        versions
+            .iter()
+            .any(|(name, _)| name == "m20261020_identity")
+    );
     store.migrate().await.expect("a second migrate is a no-op");
 
     // The interim front-door ledger also recorded the init as `mod`. When it
     // exists beside the shared table, its own receipt is the one adopted, and
     // neither legacy ledger is renamed or deleted.
+    rewind_to_legacy_init(&db).await;
     db.execute_unprepared(&format!(
         "DROP TABLE {table}; \
          CREATE TABLE front_door_seaql_migrations (version varchar PRIMARY KEY, applied_at bigint NOT NULL); \
@@ -104,7 +146,11 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         .await
         .expect("migrate over the interim records");
     assert_eq!(store.link(id).await.unwrap(), patient);
-    assert_eq!(recorded(&db).await, [(init, 43)]);
+    let adopted = recorded(&db).await;
+    assert!(adopted.iter().any(|(name, applied_at)| {
+        name == front_door::migration::INIT_MIGRATION_NAME && *applied_at == 43
+    }));
+    assert_eq!(adopted.len(), 6);
     for legacy in ["seaql_migrations", "front_door_seaql_migrations"] {
         let rows = db
             .query_all_raw(sea_orm::Statement::from_string(
@@ -116,6 +162,19 @@ async fn a_database_migrated_under_the_shared_table_keeps_its_init() {
         assert_eq!(rows.len(), 1, "{legacy} keeps its row");
     }
     store.migrate().await.expect("a second migrate is a no-op");
+}
+
+/// Remove every post-init extension so the schema matches what legacy ledgers
+/// recorded. Fixture-only: production rollback of these extensions is refused
+/// because they hold durable history and privacy receipts.
+async fn rewind_to_legacy_init(db: &sea_orm::DatabaseConnection) {
+    db.execute_unprepared("DROP TABLE duet_model_execution_switch; DROP FUNCTION duet_switch_append_only(); DROP INDEX duet_conversation_allowance; ALTER TABLE duet_conversation_inputs DROP COLUMN admitted_at; DELETE FROM front_door_migrations WHERE version='m20261023_duet_admission'").await.unwrap();
+    db.execute_unprepared("DROP TABLE duet_attempt_events,duet_conversation_attempts; DELETE FROM front_door_migrations WHERE version='m20261022_duet_execution'").await.unwrap();
+    db.execute_unprepared("DROP TRIGGER duet_permission_interrupt ON front_door_permissions; DROP FUNCTION duet_permission_interrupt(); DROP FUNCTION duet_interrupt_accepted(uuid); DROP TABLE duet_conversation_messages,duet_conversation_inputs,duet_conversation_state; DELETE FROM front_door_migrations WHERE version='m20261021_duet_conversation'").await.unwrap();
+    db.execute_unprepared("DROP TABLE front_door_luna_restrictions; DELETE FROM front_door_migrations WHERE version = 'm20261021_luna_journal'").await.unwrap();
+    <front_door::migration::Migrator as sea_orm_migration::MigratorTrait>::down(db, Some(1))
+        .await
+        .expect("remove new identity extension for legacy upgrade proof");
 }
 
 async fn recorded(db: &sea_orm::DatabaseConnection) -> Vec<(String, i64)> {
@@ -136,6 +195,95 @@ async fn recorded(db: &sea_orm::DatabaseConnection) -> Vec<(String, i64)> {
         )
     })
     .collect()
+}
+
+/// Catalog read only: unlike Migrator status helpers, never installs a ledger.
+async fn schema_tables(url: &str) -> Vec<String> {
+    let db = sea_orm::Database::connect(url)
+        .await
+        .expect("catalog connection");
+    let rows = db.query_all_raw(sea_orm::Statement::from_string(
+        sea_orm::DbBackend::Postgres,
+        "SELECT tablename::text AS name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename",
+    )).await.expect("catalog read");
+    rows.into_iter()
+        .map(|row| row.try_get("", "name").unwrap())
+        .collect()
+}
+
+#[tokio::test]
+async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
+    let Some(url) = database("migration_separation").await else {
+        return;
+    };
+    assert!(schema_tables(&url).await.is_empty());
+    let runtime = PostgresFrontDoorStore::connect_without_migrations(&url)
+        .await
+        .expect("runtime connection");
+    assert!(
+        runtime.check_schema().await.is_err(),
+        "empty schema must fail readiness"
+    );
+    assert!(
+        runtime
+            .begin_sign_in("absent@test.invalid", NOW)
+            .await
+            .is_err()
+    );
+    let _compatibility = PostgresFrontDoorStore::connect(&url)
+        .await
+        .expect("compatibility connection");
+    assert!(
+        schema_tables(&url).await.is_empty(),
+        "runtime must not install even the migration ledger"
+    );
+
+    let migrate = || {
+        let status = std::process::Command::new(env!("CARGO_BIN_EXE_front-door-migrate"))
+            .env("FRONT_DOOR_DATABASE_URL", &url)
+            .status()
+            .expect("migration job");
+        assert!(status.success(), "migration job failed");
+    };
+    migrate();
+    let expected = vec![
+        "duet_attempt_events",
+        "duet_conversation_attempts",
+        "duet_conversation_inputs",
+        "duet_conversation_messages",
+        "duet_conversation_state",
+        "duet_model_execution_switch",
+        "front_door_accounts",
+        "front_door_consents",
+        "front_door_identities",
+        "front_door_invitations",
+        "front_door_links",
+        "front_door_luna_restrictions",
+        "front_door_migrations",
+        "front_door_permissions",
+        "front_door_premium",
+        "front_door_sessions",
+        "front_door_sign_in_tokens",
+    ];
+    assert_eq!(schema_tables(&url).await, expected);
+    let (_, id, session) = invited_account(&runtime, "separation-proof").await;
+    migrate();
+    runtime.migrate().await.expect("explicit migration rerun");
+    let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
+    let reopened = PostgresFrontDoorStore::connect_without_migrations(&read_only_url)
+        .await
+        .expect("reopen runtime with database-enforced read-only transactions");
+    reopened
+        .check_schema()
+        .await
+        .expect("read-only schema check");
+    assert_eq!(schema_tables(&url).await, expected);
+    assert_eq!(reopened.session(&session, NOW).await.unwrap(), id);
+    assert!(reopened.account(id).await.is_some());
+    assert!(
+        reopened.migrate().await.is_err(),
+        "read-only runtime cannot migrate"
+    );
 }
 
 fn patient(practice: &str, id: &str) -> RosterPatient {

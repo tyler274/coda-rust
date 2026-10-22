@@ -1,236 +1,273 @@
-//! Structured OpenAI Responses wire adapter. Construction is explicit and
-//! never reads credentials or authorizes a paid call. Product startup owns that
-//! authorization. It preserves call IDs, JSON arguments, usage and provenance.
+//! API-backed OpenAI Responses adapter: bounded buffered or SSE output,
+//! `store: false`, no retries and no secret logging. Streaming is opt-in through
+//! [`Responses::streaming`]; the engine awaits product delta acknowledgments.
 
-use crate::execution::{Call, Cancellation, Item, Provider, Request, Response, StreamEvent, Usage};
+mod sse;
+
+use async_trait::async_trait;
 use serde_json::{Value, json};
 
-/// Explicitly configured provider. Keys are never serialized or debug printed.
-pub struct ResponsesProvider {
+use crate::engine::{DeltaSink, Failure, Invocation, Item, Provider, Request, Turn};
+
+/// OpenAI API adapter. Credentials stay in this instance and are never in events.
+/// Construction does not authorize paid calls; the composition supplies that gate.
+pub struct Responses {
     client: reqwest::Client,
-    endpoint: String,
+    endpoint: reqwest::Url,
     key: String,
+    model: String,
+    streaming: bool,
 }
-impl ResponsesProvider {
-    /// Creates the transport after the product has authorized calls. The client
-    /// has a bounded total deadline; no automatic provider retry is performed.
-    pub fn new(endpoint: String, key: String) -> Result<Self, String> {
+
+impl Responses {
+    /// Uses the fixed production endpoint. No request is made by construction.
+    pub fn new(key: String, model: String) -> Result<Self, String> {
+        Self::with_endpoint(key, model, "https://api.openai.com/v1/responses")
+    }
+
+    /// Selects an explicit HTTPS endpoint, or loopback HTTP for protocol tests.
+    /// Callers must trust the endpoint: it receives the supplied API credential.
+    pub fn with_endpoint(key: String, model: String, endpoint: &str) -> Result<Self, String> {
+        let endpoint = reqwest::Url::parse(endpoint).map_err(|_| "invalid provider endpoint")?;
+        let loopback = matches!(
+            endpoint.host_str(),
+            Some("127.0.0.1" | "localhost" | "[::1]")
+        );
+        if (endpoint.scheme() != "https" && !(endpoint.scheme() == "http" && loopback))
+            || !endpoint.username().is_empty()
+            || endpoint.password().is_some()
+            || endpoint.fragment().is_some()
+            || endpoint.query().is_some()
+            || key.trim().is_empty()
+            || model.trim().is_empty()
+        {
+            return Err("provider requires credentials, model and trusted HTTPS endpoint".into());
+        }
         let client = reqwest::Client::builder()
-            .timeout(std::time::Duration::from_secs(120))
+            .redirect(reqwest::redirect::Policy::none())
+            .retry(reqwest::retry::never())
             .build()
-            .map_err(|_| "could not build provider client")?;
+            .map_err(|_| "cannot construct provider client")?;
         Ok(Self {
             client,
             endpoint,
             key,
+            model,
+            streaming: false,
         })
     }
+
+    /// Enables SSE delivery through `Provider::complete_stream`. Direct buffered
+    /// `complete` rejects this mode rather than silently discarding deltas.
+    pub fn streaming(mut self) -> Self {
+        self.streaming = true;
+        self
+    }
+
+    fn body(&self, request: &Request<'_>) -> Result<Value, String> {
+        let input: Result<Vec<_>, _> = request.context.items.iter().map(|item| Ok(match item {
+            Item::Message { role, text } => json!({"role": role, "content": text}),
+            Item::Call(call) => json!({"type": "function_call", "call_id": call.id,
+                "name": call.name, "arguments": call.arguments}),
+            Item::Result { call_id, output } => json!({"type": "function_call_output", "call_id": call_id, "output": output}),
+            Item::Opaque(value) => {
+                // Opaque items cannot smuggle calls, results or instruction roles.
+                if value.get("type").and_then(Value::as_str) != Some("reasoning") {
+                    return Err("unsupported opaque Responses continuation item".to_owned());
+                }
+                value.clone()
+            }
+        })).collect();
+        Ok(json!({
+            "model": self.model, "instructions": request.context.instructions,
+            "input": input?, "store": false, "stream": self.streaming,
+            "max_output_tokens": request.limits.output_tokens,
+            "tools": request.context.tools.iter().map(|tool| json!({
+                "type": "function", "name": tool.name, "description": tool.description,
+                "parameters": tool.parameters,
+            })).collect::<Vec<_>>(),
+        }))
+    }
 }
 
-/// Converts neutral context to Responses wire objects without dropping calls.
-pub fn encode(request: &Request) -> Value {
-    let input: Vec<Value> = request.items.iter().map(|item| match item {
-        Item::Message { role, text } => json!({"role": role, "content": text}),
-        Item::Call(call) => json!({"type": "function_call", "call_id": call.id, "name": call.name, "arguments": call.arguments.to_string()}),
-        Item::Result { call_id, value } => json!({"type": "function_call_output", "call_id": call_id, "output": value.to_string()}),
-    }).collect();
-    let mut reasoning = request.options.clone();
-    let max_output = reasoning
-        .as_object_mut()
-        .and_then(|o| o.remove("max_output_tokens"));
-    let mut body = json!({"model": request.model, "reasoning": reasoning, "instructions": request.instructions,
-        "tools": request.tools, "input": input, "store": false});
-    if let Some(max_output) = max_output {
-        body["max_output_tokens"] = max_output;
+#[async_trait]
+impl Provider for Responses {
+    fn request_bytes(&self, request: &Request<'_>) -> Result<usize, String> {
+        serde_json::to_vec(&self.body(request)?)
+            .map(|bytes| bytes.len())
+            .map_err(|_| "invalid request JSON".into())
     }
-    body
+
+    async fn complete(&mut self, request: Request<'_>) -> Result<Turn, String> {
+        if self.streaming {
+            return Err("streaming adapter requires an acknowledged delta sink".into());
+        }
+        let body = self.body(&request)?;
+        let mut response = self
+            .client
+            .post(self.endpoint.clone())
+            .bearer_auth(&self.key)
+            .json(&body)
+            .send()
+            .await
+            .map_err(|_| "provider transport failed; outcome may be unknown")?;
+        if !response.status().is_success() {
+            return Err(format!(
+                "provider HTTP {}; no automatic retry",
+                response.status().as_u16()
+            ));
+        }
+        let mut bytes = Vec::new();
+        while let Some(chunk) = response
+            .chunk()
+            .await
+            .map_err(|_| "provider body interrupted; outcome unknown")?
+        {
+            if chunk.len() > request.limits.response_bytes.saturating_sub(bytes.len()) {
+                return Err("provider response byte limit".into());
+            }
+            bytes.extend_from_slice(&chunk);
+        }
+        decode(&bytes)
+    }
+
+    async fn complete_stream(
+        &mut self,
+        request: Request<'_>,
+        sink: &mut dyn DeltaSink,
+    ) -> Result<Turn, Failure> {
+        if !self.streaming {
+            return self.complete(request).await.map_err(Failure::Provider);
+        }
+        let body = self.body(&request).map_err(Failure::Provider)?;
+        let mut response = self
+            .client
+            .post(self.endpoint.clone())
+            .bearer_auth(&self.key)
+            .json(&body)
+            .send()
+            .await
+            .map_err(|_| Failure::Provider("provider transport failed; outcome unknown".into()))?;
+        if !response.status().is_success() {
+            return Err(Failure::Provider(format!(
+                "provider HTTP {}; no retry",
+                response.status().as_u16()
+            )));
+        }
+        let content_type = response
+            .headers()
+            .get(reqwest::header::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .unwrap_or("");
+        if content_type.split(';').next().unwrap_or("").trim() != "text/event-stream" {
+            return Err(Failure::Protocol("expected text/event-stream".into()));
+        }
+        let mut decoder = sse::Decoder::new(request.limits.response_bytes);
+        let mut stream = sse::Stream::default();
+        while let Some(chunk) = response
+            .chunk()
+            .await
+            .map_err(|_| Failure::Provider("stream disconnected; no retry".into()))?
+        {
+            for frame in decoder.push(&chunk)? {
+                stream.accept(frame, sink).await?;
+            }
+        }
+        decoder.finish()?;
+        stream.finish()
+    }
 }
 
-/// Decodes one completed Responses exchange. Incomplete/refused provider
-/// results never become an empty successful product completion.
-pub fn decode(body: &Value) -> Result<Response, String> {
-    if body.get("status").and_then(Value::as_str) != Some("completed") {
-        return Err("provider response was not completed".into());
+fn decode(bytes: &[u8]) -> Result<Turn, String> {
+    let response: Value = serde_json::from_slice(bytes).map_err(|_| "invalid provider JSON")?;
+    if response.get("status").and_then(Value::as_str) != Some("completed") {
+        return Err("provider response did not complete; output is not executable".into());
     }
-    let output = body
+    let output = response
         .get("output")
         .and_then(Value::as_array)
-        .ok_or("provider response has no output")?;
-    let mut text = String::new();
-    let mut calls = vec![];
+        .ok_or("missing provider output")?;
+    let mut items = Vec::new();
     for item in output {
         match item.get("type").and_then(Value::as_str) {
             Some("function_call") => {
-                calls.push(Call {
-                    id: item
-                        .get("call_id")
-                        .and_then(Value::as_str)
-                        .ok_or("missing call identity")?
-                        .into(),
-                    name: item
-                        .get("name")
-                        .and_then(Value::as_str)
-                        .ok_or("missing tool name")?
-                        .into(),
-                    arguments: serde_json::from_str(
-                        item.get("arguments")
-                            .and_then(Value::as_str)
-                            .ok_or("missing tool arguments")?,
-                    )
-                    .map_err(|_| "invalid tool argument JSON")?,
-                });
+                if item
+                    .get("status")
+                    .and_then(Value::as_str)
+                    .is_some_and(|s| s != "completed")
+                {
+                    return Err("incomplete provider tool call".into());
+                }
+                items.push(Item::Call(Invocation {
+                    id: string(item, "call_id")?,
+                    name: string(item, "name")?,
+                    arguments: string(item, "arguments")?,
+                }));
             }
             Some("message") => {
-                for part in item
+                if item.get("role").and_then(Value::as_str) != Some("assistant")
+                    || item.get("status").and_then(Value::as_str) != Some("completed")
+                {
+                    return Err("invalid provider message".into());
+                }
+                let parts = item
                     .get("content")
                     .and_then(Value::as_array)
-                    .ok_or("missing message content")?
-                {
+                    .ok_or("missing message content")?;
+                let mut text = String::new();
+                for part in parts {
                     match part.get("type").and_then(Value::as_str) {
-                        Some("output_text") => text.push_str(
-                            part.get("text")
-                                .and_then(Value::as_str)
-                                .ok_or("missing output text")?,
-                        ),
-                        Some("refusal") => return Err("provider refused response".into()),
-                        _ => return Err("unsupported provider message content".into()),
+                        Some("output_text") => text.push_str(&string(part, "text")?),
+                        Some("refusal") => return Err("provider refused request".into()),
+                        _ => return Err("unsupported provider content".into()),
                     }
                 }
+                items.push(Item::Message {
+                    role: "assistant".into(),
+                    text,
+                });
             }
-            // Reasoning stays provider-private and is not a clinical source.
-            Some("reasoning") => {}
+            Some("reasoning") => items.push(Item::Opaque(item.clone())),
             _ => return Err("unsupported provider output item".into()),
         }
     }
-    if text.is_empty() && calls.is_empty() {
-        return Err("provider returned no authored output".into());
-    }
-    Ok(Response {
-        text,
-        calls,
-        usage: Usage {
-            input_tokens: body.pointer("/usage/input_tokens").and_then(Value::as_u64),
-            output_tokens: body.pointer("/usage/output_tokens").and_then(Value::as_u64),
-        },
-        provenance: json!({"adapter": "openai-responses", "mode": "api", "response_id": body.get("id"), "cached_input_tokens": body.pointer("/usage/input_tokens_details/cached_tokens")}),
+    Ok(Turn {
+        items,
+        receipt: json!({"id": response.get("id"), "usage": response.get("usage"), "status": "completed"}),
     })
 }
-impl Provider for ResponsesProvider {
-    async fn exchange(
-        &mut self,
-        request: &Request,
-        cancel: &Cancellation,
-        emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
-    ) -> Result<Response, String> {
-        cancel.check()?;
-        let pending = async {
-            let response = self
-                .client
-                .post(&self.endpoint)
-                .bearer_auth(&self.key)
-                .json(&{
-                    let mut body = encode(request);
-                    body["stream"] = json!(true);
-                    body
-                })
-                .send()
-                .await
-                .map_err(|_| "provider request failed")?;
-            if !response.status().is_success() {
-                return Err(format!("provider returned HTTP {}", response.status()));
-            }
-            if !response
-                .headers()
-                .get(reqwest::header::CONTENT_TYPE)
-                .and_then(|v| v.to_str().ok())
-                .is_some_and(|v| v.starts_with("text/event-stream"))
-            {
-                return Err("provider did not return an event stream".into());
-            }
-            let mut response = response;
-            let mut decoder = EventDecoder::default();
-            let mut total = 0usize;
-            while let Some(chunk) = response.chunk().await.map_err(|_| "provider body failed")? {
-                total = total.saturating_add(chunk.len());
-                if total > 4 * 1024 * 1024 {
-                    return Err("provider body bound reached".into());
-                }
-                for event in decoder.push(&chunk)? {
-                    match event.get("type").and_then(Value::as_str) {
-                        Some("response.output_text.delta") => emit(StreamEvent::Text(
-                            event
-                                .get("delta")
-                                .and_then(Value::as_str)
-                                .ok_or("missing text delta")?
-                                .into(),
-                        ))?,
-                        Some("response.created" | "response.in_progress") => {
-                            emit(StreamEvent::ProviderIdentity(
-                                json!({"adapter": "openai-responses", "response_id": event.pointer("/response/id")}),
-                            ))?;
-                        }
-                        Some("response.completed" | "response.incomplete" | "response.failed") => {
-                            let body = event.get("response").ok_or("missing terminal response")?;
-                            emit(StreamEvent::ProviderIdentity(
-                                json!({"adapter":"openai-responses","response_id":body.get("id"),"cached_input_tokens":body.pointer("/usage/input_tokens_details/cached_tokens")}),
-                            ))?;
-                            emit(StreamEvent::Usage(Usage {
-                                input_tokens: body
-                                    .pointer("/usage/input_tokens")
-                                    .and_then(Value::as_u64),
-                                output_tokens: body
-                                    .pointer("/usage/output_tokens")
-                                    .and_then(Value::as_u64),
-                            }))?;
-                            return decode(body);
-                        }
-                        Some("error") => return Err("provider stream error".into()),
-                        _ => {} // Item/argument deltas are finalized by the terminal response.
-                    }
-                }
-            }
-            Err("provider stream interrupted before terminal response; usage may be unknown".into())
-        };
-        let response = tokio::select! {
-            result = pending => result?,
-            _ = async { loop { if cancel.is_cancelled() { break; } tokio::time::sleep(std::time::Duration::from_millis(20)).await; } } => {
-                return Err("provider request cancelled; usage unknown".into());
-            }
-        };
-        Ok(response)
-    }
+
+fn string(value: &Value, key: &str) -> Result<String, String> {
+    value
+        .get(key)
+        .and_then(Value::as_str)
+        .map(str::to_owned)
+        .ok_or_else(|| format!("missing provider {key}"))
 }
 
-/// Incremental SSE framing. UTF-8 is decoded only after whole lines arrive;
-/// chunks may split multibyte characters, CRLF, or a JSON tool argument.
-#[derive(Default)]
-struct EventDecoder {
-    pending: Vec<u8>,
-    data: Vec<String>,
-}
-impl EventDecoder {
-    fn push(&mut self, bytes: &[u8]) -> Result<Vec<Value>, String> {
-        self.pending.extend_from_slice(bytes);
-        let mut events = Vec::new();
-        while let Some(end) = self.pending.iter().position(|b| *b == b'\n') {
-            let line: Vec<u8> = self.pending.drain(..=end).collect();
-            let line = std::str::from_utf8(&line)
-                .map_err(|_| "invalid stream UTF-8")?
-                .trim_end_matches(['\n', '\r']);
-            if line.is_empty() {
-                if !self.data.is_empty() {
-                    let data = self.data.join("\n");
-                    self.data.clear();
-                    if data != "[DONE]" {
-                        events
-                            .push(serde_json::from_str(&data).map_err(|_| "invalid stream JSON")?);
-                    }
-                }
-            } else if let Some(data) = line.strip_prefix("data:") {
-                self.data
-                    .push(data.strip_prefix(' ').unwrap_or(data).into());
-            }
-        }
-        Ok(events)
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn incomplete_output_never_executes() {
+        assert!(decode(br#"{"status":"incomplete","output":[{"type":"function_call","call_id":"c","name":"save","arguments":"{}"}]}"#).is_err());
+        assert!(
+            decode(br#"{"status":"completed","output":[{"type":"function_call","call_id":"c"}]}"#)
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn endpoint_requires_tls_except_local_tests() {
+        assert!(
+            Responses::with_endpoint(
+                "secret".into(),
+                "model".into(),
+                "http://example.com/v1/responses"
+            )
+            .is_err()
+        );
+        assert!(Responses::new("".into(), "model".into()).is_err());
     }
 }

@@ -963,6 +963,10 @@ pub fn default_api_base() -> &'static str {
 
 /// Returns the Duet API origin for this build.
 pub fn api_base_url() -> String {
+    #[cfg(all(target_arch = "wasm32", feature = "web"))]
+    if let Some(window) = web_sys::window() {
+        return window.location().origin().unwrap_or_default();
+    }
     match option_env!("DUET_API_URL") {
         Some(url) if !url.is_empty() => url.to_owned(),
         _ => default_api_base().to_owned(),
@@ -971,6 +975,9 @@ pub fn api_base_url() -> String {
 
 /// Returns the bearer this build sends.
 pub fn api_bearer() -> String {
+    // The dedicated Duet web build never embeds a bearer; the mode shell's
+    // synthetic browser journeys still compile one in.
+    #[cfg(not(all(target_arch = "wasm32", feature = "web")))]
     if let Some(bearer) = option_env!("DUET_BEARER")
         && !bearer.is_empty()
     {
