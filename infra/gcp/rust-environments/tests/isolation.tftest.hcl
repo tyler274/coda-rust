@@ -22,14 +22,12 @@ variables {
     stg = { project_id = "test-rust-stg-only", state_bucket_name = "test-rust-stg-state-only" }
     prd = { project_id = "test-rust-prd-only", state_bucket_name = "test-rust-prd-state-only" }
   }
-  organization_id              = "123456789"
-  billing_account              = "000000-000000-000000"
-  iap_group                    = "test-team@example.invalid"
-  state_admin_members          = ["group:test-infra@example.invalid"]
-  github_repository_id         = "100000001"
-  github_owner_id              = "100000002"
-  monthly_budget_usd           = 100
-  budget_notification_channels = ["projects/test-monitoring-only/notificationChannels/100"]
+  organization_id      = "123456789"
+  billing_account      = "000000-000000-000000"
+  iap_group            = "test-team@example.invalid"
+  state_admin_members  = ["group:test-infra@example.invalid"]
+  github_repository_id = "100000001"
+  github_owner_id      = "100000002"
 }
 
 run "foundations_only" {
@@ -53,6 +51,29 @@ run "foundations_only" {
   assert {
     condition     = length(google_service_account_iam_member.release_act_as) == 0
     error_message = "Inactive workloads must not grant deployer actAs."
+  }
+  assert {
+    condition     = length(google_project_iam_member.sql_login) == 4 && length(google_project_iam_member.sql_connect) == 4
+    error_message = "Administrator bootstrap must install database IAM before database activation."
+  }
+  assert {
+    condition = alltrue([for key, grant in google_project_iam_member.sql_connect :
+      grant.condition[0].expression == (startswith(key, "physician-") ? "resource.name == 'projects/test-rust-stg-only/instances/rust-physician'" : "resource.name == 'projects/test-rust-stg-only/instances/rust-duet'")
+    ])
+    error_message = "Bootstrap database grants must remain scoped to the principal's product instance."
+  }
+}
+
+run "single_environment_bootstrap" {
+  command = plan
+  variables {
+    projects = {
+      stg = { project_id = "test-rust-stg-only", state_bucket_name = "test-rust-stg-state-only" }
+    }
+  }
+  assert {
+    condition     = google_project.environment.project_id == "test-rust-stg-only" && length(google_sql_database_instance.app) == 0 && length(google_cloud_run_v2_service.app) == 0
+    error_message = "Staging bootstrap must not require other project IDs or activate databases/services."
   }
 }
 

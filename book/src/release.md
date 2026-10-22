@@ -6,7 +6,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 - [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) is the only workflow. The `ci` job runs `cargo fmt --check`, clippy, `cargo test --workspace`, the browser proofs (physician auth journeys, the public site, then the `mobile` mode shells), then `mdbook build book` with the [book link check](setup.md#reading-and-checking-this-book), and `cargo doc`. The workflow's comments are the maintained step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
-- `deploy-staging` runs on pushes to `main` only when the repository variable `RUST_STAGING_DEPLOY` is `enabled`. [GCP deployment](gcp.md#rust-staging-deploy-switch) says when an administrator sets it.
+- `deploy-staging` runs on pushes to `main` only when the repository variable `RUST_STAGING_DEPLOY` is `enabled`. [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) says when an administrator sets it.
 - CI installs `wasm-bindgen`, mdBook, and lychee from pinned, checksum-verified release archives, not with `cargo install`. The comments next to each install step give the reason for its pin.
 - Run the workflow locally with `act` from `nix develop`. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
@@ -31,7 +31,7 @@ This workspace does not run `init` against a backend and does not apply these ro
 | Root | Owns | Owner document |
 | --- | --- | --- |
 | [`infra/gcp/public-site`](/infra/gcp/public-site) | Public-site Cloud Run behind IAP. This workspace owns its staging state and may plan and apply staging from a reviewed saved plan; never production. | [Public site](public-site.md#staging-state-and-deployment) |
-| [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services (ENG-167). It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-deploy-switch) |
+| [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services (ENG-167). It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
 
 ## Duet backend on GCP

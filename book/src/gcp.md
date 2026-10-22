@@ -1,6 +1,6 @@
 # GCP deployment
 
-Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply them. The one exception is public-site staging, described below. [Build, CI, and release](release.md#physician-hosting) says what each root owns.
+Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#physician-hosting) says what each root owns.
 
 ## Public marketing site preparation
 
@@ -42,26 +42,88 @@ Vercel retirement.
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: front-door chain, then the Duet coverage check |
 | `duet-privacy-delivery-image` | `coda-duet-privacy-delivery` | job | `duet-privacy-delivery`, a bounded Luna receipt job |
 
-- The runtime servers never migrate. They bind `0.0.0.0:$PORT`, where `PORT` defaults to 8080. `/health` reports liveness. `/readyz` answers 503 until hosted qualification exists. When `K_SERVICE` or `CODA_HOSTED` is set, the server refuses to start.
+- The runtime servers never migrate. They bind `0.0.0.0:$PORT`, where `PORT` defaults to 8080. `/health` reports liveness. Hosted startup accepts only the explicit `stg` / `staging-preview` profile with its required stores and identity configuration; other hosted profiles refuse to start. `/readyz` checks the configured schemas. This preview profile and a successful schema check do not establish hosted sign-in, live-model acceptance or production readiness. The startup owners are [`physician-sample/src/hosting.rs`](/crates/physician-sample/src/hosting.rs) and [`duet-api/src/main.rs`](/crates/duet-api/src/main.rs).
 - Each image contains the binary and the libraries it links, Doppler, CA roots, tzdata and a passwd entry for uid `65532`. The image has no shell or toolchain. It runs as `65532:65532` with working directory `/tmp`.
 - Every entrypoint is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in [`crates/workspace-tools/src/doppler.rs`](/crates/workspace-tools/src/doppler.rs). Nix reads the version and SHA-256 from that file, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
-- `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and proves that each one fails closed without a token, hosting qualification or a database. Against a disposable PostgreSQL it runs both migration images twice, then starts both servers to check `/health` 200, `/readyz` 503, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
+- `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and checks rejection of missing credentials or an unconfigured hosted profile. Against disposable PostgreSQL it runs both migration images twice, then starts both servers to check `/health` 200, schema readiness 200, the WASM assets and a clean SIGTERM exit. The local Duet smoke uses a file journal and placeholder Identity Platform configuration; it does not exercise Cloud Run's required independent GCS journal or real sign-in. The `images` CI job runs this script. Nothing is pushed.
 
-## Rust staging deploy switch
+## Rust staging bootstrap and deployment gate
+
+The isolated project is `coda-rust-staging` in `us-east1`. It is separate from
+`coda-health-staging`, which hosts the public marketing site. The root owns its
+GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
+[`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars) and
+[`backend/staging.gcs.tfbackend`](/infra/gcp/rust-environments/backend/staging.gcs.tfbackend).
+
+From an authorized engineering account:
+
+```bash
+root=infra/gcp/rust-environments
+nix develop .#release --command tofu -chdir="$root" init -input=false \
+  -backend-config=backend/staging.gcs.tfbackend
+nix develop .#release --command tofu -chdir="$root" plan -input=false \
+  -var-file=env/staging.tfvars -out=staging.tfplan
+```
+
+Review the saved plan before any separately authorized apply. Engineering-group
+access owns routine infrastructure administration and state access. Project IAM,
+custom-role changes and billing administration remain with Dev. The administrator
+bootstrap installs conditional database IAM grants before databases exist, so
+later database activation does not itself need another project-IAM grant.
+
+Engineering-group access includes Identity Platform administration for Duet's
+hosted sign-in setup. Tyler's domain-mapping access concern remains unverified;
+this root does not create domain mappings. The foundation plan was verified under
+Dev's account; an infrastructure plan and deployment from Tyler's account remain
+unverified.
+
+The foundation comprises the private network and SQL peering, five service
+accounts, GitHub WIF, immutable application registry, four empty Doppler bootstrap
+secret slots with separate readers, CI grants and 30-day logs. Dev owns the
+separate `coda-rust-stg` $10 monthly budget alert in Cloud Billing, using the
+existing billing recipients; it is not a spending cap. Budgets are deliberately
+outside this state so an engineering plan does not need billing-account access.
+The committed inputs keep databases and workloads disabled.
 
 The `deploy-staging` job in [`.github/workflows/ci.yml`](/.github/workflows/ci.yml)
 runs on pushes to `main` only when the repository variable
-`RUST_STAGING_DEPLOY` is `enabled`. Leave it unset until an administrator has
-bootstrapped the Rust staging resources in `coda-health-staging`, the saved-plan
-applies have succeeded, and the GitHub `staging` environment holds
+`RUST_STAGING_DEPLOY` is `enabled`. Keep it unset until runtime acceptance and the
+release integration below are complete, saved-plan applies have succeeded, and
+the GitHub `staging` environment holds
 `GCP_WORKLOAD_IDENTITY_PROVIDER`, `GCP_DEPLOYER_SERVICE_ACCOUNT`,
-`GCP_PROJECT_ID`, `GCP_REGION` and `RELEASE_ENVIRONMENT`. Then enable it:
+`GCP_PROJECT_ID`, `GCP_REGION` and the qualified `RELEASE_ENVIRONMENT`. Only after
+that work and deployment approval, enable it:
 
 ```bash
 gh variable set RUST_STAGING_DEPLOY --body enabled
 ```
 
 Unsetting the variable stops staging deploys without editing the workflow.
+
+The first deployment remains gated. Bootstrap and green CI do not resolve these
+current owners' outstanding work:
+
+- **Hosted identity:** physician [`auth.rs`](/crates/physician-sample/src/auth.rs)
+  still returns proof tokens from sign-in. Duet web requires a registered Apple
+  Services ID/return URL, its SDK, Identity Platform configuration and the public
+  build-time settings consumed by [`browser_identity.rs`](/crates/duet-app/src/browser_identity.rs)
+  and [`account.rs`](/crates/duet-app/src/account.rs); the current Nix image builder
+  does not supply those settings.
+- **Runtime and data setup:** activate the two separate SQL instances, install
+  the SQL grants, run the explicit migration images, configure the independent
+  Duet GCS privacy journal, and populate four least-scope Doppler configs/tokens.
+  Verify private TLS, account isolation, retained conversations, readiness and
+  the runtime's actual model/pool limits before accepting the activation gate.
+- **Release wiring:** the current workflow does not produce the immutable
+  build/runtime/compatibility manifests required by
+  [`release_commands.py`](/scripts/gcp/release_commands.py), nor configure its
+  deployer/verifier/smoke identities. Its region/token environment and `ci` job
+  lookup also need correction. The runner requires previous-release evidence,
+  so the first-release bootstrap must be explicitly implemented and verified;
+  do not fabricate a previous release or weaken the evidence checks.
+
+These are deployment blockers, not evidence that ENG-167's hosted acceptance is
+complete. No Rust application URL exists until the workloads are deployed.
 
 ## Release procedure
 

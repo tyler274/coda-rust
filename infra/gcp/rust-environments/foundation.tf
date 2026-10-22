@@ -1,9 +1,10 @@
 locals {
-  project_id = var.projects[var.environment].project_id
-  apps       = toset(["physician", "duet"])
-  databases  = var.enable_databases ? local.apps : toset([])
-  workloads  = var.enable_workloads ? local.apps : toset([])
-  identities = { for pair in setproduct(local.apps, ["runtime", "migration"]) : "${pair[0]}-${pair[1]}" => { app = pair[0], role = pair[1] } }
+  project_id         = var.projects[var.environment].project_id
+  apps               = toset(["physician", "duet"])
+  sql_instance_names = { for app in local.apps : app => "rust-${app}" }
+  databases          = var.enable_databases ? local.apps : toset([])
+  workloads          = var.enable_workloads ? local.apps : toset([])
+  identities         = { for pair in setproduct(local.apps, ["runtime", "migration"]) : "${pair[0]}-${pair[1]}" => { app = pair[0], role = pair[1] } }
   services = toset([
     "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
@@ -96,28 +97,8 @@ resource "google_artifact_registry_repository" "apps" {
   depends_on = [google_project_service.api]
 }
 
-resource "google_billing_budget" "environment" {
-  billing_account = var.billing_account
-  display_name    = "coda-rust-${var.environment}"
-  budget_filter {
-    projects               = ["projects/${google_project.environment.number}"]
-    credit_types_treatment = "INCLUDE_ALL_CREDITS"
-  }
-  amount {
-    specified_amount {
-      currency_code = "USD"
-      units         = tostring(ceil(var.monthly_budget_usd))
-    }
-  }
-  dynamic "threshold_rules" {
-    for_each = [0.5, 0.8, 1.0]
-    content { threshold_percent = threshold_rules.value }
-  }
-  all_updates_rule {
-    monitoring_notification_channels = var.budget_notification_channels
-    disable_default_iam_recipients   = true
-  }
-}
+# Billing-account administrators manage budgets outside this engineering state.
+# Refreshing or planning project infrastructure must not require billing access.
 
 resource "google_logging_project_bucket_config" "default" {
   project        = google_project.environment.project_id

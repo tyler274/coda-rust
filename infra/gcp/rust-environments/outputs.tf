@@ -48,7 +48,7 @@ output "doppler_bootstrap_secrets" {
 
 output "activation_blockers" {
   value = [
-    "Operator verifies NEW IDs, organization/folder/billing authority, separate state access, region, in-organization IAP group, budget channels and approvals.",
+    "Operator verifies project IDs, organization/folder/billing association authority, separate state access, region and in-organization IAP group. Billing administrators manage budget alerts outside this engineering state.",
     "Operator creates protected GitHub dev/staging/production environments; production requires independent reviewers. No CI infrastructure credentials.",
     "Operator provisions foundations, publishes immutable images, and separately enables databases (two continuously billed instances).",
     "Operator bootstraps per-app SQL grants; runtime owners prove IAM token refresh/private TLS, durable auth/chat, no auto-migrate, bounded pool <=4 and enforced model usage limits/provider quotas.",

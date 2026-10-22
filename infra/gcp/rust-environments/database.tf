@@ -38,7 +38,7 @@ resource "google_service_networking_connection" "sql" {
 resource "google_sql_database_instance" "app" {
   for_each            = local.databases
   project             = google_project.environment.project_id
-  name                = "rust-${each.key}"
+  name                = local.sql_instance_names[each.key]
   region              = var.region
   database_version    = "POSTGRES_17"
   deletion_protection = true
@@ -106,23 +106,24 @@ resource "google_sql_user" "app" {
 }
 
 resource "google_project_iam_member" "sql_login" {
-  for_each = var.enable_databases ? local.identities : {}
+  # Bootstrap project IAM before engineers activate the separately gated databases.
+  for_each = local.identities
   project  = google_project.environment.project_id
   role     = "roles/cloudsql.instanceUser"
   member   = "serviceAccount:${google_service_account.app[each.key].email}"
   condition {
     title      = "only-${each.value.app}-instance"
-    expression = "resource.name == 'projects/${local.project_id}/instances/${google_sql_database_instance.app[each.value.app].name}'"
+    expression = "resource.name == 'projects/${local.project_id}/instances/${local.sql_instance_names[each.value.app]}'"
   }
 }
 
 resource "google_project_iam_member" "sql_connect" {
-  for_each = var.enable_databases ? local.identities : {}
+  for_each = local.identities
   project  = google_project.environment.project_id
   role     = "roles/cloudsql.client"
   member   = "serviceAccount:${google_service_account.app[each.key].email}"
   condition {
     title      = "only-${each.value.app}-instance"
-    expression = "resource.name == 'projects/${local.project_id}/instances/${google_sql_database_instance.app[each.value.app].name}'"
+    expression = "resource.name == 'projects/${local.project_id}/instances/${local.sql_instance_names[each.value.app]}'"
   }
 }

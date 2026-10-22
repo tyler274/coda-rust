@@ -12,15 +12,16 @@ variable "projects" {
     project_id        = string
     state_bucket_name = string
   }))
-  description = "Operator-verified NEW globally available IDs and state buckets for all three environments. No live defaults."
+  description = "Operator-verified project IDs and state buckets, including the selected environment. Import an existing bootstrap project before applying."
   validation {
     condition = (
-      toset(keys(var.projects)) == toset(["dev", "stg", "prd"]) &&
-      length(distinct([for p in values(var.projects) : p.project_id])) == 3 &&
-      length(distinct([for p in values(var.projects) : p.state_bucket_name])) == 3 &&
+      contains(keys(var.projects), var.environment) &&
+      alltrue([for environment in keys(var.projects) : contains(["dev", "stg", "prd"], environment)]) &&
+      length(distinct([for p in values(var.projects) : p.project_id])) == length(var.projects) &&
+      length(distinct([for p in values(var.projects) : p.state_bucket_name])) == length(var.projects) &&
       alltrue([for p in values(var.projects) : can(regex("^[a-z][a-z0-9-]{4,28}[a-z0-9]$", p.project_id))])
     )
-    error_message = "Supply three distinct, valid NEW project IDs and distinct state bucket names keyed dev/stg/prd."
+    error_message = "Include the selected environment, use only dev/stg/prd keys, and supply distinct valid project IDs and state bucket names."
   }
 }
 
@@ -41,7 +42,7 @@ variable "folder_id" {
 
 variable "billing_account" {
   type        = string
-  description = "Operator-approved billing account; provisioning identity needs billing association and budget authority."
+  description = "Operator-approved billing account; initial project creation needs billing association authority. Budgets remain outside this state with billing-account administrators."
 }
 
 variable "region" {
@@ -83,24 +84,6 @@ variable "github_owner_id" {
   validation {
     condition     = can(regex("^[0-9]+$", var.github_owner_id))
     error_message = "Supply the immutable numeric repository owner ID."
-  }
-}
-
-variable "monthly_budget_usd" {
-  type        = number
-  description = "Approved monthly project budget. Alerts only, NOT a spending cap; two Cloud SQL instances incur continuous cost when enabled."
-  validation {
-    condition     = var.monthly_budget_usd > 0
-    error_message = "Budget must be positive."
-  }
-}
-
-variable "budget_notification_channels" {
-  type        = list(string)
-  description = "Existing authorized Cloud Monitoring email channel resource names (maximum five), no implicit recipients."
-  validation {
-    condition     = length(var.budget_notification_channels) > 0 && length(var.budget_notification_channels) <= 5
-    error_message = "Provide one to five approved budget email notification channels."
   }
 }
 

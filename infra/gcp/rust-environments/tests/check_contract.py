@@ -20,6 +20,12 @@ class Contract(unittest.TestCase):
             config = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#"))
             self.assertNotIn(forbidden, config)
 
+    def test_billing_remains_outside_engineering_state(self):
+        # A billing-account resource would require billing access even for a
+        # routine refresh/plan by the project infrastructure administrator.
+        config = "\n".join(path.read_text() for path in ROOT.glob("*.tf"))
+        self.assertNotIn('resource "google_billing_budget"', config)
+
     def test_single_isolated_root(self):
         versions = (ROOT / "versions.tf").read_text()
         self.assertIn('backend "gcs" {}', versions)
