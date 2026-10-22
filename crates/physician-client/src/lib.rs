@@ -186,6 +186,29 @@ impl PhysicianClient {
         self.get("/auth/whoami").await
     }
 
+    /// Searches the public directory without placing name criteria in a URL.
+    pub async fn search_clinicians(
+        &self,
+        query: &physician_wire::ClinicianSearch,
+    ) -> Result<Vec<physician_wire::ClinicianSummary>, http::HttpError> {
+        self.post("/auth/clinicians/search", query).await
+    }
+
+    /// Associates a server-fetched NPI with this account; does not verify identity.
+    pub async fn claim_npi(
+        &self,
+        request: &physician_wire::NpiClaimRequest,
+    ) -> Result<physician_wire::NpiClaim, http::HttpError> {
+        self.put("/auth/profile/npi", request).await
+    }
+
+    /// Removes this account's self-asserted directory association.
+    pub async fn clear_npi(&self) -> Result<(), http::HttpError> {
+        self.delete::<serde_json::Value>("/auth/profile/npi")
+            .await
+            .map(|_| ())
+    }
+
     /// Reads the patient workspaces on `physician_id`'s panel.
     pub async fn panel(&self, physician_id: &str) -> Result<PanelResponse, http::HttpError> {
         self.get(&format!("/auth/panels/{}", query_escape(physician_id)))
@@ -520,6 +543,51 @@ mod tests {
             .unwrap();
         let snapshot = client.chat_snapshot("ws", "chat").await.unwrap();
         assert_eq!(snapshot.snapshot.conversation[0].body(), Some("Hello"));
+    }
+
+    #[tokio::test]
+    async fn npi_client_uses_authenticated_post_put_and_delete() {
+        use physician_wire::{ClinicianSearch, NpiClaimRequest};
+        let app = axum::Router::new()
+            .route("/auth/clinicians/search", axum::routing::post(|headers: axum::http::HeaderMap, Json(body): Json<serde_json::Value>| async move {
+                assert_eq!(headers["authorization"], "Bearer npi-session");
+                assert_eq!(body["last_name"], "Example");
+                Json(serde_json::json!([]))
+            }))
+            .route("/auth/profile/npi", axum::routing::put(|headers: axum::http::HeaderMap, Json(body): Json<serde_json::Value>| async move {
+                assert_eq!(headers["authorization"], "Bearer npi-session");
+                assert_eq!(body["npi"], "1234567893");
+                assert_eq!(body["override_name"], false);
+                Json(serde_json::json!({"clinician":{"npi":"1234567893","name":"Ada Example","credential":"MD","specialty":"Internal Medicine","practice_address":null,"individual":true},"lookup_checked_at":42,"name_matched":true}))
+            }).delete(|headers: axum::http::HeaderMap| async move {
+                assert_eq!(headers["authorization"], "Bearer npi-session");
+                axum::http::StatusCode::NO_CONTENT
+            }));
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = PhysicianClient::new(format!("http://{address}"));
+        client.session().set("npi-session".into());
+        assert!(
+            client
+                .search_clinicians(&ClinicianSearch {
+                    last_name: Some("Example".into()),
+                    ..Default::default()
+                })
+                .await
+                .unwrap()
+                .is_empty()
+        );
+        let claim = client
+            .claim_npi(&NpiClaimRequest {
+                npi: "1234567893".into(),
+                override_name: false,
+            })
+            .await
+            .unwrap();
+        assert_eq!(claim.lookup_checked_at, 42);
+        assert!(claim.name_matched);
+        client.clear_npi().await.unwrap();
     }
 
     #[tokio::test]

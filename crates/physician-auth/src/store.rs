@@ -96,6 +96,9 @@ impl PostgresAuthStore {
             admin: Set(admin),
             sessions_ended_before: Set(0),
             created_at: Set(now as i64),
+            npi: Set(None),
+            npi_snapshot: Set(None),
+            npi_lookup_checked_at: Set(None),
         };
         let inserted = Accounts::insert(account)
             .on_conflict(
@@ -160,6 +163,9 @@ impl PostgresAuthStore {
             active: row.active,
             admin: row.admin,
             sessions_ended_before: row.sessions_ended_before.max(0) as u64,
+            npi: row
+                .npi_snapshot
+                .and_then(|snapshot| serde_json::from_value(snapshot).ok()),
         }
     }
 }
@@ -227,6 +233,77 @@ fn authority_query(
 
 #[async_trait]
 impl AuthStore for PostgresAuthStore {
+    async fn claim_npi(
+        &self,
+        identity: &PhysicianIdentity,
+        clinician: npi_registry::Clinician,
+        now: u64,
+        override_name: bool,
+    ) -> Result<crate::NpiAssociation, crate::NpiAssociationError> {
+        use crate::NpiAssociationError as Error;
+        use crate::migration::account::Column;
+        use sea_orm::{IntoActiveModel, QuerySelect};
+        let tx = self.db.begin().await.map_err(|_| Error::Unavailable)?;
+        let row = Accounts::find()
+            .filter(Column::PracticeId.eq(&identity.practice_id))
+            .filter(Column::PhysicianId.eq(&identity.physician_id))
+            .lock_exclusive()
+            .one(&tx)
+            .await
+            .map_err(|_| Error::Unavailable)?
+            .ok_or(Error::Inactive)?;
+        let association = crate::npi::association(
+            &Self::account_row(row.clone()),
+            clinician,
+            now,
+            override_name,
+        )?;
+        let mut active = row.into_active_model();
+        active.npi = Set(Some(association.clinician.npi.to_string()));
+        active.npi_snapshot = Set(Some(
+            serde_json::to_value(&association).map_err(|_| Error::Unavailable)?,
+        ));
+        active.npi_lookup_checked_at =
+            Set(Some(i64::try_from(now).map_err(|_| Error::Unavailable)?));
+        active.update(&tx).await.map_err(|error| {
+            if matches!(
+                error.sql_err(),
+                Some(sea_orm::SqlErr::UniqueConstraintViolation(_))
+            ) {
+                Error::Conflict
+            } else {
+                Error::Unavailable
+            }
+        })?;
+        tx.commit().await.map_err(|_| Error::Unavailable)?;
+        Ok(association)
+    }
+
+    async fn clear_npi(
+        &self,
+        identity: &PhysicianIdentity,
+    ) -> Result<(), crate::NpiAssociationError> {
+        use crate::NpiAssociationError as Error;
+        use crate::migration::account::Column;
+        let result = Accounts::update_many()
+            .set(crate::migration::AccountActiveModel {
+                npi: Set(None),
+                npi_snapshot: Set(None),
+                npi_lookup_checked_at: Set(None),
+                ..Default::default()
+            })
+            .filter(Column::PracticeId.eq(&identity.practice_id))
+            .filter(Column::PhysicianId.eq(&identity.physician_id))
+            .filter(Column::Active.eq(true))
+            .exec(&self.db)
+            .await
+            .map_err(|_| Error::Unavailable)?;
+        if result.rows_affected == 0 {
+            Err(Error::Inactive)
+        } else {
+            Ok(())
+        }
+    }
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError> {
         let key = email.to_lowercase();
         let account = Accounts::find()
@@ -574,7 +651,7 @@ impl AuthStore for PostgresAuthStore {
             .into_iter()
             .map(Self::account_row)
             .collect();
-        accounts.sort();
+        accounts.sort_by(|a, b| a.identity.cmp(&b.identity));
         accounts
     }
 
@@ -686,6 +763,7 @@ impl AuthStore for PostgresAuthStore {
             admin: Set(invitation.admin),
             sessions_ended_before: Set(0),
             created_at: Set(now as i64),
+            ..Default::default()
         };
         let account = account.insert(&txn).await.map_err(stale)?;
         let session_token = mint_token();
@@ -731,6 +809,7 @@ impl AuthStore for PostgresAuthStore {
             admin: Set(account.admin),
             sessions_ended_before: Set(account.sessions_ended_before),
             created_at: Set(account.created_at),
+            ..Default::default()
         };
         // The fence, not row deletion: reactivation never resurrects the
         // sessions deactivation ended, and resolution keeps naming why.
@@ -769,6 +848,7 @@ impl AuthStore for PostgresAuthStore {
             admin: Set(account.admin),
             sessions_ended_before: Set(account.sessions_ended_before),
             created_at: Set(account.created_at),
+            ..Default::default()
         };
         update.update(&self.db).await.is_ok()
     }

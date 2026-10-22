@@ -9,6 +9,58 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+/// Public-directory information displayed in the physician profile.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ClinicianSummary {
+    /// Ten-digit public NPI.
+    pub npi: String,
+    /// NPPES display name.
+    pub name: String,
+    /// Public credential text; not independently checked.
+    pub credential: Option<String>,
+    /// Public primary taxonomy description.
+    pub specialty: Option<String>,
+    /// Public practice address, formatted for display.
+    pub practice_address: Option<String>,
+    /// Whether the directory record represents an individual.
+    pub individual: bool,
+}
+
+/// Self-asserted association only; never an identity or credential verification.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct NpiClaim {
+    /// Server-fetched public directory summary.
+    pub clinician: ClinicianSummary,
+    /// Unix second the lookup was checked (potentially from the directory TTL cache).
+    pub lookup_checked_at: u64,
+    /// Name consistency check outcome; does not prove ownership.
+    pub name_matched: bool,
+}
+
+/// Request to associate an NPI with the signed-in account only.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct NpiClaimRequest {
+    /// NPI to look up on the server.
+    pub npi: String,
+    #[serde(default)]
+    /// Administrator-only bypass of name consistency, never an authority grant.
+    pub override_name: bool,
+}
+
+/// Public directory search criteria for the physician picker.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ClinicianSearch {
+    /// Optional given name.
+    pub first_name: Option<String>,
+    /// Family name search.
+    pub last_name: Option<String>,
+    /// Optional city.
+    pub city: Option<String>,
+    /// Optional state code (insufficient on its own).
+    pub state: Option<String>,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `HealthResponse` value exchanged by this crate.
 pub struct HealthResponse {
@@ -788,6 +840,9 @@ pub struct WhoamiResponse {
     #[serde(default)]
     /// Active accounts in the caller's practice when `admin` is true.
     pub practice_accounts: Vec<PracticeAccountSummary>,
+    #[serde(default)]
+    /// Self-asserted NPI association, not credential or identity verification.
+    pub npi: Option<NpiClaim>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]

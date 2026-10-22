@@ -4,6 +4,7 @@
 #![deny(missing_docs)]
 
 mod icons;
+mod profile;
 mod shell;
 
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -856,6 +857,7 @@ fn PhysicianShell(
                     div { class: "sidebar-footer",
                         if !whoami_name().is_empty() {
                             span { class: "sidebar-physician", "{whoami_name}" }
+                            profile::NpiProfile { client: client.read().clone(), whoami }
                         }
                         if connection_accounts {
                             button {

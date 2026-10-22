@@ -22,6 +22,7 @@
 //! an open "Discuss with Dev" item, not decided here.
 //! Book: `book/src/physician-site.md`.
 
+mod npi;
 use std::collections::HashSet;
 use std::sync::Arc;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
@@ -71,6 +72,8 @@ pub(crate) struct AuthContext {
 pub(crate) struct Auth {
     /// The durable store: Postgres when configured, memory otherwise.
     pub(crate) store: Arc<dyn AuthStore>,
+    /// Public directory only: never an identity or authority provider.
+    pub(crate) directory: Arc<dyn npi_registry::Directory>,
     /// Serializes local authority mutations with publication. PostgreSQL also
     /// holds row locks against mutations from other server instances.
     pub(crate) publication: tokio::sync::Mutex<()>,
@@ -116,6 +119,7 @@ impl Auth {
         let (events, _) = broadcast::channel(64);
         Arc::new(Self {
             store,
+            directory: Arc::new(npi_registry::Client::new().expect("NPPES HTTP client")),
             publication: tokio::sync::Mutex::new(()),
             delivery: std::sync::Mutex::new(Vec::new()),
             front_door,
@@ -881,6 +885,7 @@ async fn whoami(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     Json(json!({
         "physician_id": identity.physician_id,
         "practice_id": identity.practice_id,
+        "npi": account.as_ref().and_then(|account| account.npi.as_ref()).map(npi::claim),
         "display_name": account.map(|account| account.display_name)
             .unwrap_or_else(|| identity.physician_id.clone()),
         "admin": admin,
@@ -1180,6 +1185,8 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
         .route("/auth/verify", post(verify))
         .route("/auth/sign-out", post(sign_out))
         .route("/auth/whoami", get(whoami))
+        .route("/auth/profile/npi", put(npi::associate).delete(npi::clear))
+        .route("/auth/clinicians/search", post(npi::search))
         .route("/auth/panels/{physician_id}", get(get_panel))
         .route(
             "/auth/panels/{physician_id}/{patient_workspace_id}",

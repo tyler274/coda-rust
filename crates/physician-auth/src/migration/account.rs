@@ -24,6 +24,12 @@ pub struct Model {
     pub sessions_ended_before: i64,
     /// The Unix second the account was created.
     pub created_at: i64,
+    /// Self-asserted NPI, globally unique while associated; not verified ownership.
+    pub npi: Option<String>,
+    /// Public directory snapshot and name consistency metadata.
+    pub npi_snapshot: Option<Json>,
+    /// Unix second of directory lookup, never credential verification.
+    pub npi_lookup_checked_at: Option<i64>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

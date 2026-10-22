@@ -19,7 +19,9 @@ use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
 mod error;
+mod npi;
 mod store;
+pub use npi::{NpiAssociation, NpiAssociationError};
 
 pub use error::{PanelError, SessionError, SignInError};
 pub use patient_work::ReviewCadence;
@@ -114,7 +116,7 @@ pub enum Membership {
 }
 
 /// One physician account in one practice.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Account {
     /// The account's identity.
     pub identity: PhysicianIdentity,
@@ -131,6 +133,8 @@ pub struct Account {
     /// Sessions minted before this Unix second never resolve; deactivation
     /// moves it forward and reactivation leaves it there.
     pub sessions_ended_before: u64,
+    /// Self-asserted directory association; never used for account authority.
+    pub npi: Option<NpiAssociation>,
 }
 
 /// One browser session a sign-in minted.
@@ -184,6 +188,16 @@ pub trait AuthStore: Send + Sync {
     async fn account_by_email(&self, email: &str) -> Option<Account>;
     /// Reads one account by its identity.
     async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account>;
+    /// Associates a server-fetched directory record; this grants no account authority.
+    async fn claim_npi(
+        &self,
+        identity: &PhysicianIdentity,
+        clinician: npi_registry::Clinician,
+        now: u64,
+        override_name: bool,
+    ) -> Result<NpiAssociation, NpiAssociationError>;
+    /// Clears only the caller's directory association.
+    async fn clear_npi(&self, identity: &PhysicianIdentity) -> Result<(), NpiAssociationError>;
     /// Reads whether the physician may read one patient workspace.
     async fn membership(
         &self,
@@ -392,6 +406,7 @@ impl MemoryAuthStore {
                 active: true,
                 admin,
                 sessions_ended_before: 0,
+                npi: None,
             },
         );
     }
@@ -405,7 +420,7 @@ impl MemoryAuthStore {
             .filter(|account| account.identity.practice_id == practice_id)
             .cloned()
             .collect();
-        accounts.sort();
+        accounts.sort_by(|a, b| a.identity.cmp(&b.identity));
         accounts
     }
 
@@ -444,6 +459,47 @@ impl MemoryAuthStore {
 
 #[async_trait]
 impl AuthStore for MemoryAuthStore {
+    async fn claim_npi(
+        &self,
+        identity: &PhysicianIdentity,
+        clinician: npi_registry::Clinician,
+        now: u64,
+        override_name: bool,
+    ) -> Result<NpiAssociation, NpiAssociationError> {
+        let mut state = self.state.lock().expect("auth state");
+        let account = state
+            .accounts
+            .values()
+            .find(|a| &a.identity == identity)
+            .ok_or(NpiAssociationError::Inactive)?;
+        let association = npi::association(account, clinician, now, override_name)?;
+        if state.accounts.values().any(|a| {
+            &a.identity != identity
+                && a.npi
+                    .as_ref()
+                    .is_some_and(|n| n.clinician.npi == association.clinician.npi)
+        }) {
+            return Err(NpiAssociationError::Conflict);
+        }
+        state
+            .accounts
+            .values_mut()
+            .find(|a| &a.identity == identity)
+            .unwrap()
+            .npi = Some(association.clone());
+        Ok(association)
+    }
+
+    async fn clear_npi(&self, identity: &PhysicianIdentity) -> Result<(), NpiAssociationError> {
+        let mut state = self.state.lock().expect("auth state");
+        let account = state
+            .accounts
+            .values_mut()
+            .find(|a| &a.identity == identity && a.active)
+            .ok_or(NpiAssociationError::Inactive)?;
+        account.npi = None;
+        Ok(())
+    }
     async fn begin_sign_in(&self, email: &str, now: u64) -> Result<String, SignInError> {
         let key = email.to_lowercase();
         let mut state = self.state.lock().expect("auth state");
@@ -814,6 +870,7 @@ impl AuthStore for MemoryAuthStore {
                 active: true,
                 admin,
                 sessions_ended_before: 0,
+                npi: None,
             },
         );
         let session_token = self

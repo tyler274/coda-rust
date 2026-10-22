@@ -7,6 +7,7 @@
 //! bearer per sign-in, no refresh-token family or rotation.
 
 use sea_orm_migration::prelude::*;
+mod npi;
 mod upgrade;
 pub use upgrade::migrate;
 
@@ -58,6 +59,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20260101_000001_init),
             Box::new(m20260101_000002_practice_patients),
+            Box::new(npi::NpiAssociation),
         ]
     }
 }
