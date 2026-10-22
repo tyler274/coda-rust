@@ -29,11 +29,5 @@ if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
 fi
 
 cd "$root"
-# public-site's build script embeds the generated motion bundle, which is not
-# committed; a fresh worktree has none, so clippy would fail before linting.
-if [ ! -f crates/public-site/island/dist/public_site_motion_bg.wasm ]; then
-  echo "pre-commit: building the public-site motion bundle (first run in this checkout)" >&2
-  bash crates/public-site/island/build.sh >&2
-fi
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --quiet
