@@ -265,10 +265,7 @@ impl RedisBus {
         })
         .await
         .map_err(|_| "physician Redis connection timed out")?
-        .map_err(|e| {
-            eprintln!("DEBUGBUS {e:?}");
-            "physician Redis connection or subscription failed"
-        })?;
+        .map_err(|_| "physician Redis connection or subscription failed")?;
         live.store(true, Ordering::Release);
         let listener = subscriber.clone();
         let output = events.clone();
