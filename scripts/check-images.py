@@ -9,7 +9,8 @@ SECRET_KEYS = {
     "DOPPLER_TOKEN", "OPENAI_API_KEY", "DATABASE_URL", "PHYSICIAN_DATABASE_URL",
     "FRONT_DOOR_DATABASE_URL", "DUET_PRIVACY_DELIVERY_DATABASE_URL", "DUET_BEARER",
     "DUET_API_BEARER", "PHYSICIAN_API_BEARER", "CODA_ALLOW_MODEL_CALLS",
-    "DUET_OPENAI_PHI_READY",
+    "DUET_OPENAI_PHI_READY", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM",
+    "PUBSUB_EMULATOR_HOST", "PHYSICIAN_LOCAL_SCALE",
 }
 TOOLCHAIN = ("/bin/cargo", "/bin/rustc", "/bin/nix", "/bin/gcc", "/bin/sh", "/bin/bash", "/bin/psql")
 # Store paths that must never be runtime references of an image.

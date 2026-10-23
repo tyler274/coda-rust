@@ -21,10 +21,11 @@ use harness::execution::{
 use local_product::ModelBinding;
 use local_product::codex::CodexTransport;
 use local_product::execution::{PhysicianSession, Status, Work};
+use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use telemetry::genai;
-use tokio::sync::broadcast;
+use tokio::sync::broadcast::error::RecvError;
 use tracing::Instrument;
 
 use crate::auth::{AuthContext, allows_workspace, now};
@@ -61,7 +62,7 @@ pub(crate) struct Live {
     model: ChatModel,
     pub(crate) binding: ModelBinding,
     pub(crate) session: Mutex<PhysicianSession>,
-    events: broadcast::Sender<String>,
+    pub(crate) bus: Arc<dyn Bus>,
     pub(crate) sources: Vec<local_product::physician_sources::SourceRevision>,
     turns: AtomicU64,
 }
@@ -87,12 +88,11 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Ok(Arc::new(Self {
             model,
             binding,
             session: Mutex::new(session),
-            events,
+            bus: Arc::new(LocalBus::new(64)),
             sources,
             turns: AtomicU64::new(0),
         }))
@@ -110,7 +110,6 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Arc::new(Self {
             model,
             binding,
@@ -123,7 +122,7 @@ impl Live {
                 None => PhysicianSession::open(&default_session_path())
                     .expect("open default persistent physician session"),
             }),
-            events,
+            bus: Arc::new(LocalBus::new(64)),
             turns: AtomicU64::new(0),
             sources: match std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") {
                 Some(path) => {

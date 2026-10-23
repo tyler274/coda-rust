@@ -18,6 +18,7 @@ local-product = { path = "../local-product" }
 harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
 physician-auth = { path = "../physician-auth" }
+physician-bus = { path = "../physician-bus" }
 physician-wire = { path = "../physician-wire" }
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 serde = { version = "1", features = ["derive"] }
@@ -25,6 +26,7 @@ serde_json = "1"
 telemetry = { path = "../telemetry" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
 tracing = "0.1"
+google-cloud-pubsub = "1"
 
 [dev-dependencies]
 mailparse = "0.16"

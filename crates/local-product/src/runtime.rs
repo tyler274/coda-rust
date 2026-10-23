@@ -20,6 +20,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// Queue delivery recovery uses the conversation owner, not a parallel ledger.
+pub mod delivery;
 mod entities;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
@@ -95,6 +97,13 @@ pub struct Conversation {
     /// Accepted session reference, never the bearer secret; absent legacy work is blocked.
     #[serde(default)]
     pub session_hash: Option<Vec<u8>>,
+    /// Latest accepted command identity; saved atomically with authored input.
+    #[serde(default)]
+    pub input_id: Option<String>,
+    /// Database-clock time before which recovery need not republish a wakeup.
+    /// This is a delivery hint, never proof of execution or completion.
+    #[serde(default)]
+    pub dispatch_after: i64,
 }
 
 impl Default for Conversation {
@@ -106,6 +115,8 @@ impl Default for Conversation {
             work: String::new(),
             attempts: vec![],
             session_hash: None,
+            input_id: None,
+            dispatch_after: 0,
         }
     }
 }
@@ -327,6 +338,8 @@ impl Store {
         }
         state.revision += 1;
         state.session_hash = session_hash;
+        state.input_id = Some(input.key.clone());
+        state.dispatch_after = 0;
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
@@ -349,10 +362,23 @@ impl Store {
     /// Claims pending work or recovers an expired active attempt as its successor.
     /// Lease must cover the bounded engine deadline; no two live claims coexist.
     pub async fn claim(&self, scope: &Scope, lease_seconds: i64) -> Result<Option<Claim>, DbErr> {
+        self.claim_inner(scope, lease_seconds, None).await
+    }
+
+    async fn claim_inner(
+        &self,
+        scope: &Scope,
+        lease_seconds: i64,
+        input_id: Option<&str>,
+    ) -> Result<Option<Claim>, DbErr> {
         if !(1..=600).contains(&lease_seconds) {
             return Err(error("invalid lease duration"));
         }
         let (tx, mut state, now) = self.locked(scope).await?;
+        if input_id.is_some_and(|id| state.input_id.as_deref() != Some(id)) {
+            tx.commit().await?;
+            return Ok(None);
+        }
         if state.status == "active" && state.attempts.last().is_some_and(|a| a.expires <= now) {
             state.attempts.last_mut().unwrap().status = "interrupted".into();
             state.status = "pending".into();
