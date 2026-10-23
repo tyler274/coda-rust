@@ -181,3 +181,64 @@ async fn corrupt_conversation_rolls_back_receipt_and_conflicts_never_overwrite_i
     );
     assert_eq!(store.conversation(&scope).await.unwrap().revision, 1);
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let s = Store::connect(&url).await.unwrap();
+    s.migrate().await.unwrap();
+    let scope = Scope {
+        practice: uuid::Uuid::new_v4().to_string(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: "chat".into(),
+    };
+    let input = Input {
+        key: "command".into(),
+        text: "accepted work".into(),
+        timezone: "UTC".into(),
+    };
+    s.accept(&scope, &input).await.unwrap();
+    let first = s.claim(&scope, 60).await.unwrap().unwrap();
+    s.persist(
+        &first,
+        engine::Event {
+            attempt_id: first.attempt.clone(),
+            sequence: 1,
+            kind: engine::EventKind::ProviderStarted {
+                ordinal: 1,
+                context: engine::Context {
+                    instructions: "test".into(),
+                    items: vec![],
+                    tools: vec![],
+                },
+            },
+        },
+    )
+    .await
+    .unwrap();
+    s.assert_current(&first).await.unwrap();
+    // Establish expiry only after real evidence is durable. A one-second lease
+    // can expire before persist() on a busy runner because the DB clock floors
+    // to seconds. Keep fixture control at the storage owner, with no API seam.
+    let (tx, mut state, _) = s.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
+    drop(s);
+    let s = Store::connect(&url).await.unwrap();
+    assert!(s.pending().await.unwrap().contains(&scope));
+    let next = s.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(first.attempt, next.attempt);
+    assert!(s.assert_current(&first).await.is_err());
+    let state = s.conversation(&scope).await.unwrap();
+    assert_eq!(state.attempts[0].status, "interrupted");
+    assert_eq!(state.attempts[0].events.len(), 1);
+    assert_eq!(
+        state.attempts[1].predecessor.as_deref(),
+        Some(first.attempt.as_str())
+    );
+    assert_eq!(state.attempts[1].work, state.attempts[0].work);
+    assert_eq!(state.messages[0].text, input.text);
+    assert_eq!(state.messages.len(), 1);
+}

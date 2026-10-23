@@ -305,6 +305,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 
 #[tokio::test]
 async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_interact() {
+    let _guard = test_lock().lock().await;
     let site = build_site();
     unsafe {
         env::set_var("PHYSICIAN_SITE_DIR", &site);
@@ -797,9 +798,18 @@ impl CdpBrowser {
     async fn wait_for_text(&mut self, expected: &str, timeout: Duration) -> String {
         let started = Instant::now();
         loop {
-            let html = self.dom().await;
-            if html.contains(expected) {
-                return html;
+            // Read visible text and its HTML in one browser turn. Hidden text or
+            // a CSS class cannot satisfy the wait, nor can we return older HTML.
+            let snapshot = self
+                .eval("({ text: document.body ? document.body.innerText : '', html: document.documentElement ? document.documentElement.outerHTML : '' })")
+                .await;
+            let value = &snapshot["result"]["result"]["value"];
+            let html = value["html"].as_str().unwrap_or_default();
+            if value["text"]
+                .as_str()
+                .is_some_and(|text| text.contains(expected))
+            {
+                return html.to_owned();
             }
             if started.elapsed() > timeout {
                 panic!("timed out waiting for {expected:?} in DOM:\n{html}");

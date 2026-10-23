@@ -360,39 +360,3 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     assert_ne!(resumed.attempt, next.attempt);
     assert_eq!(s.conversation(&scope).await.unwrap().messages.len(), 3);
 }
-
-#[tokio::test]
-#[ignore = "requires explicit local Postgres"]
-async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
-    let s = store().await;
-    let scope = scope();
-    s.accept(&scope, &input()).await.unwrap();
-    let first = s.claim(&scope, 1).await.unwrap().unwrap();
-    s.persist(
-        &first,
-        engine::Event {
-            attempt_id: first.attempt.clone(),
-            sequence: 1,
-            kind: engine::EventKind::ProviderStarted {
-                ordinal: 1,
-                context: engine::Context {
-                    instructions: "test".into(),
-                    items: vec![],
-                    tools: vec![],
-                },
-            },
-        },
-    )
-    .await
-    .unwrap();
-    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
-    let s = store().await;
-    assert!(s.pending().await.unwrap().contains(&scope));
-    let next = s.claim(&scope, 60).await.unwrap().unwrap();
-    assert_ne!(first.attempt, next.attempt);
-    assert!(s.assert_current(&first).await.is_err());
-    let state = s.conversation(&scope).await.unwrap();
-    assert_eq!(state.attempts[0].status, "interrupted");
-    assert_eq!(state.attempts[0].events.len(), 1);
-    assert_eq!(state.messages.len(), 1);
-}

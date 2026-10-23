@@ -133,6 +133,7 @@ jobs:
           echo "version=${version}" >> "$GITHUB_OUTPUT"
       - name: Restore Rust build cache
         id: rust-cache
+        continue-on-error: true
         uses: actions/cache/restore@v6
         with:
           path: |
@@ -164,19 +165,19 @@ jobs:
       # reported, not denied, until the tree is clean.
       - name: Lint
         run: cargo clippy --workspace --all-targets
-      - name: Test
+      # Each package runs once. Browser packages keep dedicated steps below;
+      # the workspace step includes the harness streaming suites.
+      - name: Test workspace libraries and services
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        # The Android shell is proved by UI Automator on a local emulator.
+        run: cargo test --workspace --exclude physician-sample --exclude public-site --exclude mobile
+      - name: Test physician service and browser journeys
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
         # GitHub has no Node practice on port 8787. That comparison fails
-        # closed when it runs; it is not counted as passed here. The Android
-        # shell is proved by UI Automator on a local emulator, not by this job.
-        run: cargo test --workspace -- --skip the_live_react_practice_matches_the_rust_page
-      - name: Prove acknowledged neutral streaming
-        run: cargo test --locked -p harness --test execution --test responses --test streaming
-      - name: Browser proof (physician auth journeys)
-        env:
-          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        run: cargo test -p physician-sample --test auth_browser --test site --test react -- --skip the_live_react_practice_matches_the_rust_page
+        # closed when run; it is not counted as passed here.
+        run: cargo test -p physician-sample -- --skip the_live_react_practice_matches_the_rust_page
       - name: Browser and reference proof (public site)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
@@ -192,13 +193,15 @@ jobs:
       - name: Browser proof (mode shells)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
-        run: cargo test -p mobile --test mode --test browser --test duet_journey
+        run: cargo test -p mobile
       # The archive is written beside target, so free space has to hold that
       # second copy. Drop proof outputs, then build-script dirs if it is
       # still tight. Registry is always saved. A target that does not fit
-      # is not saved under the primary key, and the job fails.
+      # is not saved under the primary key. Caching is best effort: a cold
+      # next build must not invalidate the proofs from this run.
       - name: Prepare Rust cache payload
         id: cache-payload
+        continue-on-error: true
         if: steps.rust-cache.outputs.cache-hit != 'true'
         run: |
           set -euo pipefail
@@ -245,6 +248,7 @@ jobs:
           echo "include_target=${include_target}" >> "$GITHUB_OUTPUT"
           df -h
       - name: Save Rust build cache
+        continue-on-error: true
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target == 'true'
         uses: actions/cache/save@v6
         with:
@@ -255,6 +259,7 @@ jobs:
             target
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}
       - name: Save cargo registry without target
+        continue-on-error: true
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
         uses: actions/cache/save@v6
         with:
@@ -263,11 +268,10 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git/db
           key: ${{ steps.rust-cache.outputs.cache-primary-key }}-registry
-      - name: Require the dependency target in the cache
+      - name: Report uncached build artifacts
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
         run: |
-          echo "::error::Compiled target did not fit beside its archive. Registry was saved under a separate key; this run did not cache build artifacts."
-          exit 1
+          echo "::warning::Compiled target was not cached. The next run may build cold; test results are unaffected."
       # A full proof target once left no room to compile mdbook (run
       # 38686057176, ENOSPC). mdbook is now a prebuilt binary. After the
       # clean, cargo doc recompiled 215 crates (2.5 min, run 39452707783).
@@ -373,6 +377,7 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
       - name: Cache Postgres proof build
+        continue-on-error: true
         uses: actions/cache@v6
         with:
           path: |

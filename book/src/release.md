@@ -4,9 +4,10 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Continuous integration
 
-- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) is the only workflow. The `ci` job runs `cargo fmt --check`, clippy, `cargo test --workspace`, the browser proofs (physician auth journeys, the public site, then the `mobile` mode shells), then `mdbook build book` with the [book link check](setup.md#reading-and-checking-this-book), and `cargo doc`. The workflow's comments are the maintained step list.
+- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. The `ci` job runs `cargo fmt --check`, clippy, the workspace tests (excluding the three browser packages), each full browser package (`physician-sample`, `public-site`, and `mobile`) once, then `mdbook build book` with the [book link check](setup.md#reading-and-checking-this-book), and `cargo doc`. The workflow's comments are the maintained step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
 - `deploy-staging` runs on pushes to `main` only when the repository variable `RUST_STAGING_DEPLOY` is `enabled`. It pushes the four images by digest, runs both migration jobs, and moves both `coda-rust-staging` services to Ready revisions on the new digests; [direct staging rollout](gcp.md#direct-staging-rollout) describes it and how to turn it off.
+- Rust build caches are best effort. A restore, save, or cache-size failure can make the next build slower; it does not invalidate passing checks.
 - CI installs `wasm-bindgen`, mdBook, and lychee from pinned, checksum-verified release archives, not with `cargo install`. The comments next to each install step give the reason for its pin.
 - Run the workflow locally with `act` from `nix develop`. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
