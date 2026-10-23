@@ -355,7 +355,11 @@ impl Bus for RedisBus {
     }
 
     fn live(&self) -> bool {
-        self.live.load(Ordering::Acquire) && self.subscriber.is_connected()
+        // Both halves must be up: a reconnected subscriber with a publisher
+        // still reconnecting would accept turns whose changes cannot fan out.
+        self.live.load(Ordering::Acquire)
+            && self.subscriber.is_connected()
+            && self.publisher.is_connected()
     }
 }
 
