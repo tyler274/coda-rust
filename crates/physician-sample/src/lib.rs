@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+pub mod durable;
 mod gmail;
 pub mod hosting;
 mod live;
@@ -21,6 +22,7 @@ mod live_tests;
 mod publication;
 #[cfg(test)]
 mod publication_tests;
+pub mod queue;
 mod reply;
 mod simulation;
 

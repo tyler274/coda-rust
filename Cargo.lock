@@ -3642,6 +3642,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d563c7b987f40249c274a4e6a671661df6be2d084f08476dda2f0f931576cfcf"
 dependencies = [
  "async-trait",
+ "aws-lc-rs",
  "base64 0.23.1",
  "bytes",
  "google-cloud-gax",
@@ -3649,6 +3650,7 @@ dependencies = [
  "hmac",
  "http 1.5.0",
  "jiff",
+ "jsonwebtoken 11.1.0",
  "reqwest 0.13.5",
  "rustc_version",
  "rustls",
@@ -4667,6 +4669,22 @@ dependencies = [
  "serde_json",
  "signature",
  "simple_asn1",
+ "zeroize",
+]
+
+[[package]]
+name = "jsonwebtoken"
+version = "11.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e75fe14a82d81e5f5af639997db37d8b96045938a7ac6ab18cdbe1c7467e05e1"
+dependencies = [
+ "aws-lc-rs",
+ "base64 0.22.1",
+ "getrandom 0.2.17",
+ "js-sys",
+ "serde",
+ "serde_json",
+ "signature",
  "zeroize",
 ]
 
@@ -6236,6 +6254,7 @@ dependencies = [
  "front-door",
  "futures-util",
  "gmail",
+ "google-cloud-auth",
  "google-cloud-pubsub",
  "harness",
  "local-product",

@@ -27,6 +27,9 @@ telemetry = { path = "../telemetry" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
 tracing = "0.1"
 google-cloud-pubsub = "1"
+# Official Google auth: anonymous emulator credentials and the Pub/Sub push
+# OIDC verifier (Google JWKS, audience and signer email checks).
+google-cloud-auth = { version = "1", features = ["idtoken"] }
 
 [dev-dependencies]
 mailparse = "0.16"

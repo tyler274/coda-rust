@@ -106,6 +106,20 @@ impl Store {
         Self::save(tx, &claim.scope, &state).await
     }
 
+    /// Unlocked display read: never contends with a claim or publication lock.
+    /// `None` before the first accepted input. Not a fence for any decision.
+    pub async fn read(&self, scope: &Scope) -> Result<Option<Conversation>, DbErr> {
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .one(&self.db)
+            .await?
+        else {
+            return Ok(None);
+        };
+        serde_json::from_value(row.state)
+            .map(Some)
+            .map_err(|_| error("corrupt conversation"))
+    }
+
     /// True only when this input is settled or superseded. In-flight and failed
     /// work must not be acknowledged: that could lose the sole crash redelivery.
     pub async fn delivery_settled(&self, delivery: &Delivery) -> Result<bool, DbErr> {

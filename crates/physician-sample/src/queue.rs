@@ -22,7 +22,9 @@ pub struct InlineQueue {
 }
 impl InlineQueue {
     /// Builds the explicitly selected local fallback.
-    pub fn new(handler: Arc<dyn InlineHandler>) -> Self { Self { handler } }
+    pub fn new(handler: Arc<dyn InlineHandler>) -> Self {
+        Self { handler }
+    }
 }
 #[async_trait]
 impl ChatQueue for InlineQueue {
@@ -45,17 +47,27 @@ pub struct PubSubQueue {
 impl PubSubQueue {
     /// Connects to Google using ADC, or an explicitly allowed loopback emulator.
     /// Hosted markers always prohibit emulator endpoints, including false/empty.
-    pub async fn connect(topic: &str, emulator: Option<&str>, hosted: bool) -> Result<Self, String> {
+    pub async fn connect(
+        topic: &str,
+        emulator: Option<&str>,
+        hosted: bool,
+    ) -> Result<Self, String> {
         if !topic.starts_with("projects/") || !topic.contains("/topics/") {
             return Err("Pub/Sub requires a fully qualified topic".into());
         }
         let mut builder = google_cloud_pubsub::client::Publisher::builder(topic);
         if let Some(endpoint) = emulator {
             validate_emulator(endpoint, hosted)?;
-            builder = builder.with_endpoint(format!("http://{endpoint}"))
-                .with_credentials(google_cloud_auth::credentials::anonymous::Builder::new().build());
+            builder = builder
+                .with_endpoint(format!("http://{endpoint}"))
+                .with_credentials(
+                    google_cloud_auth::credentials::anonymous::Builder::new().build(),
+                );
         }
-        let publisher = builder.build().await.map_err(|_| "Pub/Sub publisher initialization failed")?;
+        let publisher = builder
+            .build()
+            .await
+            .map_err(|_| "Pub/Sub publisher initialization failed")?;
         Ok(Self { publisher })
     }
 }
@@ -63,16 +75,24 @@ impl PubSubQueue {
 impl ChatQueue for PubSubQueue {
     async fn publish(&self, delivery: &Delivery) -> Result<(), String> {
         let bytes = serde_json::to_vec(delivery).map_err(|_| "invalid queue identity")?;
-        self.publisher.publish(google_cloud_pubsub::model::Message::new().set_data(bytes))
-            .await.map_err(|_| "Pub/Sub publication failed")?;
+        self.publisher
+            .publish(google_cloud_pubsub::model::Message::new().set_data(bytes))
+            .await
+            .map_err(|_| "Pub/Sub publication failed")?;
         Ok(())
     }
 }
 
 /// Accept only literal loopback IP endpoints; no DNS or URL credential tricks.
 pub fn validate_emulator(endpoint: &str, hosted: bool) -> Result<(), String> {
-    if hosted { return Err("Pub/Sub emulator is forbidden in hosted execution".into()); }
-    let address: std::net::SocketAddr = endpoint.parse().map_err(|_| "emulator must be a loopback IP:port")?;
-    if !address.ip().is_loopback() || address.port() == 0 { return Err("emulator must be a loopback IP:port".into()); }
+    if hosted {
+        return Err("Pub/Sub emulator is forbidden in hosted execution".into());
+    }
+    let address: std::net::SocketAddr = endpoint
+        .parse()
+        .map_err(|_| "emulator must be a loopback IP:port")?;
+    if !address.ip().is_loopback() || address.port() == 0 {
+        return Err("emulator must be a loopback IP:port".into());
+    }
     Ok(())
 }
