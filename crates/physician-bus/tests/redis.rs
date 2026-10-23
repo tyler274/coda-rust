@@ -37,31 +37,72 @@ impl Server {
             tls,
         };
         if tls {
-            let status = Command::new("openssl")
-                .args([
-                    "req",
-                    "-x509",
-                    "-newkey",
-                    "rsa:2048",
-                    "-nodes",
-                    "-days",
-                    "1",
-                    "-subj",
-                    "/CN=localhost",
-                    "-addext",
-                    "subjectAltName=DNS:localhost,IP:127.0.0.1",
-                    "-addext",
-                    "basicConstraints=critical,CA:TRUE",
-                    "-keyout",
-                ])
-                .arg(server.directory.join("key.pem"))
-                .arg("-out")
-                .arg(server.directory.join("ca.pem"))
-                .stdout(Stdio::null())
-                .stderr(Stdio::null())
-                .status()
-                .expect("openssl in Nix shell");
-            assert!(status.success());
+            // A CA and a separate leaf it signs, as Memorystore presents them;
+            // webpki rejects a CA certificate used as the server end entity.
+            let dir = &server.directory;
+            let openssl = |args: &[&str]| {
+                let status = Command::new("openssl")
+                    .args(args)
+                    .current_dir(dir)
+                    .stdout(Stdio::null())
+                    .stderr(Stdio::null())
+                    .status()
+                    .expect("openssl in Nix shell");
+                assert!(status.success(), "openssl {args:?}");
+            };
+            openssl(&[
+                "req",
+                "-x509",
+                "-newkey",
+                "rsa:2048",
+                "-nodes",
+                "-days",
+                "1",
+                "-subj",
+                "/CN=physician-bus-test-ca",
+                "-addext",
+                "basicConstraints=critical,CA:TRUE",
+                "-addext",
+                "keyUsage=critical,keyCertSign,cRLSign",
+                "-keyout",
+                "ca-key.pem",
+                "-out",
+                "ca.pem",
+            ]);
+            openssl(&[
+                "req",
+                "-newkey",
+                "rsa:2048",
+                "-nodes",
+                "-subj",
+                "/CN=localhost",
+                "-keyout",
+                "key.pem",
+                "-out",
+                "server.csr",
+            ]);
+            std::fs::write(
+                dir.join("server.ext"),
+                "subjectAltName=DNS:localhost,IP:127.0.0.1\nbasicConstraints=critical,CA:FALSE\nextendedKeyUsage=serverAuth\n",
+            )
+            .unwrap();
+            openssl(&[
+                "x509",
+                "-req",
+                "-in",
+                "server.csr",
+                "-CA",
+                "ca.pem",
+                "-CAkey",
+                "ca-key.pem",
+                "-CAcreateserial",
+                "-days",
+                "1",
+                "-extfile",
+                "server.ext",
+                "-out",
+                "server.pem",
+            ]);
         }
         drop(listener);
         server.restart().await;
@@ -90,7 +131,7 @@ impl Server {
                 .args(["--port", "0", "--tls-port"])
                 .arg(self.port.to_string())
                 .arg("--tls-cert-file")
-                .arg(self.directory.join("ca.pem"))
+                .arg(self.directory.join("server.pem"))
                 .arg("--tls-key-file")
                 .arg(self.directory.join("key.pem"))
                 .arg("--tls-ca-cert-file")
