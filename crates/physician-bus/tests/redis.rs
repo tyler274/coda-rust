@@ -1,7 +1,7 @@
 //! Real disposable Valkey, no shared service, credentials, or fixed ports.
 //! Run from the Nix dev shell: cargo test -p physician-bus --test redis --locked
 use fred::prelude::*;
-use physician_bus::{Bus, CHANNEL, Event, RedisBus};
+use physician_bus::{Bus, CHANNEL, Event, RedisBus, Subscription};
 use std::{
     net::{TcpListener, TcpStream},
     path::PathBuf,
@@ -9,7 +9,6 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
-use tokio::sync::broadcast;
 
 const PASSWORD: &str = "synthetic-bus-test-password";
 static SEQUENCE: AtomicU64 = AtomicU64::new(0);
@@ -138,7 +137,7 @@ impl Drop for Server {
     }
 }
 
-async fn receive(receiver: &mut broadcast::Receiver<Event>, expected: &Event) {
+async fn receive(receiver: &mut Subscription, expected: &Event) {
     tokio::time::timeout(Duration::from_secs(12), async {
         loop {
             let event = receiver.recv().await.unwrap();
@@ -177,8 +176,6 @@ async fn independent_instances_auth_fanout_restart_resync_and_invalid_payload() 
     let second = RedisBus::connect(&server.url(), None).await.unwrap();
     let mut a = first.subscribe();
     let mut b = second.subscribe();
-    receive(&mut a, &Event::Resync).await;
-    receive(&mut b, &Event::Resync).await;
     let changed = Event::WorkspaceChanged {
         workspace_id: "synthetic-workspace".into(),
     };
@@ -248,11 +245,10 @@ async fn tls_custom_ca_auth_and_untrusted_certificate_rejection() {
         RedisBus::connect(&server.url(), None).await.is_err(),
         "self-signed server must not be trusted by default"
     );
-    let ca = server.directory.join("ca.pem");
+    let ca = std::fs::read(server.directory.join("ca.pem")).unwrap();
     let first = RedisBus::connect(&server.url(), Some(&ca)).await.unwrap();
     let second = RedisBus::connect(&server.url(), Some(&ca)).await.unwrap();
     let mut receiver = second.subscribe();
-    receive(&mut receiver, &Event::Resync).await;
     let changed = Event::WorkspaceChanged {
         workspace_id: "synthetic-tls-workspace".into(),
     };

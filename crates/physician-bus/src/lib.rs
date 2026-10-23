@@ -1,6 +1,7 @@
 //! Physician-only, lossy projection invalidation. This is not a durable work queue.
 //!
-//! Consumers must refetch on `Resync` and on broadcast `RecvError::Lagged`.
+//! Consumers refetch once when they subscribe, then again on every `Resync`;
+//! receiver lag, malformed wire data, and Redis reconnects all surface as one.
 //! Workspace IDs are routing hints, not authorization: filter them against the
 //! authenticated physician's current authority before sending anything to a client.
 
@@ -8,7 +9,6 @@ use async_trait::async_trait;
 use fred::{clients::SubscriberClient, prelude::*, types::RespVersion};
 use serde::{Deserialize, Serialize};
 use std::{
-    path::Path,
     sync::{
         Arc,
         atomic::{AtomicBool, Ordering},
@@ -77,10 +77,42 @@ fn decode(payload: &[u8]) -> Result<Event, String> {
 pub trait Bus: Send + Sync {
     /// Best-effort invalidation only. A successful publish is not durable delivery.
     async fn publish(&self, event: Event) -> Result<(), String>;
-    /// A new receiver gets a resync hint; callers must also handle receiver lag.
-    fn subscribe(&self) -> broadcast::Receiver<Event>;
+    /// Events published from now on. Whoever opens a subscription refetches
+    /// once itself (it knows it just connected); afterwards every loss —
+    /// receiver lag or a Redis reconnect — surfaces as `Resync`.
+    fn subscribe(&self) -> Subscription;
     /// Whether the subscriber is connected and its subscription acknowledged.
     fn live(&self) -> bool;
+}
+
+/// One consumer's view of the bus. Lag surfaces as `Event::Resync`, so a
+/// consumer only has to handle events, never a silent gap.
+pub struct Subscription {
+    events: broadcast::Receiver<Event>,
+}
+
+impl Subscription {
+    fn new(events: &broadcast::Sender<Event>) -> Self {
+        Self {
+            events: events.subscribe(),
+        }
+    }
+
+    /// The next event. `Err` only once the bus itself is gone.
+    pub async fn recv(&mut self) -> Result<Event, broadcast::error::RecvError> {
+        match self.events.recv().await {
+            Err(broadcast::error::RecvError::Lagged(_)) => Ok(Event::Resync),
+            other => other,
+        }
+    }
+
+    /// A queued event without waiting, for draining.
+    pub fn try_recv(&mut self) -> Result<Event, broadcast::error::TryRecvError> {
+        match self.events.try_recv() {
+            Err(broadcast::error::TryRecvError::Lagged(_)) => Ok(Event::Resync),
+            other => other,
+        }
+    }
 }
 
 pub struct LocalBus {
@@ -103,21 +135,13 @@ impl Bus for LocalBus {
         Ok(())
     }
 
-    fn subscribe(&self) -> broadcast::Receiver<Event> {
-        subscribe_with_resync(&self.events)
+    fn subscribe(&self) -> Subscription {
+        Subscription::new(&self.events)
     }
 
     fn live(&self) -> bool {
         true
     }
-}
-
-fn subscribe_with_resync(events: &broadcast::Sender<Event>) -> broadcast::Receiver<Event> {
-    let receiver = events.subscribe();
-    // Broadcast cannot seed just one receiver. Existing receivers may therefore
-    // see an extra resync when another stream opens; resync is idempotent.
-    let _ = events.send(Event::Resync);
-    receiver
 }
 
 #[derive(Default)]
@@ -141,7 +165,7 @@ pub struct RedisBus {
     _tasks: Tasks,
 }
 
-fn config(url: &str, ca: Option<&Path>) -> Result<Config, String> {
+fn config(url: &str, ca: Option<&[u8]>) -> Result<Config, String> {
     // Restrict to one ordinary Redis endpoint, never a cluster/sentinel URL.
     if !url.starts_with("redis://") && !url.starts_with("rediss://") {
         return Err("physician Redis URL must use redis or rediss".into());
@@ -158,9 +182,8 @@ fn config(url: &str, ca: Option<&Path>) -> Result<Config, String> {
             ClientConfig, RootCertStore,
             pki_types::{CertificateDer, pem::PemObject},
         };
-        let pem = std::fs::read(ca).map_err(|_| "cannot read physician Redis CA".to_string())?;
         let mut roots = RootCertStore::empty();
-        for cert in CertificateDer::pem_slice_iter(&pem) {
+        for cert in CertificateDer::pem_slice_iter(ca) {
             roots
                 .add(cert.map_err(|_| "invalid physician Redis CA".to_string())?)
                 .map_err(|_| "invalid physician Redis CA".to_string())?;
@@ -182,11 +205,11 @@ fn config(url: &str, ca: Option<&Path>) -> Result<Config, String> {
 
 impl RedisBus {
     /// Connect publisher and subscriber, authenticating from the URL. `rediss`
-    /// verifies the server certificate and name using `ca` (PEM bundle) or system
-    /// roots. Hosted configuration must use `rediss` and the Memorystore CA.
+    /// verifies the server certificate and name using `ca` (PEM bundle bytes,
+    /// e.g. `PHYSICIAN_REDIS_CA_PEM`) or system roots. Hosted configuration must use `rediss` and the Memorystore CA.
     /// Initial failure returns an error; established connections retry forever
     /// with bounded exponential backoff. No credentials appear in our errors.
-    pub async fn connect(url: &str, ca: Option<&Path>) -> Result<Self, String> {
+    pub async fn connect(url: &str, ca: Option<&[u8]>) -> Result<Self, String> {
         let config = config(url, ca)?;
         let mut builder = Builder::from_config(config);
         builder.set_policy(ReconnectPolicy::new_exponential(0, 100, 5_000, 2));
@@ -303,8 +326,8 @@ impl Bus for RedisBus {
             .map_err(|_| "physician Redis publish failed".into())
     }
 
-    fn subscribe(&self) -> broadcast::Receiver<Event> {
-        subscribe_with_resync(&self.events)
+    fn subscribe(&self) -> Subscription {
+        Subscription::new(&self.events)
     }
 
     fn live(&self) -> bool {
@@ -317,13 +340,13 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn local_fanout_initial_resync_and_lag() {
+    async fn local_fanout_and_lag_resync() {
         let bus: Arc<dyn Bus> = Arc::new(LocalBus::new(2));
         let mut first = bus.subscribe();
-        assert_eq!(first.recv().await.unwrap(), Event::Resync);
         let mut second = bus.subscribe();
-        assert_eq!(first.recv().await.unwrap(), Event::Resync);
-        assert_eq!(second.recv().await.unwrap(), Event::Resync);
+        // Opening a subscription disturbs nobody.
+        assert!(first.try_recv().is_err());
+        assert!(second.try_recv().is_err());
         let event = Event::WorkspaceChanged {
             workspace_id: "workspace-1".into(),
         };
@@ -331,12 +354,10 @@ mod tests {
         assert_eq!(first.recv().await.unwrap(), event);
         assert_eq!(second.recv().await.unwrap(), event);
         for _ in 0..4 {
-            bus.publish(Event::Resync).await.unwrap();
+            bus.publish(event.clone()).await.unwrap();
         }
-        assert!(matches!(
-            first.recv().await,
-            Err(broadcast::error::RecvError::Lagged(_))
-        ));
+        // Lag never drops silently: it is a resync.
+        assert_eq!(first.recv().await.unwrap(), Event::Resync);
         assert!(bus.live());
     }
 
@@ -376,10 +397,12 @@ mod tests {
 
     #[test]
     fn rejects_unsafe_ca_and_redacts_url_errors() {
-        assert!(config("redis://localhost", Some(Path::new("missing"))).is_err());
+        let pem = b"-----BEGIN CERTIFICATE-----\nnot base64\n-----END CERTIFICATE-----\n";
+        assert!(config("redis://localhost", Some(pem)).is_err());
         let error = config("not-a-url:secret", None).err().unwrap();
         assert!(!error.contains("secret"));
-        assert!(config("rediss://localhost", Some(Path::new("missing"))).is_err());
+        assert!(config("rediss://localhost", Some(pem)).is_err());
+        assert!(config("rediss://localhost", Some(b"")).is_err());
         let config = config(
             "redis://default:synthetic-test-password@localhost:6379",
             None,

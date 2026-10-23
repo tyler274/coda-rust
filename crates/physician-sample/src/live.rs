@@ -25,7 +25,6 @@ use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use telemetry::genai;
-use tokio::sync::broadcast::error::RecvError;
 use tracing::Instrument;
 
 use crate::auth::{AuthContext, allows_workspace, now};
@@ -280,7 +279,17 @@ pub(crate) async fn submit(
                 match result {
                     Ok(response) => {
                         genai::record_output(&turn, &response.text);
-                        let _ = live.events.send(workspace);
+                        // Lossy invalidation; subscribers refetch on resync.
+                        if live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: workspace,
+                            })
+                            .await
+                            .is_err()
+                        {
+                            tracing::warn!("physician workspace invalidation not published");
+                        }
                     }
                     Err(_) => {
                         // Detailed provider output remains in the protected owner,
@@ -353,7 +362,16 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
                 .expect("physician session")
                 .settle(&work, Status::Failed);
         }
-        let _ = live.events.send(work.workspace);
+        if live
+            .bus
+            .publish(Event::WorkspaceChanged {
+                workspace_id: work.workspace,
+            })
+            .await
+            .is_err()
+        {
+            tracing::warn!("physician workspace invalidation not published");
+        }
     });
     Json(json!({"outcome":"accepted", "patient_workspace_id":workspace,"run_id":id}))
         .into_response()
@@ -379,13 +397,18 @@ pub(crate) async fn snapshot(
     }))
 }
 
-/// `workspace_changed` frames. The body stays open.
+/// `workspace_changed` and `resync` frames. The body stays open. A client
+/// refetches what it shows on `resync` (bus lag or a Redis reconnect).
 pub(crate) async fn events(State(live): State<Arc<Live>>) -> Response {
-    let rx = live.events.subscribe();
+    let rx = live.bus.subscribe();
     let stream = stream::unfold(rx, |mut rx| async move {
-        let workspace = rx.recv().await.ok()?;
-        let data = json!({ "patient_workspace_id": workspace }).to_string();
-        let frame = format!("event: workspace_changed\ndata: {data}\n\n");
+        let frame = match rx.recv().await.ok()? {
+            Event::WorkspaceChanged { workspace_id } | Event::WorkspaceSettled { workspace_id } => {
+                let data = json!({ "patient_workspace_id": workspace_id }).to_string();
+                format!("event: workspace_changed\ndata: {data}\n\n")
+            }
+            Event::Resync => "event: resync\ndata: {}\n\n".to_owned(),
+        };
         Some((Ok::<String, Infallible>(frame), rx))
     });
     (

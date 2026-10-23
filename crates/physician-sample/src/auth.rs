@@ -36,7 +36,6 @@ use axum::routing::{get, post, put};
 use futures_util::{StreamExt, stream};
 use serde::Deserialize;
 use serde_json::{Value, json};
-use tokio::sync::broadcast;
 
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
 use physician_auth::{
@@ -82,8 +81,9 @@ pub(crate) struct Auth {
     /// The Duet front door this practice invites patients through. One
     /// store serves every practice; isolation is enforced per request.
     pub(crate) front_door: Arc<dyn FrontDoorStore>,
-    /// Broadcasts `patient_workspace_id` when panel membership changes.
-    pub(crate) events: broadcast::Sender<String>,
+    /// Process-local panel-change hints. Cross-instance authority changes
+    /// arrive through the Postgres NOTIFY feed, not the Redis bus.
+    pub(crate) events: Arc<dyn physician_bus::Bus>,
 }
 
 /// Registers the recorded practice's five workspaces to `STAGING_PRACTICE_ID`
@@ -130,7 +130,7 @@ impl Auth {
         mail: crate::gmail::Delivery,
     ) -> Arc<Self> {
         seed_staging(&*store).await;
-        let (events, _) = broadcast::channel(64);
+        let events: Arc<dyn physician_bus::Bus> = Arc::new(physician_bus::LocalBus::new(64));
         Arc::new(Self {
             store,
             publication: tokio::sync::Mutex::new(()),
@@ -648,7 +648,9 @@ async fn guard_event_stream(
                         {
                             return None;
                         }
-                        if let Ok(ws) = changed {
+                        if let Ok(physician_bus::Event::WorkspaceChanged { workspace_id: ws }
+                            | physician_bus::Event::WorkspaceSettled { workspace_id: ws }) = changed
+                        {
                             if let Some(ref watched) = watched_workspace
                                 && watched != &ws
                             {
@@ -1168,7 +1170,12 @@ async fn apply_panel_change(
         .await
     {
         Ok(()) => {
-            let _ = auth.events.send(patient_workspace_id.clone());
+            let _ = auth
+                .events
+                .publish(physician_bus::Event::WorkspaceChanged {
+                    workspace_id: patient_workspace_id.clone(),
+                })
+                .await;
             Json(json!({
                 "practice_id": caller.practice_id,
                 "physician_id": physician_id,
