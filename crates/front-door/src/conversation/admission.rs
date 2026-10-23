@@ -89,15 +89,20 @@ pub struct SwitchChange {
 /// Newest switch row; no row is off. Takes the shared fence so a concurrent
 /// change either commits first or waits for this transaction.
 pub(super) async fn enabled(tx: &DatabaseTransaction) -> Result<bool, AuthorityError> {
+    // PostgreSQL transaction advisory locks have no SeaORM row-lock equivalent.
+    // Keep the shared/exclusive protocol and the bound, product-owned lock key.
     tx.execute_raw(sql(
         "SELECT pg_advisory_xact_lock_shared(hashtextextended($1,0))",
         vec![SWITCH_LOCK.into()],
     ))
     .await?;
     Ok(tx
-        .query_one_raw(sql(
-            "SELECT enabled FROM duet_model_execution_switch ORDER BY id DESC LIMIT 1",
-            vec![],
+        .query_one_raw(statement(
+            Query::select()
+                .column(W::Enabled)
+                .from(W::Table)
+                .order_by(W::Id, Order::Desc)
+                .limit(1),
         ))
         .await?
         .map(|r| r.try_get::<bool>("", "enabled"))
@@ -113,6 +118,10 @@ pub(super) async fn allowance(
     timezone: &str,
     limit: i64,
 ) -> Result<String, AuthorityError> {
+    // PostgreSQL-specific materialized wall-clock/calendar calculation: one
+    // volatile clock observation defines both DST-aware local-day bounds and
+    // the rolling window. Keep this bound statement rather than splitting it
+    // into ORM reads that could observe different instants at a day boundary.
     let r = tx.query_one_raw(sql(
         "WITH b AS (SELECT now_at, (date_trunc('day', now_at AT TIME ZONE $2) AT TIME ZONE $2) AS day_start,
                 ((date_trunc('day', now_at AT TIME ZONE $2) + interval '1 day') AT TIME ZONE $2) AS day_end
@@ -138,7 +147,7 @@ pub(super) async fn allowance(
     if day_reached || rolling_reached {
         let mut resets_at = if day_reached { day_end } else { 0 };
         if rolling_reached {
-            resets_at = resets_at.max(release.unwrap_or(day_end));
+            resets_at = std::cmp::max(resets_at, release.unwrap_or(day_end));
         }
         return Err(AuthorityError::DailyLimit { resets_at });
     }
@@ -165,26 +174,90 @@ impl PostgresFrontDoorStore {
         }
         let tx = self.db.begin().await?;
         if !enabled {
+            // A table-level lock drains existing account lockers and prevents
+            // new ones; FOR UPDATE on existing rows cannot fence new accounts.
+            // SeaQuery has row locks but no PostgreSQL LOCK TABLE builder.
             tx.execute_raw(sql(
                 "LOCK TABLE front_door_accounts IN EXCLUSIVE MODE",
                 vec![],
             ))
             .await?;
         }
+        // Exclusive counterpart of enabled()'s PostgreSQL advisory fence.
         tx.execute_raw(sql(
             "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
             vec![SWITCH_LOCK.into()],
         ))
         .await?;
-        let r = tx.query_one_raw(sql("INSERT INTO duet_model_execution_switch(enabled,changed_by,reason) VALUES($1,$2,$3) RETURNING id,enabled,changed_by,reason",vec![enabled.into(),changed_by.into(),reason.into()])).await?.ok_or(AuthorityError::Refused)?;
+        let r = tx
+            .query_one_raw(statement(
+                Query::insert()
+                    .into_table(W::Table)
+                    .columns([W::Enabled, W::ChangedBy, W::Reason])
+                    .values_panic([enabled.into(), changed_by.into(), reason.into()])
+                    .returning(Query::returning().columns([
+                        W::Id,
+                        W::Enabled,
+                        W::ChangedBy,
+                        W::Reason,
+                    ])),
+            ))
+            .await?
+            .ok_or(AuthorityError::Refused)?;
         if !enabled {
-            let accounts = tx.query_all_raw(sql("SELECT DISTINCT account_id FROM duet_conversation_inputs WHERE state IN ('queued','running')",vec![])).await?;
+            let accounts = tx
+                .query_all_raw(statement(
+                    Query::select()
+                        .distinct()
+                        .column(I::AccountId)
+                        .from(I::Table)
+                        .and_where(Expr::col(I::State).is_in(["queued", "running"])),
+                ))
+                .await?;
             for a in accounts {
                 let account: Uuid = a.try_get("", "account_id")?;
-                let rev: i64 = tx.query_one_raw(sql("UPDATE duet_conversation_state SET revision=revision+1 WHERE account_id=$1 RETURNING revision",vec![account.into()])).await?.ok_or(AuthorityError::Refused)?.try_get("","revision")?;
-                tx.execute_raw(sql("UPDATE duet_conversation_attempts SET state='interrupted' WHERE state='running' AND run_id IN (SELECT run_id FROM duet_conversation_inputs WHERE account_id=$1 AND state IN ('queued','running'))",vec![account.into()])).await?;
-                tx.execute_raw(sql("UPDATE duet_conversation_messages SET state='interrupted',revision=$2 WHERE account_id=$1 AND role='assistant' AND state IN ('pending','streaming')",vec![account.into(),rev.into()])).await?;
-                tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state='paused',failure=$3,lease_until=NULL,revision=$2 WHERE account_id=$1 AND state IN ('queued','running')",vec![account.into(),rev.into(),SWITCHED_OFF.into()])).await?;
+                let rev = execution::revision(&tx, account).await?;
+                tx.execute_raw(statement(
+                    Query::update()
+                        .table(T::Table)
+                        .value(T::State, "interrupted")
+                        .and_where(Expr::col(T::State).eq("running"))
+                        .and_where(
+                            Expr::col(T::RunId).in_subquery(
+                                Query::select()
+                                    .column(I::RunId)
+                                    .from(I::Table)
+                                    .and_where(Expr::col(I::AccountId).eq(account))
+                                    .and_where(Expr::col(I::State).is_in(["queued", "running"]))
+                                    .to_owned(),
+                            ),
+                        ),
+                ))
+                .await?;
+                tx.execute_raw(statement(
+                    Query::update()
+                        .table(M::Table)
+                        .value(M::State, "interrupted")
+                        .value(M::Revision, rev)
+                        .and_where(Expr::col(M::AccountId).eq(account))
+                        .and_where(Expr::col(M::Role).eq("assistant"))
+                        .and_where(Expr::col(M::State).is_in(["pending", "streaming"])),
+                ))
+                .await?;
+                tx.execute_raw(statement(
+                    Query::update()
+                        .table(I::Table)
+                        .value(I::State, "paused")
+                        .value(I::Failure, SWITCHED_OFF)
+                        .value(
+                            I::LeaseUntil,
+                            Expr::Keyword(sea_orm::sea_query::Keyword::Null),
+                        )
+                        .value(I::Revision, rev)
+                        .and_where(Expr::col(I::AccountId).eq(account))
+                        .and_where(Expr::col(I::State).is_in(["queued", "running"])),
+                ))
+                .await?;
             }
         }
         tx.commit().await?;

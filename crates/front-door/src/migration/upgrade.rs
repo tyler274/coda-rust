@@ -1,5 +1,6 @@
 //! Non-destructive adoption of the legacy shared file-derived migration receipt.
 use super::Migrator;
+use sea_orm::sea_query::{Alias, Expr, ExprTrait, Query};
 use sea_orm::{ConnectionTrait, DatabaseConnection, DbBackend, DbErr, Statement, TransactionTrait};
 use sea_orm_migration::{MigratorTrait, SchemaManager};
 
@@ -14,15 +15,20 @@ const LEGACY_OWN_LEDGER: &str = "front_door_seaql_migrations";
 /// The shared legacy ledger and unrelated co-resident schemas remain untouched.
 pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
     let tx = db.begin().await?;
+    // PostgreSQL transaction advisory lock serializes migration adoption;
+    // a row lock cannot protect a ledger which may not exist yet.
     tx.execute_unprepared("select pg_advisory_xact_lock(740146002)")
         .await?;
     Migrator::install(&tx).await?;
     let manager = SchemaManager::new(&tx);
     let count = tx
-        .query_one_raw(Statement::from_string(
-            DbBackend::Postgres,
-            "select count(*) as n from front_door_migrations".to_owned(),
-        ))
+        .query_one_raw(
+            DbBackend::Postgres.build(
+                Query::select()
+                    .expr_as(Expr::col(Alias::new("version")).count(), Alias::new("n"))
+                    .from(Alias::new("front_door_migrations")),
+            ),
+        )
         .await?
         .unwrap()
         .try_get::<i64>("", "n")?;
@@ -83,10 +89,14 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
             let mut legacy = None;
             for ledger in ledgers {
                 legacy = tx
-                    .query_one_raw(Statement::from_string(
-                        DbBackend::Postgres,
-                        format!("select applied_at from {ledger} where version='mod'"),
-                    ))
+                    .query_one_raw(
+                        DbBackend::Postgres.build(
+                            Query::select()
+                                .column(Alias::new("applied_at"))
+                                .from(Alias::new(ledger))
+                                .and_where(Expr::col(Alias::new("version")).eq("mod")),
+                        ),
+                    )
                     .await?;
                 if legacy.is_some() {
                     break;
@@ -111,9 +121,18 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
                 "front_door_invitations_roster_idx",
                 "front_door_links_roster_idx",
             ] {
+                // PostgreSQL catalog check verifies legacy indexes before adoption.
                 if tx.query_one_raw(Statement::from_sql_and_values(DbBackend::Postgres,"select indexname from pg_indexes where schemaname=current_schema() and indexname=$1",vec![index.into()])).await?.is_none(){return Err(DbErr::Custom(format!("legacy schema missing index {index}")));}
             }
-            tx.execute_raw(Statement::from_sql_and_values(DbBackend::Postgres,"insert into front_door_migrations(version,applied_at) values('front_door_20260101_000001_init',$1)",vec![applied.into()])).await?;
+            tx.execute_raw(
+                DbBackend::Postgres.build(
+                    Query::insert()
+                        .into_table(Alias::new("front_door_migrations"))
+                        .columns([Alias::new("version"), Alias::new("applied_at")])
+                        .values_panic(["front_door_20260101_000001_init".into(), applied.into()]),
+                ),
+            )
+            .await?;
         }
     }
     Migrator::up(&tx, None).await?;

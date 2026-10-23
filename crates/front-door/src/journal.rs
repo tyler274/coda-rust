@@ -175,12 +175,21 @@ impl PostgresFrontDoorStore {
             }
         }
         let remaining = deadline.saturating_duration_since(tokio::time::Instant::now());
-        let stats = tokio::time::timeout(remaining, self.db.query_one_raw(Statement::from_string(
-            DbBackend::Postgres,
-            "SELECT count(*)::bigint AS pending, min(occurred_at)::bigint AS oldest FROM front_door_luna_restrictions WHERE NOT confirmed",
-        ))).await.map_err(|_| AuthorityError::RestrictionPending)??.ok_or(AuthorityError::Refused)?;
-        report.pending = stats.try_get("", "pending")?;
-        let oldest: Option<i64> = stats.try_get("", "oldest")?;
+        let stats = tokio::time::timeout(
+            remaining,
+            restriction::Entity::find()
+                .select_only()
+                .column_as(restriction::Column::Id.count(), "pending")
+                .column_as(restriction::Column::OccurredAt.min(), "oldest")
+                .filter(restriction::Column::Confirmed.eq(false))
+                .into_tuple::<(i64, Option<i64>)>()
+                .one(&self.db),
+        )
+        .await
+        .map_err(|_| AuthorityError::RestrictionPending)??
+        .ok_or(AuthorityError::Refused)?;
+        report.pending = stats.0;
+        let oldest = stats.1;
         report.oldest_pending_age_seconds = oldest.map(|at| {
             now.saturating_add(start.elapsed().as_secs() as i64)
                 .saturating_sub(at)
@@ -313,6 +322,7 @@ impl PostgresFrontDoorStore {
             return Err(AuthorityError::Refused);
         }
         let tx = self.db.begin().await?;
+        // PostgreSQL database identity is a recovery safety gate, not CRUD.
         let database = tx
             .query_one_raw(Statement::from_string(
                 DbBackend::Postgres,

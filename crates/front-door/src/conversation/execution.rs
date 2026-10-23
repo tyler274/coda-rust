@@ -37,10 +37,33 @@ async fn row(
     account: Uuid,
     run: Uuid,
 ) -> Result<Option<QueryResult>, AuthorityError> {
-    Ok(tx.query_one_raw(sql("SELECT *,lease_until>clock_timestamp() AS live,retry_deadline>clock_timestamp() AS retryable FROM duet_conversation_inputs WHERE account_id=$1 AND run_id=$2",vec![account.into(),run.into()])).await?)
+    Ok(tx
+        .query_one_raw(statement(
+            Query::select()
+                .column(sea_orm::sea_query::Asterisk)
+                .expr_as(
+                    Expr::col(I::LeaseUntil).gt(query::clock()),
+                    Alias::new("live"),
+                )
+                .expr_as(
+                    Expr::col(I::RetryDeadline).gt(query::clock()),
+                    Alias::new("retryable"),
+                )
+                .from(I::Table)
+                .and_where(Expr::col(I::AccountId).eq(account))
+                .and_where(Expr::col(I::RunId).eq(run)),
+        ))
+        .await?)
 }
-async fn revision(tx: &DatabaseTransaction, account: Uuid) -> Result<i64, AuthorityError> {
-    Ok(tx.query_one_raw(sql("UPDATE duet_conversation_state SET revision=revision+1 WHERE account_id=$1 RETURNING revision",vec![account.into()])).await?.ok_or(AuthorityError::Refused)?.try_get("","revision")?)
+pub(super) async fn revision(
+    tx: &DatabaseTransaction,
+    account: Uuid,
+) -> Result<i64, AuthorityError> {
+    Ok(tx
+        .query_one_raw(statement(&query::revision_update(account)))
+        .await?
+        .ok_or(AuthorityError::Refused)?
+        .try_get("", "revision")?)
 }
 async fn end(
     tx: &DatabaseTransaction,
@@ -49,13 +72,25 @@ async fn end(
     state: &str,
 ) -> Result<(), AuthorityError> {
     let rev = revision(tx, account).await?;
-    tx.execute_raw(sql(
-        "UPDATE duet_conversation_attempts SET state=$2 WHERE run_id=$1 AND state='running'",
-        vec![run.into(), state.into()],
+    tx.execute_raw(statement(&query::running_attempts(run, state)))
+        .await?;
+    tx.execute_raw(statement(
+        query::reply_update(account, run)
+            .value(M::State, state)
+            .value(M::Revision, rev),
     ))
     .await?;
-    tx.execute_raw(sql("UPDATE duet_conversation_messages SET state=$3,revision=$4 WHERE account_id=$1 AND id=(SELECT reply_id FROM duet_conversation_inputs WHERE run_id=$2)",vec![account.into(),run.into(),state.into(),rev.into()])).await?;
-    tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state=$2,failure=$2,lease_until=NULL,revision=$3 WHERE run_id=$1",vec![run.into(),state.into(),rev.into()])).await?;
+    tx.execute_raw(statement(
+        query::run_update(run)
+            .value(I::State, state)
+            .value(I::Failure, state)
+            .value(
+                I::LeaseUntil,
+                Expr::Keyword(sea_orm::sea_query::Keyword::Null),
+            )
+            .value(I::Revision, rev),
+    ))
+    .await?;
     Ok(())
 }
 pub(super) async fn fence(
@@ -123,9 +158,24 @@ impl PostgresFrontDoorStore {
         if access.permissions.terms_version.as_deref() != Some(identity::TERMS_VERSION) {
             // Retain accepted work; resumption is deliberately not implemented.
             let rev = revision(&tx, account.id).await?;
-            tx.execute_raw(sql("UPDATE duet_conversation_attempts SET state='interrupted' WHERE run_id=$1 AND state='running'",vec![run.into()])).await?;
-            tx.execute_raw(sql("UPDATE duet_conversation_messages SET state='interrupted',revision=$3 WHERE account_id=$1 AND id=(SELECT reply_id FROM duet_conversation_inputs WHERE run_id=$2)",vec![account.id.into(),run.into(),rev.into()])).await?;
-            tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state='paused',lease_until=NULL,revision=$2 WHERE run_id=$1",vec![run.into(),rev.into()])).await?;
+            tx.execute_raw(statement(&query::running_attempts(run, "interrupted")))
+                .await?;
+            tx.execute_raw(statement(
+                query::reply_update(account.id, run)
+                    .value(M::State, "interrupted")
+                    .value(M::Revision, rev),
+            ))
+            .await?;
+            tx.execute_raw(statement(
+                query::run_update(run)
+                    .value(I::State, "paused")
+                    .value(
+                        I::LeaseUntil,
+                        Expr::Keyword(sea_orm::sea_query::Keyword::Null),
+                    )
+                    .value(I::Revision, rev),
+            ))
+            .await?;
             tx.commit().await?;
             return Ok(None);
         }
@@ -152,12 +202,49 @@ impl PostgresFrontDoorStore {
             tx.commit().await?;
             return Ok(None);
         }
-        tx.execute_raw(sql("UPDATE duet_conversation_attempts SET state='expired' WHERE run_id=$1 AND state='running'",vec![run.into()])).await?;
+        tx.execute_raw(statement(&query::running_attempts(run, "expired")))
+            .await?;
         let token = Uuid::new_v4();
         let rev = revision(&tx, account.id).await?;
-        tx.execute_raw(sql("INSERT INTO duet_conversation_attempts(id,run_id,ordinal,state) VALUES($1,$2,$3,'running')",vec![token.into(),run.into(),(count+1).into()])).await?;
-        tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state='running',claim_token=$2,attempt_count=attempt_count+1,lease_until=clock_timestamp()+interval '720 seconds',retry_deadline=coalesce(retry_deadline,clock_timestamp()+interval '30 minutes'),revision=$3 WHERE run_id=$1",vec![run.into(),token.into(),rev.into()])).await?;
-        tx.execute_raw(sql("UPDATE duet_conversation_messages SET state='streaming',text='',revision=$3 WHERE account_id=$1 AND id=(SELECT reply_id FROM duet_conversation_inputs WHERE run_id=$2)",vec![account.id.into(),run.into(),rev.into()])).await?;
+        tx.execute_raw(statement(
+            Query::insert()
+                .into_table(T::Table)
+                .columns([T::Id, T::RunId, T::Ordinal, T::State])
+                .values_panic([
+                    token.into(),
+                    run.into(),
+                    (count + 1).into(),
+                    "running".into(),
+                ]),
+        ))
+        .await?;
+        // PostgreSQL intervals and wall clock preserve lease/retry timing after lock acquisition.
+        tx.execute_raw(statement(
+            query::run_update(run)
+                .value(I::State, "running")
+                .value(I::ClaimToken, token)
+                .value(I::AttemptCount, Expr::col(I::AttemptCount).add(1))
+                .value(
+                    I::LeaseUntil,
+                    query::clock().add(Expr::cust("interval '720 seconds'")),
+                )
+                .value(
+                    I::RetryDeadline,
+                    Func::coalesce([
+                        Expr::col(I::RetryDeadline),
+                        query::clock().add(Expr::cust("interval '30 minutes'")),
+                    ]),
+                )
+                .value(I::Revision, rev),
+        ))
+        .await?;
+        tx.execute_raw(statement(
+            query::reply_update(account.id, run)
+                .value(M::State, "streaming")
+                .value(M::Text, "")
+                .value(M::Revision, rev),
+        ))
+        .await?;
         tx.commit().await?;
         let mut original = principal.clone();
         original.authenticated_at = r
@@ -178,7 +265,24 @@ impl PostgresFrontDoorStore {
     ) -> Result<Vec<Uuid>, AuthorityError> {
         let tx = self.db.begin().await?;
         let (a, _) = identity::locked(&tx, principal).await?;
-        let rows=tx.query_all_raw(sql("SELECT run_id FROM duet_conversation_inputs WHERE account_id=$1 AND (state='queued' OR (state='running' AND lease_until<=clock_timestamp())) ORDER BY created_at,run_id LIMIT 64",vec![a.id.into()])).await?;
+        let rows = tx
+            .query_all_raw(statement(
+                Query::select()
+                    .column(I::RunId)
+                    .from(I::Table)
+                    .and_where(Expr::col(I::AccountId).eq(a.id))
+                    .cond_where(
+                        Cond::any().add(Expr::col(I::State).eq("queued")).add(
+                            Cond::all()
+                                .add(Expr::col(I::State).eq("running"))
+                                .add(Expr::col(I::LeaseUntil).lte(query::clock())),
+                        ),
+                    )
+                    .order_by(I::CreatedAt, Order::Asc)
+                    .order_by(I::RunId, Order::Asc)
+                    .limit(64),
+            ))
+            .await?;
         let ids = rows
             .into_iter()
             .map(|r| r.try_get("", "run_id"))
@@ -200,7 +304,15 @@ impl PostgresFrontDoorStore {
     pub async fn begin_conversation_execution(&self, claim: &Claim) -> Result<(), AuthorityError> {
         let tx = self.db.begin().await?;
         fence(&tx, claim).await?;
-        let result=tx.execute_raw(sql("UPDATE duet_conversation_attempts SET execution_started=true WHERE id=$1 AND NOT execution_started",vec![claim.token.into()])).await?;
+        let result = tx
+            .execute_raw(statement(
+                Query::update()
+                    .table(T::Table)
+                    .value(T::ExecutionStarted, true)
+                    .and_where(Expr::col(T::Id).eq(claim.token))
+                    .and_where(Expr::col(T::ExecutionStarted).eq(false)),
+            ))
+            .await?;
         if result.rows_affected() != 1 {
             return Err(AuthorityError::Refused);
         }
@@ -231,9 +343,12 @@ impl PostgresFrontDoorStore {
         let tx = self.db.begin().await?;
         fence(&tx, claim).await?;
         if let Some(r) = tx
-            .query_one_raw(sql(
-                "SELECT * FROM duet_attempt_events WHERE attempt_id=$1 AND sequence=$2",
-                vec![claim.token.into(), event.sequence.into()],
+            .query_one_raw(statement(
+                Query::select()
+                    .column(sea_orm::sea_query::Asterisk)
+                    .from(E::Table)
+                    .and_where(Expr::col(E::AttemptId).eq(claim.token))
+                    .and_where(Expr::col(E::Sequence).eq(event.sequence)),
             ))
             .await?
         {
@@ -246,14 +361,44 @@ impl PostgresFrontDoorStore {
             tx.commit().await?;
             return Ok(());
         }
-        let n:i64=tx.query_one_raw(sql("SELECT coalesce(max(sequence),0) AS n FROM duet_attempt_events WHERE attempt_id=$1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?.try_get("","n")?;
+        let n: i64 = tx
+            .query_one_raw(statement(
+                Query::select()
+                    .expr_as(
+                        Func::coalesce([Expr::col(E::Sequence).max(), Expr::val(0)]),
+                        Alias::new("n"),
+                    )
+                    .from(E::Table)
+                    .and_where(Expr::col(E::AttemptId).eq(claim.token)),
+            ))
+            .await?
+            .ok_or(AuthorityError::Refused)?
+            .try_get("", "n")?;
         if event.sequence != n + 1 {
             return Err(AuthorityError::Refused);
         }
-        tx.execute_raw(sql("INSERT INTO duet_attempt_events(attempt_id,sequence,body,delta,candidate) VALUES($1,$2,$3,$4,$5)",vec![claim.token.into(),event.sequence.into(),event.body.clone().into(),event.delta.clone().into(),event.candidate.clone().into()])).await?;
+        tx.execute_raw(statement(
+            Query::insert()
+                .into_table(E::Table)
+                .columns([E::AttemptId, E::Sequence, E::Body, E::Delta, E::Candidate])
+                .values_panic([
+                    claim.token.into(),
+                    event.sequence.into(),
+                    event.body.clone().into(),
+                    event.delta.clone().into(),
+                    event.candidate.clone().into(),
+                ]),
+        ))
+        .await?;
         if let Some(delta) = &event.delta {
             let rev = revision(&tx, claim.account).await?;
-            tx.execute_raw(sql("UPDATE duet_conversation_messages SET text=text||$3,revision=$4 WHERE account_id=$1 AND id=(SELECT reply_id FROM duet_conversation_inputs WHERE run_id=$2)",vec![claim.account.into(),claim.run.into(),delta.clone().into(),rev.into()])).await?;
+            use sea_orm::sea_query::extension::postgres::PgExpr;
+            tx.execute_raw(statement(
+                query::reply_update(claim.account, claim.run)
+                    .value(M::Text, Expr::col(M::Text).concatenate(delta.clone()))
+                    .value(M::Revision, rev),
+            ))
+            .await?;
         }
         tx.commit().await?;
         Ok(())
@@ -278,9 +423,12 @@ impl PostgresFrontDoorStore {
             && r.try_get::<Option<Uuid>>("", "claim_token")? == Some(claim.token)
         {
             let existing = tx
-                .query_one_raw(sql(
-                    "SELECT text FROM duet_conversation_messages WHERE account_id=$1 AND id=$2",
-                    vec![a.id.into(), r.try_get::<Uuid>("", "reply_id")?.into()],
+                .query_one_raw(statement(
+                    Query::select()
+                        .column(M::Text)
+                        .from(M::Table)
+                        .and_where(Expr::col(M::AccountId).eq(a.id))
+                        .and_where(Expr::col(M::Id).eq(r.try_get::<Uuid>("", "reply_id")?)),
                 ))
                 .await?
                 .ok_or(AuthorityError::Refused)?;
@@ -291,16 +439,46 @@ impl PostgresFrontDoorStore {
             return Ok(());
         }
         fence(&tx, claim).await?;
-        let last=tx.query_one_raw(sql("SELECT candidate FROM duet_attempt_events WHERE attempt_id=$1 ORDER BY sequence DESC LIMIT 1",vec![claim.token.into()])).await?.ok_or(AuthorityError::Refused)?;
+        let last = tx
+            .query_one_raw(statement(
+                Query::select()
+                    .column(E::Candidate)
+                    .from(E::Table)
+                    .and_where(Expr::col(E::AttemptId).eq(claim.token))
+                    .order_by(E::Sequence, Order::Desc)
+                    .limit(1),
+            ))
+            .await?
+            .ok_or(AuthorityError::Refused)?;
         if last.try_get::<Option<String>>("", "candidate")?.as_deref() != Some(text) {
             return Err(AuthorityError::Refused);
         }
         let rev = revision(&tx, a.id).await?;
-        tx.execute_raw(sql("UPDATE duet_conversation_messages SET text=$3,state='complete',revision=$4 WHERE account_id=$1 AND id=$2",vec![a.id.into(),r.try_get::<Uuid>("","reply_id")?.into(),text.into(),rev.into()])).await?;
-        tx.execute_raw(sql("UPDATE duet_conversation_inputs SET state='completed',lease_until=NULL,revision=$2 WHERE run_id=$1",vec![claim.run.into(),rev.into()])).await?;
-        tx.execute_raw(sql(
-            "UPDATE duet_conversation_attempts SET state='completed' WHERE id=$1",
-            vec![claim.token.into()],
+        tx.execute_raw(statement(
+            Query::update()
+                .table(M::Table)
+                .value(M::Text, text)
+                .value(M::State, "complete")
+                .value(M::Revision, rev)
+                .and_where(Expr::col(M::AccountId).eq(a.id))
+                .and_where(Expr::col(M::Id).eq(r.try_get::<Uuid>("", "reply_id")?)),
+        ))
+        .await?;
+        tx.execute_raw(statement(
+            query::run_update(claim.run)
+                .value(I::State, "completed")
+                .value(
+                    I::LeaseUntil,
+                    Expr::Keyword(sea_orm::sea_query::Keyword::Null),
+                )
+                .value(I::Revision, rev),
+        ))
+        .await?;
+        tx.execute_raw(statement(
+            Query::update()
+                .table(T::Table)
+                .value(T::State, "completed")
+                .and_where(Expr::col(T::Id).eq(claim.token)),
         ))
         .await?;
         tx.commit().await?;
@@ -334,7 +512,28 @@ impl PostgresFrontDoorStore {
         }
         let tx = self.db.begin().await?;
         let (a, _) = identity::locked(&tx, principal).await?;
-        let rows=tx.query_all_raw(sql("SELECT e.* FROM duet_attempt_events e JOIN duet_conversation_attempts t ON t.id=e.attempt_id JOIN duet_conversation_inputs i ON i.run_id=t.run_id WHERE i.account_id=$1 AND e.attempt_id=$2 AND e.sequence>$3 ORDER BY e.sequence LIMIT 100",vec![a.id.into(),attempt.into(),after.into()])).await?;
+        let rows = tx
+            .query_all_raw(statement(
+                Query::select()
+                    .expr(Expr::col((E::Table, sea_orm::sea_query::Asterisk)))
+                    .from(E::Table)
+                    .join(
+                        JoinType::InnerJoin,
+                        T::Table,
+                        Expr::col((T::Table, T::Id)).equals((E::Table, E::AttemptId)),
+                    )
+                    .join(
+                        JoinType::InnerJoin,
+                        I::Table,
+                        Expr::col((I::Table, I::RunId)).equals((T::Table, T::RunId)),
+                    )
+                    .and_where(Expr::col((I::Table, I::AccountId)).eq(a.id))
+                    .and_where(Expr::col((E::Table, E::AttemptId)).eq(attempt))
+                    .and_where(Expr::col((E::Table, E::Sequence)).gt(after))
+                    .order_by((E::Table, E::Sequence), Order::Asc)
+                    .limit(100),
+            ))
+            .await?;
         let events = rows
             .into_iter()
             .map(|r| {

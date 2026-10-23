@@ -1,7 +1,8 @@
 //! Real PostgreSQL authority race proof; missing prerequisites fail, never skip.
 use super::*;
+use physician_auth::migration::{Accounts, Memberships, Patients, account, membership, patient};
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
-use sea_orm::{ConnectionTrait, Database, DbBackend, Statement};
+use sea_orm::{ColumnTrait, Database, EntityTrait, QueryFilter};
 use std::sync::Arc;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
@@ -82,25 +83,19 @@ async fn postgres_revocation_waits_for_existing_authority_row_publication_fence(
         .is_err(),
         "new publication must fail after revocation"
     );
-    db.execute_raw(Statement::from_sql_and_values(
-        DbBackend::Postgres,
-        "DELETE FROM physician_memberships WHERE practice_id=$1",
-        vec![practice.clone().into()],
-    ))
-    .await
-    .unwrap();
-    db.execute_raw(Statement::from_sql_and_values(
-        DbBackend::Postgres,
-        "DELETE FROM physician_patients WHERE practice_id=$1",
-        vec![practice.clone().into()],
-    ))
-    .await
-    .unwrap();
-    db.execute_raw(Statement::from_sql_and_values(
-        DbBackend::Postgres,
-        "DELETE FROM physician_accounts WHERE practice_id=$1",
-        vec![practice.into()],
-    ))
-    .await
-    .unwrap();
+    Memberships::delete_many()
+        .filter(membership::Column::PracticeId.eq(&practice))
+        .exec(&db)
+        .await
+        .unwrap();
+    Patients::delete_many()
+        .filter(patient::Column::PracticeId.eq(&practice))
+        .exec(&db)
+        .await
+        .unwrap();
+    Accounts::delete_many()
+        .filter(account::Column::PracticeId.eq(&practice))
+        .exec(&db)
+        .await
+        .unwrap();
 }

@@ -1,26 +1,37 @@
 //! Non-destructive adoption of the old file-derived `mod` migration receipt.
 //! The shared legacy ledger is never renamed/deleted: front-door may own it too.
 use super::Migrator;
-use sea_orm::{ConnectionTrait, DatabaseConnection, DbBackend, DbErr, Statement, TransactionTrait};
-use sea_orm_migration::{MigratorTrait, SchemaManager};
+use sea_orm::{
+    ConnectionTrait, DatabaseConnection, DbErr, EntityTrait, TransactionTrait,
+    sea_query::{Expr, Func, Query},
+};
+use sea_orm_migration::{MigratorTrait, SchemaManager, seaql_migrations};
 
 /// Serializes startup, verifies old schema identity, adopts it into this owner's
 /// ledger, and runs missing migrations in the same transaction.
 pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
     let txn = db.begin().await?;
-    txn.execute_unprepared("SELECT pg_advisory_xact_lock(740146001)")
-        .await?;
+    // PostgreSQL transaction-scoped advisory lock serializes adoption/install;
+    // row locks cannot protect a migration ledger that does not yet exist.
+    txn.query_one(
+        &Query::select()
+            .expr(Func::cust("pg_advisory_xact_lock").arg(740146001_i64))
+            .to_owned(),
+    )
+    .await?;
     Migrator::install(&txn).await?;
     let manager = SchemaManager::new(&txn);
-    let count = txn
-        .query_one_raw(Statement::from_string(
-            DbBackend::Postgres,
-            "SELECT count(*) AS n FROM physician_auth_migrations".to_owned(),
-        ))
+    let ledger_is_empty = txn
+        .query_one(
+            &Query::select()
+                .column(seaql_migrations::Column::Version)
+                .from(Migrator::migration_table_name())
+                .limit(1)
+                .to_owned(),
+        )
         .await?
-        .unwrap()
-        .try_get::<i64>("", "n")?;
-    if count == 0 {
+        .is_none();
+    if ledger_is_empty {
         let tables = [
             (
                 "physician_accounts",
@@ -60,16 +71,13 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
                         .into(),
                 ));
             }
-            let legacy = txn
-                .query_one_raw(Statement::from_string(
-                    DbBackend::Postgres,
-                    "SELECT applied_at FROM seaql_migrations WHERE version='mod'".to_owned(),
-                ))
+            let legacy = seaql_migrations::Entity::find_by_id("mod")
+                .one(&txn)
                 .await?
                 .ok_or_else(|| {
                     DbErr::Custom("unidentified physician schema: no legacy mod receipt".into())
                 })?;
-            let applied: i64 = legacy.try_get("", "applied_at")?;
+            let applied = legacy.applied_at;
             for (table, columns) in tables {
                 for column in columns.split(',') {
                     if !manager.has_column(table, column).await? {
@@ -81,16 +89,23 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
             }
             // Check the original named indexes as well as columns; mere table
             // existence is not enough to recognize a completed legacy migration.
-            for index in [
-                "physician_accounts_practice_idx",
-                "physician_sessions_account_idx",
-                "physician_sign_in_tokens_account_idx",
-                "physician_memberships_workspace_idx",
-                "physician_patient_links_workspace_idx",
+            for (table, index) in [
+                ("physician_accounts", "physician_accounts_practice_idx"),
+                ("physician_sessions", "physician_sessions_account_idx"),
+                (
+                    "physician_sign_in_tokens",
+                    "physician_sign_in_tokens_account_idx",
+                ),
+                (
+                    "physician_memberships",
+                    "physician_memberships_workspace_idx",
+                ),
+                (
+                    "physician_patient_links",
+                    "physician_patient_links_workspace_idx",
+                ),
             ] {
-                let exists = txn.query_one_raw(Statement::from_sql_and_values(DbBackend::Postgres,
-                    "SELECT indexname FROM pg_indexes WHERE schemaname=current_schema() AND indexname=$1", vec![index.into()])).await?;
-                if exists.is_none() {
+                if !manager.has_index(table, index).await? {
                     return Err(DbErr::Custom(format!(
                         "legacy physician schema missing index {index}"
                     )));
@@ -108,9 +123,10 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
                         return Err(DbErr::Custom("partial physician patients migration".into()));
                     }
                 }
-                let index = txn.query_one_raw(Statement::from_string(DbBackend::Postgres,
-                    "SELECT indexname FROM pg_indexes WHERE schemaname=current_schema() AND indexname='physician_patients_practice_idx'".to_owned())).await?;
-                if index.is_none() {
+                if !manager
+                    .has_index("physician_patients", "physician_patients_practice_idx")
+                    .await?
+                {
                     return Err(DbErr::Custom(
                         "partial physician patients migration: missing index".into(),
                     ));
@@ -130,11 +146,16 @@ pub async fn migrate(db: &DatabaseConnection) -> Result<(), DbErr> {
     txn.commit().await
 }
 async fn adopt(db: &impl ConnectionTrait, version: &str, applied: i64) -> Result<(), DbErr> {
-    db.execute_raw(Statement::from_sql_and_values(
-        DbBackend::Postgres,
-        "INSERT INTO physician_auth_migrations(version,applied_at) VALUES($1,$2)",
-        vec![version.into(), applied.into()],
-    ))
+    db.execute(
+        &Query::insert()
+            .into_table(Migrator::migration_table_name())
+            .columns([
+                seaql_migrations::Column::Version,
+                seaql_migrations::Column::AppliedAt,
+            ])
+            .values_panic([Expr::val(version), Expr::val(applied)])
+            .to_owned(),
+    )
     .await?;
     Ok(())
 }

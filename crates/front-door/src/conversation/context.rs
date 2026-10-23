@@ -40,12 +40,48 @@ impl PostgresFrontDoorStore {
         let current: Uuid = run.try_get("", "message_id")?;
         let timezone: String = run.try_get("", "timezone")?;
         let attempt: i32 = run.try_get("", "attempt_count")?;
-        let head = tx.query_one_raw(sql("SELECT m.sequence, to_char(clock_timestamp() AT TIME ZONE $3,'YYYY-MM-DD\"T\"HH24:MI:SS') AS local_now, (SELECT min(sequence) FROM duet_conversation_messages WHERE account_id=$1) AS first_sequence, (SELECT id FROM duet_conversation_messages WHERE account_id=$1 ORDER BY sequence LIMIT 1) AS first_id FROM duet_conversation_messages m WHERE m.account_id=$1 AND m.id=$2",vec![claim.account.into(),current.into(),timezone.clone().into()])).await?.ok_or(AuthorityError::Refused)?;
+        // PostgreSQL owns timezone/DST rendering and the post-lock wall clock.
+        let head = tx.query_one_raw(statement(Query::select().column(M::Sequence)
+            .expr_as(Expr::cust_with_values("to_char(clock_timestamp() AT TIME ZONE $1,'YYYY-MM-DD\"T\"HH24:MI:SS')",[timezone.clone()]),Alias::new("local_now"))
+            .expr_as(Query::select().expr(Expr::col(M::Sequence).min()).from(M::Table)
+                .and_where(Expr::col(M::AccountId).eq(claim.account)).to_owned(),Alias::new("first_sequence"))
+            .expr_as(Query::select().column(M::Id).from(M::Table)
+                .and_where(Expr::col(M::AccountId).eq(claim.account))
+                .order_by(M::Sequence,Order::Asc).limit(1).to_owned(),Alias::new("first_id"))
+            .from(M::Table).and_where(Expr::col(M::AccountId).eq(claim.account))
+            .and_where(Expr::col(M::Id).eq(current)))).await?.ok_or(AuthorityError::Refused)?;
         let through: i64 = head.try_get("", "sequence")?;
         // Settled messages only: unfinished or interrupted empty replies are not
         // things Duet said. Newest first, then trimmed to the byte budget.
-        let rows = tx.query_all_raw(sql("SELECT id,sequence,role,text,state FROM duet_conversation_messages WHERE account_id=$1 AND sequence<$2 AND (state='complete' OR (role='assistant' AND state='interrupted' AND text<>'')) ORDER BY sequence DESC LIMIT $3",vec![claim.account.into(),through.into(),RECENT_MESSAGES.into()])).await?;
-        let current_row = tx.query_one_raw(sql("SELECT id,sequence,role,text,state FROM duet_conversation_messages WHERE account_id=$1 AND id=$2",vec![claim.account.into(),current.into()])).await?.ok_or(AuthorityError::Refused)?;
+        let rows = tx
+            .query_all_raw(statement(
+                Query::select()
+                    .columns([M::Id, M::Sequence, M::Role, M::Text, M::State])
+                    .from(M::Table)
+                    .and_where(Expr::col(M::AccountId).eq(claim.account))
+                    .and_where(Expr::col(M::Sequence).lt(through))
+                    .cond_where(
+                        Cond::any().add(Expr::col(M::State).eq("complete")).add(
+                            Cond::all()
+                                .add(Expr::col(M::Role).eq("assistant"))
+                                .add(Expr::col(M::State).eq("interrupted"))
+                                .add(Expr::col(M::Text).ne("")),
+                        ),
+                    )
+                    .order_by(M::Sequence, Order::Desc)
+                    .limit(RECENT_MESSAGES as u64),
+            ))
+            .await?;
+        let current_row = tx
+            .query_one_raw(statement(
+                Query::select()
+                    .columns([M::Id, M::Sequence, M::Role, M::Text, M::State])
+                    .from(M::Table)
+                    .and_where(Expr::col(M::AccountId).eq(claim.account))
+                    .and_where(Expr::col(M::Id).eq(current)),
+            ))
+            .await?
+            .ok_or(AuthorityError::Refused)?;
         tx.commit().await?;
         let message = |r: &sea_orm::QueryResult| -> Result<Value, sea_orm::DbErr> {
             Ok(json!({

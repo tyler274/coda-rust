@@ -2,7 +2,7 @@
 """Check tracked authored SQL (not generated SQL or arbitrary Rust strings).
 
 Run: nix develop --command python scripts/check-sql.py [--write]
-The three required Duet queries are included by Rust at compile time. All other
+The required Duet schema-readiness query is included by Rust at compile time. All other
 tracked .sql files outside read-only submodules are included automatically.
 Duet migrations under crates/duet-api/migrations are excluded: each file is
 checksummed into duet_schema_migrations, so formatting must not change it.
@@ -21,8 +21,6 @@ import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 REQUIRED = {
-    "crates/duet-api/src/sql/list_moments.sql",
-    "crates/duet-api/src/sql/delete_moment.sql",
     "crates/duet-api/src/sql/has_migration.sql",
 }
 
@@ -41,10 +39,13 @@ def main():
         name
         for name in set(filter(None, tracked))
         if not name.startswith("crates/duet-api/migrations/")
+        and (ROOT / name).is_file()
     )
     missing = REQUIRED - set(paths)
     if missing:
         sys.exit(f"Required authored SQL is not tracked: {sorted(missing)}")
+    if not paths:
+        sys.exit("No authored SQL files remain; retire this check explicitly instead of claiming coverage")
     failed = False
     for name in paths:
         path = ROOT / name

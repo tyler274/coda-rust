@@ -12,14 +12,20 @@ pub use harness::engine;
 /// Existing API adapter; no second physician provider transport.
 pub use harness::responses::Responses;
 use sea_orm::{
-    ConnectionTrait, Database, DatabaseConnection, DbBackend, DbErr, Statement, TransactionTrait,
+    ActiveModelTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr, EntityTrait,
+    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
+    sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+mod entities;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
+#[cfg(test)]
+mod tests;
+use entities::{command, conversation};
 
 /// Authenticated product scope, supplied by the server, never the command body.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -130,19 +136,43 @@ pub struct Store {
     db: DatabaseConnection,
 }
 
-fn sql(query: &str, values: Vec<sea_orm::Value>) -> Statement {
-    Statement::from_sql_and_values(DbBackend::Postgres, query, values)
-}
 fn error(message: &str) -> DbErr {
     DbErr::Custom(message.into())
 }
-fn keys(scope: &Scope) -> Vec<sea_orm::Value> {
-    vec![
-        scope.practice.clone().into(),
-        scope.physician.clone().into(),
-        scope.workspace.clone().into(),
-        scope.chat.clone().into(),
-    ]
+fn keys(scope: &Scope) -> (String, String, String, String) {
+    (
+        scope.practice.clone(),
+        scope.physician.clone(),
+        scope.workspace.clone(),
+        scope.chat.clone(),
+    )
+}
+
+fn conversation_model(scope: &Scope, state: Value) -> conversation::ActiveModel {
+    conversation::ActiveModel {
+        practice: Set(scope.practice.clone()),
+        physician: Set(scope.physician.clone()),
+        workspace: Set(scope.workspace.clone()),
+        chat: Set(scope.chat.clone()),
+        state: Set(state),
+    }
+}
+
+fn database_clock() -> Expr {
+    // PostgreSQL wall clock, deliberately not transaction-start CURRENT_TIMESTAMP:
+    // leases must be checked after waiting for conversation and authority locks.
+    // SeaQuery has no dedicated clock_timestamp/epoch extraction expression.
+    Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
+}
+
+async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+    let query = Query::select()
+        .expr_as(database_clock(), Alias::new("now"))
+        .to_owned();
+    tx.query_one(&query)
+        .await?
+        .ok_or_else(|| error("missing database clock"))?
+        .try_get("", "now")
 }
 
 impl Store {
@@ -158,6 +188,8 @@ impl Store {
     /// Explicit additive, rerunnable migration, never invoked by connect.
     pub async fn migrate(&self) -> Result<(), DbErr> {
         let tx = self.db.begin().await?;
+        // PostgreSQL-only migration serialization; the recorded schema below stays
+        // unchanged. Ordinary runtime access uses the owning typed entities.
         tx.execute_unprepared("SELECT pg_advisory_xact_lock(804081)")
             .await?;
         tx.execute_unprepared(include_str!("runtime.sql")).await?;
@@ -180,16 +212,13 @@ impl Store {
             return Err(error("empty physician scope"));
         }
         let tx = self.db.begin().await?;
-        let row = tx.query_one_raw(sql("SELECT state, floor(extract(epoch FROM clock_timestamp()))::bigint AS now FROM physician_runtime_conversations WHERE practice=$1 AND physician=$2 AND workspace=$3 AND chat=$4 FOR UPDATE", keys(scope))).await?.ok_or_else(|| error("conversation not found"))?;
-        let state: Value = row.try_get("", "state")?;
-        let now = tx
-            .query_one_raw(sql(
-                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
-                vec![],
-            ))
+        let row = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
             .await?
-            .ok_or_else(|| error("missing database clock"))?
-            .try_get("", "now")?;
+            .ok_or_else(|| error("conversation not found"))?;
+        let state = row.state;
+        let now = now(&tx).await?;
         Ok((
             tx,
             serde_json::from_value(state).map_err(|_| error("corrupt conversation"))?,
@@ -202,13 +231,12 @@ impl Store {
         scope: &Scope,
         state: &Conversation,
     ) -> Result<(), DbErr> {
-        let mut values = keys(scope);
-        values.push(
-            serde_json::to_value(state)
-                .map_err(|_| error("invalid conversation"))?
-                .into(),
-        );
-        tx.execute_raw(sql("UPDATE physician_runtime_conversations SET state=$5 WHERE practice=$1 AND physician=$2 AND workspace=$3 AND chat=$4", values)).await?;
+        conversation_model(
+            scope,
+            serde_json::to_value(state).map_err(|_| error("invalid conversation"))?,
+        )
+        .update(&tx)
+        .await?;
         tx.commit().await
     }
 
@@ -252,26 +280,45 @@ impl Store {
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
-        let result = tx.execute_raw(sql("INSERT INTO physician_runtime_commands (practice, physician, key, command) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING", vec![scope.practice.clone().into(), scope.physician.clone().into(), input.key.clone().into(), command.clone().into()])).await?;
-        if result.rows_affected() == 0 {
-            let row = tx.query_one_raw(sql("SELECT command FROM physician_runtime_commands WHERE practice=$1 AND physician=$2 AND key=$3", vec![scope.practice.clone().into(), scope.physician.clone().into(), input.key.clone().into()])).await?.ok_or_else(|| error("missing command receipt"))?;
-            let previous: Value = row.try_get("", "command")?;
+        let inserted = command::Entity::insert(command::ActiveModel {
+            practice: Set(scope.practice.clone()),
+            physician: Set(scope.physician.clone()),
+            key: Set(input.key.clone()),
+            command: Set(command.clone()),
+        })
+        .on_conflict(OnConflict::new().do_nothing().to_owned())
+        .exec_without_returning(&tx)
+        .await?;
+        if inserted == 0 {
+            let previous = command::Entity::find_by_id((
+                scope.practice.clone(),
+                scope.physician.clone(),
+                input.key.clone(),
+            ))
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing command receipt"))?
+            .command;
             if previous != command {
                 return Err(error("idempotency collision"));
             }
             tx.commit().await?;
             return Ok(Accepted::Duplicate);
         }
-        let mut values = keys(scope);
-        values.push(
-            serde_json::to_value(Conversation::default())
-                .unwrap()
-                .into(),
-        );
-        tx.execute_raw(sql("INSERT INTO physician_runtime_conversations (practice,physician,workspace,chat,state) VALUES ($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING", values)).await?;
-        let row = tx.query_one_raw(sql("SELECT state FROM physician_runtime_conversations WHERE practice=$1 AND physician=$2 AND workspace=$3 AND chat=$4 FOR UPDATE", keys(scope))).await?.ok_or_else(|| error("missing conversation"))?;
-        let mut state: Conversation = serde_json::from_value(row.try_get("", "state")?)
-            .map_err(|_| error("corrupt conversation"))?;
+        conversation::Entity::insert(conversation_model(
+            scope,
+            serde_json::to_value(Conversation::default()).unwrap(),
+        ))
+        .on_conflict(OnConflict::new().do_nothing().to_owned())
+        .exec_without_returning(&tx)
+        .await?;
+        let row = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing conversation"))?;
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
         if state.status == "completed" {
             state.work = Uuid::new_v4().to_string();
         }
@@ -438,14 +485,7 @@ impl Store {
         } else if state.session_hash.is_some() {
             return Err(error("hosted publication requires transactional authority"));
         }
-        let now = tx
-            .query_one_raw(sql(
-                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
-                vec![],
-            ))
-            .await?
-            .ok_or_else(|| error("missing clock"))?
-            .try_get("", "now")?;
+        let now = now(&tx).await?;
         if !Self::current(&state, claim, now) {
             return Err(error("stale completion"));
         }
@@ -510,25 +550,53 @@ impl Store {
         maximum: usize,
         after: Option<&Scope>,
     ) -> Result<Vec<Scope>, DbErr> {
-        let mut values = vec![(maximum as i64).into()];
+        use conversation::Column as C;
         let after = after.cloned().unwrap_or(Scope {
             practice: String::new(),
             physician: String::new(),
             workspace: String::new(),
             chat: String::new(),
         });
-        values.extend(keys(&after));
-        let rows = self.db.query_all_raw(sql("SELECT practice,physician,workspace,chat FROM physician_runtime_conversations WHERE (practice,physician,workspace,chat) > ($2,$3,$4,$5) AND (state->>'status' = 'pending' OR (state->>'status' = 'active' AND (state->'attempts'->-1->>'expires')::bigint <= floor(extract(epoch FROM clock_timestamp()))::bigint)) ORDER BY practice,physician,workspace,chat LIMIT $1", values)).await?;
-        rows.into_iter()
-            .map(|r| {
-                Ok(Scope {
-                    practice: r.try_get("", "practice")?,
-                    physician: r.try_get("", "physician")?,
-                    workspace: r.try_get("", "workspace")?,
-                    chat: r.try_get("", "chat")?,
-                })
+        let columns = [C::Practice, C::Physician, C::Workspace, C::Chat];
+        let status = Expr::col(C::State).cast_json_field("status");
+        let expires = Expr::col(C::State)
+            .get_json_field("attempts")
+            .get_json_field(-1_i32)
+            .cast_json_field("expires")
+            .cast_as(Alias::new("bigint"));
+        let mut query = conversation::Entity::find()
+            .select_only()
+            .columns(columns)
+            .filter(Expr::tuple(columns.map(Expr::col)).gt(Expr::tuple([
+                Expr::val(after.practice),
+                Expr::val(after.physician),
+                Expr::val(after.workspace),
+                Expr::val(after.chat),
+            ])))
+            .filter(
+                Condition::any().add(status.clone().eq("pending")).add(
+                    Condition::all()
+                        .add(status.eq("active"))
+                        .add(expires.lte(database_clock())),
+                ),
+            )
+            .limit(maximum as u64);
+        for column in columns {
+            query = query.order_by_asc(column);
+        }
+        let rows = query
+            .into_tuple::<(String, String, String, String)>()
+            .all(&self.db)
+            .await?;
+        Ok(rows
+            .into_iter()
+            .map(|(practice, physician, workspace, chat)| Scope {
+                practice,
+                physician,
+                workspace,
+                chat,
             })
-            .collect()
+            .collect())
     }
 }
 

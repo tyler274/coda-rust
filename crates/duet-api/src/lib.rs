@@ -25,6 +25,7 @@ pub mod hosting;
 pub mod identity;
 pub mod journal_gcs;
 pub mod luna;
+mod moment_entity;
 pub mod privacy;
 pub mod privacy_archive;
 pub mod producer_database;
@@ -49,13 +50,11 @@ use axum::routing::{delete, get, post, put};
 use duet_wire::models::{AccountMoment, MomentKind};
 use front_door::http::{ConsentView, FrontDoorState, SessionView};
 use front_door::{FrontDoorStore, LinkError, Premium, SessionError, SignInError};
+use sea_orm::{ColumnTrait, EntityTrait, QueryFilter, QueryOrder};
 use uuid::Uuid;
 
 /// The `REQUIRED_MIGRATION` constant.
 pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
-
-const LIST_SQL: &str = include_str!("sql/list_moments.sql");
-const DELETE_SQL: &str = include_str!("sql/delete_moment.sql");
 
 #[derive(Debug)]
 /// The `ApiError` cases.
@@ -190,25 +189,31 @@ pub trait Moments: Send + Sync {
 
 /// The `PgMoments` value exchanged by this crate.
 pub struct PgMoments {
-    pool: sqlx::PgPool,
+    database: sea_orm::DatabaseConnection,
 }
 
 impl PgMoments {
-    /// Creates the client.
+    /// Reuses the existing pool without changing schema or transaction ownership.
     pub fn new(pool: sqlx::PgPool) -> Self {
-        Self { pool }
+        Self {
+            database: sea_orm::SqlxPostgresConnector::from_sqlx_postgres_pool(pool),
+        }
     }
 }
 
 #[async_trait]
 impl Moments for PgMoments {
     async fn list(&self, user_id: Uuid) -> Result<Vec<AccountMoment>, ApiError> {
-        let rows = sqlx::query_as::<_, MomentRow>(LIST_SQL)
-            .bind(user_id)
-            .fetch_all(&self.pool)
+        let rows = moment_entity::Entity::find()
+            .filter(moment_entity::Column::UserId.eq(user_id))
+            .order_by_desc(moment_entity::Column::OccurredAt)
+            .order_by_desc(moment_entity::Column::Id)
+            .all(&self.database)
             .await
             .map_err(|error| ApiError::Storage(error.to_string()))?;
-        rows.into_iter().map(MomentRow::into_moment).collect()
+        rows.into_iter()
+            .map(moment_entity::Model::into_moment)
+            .collect()
     }
 
     async fn remove(&self, user_id: Uuid, moment_id: Uuid) -> Result<bool, ApiError> {
@@ -220,24 +225,17 @@ impl Moments for PgMoments {
                 "Privacy journal confirmation is not served by this process.",
             ));
         }
-        let deleted = sqlx::query(DELETE_SQL)
-            .bind(moment_id)
-            .bind(user_id)
-            .execute(&self.pool)
+        let deleted = moment_entity::Entity::delete_many()
+            .filter(moment_entity::Column::Id.eq(moment_id))
+            .filter(moment_entity::Column::UserId.eq(user_id))
+            .exec(&self.database)
             .await
             .map_err(|error| ApiError::Storage(error.to_string()))?;
-        Ok(deleted.rows_affected() == 1)
+        Ok(deleted.rows_affected == 1)
     }
 }
 
-#[derive(sqlx::FromRow)]
-struct MomentRow {
-    id: Uuid,
-    kind: String,
-    occurred_at: chrono::DateTime<chrono::Utc>,
-}
-
-impl MomentRow {
+impl moment_entity::Model {
     fn into_moment(self) -> Result<AccountMoment, ApiError> {
         let kind = match self.kind.as_str() {
             "first_summary_prepared" => MomentKind::FirstSummaryPrepared,
@@ -637,12 +635,7 @@ mod tests {
     }
 
     #[test]
-    fn sql_matches_the_python_moment_store() {
-        let list = LIST_SQL.split_whitespace().collect::<Vec<_>>().join(" ");
-        let delete = DELETE_SQL.split_whitespace().collect::<Vec<_>>().join(" ");
-        assert!(list.contains("from public.account_moments"));
-        assert!(list.contains("order by occurred_at desc, id desc"));
-        assert!(delete.contains("delete from public.account_moments"));
+    fn moments_keep_the_external_schema_readiness_contract() {
         assert_eq!(REQUIRED_MIGRATION, "0120_one_review_bookmark");
     }
 

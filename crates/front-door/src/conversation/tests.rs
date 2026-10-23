@@ -673,7 +673,9 @@ async fn postgres_operator_switch_allowance_and_context() {
     );
     assert_eq!(ctx.payload["local_timezone"], "America/New_York");
     assert_eq!(ctx.payload["assignment"]["kind"], "conversation");
-    assert!(ctx.payload["working_understanding"].is_null());
+    assert!(serde_json::Value::is_null(
+        &ctx.payload["working_understanding"]
+    ));
     assert!(ctx.payload.get("earlier_attempt").is_none());
     assert_eq!(
         ctx.payload["conversation_history_boundary"]["first_message_id"],

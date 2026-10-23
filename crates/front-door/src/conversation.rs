@@ -8,8 +8,14 @@ use crate::{
     PostgresFrontDoorStore,
     identity::{self, Access, AuthorityError, Principal},
 };
+use sea_orm::sea_query::ExprTrait as _;
+use sea_orm::sea_query::{Alias, Cond, Expr, Func, JoinType, OnConflict, Order, Query};
 use sea_orm::{ConnectionTrait, DatabaseTransaction, DbBackend, Statement, TransactionTrait};
 use uuid::Uuid;
+mod query;
+use query::{
+    Attempt as T, Event as E, Input as I, Message as M, State as S, Switch as W, statement,
+};
 
 pub use admission::{
     Admission, DEFAULT_DAILY_REPLY_LIMIT, DailyLimit, OperatorAttestation, PHI_READY_ENV,
@@ -69,8 +75,44 @@ async fn accepted(
     account: Uuid,
     id: Uuid,
 ) -> Result<Option<Accepted>, AuthorityError> {
-    tx.query_one_raw(sql("SELECT i.*,m.text,s.revision AS current_revision FROM duet_conversation_inputs i JOIN duet_conversation_messages m ON m.account_id=i.account_id AND m.id=i.message_id JOIN duet_conversation_state s ON s.account_id=i.account_id WHERE i.account_id=$1 AND i.message_id=$2", vec![account.into(),id.into()])).await?
-        .map(|r| Ok(Accepted { message_id:r.try_get("","message_id")?, run_id:r.try_get("","run_id")?,reply_id:r.try_get("","reply_id")?,text:r.try_get("","text")?,timezone:r.try_get("","timezone")?,state:r.try_get("","state")?,revision:r.try_get("","current_revision")?,permission_revision:r.try_get("","permission_revision")? })).transpose()
+    tx.query_one_raw(statement(
+        Query::select()
+            .expr(Expr::col((I::Table, sea_orm::sea_query::Asterisk)))
+            .column((M::Table, M::Text))
+            .expr_as(
+                Expr::col((S::Table, S::Revision)),
+                Alias::new("current_revision"),
+            )
+            .from(I::Table)
+            .join(
+                JoinType::InnerJoin,
+                M::Table,
+                Cond::all()
+                    .add(Expr::col((M::Table, M::AccountId)).equals((I::Table, I::AccountId)))
+                    .add(Expr::col((M::Table, M::Id)).equals((I::Table, I::MessageId))),
+            )
+            .join(
+                JoinType::InnerJoin,
+                S::Table,
+                Expr::col((S::Table, S::AccountId)).equals((I::Table, I::AccountId)),
+            )
+            .and_where(Expr::col((I::Table, I::AccountId)).eq(account))
+            .and_where(Expr::col((I::Table, I::MessageId)).eq(id)),
+    ))
+    .await?
+    .map(|r| {
+        Ok(Accepted {
+            message_id: r.try_get("", "message_id")?,
+            run_id: r.try_get("", "run_id")?,
+            reply_id: r.try_get("", "reply_id")?,
+            text: r.try_get("", "text")?,
+            timezone: r.try_get("", "timezone")?,
+            state: r.try_get("", "state")?,
+            revision: r.try_get("", "current_revision")?,
+            permission_revision: r.try_get("", "permission_revision")?,
+        })
+    })
+    .transpose()
 }
 impl PostgresFrontDoorStore {
     /// Accept plain text once under the canonical account/session lock. Existing
@@ -110,6 +152,8 @@ impl PostgresFrontDoorStore {
         if !access.allows_luna() {
             return Err(AuthorityError::Refused);
         }
+        // PostgreSQL's installed timezone catalog, not an application list,
+        // remains authoritative (including aliases and installed tzdata).
         if tx
             .query_one_raw(sql(
                 "SELECT name FROM pg_timezone_names WHERE name=$1",
@@ -129,24 +173,110 @@ impl PostgresFrontDoorStore {
         // records the exact instant it was counted against.
         let admitted_at =
             admission::allowance(&tx, account.id, &input.timezone, admission.limit).await?;
-        tx.execute_raw(sql(
-            "INSERT INTO duet_conversation_state(account_id) VALUES($1) ON CONFLICT DO NOTHING",
-            vec![account.id.into()],
+        tx.execute_raw(statement(
+            Query::insert()
+                .into_table(S::Table)
+                .columns([S::AccountId])
+                .values_panic([account.id.into()])
+                .on_conflict(OnConflict::new().do_nothing().to_owned()),
         ))
         .await?;
+        // Invoke the existing PostgreSQL trigger-owned transition; duplicating
+        // its body here would split the acceptance and consent interruption owner.
         tx.execute_raw(sql(
             "SELECT duet_interrupt_accepted($1)",
             vec![account.id.into()],
         ))
         .await?;
-        let row = tx.query_one_raw(sql("UPDATE duet_conversation_state SET revision=revision+1,next_sequence=next_sequence+2 WHERE account_id=$1 RETURNING revision,next_sequence-2 AS sequence",vec![account.id.into()])).await?.ok_or(AuthorityError::Refused)?;
+        let row = tx
+            .query_one_raw(statement(
+                Query::update()
+                    .table(S::Table)
+                    .value(S::Revision, Expr::col(S::Revision).add(1))
+                    .value(S::NextSequence, Expr::col(S::NextSequence).add(2))
+                    .and_where(Expr::col(S::AccountId).eq(account.id))
+                    .returning(Query::returning().columns([S::Revision, S::NextSequence])),
+            ))
+            .await?
+            .ok_or(AuthorityError::Refused)?;
         let revision: i64 = row.try_get("", "revision")?;
-        let sequence: i64 = row.try_get("", "sequence")?;
+        let sequence = row.try_get::<i64>("", "next_sequence")? - 2;
         let run = Uuid::new_v4();
         let reply = Uuid::new_v4();
-        tx.execute_raw(sql("INSERT INTO duet_conversation_inputs(account_id,message_id,run_id,reply_id,timezone,state,permission_revision,revision,admitted_at) VALUES($1,$2,$3,$4,$5,'queued',$6,$7,$8::timestamptz)", vec![account.id.into(),input.id.into(),run.into(),reply.into(),input.timezone.clone().into(),access.permissions.revision.into(),revision.into(),admitted_at.into()])).await?;
-        tx.execute_raw(sql("INSERT INTO duet_conversation_messages(account_id,id,input_id,sequence,revision,role,text,state) VALUES($1,$2,$2,$4,$5,'user',$6,'complete'),($1,$3,$2,$4+1,$5,'assistant','','pending')",vec![account.id.into(),input.id.into(),reply.into(),sequence.into(),revision.into(),input.text.clone().into()])).await?;
-        tx.execute_raw(sql("UPDATE duet_conversation_inputs SET origin_project=$3,origin_subject=$4,origin_authenticated_at=$5 WHERE account_id=$1 AND message_id=$2",vec![account.id.into(),input.id.into(),principal.project.clone().into(),principal.subject.clone().into(),principal.authenticated_at.into()])).await?;
+        tx.execute_raw(statement(
+            Query::insert()
+                .into_table(I::Table)
+                .columns([
+                    I::AccountId,
+                    I::MessageId,
+                    I::RunId,
+                    I::ReplyId,
+                    I::Timezone,
+                    I::State,
+                    I::PermissionRevision,
+                    I::Revision,
+                    I::AdmittedAt,
+                ])
+                .values_panic([
+                    account.id.into(),
+                    input.id.into(),
+                    run.into(),
+                    reply.into(),
+                    input.timezone.clone().into(),
+                    "queued".into(),
+                    access.permissions.revision.into(),
+                    revision.into(),
+                    Expr::val(admitted_at).cast_as(Alias::new("timestamptz")),
+                ]),
+        ))
+        .await?;
+        tx.execute_raw(statement(
+            Query::insert()
+                .into_table(M::Table)
+                .columns([
+                    M::AccountId,
+                    M::Id,
+                    M::InputId,
+                    M::Sequence,
+                    M::Revision,
+                    M::Role,
+                    M::Text,
+                    M::State,
+                ])
+                .values_panic([
+                    account.id.into(),
+                    input.id.into(),
+                    input.id.into(),
+                    sequence.into(),
+                    revision.into(),
+                    "user".into(),
+                    input.text.clone().into(),
+                    "complete".into(),
+                ])
+                .values_panic([
+                    account.id.into(),
+                    reply.into(),
+                    input.id.into(),
+                    (sequence + 1).into(),
+                    revision.into(),
+                    "assistant".into(),
+                    "".into(),
+                    "pending".into(),
+                ]),
+        ))
+        .await?;
+        tx.execute_raw(statement(
+            Query::update()
+                .table(I::Table)
+                .values([
+                    (I::OriginProject, principal.project.clone().into()),
+                    (I::OriginSubject, principal.subject.clone().into()),
+                    (I::OriginAuthenticatedAt, principal.authenticated_at.into()),
+                ])
+                .and_where(Expr::col(I::AccountId).eq(account.id))
+                .and_where(Expr::col(I::MessageId).eq(input.id)),
+        ))
+        .await?;
         let result = accepted(&tx, account.id, input.id)
             .await?
             .ok_or(AuthorityError::Refused)?;
@@ -179,7 +309,23 @@ impl PostgresFrontDoorStore {
         }
         let tx = self.db.begin().await?;
         let (account, _) = identity::locked(&tx, principal).await?;
-        let rows = tx.query_all_raw(sql("SELECT * FROM (SELECT * FROM duet_conversation_messages WHERE account_id=$1 AND ($2::bigint IS NULL OR sequence<$2) ORDER BY sequence DESC LIMIT $3) page ORDER BY sequence",vec![account.id.into(),before.into(),(limit as i64).into()])).await?;
+        let mut page = Query::select();
+        page.column(sea_orm::sea_query::Asterisk)
+            .from(M::Table)
+            .and_where(Expr::col(M::AccountId).eq(account.id))
+            .order_by(M::Sequence, Order::Desc)
+            .limit(limit);
+        if let Some(before) = before {
+            page.and_where(Expr::col(M::Sequence).lt(before));
+        }
+        let rows = tx
+            .query_all_raw(statement(
+                Query::select()
+                    .column(sea_orm::sea_query::Asterisk)
+                    .from_subquery(page, Alias::new("page"))
+                    .order_by(M::Sequence, Order::Asc),
+            ))
+            .await?;
         let messages = rows
             .into_iter()
             .map(|r| {

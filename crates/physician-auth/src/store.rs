@@ -16,7 +16,8 @@ use crate::{
 use async_trait::async_trait;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
-    DbBackend, DbErr, EntityTrait, QueryFilter, Set, Statement, TransactionTrait,
+    DbErr, EntityTrait, QueryFilter, QuerySelect, QueryTrait, Set, TransactionTrait,
+    sea_query::{Expr, JoinType, LockType, Query},
 };
 
 /// The SQL-backed store.
@@ -123,27 +124,23 @@ impl PostgresAuthStore {
         identity: &PhysicianIdentity,
         workspace: &str,
     ) -> Result<(), DbErr> {
-        use sea_orm::{ConnectionTrait, DbBackend, Statement};
-        let row = tx
-            .query_one_raw(Statement::from_sql_and_values(
-                DbBackend::Postgres,
-                include_str!("runtime_authority.sql"),
-                [
-                    session_hash.to_vec().into(),
-                    identity.practice_id.clone().into(),
-                    identity.physician_id.clone().into(),
-                    workspace.to_owned().into(),
-                ],
-            ))
+        let expires = authority_query(session_hash, identity, workspace, LockType::Share)
+            .into_tuple::<i64>()
+            .one(tx)
             .await?
             .ok_or_else(|| DbErr::Custom("runtime authority revoked".into()))?;
-        let expires: i64 = row.try_get("", "expires_at")?;
-        // Clock read follows lock acquisition, including time spent waiting.
+        // PostgreSQL-specific wall-clock expression: CURRENT_TIMESTAMP is fixed at
+        // transaction start and would admit a session that expired while waiting
+        // for locks. Read it in a separate statement AFTER authority locks arrive.
         let now = tx
-            .query_one_raw(Statement::from_string(
-                DbBackend::Postgres,
-                "SELECT floor(extract(epoch FROM clock_timestamp()))::bigint AS now",
-            ))
+            .query_one(
+                &Query::select()
+                    .expr_as(
+                        Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint"),
+                        "now",
+                    )
+                    .to_owned(),
+            )
             .await?
             .ok_or_else(|| DbErr::Custom("missing database clock".into()))?;
         if expires <= now.try_get::<i64>("", "now")? {
@@ -165,6 +162,67 @@ impl PostgresAuthStore {
             sessions_ended_before: row.sessions_ended_before.max(0) as u64,
         }
     }
+}
+
+/// A single statement both proves authority and locks every participating row.
+/// Do not split these joins into independent lookups: revocation/reassignment
+/// must conflict with the same four-row fence held through publication.
+fn authority_query(
+    session_hash: &[u8],
+    identity: &PhysicianIdentity,
+    workspace: &str,
+    lock: LockType,
+) -> sea_orm::Select<Sessions> {
+    use crate::migration::{account, membership, patient, session};
+    use sea_orm::sea_query::ExprTrait;
+
+    let mut query = Sessions::find()
+        .select_only()
+        .column(session::Column::ExpiresAt)
+        .filter(session::Column::TokenHash.eq(session_hash.to_vec()))
+        .filter(account::Column::PracticeId.eq(&identity.practice_id))
+        .filter(account::Column::PhysicianId.eq(&identity.physician_id))
+        .filter(account::Column::Active.eq(true))
+        .filter(membership::Column::PatientWorkspaceId.eq(workspace))
+        .filter(membership::Column::Allowed.eq(true))
+        .filter(
+            Expr::col((Sessions, session::Column::CreatedAt))
+                .gte(Expr::col((Accounts, account::Column::SessionsEndedBefore))),
+        );
+    QueryTrait::query(&mut query)
+        .join(
+            JoinType::InnerJoin,
+            Accounts,
+            Expr::col((Accounts, account::Column::Id))
+                .eq(Expr::col((Sessions, session::Column::AccountId))),
+        )
+        .join(
+            JoinType::InnerJoin,
+            Memberships,
+            Expr::col((Memberships, membership::Column::PracticeId))
+                .eq(Expr::col((Accounts, account::Column::PracticeId)))
+                .and(
+                    Expr::col((Memberships, membership::Column::PhysicianId))
+                        .eq(Expr::col((Accounts, account::Column::PhysicianId))),
+                ),
+        )
+        .join(
+            JoinType::InnerJoin,
+            Patients,
+            Expr::col((Patients, patient::Column::PatientWorkspaceId))
+                .eq(Expr::col((
+                    Memberships,
+                    membership::Column::PatientWorkspaceId,
+                )))
+                .and(
+                    Expr::col((Patients, patient::Column::PracticeId))
+                        .eq(Expr::col((Accounts, account::Column::PracticeId))),
+                ),
+        )
+        // No outer joins or subqueries: an unqualified lock locks exactly the
+        // session, account, membership and patient rows, as the original OF list.
+        .lock(lock);
+    query
 }
 
 #[async_trait]
@@ -279,17 +337,12 @@ impl AuthStore for PostgresAuthStore {
         publish: &mut (dyn FnMut() -> Result<(), String> + Send),
     ) -> Result<(), String> {
         let txn = self.db.begin().await.map_err(|e| e.to_string())?;
-        let row = txn.query_one_raw(Statement::from_sql_and_values(
-            DbBackend::Postgres,
-            "SELECT a.id FROM physician_sessions s \
-             JOIN physician_accounts a ON a.id=s.account_id \
-             JOIN physician_memberships m ON m.practice_id=a.practice_id AND m.physician_id=a.physician_id \
-             JOIN physician_patients p ON p.patient_workspace_id=m.patient_workspace_id AND p.practice_id=a.practice_id \
-             WHERE s.token_hash=$1 AND s.expires_at>$2 AND s.created_at>=a.sessions_ended_before \
-             AND a.active=true AND a.practice_id=$3 AND a.physician_id=$4 \
-             AND m.patient_workspace_id=$5 AND m.allowed=true FOR UPDATE OF s,a,m,p",
-            vec![token_hash(token).to_vec().into(), (now as i64).into(), identity.practice_id.clone().into(), identity.physician_id.clone().into(), workspace.to_owned().into()],
-        )).await.map_err(|e| e.to_string())?;
+        let row = authority_query(&token_hash(token), identity, workspace, LockType::Update)
+            .filter(crate::migration::session::Column::ExpiresAt.gt(now as i64))
+            .into_tuple::<i64>()
+            .one(&txn)
+            .await
+            .map_err(|e| e.to_string())?;
         if row.is_none() {
             return Err("physician authority changed".into());
         }
@@ -999,4 +1052,46 @@ fn stale(_: DbErr) -> SignInError {
 
 fn invalid(_: DbErr) -> SessionError {
     SessionError::Invalid
+}
+
+#[cfg(test)]
+mod query_tests {
+    use super::*;
+    use sea_orm::DbBackend;
+
+    #[test]
+    fn authority_query_binds_values_and_locks_the_joined_owners() {
+        let identity = PhysicianIdentity {
+            practice_id: "practice' OR true --".into(),
+            physician_id: "physician".into(),
+        };
+        for (lock, suffix) in [
+            (LockType::Share, "FOR SHARE"),
+            (LockType::Update, "FOR UPDATE"),
+        ] {
+            let statement = authority_query(b"session-hash", &identity, "workspace", lock)
+                .build(DbBackend::Postgres);
+            assert_eq!(
+                statement.sql,
+                format!(
+                    "SELECT \"physician_sessions\".\"expires_at\" FROM \"physician_sessions\" \
+                     INNER JOIN \"physician_accounts\" ON \"physician_accounts\".\"id\" = \"physician_sessions\".\"account_id\" \
+                     INNER JOIN \"physician_memberships\" ON \"physician_memberships\".\"practice_id\" = \"physician_accounts\".\"practice_id\" AND \"physician_memberships\".\"physician_id\" = \"physician_accounts\".\"physician_id\" \
+                     INNER JOIN \"physician_patients\" ON \"physician_patients\".\"patient_workspace_id\" = \"physician_memberships\".\"patient_workspace_id\" AND \"physician_patients\".\"practice_id\" = \"physician_accounts\".\"practice_id\" \
+                     WHERE \"physician_sessions\".\"token_hash\" = $1 AND \"physician_accounts\".\"practice_id\" = $2 AND \"physician_accounts\".\"physician_id\" = $3 AND \"physician_accounts\".\"active\" = $4 AND \"physician_memberships\".\"patient_workspace_id\" = $5 AND \"physician_memberships\".\"allowed\" = $6 AND \"physician_sessions\".\"created_at\" >= \"physician_accounts\".\"sessions_ended_before\" {suffix}"
+                )
+            );
+            assert_eq!(
+                statement.values.unwrap().0,
+                vec![
+                    b"session-hash".to_vec().into(),
+                    identity.practice_id.clone().into(),
+                    identity.physician_id.clone().into(),
+                    true.into(),
+                    "workspace".into(),
+                    true.into(),
+                ]
+            );
+        }
+    }
 }
