@@ -363,9 +363,56 @@ impl Bus for RedisBus {
     }
 }
 
+/// Selects the bus from configuration: `PHYSICIAN_REDIS_URL` picks
+/// [`RedisBus`] (with optional `PHYSICIAN_REDIS_CA_PEM`), otherwise a
+/// [`LocalBus`] serves one process. Hosted runs must use `rediss` with a CA:
+/// a plaintext or system-root Redis would put AUTH on an unverified link.
+pub async fn from_env(
+    get: impl Fn(&str) -> Option<String>,
+    hosted: bool,
+) -> Result<Arc<dyn Bus>, String> {
+    let url = get("PHYSICIAN_REDIS_URL").filter(|url| !url.trim().is_empty());
+    let ca = get("PHYSICIAN_REDIS_CA_PEM").filter(|ca| !ca.trim().is_empty());
+    match url {
+        None if ca.is_some() => Err("PHYSICIAN_REDIS_CA_PEM requires PHYSICIAN_REDIS_URL".into()),
+        None => Ok(Arc::new(LocalBus::new(CAPACITY))),
+        Some(url) => {
+            if hosted && (!url.starts_with("rediss://") || ca.is_none()) {
+                return Err(
+                    "hosted physician Redis requires rediss and PHYSICIAN_REDIS_CA_PEM".into(),
+                );
+            }
+            Ok(Arc::new(
+                RedisBus::connect(&url, ca.as_deref().map(str::as_bytes)).await?,
+            ))
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[tokio::test]
+    async fn selection_defaults_local_and_hosted_requires_verified_tls() {
+        let none = |_: &str| None;
+        assert!(from_env(none, true).await.unwrap().live());
+        let only_ca = |name: &str| (name == "PHYSICIAN_REDIS_CA_PEM").then(|| "pem".to_owned());
+        assert!(from_env(only_ca, false).await.is_err());
+        for (url, ca) in [
+            ("redis://default:x@10.0.0.1:6378", Some("pem")),
+            ("rediss://default:x@10.0.0.1:6378", None),
+        ] {
+            let get = |name: &str| match name {
+                "PHYSICIAN_REDIS_URL" => Some(url.to_owned()),
+                "PHYSICIAN_REDIS_CA_PEM" => ca.map(str::to_owned),
+                _ => None,
+            };
+            let error = from_env(get, true).await.err().unwrap();
+            assert!(error.contains("hosted"), "{error}");
+            assert!(!error.contains("default:x"));
+        }
+    }
 
     #[tokio::test]
     async fn local_fanout_and_lag_resync() {

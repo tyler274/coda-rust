@@ -21,7 +21,7 @@ use physician_wire::{
 
 use panels::Panel;
 #[cfg(target_arch = "wasm32")]
-use shell::workspace_event_rereads;
+use shell::{EventRefetch, event_refetch};
 use shell::{
     CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
     REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA, ReadView,
@@ -343,6 +343,7 @@ fn follow_workspace_events(
                 apply_event_frames(
                     &mut buffer,
                     &selected,
+                    &mut today_attempt,
                     &mut workspace_attempt,
                     &mut snapshot_attempt,
                 );
@@ -357,6 +358,7 @@ fn follow_workspace_events(
 fn apply_event_frames(
     buffer: &mut String,
     selected: &Signal<Option<String>>,
+    today_attempt: &mut Signal<u32>,
     workspace_attempt: &mut Signal<u32>,
     snapshot_attempt: &mut Signal<u32>,
 ) {
@@ -375,9 +377,18 @@ fn apply_event_frames(
             }
         }
         let open = selected.read().clone();
-        if workspace_event_rereads(&name, &data, open.as_deref()) {
-            workspace_attempt.set(workspace_attempt() + 1);
-            snapshot_attempt.set(snapshot_attempt() + 1);
+        match event_refetch(&name, &data, open.as_deref()) {
+            EventRefetch::Nothing => {}
+            EventRefetch::OpenPatient => {
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
+            // The server missed events; reread every projection once.
+            EventRefetch::Everything => {
+                today_attempt.set(today_attempt() + 1);
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
         }
     }
 }
