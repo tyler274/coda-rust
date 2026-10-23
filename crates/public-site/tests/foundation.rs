@@ -8,10 +8,7 @@ use tower::ServiceExt;
 
 #[test]
 fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
-    let config = Config {
-        physician_app_url: "https://physicians.example.test/sign-in?from=public&source=nav".into(),
-        ..Config::default()
-    };
+    let config = Config::default();
     let table = prerender(&config);
     assert_eq!(table.pages.len(), Route::pages().len());
     for route in Route::pages() {
@@ -27,10 +24,7 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
         assert!(html.contains(&page.meta.canonical_url));
         assert!(html.contains("Main navigation"));
         assert!(html.contains("Consumer Health Data Privacy Policy"));
-        assert!(
-            html.contains("https://physicians.example.test/sign-in?from=public&#38;source=nav"),
-            "{html}"
-        );
+        assert!(html.contains("href=\"/physician/\""), "{html}");
         assert!(html.contains("<main"));
         if path != "/" {
             assert!(

@@ -17,10 +17,7 @@ async fn staging_sign_in_reaches_the_physician_service() {
         .find(|line| line.starts_with("physician_app_url"))
         .and_then(|line| line.split('"').nth(1))
         .expect("staging must configure physician_app_url");
-    let config = Config {
-        physician_app_url: destination.into(),
-        ..Config::default()
-    };
+    let config = Config::default();
     let app = router_with_options(
         prerender(&config),
         RuntimeConfig::default(),
@@ -39,11 +36,15 @@ async fn staging_sign_in_reaches_the_physician_service() {
             .to_vec(),
     )
     .unwrap();
-    let rendered = html.contains(&format!("href=\"{destination}\">Sign in</a>"));
+    let rendered = html.contains("href=\"/physician/\">Sign in</a>");
+    assert!(
+        !html.contains(destination),
+        "upstream origin must not enter HTML"
+    );
     let correct = destination == "https://physician-836508863523.us-east1.run.app";
     assert!(
         rendered,
-        "the configured destination must reach the Sign in anchor"
+        "Sign in must remain on the public origin under /physician/"
     );
     assert!(
         correct,

@@ -130,7 +130,12 @@ resource "google_iap_web_cloud_run_service_iam_binding" "team" {
   location               = var.region
   cloud_run_service_name = google_cloud_run_v2_service.app[each.key].name
   role                   = "roles/iap.httpsResourceAccessor"
-  members                = ["group:${var.iap_group}"]
+  # This authoritative binding is the sole owner of proxy access. Never add a
+  # competing IAP member resource in the public-site root or a project grant.
+  members = setunion(
+    toset(["group:${var.iap_group}"]),
+    each.key == "physician" ? var.physician_proxy_invokers : toset([]),
+  )
 }
 
 resource "google_cloud_run_v2_job" "migration" {

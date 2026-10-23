@@ -6,12 +6,18 @@ locals {
   # API enablement and creation of this Google-managed identity belong to the
   # existing project's operator, not this service-only root.
   iap_service_agent = "service-${var.project_number}@gcp-sa-iap.iam.gserviceaccount.com"
-  runtime_env = merge({
-    PUBLIC_SITE_LISTEN_ADDR = "0.0.0.0:8080"
-    PHYSICIAN_APP_URL       = var.physician_app_url
-    APP_ENV                 = var.environment
-    RELEASE_SHA             = var.release_sha
-  }, local.staging ? { PUBLIC_SITE_IAP_AUDIENCE = local.iap_audience } : {})
+  runtime_env = merge(
+    {
+      PUBLIC_SITE_LISTEN_ADDR = "0.0.0.0:8080"
+      PHYSICIAN_APP_URL       = var.physician_app_url
+      APP_ENV                 = var.environment
+      RELEASE_SHA             = var.release_sha
+    },
+    local.staging ? { PUBLIC_SITE_IAP_AUDIENCE = local.iap_audience } : {},
+    var.physician_proxy_enabled ? {
+      PHYSICIAN_PROXY_SERVICE_ACCOUNT = google_service_account.site.email
+    } : {},
+  )
 }
 
 resource "google_service_account" "site" {
@@ -37,9 +43,10 @@ resource "google_cloud_run_v2_service" "site" {
   invoker_iam_disabled = false
 
   template {
+    # Bound long-lived /physician SSE requests; clients reconnect after this deadline.
     service_account                  = google_service_account.site.email
     max_instance_request_concurrency = var.concurrency
-    timeout                          = "30s"
+    timeout                          = "300s"
 
     scaling {
       min_instance_count = var.min_instances
@@ -51,7 +58,7 @@ resource "google_cloud_run_v2_service" "site" {
       command = ["/doppler"]
       args = [
         "run", "--no-fallback", "--no-check-version", "--config-dir=/tmp/doppler", "--project", "coda-rust", "--config", local.doppler_config,
-        "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA${local.staging ? ",PUBLIC_SITE_IAP_AUDIENCE" : ""}",
+        "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA${local.staging ? ",PUBLIC_SITE_IAP_AUDIENCE" : ""}${var.physician_proxy_enabled ? ",PHYSICIAN_PROXY_SERVICE_ACCOUNT" : ""}",
         "--", "/public-site"
       ]
       ports {

@@ -98,8 +98,24 @@ run "reject_prod_activation" {
   expect_failures = [google_project.environment]
 }
 
+run "reject_public_proxy_invoker" {
+  command = plan
+  variables { physician_proxy_invokers = ["allUsers"] }
+  expect_failures = [var.physician_proxy_invokers]
+}
+
+run "reject_group_proxy_invoker" {
+  command = plan
+  variables { physician_proxy_invokers = ["group:test-team@example.invalid"] }
+  expect_failures = [var.physician_proxy_invokers]
+}
+
 run "production_identity" {
   command = plan
+  assert {
+    condition     = length(var.physician_proxy_invokers) == 0
+    error_message = "Production must not inherit staging's cross-project proxy grant."
+  }
   variables { environment = "prd" }
   assert {
     condition     = google_project.environment.project_id == "test-rust-prd-only" && google_storage_bucket.state.name == "test-rust-prd-state-only" && local.github_subject == "repo:Coda-Health@100000002/coda-rust@100000001:environment:production" && strcontains(local.oidc_condition, "assertion.event_name == 'workflow_dispatch'") && !strcontains(local.oidc_condition, "'staging'")
@@ -131,6 +147,7 @@ run "reject_unapproved_runtime" {
 run "active_staging_contract" {
   command = plan
   variables {
+    physician_proxy_invokers               = ["serviceAccount:public-site-staging@test-public-staging.iam.gserviceaccount.com"]
     enable_databases                       = true
     enable_workloads                       = true
     runtime_and_database_contract_approved = true
@@ -171,8 +188,12 @@ run "active_staging_contract" {
     error_message = "Every service requires direct IAP, IAM checks, scale caps and private VPC access."
   }
   assert {
-    condition     = alltrue([for binding in google_iap_web_cloud_run_service_iam_binding.team : binding.members == toset(["group:test-team@example.invalid"])])
-    error_message = "Only the approved group can pass IAP."
+    condition     = google_iap_web_cloud_run_service_iam_binding.team["physician"].members == toset(["group:test-team@example.invalid", "serviceAccount:public-site-staging@test-public-staging.iam.gserviceaccount.com"]) && google_iap_web_cloud_run_service_iam_binding.team["duet"].members == toset(["group:test-team@example.invalid"])
+    error_message = "Only physician may include the explicit proxy allowlist; Duet remains group-only."
+  }
+  assert {
+    condition     = google_iap_web_cloud_run_service_iam_binding.team["physician"].cloud_run_service_name == "physician" && google_iap_web_cloud_run_service_iam_binding.team["physician"].project == "test-rust-stg-only" && google_iap_web_cloud_run_service_iam_binding.team["physician"].role == "roles/iap.httpsResourceAccessor" && alltrue([for binding in google_cloud_run_v2_service_iam_binding.iap_invoker : !contains(binding.members, "serviceAccount:public-site-staging@test-public-staging.iam.gserviceaccount.com")])
+    error_message = "Proxy access is physician-service IAP access, never direct Cloud Run invocation or a project grant."
   }
   assert {
     condition     = alltrue([for job in google_cloud_run_v2_job.migration : job.template[0].parallelism == 1 && job.template[0].task_count == 1 && job.template[0].template[0].max_retries == 0])

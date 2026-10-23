@@ -82,7 +82,9 @@ def main():
         with socket.socket() as reservation:
             reservation.bind(("127.0.0.1", 0))
             port = reservation.getsockname()[1]
-        env = dict(clean_env, APP_ENV=environment, PUBLIC_SITE_LISTEN_ADDR=f"127.0.0.1:{port}")
+        env = dict(clean_env, APP_ENV=environment, PUBLIC_SITE_LISTEN_ADDR=f"127.0.0.1:{port}",
+                   PHYSICIAN_APP_URL="https://physician.example.test",
+                   PHYSICIAN_PROXY_SERVICE_ACCOUNT="public-site@fixture.iam.gserviceaccount.com")
         if environment == "staging":
             # Staging refuses to start without the direct Cloud Run IAP audience.
             # The local child never receives a signed assertion, so it stays deny-all.

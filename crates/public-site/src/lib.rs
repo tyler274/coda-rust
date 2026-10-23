@@ -5,6 +5,7 @@ pub mod chrome;
 pub mod config;
 pub mod pages;
 pub mod prerender;
+pub mod proxy;
 pub mod representation;
 pub mod route;
 pub mod runtime;

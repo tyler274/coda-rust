@@ -78,12 +78,19 @@ variable "release_sha" {
 }
 
 variable "physician_app_url" {
-  description = "Separate physician sign-in destination; no physician backend is provisioned here."
+  description = "Fixed physician HTTPS upstream origin for /physician; no physician backend or target IAM is provisioned here."
   type        = string
   validation {
-    condition     = can(regex("^https://[^/]+", var.physician_app_url))
-    error_message = "Deployed physician_app_url must use HTTPS."
+    condition     = can(regex("^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?/?$", var.physician_app_url))
+    error_message = "Deployed physician_app_url must be a fixed HTTPS origin without credentials, path, query, or fragment."
   }
+}
+
+variable "physician_proxy_enabled" {
+  description = "Opt in only after operators provision runtime self-signJwt and physician-only IAP access. No production activation is implicit."
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "certificate_ids" {

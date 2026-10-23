@@ -108,6 +108,74 @@ fn write_stored_session(session: Option<&str>) {
     }
 }
 
+// Count consecutive failed/short streams, not successful Cloud Run rotations.
+// A valid SSE response sustained for at least 30 seconds restores all five
+// retries. Even a healthy rotation waits one second; immediate EOF cannot spin.
+#[cfg(any(target_arch = "wasm32", test))]
+#[derive(Default)]
+struct StreamRetryBudget {
+    failures: u32,
+}
+
+#[cfg(any(target_arch = "wasm32", test))]
+impl StreamRetryBudget {
+    // None denotes a failed connection/HTTP response, regardless of how long
+    // that request took. Some(elapsed_ms) measures only an accepted SSE body.
+    fn next_delay_ms(&mut self, elapsed_ms: Option<f64>) -> Option<i32> {
+        if elapsed_ms.is_some_and(|elapsed| elapsed >= 30_000.0) {
+            self.failures = 0;
+            return Some(1_000);
+        }
+        self.failures = self.failures.saturating_add(1);
+        (self.failures <= 5).then(|| 1_000 << (self.failures - 1))
+    }
+}
+
+#[cfg(test)]
+mod stream_retry_tests {
+    use super::StreamRetryBudget;
+
+    #[test]
+    fn immediate_eof_and_failures_back_off_and_exhaust_the_budget() {
+        let mut retry = StreamRetryBudget::default();
+        for (elapsed, expected) in [
+            (Some(0.0), Some(1_000)),
+            (None, Some(2_000)),
+            (Some(29_999.0), Some(4_000)),
+            (None, Some(8_000)),
+            (Some(0.0), Some(16_000)),
+            (None, None),
+            (Some(0.0), None),
+        ] {
+            assert_eq!(retry.next_delay_ms(elapsed), expected);
+        }
+    }
+
+    #[test]
+    fn sustained_stream_resets_both_backoff_and_entire_retry_budget() {
+        let mut retry = StreamRetryBudget::default();
+        for _ in 0..5 {
+            assert!(retry.next_delay_ms(None).is_some());
+        }
+        assert_eq!(retry.next_delay_ms(Some(30_000.0)), Some(1_000));
+        for delay in [1_000, 2_000, 4_000, 8_000, 16_000] {
+            assert_eq!(retry.next_delay_ms(Some(0.0)), Some(delay));
+        }
+        assert_eq!(retry.next_delay_ms(None), None);
+    }
+
+    #[test]
+    fn cloud_run_rotations_do_not_exhaust_the_budget() {
+        let mut retry = StreamRetryBudget::default();
+        // Simulate a full day of five-minute responses without browser waits.
+        for _ in 0..288 {
+            assert_eq!(retry.next_delay_ms(Some(300_000.0)), Some(1_000));
+        }
+        assert_eq!(retry.next_delay_ms(Some(0.0)), Some(1_000));
+        assert_eq!(retry.next_delay_ms(None), Some(2_000));
+    }
+}
+
 #[cfg(target_arch = "wasm32")]
 fn follow_workspace_events(
     base_url: &str,
@@ -122,83 +190,141 @@ fn follow_workspace_events(
         base_url.trim_end_matches('/')
     );
     use wasm_bindgen::JsCast;
-    wasm_bindgen_futures::spawn_local(async move {
+    // Dioxus owns this task: leaving the signed-in shell cancels it. Aborting
+    // the fetch on drop also releases a pending stream on logout/unmount.
+    spawn(async move {
         let Some(window) = web_sys::window() else {
             return;
         };
-        let init = web_sys::RequestInit::new();
-        init.set_method("GET");
-        if let Some(token) = session.as_deref().filter(|token| !token.is_empty())
-            && let Ok(headers) = web_sys::Headers::new()
-        {
-            let _ = headers.set("Authorization", &format!("Bearer {token}"));
-            init.set_headers(&headers);
-        }
-        let Ok(value) =
-            wasm_bindgen_futures::JsFuture::from(window.fetch_with_str_and_init(&url, &init)).await
-        else {
+        let Ok(controller) = web_sys::AbortController::new() else {
             return;
         };
-        let Ok(response) = value.dyn_into::<web_sys::Response>() else {
+        struct AbortOnDrop(web_sys::AbortController);
+        impl Drop for AbortOnDrop {
+            fn drop(&mut self) {
+                self.0.abort();
+            }
+        }
+        let _abort = AbortOnDrop(controller.clone());
+        let Some(clock) = window.performance() else {
             return;
         };
-        if !response.ok() {
-            return;
-        }
-        let event_stream = response
-            .headers()
-            .get("content-type")
-            .ok()
-            .flatten()
-            .is_some_and(|kind| kind.contains("text/event-stream"));
-        if !event_stream {
-            return;
-        }
-        let Some(body) = response.body() else {
-            return;
-        };
-        let reader = body.get_reader();
-        let mut buffer = String::new();
-        loop {
-            let Ok(read) = js_sys::Reflect::get(&reader, &"read".into()) else {
+        let mut retry = StreamRetryBudget::default();
+        let mut next_delay = Some(0);
+        let mut reconnecting = false;
+        while let Some(delay) = next_delay {
+            if delay > 0 {
+                let wait = js_sys::Promise::new(&mut |resolve, reject| {
+                    if let Err(error) = window
+                        .set_timeout_with_callback_and_timeout_and_arguments_0(&resolve, delay)
+                    {
+                        let _ = reject.call1(&wasm_bindgen::JsValue::NULL, &error);
+                    }
+                });
+                if wasm_bindgen_futures::JsFuture::from(wait).await.is_err() {
+                    return;
+                }
+            }
+            let init = web_sys::RequestInit::new();
+            init.set_signal(Some(&controller.signal()));
+            init.set_method("GET");
+            if let Some(token) = session.as_deref().filter(|token| !token.is_empty())
+                && let Ok(headers) = web_sys::Headers::new()
+            {
+                let _ = headers.set("Authorization", &format!("Bearer {token}"));
+                init.set_headers(&headers);
+            }
+            let Ok(value) =
+                wasm_bindgen_futures::JsFuture::from(window.fetch_with_str_and_init(&url, &init))
+                    .await
+            else {
+                next_delay = retry.next_delay_ms(None);
+                reconnecting = true;
+                continue;
+            };
+            let Ok(response) = value.dyn_into::<web_sys::Response>() else {
                 return;
             };
-            let Ok(read) = read.dyn_into::<js_sys::Function>() else {
-                return;
-            };
-            let Ok(promise) = read.call0(&reader) else {
-                return;
-            };
-            let Ok(promise) = promise.dyn_into::<js_sys::Promise>() else {
-                return;
-            };
-            let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(promise).await else {
+            if !response.ok() {
+                // Never retry an authorization refusal. Re-read through the owner
+                // so a revoked session returns to the sign-in screen.
                 today_attempt.set(today_attempt() + 1);
                 workspace_attempt.set(workspace_attempt() + 1);
-                return;
-            };
-            let done = js_sys::Reflect::get(&chunk, &"done".into())
-                .ok()
-                .and_then(|value| value.as_bool())
-                .unwrap_or(true);
-            if done {
-                today_attempt.set(today_attempt() + 1);
-                workspace_attempt.set(workspace_attempt() + 1);
+                if response.status() == 429 || response.status() >= 500 {
+                    next_delay = retry.next_delay_ms(None);
+                    reconnecting = true;
+                    continue;
+                }
                 return;
             }
-            let Some(bytes) = js_sys::Reflect::get(&chunk, &"value".into())
+            let event_stream = response
+                .headers()
+                .get("content-type")
                 .ok()
-                .map(|value| js_sys::Uint8Array::new(&value).to_vec())
-            else {
+                .flatten()
+                .is_some_and(|kind| kind.contains("text/event-stream"));
+            if !event_stream {
+                return;
+            }
+            let Some(body) = response.body() else {
                 return;
             };
-            buffer.push_str(&String::from_utf8_lossy(&bytes));
-            apply_event_frames(
-                &mut buffer,
-                &selected,
-                &mut workspace_attempt,
-                &mut snapshot_attempt,
-            );
+            if reconnecting {
+                // These events invalidate projections; they are not a second
+                // ledger. Reconcile the gap via authoritative reads, never by
+                // replaying commands or assuming every server supports cursors.
+                today_attempt.set(today_attempt() + 1);
+                workspace_attempt.set(workspace_attempt() + 1);
+                snapshot_attempt.set(snapshot_attempt() + 1);
+            }
+            let started_at = clock.now();
+            let reader = body.get_reader();
+            let mut buffer = String::new();
+            loop {
+                let Ok(read) = js_sys::Reflect::get(&reader, &"read".into()) else {
+                    return;
+                };
+                let Ok(read) = read.dyn_into::<js_sys::Function>() else {
+                    return;
+                };
+                let Ok(promise) = read.call0(&reader) else {
+                    return;
+                };
+                let Ok(promise) = promise.dyn_into::<js_sys::Promise>() else {
+                    return;
+                };
+                let Ok(chunk) = wasm_bindgen_futures::JsFuture::from(promise).await else {
+                    today_attempt.set(today_attempt() + 1);
+                    workspace_attempt.set(workspace_attempt() + 1);
+                    snapshot_attempt.set(snapshot_attempt() + 1);
+                    break;
+                };
+                let done = js_sys::Reflect::get(&chunk, &"done".into())
+                    .ok()
+                    .and_then(|value| value.as_bool())
+                    .unwrap_or(true);
+                if done {
+                    today_attempt.set(today_attempt() + 1);
+                    workspace_attempt.set(workspace_attempt() + 1);
+                    snapshot_attempt.set(snapshot_attempt() + 1);
+                    break;
+                }
+                let Some(bytes) = js_sys::Reflect::get(&chunk, &"value".into())
+                    .ok()
+                    .map(|value| js_sys::Uint8Array::new(&value).to_vec())
+                else {
+                    return;
+                };
+                buffer.push_str(&String::from_utf8_lossy(&bytes));
+                apply_event_frames(
+                    &mut buffer,
+                    &selected,
+                    &mut workspace_attempt,
+                    &mut snapshot_attempt,
+                );
+            }
+            next_delay = retry.next_delay_ms(Some(clock.now() - started_at));
+            reconnecting = true;
         }
     });
 }
@@ -650,7 +776,7 @@ fn PhysicianShell(
                 r#type: "button",
                 aria_label: "Open Coda",
                 onclick: move |_| app_collapsed.set(false),
-                img { class: "coda-logo", src: "/assets/coda-health-logo-transparent.png", alt: "" }
+                img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
             }
         }
         div {
@@ -754,7 +880,7 @@ fn PhysicianShell(
                             r#type: "button",
                             aria_label: "Coda Health",
                             onclick: move |_| place.set(Place::Today),
-                            img { class: "coda-logo", src: "/assets/coda-health-logo-transparent.png", alt: "Coda Health" }
+                            img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "Coda Health" }
                         }
                         button {
                             class: "icon-button sidebar-collapse",

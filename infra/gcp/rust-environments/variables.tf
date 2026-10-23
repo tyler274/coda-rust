@@ -60,6 +60,17 @@ variable "iap_group" {
   }
 }
 
+variable "physician_proxy_invokers" {
+  description = "Explicit operator-approved service-account IAP members for physician only (including cross-project public-site proxies). Empty by default, including production; never grants Duet or direct run.invoker access."
+  type        = set(string)
+  default     = []
+  nullable    = false
+  validation {
+    condition     = alltrue([for member in var.physician_proxy_invokers : can(regex("^serviceAccount:[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\\.iam\\.gserviceaccount\\.com$", member))])
+    error_message = "physician_proxy_invokers must contain explicit serviceAccount:NAME@PROJECT.iam.gserviceaccount.com members, never groups, users, domains, or wildcards."
+  }
+}
+
 variable "state_admin_members" {
   type        = set(string)
   description = "Environment-specific operator principals allowed to manage state objects. Never deployers or federated CI principals."

@@ -10,6 +10,45 @@ variables {
   doppler_token_secret_version = "1"
 }
 
+run "staging_proxy_uses_own_identity" {
+  command = plan
+  variables { physician_proxy_enabled = true }
+  override_resource {
+    target = google_service_account.site
+    values = { email = "public-site-staging@coda-health-staging.iam.gserviceaccount.com" }
+  }
+  assert {
+    condition     = local.runtime_env.PHYSICIAN_PROXY_SERVICE_ACCOUNT == "public-site-staging@coda-health-staging.iam.gserviceaccount.com" && local.runtime_env.PHYSICIAN_APP_URL == var.physician_app_url
+    error_message = "The proxy must use its own runtime identity and fixed physician upstream."
+  }
+  assert {
+    condition     = google_cloud_run_v2_service.site.template[0].timeout == "300s" && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE,PHYSICIAN_PROXY_SERVICE_ACCOUNT")
+    error_message = "SSE needs a bounded 300s service timeout and Doppler must preserve the proxy identity."
+  }
+  assert {
+    condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
+    error_message = "Proxying must not weaken the public staging IAP gate."
+  }
+}
+
+run "reject_upstream_credentials" {
+  command = plan
+  variables { physician_app_url = "https://user:password@physician.example.test" }
+  expect_failures = [var.physician_app_url]
+}
+
+run "reject_upstream_path" {
+  command = plan
+  variables { physician_app_url = "https://physician.example.test/auth/sign-in" }
+  expect_failures = [var.physician_app_url]
+}
+
+run "reject_upstream_query" {
+  command = plan
+  variables { physician_app_url = "https://physician.example.test?target=elsewhere" }
+  expect_failures = [var.physician_app_url]
+}
+
 run "staging_origin_is_protected" {
   command = plan
 
@@ -82,6 +121,10 @@ run "staging_url_is_protected_service_uri" {
 
 run "production_respects_origin_cache_headers" {
   command = plan
+  assert {
+    condition     = !var.physician_proxy_enabled && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT")
+    error_message = "Production proxy signing requires separate explicit operator activation."
+  }
   variables {
     environment     = "production"
     certificate_ids = ["projects/public-site-test/global/sslCertificates/test"]

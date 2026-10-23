@@ -63,6 +63,7 @@ def container(image, environment):
         # Startup requires the direct Cloud Run signed-header audience. Local
         # image tests never substitute a trust endpoint or fetch cloud tokens.
         staging_env = [
+            "-e", "PHYSICIAN_PROXY_SERVICE_ACCOUNT=public-site@fixture.iam.gserviceaccount.com",
             "-e", "PUBLIC_SITE_IAP_AUDIENCE=/projects/134570912572/locations/us-east1/services/public-site-staging",
         ]
     return docker(
@@ -124,7 +125,8 @@ def main():
         assert re.search(r"<title>[^<]+</title>", html)
         assert document.canonical and document.description[0]
         assert "main" in document.tags and "footer" in document.tags
-        assert "https://physician.example.test" in html
+        assert 'href="/physician/"' in html
+        assert "https://physician.example.test" not in html
         assert len(body) > 10000, len(body)
         print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer/sign-in valid")
         # The homepage system: original styles, frame reservation and the no-script reveal.
@@ -167,7 +169,7 @@ def main():
     cid = container(image, "staging")
     try:
         base = await_ready(cid)
-        for path in ["/", chrome, motion, document.styles[0], "/api/health", "/healthz", "/does-not-exist"]:
+        for path in ["/", "/physician", "/physician/", "/physician/today", chrome, motion, document.styles[0], "/api/health", "/healthz", "/does-not-exist"]:
             status, headers, body = fetch(base, path)
             assert status in (401, 403), (path, status)
             assert "no-store" in headers["Cache-Control"], path

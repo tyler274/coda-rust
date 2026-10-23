@@ -34,17 +34,79 @@ fn open_patient() -> String {
 #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 fn api_base() -> String {
     #[cfg(target_arch = "wasm32")]
-    if let Some(url) = query_api() {
-        return url;
-    }
-    if let Some(url) = option_env!("PHYSICIAN_API_URL") {
+    let query = query_api();
+    #[cfg(not(target_arch = "wasm32"))]
+    let query: Option<String> = None;
+    #[cfg(target_arch = "wasm32")]
+    let page = web_sys::window()
+        .and_then(|window| Some((page_origin()?, window.location().pathname().ok()?)));
+    #[cfg(not(target_arch = "wasm32"))]
+    let page: Option<(String, String)> = None;
+    resolve_api_base(
+        query.as_deref(),
+        option_env!("PHYSICIAN_API_URL"),
+        page.as_ref()
+            .map(|(origin, path)| (origin.as_str(), path.as_str())),
+    )
+}
+
+fn resolve_api_base(
+    query: Option<&str>,
+    configured: Option<&str>,
+    page: Option<(&str, &str)>,
+) -> String {
+    if let Some(url) = query.or(configured) {
         return url.to_owned();
     }
-    #[cfg(target_arch = "wasm32")]
-    if let Some(origin) = page_origin() {
-        return origin;
+    if let Some((origin, path)) = page {
+        // Only the declared mount is special, not arbitrary prefixes such as /physicians.
+        let prefix = if path == "/physician" || path.starts_with("/physician/") {
+            "/physician"
+        } else {
+            ""
+        };
+        return format!("{origin}{prefix}");
     }
     "http://127.0.0.1:8790".to_owned()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::resolve_api_base;
+
+    #[test]
+    fn runtime_mount_is_segment_bounded() {
+        for path in ["/physician", "/physician/", "/physician/index.html"] {
+            assert_eq!(
+                resolve_api_base(None, None, Some(("https://coda.test", path))),
+                "https://coda.test/physician"
+            );
+        }
+        for path in ["/", "/index.html", "/physicians", "/physician-other/"] {
+            assert_eq!(
+                resolve_api_base(None, None, Some(("https://coda.test", path))),
+                "https://coda.test"
+            );
+        }
+    }
+
+    #[test]
+    fn explicit_api_overrides_are_not_prefixed() {
+        let page = Some(("https://coda.test", "/physician/"));
+        assert_eq!(
+            resolve_api_base(
+                Some("http://localhost:8790/"),
+                Some("https://configured.test/api"),
+                page
+            ),
+            "http://localhost:8790/"
+        );
+        assert_eq!(
+            resolve_api_base(None, Some("https://configured.test/api"), page),
+            "https://configured.test/api"
+        );
+        assert_eq!(resolve_api_base(None, None, None), "http://127.0.0.1:8790");
+    }
 }
 
 #[cfg(target_arch = "wasm32")]

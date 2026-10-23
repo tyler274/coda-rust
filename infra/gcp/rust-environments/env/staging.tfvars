@@ -20,7 +20,12 @@ github_owner_id      = "306538119"
 enable_databases = true
 sql_tier         = "db-f1-micro"
 
-# Staging-preview workloads behind direct IAP (iap_group only). SQL grants were
+# The public-site origin verifies its own staging IAP assertion before proxying.
+# This principal gets physician IAP access only; Duet remains group-only.
+# Operator approval/application is required before enabling the public proxy.
+physician_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com"]
+
+# Staging-preview workloads remain behind direct IAP. SQL grants were
 # installed with bootstrap-grants.sql; DB credentials live only in the four
 # per-role Doppler configs below. Physician sign-in is still the proof-token
 # preview and Duet's Identity Platform API key is a placeholder (ENG-167).
@@ -62,7 +67,7 @@ runtime_environment = {
     CODA_HOSTED_PROFILE = "staging-preview"
     # The image runs physician chat in API mode, which refuses to start without
     # this allowance; the key comes from stg_physician_runtime. IAP limits
-    # callers to iap_group.
+    # callers to iap_group and the explicitly allowlisted, IAP-gated site proxy.
     CODA_ALLOW_MODEL_CALLS = "1"
   }
   duet = {

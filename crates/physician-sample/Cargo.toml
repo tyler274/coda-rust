@@ -25,6 +25,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal
 tracing = "0.1"
 
 [dev-dependencies]
+public-site = { path = "../public-site" }
 opentelemetry = { version = "0.31", default-features = false, features = ["trace"] }
 opentelemetry_sdk = { version = "0.31", default-features = false, features = ["trace", "testing"] }
 tracing-opentelemetry = { version = "0.32", default-features = false }

@@ -2,9 +2,70 @@
 
 `crates/public-site` is the Rust public marketing site. It is separate from the
 physician runtime and Duet: no database, physician accounts, model execution, or
-clinical types are introduced by the site. `PHYSICIAN_APP_URL` is a navigation
-link, not a backend connection. `submodules/kytos` is an optional read-only
-developer reference, never a build, test, CI, or runtime dependency.
+clinical types are introduced by the site. The same-origin physician entry point
+is `/physician/`; `PHYSICIAN_APP_URL` identifies the separately operated upstream, not
+an external navigation destination. The site is a transport-only reverse proxy:
+it strips `/physician` and forwards requests, while physician authentication, clinical
+authorization, effects and persistence remain owned by the physician service.
+`submodules/kytos` is an optional read-only developer reference, never a build,
+test, CI, or runtime dependency.
+
+### Same-origin physician proxy qualification
+
+The `/physician/` change has local integration proof and is **not yet deployed or
+qualified against Google IAM/IAP**. `cargo test -p public-site` passed, including
+marketing browser regressions; `cargo test -p physician-sample --test site` passed
+all four Chromium journeys. The physician browser tests run through the actual
+public-site proxy to a separate loopback physician server, covering prefixed
+assets/API calls, sign-in, session restoration, sign-out/token revocation, account
+revocation and finite-stream reconnection. Only the explicit `?api=` override
+check uses a separate recorded fixture. These tests do not establish deployed
+service-account permissions or access enforcement by Google.
+The same relative entry point is intended for both `staging.codahealth.ai` and
+`codahealth.ai`; this does not authorize production deployment or DNS changes.
+Production must not expose the staging preview sign-in flow, which returns its
+one-time token in the response. A production launch still requires qualified
+production physician authentication and an explicit hosting approval.
+
+The proxy must preserve physician bearer authorization, query strings and streamed
+responses without forwarding browser cookies, caller-supplied service credentials
+or IAP identity assertions to the upstream. Upstream IAP authentication is a
+separate service-account credential in `Proxy-Authorization`, not a replacement
+for the physician `Authorization` header. The public origin's verified IAP gate
+remains mandatory for all staging proxy requests. Missing service credentials or
+failed refreshes must fail closed; neither IAP boundary may be disabled to make
+the proxy work.
+
+The intended keyless credential flow is IAM Credentials `signJwt`, using the
+public-site runtime identity, a short-lived JWT scoped to the configured physician
+origin, and a self-scoped signing permission. The physician service's own
+infrastructure owner must grant that runtime identity IAP access to **only** the
+physician service. Public-site infrastructure must not compete with that owner's
+authoritative IAM binding. No service-account private key or token belongs in
+source, URLs, browser state or logs.
+
+Before a staging release, an authorized operator must enable/verify the IAM
+Credentials API and provision the `publicSitePhysicianProxySigner` custom role
+(`iam.serviceAccounts.signJwt` only), bound runtime-to-itself on
+`public-site-staging@coda-health-staging.iam.gserviceaccount.com`. This permission
+is identity-signing authority, **not** an IAM restriction to one audience. Its
+approval must account for the runtime identity's existing privileges. The
+optional `--physician-proxy` administrator bootstrap flag supplies that grant,
+but the full bootstrap also repeats other provisioning steps; it must not be run
+as an unreviewed shortcut. Separately, the physician infrastructure operator must
+apply the staging `physician_proxy_invokers` allowlist through the existing
+authoritative physician IAP binding, retaining the engineering group and leaving
+Duet unchanged. These grants have not been applied by this change. Release must
+wait for them; application unit tests cannot prove deployed IAM access.
+
+`/physician/` is not a browser security boundary: marketing scripts on the same origin
+can access the physician session stored in session storage. The entire origin
+must therefore be treated as trusted physician-session code. Proxy responses
+must never enter public or CDN caches, including in production. Browser proof
+must cover prefix-relative assets and API requests, sign-in, session restoration,
+sign-out and streamed events through the proxy, not just direct-backend access.
+Cloud Run streams remain finite; client reconnection and revocation must be
+qualified rather than treating a longer request timeout as an indefinite stream.
 
 [PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged this implementation
 into `main` as `ee8ae88c9675bd008ff91e45dc799c88f13d5f24`. This is implementation
@@ -126,8 +187,19 @@ Runtime configuration:
 
 - `PUBLIC_SITE_LISTEN_ADDR`: local default `127.0.0.1:8791`; the image and Cloud
   Run root explicitly set `0.0.0.0:8080`.
-- `PHYSICIAN_APP_URL`: local default `http://127.0.0.1:8790`; deployed values must
-  use HTTPS and point to the separately operated physician application.
+- `PHYSICIAN_APP_URL`: local default `http://127.0.0.1:8790`; fixed upstream
+  origin for `/physician/`, not the browser navigation link. Deployed values must use
+  HTTPS; credentials, non-root paths, queries and fragments are rejected.
+- `PHYSICIAN_PROXY_SERVICE_ACCOUNT`: service identity used for keyless upstream
+  IAP authentication. Required in staging; its signing permission and physician
+  IAP access must be provisioned before release. No browser credential supplies
+  this value.
+- `PUBLIC_SITE_ORIGIN`: optional exact browser origin for unsafe-method Origin
+  validation. Defaults to `https://staging.codahealth.ai` in staging,
+  `https://codahealth.ai` in production, and the local listener origin otherwise.
+  Unspecified local bind addresses (`0.0.0.0` or `::`) map to the corresponding
+  loopback browser host. Alternate hosts or mapped container ports must set this
+  origin explicitly so unsafe-method Origin checks match the browser.
 - `APP_ENV`: deployment root permits only `staging` or `production`; staging
   selects the origin IAP gate. Do not use a misspelled environment to disable it.
 - `RELEASE_SHA`: full Git revision, supplied at runtime for the health response.

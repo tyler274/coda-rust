@@ -28,6 +28,9 @@
 #                               doppler_token_secret_version in env/staging.tfvars after.
 #   --temporary-deployer-grant  OPTIONAL. Grant DEPLOYER_USER the first-apply roles,
 #                               each expiring after GRANT_HOURS (IAM condition).
+#   --physician-proxy           OPTIONAL approved staging /physician proxy: create a
+#                               signJwt-only custom role and bind runtime to itself.
+#                               Physician target IAP stays in rust-environments.
 #   --check-group               Read-only Google Group lookup (needs a Workspace/Cloud
 #                               Identity admin); runs only this step.
 #   -h, --help                  Show this header.
@@ -106,6 +109,7 @@ PRINT=0
 SKIP_TOKEN=0
 ROTATE_TOKEN=0
 TEMP_GRANT=0
+PHYSICIAN_PROXY=0
 CHECK_GROUP=0
 for arg in "$@"; do
   case "$arg" in
@@ -114,6 +118,7 @@ for arg in "$@"; do
     --rotate-doppler-token) ROTATE_TOKEN=1 ;;
     --temporary-deployer-grant) TEMP_GRANT=1 ;;
     --check-group) CHECK_GROUP=1 ;;
+    --physician-proxy) PHYSICIAN_PROXY=1 ;;
     -h | --help)
       sed -n '2,/^set -euo/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'
       exit 0
@@ -192,6 +197,13 @@ if [[ $CHECK_GROUP -eq 1 ]]; then
   run "${G[@]}" identity groups memberships check-transitive-membership \
     --group-email="$IAP_GROUP" --member-email="$DEPLOYER_USER"
   exit 0
+fi
+
+# The proxy grant is separately approved staging-only bootstrap. Do not allow
+# environment overrides to turn this convenience flag into production authority.
+if [[ $PHYSICIAN_PROXY -eq 1 ]] && [[ "$PROJECT_ID" != coda-health-staging || "$PROJECT_NUMBER" != 134570912572 || "$SERVICE_NAME" != public-site-staging ]]; then
+  echo "--physician-proxy is restricted to public-site-staging in coda-health-staging" >&2
+  exit 1
 fi
 
 # --- 0. Preflight -------------------------------------------------------------
@@ -415,6 +427,35 @@ else
 fi
 note "No run.invoker or iap.httpsResourceAccessor is granted: CI gets no website access."
 note "No iam.serviceAccountAdmin: CI never creates or edits the runtime SA."
+
+# Operator-owned IAM, not release-managed resources: the release root may only
+# update the existing Cloud Run service. This role definition grants nothing at
+# project scope. Its only binding is runtime -> itself on that service account.
+# signJwt does not constrain audience: least privilege relies on the fixed
+# application upstream and the separately scoped physician IAP binding.
+if [[ $PHYSICIAN_PROXY -eq 1 ]]; then
+  step "Approved staging proxy: runtime self-signJwt only"
+  if [[ $PRINT -eq 0 ]] && ! exists "${G[@]}" iam service-accounts describe "$RUNTIME_SA"; then
+    echo "runtime SA must exist before --physician-proxy; perform first apply separately" >&2
+    exit 1
+  fi
+  PROXY_ROLE=publicSitePhysicianProxySigner
+  if missing "${G[@]}" iam roles describe "$PROXY_ROLE"; then
+    run "${G[@]}" iam roles create "$PROXY_ROLE" \
+      --title="Public site physician proxy JWT signer" \
+      --description="Runtime self-signJwt only; physician access is separately service-scoped" \
+      --permissions=iam.serviceAccounts.signJwt --stage=GA
+  else
+    run "${G[@]}" iam roles update "$PROXY_ROLE" \
+      --permissions=iam.serviceAccounts.signJwt --stage=GA
+  fi
+  run "${G[@]}" iam service-accounts add-iam-policy-binding "$RUNTIME_SA" \
+    --member="serviceAccount:${RUNTIME_SA}" \
+    --role="projects/${PROJECT_ID}/roles/${PROXY_ROLE}" --condition=None
+  note "No tokenCreator, signBlob/getAccessToken permission, service-account keys or CI signing grant."
+  note "signJwt is still identity-signing authority, not an audience-restricted permission; approve this boundary explicitly."
+  note "The coda-rust-staging operator must apply physician_proxy_invokers through its authoritative physician IAP binding."
+fi
 
 # --- 6. GitHub Actions Workload Identity Federation ---------------------------
 WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.repository_id == '${WIF_REPOSITORY_ID}' && assertion.repository_owner_id == '${WIF_OWNER_ID}' && assertion.ref == '${WIF_REF}' && assertion.environment == '${WIF_ENVIRONMENT}'"

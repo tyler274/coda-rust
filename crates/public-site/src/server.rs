@@ -52,6 +52,7 @@ struct SiteState {
     ready: Readiness,
     runtime: RuntimeConfig,
     gate: AccessGate,
+    physician_proxy: crate::proxy::PhysicianProxy,
     permits: Arc<Semaphore>,
 }
 
@@ -138,14 +139,21 @@ fn router_with_gate(
         robots: Representation::new(robots, "text/plain; charset=utf-8"),
         health: Representation::new(health, "application/json"),
         gate,
+        physician_proxy: crate::proxy::PhysicianProxy::new(runtime.physician_proxy.clone()),
         permits: Arc::new(Semaphore::new(runtime.max_concurrency)),
         runtime,
         ready,
     });
+    let physician = Router::new()
+        .route("/physician", axum::routing::any(serve_physician))
+        .route("/physician/", axum::routing::any(serve_physician))
+        .route("/physician/{*path}", axum::routing::any(serve_physician))
+        .layer(RequestBodyLimitLayer::new(crate::proxy::REQUEST_LIMIT));
     Router::new()
         .fallback(serve)
-        .with_state(state.clone())
         .layer(RequestBodyLimitLayer::new(16 * 1024))
+        .merge(physician)
+        .with_state(state.clone())
         // Outermost middleware gates even health, assets, rejected methods and
         // body-limit failures, and forcibly removes every public cache policy.
         .layer(middleware::from_fn_with_state(state, boundary))
@@ -160,7 +168,13 @@ fn xml_escape(value: &str) -> String {
         .replace('\'', "&apos;")
 }
 
+async fn serve_physician(State(state): State<Arc<SiteState>>, request: Request) -> Response {
+    state.physician_proxy.serve(request).await
+}
+
 async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: Next) -> Response {
+    let physician =
+        request.uri().path() == "/physician" || request.uri().path().starts_with("/physician/");
     let head = request.method() == Method::HEAD;
     let mut response = if let Ok(_permit) = state.permits.clone().try_acquire_owned() {
         match tokio::time::timeout(state.runtime.request_timeout, async {
@@ -203,6 +217,17 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
         // Vary:* additionally forbids shared-cache reuse across credentials.
         // Deployment must still disable forced CDN caching on the staging host;
         // origin headers cannot defend against an edge configured to ignore them.
+        headers.insert(header::VARY, "*".parse().unwrap());
+    }
+    if physician {
+        let headers = response.headers_mut();
+        headers.insert(
+            header::CACHE_CONTROL,
+            "private, no-store, max-age=0".parse().unwrap(),
+        );
+        headers.insert("cdn-cache-control", "no-store".parse().unwrap());
+        headers.insert("cloudflare-cdn-cache-control", "no-store".parse().unwrap());
+        headers.insert("surrogate-control", "no-store".parse().unwrap());
         headers.insert(header::VARY, "*".parse().unwrap());
     }
     if head {
@@ -433,6 +458,59 @@ mod tests {
         }
     }
     #[tokio::test]
+    async fn outer_iap_guards_proxy_and_redirect_before_any_upstream_call() {
+        use std::sync::atomic::AtomicUsize;
+        let calls = Arc::new(AtomicUsize::new(0));
+        let observed = calls.clone();
+        let upstream = Router::new().fallback(move || {
+            let calls = observed.clone();
+            async move {
+                calls.fetch_add(1, Ordering::SeqCst);
+                "upstream"
+            }
+        });
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let origin = format!("http://{}", listener.local_addr().unwrap());
+        let task = tokio::spawn(async move {
+            axum::serve(listener, upstream).await.unwrap();
+        });
+        let mut runtime = staged();
+        runtime.physician_proxy =
+            crate::proxy::ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false)
+                .unwrap();
+        let app = router_with_options(pages(), runtime, [], Readiness::ready());
+        for path in ["/physician", "/physician/", "/physician/api/messages"] {
+            assert_eq!(
+                app.clone()
+                    .oneshot(request(path, false))
+                    .await
+                    .unwrap()
+                    .status(),
+                StatusCode::FORBIDDEN
+            );
+        }
+        assert_eq!(calls.load(Ordering::SeqCst), 0);
+        assert_eq!(
+            app.clone()
+                .oneshot(request("/physician", true))
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::PERMANENT_REDIRECT
+        );
+        assert_eq!(calls.load(Ordering::SeqCst), 0);
+        assert_eq!(
+            app.oneshot(request("/physician/", true))
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::OK
+        );
+        assert_eq!(calls.load(Ordering::SeqCst), 1);
+        task.abort();
+    }
+
+    #[tokio::test]
     async fn health_requires_access_and_optional_health_token() {
         let mut runtime = staged();
         runtime.health_token = Some("probe".into());
@@ -547,6 +625,7 @@ mod tests {
             health: Representation::new("", "text/plain"),
             ready: Readiness::ready(),
             gate: crate::access::tests::cached_gate(),
+            physician_proxy: crate::proxy::PhysicianProxy::new(runtime.physician_proxy.clone()),
             permits: Arc::new(Semaphore::new(1)),
             runtime,
         });

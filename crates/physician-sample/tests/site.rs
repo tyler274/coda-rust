@@ -93,6 +93,145 @@ async fn the_recorded_practice_is_visible() {
 }
 
 #[tokio::test]
+async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: all site tests hold test_lock while changing environment.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let streams = Arc::new(AtomicUsize::new(0));
+    let requests = Arc::new(std::sync::Mutex::new(Vec::<String>::new()));
+    let seen = requests.clone();
+    let stream_count = streams.clone();
+    let app = physician_sample::recorded().layer(axum::middleware::from_fn(
+        move |request: axum::extract::Request, next: axum::middleware::Next| {
+            let streams = stream_count.clone();
+            async move {
+                use axum::response::IntoResponse;
+                if request.uri().path() != "/patient-workspaces/events" {
+                    return next.run(request).await;
+                }
+                let attempt = streams.fetch_add(1, Ordering::SeqCst);
+                // Two finite Cloud Run responses, then an authority refusal.
+                // The browser must reconnect EOF but never retry the refusal.
+                let status = if attempt >= 2 {
+                    axum::http::StatusCode::FORBIDDEN
+                } else {
+                    axum::http::StatusCode::OK
+                };
+                (status, [("content-type", "text/event-stream")], ": end\n\n").into_response()
+            }
+        },
+    ));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let upstream_address = listener.local_addr().unwrap();
+    let upstream = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let app = public_proxy(upstream_address, address)
+        // Override-only fixture; /physician itself is the real public-site transport.
+        .nest("/override", physician_sample::recorded())
+        .layer(axum::middleware::from_fn(
+            move |request: axum::extract::Request, next: axum::middleware::Next| {
+                let seen = seen.clone();
+                async move {
+                    seen.lock().unwrap().push(request.uri().path().to_owned());
+                    next.run(request).await
+                }
+            },
+        ));
+    let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/physician/")).await;
+    browser
+        .wait_for_text("Mary Louis", Duration::from_secs(15))
+        .await;
+    let assets = browser
+        .eval(
+            r#"(async () => {
+        const logo = document.querySelector('img.coda-logo');
+        await logo.decode();
+        const icon = document.querySelector('link[rel="icon"]');
+        const response = await fetch(icon.href);
+        return logo.naturalWidth > 0 && new URL(logo.src).pathname.startsWith('/physician/assets/')
+            && new URL(icon.href).pathname === '/physician/favicon.svg' && response.ok
+            && (await response.text()).includes('<svg');
+    })()"#,
+        )
+        .await;
+    assert_eq!(
+        assets.pointer("/result/result/value"),
+        Some(&serde_json::json!(true)),
+        "prefix assets must load: {assets}"
+    );
+    let deadline = Instant::now() + Duration::from_secs(10);
+    while streams.load(Ordering::SeqCst) < 3 {
+        assert!(Instant::now() < deadline, "finite SSE did not reconnect");
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    tokio::time::sleep(Duration::from_secs(5)).await;
+    assert_eq!(
+        streams.load(Ordering::SeqCst),
+        3,
+        "authorization refusal must stop retries"
+    );
+    let paths = requests.lock().unwrap().clone();
+    assert!(paths.iter().any(|path| path == "/physician/today"));
+    assert!(
+        paths.iter().all(|path| path.starts_with("/physician/")),
+        "escaped mount: {paths:?}"
+    );
+
+    // Explicit query API still wins over the page prefix, with the same wasm.
+    browser
+        .navigate(&format!(
+            "http://{address}/physician/?api=http%3A%2F%2F{address}%2Foverride"
+        ))
+        .await;
+    browser
+        .wait_for_text("Mary Louis", Duration::from_secs(15))
+        .await;
+    let deadline = Instant::now() + Duration::from_secs(10);
+    while !requests
+        .lock()
+        .unwrap()
+        .iter()
+        .any(|path| path == "/override/today")
+    {
+        assert!(Instant::now() < deadline, "query override was not used");
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    server.abort();
+    upstream.abort();
+}
+
+fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) -> axum::Router {
+    let runtime = public_site::runtime::RuntimeConfig {
+        environment: "local".into(),
+        physician_proxy: public_site::proxy::ProxyConfig::new(
+            &format!("http://{upstream}"),
+            &format!("http://{public}"),
+            None,
+            false,
+            false,
+        )
+        .unwrap(),
+        ..Default::default()
+    };
+    public_site::server::router_with_options(
+        public_site::prerender(&public_site::Config {
+            listen_addr: public,
+        }),
+        runtime,
+        [],
+        public_site::server::Readiness::ready(),
+    )
+}
+
+#[tokio::test]
 async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -138,13 +277,20 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     store.register_patient("practice-clinic-b", jake).await;
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
+    let upstream_address = listener.local_addr().unwrap();
     let server_store: Arc<dyn AuthStore> = store.clone();
-    tokio::spawn(async move { physician_sample::serve_with_store(listener, server_store).await });
-    wait_until_ready(address).await;
+    let upstream =
+        tokio::spawn(
+            async move { physician_sample::serve_with_store(listener, server_store).await },
+        );
+    wait_until_ready(upstream_address).await;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let app = public_proxy(upstream_address, address);
+    let proxy = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
 
     let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/")).await;
+    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/physician/")).await;
 
     // 1. Unauthenticated visit renders SignInScreen (never Today or clinical content).
     let sign_in_dom = browser
@@ -201,9 +347,26 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "Mary Louis is not on Dr. Clinic Admin's panel yet and must not appear on Today:\n{today_dom}"
     );
 
+    // Reload through the real proxy: sessionStorage must restore the bearer
+    // session rather than rely on the prior in-memory client.
+    browser.call("Page.reload", serde_json::json!({})).await;
+    tokio::time::sleep(Duration::from_millis(250)).await;
+    browser
+        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
+        .await;
+    let session = browser
+        .eval("sessionStorage.getItem('coda.physician.session')")
+        .await;
+    let token = session
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .expect("stored bearer session")
+        .to_owned();
+    assert!(!token.is_empty());
+
     // 3. Cross-practice patient (Jake in practice-clinic-b) returns 404 unavailable with zero data leak.
     browser
-        .navigate(&format!("http://{address}/?patient={jake}"))
+        .navigate(&format!("http://{address}/physician/?patient={jake}"))
         .await;
     let cross_practice_dom = browser
         .wait_for_text(
@@ -220,7 +383,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 
     // 4. Same-clinic non-panel patient (Mary in practice-clinic-a) renders clean Clinic Demographic Card.
     browser
-        .navigate(&format!("http://{address}/?patient={mary}"))
+        .navigate(&format!("http://{address}/physician/?patient={mary}"))
         .await;
     let demographic_dom = browser
         .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
@@ -287,7 +450,39 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "removing patient from panel must lock clinical workspace back to demographic card:\n{relocked_dom}"
     );
 
-    // 7. Deactivating the physician account terminates SSE and returns the browser to SignInScreen.
+    // Sign-out crosses the proxy, revokes the real server session, and clears
+    // browser persistence. Reload must remain at the gate.
+    browser
+        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
+    let stored = browser
+        .eval("sessionStorage.getItem('coda.physician.session')")
+        .await;
+    assert_eq!(
+        stored.pointer("/result/result/value"),
+        Some(&serde_json::Value::Null)
+    );
+    let response = reqwest::Client::new()
+        .get(format!("http://{address}/physician/today"))
+        .bearer_auth(&token)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), reqwest::StatusCode::UNAUTHORIZED);
+    browser.call("Page.reload", serde_json::json!({})).await;
+    tokio::time::sleep(Duration::from_millis(250)).await;
+    browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
+    browser.sign_in_again().await;
+    browser
+        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
+        .await;
+
+    // 7. Deactivating the physician account terminates SSE through the proxy and returns the browser to SignInScreen.
     assert!(store.deactivate("admin@clinic-a.test").await);
     let revoked_dom = browser
         .wait_for_text("Sign in to Coda", Duration::from_secs(10))
@@ -297,6 +492,8 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "revoking session/account must terminate SSE and return to SignInScreen:\n{revoked_dom}"
     );
 
+    proxy.abort();
+    upstream.abort();
     unsafe {
         env::remove_var("PHYSICIAN_AUTH");
         env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
@@ -782,6 +979,24 @@ impl CdpBrowser {
             }),
         )
         .await
+    }
+
+    async fn sign_in_again(&mut self) {
+        self.eval(r#"new Promise(resolve => {
+            const input = document.querySelector('input.sign-in-input[type="email"]');
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'admin@clinic-a.test');
+            input.dispatchEvent(new Event('input', {bubbles: true}));
+            setTimeout(() => { document.querySelector('button.sign-in-primary').click(); resolve(true); }, 50);
+        })"#).await;
+        self.wait_for_text("Sign-in code", Duration::from_secs(10))
+            .await;
+        self.eval(r#"new Promise(resolve => {
+            const code = document.querySelector('.sign-in-card').getAttribute('data-proof-token');
+            const input = document.querySelector('input.sign-in-input[type="text"]');
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, code);
+            input.dispatchEvent(new Event('input', {bubbles: true}));
+            setTimeout(() => { document.querySelector('button.sign-in-primary').click(); resolve(true); }, 50);
+        })"#).await;
     }
 
     async fn dom(&mut self) -> String {
