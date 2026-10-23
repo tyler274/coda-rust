@@ -64,8 +64,23 @@ fn decode(payload: &[u8]) -> Result<Event, String> {
     if payload.len() > MAX_PAYLOAD {
         return Err("physician bus event too large".into());
     }
-    let envelope: Envelope =
+    let raw: serde_json::Value =
         serde_json::from_slice(payload).map_err(|_| "invalid physician bus event".to_string())?;
+    // serde does not apply deny_unknown_fields to unit variants of an
+    // internally tagged enum, so `resync` would accept smuggled fields.
+    let allowed: &[&str] = match raw.pointer("/event/type").and_then(|t| t.as_str()) {
+        Some("resync") => &["type"],
+        _ => &["type", "workspace_id"],
+    };
+    if raw
+        .get("event")
+        .and_then(|event| event.as_object())
+        .is_some_and(|event| event.keys().any(|key| !allowed.contains(&key.as_str())))
+    {
+        return Err("invalid physician bus event".into());
+    }
+    let envelope: Envelope =
+        serde_json::from_value(raw).map_err(|_| "invalid physician bus event".to_string())?;
     if envelope.version != 1 {
         return Err("unsupported physician bus event version".into());
     }
@@ -277,7 +292,7 @@ impl RedisBus {
                     result = messages.recv() => {
                         match result {
                             Ok(message) if message.channel == CHANNEL => {
-                                let event = message.value.as_bytes().and_then(|value| decode(&value).ok())
+                                let event = message.value.as_bytes().and_then(|value| decode(value).ok())
                                     .unwrap_or(Event::Resync);
                                 let _ = output.send(event);
                             }
