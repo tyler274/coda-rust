@@ -185,6 +185,10 @@ fn config(url: &str, ca: Option<&[u8]>) -> Result<Config, String> {
     if !url.starts_with("redis://") && !url.starts_with("rediss://") {
         return Err("physician Redis URL must use redis or rediss".into());
     }
+    // fred builds a default rustls config while parsing `rediss`. With both
+    // ring and aws-lc-rs linked (feature unification), rustls has no process
+    // default and panics, so pin one. An existing default is kept.
+    let _ = fred::rustls::crypto::ring::default_provider().install_default();
     let mut config =
         Config::from_url(url).map_err(|_| "invalid physician Redis URL".to_string())?;
     // RESP3 allows a subscriber heartbeat without another subscriber connection.
@@ -206,8 +210,13 @@ fn config(url: &str, ca: Option<&[u8]>) -> Result<Config, String> {
         if roots.is_empty() {
             return Err("empty physician Redis CA bundle".into());
         }
+        // Name the provider: feature unification can enable both ring and
+        // aws-lc-rs in one binary, and then rustls has no process default.
+        let provider = std::sync::Arc::new(fred::rustls::crypto::ring::default_provider());
         config.tls = Some(
-            ClientConfig::builder()
+            ClientConfig::builder_with_provider(provider)
+                .with_safe_default_protocol_versions()
+                .map_err(|_| "physician Redis TLS provider unavailable".to_string())?
                 .with_root_certificates(roots)
                 .with_no_client_auth()
                 .into(),
