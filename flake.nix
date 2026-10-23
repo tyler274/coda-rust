@@ -112,6 +112,10 @@
         # entering the repaired shell also replaces cached mislinked binaries.
         # Do not send GCC linker flags to wasm32 or other cross targets.
         env.CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS = "-C link-arg=-fuse-ld=bfd";
+        # Nixpkgs' rustc sysroot has no lib/rustlib/src, so rust-analyzer
+        # cannot load std ("can't load standard library, try installing
+        # `rust-src`"). Point it at the source for this same rustc.
+        env.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
         env.OPENSSL_NO_VENDOR = "1";
         env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
         # The browser proof tests (crates/mobile/tests, physician-sample/tests)
