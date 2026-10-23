@@ -1,3 +1,4 @@
+use super::delivery::Delivery;
 use super::*;
 
 #[tokio::test]
@@ -241,4 +242,145 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     assert_eq!(state.attempts[1].work, state.attempts[0].work);
     assert_eq!(state.messages[0].text, input.text);
     assert_eq!(state.messages.len(), 1);
+}
+
+fn delivery_scope(practice: &str, chat: &str) -> Scope {
+    Scope {
+        practice: practice.into(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: chat.into(),
+    }
+}
+
+fn delivery_input(key: &str) -> Input {
+    Input {
+        key: key.into(),
+        text: key.into(),
+        timezone: "UTC".into(),
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    let scope = delivery_scope(&practice, "chat");
+    let unauthorized = delivery_scope(&practice, "local-only");
+    store
+        .accept_authorized(&scope, &delivery_input("first"), vec![7; 32])
+        .await
+        .unwrap();
+    // Local (session-less) work never becomes a hosted queue wakeup.
+    store
+        .accept(&unauthorized, &delivery_input("local"))
+        .await
+        .unwrap();
+    let ours = |page: &delivery::DispatchPage| -> Vec<Delivery> {
+        page.deliveries
+            .iter()
+            .filter(|d| d.scope.practice == practice)
+            .cloned()
+            .collect()
+    };
+    let first = Delivery {
+        scope: scope.clone(),
+        input_id: "first".into(),
+    };
+    let page = store.dispatch_due(100, Some(&start)).await.unwrap();
+    assert_eq!(ours(&page), vec![first.clone()]);
+    // Successful publication suppresses republish until the retry hint passes.
+    store.dispatched(&first, 600).await.unwrap();
+    let page = store.dispatch_due(100, Some(&start)).await.unwrap();
+    assert!(ours(&page).is_empty());
+    assert!(!store.delivery_settled(&first).await.unwrap());
+
+    // A newer accepted input supersedes the old wakeup: it can never claim,
+    // and acknowledging it is safe because the newer input is recoverable.
+    store
+        .accept_authorized(&scope, &delivery_input("second"), vec![7; 32])
+        .await
+        .unwrap();
+    assert!(store.claim_delivery(&first, 60).await.unwrap().is_none());
+    assert!(store.delivery_settled(&first).await.unwrap());
+    let second = Delivery {
+        scope: scope.clone(),
+        input_id: "second".into(),
+    };
+    assert_eq!(
+        ours(&store.dispatch_due(100, Some(&start)).await.unwrap()),
+        vec![second.clone()]
+    );
+
+    // Duplicate wakeups find no second live claim.
+    let claim = store.claim_delivery(&second, 60).await.unwrap().unwrap();
+    assert!(store.claim_delivery(&second, 60).await.unwrap().is_none());
+    store.heartbeat(&claim, 120).await.unwrap();
+    assert!(!store.delivery_settled(&second).await.unwrap());
+
+    // A failed run is released for broker redelivery as a successor attempt.
+    store.retry_delivery(&claim).await.unwrap();
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "pending");
+    assert!(store.heartbeat(&claim, 60).await.is_err());
+    let retry = store.claim_delivery(&second, 60).await.unwrap().unwrap();
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(
+        state.attempts.last().unwrap().predecessor.as_deref(),
+        Some(claim.attempt.as_str())
+    );
+
+    // Intentional Stop settles the delivery and cannot be reopened by retry.
+    store.stop(&scope).await.unwrap();
+    store.retry_delivery(&retry).await.unwrap();
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "held");
+    assert!(store.delivery_settled(&second).await.unwrap());
+    assert!(ours(&store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty());
+    assert!(store.dispatch_due(0, None).await.is_err());
+    assert!(store.dispatched(&second, 0).await.is_err());
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    let scope = delivery_scope(&practice, "chat");
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32])
+        .await
+        .unwrap();
+    let delivery = Delivery {
+        scope: scope.clone(),
+        input_id: "turn".into(),
+    };
+    let claim = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
+    store.dispatched(&delivery, 60).await.unwrap();
+    // Expire lease and dispatch hint at the storage owner instead of sleeping
+    // across a floored database-clock second (flaky on busy runners).
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    state.dispatch_after = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
+    let page = store.dispatch_due(100, Some(&start)).await.unwrap();
+    assert!(page.deliveries.contains(&delivery));
+    assert!(store.heartbeat(&claim, 60).await.is_err());
+    let successor = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
 }

@@ -65,11 +65,28 @@ class SqlInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "SQL file is empty"):
             self.run_check(["required.sql"], {"required.sql": " \n"}, {"required.sql"})
 
-    def test_actual_required_inventory_keeps_schema_readiness_only(self):
+    def test_actual_required_inventory_keeps_only_postgres_exceptions(self):
         self.assertEqual(
             check_sql.REQUIRED,
-            {"crates/duet-api/src/sql/has_migration.sql"},
+            {
+                "crates/duet-api/src/sql/has_migration.sql",
+                "crates/physician-auth/src/authority_notify.sql",
+            },
         )
+
+    def test_required_inventory_files_are_included_by_rust(self):
+        root = Path(__file__).resolve().parent.parent
+        sources = {
+            "crates/duet-api/src/sql/has_migration.sql": "crates/duet-api/src",
+            "crates/physician-auth/src/authority_notify.sql": "crates/physician-auth/src",
+        }
+        for required, crate in sources.items():
+            name = Path(required).name
+            included = any(
+                name in path.read_text()
+                for path in (root / crate).rglob("*.rs")
+            )
+            self.assertTrue(included, f"{required} is not include_str!'d by Rust")
 
 
 if __name__ == "__main__":
