@@ -90,6 +90,45 @@ pub fn staging_accounts(
         .collect()
 }
 
+/// Stable physician id for one staging email.
+///
+/// The readable slug is not unique (`a.b@c` and `a-b@c` share it), so a short
+/// hash of the exact lower-cased email is appended. A rerun of account
+/// creation leaves an existing physician id alone.
+pub fn staging_physician_id(email: &str) -> String {
+    use sha2::{Digest, Sha256};
+    let email = email.trim().to_lowercase();
+    let mut slug = String::new();
+    let mut dashed = false;
+    for character in email.chars() {
+        if character.is_ascii_alphanumeric() {
+            slug.push(character);
+            dashed = false;
+        } else if !dashed && !slug.is_empty() {
+            slug.push('-');
+            dashed = true;
+        }
+        if slug.len() >= 32 {
+            break;
+        }
+    }
+    let slug = slug.trim_end_matches('-');
+    let suffix =
+        Sha256::digest(email.as_bytes())
+            .iter()
+            .take(4)
+            .fold(String::new(), |mut out, byte| {
+                use std::fmt::Write as _;
+                let _ = write!(out, "{byte:02x}");
+                out
+            });
+    if slug.is_empty() {
+        format!("physician-{suffix}")
+    } else {
+        format!("{slug}-{suffix}")
+    }
+}
+
 /// Readiness for a hosted revision: the auth store and the front-door schema
 /// both answer. Anything else, including an unconfigured local run, is 503.
 pub async fn ready(
@@ -109,6 +148,20 @@ pub async fn ready(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn staging_physician_ids_are_stable_and_distinct_per_email() {
+        let dotted = staging_physician_id("  A.B@Practice.test ");
+        assert_eq!(dotted, staging_physician_id("a.b@practice.test"));
+        let dashed = staging_physician_id("a-b@practice.test");
+        assert_ne!(dotted, dashed);
+        assert!(dotted.starts_with("a-b-practice-test-"));
+        assert!(dashed.starts_with("a-b-practice-test-"));
+        assert_ne!(
+            staging_physician_id("admin@practice.test"),
+            staging_physician_id("member@practice.test")
+        );
+    }
 
     fn hosted(extra: &[(&str, &str)]) -> Result<(), String> {
         validate_startup(|name| {

@@ -58,6 +58,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20260101_000001_init),
             Box::new(m20260101_000002_practice_patients),
+            Box::new(m20261023_000003_unique_physician_identity),
         ]
     }
 }
@@ -501,6 +502,66 @@ impl MigrationTrait for m20260101_000002_practice_patients {
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
             .drop_table(Table::drop().table(Patients).take())
+            .await
+    }
+}
+
+/// Reassigns every duplicate `(practice_id, physician_id)` except the earliest
+/// row (`created_at`, then `id`). Membership rows stay on the surviving id, so
+/// a reassigned account starts with no panel.
+pub const REASSIGN_DUPLICATE_PHYSICIAN_IDS: &str = "\
+update physician_accounts as account
+set physician_id = 'migrated-' || replace(account.id::text, '-', '')
+where account.id in (
+    select id from (
+        select id,
+               row_number() over (
+                   partition by practice_id, physician_id
+                   order by created_at, id
+               ) as rank
+        from physician_accounts
+    ) ranked
+    where rank > 1
+)";
+
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261023_000003_unique_physician_identity;
+impl MigrationName for m20261023_000003_unique_physician_identity {
+    fn name(&self) -> &str {
+        "physician_auth_20261023_000003_unique_physician_identity"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261023_000003_unique_physician_identity {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        // Set-based repair of rows that already share an identity. Ordinary
+        // account writes stay on the entity API; this is not a new CRUD path.
+        manager
+            .get_connection()
+            .execute_unprepared(REASSIGN_DUPLICATE_PHYSICIAN_IDS)
+            .await?;
+        manager
+            .create_index(
+                Index::create()
+                    .name("physician_accounts_practice_physician_uidx")
+                    .table(Accounts)
+                    .col(account::Column::PracticeId)
+                    .col(account::Column::PhysicianId)
+                    .unique()
+                    .take(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_index(
+                Index::drop()
+                    .name("physician_accounts_practice_physician_uidx")
+                    .table(Accounts)
+                    .to_owned(),
+            )
             .await
     }
 }

@@ -569,13 +569,16 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn account_by_identity(&self, identity: &PhysicianIdentity) -> Option<Account> {
-        self.state
-            .lock()
-            .expect("auth state")
+        let state = self.state.lock().expect("auth state");
+        let mut matched = state
             .accounts
             .values()
-            .find(|account| account.identity == *identity)
-            .cloned()
+            .filter(|account| account.identity == *identity);
+        let account = matched.next()?.clone();
+        if matched.next().is_some() {
+            return None;
+        }
+        Some(account)
     }
 
     async fn membership(
@@ -1276,6 +1279,31 @@ mod tests {
             token_hash("codas-abc"),
             "verification is deterministic"
         );
+    }
+
+    #[tokio::test]
+    async fn account_by_identity_is_absent_when_two_accounts_share_it() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "shared", "a@example.test", "A", true);
+        store.seed_account("practice", "shared", "b@example.test", "B", false);
+        assert!(
+            store
+                .account_by_identity(&PhysicianIdentity {
+                    practice_id: "practice".to_owned(),
+                    physician_id: "shared".to_owned(),
+                })
+                .await
+                .is_none()
+        );
+        store.seed_account("practice", "only", "c@example.test", "C", false);
+        let found = store
+            .account_by_identity(&PhysicianIdentity {
+                practice_id: "practice".to_owned(),
+                physician_id: "only".to_owned(),
+            })
+            .await
+            .expect("one match");
+        assert_eq!(found.email, "c@example.test");
     }
 
     #[test]
