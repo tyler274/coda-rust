@@ -55,7 +55,12 @@ fn resolve_api_base(
     configured: Option<&str>,
     page: Option<(&str, &str)>,
 ) -> String {
-    if let Some(url) = query.or(configured) {
+    // `query` is already percent-decoded. Only a loopback http(s) URL may
+    // replace the compile-time URL or the page origin.
+    if let Some(url) = query.filter(|url| is_loopback_api_url(url)) {
+        return url.to_owned();
+    }
+    if let Some(url) = configured {
         return url.to_owned();
     }
     if let Some((origin, path)) = page {
@@ -107,6 +112,81 @@ mod tests {
         );
         assert_eq!(resolve_api_base(None, None, None), "http://127.0.0.1:8790");
     }
+
+    #[test]
+    fn query_api_override_is_loopback_only() {
+        let page = Some(("https://coda.test", "/physician/"));
+        let configured = Some("https://configured.test/api");
+        for url in [
+            "http://localhost:8790/",
+            "https://localhost/physician",
+            "http://127.0.0.1:8790",
+            "HTTP://LOCALHOST",
+        ] {
+            assert_eq!(
+                resolve_api_base(Some(url), configured, page),
+                url,
+                "{url} is loopback"
+            );
+        }
+        for url in [
+            "https://evil.example/api",
+            "http://user:pass@127.0.0.1:8790/",
+            "http://user@localhost",
+            "http://localhost.evil.com",
+            "http://127.0.0.1.evil.com",
+            "http://2130706433",
+            "javascript:alert(1)",
+            "http://[::1]:8790/",
+            "http://127.0.0.1\\@evil.com",
+        ] {
+            assert_eq!(
+                resolve_api_base(Some(url), configured, page),
+                "https://configured.test/api",
+                "{url} must be ignored"
+            );
+            assert_eq!(
+                resolve_api_base(Some(url), None, page),
+                "https://coda.test/physician",
+                "{url} falls through to the page origin"
+            );
+        }
+    }
+}
+
+/// `http` or `https` whose host is `localhost` or `127.0.0.1`, with no userinfo.
+fn is_loopback_api_url(value: &str) -> bool {
+    let value = value.trim();
+    let Some((scheme, rest)) = value.split_once("://") else {
+        return false;
+    };
+    if !scheme.eq_ignore_ascii_case("http") && !scheme.eq_ignore_ascii_case("https") {
+        return false;
+    }
+    let authority = rest.split(['/', '?', '#']).next().unwrap_or("");
+    if authority.is_empty()
+        || authority.contains('@')
+        || authority.contains('\\')
+        || authority.chars().any(|c| c.is_control() || c == ' ')
+    {
+        return false;
+    }
+    let host = match authority.rsplit_once(':') {
+        Some((host, port))
+            if !host.is_empty() && !port.is_empty() && port.chars().all(|c| c.is_ascii_digit()) =>
+        {
+            if port.parse::<u16>().is_err() {
+                return false;
+            }
+            host
+        }
+        Some(_) => return false,
+        None => authority,
+    };
+    if host.contains(':') || host.contains('[') {
+        return false;
+    }
+    host.eq_ignore_ascii_case("localhost") || host == "127.0.0.1"
 }
 
 #[cfg(target_arch = "wasm32")]
