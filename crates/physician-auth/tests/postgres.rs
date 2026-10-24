@@ -442,6 +442,19 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
         .await
         .expect("revoke consent");
     assert!(!revoked.sharing_consented);
+    assert_eq!(
+        store
+            .grant_patient_consent("pg-proof", "pw-elena", "duet-elena", "v1", NOW + 30)
+            .await
+            .expect_err("revoked consent is not restored"),
+        SignInError::Invalid
+    );
+    let still = store
+        .patient_link("pg-proof", "pw-elena")
+        .await
+        .expect("link remains");
+    assert!(!still.sharing_consented);
+    assert_eq!(still.revoked_at, Some(NOW + 20));
 }
 
 #[tokio::test]

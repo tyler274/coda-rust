@@ -894,11 +894,13 @@ impl AuthStore for PostgresAuthStore {
         if !row.linked || row.duet_account_id.as_deref() != Some(duet_account_id) {
             return Err(SignInError::Invalid);
         }
+        if row.revoked_at.is_some() {
+            return Err(SignInError::Invalid);
+        }
         let mut update: crate::migration::PatientLinkActiveModel = row.into();
         update.sharing_consented = Set(true);
         update.consent_version = Set(Some(consent_version.to_owned()));
         update.consented_at = Set(Some(now as i64));
-        update.revoked_at = Set(None);
         let updated = update.update(&self.db).await.map_err(stale)?;
         Ok(patient_link_from_row(updated))
     }
