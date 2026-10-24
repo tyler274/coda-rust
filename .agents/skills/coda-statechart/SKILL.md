@@ -23,7 +23,8 @@ Follow the [shared principles](../../../verification/README.md#principles).
    and evals. Actors choose nondeterministically (`may`); keep hard limits few,
    each with a reason naming what it protects. Every event declares its cause; an
    agent's event is an output of the system running it. Charts compose through
-   shared declared events, not copied states.
+   shared declared events, not copied states. A chart that details part of
+   another is connected to it by one map and checked with `against`.
 5. State each promise and its decision source beside the diagram. Revise words
    and diagrams together. Resolve new product meaning with Dev; checking a draft
    does not approve it. Save beside existing verification when edits are authorized.

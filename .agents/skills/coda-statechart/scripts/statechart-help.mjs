@@ -5,6 +5,7 @@ export const USAGE = {
   trace: "node statechart.mjs trace CHART.mmd [--max-states N]",
   rules: "node statechart.mjs rules CHART.mmd [--rule NAME] [--max-cone N] [--max-states N]",
   compare: "node statechart.mjs compare FIRST.mmd SECOND.mmd [--rename MAP.json]",
+  against: "node statechart.mjs against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats]",
@@ -77,6 +78,33 @@ const COMPARE = `compare FIRST.mmd SECOND.mmd [--rename MAP.json]
   mapping a FIRST name to its SECOND name; state renames apply in every region.
   Exit: 0 the same flat model; 1 differences or an invalid chart.`;
 
+const AGAINST = `against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]
+  Check a chart that details part of another against it, through one map in the
+  agreed chart's words (adapted from pstack's --against):
+    {"states": {DETAIL STATE: {AGREED REGION: AGREED STATE, ...}},
+     "events": {DETAIL EVENT: AGREED EVENT or null},
+     "omits":  {AGREED EVENT: "why the detail leaves it out"},
+     "outside": {DETAIL EVENT: "why the agreed chart does not model it"},
+     "steps":   {"FROM --> TO on EVENT": AGREED EVENT or null}}
+  Every detailed state and event must be mapped; null marks a hidden step that
+  only the detail has, which must keep the agreed state. A steps entry labels one
+  detailed step, overriding its event's label there. Each detailed region maps on
+  its own: the agreed regions its states name are its scope (one detailed region
+  per agreed region), and a region whose states map to {} only the detail has. A
+  scoped part left out of an entry is inactive while its parent is elsewhere. An event under outside, such as a page reload that
+  the agreed chart abstracts away, is not compared and is printed with its
+  reason. Both directions are checked:
+  - each detailed step must be an agreed step in every scope region on the mapped
+    event (a region the agreed event does not move may stay), and must not need a
+    condition the mapped state rules out; an entered part must land where the
+    agreed step enters it;
+  - each agreed step in scope, from a state the detail can be in, must be shown by
+    a detailed step, unless omits names its event with a reason.
+  Conditions the matched agreed steps read outside the scope are listed as what
+  the detail assumes. Starting states are not compared. --out writes the layered
+  chart: each agreed state as a box holding the detailed states mapped to it.
+  Exit: 0 both directions agree; 1 differences or an invalid map or chart.`;
+
 const FLAT = `flat CHART.mmd
   Print the fully expanded chart as plain Mermaid: one region per holder, leaf
   states with qualified captions, concrete event labels (templates, families and
@@ -123,6 +151,7 @@ Commands:
   trace   shortest reachable violation of the chart's rules
   rules   check each rule on a small cone of regions (large charts)
   compare differences between two charts' flat models
+  against check a detailed chart against the chart it details, through a map
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
   lint    unreachable states, dead edges, and event-declaration problems
@@ -136,6 +165,7 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   trace: TRACE,
   rules: RULES,
   compare: COMPARE,
+  against: AGAINST,
   flat: FLAT,
   query: QUERY,
   lint: LINT,

@@ -10,6 +10,7 @@ import { printFlat } from "./chart-flat.mjs";
 import { lint, queryEvent, queryRegion, queryState, summary } from "./chart-query.mjs";
 import { checkRules, printRules } from "./chart-rules.mjs";
 import { compareCharts, printComparison, readRenames } from "./compare-charts.mjs";
+import { against, printAgainst, readMap } from "./chart-against.mjs";
 
 class Usage extends Error {}
 
@@ -57,6 +58,15 @@ export const COMMANDS = {
     run: ([a, b], flags) => {
       const renames = flags.rename === undefined ? undefined : readRenames(read(flags.rename));
       return printComparison(compareCharts(read(a), read(b), renames));
+    },
+  },
+  against: {
+    inputs: 2, values: ["--map", "--out"],
+    run: ([detail, agreed], flags) => {
+      if (flags.map === undefined) throw new Usage("provide --map MAP.json");
+      const result = against(read(detail), read(agreed), readMap(read(flags.map)));
+      if (flags.out !== undefined) fs.writeFileSync(flags.out, result.layered);
+      return printAgainst(result);
     },
   },
   flat: {

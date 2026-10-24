@@ -320,6 +320,17 @@ incomplete. HOLDS covers chart rules only, like an exhausted trace.
   problems and keyword lines read as comments; `--cause` adds unreasoned limits.
 - `compare FIRST SECOND [--rename MAP.json]` diffs two flat models: regions,
   states, steps with their conditions, declared events and rules.
+- `against DETAIL AGREED --map MAP.json [--out LAYERED.mmd]` checks a chart that
+  details part of another, through one map that labels the detailed states and
+  events in the agreed chart's words (pstack's `--against`); a `steps` entry labels
+  one detailed step from its state and event, and each detailed region maps on its
+  own, so a region only the detail has maps its states to `{}`. Each detailed step
+  must be an agreed step or a hidden one that keeps the agreed state, and each
+  agreed step in scope must be shown, unless the map omits it with a reason; an
+  event the agreed chart abstracts away goes under `outside` with a reason. The
+  conditions the detail assumes are listed, and `--out` draws each agreed state
+  as a box around the detailed states mapped to it. Each difference goes back to
+  whoever owns the behavior: either the detail or the agreed chart is wrong.
 - `flat` prints the expansion; without parallel parts it reads back to the same
   flat model, with rules as comments.
 
