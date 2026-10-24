@@ -37,8 +37,7 @@ enable_physician_smtp_relay = true
 # Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns):
 # Memorystore Basic 1 GB (about $35/month, always billed), the Pub/Sub chat-turn
 # queue, the internal physician-worker and always-allocated physician CPU.
-# The plan refuses to run until images.physician.worker below holds the
-# first pushed coda-physician-worker digest.
+# images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 
 images = {
@@ -46,8 +45,7 @@ images = {
   physician = {
     runtime   = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-sample@sha256:042628a23dbb554af0368b7fad78166593384bcc695eeb410b69be7f7050f020"
     migration = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-migrate@sha256:af679d7edb9b20f04fc42397d3ac00d78c12c4d79a799d7e189094e094effac4"
-    # Operator step: record the digest deploy-staging pushed for this commit.
-    # worker  = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-worker@sha256:<digest>"
+    worker    = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-worker@sha256:b9e8fef897b13c1bd8b8440c4cfce8ed2cd333e21af8705d248b044dec20ab85"
   }
   duet = {
     runtime   = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-duet-api@sha256:7d5aa30d062a10ec02dad6a06c6730d058a123437f6bf90529884e7fbfced6ed"

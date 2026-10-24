@@ -293,11 +293,12 @@ grant or setting, and the root's tests check this.
 does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed. Activation, in
 order, from an authorized engineering account:
 
-1. **Publish the worker image.** Merge the worker change so that
-   `deploy-staging` pushes `coda-physician-worker`. Record its digest as
-   `images.physician.worker` in
+1. **Publish the worker image.** The initial `coda-physician-worker` digest is
+   already pinned as `images.physician.worker` in
    [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars). The
-   plan refuses to run until that digest is set.
+   plan refuses to run without a digest in that field. Later `deploy-staging`
+   pushes replace the running image; OpenTofu ignores that field after the
+   service exists.
 2. **Plan, review, apply.** Run the saved plan from
    [the bootstrap section](#rust-staging-bootstrap-and-deployment-gate) and
    review it. It should create the cache, both topics, both subscriptions, the
