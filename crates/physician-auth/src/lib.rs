@@ -966,10 +966,12 @@ impl AuthStore for MemoryAuthStore {
         if !record.link.linked || record.link.duet_account_id.as_deref() != Some(duet_account_id) {
             return Err(SignInError::Invalid);
         }
+        if record.link.revoked_at.is_some() {
+            return Err(SignInError::Invalid);
+        }
         record.link.sharing_consented = true;
         record.link.consent_version = Some(consent_version.to_owned());
         record.link.consented_at = Some(now);
-        record.link.revoked_at = None;
         Ok(record.link.clone())
     }
 
@@ -1501,6 +1503,20 @@ mod tests {
         assert!(!revoked.sharing_consented);
         assert_eq!(revoked.consent_version.as_deref(), Some("v1"));
         assert_eq!(revoked.revoked_at, Some(NOW + 60));
+
+        assert_eq!(
+            store
+                .grant_patient_consent("practice-1", "pw-elena", "duet-elena", "v1", NOW + 70)
+                .await
+                .unwrap_err(),
+            SignInError::Invalid
+        );
+        let still = store
+            .patient_link("practice-1", "pw-elena")
+            .await
+            .expect("link remains");
+        assert!(!still.sharing_consented);
+        assert_eq!(still.revoked_at, Some(NOW + 60));
     }
 
     #[tokio::test]

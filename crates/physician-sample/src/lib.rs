@@ -1442,6 +1442,15 @@ mod tests {
         assert_eq!(stop_json["sharing_consented"], false);
         assert!(stop_json["revoked_at"].is_u64());
 
+        let (status, restore_body) = request(
+            app.clone(),
+            "PUT",
+            &format!("/patient-workspaces/{patient_id}/consent"),
+            Body::from(r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#),
+        )
+        .await;
+        assert_eq!(status, StatusCode::BAD_REQUEST, "{restore_body}");
+
         let (status, _) = request(
             app.clone(),
             "POST",
