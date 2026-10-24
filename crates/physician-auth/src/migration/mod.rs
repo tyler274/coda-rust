@@ -59,7 +59,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260101_000001_init),
             Box::new(m20260101_000002_practice_patients),
             Box::new(m20261023_000003_unique_physician_identity),
-            Box::new(m20261022_000003_authority_notify),
+            Box::new(m20261024_000004_authority_notify),
         ]
     }
 }
@@ -573,15 +573,15 @@ impl MigrationTrait for m20261023_000003_unique_physician_identity {
 /// Raw SQL by exception: SeaQuery has no trigger or PL/pgSQL builder. The
 /// statements carry no runtime values.
 #[allow(non_camel_case_types, missing_docs)]
-pub struct m20261022_000003_authority_notify;
-impl MigrationName for m20261022_000003_authority_notify {
+pub struct m20261024_000004_authority_notify;
+impl MigrationName for m20261024_000004_authority_notify {
     fn name(&self) -> &str {
-        "physician_auth_20261022_000003_authority_notify"
+        "physician_auth_20261024_000004_authority_notify"
     }
 }
 
 #[async_trait::async_trait]
-impl MigrationTrait for m20261022_000003_authority_notify {
+impl MigrationTrait for m20261024_000004_authority_notify {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
             .get_connection()

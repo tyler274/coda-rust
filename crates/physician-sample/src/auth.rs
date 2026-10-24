@@ -1404,6 +1404,18 @@ async fn inject_auth_store(
     next.run(request).await
 }
 
+/// Builds the router with auth required on the recorded practice.
+///
+/// `PHYSICIAN_AUTH=required` guards every physician route of `base` through
+/// one store — Postgres when `PHYSICIAN_DATABASE_URL` is set, memory otherwise.
+/// Any other value serves `base` with the auth routes still present. Workspace
+/// events stay on an in-process bus. The process entrypoint uses
+/// [`authed_router_with_bus`] when Redis is configured. Sign-in mail comes
+/// from the environment.
+pub async fn authed_router(base: axum::Router) -> axum::Router {
+    authed_router_with_bus(base, Arc::new(physician_bus::LocalBus::new(64))).await
+}
+
 /// Builds the router with auth on `base`, publishing panel changes on `bus`.
 ///
 /// `PHYSICIAN_AUTH=required` guards every physician route through one store —
