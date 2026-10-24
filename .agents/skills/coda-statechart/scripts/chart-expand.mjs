@@ -251,15 +251,31 @@ function expandEvents({ root, events, groups, strict }, instances, { lenient = f
     const found = new Map();
     for (const values of bindings)
       if (wanted.every((p) => Object.hasOwn(values, p))) {
+        // Instances of different templates may produce the same member; their values merge.
         const label = substitute(pattern, values);
-        if (!found.has(label)) found.set(label, { label, values });
+        const known = found.get(label);
+        if (!known) { found.set(label, { label, values }); continue; }
+        for (const [k, v] of Object.entries(values)) {
+          if (Object.hasOwn(known.values, k) && known.values[k] !== v)
+            throw new Error(`"${label}" is bound by instances that disagree on {${k}}: "${known.values[k]}" and "${v}"`);
+          known.values = { ...known.values, [k]: v };
+        }
       }
     return [...found.values()];
   };
+  // A group whose name has {placeholders} is a family of groups: one per instance binding
+  // them, each member bound with that instance's values.
+  const named = new Map([...groups].filter(([name]) => !placeholders(name).length));
+  for (const [name, list] of groups)
+    for (const { label, values } of placeholders(name).length ? members(name) : []) {
+      if (named.has(label)) throw new Error(`the event group "${label}" is declared twice`);
+      named.set(label, list.map((m) => substitute(m, values)));
+    }
   const catalog = new Map(); // concrete event label -> { decl, values }
   for (const decl of events) {
     if (groups.has(decl.label)) throw new Error(`"${decl.label}" is both an event and an event group`);
     for (const m of members(decl.label)) {
+      if (named.has(m.label)) throw new Error(`"${m.label}" is both an event and an event group`);
       if (catalog.has(m.label)) throw new Error(`the event "${m.label}" is declared twice`);
       catalog.set(m.label, { decl, values: m.values });
     }
@@ -270,7 +286,9 @@ function expandEvents({ root, events, groups, strict }, instances, { lenient = f
       return [t];
     }
     // A group stands for its members; a family pattern for the instances that bind it.
-    const bound = groups.has(t.label) ? groups.get(t.label).flatMap(members) : members(t.label);
+    const bound = members(t.label).flatMap((m) => named.has(m.label)
+      ? named.get(m.label).flatMap(members).map((x) => ({ ...x, values: { ...m.values, ...x.values } }))
+      : [m]);
     // A pattern nothing binds stays one step, so the check below names it.
     const copies = bound.length ? bound.map(({ label, values }) => ({ ...t, ...bindStep(t, values), label })) : [t];
     // Nothing a step says may keep a placeholder once templates and events are bound.

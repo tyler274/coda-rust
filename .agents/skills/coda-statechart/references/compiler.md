@@ -169,7 +169,8 @@ state "Panel open" as Open {
 who causes an event and what it is for; `needs` (optional) is a `%% when` added to
 every edge carrying the event. A label with `{placeholders}` declares a family,
 one event per template instance that binds them. `%% events NAME = a | b` names a
-group: an edge labeled NAME stands for one edge per member. `%% events declared`
+group: an edge labeled NAME stands for one edge per member. A NAME with
+`{placeholders}` is one group per instance that binds them, its members bound the same way. `%% events declared`
 makes the chart strict: every labeled edge must carry a declared event, and
 unlabeled steps are refused.
 

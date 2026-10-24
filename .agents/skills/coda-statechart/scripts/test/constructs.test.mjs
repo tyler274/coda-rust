@@ -672,6 +672,57 @@ test("a group edge binds each member's values into its effect and %% when ids", 
   assert.deepEqual(courier("you collect from locker b").guard, { not: false, states: { "Locker b (large)": ["Full"] } });
 });
 
+test("a group named with a placeholder is one group per instance, bound like a family", () => {
+  const family = lockerEvents
+    .replace("%% events a collection = you collect from locker {key}", "%% events a collection = you collect from locker {key}\n  %% events locker {key} is touched = you collect from locker {key} | the door of locker {key} jams")
+    .replace("      %% only b\n      %% never", "      %% only b\n      Jammed --> Full : locker {key} is touched\n      %% only b\n      %% never")
+    .replace("Gone --> Driving : a collection", "Gone --> Driving : locker {key} is touched");
+  const written = lockerEvents
+    .replace("      %% only b\n      %% never", "      %% only b\n      Jammed --> Full : you collect from locker {key}\n      %% only b\n      Jammed --> Full : the door of locker {key} jams\n      %% only b\n      %% never")
+    .replace("Gone --> Driving : a collection", ["a", "b"].flatMap((k) => [`Gone --> Driving : you collect from locker ${k}`, `Gone --> Driving : the door of locker ${k} jams`]).join("\n      "));
+  const same = cmd("compare", fixture(family).input, fixture(written).input);
+  assert.equal(same.stdout, "Same flat model.\n");
+  assert.equal(cmd("lint", fixture(family).input).status, 0);
+  refused(family.replace("%% events a collection = you collect from locker {key}", "%% events locker a is touched = you collect from locker a"), /the event group "locker a is touched" is declared twice/);
+});
+
+test("instances of different templates that produce the same event merge their values", () => {
+  const room = `stateDiagram-v2
+  %% events declared
+  %% event press the {thing} | by you | needs {ready}@{key} | reason: only a powered {thing} switches | You press it.
+  %% event unplug the {thing} | by you | You unplug it.
+  %% event plug in the {thing} | by you | You plug it in.
+  state "Room" as Room {
+    state "{thing} switch" as Switch {
+      %% template
+      %% instance a: thing = lamp
+      %% instance b: thing = fan
+      [*] --> Off
+      state "Off" as Off
+      state "On" as On
+      Off --> On : press the {thing}
+      On --> Off : press the {thing}
+    }
+    --
+    state "{thing} power" as Power {
+      %% template
+      %% instance a: thing = lamp, ready = Plugged
+      %% instance b: thing = fan, ready = Plugged
+      [*] --> Plugged
+      state "Plugged in" as Plugged
+      state "Unplugged" as Unplugged
+      Plugged --> Unplugged : unplug the {thing}
+      Unplugged --> Plugged : plug in the {thing}
+    }
+  }
+  [*] --> Room
+`;
+  const { map } = names(generated(room));
+  const { needs } = map.events.find((x) => x.label === "press the fan");
+  assert.deepEqual([needs.not, needs.states], [false, { "fan power": ["Plugged in"] }]);
+  refused(room.replace("%% instance b: thing = fan\n", "%% instance b: thing = fan, ready = Unplugged\n"), /"press the fan" is bound by instances that disagree on \{ready\}/);
+});
+
 test("negative control: without needs the courier fills a locker while the other is full", () => {
   const f = generated(lockerEvents.replace(" | needs Empty@{key}, Empty@{other}", ""));
   verify(f, false, "step_preserves_inductive");
