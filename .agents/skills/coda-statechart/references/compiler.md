@@ -142,6 +142,28 @@ state "Locker {key} ({size})" as Locker {
 }
 ```
 
+**Shapes.** When the same behavior belongs inside different composites, write it once:
+a composite whose first line is `%% shape NAME` is not part of the chart and holds the
+shared states and edges. A composite whose first line is `%% use NAME as KEY: name = value, ...`
+is filled with them as a one-instance template, so ids become `Id@KEY`, `{name}`
+placeholders bind, and `%% only`/`%% except` inside the shape may name any use of it.
+Lines after the `%% use` line add what only that use has, such as its own states or the
+steps that start it. A nested use resets when its composite is entered, like any region there.
+
+```mermaid
+state "Read" as ReadShape {
+  %% shape read
+  [*] --> Loading
+  Loading --> Shown : {thing} loads
+}
+state "Panel open" as Open {
+  [*] --> NoteRead
+  state "The note read" as NoteRead {
+    %% use read as note: thing = the note
+  }
+}
+```
+
 **Declared events.** `%% event LABEL | by CAUSE | needs [not] Ids | INTENT` declares
 who causes an event and what it is for; `needs` (optional) is a `%% when` added to
 every edge carrying the event. A label with `{placeholders}` declares a family,

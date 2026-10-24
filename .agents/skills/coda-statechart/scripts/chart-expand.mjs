@@ -29,6 +29,23 @@ export function expand(parsed, options = {}) {
   const instances = []; // { template, key, values }
   const local = new Map(); // template-local id -> template name
   let nevers = parsed.nevers;
+  // Each %% use of a shape is a one-instance template; %% only and %% except inside the
+  // shape may name any use of it.
+  const shapeKeys = new Map();
+  (function scan(q) {
+    for (const p of q.parts) for (const c of p.children) {
+      if (c.leaf) continue;
+      if (c.template?.shape) {
+        const keys = shapeKeys.get(c.template.shape) ?? new Set();
+        for (const { key } of c.template.instances) {
+          if (keys.has(key)) throw new Error(`two %% use lines of the shape ${c.template.shape} are named ${key}`);
+          keys.add(key);
+        }
+        shapeKeys.set(c.template.shape, keys);
+      }
+      scan(c);
+    }
+  })(root);
 
   function expandIn(node) {
     for (const p of node.parts) for (const c of p.children) if (!c.leaf && !c.template) expandIn(c);
@@ -47,10 +64,10 @@ export function expand(parsed, options = {}) {
         if (!q.leaf) for (const sub of q.parts) for (const c of sub.children) collect(c);
       })(t);
       for (const id of ids) local.set(id, t.name);
-      const keys = new Set(t.template.instances.map((i) => i.key));
+      const keys = shapeKeys.get(t.template.shape) ?? new Set(t.template.instances.map((i) => i.key));
       const check = (limit, what) => {
         for (const k of limit?.keys ?? [])
-          if (!keys.has(k)) throw new Error(`%% ${limit.only ? "only" : "except"} on ${what} names ${k}, which is not an instance of template ${t.name}`);
+          if (!keys.has(k)) throw new Error(`%% ${limit.only ? "only" : "except"} on ${what} names ${k}, which is not ${t.template.shape ? `a use of the shape ${t.template.shape}` : `an instance of template ${t.name}`}`);
       };
       for (const { key, values } of t.template.instances) {
         instances.push({ template: t.name, key, values });

@@ -543,6 +543,37 @@ test("templates expand one region per instance with substitutions, instance refe
   assert.deepEqual(JSON.parse(fs.readFileSync(except.map, "utf8")).events, map.events);
 });
 
+const shapedDesk = here("./reads.mmd");
+
+test("a shape written once fills composites anywhere; each use is bound, limited and extended like a template instance", async () => {
+  const f = generated(shapedDesk);
+  const { state: s, event: e, map } = names(f);
+  const note = (x) => `Panel open.The note read.${x}`;
+  assert.deepEqual(map.regions.map((r) => [r.caption, r.states.map((x) => x.caption)]), [
+    ["The list read", ["Loading the list", "Showing the list", "Showing the list, with Retry", "Couldn't load the list, with Retry", "Switched off"]],
+    ["Panel", ["Closed", note("Loading the note"), note("Showing the note"), note("Showing the note, with Retry"), note("Couldn't load the note, with Retry")]],
+  ]);
+  addProof(f, `
+    assert forall|b: State| ${e("open the panel")}(${s("Showing the list", "Closed")}, b) == (b == ${s("Showing the list", note("Loading the note"))}) by {};
+    assert forall|b: State| ${e("the note fails")}(${s("Showing the list", note("Showing the note"))}, b)
+      == (b == ${s("Showing the list", note("Showing the note, with Retry"))}) by {};
+    assert forall|b: State| ${e("the list is switched off")}(${s("Showing the list", "Closed")}, b) == (b == ${s("Switched off", "Closed")}) by {};
+    assert forall|b: State| !${e("retry the note")}(${s("Showing the list", note("Showing the note"))}, b) by {};
+    assert forall|b: State| !${e("retry the list")}(${s("Showing the list, with Retry", "Closed")}, b) by {};
+    assert forall|b: State| ${e("retry the note")}(${s("Showing the list", note("Showing the note, with Retry"))}, b)
+      == (b == ${s("Showing the list", note("Loading the note"))}) by {};
+  `);
+  assert.ok(await agreement(f) > 4);
+  verify(f);
+});
+
+test("shapes refuse an unknown shape, a misplaced use, a repeated use name and a limit naming no use", () => {
+  refused(shapedDesk.replace("%% use read as list", "%% use reed as list"), /names the shape reed, which no %% shape composite defines/);
+  refused(shapedDesk.replace("    %% use read as note: thing = the note\n", "    [*] --> Spare\n    %% use read as note: thing = the note\n"), /%% use must be the first line inside the composite it fills/);
+  refused(shapedDesk.replace("%% use read as note", "%% use read as list"), /two %% use lines of the shape read are named list/);
+  refused(shapedDesk.replace("%% only note", "%% only nite"), /names nite, which is not a use of the shape read/);
+});
+
 test("negative control: without the instance guard both lockers fill", () => {
   const f = generated(lockers.replace(" [while locker {other} is empty]", "").replace("      %% when Empty@{other}\n", ""));
   verify(f, false, "step_preserves_inductive");

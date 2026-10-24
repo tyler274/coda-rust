@@ -48,6 +48,44 @@ export function reasoned(text) {
 // have the construct's shape stays an ordinary comment; lint lists such lines.
 export const KEYWORDS = /^%%\s*(when|never|template|instance|only|except|event|events)\b/;
 
+// Shapes: a composite whose first line is `%% shape NAME` is not part of the chart; it
+// defines contents written once. A composite whose first line is
+// `%% use NAME as KEY: name = value, ...` is filled with those contents as a one-instance
+// template, so the same shape can sit inside different composites; the lines after it
+// add what only that use has, such as the steps that start it.
+const OPENS = /^\s*state\s+"[^"]*"\s+as\s+[A-Za-z_]\w*\s*\{\s*$/;
+const CLOSES = /^\s*\}\s*$/;
+function useShapes(lines) {
+  const shapes = new Map();
+  const rest = [];
+  for (let i = 0; i < lines.length; i++) {
+    const shape = OPENS.test(lines[i]) && /^\s*%%\s*shape\s+([A-Za-z_][\w-]*)\s*$/.exec(lines[i + 1] ?? "");
+    if (!shape) { rest.push(lines[i]); continue; }
+    if (shapes.has(shape[1])) throw new Error(`the shape ${shape[1]} is defined twice`);
+    const contents = [];
+    let depth = 1, j = i + 2;
+    for (; j < lines.length; j++) {
+      if (OPENS.test(lines[j])) depth++;
+      else if (CLOSES.test(lines[j]) && !--depth) break;
+      contents.push(lines[j]);
+    }
+    if (depth) throw new Error(`the shape ${shape[1]} has no closing }`);
+    shapes.set(shape[1], contents);
+    i = j;
+  }
+  const out = [];
+  for (let i = 0; i < rest.length; i++) {
+    const use = /^\s*%%\s*use\s+([A-Za-z_][\w-]*)\s+as\s+([A-Za-z0-9_]+)\s*(?::\s*(.*))?$/.exec(rest[i]);
+    if (!use) { out.push(rest[i]); continue; }
+    if (!OPENS.test(out.at(-1) ?? ""))
+      throw new Error(`%% use must be the first line inside the composite it fills: ${rest[i].trim()}`);
+    const contents = shapes.get(use[1]);
+    if (!contents) throw new Error(`%% use names the shape ${use[1]}, which no %% shape composite defines`);
+    out.push(`%% template from ${use[1]}`, `%% instance ${use[2]}: ${use[3] ?? ""}`, ...contents);
+  }
+  return out;
+}
+
 // The tree: root.parts[i] = { children, transitions }; a child is a leaf
 // { name, leaf: true } or a composite { name, parts }. Ids are global, as in Mermaid.
 // A transition keeps its label text so templates can substitute placeholders in it.
@@ -83,7 +121,7 @@ export function readChart(text) {
   const body = text.replace(/^\s*---[ \t]*\r?\n[^]*?\r?\n---[ \t]*(\r?\n|$)/, "");
   if (!/^\s*stateDiagram-v2\s*$/m.test(body))
     throw new Error("expected a stateDiagram-v2 chart (not a flowchart or Markdown fence)");
-  for (const raw of body.split("\n")) {
+  for (const raw of useShapes(body.split("\n"))) {
     const line = raw.trim().replace(/(\[\*\]|[A-Za-z_]\w*):::[\w-]+/g, "$1");
     const when = /^%%\s*when\s+(not\s+)?(.+)$/.exec(line);
     if (when) {
@@ -114,12 +152,13 @@ export function readChart(text) {
     if (/^%%\s*(when|never)\b/.test(line))
       throw new Error(`malformed formal annotation: ${line}`);
     // Templates: one region written once, expanded per %% instance line.
-    if (/^%%\s*template\s*$/.test(line)) {
+    const marks = /^%%\s*template(?:\s+from\s+(\S+))?\s*$/.exec(line);
+    if (marks) {
       const node = stack.at(-1);
       if (template()) throw new Error(`templates cannot be nested: ${node.name}`);
       if (node === root || node.parts.length > 1 || node.parts[0].children.length || node.parts[0].transitions.length)
         throw new Error(`%% template must be the first line inside the composite it marks: ${line}`);
-      node.template = { instances: [] };
+      node.template = { instances: [], ...(marks[1] ? { shape: marks[1] } : {}) };
       item = null;
       continue;
     }
