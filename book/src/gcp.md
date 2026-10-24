@@ -37,6 +37,7 @@ Vercel retirement.
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -186,13 +187,18 @@ runs on pushes to `main`, after every check job, when the repository variable
 `staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
 `GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
 
-1. builds the four Nix images and pushes each to `apps/` tagged with the commit,
+1. builds the physician and Duet runtime and migration images and
+   `physician-worker-image`, and pushes each to `apps/` tagged with the commit,
    recording its digest;
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
    traffic;
-3. uploads a receipt (digests, executions, revisions) as the
+3. updates `physician-worker` to its digest, with the same Ready-revision check,
+   once that service exists. The first push, before the scaling plan creates the
+   service, still publishes the digest for `images.physician.worker` and leaves
+   the service alone;
+4. uploads a receipt (digests, executions, revisions) as the
    `release-receipt-*` artifact.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
@@ -247,13 +253,16 @@ grant or setting, and the root's tests check this.
   instance `rust-physician-cache`: Basic tier, 1 GB, Redis 7.2, AUTH and TLS
   (`SERVER_AUTHENTICATION`). It sits on the existing `rust-sql-private` peering,
   so it has no public endpoint. It carries `workspace_changed` and
-  `workspace_settled` between instances. Sign-in and panel notices stay on the
+  `workspace_settled` between instances. Clients use `fred` with TLS and AUTH
+  (`PHYSICIAN_REDIS_URL`, `PHYSICIAN_REDIS_CA_PEM`). Lag or a reconnect is a
+  `resync`, and the page refetches. Sign-in and panel notices stay on the
   Postgres `physician_authority` triggers.
 - [`queue.tf`](/infra/gcp/rust-environments/queue.tf) creates the topics
-  `physician-chat-turns` and `physician-chat-turns-dead-letter`. A push
-  subscription delivers each turn to the worker with an OIDC token for the
-  `physician-pubsub-push` service account. The ack deadline is 600 s and retries
-  back off from 10 s to 600 s. After 5 failed deliveries a message goes to the
+  `physician-chat-turns` and `physician-chat-turns-dead-letter`. Each message is
+  `{scope, input_id}`. A push subscription delivers each turn to the worker
+  with an OIDC token for the `physician-pubsub-push` service account. The ack
+  deadline is 600 s and retries back off from 10 s to 600 s. After 5 failed
+  deliveries a message goes to the
   dead-letter topic, which has a pull subscription of the same name for
   inspection. Only the physician runtime identity may publish turns. The
   Pub/Sub service agent may dead-letter, and it may mint tokens for the push
@@ -272,7 +281,9 @@ grant or setting, and the root's tests check this.
   `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
   as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It keeps
   request-based CPU, because every turn runs inside the push request it
-  answers.
+  answers. On each push it checks the token's audience and the
+  `physician-pubsub-push` email, claims the leased turn in Postgres, runs the
+  model, commits, and publishes `workspace_changed`.
 - The physician site gets `PHYSICIAN_CHAT_TOPIC` and `cpu_idle = false`, because
   its Postgres listener and Redis subscriber must keep running between requests.
   Duet keeps `cpu_idle = true`. `runtime_environment` may not set any of the
@@ -341,26 +352,30 @@ order, from an authorized engineering account:
    - To inspect dead letters without acknowledging them, run
      `gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
 
+Workstations use `valkey` and the Pub/Sub emulator from `nix develop`. Unset
+`PHYSICIAN_REDIS_URL` keeps the in-process bus.
+
 To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
-saved plan. The plan removes the cache, topics, subscriptions and worker, and
-returns the site to `cpu_idle = true`. Then delete the two Doppler keys and
+saved plan. The plan removes the cache, topics, subscriptions, and worker.
+The physician site keeps `cpu_idle = false`, because its Postgres authority
+listener still runs between requests. Then delete the two Doppler keys and
 redeploy.
 
 #### Cost
 
 These are list prices for `us-east1` in October 2026. The `coda-rust-stg` budget
-is a **$10/month alert**, not a cap, and this gate alone exceeds it. Dev should
-raise the alert, or accept that it fires, before applying.
+is a **$10/month alert**, not a spending cap, and this gate exceeds it. Raise
+that alert before applying. Nothing is applied without a reviewed saved plan.
 
 | Item | Billing | Estimate |
 | --- | --- | --- |
-| Memorystore Basic M1, 1 GB | $0.049 per GB-hour, always billed while the instance exists ([pricing](https://cloud.google.com/memorystore/docs/redis/pricing)) | about **$36/month** (730 h) |
+| Memorystore Basic M1, 1 GB | $0.049 per GB-hour, always billed while the instance exists ([pricing](https://cloud.google.com/memorystore/docs/redis/pricing)) | about **$35/month** |
 | Pub/Sub topics and subscriptions | Throughput billing with a monthly free tier; each turn message is a few hundred bytes (`{scope, input_id}`) | negligible, $0 at staging volume |
 | `physician` with `cpu_idle = false` (1 vCPU, 1 GiB, min 0, max 2) | Instance-based: $0.000018 per vCPU-second plus $0.000002 per GiB-second for the whole time an instance is up ([pricing](https://cloud.google.com/run/pricing)) | $0.072 per instance-hour. That is about $53/month per instance kept up all the time, so $105 at the cap of 2. At 4 busy hours a day it is about $9/month, before the free tier of 240,000 vCPU-seconds and 450,000 GiB-seconds per billing account. Instances still scale to zero when idle. |
 | `physician-worker` (`cpu_idle = true`) | Request-based, billed only while a turn runs | cents per month at staging volume; model tokens dominate |
 
 The two `db-f1-micro` SQL instances already cost about $20/month. With
-Memorystore, staging's fixed spend is about $56/month before any Cloud Run time.
+Memorystore, staging's fixed spend is about $55/month before any Cloud Run time.
 
 ## Release procedure
 

@@ -10,9 +10,17 @@
 /// The only hosted profile this binary will start under.
 pub const STAGING_PROFILE: &str = "staging-preview";
 
+/// Whether this process is a hosted revision.
+///
+/// Cloud Run sets `K_SERVICE`. `CODA_HOSTED` is the explicit marker. Any
+/// value, including an empty string or `false`, still counts as hosted.
+pub fn is_hosted(get: impl Fn(&str) -> Option<String>) -> bool {
+    get("K_SERVICE").is_some() || get("CODA_HOSTED").is_some()
+}
+
 /// Refuses hosted execution unless the staging-preview profile is complete.
 pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), String> {
-    if get("K_SERVICE").is_none() && get("CODA_HOSTED").is_none() {
+    if !is_hosted(&get) {
         return Ok(());
     }
     // Emulator credentials are intentionally absent. Presence alone is enough

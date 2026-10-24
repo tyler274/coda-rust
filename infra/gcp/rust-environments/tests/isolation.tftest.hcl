@@ -297,8 +297,9 @@ run "physician_relay_routing" {
 }
 
 run "physician_scale_gate_off" {
-  # Active workloads without the scaling gate: no Redis, Pub/Sub or worker,
-  # and both services keep request-only CPU.
+  # Active workloads without the scaling gate: no Redis, Pub/Sub or worker.
+  # The physician site still keeps CPU between requests for the Postgres
+  # authority listener. Duet stays request-based.
   command = plan
   variables {
     enable_databases                       = true
@@ -344,6 +345,10 @@ run "physician_scale_gate_off" {
   assert {
     condition     = output.physician_scale == null && output.physician_redis_ca_pem == null
     error_message = "Scaling outputs are null while the gate is off."
+  }
+  assert {
+    condition     = !google_cloud_run_v2_service.app["physician"].template[0].containers[0].resources[0].cpu_idle && google_cloud_run_v2_service.app["duet"].template[0].containers[0].resources[0].cpu_idle
+    error_message = "The physician site keeps CPU for its Postgres listener with the scaling gate off. Duet stays request-based."
   }
 }
 
@@ -528,6 +533,7 @@ run "physician_scale_active" {
       w.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY" && !w.iap_enabled && !w.invoker_iam_disabled &&
       w.template[0].service_account == "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com" &&
       w.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" && w.template[0].scaling[0].min_instance_count == 0 && w.template[0].scaling[0].max_instance_count == 2 &&
+      w.template[0].containers[0].resources[0].cpu_idle &&
       w.template[0].containers[0].image == var.images["physician"].worker
     ])
     error_message = "The worker is internal-only, IAM-checked, private-egress, scale-capped and runs the recorded worker digest."

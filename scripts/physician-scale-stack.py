@@ -152,7 +152,10 @@ def run(args, root):
             subprocess.run([str(binary / "physician-migrate")], env=stack.env | shared, check=True)
             stack.start("worker", [str(binary / "physician-worker")], shared | {
                 "PHYSICIAN_WORKER_LISTEN_ADDR": f"127.0.0.1:{worker}",
-                "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}"})
+                "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}",
+                # The local stack is not API mode. The worker refuses to start
+                # without a provider; this fixed reply never leaves the process.
+                "PHYSICIAN_WORKER_FIXED_TEXT": "Noted."})
             for name, port in (("site-a", site_a), ("site-b", site_b)):
                 stack.start(name, [str(binary / "physician-sample")], shared | {
                     "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{port}"})

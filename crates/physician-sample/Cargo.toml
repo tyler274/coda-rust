@@ -10,6 +10,7 @@ version.workspace = true
 sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
 sha2 = "0.11"
 axum = "0.8"
+# Pub/Sub push `message.data` is standard base64, decoded with the Engine API.
 base64 = "0.23"
 front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }

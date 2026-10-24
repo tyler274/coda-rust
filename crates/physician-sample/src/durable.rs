@@ -33,6 +33,11 @@ impl DurableChat {
             .accept_authorized(scope, input, session_hash)
             .await
             .map_err(|e| e.to_string())?;
+        // A duplicate receipt is already accepted. Publishing again would run
+        // the turn twice; the first wakeup, or recovery, still owns delivery.
+        if matches!(accepted, Accepted::Duplicate) {
+            return Ok(accepted);
+        }
         let delivery = Delivery {
             scope: scope.clone(),
             input_id: input.key.clone(),

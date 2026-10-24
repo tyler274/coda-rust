@@ -81,8 +81,10 @@ pub(crate) struct Auth {
     /// The Duet front door this practice invites patients through. One
     /// store serves every practice; isolation is enforced per request.
     pub(crate) front_door: Arc<dyn FrontDoorStore>,
-    /// Process-local panel-change hints. Cross-instance authority changes
-    /// arrive through the Postgres NOTIFY feed, not the Redis bus.
+    /// Workspace invalidation bus shared with chat execution. `live::events`
+    /// is the only SSE encoder; the guard filters that stream and does not
+    /// subscribe again. Session revocation still arrives on the Postgres
+    /// NOTIFY feed.
     pub(crate) events: Arc<dyn physician_bus::Bus>,
 }
 
@@ -115,10 +117,25 @@ impl Auth {
         store: Arc<dyn AuthStore>,
         front_door: Arc<dyn FrontDoorStore>,
     ) -> Arc<Self> {
-        Self::configured(store, front_door, crate::gmail::Delivery::Proof).await
+        Self::with_bus(
+            store,
+            front_door,
+            Arc::new(physician_bus::LocalBus::new(64)),
+        )
+        .await
     }
 
-    /// Builds auth state on one pair of stores and one mail delivery.
+    /// Same stores as [`Self::on`], publishing on a caller-owned bus.
+    /// Sign-in stays in proof mode.
+    pub(crate) async fn with_bus(
+        store: Arc<dyn AuthStore>,
+        front_door: Arc<dyn FrontDoorStore>,
+        events: Arc<dyn physician_bus::Bus>,
+    ) -> Arc<Self> {
+        Self::configured(store, front_door, events, crate::gmail::Delivery::Proof).await
+    }
+
+    /// Stores, a workspace bus, and one mail delivery.
     ///
     /// [`Delivery::Proof`](crate::gmail::Delivery::Proof) is what local runs
     /// and tests use. The process entrypoint passes
@@ -127,10 +144,10 @@ impl Auth {
     pub(crate) async fn configured(
         store: Arc<dyn AuthStore>,
         front_door: Arc<dyn FrontDoorStore>,
+        events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Arc<Self> {
         seed_staging(&*store).await;
-        let events: Arc<dyn physician_bus::Bus> = Arc::new(physician_bus::LocalBus::new(64));
         Arc::new(Self {
             store,
             publication: tokio::sync::Mutex::new(()),
@@ -141,7 +158,20 @@ impl Auth {
         })
     }
 
-    async fn memory_with(mail: crate::gmail::Delivery) -> Arc<Self> {
+    /// Builds the process-memory auth state for tests.
+    #[cfg(test)]
+    pub(crate) async fn memory() -> Arc<Self> {
+        Self::memory_with(
+            Arc::new(physician_bus::LocalBus::new(64)),
+            crate::gmail::Delivery::Proof,
+        )
+        .await
+    }
+
+    async fn memory_with(
+        events: Arc<dyn physician_bus::Bus>,
+        mail: crate::gmail::Delivery,
+    ) -> Arc<Self> {
         let store = Arc::new(MemoryAuthStore::new());
         store.seed_account(
             STAGING_PRACTICE_ID,
@@ -150,11 +180,13 @@ impl Auth {
             "Staging Physician",
             true,
         );
-        Self::configured(store, Arc::new(MemoryFrontDoorStore::new()), mail).await
+        Self::configured(store, Arc::new(MemoryFrontDoorStore::new()), events, mail).await
     }
 
-    async fn postgres_with(
+    /// Postgres auth on a caller-owned bus. Does not migrate.
+    pub(crate) async fn postgres_with_bus(
         database_url: &str,
+        events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Result<Arc<Self>, String> {
         let store = PostgresAuthStore::connect_without_migrations(database_url)
@@ -174,7 +206,7 @@ impl Auth {
         // Authority reads are answered from memory between changes; the
         // database trigger feed invalidates them across replicas.
         let store = CachedAuthStore::postgres(store);
-        Ok(Self::configured(Arc::new(store), Arc::new(front_door), mail).await)
+        Ok(Self::configured(Arc::new(store), Arc::new(front_door), events, mail).await)
     }
 }
 
@@ -594,11 +626,11 @@ async fn guard_event_stream(
     let initial_panel: HashSet<String> = auth.store.panel(&identity).await.into_iter().collect();
     let (parts, body) = response.into_parts();
     let inner = body.into_data_stream();
-    let auth_rx = auth.events.subscribe();
+    // Do not subscribe here. `live::events` already encodes the shared bus,
+    // including resync. A second subscription would deliver every frame twice.
     let feed = auth.store.authority_changes();
     let state = (
         Box::pin(inner),
-        auth_rx,
         feed,
         auth,
         token,
@@ -611,7 +643,6 @@ async fn guard_event_stream(
         state,
         |(
             mut inner,
-            mut auth_rx,
             mut feed,
             auth,
             token,
@@ -634,46 +665,6 @@ async fn guard_event_stream(
                         .await
                         {
                             return None;
-                        }
-                    }
-                    changed = auth_rx.recv() => {
-                        if !stream_still_authorized(
-                            &auth,
-                            &token,
-                            &identity,
-                            watched_workspace.as_deref(),
-                            &initial_panel,
-                        )
-                        .await
-                        {
-                            return None;
-                        }
-                        if let Ok(physician_bus::Event::WorkspaceChanged { workspace_id: ws }
-                            | physician_bus::Event::WorkspaceSettled { workspace_id: ws }) = changed
-                        {
-                            if let Some(ref watched) = watched_workspace
-                                && watched != &ws
-                            {
-                                continue;
-                            }
-                            if allows_workspace(&auth, &identity, &ws).await {
-                                let data = json!({ "patient_workspace_id": ws }).to_string();
-                                let frame = format!("event: workspace_changed\ndata: {data}\n\n");
-                                return Some((
-                                    Ok::<Bytes, axum::Error>(Bytes::from(frame)),
-                                    (
-                                        inner,
-                                        auth_rx,
-                                        feed,
-                                        auth,
-                                        token,
-                                        identity,
-                                        watched_workspace,
-                                        initial_panel,
-                                        pending,
-                                    ),
-                                ));
-                            }
                         }
                     }
                     item = inner.next() => {
@@ -710,7 +701,6 @@ async fn guard_event_stream(
                                 Ok::<Bytes, axum::Error>(Bytes::from(filtered)),
                                 (
                                     inner,
-                                    auth_rx,
                                     feed,
                                     auth,
                                     token,
@@ -833,6 +823,9 @@ async fn filter_sse_chunk(
             }
         }
         let allow = match workspace_id {
+            // `event: resync` and any other frame without a workspace id pass
+            // through. Membership filtering applies only to workspace frames.
+            None => true,
             Some(ws) => {
                 if let Some(watched) = watched_workspace
                     && watched != ws
@@ -842,7 +835,6 @@ async fn filter_sse_chunk(
                     allows_workspace(auth, identity, &ws).await
                 }
             }
-            None => true,
         };
         if allow {
             out.push_str(trimmed);
@@ -1412,23 +1404,26 @@ async fn inject_auth_store(
     next.run(request).await
 }
 
-/// Builds the router with auth required on the recorded practice.
+/// Builds the router with auth on `base`, publishing panel changes on `bus`.
 ///
-/// `PHYSICIAN_AUTH=required` guards every physician route of `base` through
-/// one store — Postgres when `PHYSICIAN_DATABASE_URL` is set (migrations
-/// apply on start), memory otherwise; unset or any other value serves `base`
-/// with the auth routes still present for the client.
-pub async fn authed_router(base: axum::Router) -> axum::Router {
+/// `PHYSICIAN_AUTH=required` guards every physician route through one store —
+/// Postgres when `PHYSICIAN_DATABASE_URL` is set, memory otherwise. Any other
+/// value serves `base` with the auth routes still present. Neither store is
+/// migrated. Sign-in mail comes from the environment.
+pub(crate) async fn authed_router_with_bus(
+    base: axum::Router,
+    bus: Arc<dyn physician_bus::Bus>,
+) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
     let auth = match (auth_mode(), database_url()) {
-        (AuthMode::Required, Some(url)) => match Auth::postgres_with(&url, mail).await {
+        (AuthMode::Required, Some(url)) => match Auth::postgres_with_bus(&url, bus, mail).await {
             Ok(auth) => auth,
             Err(error) => {
                 tracing::error!(%error, "physician auth store unavailable");
                 std::process::exit(1);
             }
         },
-        _ => Auth::memory_with(mail).await,
+        _ => Auth::memory_with(bus, mail).await,
     };
     match auth_mode() {
         AuthMode::Required => required_router(base, auth),
@@ -2166,6 +2161,18 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn event_guard_forwards_resync_frames() {
+        let auth = Auth::memory().await;
+        let identity = PhysicianIdentity {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            physician_id: "staging-physician".to_owned(),
+        };
+        let filtered =
+            filter_sse_chunk("event: resync\ndata: {}\n\n", &auth, &identity, None).await;
+        assert_eq!(filtered, "event: resync\ndata: {}\n\n");
+    }
+
+    #[tokio::test]
     async fn sse_events_filter_to_panel_and_terminate_when_session_or_panel_access_is_revoked() {
         let store = Arc::new(MemoryAuthStore::new());
         store.seed_account(
@@ -2813,6 +2820,7 @@ mod tests {
         let auth = Auth::configured(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::clone(&front_door) as Arc<dyn FrontDoorStore>,
+            Arc::new(physician_bus::LocalBus::new(64)),
             crate::gmail::Delivery::Hosted(Box::new(sender)),
         )
         .await;

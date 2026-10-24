@@ -35,7 +35,7 @@ runtime_and_database_contract_approved = true
 enable_physician_smtp_relay = true
 
 # Physician scaling (book/src/gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns):
-# Memorystore Basic 1 GB (~$36/month, always billed), the Pub/Sub chat-turn
+# Memorystore Basic 1 GB (about $35/month, always billed), the Pub/Sub chat-turn
 # queue, the internal physician-worker and always-allocated physician CPU.
 # The plan refuses to run until images.physician.worker below holds the
 # first pushed coda-physician-worker digest.

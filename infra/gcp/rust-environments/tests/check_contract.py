@@ -127,6 +127,7 @@ class Contract(unittest.TestCase):
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
         self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
         self.assertRegex(worker, r"iap_enabled\s+= false")
+        self.assertRegex(worker, r"cpu_idle\s+= true")
         invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
         self.assertIn('members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]', invoker)
         # No additive run.invoker grant may widen the authoritative binding.
