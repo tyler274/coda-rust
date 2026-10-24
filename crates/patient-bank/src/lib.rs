@@ -3,5 +3,6 @@
 //! See README.md for the pipeline.
 
 pub mod json;
+pub mod ledger;
 pub mod rng;
 pub mod time;
