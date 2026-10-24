@@ -2,6 +2,9 @@
 //! checks, the FHIR R4 renderer, bank build, validation and panel materialization.
 //! See README.md for the pipeline.
 
+pub mod catalog;
+pub mod catalog_seed;
 pub mod json;
 pub mod rng;
+pub mod terms;
 pub mod time;
