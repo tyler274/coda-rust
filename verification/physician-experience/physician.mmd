@@ -10,21 +10,6 @@ stateDiagram-v2
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
 %% what it is for. Physician commands need an active session (bug 15 becomes structural).
 %% events declared
-%% never OneAtATime_understanding_review: initial understanding in hand.initial understanding active.Coda is working on the initial understanding & patient review in hand.patient review active.Coda is working on the patient review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_understanding_followup: initial understanding in hand.initial understanding active.Coda is working on the initial understanding & follow-up review in hand.follow-up review active.Coda is working on the follow-up review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_understanding_weekly: initial understanding in hand.initial understanding active.Coda is working on the initial understanding & weekly review in hand.weekly review active.Coda is working on the weekly review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_understanding_prep: initial understanding in hand.initial understanding active.Coda is working on the initial understanding & visit preparation in hand.visit preparation active.Coda is working on the visit preparation -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_understanding_proactive: initial understanding in hand.initial understanding active.Coda is working on the initial understanding & proactive work in hand.proactive work active.Coda is working on the proactive work -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_review_followup: patient review in hand.patient review active.Coda is working on the patient review & follow-up review in hand.follow-up review active.Coda is working on the follow-up review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_review_weekly: patient review in hand.patient review active.Coda is working on the patient review & weekly review in hand.weekly review active.Coda is working on the weekly review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_review_prep: patient review in hand.patient review active.Coda is working on the patient review & visit preparation in hand.visit preparation active.Coda is working on the visit preparation -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_review_proactive: patient review in hand.patient review active.Coda is working on the patient review & proactive work in hand.proactive work active.Coda is working on the proactive work -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_followup_weekly: follow-up review in hand.follow-up review active.Coda is working on the follow-up review & weekly review in hand.weekly review active.Coda is working on the weekly review -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_followup_prep: follow-up review in hand.follow-up review active.Coda is working on the follow-up review & visit preparation in hand.visit preparation active.Coda is working on the visit preparation -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_followup_proactive: follow-up review in hand.follow-up review active.Coda is working on the follow-up review & proactive work in hand.proactive work active.Coda is working on the proactive work -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_weekly_prep: weekly review in hand.weekly review active.Coda is working on the weekly review & visit preparation in hand.visit preparation active.Coda is working on the visit preparation -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_weekly_proactive: weekly review in hand.weekly review active.Coda is working on the weekly review & proactive work in hand.proactive work active.Coda is working on the proactive work -- One patient's background work runs one at a time (RP:806).
-%% never OneAtATime_prep_proactive: visit preparation in hand.visit preparation active.Coda is working on the visit preparation & proactive work in hand.proactive work active.Coda is working on the proactive work -- One patient's background work runs one at a time (RP:806).
 %% event sign in to the practice | by you | You sign in: a member lands on Today, anyone else is told they have no access to this practice.
 %% event sign in through a link | by you | You sign in from a Coda link to a patient or an item: a member lands on that patient with exactly the access they have, and the link then opens its item; anyone else is refused.
 %% event open the patient | by you | needs SIn | reason: commands need an active session | You open the patient: their page, identity only, or a not-available notice, by your access.
@@ -77,11 +62,8 @@ stateDiagram-v2
 %% event Coda starts the {work} | by Coda | needs WOwed@{key} | reason: only the work's own state makes its events possible | Coda begins the {work} from the latest evidence it may read.
 %% event a tool call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} shows its current step, only from a real tool call (ENG-160).
 %% event the next model call starts in the {work} | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | The step line clears while Coda thinks.
-%% event the {work} is interrupted | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | Something cut the {work} off; it shows Interrupted and continues by itself.
-%% event the interrupted {work} can't continue | by Coda's runtime | needs WInt@{key} | reason: only the work's own state makes its events possible | After a restart Coda can't verify, the {work} shows Couldn't finish with Try again (Q619).
-%% event the interrupted {work} continues | by Coda's runtime | needs WInt@{key} | reason: only the work's own state makes its events possible | The {work} picks up again and shows Working.
-%% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | A mechanical failure; the one automatic retry runs quietly first, and machinery never alerts you (CT:95).
-%% event Coda finishes the {work} | by Coda | needs WRun@{key}, FoLeft@{key}, FoUsed@{key}, MLFree | reason: only the work's own state makes its events possible, only current reading changes anything (decision 7), and work waits out a correction's Undo (W4) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
+%% event the {work} fails | by Coda's runtime | needs WRun@{key} | reason: only the work's own state makes its events possible | The {work} couldn't finish after whatever recovery the runtime does on its own; it shows Couldn't finish with Try again, and machinery never alerts you (CT:95).
+%% event Coda finishes the {work} | by Coda | needs WRun@{key}, {normal}@{key}, MLFree | reason: only the work's own state makes its events possible, a {fresh} kind whose records changed finishes on older records instead (decision 7), and work waits out a correction's Undo (W4) | The {work} ends from current records; every effect is a may: quiet in Updates, a concern, a question for you kept with one active follow-up (CT:104), a reply draft, a follow-up change, or change notices.
 %% event Coda waits on the {work} for missing information | by Coda | needs WRun@{key} | reason: only the work's own state makes its events possible | Coda keeps the {work} for information that will arrive anyway; the patient page shows Waiting with the reason and Try again, never Today.
 %% event Coda can't restart the {work} | by Coda's runtime | needs WOwed@{key}, WFail@{key} | reason: only the work's own state makes its events possible | The {work} can't run again; anything left goes to Today with Done, otherwise Updates logs it. It never blocks later work.
 %% event try the {work} again | by you | command on the {work}: Try again, clicked while SIn | needs AClin, WFail@{key}, WWait@{key} | reason: only stalled work offers Try again | You retry the {work}; it reads the latest records and stays in its episode.
@@ -93,14 +75,14 @@ stateDiagram-v2
 %%
 %% Outcomes. Every kind of work ends with one event; what it produces is each owner's "may".
 %% events Coda finishes any work = Coda finishes the {work}
-%% event Coda finishes the {fresh} on older records | by Coda | needs WRun@{key}, FoStale@{key}, MLFree | reason: only the work's own state makes its events possible, and work waits out a correction's Undo (W4) | Records changed twice under the {fresh}; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).
+%% event Coda finishes the {fresh} on older records | by Coda | needs WRun@{key}, NwSeen@{key}, MLFree | reason: only the work's own state makes its events possible, and work waits out a correction's Undo (W4) | Records changed under the {fresh}; Coda finishes from what it read, notes the newer records with one tap to update, and changes nothing from stale reading (decision 7). Background work instead publishes its reassessment as it is (RP:1430-1432).
 %% event open the concern | by you | needs SIn, AClin | reason: commands need an active session and clinical access | You read the concern; opening is yours alone and never clears it.
 %% event another physician opens the concern | by another physician | Someone else read it; it stays new to you.
 %% event mark the concern done | by you | command on the concern: Done, clicked while SIn | needs AClin, CNeeds | reason: Done needs clinical access and a concern that needs attention | Done clears this exact concern for every physician (Dev 2026-10-22).
 %% event another physician marks the concern done | by another physician | Done by anyone clears it for everyone.
 %% event create a follow-up | by you | command on the follow-up: Create, clicked while SIn | needs AClin, FNone, FCompleted, FCancelled | reason: a new follow-up needs none active or held | You set up a follow-up: what to check and when.
 %% event change the follow-up | by you | command on the follow-up: Change, clicked while SIn | needs AClin, FActive, FHeld | reason: only an active or held follow-up changes | You change it, even while stopped; a due occurrence's owed review ends, and it comes due again on its own if still due.
-%% event review the follow-up now | by you | command on the follow-up: Review now, clicked while SIn | needs AClin, FActive, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@review, WOwed@review, WStalled@review, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: commands need an active session and clinical access; held work uses Resume (CT:612); it refuses while the patient's automation slot is busy (Dev 2026-10-06, RP:803-804) | One review of the current follow-up; work already in hand is reused.
+%% event review the follow-up now | by you | command on the follow-up: Review now, clicked while SIn | needs AClin, FActive | reason: commands need an active session and clinical access; held work uses Resume (CT:612) | One review of the current follow-up; work already in hand is reused.
 %% event stop the follow-up | by you | command on the follow-up: Stop, clicked while SIn | needs AClin, FActive | reason: only an active follow-up stops | You stop the follow-up; it and its review hold until Resume (M1).
 %% event stop and discuss the follow-up | by you | command on the follow-up: Stop and discuss, clicked while SIn | needs AClin, FActive | reason: only an active follow-up stops | You stop the follow-up and open a conversation about it; it holds until Resume.
 %% event resume the follow-up | by you | command on the follow-up: Resume, clicked while SIn | needs AClin, FHeld | reason: only a held follow-up resumes | Resume reviews the current version of the follow-up (M1).
@@ -164,6 +146,7 @@ stateDiagram-v2
 %% event transcription fails | by the transcription service | Your text is kept; no audio is stored or retried (px.md:349-350).
 %% events you lose clinical access = clinical access reduced | patient access removed | practice access removed
 %% events you stop the follow-up = stop the follow-up | stop and discuss the follow-up
+%% events you stop the {held} = stop the {held} | stop and discuss the {held}
 %% events you change the Updates day = go to an earlier day | return to today's updates
 %% events another update opens = go to the next update | go to the previous update | open an update from the orb
 %% events you write to Coda = send | send to steer the answer | send next | send a queued message now
@@ -177,13 +160,13 @@ stateDiagram-v2
 %% event retry saving the draft | by you | needs SIn | reason: commands need an active session | You retry the save.
 %% event discard the draft | by you | needs SIn, CrNone@conversation, RdShown@conversation, RdKept@conversation | reason: a composer opens only once its conversation and saved draft are shown, so nothing typed hides the saved text | You clear the draft on purpose.
 %% event send | by you | command on the conversation: Send, clicked while SIn, DText, CrNone@conversation, RdShown@conversation, RdKept@conversation | needs AClin, WIdle@answer, WStalled@answer | reason: a message needs clinical access, and while Coda answers it steers or waits as Send next instead; only written text sends | Your message starts Coda's answer; it supersedes a stopped answer's Resume. It sends even when autosave failed (A2). Writing on the patient page opens a new conversation (PX-897).
-%% event send to steer the answer | by you | command on the conversation: Steer, clicked while SIn, DText, CrNone@conversation, RdShown@conversation, RdKept@conversation, WRun@answer, WInt@answer | needs AClin | reason: Steer shows only while an answer runs, and one that arrives after the answer finished starts a new answer (runtime-protocol.md:1519) | Your message joins the answer in progress; while it recovers from an interruption it waits and is delivered when it continues.
+%% event send to steer the answer | by you | command on the conversation: Steer, clicked while SIn, DText, CrNone@conversation, RdShown@conversation, RdKept@conversation, WRun@answer | needs AClin | reason: Steer shows only while an answer runs, and one that arrives after the answer finished starts a new answer (runtime-protocol.md:1519) | Your message joins the answer in progress at once (Dev 2026-10-24).
 %% event send next | by you | command on the conversation: Send next, clicked while SIn, DText, CrNone@conversation, RdShown@conversation, RdKept@conversation, WActive@answer | needs AClin | reason: Send next shows only while an answer is in progress, and one that arrives after it ended starts a new answer (runtime-protocol.md:1519) | Your message waits, editable, for the next answer.
 %% event edit a queued message | by you | command on the queued messages: Edit, clicked while SIn | needs QQueued | reason: only a waiting message can be edited | You change a waiting message.
 %% event remove a queued message | by you | command on the queued messages: Remove, clicked while SIn | needs QQueued | reason: only a waiting message can be removed | The message leaves the queue and its text returns to your draft without overwriting newer text.
 %% event send a queued message now | by you | command on the queued messages: Send now, clicked while SIn | needs AClin, QQueued, WIdle@answer, WStalled@answer | reason: a queued message is sent at once only while no answer is in progress, as after Stop; during an answer it waits its turn (A1 revised; runtime-protocol.md:1515) | That message starts the next answer now, ahead of Resume; the others stay queued.
 %% event the queued message starts | by the app | needs QQueued, WIdle@answer, WStalled@answer, HNo@answer | reason: queued messages wait until the answer is no longer in progress and not held by Stop (A1) | The waiting messages start the next answer.
-%% event archive the conversation | by you | command on the conversation: Archive, clicked while SIn | needs AClin, CoActive, WIdle@answer, WFail@answer, QNone, SwNone | reason: one eligibility rule for the button and the command: no active answer, queued or steering message, or pending continuation (runtime-protocol.md:499) | The conversation leaves the active list; its history, work and attention are unchanged.
+%% event archive the conversation | by you | command on the conversation: Archive, clicked while SIn | needs AClin, CoActive, WIdle@answer, WFail@answer, QNone | reason: one eligibility rule for the button and the command: no active answer, queued message, or pending continuation (runtime-protocol.md:499) | The conversation leaves the active list; its history, work and attention are unchanged.
 %% event restore the conversation | by you | command on the conversation: Restore, clicked while SIn | needs AClin, CoArchived | reason: only an archived conversation restores | It returns to the active list and starts no work.
 %% event undo the archive | by you | command on the conversation: Undo, clicked while SIn, ArShown | needs AClin, CoArchived | reason: Undo is exact Restore of the archive it names, even after navigation (px.md:386) | The conversation returns to the active list.
 %% event the archive notice closes | by the app | needs ArShown | reason: only a shown notice closes | Conversation archived · Undo goes away.
@@ -221,22 +204,19 @@ stateDiagram-v2
 %% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs PcConnected | reason: only a live connection can end | Any practice member ends the connection; what was received stays, dated.
 %% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once.
 %%
-%% Patient messaging (PM, ENG-8). Coda never sends: you copy a reply and send it in Gmail or Spruce.
+%% Patient messaging (PM, ENG-8). Coda never sends on its own: you copy a reply and send it in Gmail or
+%% Spruce, or Send has Coda send exactly your approved words for you, shown as sent by Coda for you
+%% (Dev 2026-10-24; PM:160). Accepted, sent, delivered and read are distinct (PM:161).
 %% event connect the channel | by you | needs SIn, ChOff | reason: commands need an active session; only an unconnected channel connects | You connect Gmail or Spruce; whoever connects it manages it until practice roles exist (PM-519).
 %% event someone else connects the channel | by another physician | needs ChOff | reason: only an unconnected channel connects | Another practice member connects and manages it.
 %% event the provider authorizes the channel | by the messaging provider | needs ChConnecting | reason: only a connecting channel is authorized | The channel catches up without duplicates.
 %% event the provider refuses the channel | by the messaging provider | needs ChConnecting | reason: only a connecting channel is refused | The channel needs reconnecting.
-%% event catch-up completes | by the messaging channel | needs ChCatchUp | reason: only a catching-up channel completes | The channel is live.
-%% event the channel sync fails temporarily | by the messaging channel | needs ChCatchUp, ChOn | reason: only a live channel syncs | It recovers on its own; nobody is alerted.
-%% event the channel recovers | by the messaging channel | needs ChRetrying | reason: only a retrying channel recovers | Sync resumes.
 %% event the provider revokes access or an administrator blocks it | by the messaging provider | needs ChLive | reason: only a live channel loses its grant | Only this needs Reconnect (PM-1275).
 %% event reconnect the channel | by you | needs SIn, MgrYes, ChProblem | reason: the manager reconnects a channel that needs it | You reconnect it.
 %% event disconnect the channel | by you | needs SIn, MgrYes | reason: only the messaging manager disconnects (PM-519) | Access and in-flight work stop.
 %% event the disconnect completes | by the messaging provider | needs ChDisconnecting, MLFree | reason: only a disconnecting channel completes, and it waits out a correction's Undo like everything else touching the conversation (W4) | Messages never accepted into a record and open reply drafts are deleted; accepted evidence stays under the record's policy (ENG-8).
 %% event a message arrives from a known sender | by the messaging channel | needs ChLive, MLNone | reason: only a live channel delivers; known-sender rules link on arrival (PM-190) | The message links to the patient at once.
-%% event Coda suggests a patient or is unsure | by Coda | needs MLDeciding | reason: only a message being matched | The message waits to be matched; who sees it on Today is a projection.
-%% event matching runs past fifteen minutes | by the clock | needs MLDeciding | reason: only a message being matched | It waits to be matched by a person.
-%% event matching fails | by Coda's runtime | needs MLDeciding | reason: only a message being matched | It waits to be matched by a person.
+%% event Coda suggests a patient or is unsure | by Coda | needs MLDeciding | reason: only a message being matched | Matching always ends here when Coda can't tell, so a person decides; how long the runtime tries is not the graph's (Dev 2026-10-24). The message waits to be matched; who sees it on Today is a projection.
 %% event Coda finds it is not a patient message | by Coda | needs MLDeciding, MLWaiting | reason: only an unmatched message | It stays out of patient work until the sender writes again.
 %% event confirm the match | by you | command on the message match: Confirm, clicked while SIn | needs MLWaiting | reason: only a message waiting to be matched | Any signed-in physician confirms Coda's suggestion (Dev 2026-10-23); the message becomes the patient's evidence.
 %% event confirm another patient | by you | command on the message match: Another patient, clicked while SIn | needs MLWaiting | reason: only a message waiting to be matched | You match it to someone else.
@@ -258,6 +238,9 @@ stateDiagram-v2
 %% event edit the reply | by you | needs SIn, AClin, MRReady, MRNewMsg, MLLinked | reason: commands need an active session and clinical access; the reply belongs to the linked message | Your reply box is your private draft; your edits stay yours.
 %% event use Coda's update | by you | command on the reply: Use Coda's update, clicked while SIn | needs RtOffered | reason: only while Coda's update is offered | Coda's newer text replaces yours, with Restore my version.
 %% event restore my version | by you | command on the reply: Restore my version, clicked while SIn | needs RtRestorable | reason: only while your earlier text can be restored | Your earlier text comes back; one restore point.
+%% event send the reply | by you | command on the reply: Send, clicked while SIn | needs AClin, MRReady, MRNewMsg, MLLinked, ChLive, WIdle@revision | reason: Coda sends only the exact words you approved, on the linked conversation through a live channel, and not while a revision is rewriting them (PM:160; Copy waits the same way) | Coda sends exactly the text in your reply box through the channel, shown to the patient and the practice as sent by Coda for you (Dev 2026-10-24).
+%% event the channel sends the reply | by the messaging provider | needs MRSending, MRSendingNew | reason: only a reply Coda is sending can be sent | The channel reports the reply sent. Delivery and reading are the channel's to report, never assumed from sending (PM:161).
+%% event the channel can't send the reply | by the messaging provider | needs MRSending, MRSendingNew | reason: only a reply Coda is sending can fail | The channel refuses or fails; your text stays in the reply box and Send can be tried again.
 %% event ask Coda to revise the reply | by you | command on the reply: Ask Coda to revise, clicked while SIn | needs AClin, MRReady, MRNewMsg, MLLinked | reason: only an open reply on the linked message | "Tell Coda what to change": Coda revises your saved reply in place; Copy waits while it runs.
   state "Physician web app" as App {
 
@@ -907,16 +890,18 @@ stateDiagram-v2
       %% Instance values say what each kind allows: {held} kinds can be stopped (initial
       %% understanding cannot, CT-014), {left} kinds leave a Today row when Coda can't restart them,
       %% and {fresh} kinds offer one tap to update on newer records. {row} kinds have a row on Today when Coda can't restart them.
-      %% instance understanding: work = initial understanding
-      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review
-      %% instance followup: work = follow-up review, row = follow-up review
-      %% instance weekly: work = weekly review, held = weekly review
-      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation
-      %% instance asked: work = asked reply, held = asked reply, left = asked reply, fresh = asked reply, row = asked reply
-      %% instance proactive: work = proactive work, held = proactive work
-      %% instance answer: work = answer, held = answer, fresh = answer
-      %% instance revision: work = reply revision, held = reply revision
-      %% Idle, or in hand. Work in hand is active (owed, running or interrupted) or stalled (waiting
+%% {normal} is what an ordinary finish needs beyond running: {fresh} kinds need nothing new since
+%% they started (otherwise they finish on older records); other kinds finish from what they read.
+      %% instance understanding: work = initial understanding, normal = WRun
+      %% instance review: work = patient review, held = patient review, left = patient review, row = patient review, normal = WRun
+      %% instance followup: work = follow-up review, row = follow-up review, normal = WRun
+      %% instance weekly: work = weekly review, held = weekly review, normal = WRun
+      %% instance prep: work = visit preparation, held = visit preparation, left = visit preparation, row = visit preparation, normal = WRun
+      %% instance asked: work = asked reply, held = asked reply, left = asked reply, fresh = asked reply, row = asked reply, normal = NwNone
+      %% instance proactive: work = proactive work, held = proactive work, normal = WRun
+      %% instance answer: work = answer, held = answer, fresh = answer, normal = NwNone
+      %% instance revision: work = reply revision, held = reply revision, normal = WRun
+      %% Idle, or in hand. Work in hand is active (owed or running) or stalled (waiting
       %% for an opportunity, or failed with Try again; a question for you is a finish, never a wait, CT:671). Stop, and anything that
       %% ends the work's occasion, takes work in hand back to idle wherever it is.
       state "{work}: lifecycle" as Life {
@@ -939,7 +924,6 @@ stateDiagram-v2
               WQuiet --> WStep : a tool call starts in the {work}
               WStep --> WQuiet : the next model call starts in the {work}
             }
-            state "{work} interrupted, continuing automatically" as WInt
           }
           state "{work} stalled" as WStalled {
             [*] --> WWait
@@ -987,54 +971,39 @@ stateDiagram-v2
         %% only proactive
         WStalled --> WOwed : Coda decides to take something on
         %% only proactive
-        WOwed --> WRun : Coda starts the {work} [records kept, slot free]
-        %% when SrcHave, SrcGoneKept, WIdle@review, WOwed@review, WStalled@review, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: Coda reads only authorized evidence it has (N1); the patient's one automation slot is free (RP:806)
+        WOwed --> WRun : Coda starts the {work} [records kept]
+        %% when SrcHave, SrcGoneKept | reason: Coda reads only authorized evidence it has (N1)
         %% only understanding
-        WOwed --> WRun : Coda starts the {work} [Duet shared records, slot free]
-        %% when PcConnected, PcEnded, WIdle@review, WOwed@review, WStalled@review, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: Coda reads only authorized evidence it has (N1); the patient's one automation slot is free (RP:806)
+        WOwed --> WRun : Coda starts the {work} [Duet shared records]
+        %% when PcConnected, PcEnded | reason: Coda reads only authorized evidence it has (N1)
         %% only understanding
         WOwed --> WRun : Coda starts the {work}
         %% only answer, revision
         WOwed --> WRun : Coda starts the {work} [no patient review running]
         %% when WIdle@review, WOwed@review, WStalled@review | reason: an ask waits behind a patient review already running (px.md:167)
         %% only asked
-        WOwed --> WRun : Coda starts the {work} [initial understanding finished, slot free]
-        %% when SumWritten, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: later work waits for initial understanding to finish (N13, RP:810-811); the patient's one automation slot is free (RP:806)
-        %% only review
-        WOwed --> WRun : Coda starts the {work} [initial understanding finished, slot free]
-        %% when SumWritten, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@review, WOwed@review, WStalled@review, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: later work waits for initial understanding to finish (N13, RP:810-811); the patient's one automation slot is free (RP:806)
-        %% only weekly
-        WOwed --> WRun : Coda starts the {work} [initial understanding finished, slot free]
-        %% when SumWritten, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@review, WOwed@review, WStalled@review, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: later work waits for initial understanding to finish (N13, RP:810-811); the patient's one automation slot is free (RP:806)
-        %% only prep
-        WOwed --> WRun : Coda starts the {work} [initial understanding finished, slot free]
-        %% when SumWritten, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@review, WOwed@review, WStalled@review, WIdle@followup, WOwed@followup, WStalled@followup, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep | reason: later work waits for initial understanding to finish (N13, RP:810-811); the patient's one automation slot is free (RP:806)
-        %% only proactive
-        WOwed --> WRun : Coda starts the {work} [initial understanding finished, slot free, no change awaiting review]
-        %% when SumWritten, WIdle@understanding, WOwed@understanding, WStalled@understanding, WIdle@review, WStalled@review, WIdle@weekly, WOwed@weekly, WStalled@weekly, WIdle@prep, WOwed@prep, WStalled@prep, WIdle@proactive, WOwed@proactive, WStalled@proactive | reason: the patient's one automation slot is free (RP:806); a due follow-up gets its own review after any change awaiting review (RP:812-815)
-        %% only followup
-        WRun --> WOwed : news for the patient [a reassessment left]
-        %% when FoLeft | reason: one reassessment per episode when news arrives
-        WRun --> WInt : the {work} is interrupted
-        WInt --> WRun : the interrupted {work} continues
-        WInt --> WFail : the interrupted {work} can't continue
-        WRun --> WOwed : the {work} fails [automatic retry left]
-        %% when FoLeft | reason: one automatic retry per episode
-        WRun --> WFail : the {work} fails [automatic retry used]
-        %% when FoSpent | reason: after the one automatic retry, a failure waits for Try again
+        WOwed --> WRun : Coda starts the {work} [initial understanding finished]
+        %% when SumWritten | reason: later work builds on the initial understanding (N13, RP:810-811); work for one patient otherwise runs side by side (Dev 2026-10-24)
+        %% only review, followup, weekly, prep, proactive
+        WRun --> WFail : the {work} fails
         WRun --> WWait : Coda waits on the {work} for missing information
         WFail --> WOwed : try the {work} again
         WWait --> WOwed : try the {work} again
         WOwed --> WIdle : Coda can't restart the {work}
         WFail --> WIdle : Coda can't restart the {work}
+        WRun --> WIdle : Coda finishes the {work} [nothing new arrived]
+        %% when NwNone | reason: work that read everything there was is done
+        %% only understanding, review, prep, asked, answer
         WRun --> WIdle : Coda finishes the {work}
+        %% except understanding, review, prep, asked, answer
+        WRun --> WOwed : Coda finishes the {work} [something new arrived]
+        %% when NwSeen | reason: work that finished from what it read looks again at what arrived meanwhile (RP:1430-1432)
+        %% only understanding, review, prep
         WRun --> WOwed : the correction's Undo ends
         %% except asked, revision
         WRun --> WDoneStale : Coda finishes the {fresh} on older records
         %% only asked, answer
-        WHand --> WIdle : stop the {held}
-        %% except understanding, followup
-        WHand --> WIdle : stop and discuss the {held}
+        WHand --> WIdle : you stop the {held}
         %% except understanding, followup
         WHand --> WIdle : you stop the follow-up
         %% only followup
@@ -1113,82 +1082,32 @@ stateDiagram-v2
         %% only prep
       }
       --
-      %% One automatic follow-on per episode: a retry after a failure or one reassessment when news
-      %% arrives. A second change finishes from what Coda read and notes the newer records.
-      state "{work}: automatic follow-on" as Follow {
-        [*] --> FoLeft
-        state "One automatic retry or reassessment left" as FoLeft
-        state "Automatic follow-on spent" as FoSpent {
-          [*] --> FoUsed
-          state "Automatic follow-on used" as FoUsed
-          state "Used, and newer records noted for one tap to update" as FoStale
-          %% only asked, answer
-        }
-        FoLeft --> FoUsed : news for the patient [working]
-        %% when WRun | reason: the automatic follow-on is spent only by news or a failure while the work runs
-        FoUsed --> FoStale : news for the patient [working]
-        %% when WRun | reason: the automatic follow-on is spent only by news or a failure while the work runs
-        %% only asked, answer
-        FoLeft --> FoUsed : the {work} fails [working]
-        %% when WRun | reason: the automatic follow-on is spent only by news or a failure while the work runs
-        FoUsed --> FoLeft : Coda finishes the {work}
-        FoStale --> FoLeft : Coda finishes the {fresh} on older records
-        %% only asked, answer
-        FoSpent --> FoLeft : Coda can't restart the {work}
-        FoSpent --> FoLeft : the visit is cancelled
-        %% only prep
-        FoSpent --> FoLeft : the visit is moved
-        %% only prep
-        FoSpent --> FoLeft : the visit ends [not running]
-        %% when WOwed, WStalled | reason: preparation that isn't running starts fresh for the next visit
-        %% only prep
-        FoSpent --> FoLeft : cancel the follow-up
-        %% only followup
-        FoSpent --> FoLeft : complete the follow-up
-        %% only followup
-        FoSpent --> FoLeft : change the follow-up
-        %% only followup
-        FoSpent --> FoLeft : you lose clinical access
-        %% only asked, answer, revision
-        %% never FollowOnPerEpisode: {work} not in hand & Automatic follow-on spent -- One automatic retry or reassessment per episode; the next episode starts with it (PX:627).
-        FoSpent --> FoLeft : the correction's Undo ends
-        %% only asked, revision
-        FoSpent --> FoLeft : the disconnect completes
-        %% only asked, revision
-        FoSpent --> FoLeft : mark no reply needed
-        %% only asked, revision
-        FoSpent --> FoLeft : Coda finishes the patient review [a linked message, no reply open] / may propose a reply
-        %% when MLLinked, MRNone | reason: a reply the review proposes first answers the ask (px.md:167)
-        %% only asked
-        FoSpent --> FoLeft : Coda finishes the patient review [the practice replied] / may close the reply as answered
-        %% when PrShown, MRReady, MRNewMsg | reason: the reply closes as answered only while open and after the practice replied
-        %% only revision
-        FoSpent --> FoLeft : stop the {held} [work in hand]
-        %% when WHand | reason: a stop resets the automatic follow-on, so Resume starts a fresh episode
-        %% except understanding, followup
-        FoSpent --> FoLeft : stop the follow-up [work in hand]
-        %% when WHand | reason: a stop resets the automatic follow-on, so Resume starts a fresh episode
-        %% only followup
-        FoSpent --> FoLeft : stop and discuss the {held} [work in hand]
-        %% when WHand | reason: a stop resets the automatic follow-on, so Resume starts a fresh episode
-        %% except understanding, followup
-        FoSpent --> FoLeft : stop and discuss the follow-up [work in hand]
-        %% when WHand | reason: a stop resets the automatic follow-on, so Resume starts a fresh episode
-        %% only followup
+      %% Coda works from what it read. Something new arriving meanwhile never stops it. News is the
+      %% patient review's to take up (or the initial understanding's, before one exists), so those two
+      %% look again once they finish, and so does visit preparation, so a briefing reflects what
+      %% arrived before the visit; a {fresh} kind finishes with Update (decision 7); other work leaves
+      %% news to the review. How often the runtime retries or re-reads is not the graph's
+      %% (Dev 2026-10-24). Each start reads afresh, so starting clears the flag.
+      state "{work}: news while working" as News {
+        %% only understanding, review, prep, asked, answer
+        [*] --> NwNone
+        state "Nothing new since it started" as NwNone
+        state "Something new arrived since it started" as NwSeen
+        NwNone --> NwSeen : news for the patient [working]
+        %% when WRun | reason: only news that arrives while the work runs is news it missed
+        NwSeen --> NwNone : Coda starts the {work}
       }
       --
       %% Stop holds the work with Resume where it was stopped. New causes still make new work owed;
       %% for the weekly review alone, a stop also holds later cycles. A follow-up's hold is the
       %% follow-up's own (Stopped, held until Resume), so its review keeps no second one.
       state "{work}: held by you" as Hold {
+        %% except understanding, followup
         [*] --> HNo
         state "Not held" as HNo
         state "Held with Resume" as HYes
         %% except understanding, followup
-        HNo --> HYes : stop the {held} [work in hand]
-        %% when WHand | reason: only work in hand can be held
-        %% except understanding
-        HNo --> HYes : stop and discuss the {held} [work in hand]
+        HNo --> HYes : you stop the {held} [work in hand]
         %% when WHand | reason: only work in hand can be held
         %% except understanding
         HYes --> HNo : resume the {held}
@@ -1232,6 +1151,7 @@ stateDiagram-v2
       --
       %% R6: what a can't-restart run left waits on Today with Done, and rides the next run.
       state "{work}: left for you" as Left {
+        %% only review, followup, prep, asked
         [*] --> LNone
         state "Nothing left for you" as LNone
         state "Coda couldn't restart; what's left is on Today with Done" as LShown {
@@ -1462,7 +1382,7 @@ stateDiagram-v2
     }
     --
     %% PX persistence: one private draft per physician and conversation, saved quietly; Not saved
-    %% stays visible with Retry; Discard is explicit. Text a queue or a waiting steer gives back comes
+    %% stays visible with Retry; Discard is explicit. Text a queue gives back comes
     %% here, including when access is lost (ENG-19) or the session ends; nothing typed is lost (N3).
     state "Your draft" as Draft {
       [*] --> DEmpty
@@ -1492,21 +1412,17 @@ stateDiagram-v2
       DEmpty --> DSaving : remove a queued message
       DText --> DSaving : remove a queued message
       DEmpty --> DSaving : clinical access reduced [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
       DText --> DSaving : clinical access reduced [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
       DEmpty --> DSaving : patient access removed [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
       DText --> DSaving : patient access removed [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
       DEmpty --> DSaving : practice access removed [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
       DText --> DSaving : practice access removed [a message waits]
-      %% when QQueued, SwWaiting | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DEmpty --> DSaving : stop the answer [a steer waits]
-      %% when SwWaiting | reason: stopping returns a waiting steer's text to the draft (Dev 2026-10-23)
-      DText --> DSaving : stop the answer [a steer waits]
-      %% when SwWaiting | reason: stopping returns a waiting steer's text to the draft (Dev 2026-10-23)
+      %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
     }
     --
     %% Several messages may wait, each editable; all attach to the next answer (RP-1542). How many is
@@ -1526,20 +1442,6 @@ stateDiagram-v2
       QQueued --> QNone : send a queued message now
       QQueued --> QNone : the queued message starts
       QQueued --> QNone : you lose clinical access
-    }
-    --
-    %% A steer sent while the answer recovers from an interruption waits and is delivered when it
-    %% continues; if the answer stops instead, its text returns to the draft (Dev 2026-10-23).
-    state "Steer waiting" as SteerWait {
-      [*] --> SwNone
-      state "No steer waiting" as SwNone
-      state "Steer waiting for the answer to continue" as SwWaiting
-      SwNone --> SwWaiting : send to steer the answer [interrupted]
-      %% when WInt@answer | reason: a steer sent during an interruption waits until the answer continues (Dev 2026-10-23)
-      SwWaiting --> SwWaiting : send to steer the answer
-      SwWaiting --> SwNone : the interrupted answer continues
-      SwWaiting --> SwNone : stop the answer
-      SwWaiting --> SwNone : you lose clinical access
       %% never NoConversationWithIdentityOnly: Conversation & Identity only -- A conversation is clinical content.
       %% never NoConversationWithoutAccess: Conversation & Cannot see the patient -- A conversation is clinical content.
     }
@@ -1588,7 +1490,6 @@ stateDiagram-v2
       %% never NoAnswerWhileArchived: Archived & answer in hand.answer active -- An archived conversation has no answer running or owed.
       %% never NoPendingAnswerWhileArchived: Archived & answer in hand.answer stalled.answer waiting for the next opportunity, with Try again -- Archive excludes pending continuation.
       %% never NoQueueWhileArchived: Archived & Messages queued for the next answer, each editable -- An archived conversation has nothing queued.
-      %% never NoSteerWhileArchived: Archived & Steer waiting for the answer to continue -- An archived conversation has no steering input.
     }
     --
     %% Updates (runtime-protocol.md:398-402): a finish that writes you something makes this patient's row
@@ -1622,8 +1523,9 @@ stateDiagram-v2
       %% never NotAPatientConcernWithheld: About a patient message; stays with its message & No correction waiting on Undo.Not a patient, until the sender writes again & Nothing withheld -- A concern about a message marked not a patient shows only after the re-review decides it.
     }
     --
-    %% PM section 8 and ENG-8: temporary failures recover on their own; only a revoked grant or an
-    %% administrator's block needs Reconnect (PM-1275); reconnect catches up without duplicates.
+    %% PM section 8 and ENG-8: only a revoked grant or an administrator's block needs Reconnect
+    %% (PM-1275). Catching up and temporary sync failures are the channel's own and never shown, so the
+    %% graph has none (Dev 2026-10-24); reconnect catches up without duplicates.
     state "Messaging channel" as Channel {
       [*] --> ChOff
       %% Not connected: never connected names nothing; a disconnected connection is one Coda isn't
@@ -1637,19 +1539,10 @@ stateDiagram-v2
         state "Connection" as ChConn {
           [*] --> ChConnecting
           state "Connecting the channel" as ChConnecting
-          state "Channel live" as ChLive {
-            [*] --> ChCatchUp
-            state "Catching up" as ChCatchUp
-            state "Channel connected" as ChOn
-            state "Temporarily unavailable, retrying" as ChRetrying
-            ChCatchUp --> ChOn : catch-up completes
-            ChCatchUp --> ChRetrying : the channel sync fails temporarily
-            ChOn --> ChRetrying : the channel sync fails temporarily
-            ChRetrying --> ChOn : the channel recovers
-          }
+          state "Channel live" as ChLive
           state "Channel needs reconnecting" as ChProblem
           state "Disconnecting" as ChDisconnecting
-          ChConnecting --> ChCatchUp : the provider authorizes the channel
+          ChConnecting --> ChLive : the provider authorizes the channel
           ChConnecting --> ChProblem : the provider refuses the channel
           ChLive --> ChProblem : the provider revokes access or an administrator blocks it
           ChProblem --> ChConnecting : reconnect the channel
@@ -1700,8 +1593,6 @@ stateDiagram-v2
       MLNone --> MLLinked : a message arrives from a known sender
       MLDeciding --> MLWaiting : Coda suggests a patient or is unsure
       MLDeciding --> MLWaitUrgent : Coda suggests a patient or is unsure / may mark it looks urgent
-      MLDeciding --> MLWaiting : matching runs past fifteen minutes
-      MLDeciding --> MLWaiting : matching fails
       MLDeciding --> MLUnlinked : Coda finds it is not a patient message
       MLWaiting --> MLUnlinked : Coda finds it is not a patient message
       MLWaiting --> MLLinked : confirm the match
@@ -1746,6 +1637,7 @@ stateDiagram-v2
       state "No practice reply since the patient wrote" as PrNone
       state "The practice replied in the channel" as PrShown
       PrNone --> PrShown : the practice replies in the channel
+      PrNone --> PrShown : the channel sends the reply
       PrShown --> PrNone : the patient writes again
       PrShown --> PrNone : the disconnect completes
     }
@@ -1763,11 +1655,18 @@ stateDiagram-v2
         state "No reply work" as MRNone
         state "Closed, no reply needed" as MRClosed
         state "Closed, the practice answered in the channel" as MRAnswered
+        state "Closed, sent by Coda for you" as MRSent
       }
       state "Reply work open" as MROpen {
         state "Reply status" as MRStatus {
           [*] --> MRReady
-          state "Reply ready" as MRReady
+          state "Reply ready" as MRReady {
+            [*] --> MRToSend
+            state "Ready to send or copy" as MRToSend
+            state "Couldn't send, your text kept" as MRNotSent
+          }
+          state "Sending, as Coda for you" as MRSending
+          state "Sending, as Coda for you; the patient wrote again" as MRSendingNew
           state "Reviewing a new message" as MRNewMsg
           state "Closed, no reply needed, Undo shown" as MRUndo
           MRReady --> MRNewMsg : the patient writes again
@@ -1778,6 +1677,11 @@ stateDiagram-v2
           MRUndo --> MRNewMsg : the patient writes again
           MRNewMsg --> MRReady : Coda finishes the asked reply
           MRUndo --> MRReady : Coda finishes the asked reply
+          MRReady --> MRSending : send the reply
+          MRNewMsg --> MRSendingNew : send the reply
+          MRSending --> MRSendingNew : the patient writes again
+          MRSending --> MRNotSent : the channel can't send the reply
+          MRSendingNew --> MRNewMsg : the channel can't send the reply
         }
         --
         %% PM reply card: your private draft for this reply. Untouched text follows Coda's newest;
@@ -1823,6 +1727,9 @@ stateDiagram-v2
       MRUndo --> MRClosed : the no-reply Undo ends
       MRClosed --> MRNone : the patient writes again
       MRAnswered --> MRNone : the patient writes again
+      MRSent --> MRNone : the patient writes again
+      MRSending --> MRSent : the channel sends the reply
+      MRSendingNew --> MRNone : the channel sends the reply
       MRReady --> MRAnswered : Coda finishes the patient review [the practice replied] / may close the reply as answered
       %% when PrShown | reason: a reply closes as answered only after a practice message in that conversation (RP-392)
       MRNewMsg --> MRAnswered : Coda finishes the patient review [the practice replied] / may close the reply as answered
@@ -1830,6 +1737,7 @@ stateDiagram-v2
       MROpen --> MRNone : the correction's Undo ends
       MRAnswered --> MRNone : the correction's Undo ends
       MRClosed --> MRNone : the correction's Undo ends
+      MRSent --> MRNone : the correction's Undo ends
       MROpen --> MRNone : the disconnect completes
       %% never NoReplyWhileMatching: No correction waiting on Undo.Coda is matching the message & Reply work open -- An unmatched message has no reply for this patient.
       %% never NoReplyForWaitingMatch: No correction waiting on Undo.Message to match & Reply work open -- A message waiting for a match has no reply for this patient.
