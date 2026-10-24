@@ -249,9 +249,12 @@ async fn serve(
         )
             .into_response();
     }
-    // The original's URL rule (Next's default): a trailing slash is removed with a
-    // permanent redirect that keeps the query, before any route or asset is matched.
-    if let Some(path) = uri.path().strip_suffix('/').filter(|path| !path.is_empty()) {
+    // A trailing slash is removed with a permanent redirect that keeps the query,
+    // before any route or asset is matched. The target must be one same-origin
+    // path: a second leading slash, a backslash, or a scheme is not a redirect.
+    if let Some(path) = uri.path().strip_suffix('/').filter(|path| !path.is_empty())
+        && same_origin_path(path)
+    {
         let location = match uri.query() {
             Some(query) => format!("{path}?{query}"),
             None => path.to_owned(),
@@ -348,6 +351,15 @@ fn probe(ready: bool, method: &Method) -> Response {
         .unwrap()
 }
 
+/// A redirect target is one same-origin path. A second leading slash, a
+/// backslash, or a scheme would leave this origin.
+fn same_origin_path(path: &str) -> bool {
+    path.starts_with('/')
+        && !path.starts_with("//")
+        && !path.contains('\\')
+        && !path.contains("://")
+}
+
 /// Only the binary's optional loopback listener mounts these endpoints. Public
 /// probes are always subject to Access; no spoofable header/IP bypass exists.
 pub fn internal_probe_router(ready: Readiness) -> Router {
@@ -414,6 +426,36 @@ mod tests {
             );
         }
         request.body(Body::empty()).unwrap()
+    }
+    #[tokio::test]
+    async fn trailing_slash_redirect_stays_on_this_origin() {
+        let app = router_with_options(pages(), RuntimeConfig::default(), [], Readiness::ready());
+        let pricing = app
+            .clone()
+            .oneshot(request("/pricing/?plan=1", false))
+            .await
+            .unwrap();
+        assert_eq!(pricing.status(), StatusCode::PERMANENT_REDIRECT);
+        assert_eq!(pricing.headers()["location"], "/pricing?plan=1");
+        assert!(same_origin_path("/pricing"));
+        assert!(same_origin_path("/duet/"));
+        assert!(!same_origin_path("//example.test"));
+        assert!(!same_origin_path("/\\\\example.test"));
+        assert!(!same_origin_path("/http://example.test"));
+
+        let off = app
+            .oneshot(request("//example.test/", false))
+            .await
+            .unwrap();
+        let location = off
+            .headers()
+            .get(header::LOCATION)
+            .and_then(|value| value.to_str().ok())
+            .unwrap_or("");
+        assert!(
+            !location.contains("example.test"),
+            "off-origin location: {location}"
+        );
     }
     #[tokio::test]
     async fn staging_gates_every_public_resource_and_never_shared_caches() {
