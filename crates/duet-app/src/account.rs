@@ -82,7 +82,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     use_drop(move || {
         drop_session.switch(None);
     });
-    let mut offline_draft = use_signal(|| None::<duet_client::retention::DoctorDraft>);
+    let mut offline_draft = use_signal(|| None::<(String, duet_client::retention::DoctorDraft)>);
     let mut active = use_signal(|| None::<Active>);
     let mut message = use_signal(String::new);
     let mut busy = use_signal(|| true);
@@ -144,6 +144,11 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             }
             match result {
                 Ok(value) => {
+                    let owner = value.fence.owner().to_owned();
+                    offline_draft.set(step_offline_draft(
+                        offline_draft(),
+                        DraftTransition::Activate { owner },
+                    ));
                     active.set(Some(value));
                     message.set(String::new());
                 }
@@ -167,6 +172,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 {
                     owner.session().switch(None);
                     active.set(None);
+                    offline_draft.set(step_offline_draft(offline_draft(), DraftTransition::Expire));
                     message.set("Sign-in expired. Your draft remains retained; no pending operation was replayed.".into());
                 }
             }
@@ -199,6 +205,8 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         if std::time::Instant::now() >= expiry {
                             owner.session().switch(None);
                             active.set(None);
+                            offline_draft
+                                .set(step_offline_draft(offline_draft(), DraftTransition::Expire));
                             message.set("Sign-in expired while secure storage was unavailable. Your draft remains protected.".into());
                         }
                         continue;
@@ -243,6 +251,8 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                     Err(duet_client::identity::IdentityError::Expired) => {
                         owner.session().switch(None);
                         active.set(None);
+                        offline_draft
+                            .set(step_offline_draft(offline_draft(), DraftTransition::Expire));
                         message.set("Your sign-in expired or was revoked. Sign in again; your draft is retained. No pending save was replayed.".into());
                         continue;
                     }
@@ -251,6 +261,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 if std::time::Instant::now() >= expiry {
                     owner.session().switch(None);
                     active.set(None);
+                    offline_draft.set(step_offline_draft(offline_draft(), DraftTransition::Expire));
                     message.set("Sign-in could not be refreshed. Reconnect or sign in again; uncertain saves were not replayed.".into());
                 }
             }
@@ -261,7 +272,10 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         lifecycle.set(lifecycle() + 1);
         signed_out.set(true);
         active.set(None); // Unmount every private component before disk cleanup.
-        offline_draft.set(None);
+        offline_draft.set(step_offline_draft(
+            offline_draft(),
+            DraftTransition::SignOut,
+        ));
         busy.set(false);
         #[cfg(target_arch = "wasm32")]
         let cleanup = logout_owner.sign_out();
@@ -342,6 +356,11 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             }
             match result {
                 Ok(value) => {
+                    let owner = value.fence.owner().to_owned();
+                    offline_draft.set(step_offline_draft(
+                        offline_draft(),
+                        DraftTransition::Activate { owner },
+                    ));
                     active.set(Some(value));
                     message.set(String::new());
                 }
@@ -351,6 +370,11 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         });
     };
     let offline_owner = retention.clone();
+    let draft_viewer = offline_owner
+        .retained_identity()
+        .ok()
+        .flatten()
+        .map(|identity| identity.owner);
     rsx! {
         style { "{ui::STYLESHEET}" }
         if let Some(current) = active() {
@@ -368,13 +392,28 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 if cleanup_pending() { button { onclick: sign_out, "Retry secure cleanup" } }
                 button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
                     match offline_owner.recover_offline() {
-                        Ok(duet_client::retention::DraftRecovery::Draft(draft)) => offline_draft.set(Some(*draft)),
+                        Ok(duet_client::retention::DraftRecovery::Draft(draft)) => {
+                            if let Some(owner) = offline_owner
+                                .retained_identity()
+                                .ok()
+                                .flatten()
+                                .map(|identity| identity.owner)
+                            {
+                                offline_draft.set(step_offline_draft(
+                                    offline_draft(),
+                                    DraftTransition::Recover {
+                                        owner,
+                                        draft: *draft,
+                                    },
+                                ));
+                            }
+                        }
                         Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
                         Ok(_) => message.set("No retained draft on this device.".into()),
                         Err(error) => message.set(error),
                     }
                 }, "View protected draft offline" }
-                if let Some(draft) = offline_draft() {
+                if let Some(draft) = shown_offline_draft(offline_draft(), true, draft_viewer.as_deref()) {
                     section {
                         h2 { "Unsaved doctor draft — offline" }
                         p { "This is not the approved page. Reconnect and verify your account before saving or sharing." }
@@ -408,4 +447,73 @@ fn AccountRoutes(
         access_token,
     });
     rsx! { crate::PrivateRoot { base_url, bearer } }
+}
+
+/// Account-shell transition for the offline doctor draft.
+///
+/// Recovery remembers the owner. Activation, expiry, and sign-out drop it, so
+/// a later signed-out render cannot show another person's draft.
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum DraftTransition<T> {
+    /// A signed-out recovery of this owner's protected draft.
+    Recover { owner: String, draft: T },
+    /// A verified sign-in, including a different person without a remount.
+    Activate { owner: String },
+    /// A watchdog or refresh path that clears the active session.
+    Expire,
+    /// An explicit sign-out.
+    SignOut,
+}
+
+fn step_offline_draft<T>(
+    _current: Option<(String, T)>,
+    event: DraftTransition<T>,
+) -> Option<(String, T)> {
+    match event {
+        DraftTransition::Recover { owner, draft } => Some((owner, draft)),
+        DraftTransition::Activate { owner: _ }
+        | DraftTransition::Expire
+        | DraftTransition::SignOut => None,
+    }
+}
+
+fn shown_offline_draft<T>(
+    current: Option<(String, T)>,
+    signed_out: bool,
+    viewer: Option<&str>,
+) -> Option<T> {
+    let (owner, draft) = current?;
+    (signed_out && viewer == Some(owner.as_str())).then_some(draft)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{DraftTransition, shown_offline_draft, step_offline_draft};
+
+    #[test]
+    fn recovered_draft_is_empty_after_another_account_signs_in_and_expires() {
+        let mut draft = None;
+        draft = step_offline_draft(
+            draft,
+            DraftTransition::Recover {
+                owner: "alice".into(),
+                draft: "alice-note",
+            },
+        );
+        assert_eq!(
+            shown_offline_draft(draft.clone(), true, Some("alice")),
+            Some("alice-note")
+        );
+        // Sign in as someone else without remounting the account shell.
+        draft = step_offline_draft(
+            draft,
+            DraftTransition::Activate {
+                owner: "bob".into(),
+            },
+        );
+        assert!(draft.is_none());
+        draft = step_offline_draft(draft, DraftTransition::Expire);
+        assert!(draft.is_none());
+        assert!(shown_offline_draft(draft, true, Some("bob")).is_none());
+    }
 }
