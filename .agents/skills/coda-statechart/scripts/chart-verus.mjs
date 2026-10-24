@@ -7,7 +7,15 @@ import { parseMermaid } from "./mermaid.mjs";
 import { sharedEffects } from "./chart-search.mjs";
 
 export const hash = (text) => createHash("sha256").update(text).digest("hex");
-const join = (xs, operator, empty) => xs.length === 0 ? empty : xs.length === 1 ? xs[0] : xs.map((x) => `(${x})`).join(` ${operator} `);
+// rustc parses a flat chain of N operators as a tree N deep; long chains are grouped into
+// a balanced tree so a large chart cannot overflow the compiler's stack.
+const join = (xs, operator, empty) => {
+  if (xs.length === 0) return empty;
+  if (xs.length === 1) return xs[0];
+  if (xs.length <= 16) return xs.map((x) => `(${x})`).join(` ${operator} `);
+  const half = Math.ceil(xs.length / 2);
+  return `(${join(xs.slice(0, half), operator, empty)}) ${operator} (${join(xs.slice(half), operator, empty)})`;
+};
 const and = (xs) => join(xs.filter((x) => x !== "true"), "&&", "true");
 const or = (xs) => join(xs, "||", "false");
 // Simplifying forms, used only by constructs that older charts cannot contain.
@@ -30,7 +38,8 @@ function ident(words, prefix, taken, snake = false) {
 }
 
 const definition = (name, parameters, clauses) =>
-  `pub open spec fn ${name}(${parameters}) -> bool {\n    ${clauses.map((c) => `(${c})`).join("\n    && ")}\n}`;
+  `pub open spec fn ${name}(${parameters}) -> bool {\n    ${clauses.length <= 16
+    ? clauses.map((c) => `(${c})`).join("\n    && ") : join(clauses, "&&", "true")}\n}`;
 
 const SEMANTICS = "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed";
 
@@ -49,11 +58,24 @@ export function compile(text, module, options = {}) {
   // A scoped region's parent always precedes it, so parents are resolved first.
   for (const r of regions) if (r.scope) r.parent = index.get(r.scope.region);
   const at = (r, state, variable = "s") => `${variable}.${r.field} == ${r.type}::${r.variants.get(state)}`;
+  // Named predicates keep the model small enough for rustc: each long formula is written
+  // once and called wherever it recurs. Identical formulas share one definition.
+  const helpers = [], named = new Map();
+  const helper = (words, parameters, body) => {
+    if (body.length <= 80) return body;
+    const key = `${parameters}|${body}`;
+    if (!named.has(key)) {
+      const name = ident(words, "", functions, true);
+      helpers.push(definition(name, parameters, [body]));
+      named.set(key, `${name}(${parameters.split(", ").map((p) => p.split(":")[0]).join(", ")})`);
+    }
+    return named.get(key);
+  };
   const guard = (g) => {
     if (!g) return "true";
     const hits = Object.entries(g.states).map(([name, states]) => {
       const r = regions[index.get(name)];
-      return or(states.map((state) => at(r, state)));
+      return helper(`in ${r.field}`, "s: State", or(states.map((state) => at(r, state))));
     });
     return g.not ? `!(${or(hits)})` : and(hits);
   };
@@ -68,8 +90,8 @@ export function compile(text, module, options = {}) {
       if (t.label) byLabel.set(t.label, action);
     }
     if (!action.moves.has(ri)) action.moves.set(ri, []);
-    const move = { ...t, enabled: and([at(r, t.from), guard(t.guard), guard(t.needs), ...(t.within ?? []).map(guard),
-      ...(t.unless ?? []).map((c) => `!(${and(c.map(guard))})`)]) };
+    const move = { ...t, enabled: helper(`${action.function} when`, "s: State", and([at(r, t.from), guard(t.guard), guard(t.needs),
+      ...(t.within ?? []).map(guard), ...(t.unless ?? []).map((c) => `!(${and(c.map(guard))})`)])) };
     const moves = action.moves.get(ri);
     if (!moves.some((m) => m.from === move.from && m.to === move.to && m.enabled === move.enabled
       && Boolean(m.optional) === Boolean(move.optional) && same(m.enter, move.enter))) moves.push(move);
@@ -140,15 +162,20 @@ export function compile(text, module, options = {}) {
   const children = regions.map((_, i) => regions.flatMap((r, ki) => r.scope && r.parent === i ? [ki] : []));
   const subtree = (xi) => [xi, ...children[xi].flatMap(subtree)];
   const entries = (r, action) => r.starts?.get(action.label) ?? [...r.initial];
-  const closed = (ki) => all([at(regions[ki], regions[ki].inactive, "t"), ...children[ki].map(closed)]);
+  const closed = (ki) => helper(`closed ${regions[ki].field}`, "t: State",
+    all([at(regions[ki], regions[ki].inactive, "t"), ...children[ki].map(closed)]));
+  const untouched = (xi, action) => !subtree(xi).some((x) => action.moves.has(x));
+  const unchangedTree = (xi) => helper(`same ${regions[xi].field}`, "s: State, t: State", and(subtree(xi).map((x) => self(regions[x]))));
   const enter = (ki, lands, action) => any(lands.map((state) =>
     all([at(regions[ki], state, "t"), ...children[ki].map((c) => (regions[c].scope.state === state ? enter(c, entries(regions[c], action), action) : closed(c)))])));
   const react = (xi, action, chosen) => {
     const x = regions[xi], moves = action.moves.get(xi) ?? [];
     if (!children[xi].length) return ordinary(x, xi, action, chosen);
+    if (untouched(xi, action)) return unchangedTree(xi);
     const kept = (ki) => {
       const here = at(x, regions[ki].scope.state);
-      return any([all([here, react(ki, action, chosen)]), all([`!(${here})`, closed(ki)])]);
+      return helper(`kept ${regions[ki].field}`, "s: State, t: State",
+        any([all([here, react(ki, action, chosen)]), all([`!(${here})`, closed(ki)])]));
     };
     const { open, own, keep, guard, none } = split(moves, action, chosen);
     const options = open.map((m) => all([m.enabled, guard(m), at(x, m.to, "t"), ...children[xi].map((ki) => {
@@ -161,7 +188,6 @@ export function compile(text, module, options = {}) {
   };
   const effect = (r, ri, action, chosen) => {
     if (!children[ri].length) return ordinary(r, ri, action, chosen);
-    if (!subtree(ri).some((x) => action.moves.has(x))) return and(subtree(ri).map((x) => self(regions[x])));
     return react(ri, action, chosen);
   };
   // Regions naming a shared effect are written once per assignment of the event's shared
@@ -169,12 +195,17 @@ export function compile(text, module, options = {}) {
   const effects = (action) => {
     const shared = [...sharedEffects(action)];
     const touches = (ri) => subtree(ri).some((x) => (action.moves.get(x) ?? []).some((m) => m.optional && shared.includes(m.intent)));
-    const top = regions.flatMap((r, ri) => (r.scope ? [] : [ri]));
+    const top = regions.flatMap((r, ri) => (r.scope ? [] : [ri])).filter((ri) => !untouched(ri, action));
+    // Like TLA's UNCHANGED: every region the event cannot touch keeps its pre-state.
+    const moved = top.flatMap(subtree);
+    const frame = moved.length === regions.length ? []
+      : [helper("unchanged", "s: State, t: State",
+        `t == (State { ${moved.map((x) => `${regions[x].field}: t.${regions[x].field}`).join(", ")}${moved.length ? ", " : ""}..s })`)];
     const fixed = top.filter((ri) => !touches(ri)).map((ri) => effect(regions[ri], ri, action, new Set()));
     const varying = top.filter(touches);
-    if (!varying.length) return fixed;
+    if (!varying.length) return [...fixed, ...frame];
     const assignments = [...Array(2 ** shared.length).keys()].map((bits) => new Set(shared.filter((_, i) => bits & (2 ** i))));
-    return [...fixed, or(assignments.map((chosen) => and(varying.map((ri) => effect(regions[ri], ri, action, chosen)))))];
+    return [...fixed, or(assignments.map((chosen) => and(varying.map((ri) => effect(regions[ri], ri, action, chosen))))), ...frame];
   };
   const init = (r) => {
     const start = or([...r.initial].map((s) => at(r, s)));
@@ -195,13 +226,16 @@ export function compile(text, module, options = {}) {
     out.push("}");
   }
   out.push("pub struct State {", ...regions.map((r) => `    pub ${r.field}: ${r.type},`), "}");
-  out.push(definition("init", "s: State", regions.map(init)));
+  const initDefinition = definition("init", "s: State", regions.map(init));
+  const events = [];
   for (const action of actions) {
     const enabled = [...action.moves.values()].flatMap((moves) => moves.map((m) => m.enabled));
     // A scoped region's constraint is part of its outermost parent's formula.
-    out.push(`// Event: ${comment(action.label || "unlabeled transition")}`,
+    events.push(`// Event: ${comment(action.label || "unlabeled transition")}`,
       definition(action.function, "s: State, t: State", [or(enabled), ...effects(action)]));
   }
+  if (helpers.length) out.push("// Named predicates shared by the definitions below.", ...helpers);
+  out.push(initDefinition, ...events);
   out.push(`pub open spec fn next(s: State, t: State) -> bool {\n    ${or(actions.map((a) => `${a.function}(s, t)`))}\n}`);
   // TLA's [][Next]_vars also allows stuttering, independently of enabled actions.
   out.push(`pub open spec fn step(s: State, t: State) -> bool {\n    next(s, t) || s == t\n}`);
@@ -214,9 +248,10 @@ export function compile(text, module, options = {}) {
   }
   out.push(`pub open spec fn safety(s: State) -> bool {\n    ${and(rules.map((r) => `${r.function}(s)`))}\n}`, "}", "");
   const source = out.join("\n");
+  const steps = stepsSource(module, actions);
   const scoped = regions.some((r) => r.scope);
   const mapping = {
-    format: 1, module, chart_sha256: hash(text), generated_sha256: hash(source),
+    format: 1, module, chart_sha256: hash(text), generated_sha256: hash(source), steps_sha256: hash(steps),
     semantics: scoped ? `${SEMANTICS}; parallel parts follow their parent's post-state, and exit wins` : SEMANTICS,
     regions: regions.map((r) => ({ caption: r.caption, field: r.field, type: r.type,
       ...(r.instance ? { instance: r.instance } : {}),
@@ -233,7 +268,27 @@ export function compile(text, module, options = {}) {
       ? { name, sentence, kind, region: regions[ri].caption, scope: regions[ri].scope, function: fn }
       : { name, sentence, states, function: fn, ...(reason ? { reason } : {}) }),
   };
-  return { source, mapping, ir: { regions, actions, rules }, parsed };
+  return { source, steps, mapping, ir: { regions, actions, rules }, parsed };
+}
+
+// Like the #[inductive] lemmas of Verus's state_machine!: one small obligation per event, so
+// no single query has to reason about every event at once. inductive() stays in the editable
+// proof file; this file is generated and regenerated with the model.
+function stepsSource(module, actions) {
+  const lemma = (a) => `preserves_${a.function}`;
+  return [
+    "// @generated by chart-to-verus.mjs; edit the diagram, not this file.",
+    `// One preservation obligation per event. Strengthen inductive() in ${module}_proof.rs.`,
+    "use crate::chart::*;", "use crate::inductive;", "use vstd::prelude::*;", "verus! {",
+    ...actions.map((a) => `pub proof fn ${lemma(a)}(s: State, t: State)\n    requires inductive(s), ensures ${a.function}(s, t) ==> inductive(t),\n{}`),
+    // Each event's reasoning stays in its own lemma. Hiding the events here would make the
+    // solver's encoding far costlier, so they stay open.
+    "pub proof fn every_event_preserves_inductive(s: State, t: State)",
+    "    requires inductive(s), ensures step(s, t) ==> inductive(t),",
+    "{",
+    ...actions.map((a) => `    ${lemma(a)}(s, t);`),
+    "}", "}", "",
+  ].join("\n");
 }
 
 export function proofStarter(module) {
@@ -242,6 +297,8 @@ export function proofStarter(module) {
 // No production code, temporal progress, or fairness is established here.
 #[path = "${module}.rs"]
 mod chart;
+#[path = "${module}_steps.rs"]
+mod steps;
 use chart::*;
 use vstd::prelude::*;
 verus! {
@@ -252,7 +309,9 @@ pub proof fn initial_is_inductive(s: State)
 {}
 pub proof fn step_preserves_inductive(s: State, t: State)
     requires inductive(s), step(s, t), ensures inductive(t),
-{}
+{
+    steps::every_event_preserves_inductive(s, t);
+}
 pub proof fn inductive_implies_safety(s: State)
     requires inductive(s), ensures safety(s),
 {}
@@ -267,6 +326,8 @@ pub proof fn all_reached_states_are_safe(s: State, rest: Seq<State>)
     ensures safety(s), forall|i: int| 0 <= i < rest.len() ==> safety(rest[i]),
     decreases rest.len(),
 {
+    // Each step is discharged by step_preserves_inductive; unfolding it here only costs time.
+    hide(step);
     inductive_implies_safety(s);
     if rest.len() > 0 {
         step_preserves_inductive(s, rest.first());
@@ -280,6 +341,7 @@ pub proof fn every_initialized_finite_trace_is_safe(s: State, rest: Seq<State>)
     requires init(s), path_from(s, rest),
     ensures safety(s), forall|i: int| 0 <= i < rest.len() ==> safety(rest[i]),
 {
+    hide(step);
     initial_is_inductive(s);
     all_reached_states_are_safe(s, rest);
 }
@@ -288,17 +350,18 @@ fn main() {}
 `;
 }
 
-// Generate (or with check: true, compare without writing) NAME.rs, NAME.map.json and NAME_proof.rs.
+// Generate (or with check: true, compare without writing) NAME.rs, NAME_steps.rs, NAME.map.json and NAME_proof.rs.
 export function writeModel({ chart, module, dir, check }) {
   const text = fs.readFileSync(chart, "utf8");
-  const { source, mapping } = compile(text, module);
+  const { source, steps, mapping } = compile(text, module);
   dir = dir ?? path.dirname(chart);
   const modelPath = path.join(dir, `${module}.rs`);
   const mapPath = path.join(dir, `${module}.map.json`);
   const proofPath = path.join(dir, `${module}_proof.rs`);
+  const stepsPath = path.join(dir, `${module}_steps.rs`);
   const mapText = JSON.stringify(mapping, null, 2) + "\n";
   if (check) {
-    for (const [file, wanted] of [[modelPath, source], [mapPath, mapText]])
+    for (const [file, wanted] of [[modelPath, source], [stepsPath, steps], [mapPath, mapText]])
       if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== wanted) throw new Error(`diagram/generated drift: ${file}`);
     if (!fs.existsSync(proofPath)) throw new Error(`missing proof entrypoint: ${proofPath}`);
     console.log(`Current: ${modelPath} (correspondence only; run Verus separately)`);
@@ -310,14 +373,17 @@ export function writeModel({ chart, module, dir, check }) {
     const prior = JSON.parse(fs.readFileSync(mapPath, "utf8"));
     if (hash(fs.readFileSync(modelPath, "utf8")) !== prior.generated_sha256)
       throw new Error(`hand-edited generated model: ${modelPath}; preserve edits in a separate refinement before regenerating`);
+    if (fs.existsSync(stepsPath) && prior.steps_sha256 && hash(fs.readFileSync(stepsPath, "utf8")) !== prior.steps_sha256)
+      throw new Error(`hand-edited generated steps: ${stepsPath}; strengthen inductive() in ${proofPath} instead`);
   } else if (fs.existsSync(mapPath) || fs.existsSync(proofPath)) {
     throw new Error(`incomplete existing output for ${module}; choose a new output directory`);
   }
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(modelPath, source);
+  fs.writeFileSync(stepsPath, steps);
   fs.writeFileSync(mapPath, mapText);
   if (!fs.existsSync(proofPath)) fs.writeFileSync(proofPath, proofStarter(module), { flag: "wx" });
-  console.log(`Generated ${modelPath} and ${mapPath}; proof entrypoint ${proofPath}`);
+  console.log(`Generated ${modelPath}, ${stepsPath} and ${mapPath}; proof entrypoint ${proofPath}`);
   console.log(`${mapping.regions.length} regions, ${mapping.events.length} events, ${mapping.rules.length} safety rules. Run Verus to check the proof.`);
   if (!mapping.rules.length) console.log("No %% never rules: this skeleton does not yet state a behavioral safety promise.");
 }

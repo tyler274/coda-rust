@@ -158,7 +158,7 @@ state App {
 %% never NoRingingWhileOpen: Open & Ringing -- The alarm never rings while the door stands open.
 `;
   const f = generated(flat);
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_");
   const trace = cmd("trace", f.input);
   assert.equal(trace.status, 1, trace.text);
   assert.match(trace.text, /VIOLATION NoRingingWhileOpen/);
@@ -511,7 +511,7 @@ test("negative control: an optional reaction breaks the rule the mandatory one k
     assert forall|b: State| ${e("the courier leaves a note")}(${s("Waiting", "Out", "Home")}, b)
       == (b == ${s("Porch", "Visited", "Home")} || b == ${s("Waiting", "Visited", "Home")}) by {};
   `);
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_");
   const trace = cmd("trace", f.input);
   assert.equal(trace.status, 1, trace.text);
   assert.match(trace.text, /2\. the courier leaves a note → Parcel: Waiting; Courier: Visited/);
@@ -620,7 +620,7 @@ test("shapes refuse an unknown shape, a misplaced use, a repeated use name and a
 
 test("negative control: without the instance guard both lockers fill", () => {
   const f = generated(lockers.replace(" [while locker {other} is empty]", "").replace("      %% when Empty@{other}\n", ""));
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_");
   const trace = cmd("trace", f.input);
   assert.equal(trace.status, 1, trace.text);
   assert.match(trace.text, /VIOLATION NotBothFull_a/);
@@ -725,7 +725,7 @@ test("instances of different templates that produce the same event merge their v
 
 test("negative control: without needs the courier fills a locker while the other is full", () => {
   const f = generated(lockerEvents.replace(" | needs Empty@{key}, Empty@{other}", ""));
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_");
   const trace = cmd("trace", f.input);
   assert.equal(trace.status, 1, trace.text);
   assert.match(trace.text, /VIOLATION NotBothFull_a/);

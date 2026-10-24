@@ -9,8 +9,9 @@ import { printSearch, search } from "./chart-search.mjs";
 const HELP = `Usage: node chart-to-verus.mjs CHART.mmd --module NAME [--dir OUT] [--check | --trace] [--max-states N]
 
 Compile pstack's supported Mermaid stateDiagram-v2 subset to Verus.
-Writes NAME.rs (generated behavior), NAME.map.json (diagram correspondence),
-and NAME_proof.rs (editable proof starter, created only when absent).
+Writes NAME.rs (generated behavior), NAME_steps.rs (one generated preservation
+lemma per event), NAME.map.json (diagram correspondence), and NAME_proof.rs
+(editable proof starter, created only when absent).
 Existing generated files may be refreshed; hand-edited generated files are refused.
 --check writes nothing and fails if generated files differ from the chart.
 --trace searches this same finite chart without writing files; prints the shortest

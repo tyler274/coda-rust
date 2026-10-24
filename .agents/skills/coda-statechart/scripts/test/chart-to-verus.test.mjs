@@ -95,7 +95,7 @@ test("broadcasts, state guards, and finite-trace safety verify on the actual gen
 
 test("removing the diagram guard fails the generated transition obligation, not compilation", () => {
   const f = generated(example.replace(" [while online]", "").replace("      %% when Online\n", ""));
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_the_server_confirms");
   const trace = generate(f, ["--trace"]);
   assert.equal(trace.status, 1, trace.text);
   assert.match(trace.text, /Shortest path: 2 events/);
@@ -224,7 +224,7 @@ state App {
 [*] --> App
 %% never NoBad: Bad -- Bad is unreachable.
 `);
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_finish");
   const trace = generate(f, ["--trace"]);
   assert.equal(trace.status, 0, trace.text);
   assert.match(trace.text, /Exhausted 1 reachable chart states/);
@@ -254,7 +254,7 @@ state Busy {
   verify(f);
 });
 
-test("chart drift is detected, regeneration preserves proof edits, and edited generated models are refused", () => {
+test("chart drift is detected, regeneration preserves proof edits, and edited generated models and steps are refused", () => {
   const f = generated(example);
   assert.equal(generate(f, ["--check"]).status, 0);
   fs.appendFileSync(f.proof, "\n// User-owned proof notes.\n");
@@ -270,6 +270,14 @@ test("chart drift is detected, regeneration preserves proof edits, and edited ge
   const edited = fs.readFileSync(f.model, "utf8");
   assert.equal(generate(f).status, 1);
   assert.equal(fs.readFileSync(f.model, "utf8"), edited);
+  // The per-event lemmas are generated too: an edit there is refused, not overwritten.
+  const g = generated(example);
+  const steps = g.proof.replace("_proof.rs", "_steps.rs");
+  fs.appendFileSync(steps, "\n// Manual lemma edits belong in the proof file.\n");
+  const stepsEdited = fs.readFileSync(steps, "utf8");
+  assert.equal(generate(g, ["--check"]).status, 1);
+  assert.equal(generate(g).status, 1);
+  assert.equal(fs.readFileSync(steps, "utf8"), stepsEdited);
 });
 
 test("ambiguous or unsupported semantics fail before writing any model", () => {
@@ -348,7 +356,7 @@ state Busy {
   assert.match(trace.text, /Shortest path: 1 events/);
   assert.match(trace.text, /1\. Start → .*Near/);
   assert.match(trace.text, /2\. choose → .*Busy.Sending/);
-  verify(f, false, "step_preserves_inductive");
+  verify(f, false, "preserves_event_choose");
 });
 
 test("search guards read the pre-state and every enabled broadcast region moves", () => {

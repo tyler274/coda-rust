@@ -24,9 +24,10 @@ declared events and "/ effect" labels expand before any backend reads the chart.
 See references/compiler.md for the full syntax.`;
 
 const VERUS = `verus CHART.mmd --module NAME [--dir OUT]
-  Compile the chart to Verus. Writes NAME.rs (generated behavior), NAME.map.json
-  (diagram correspondence) and NAME_proof.rs (editable proof starter, created only
-  when absent) in OUT (default: the chart's folder). Existing generated files may be
+  Compile the chart to Verus. Writes NAME.rs (generated behavior), NAME_steps.rs
+  (one generated preservation lemma per event), NAME.map.json (diagram
+  correspondence) and NAME_proof.rs (editable proof starter, created only when
+  absent) in OUT (default: the chart's folder). Existing generated files may be
   refreshed; hand-edited generated files are refused.
 
   The starter checks initialization, inductive safety, and finite traces. It may
@@ -37,7 +38,7 @@ const VERUS = `verus CHART.mmd --module NAME [--dir OUT]
 ${SEMANTICS}`;
 
 const CHECK = `check CHART.mmd --module NAME [--dir OUT]
-  Write nothing; fail if NAME.rs or NAME.map.json differ from what the chart
+  Write nothing; fail if NAME.rs, NAME_steps.rs or NAME.map.json differ from what the chart
   generates, or NAME_proof.rs is missing. Checks correspondence, not the proof.`;
 
 const TRACE = `trace CHART.mmd [--max-states N]

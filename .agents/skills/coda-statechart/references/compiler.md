@@ -28,7 +28,17 @@ Use the feature's own directory and module name for maintained models.
 
 - `Sync.rs` is generated behavior: finite region enums, initial-state predicate,
   one relation per event, the combined transition relation, and safety predicates.
-  Change that behavior in the diagram, then regenerate.
+  Change that behavior in the diagram, then regenerate. To stay small enough for
+  rustc on large charts, a long formula is written once as a named predicate
+  (move guards, multi-state membership, closed or unchanged parts) and called
+  where it recurs. Regions an event cannot touch keep their pre-state through one
+  shared struct-update frame, `t == (State { moved: t.moved, ..s })`, like TLA's
+  `UNCHANGED`. Long `&&` and `||` chains are grouped into balanced trees.
+- `Sync_steps.rs` is generated too: one lemma per event saying it preserves the
+  proof's `inductive()`, and one lemma combining them, like the `#[inductive]`
+  lemmas of Verus's `state_machine!`. Each event is a separate small query, and a
+  failure names the event whose step breaks the invariant. Strengthen
+  `inductive()` in the proof file; never edit this one.
 - `Sync.map.json` connects diagram captions, transitions and rules to generated
   symbols and records the diagram and generated-source hashes. It also records
   scoped regions, template instances, declared events and stated reasons. It is a
