@@ -15,6 +15,7 @@ const [verus, version] = JSON.parse(lookup.stdout);
 const versionResult = spawnSync(verus, ["--version"], { encoding: "utf8" });
 assert.equal(versionResult.status, 0, "Install the pinned verifier with verification/install-verus.py");
 assert.ok(versionResult.stdout.includes(version), "the verifier must match verification/verus.json");
+fs.mkdirSync(path.join(root, "target/verification/runs"), { recursive: true });
 const run = fs.mkdtempSync(path.join(root, "target/verification/runs/chart-compiler-"));
 console.log(`Compiler evidence: ${run}`);
 

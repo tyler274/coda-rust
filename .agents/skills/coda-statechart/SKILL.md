@@ -19,20 +19,27 @@ Follow the [shared principles](../../../verification/README.md#principles).
 3. Walk ordinary continuation, alternatives, completion and recovery from each
    state, including cross-feature interactions and reopening where relevant.
    Challenge the complete journey first; known failures add further challenges.
-4. State each promise and its decision source beside the diagram. Revise words
+4. Draw what an observer sees happen; guidance and taste belong in prompts, skills
+   and evals. Actors choose nondeterministically (`may`); keep hard limits few,
+   each with a reason naming what it protects. Every event declares its cause; an
+   agent's event is an output of the system running it. Charts compose through
+   shared declared events, not copied states.
+5. State each promise and its decision source beside the diagram. Revise words
    and diagrams together. Resolve new product meaning with Dev; checking a draft
    does not approve it. Save beside existing verification when edits are authorized.
 
 ## Check the agreed design
 
 Use the [compiler](references/compiler.md) for its supported `stateDiagram-v2`
-subset. Encode real finite-state exclusions with `%% never` and state guards with
-`%% when`. Link identity, revision, collection and progress promises to named data
+subset: nested parallel regions, templates, declared events and `/ effect` labels
+expand into one flat model. Encode real finite-state exclusions with `%% never` and
+state guards with `%% when`. Link identity, revision, collection and progress promises to named data
 proofs; do not invent artificial states to make every chart have a safety rule.
 A chart without rules establishes transition correspondence only.
 
-Generate the model, run its Verus proof and `--check`, and use `--trace` to find
-shortest reachable chart violations. Show an established violation as numbered
+Generate the model with `statechart.mjs verus`, run its Verus proof and `check`,
+and use `trace` to find shortest reachable chart violations (`rules` when the chart
+is too large to exhaust). Use `lint`, `query`, `flat` and `compare` to read a chart. Show an established violation as numbered
 user steps and its generated path diagram. Search exhaustion is limited to the
 finite chart; an interrupted or bounded search is incomplete. A failed Verus data
 obligation need not have a reachable counterexample.

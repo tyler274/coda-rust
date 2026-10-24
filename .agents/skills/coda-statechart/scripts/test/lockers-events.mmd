@@ -1,0 +1,30 @@
+stateDiagram-v2
+  %% events declared
+  %% event the courier fills locker {key} | by the courier | needs Empty@{key}, Empty@{other} | The courier fills an empty locker while the other one is empty.
+  %% event you collect from locker {key} | by you | You take your parcel out of the locker.
+  %% event the door of locker {key} jams | by the locker | The locker door sticks shut.
+  %% events a collection = you collect from locker {key}
+  state "Parcel lockers" as Lockers {
+    state "Locker {key} ({size})" as Locker {
+      %% template
+      %% instance a: size = small, other = b
+      %% instance b: size = large, other = a
+      [*] --> Empty
+      state "Waiting for a {size} parcel" as Empty
+      state "Full" as Full
+      Empty --> Full : the courier fills locker {key} / put the parcel in
+      Full --> Empty : you collect from locker {key}
+      state "Jammed" as Jammed
+      %% only b
+      Full --> Jammed : the door of locker {key} jams
+      %% only b
+      %% never NotBothFull: Full & Full@{other} -- At most one locker holds a parcel.
+    }
+    --
+    state "Courier" as Courier {
+      [*] --> Driving
+      Driving --> Gone : the courier fills locker {key}
+      Gone --> Driving : a collection
+    }
+  }
+  [*] --> Lockers
