@@ -484,18 +484,17 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .to_owned();
     assert!(!token.is_empty());
 
-    // 3. Cross-practice patient (Jake in practice-clinic-b) returns 404 unavailable with zero data leak.
+    // 3. Cross-practice patient (Jake in practice-clinic-b) returns 404: not available, with zero data leak.
     browser
         .navigate(&format!("http://{address}/physician/?patient={jake}"))
         .await;
     let cross_practice_dom = browser
-        .wait_for_text(
-            "Coda couldn’t load what needs you for this patient.",
-            Duration::from_secs(10),
-        )
+        .wait_for_text("That patient is not available.", Duration::from_secs(10))
         .await;
     assert!(
-        !cross_practice_dom.contains("Jake")
+        cross_practice_dom.contains("Go to Today")
+            && !cross_practice_dom.contains("Coda couldn’t load what needs you for this patient.")
+            && !cross_practice_dom.contains("Jake")
             && !cross_practice_dom.contains("Patient summary")
             && !cross_practice_dom.contains("Patient demographics"),
         "cross-practice patient must not leak demographics or clinical data:\n{cross_practice_dom}"

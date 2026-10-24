@@ -4,6 +4,7 @@
 #![deny(missing_docs)]
 
 mod icons;
+mod panels;
 mod shell;
 mod tabs;
 
@@ -18,27 +19,42 @@ use physician_wire::{
     SimulationStatus, WhoamiResponse, WorkspaceReply,
 };
 
+use panels::Panel;
 #[cfg(target_arch = "wasm32")]
 use shell::workspace_event_rereads;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
-    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA,
+    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA, ReadView,
     ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
     TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
     WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name, citation_inspection,
     connection_lines, demographic_card_view, format_calendar_date, format_clock, format_message,
     format_waited, keyboard_command, need_you_words, opens_reader, past_work_copy,
-    patient_upcoming_visits, reply_channel_label, reply_review_actions, schedule_empty_copy,
-    shows_today_schedule, summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits,
-    work_end_reason, work_heading,
+    patient_upcoming_visits, read_view, reply_channel_label, reply_review_actions,
+    reply_urgency_words, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
-use ui::{EmptyState, ErrorState, TextButton};
+use ui::{CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice, TextButton};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
 const UPDATES_EMPTY: &str = "Nothing from Coda yet today.";
 const UPDATES_EMPTY_DETAIL: &str = "What Coda does for your patients today will appear here.";
 const UPDATES_UNAVAILABLE: &str = "Coda couldn’t load Updates.";
+const UPDATES_STALE: &str = "Coda couldn’t refresh Updates. Showing the last list.";
+const SCHEDULE_LOADING: &str = "Loading the schedule…";
+const SCHEDULE_UNAVAILABLE: &str = "Coda couldn’t load the schedule.";
+const SCHEDULE_STALE: &str = "Coda couldn’t refresh the schedule. Showing the last one.";
+const SEARCH_LOADING: &str = "Searching…";
+const SEARCH_UNAVAILABLE: &str = "Coda couldn’t search patients.";
+const SEARCH_NONE: &str = "No patients match.";
+const CONVERSATION_LOADING: &str = "Opening the conversation…";
+const PATIENT_LOADING: &str = "Opening the patient…";
+const PATIENT_UNAVAILABLE: &str = "Coda couldn’t open this patient.";
+const PATIENT_STALE: &str = "Coda couldn’t refresh this patient. Showing the last view.";
+const PATIENT_GONE: &str = "That patient is not available.";
+const GO_TO_TODAY: &str = "Go to Today";
+const NEEDS_YOU_NOW: &str = "Needs you now";
 const RECENT_NONE: &str = "Conversations with Coda will appear here.";
 const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
@@ -619,6 +635,22 @@ fn PhysicianShell(
     let mut sidebar_collapsed = use_signal(|| false);
     let mut app_collapsed = use_signal(|| false);
     let mut schedule_collapsed = use_signal(|| false);
+    // The physician's remembered choices arrive with who they are.
+    use_effect(move || {
+        if let Some(account) = whoami.read().as_ref() {
+            sidebar_collapsed.set(panels::collapsed(&account.physician_id, Panel::Sidebar));
+            schedule_collapsed.set(panels::collapsed(&account.physician_id, Panel::Schedule));
+        }
+    });
+    let mut remember = move |panel: Panel, collapsed: bool| {
+        match panel {
+            Panel::Sidebar => sidebar_collapsed.set(collapsed),
+            Panel::Schedule => schedule_collapsed.set(collapsed),
+        }
+        if let Some(account) = whoami.peek().as_ref() {
+            panels::remember(&account.physician_id, panel, collapsed);
+        }
+    };
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
     let mut connections_open = use_signal(|| false);
@@ -633,14 +665,21 @@ fn PhysicianShell(
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
     let mut snapshot_attempt = use_signal(|| 0u32);
+    let mut search_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
+    // The patient the server said isn't there for this physician (a 404 also
+    // answers for no access, so presence never leaks).
+    let mut gone = use_signal(|| None::<String>);
     let mut target_physician = use_signal(String::new);
     let mut panel_busy = use_signal(|| false);
     let mut panel_notice = use_signal(String::new);
     let mut past_work_open = use_signal(|| false);
     let mut reply_notice = use_signal(String::new);
-    let mut reply_busy = use_signal(|| false);
+    let reply_slot = use_command_slot();
+    let send_slot = use_command_slot();
+    let resume_slot = use_command_slot();
+    let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
         let showing = place();
@@ -730,10 +769,11 @@ fn PhysicianShell(
     let updates = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
-        async move { client.updates().await.map_err(|_| ()) }
+        async move { client.updates().await.map(|page| page.rows).map_err(|_| ()) }
     });
     let found = use_resource(move || {
         let _attempt = today_attempt();
+        let _search_attempt = search_attempt();
         let query = query();
         let client = client.read().clone();
         async move {
@@ -768,6 +808,7 @@ fn PhysicianShell(
                 Some(id) => match client.workspace(&id).await {
                     Ok(open) => {
                         shown.set(true);
+                        gone.set(None);
                         Ok(Some(open))
                     }
                     // A covered page keeps what it showed; signing out leaves
@@ -780,6 +821,7 @@ fn PhysicianShell(
                             physician_client::HttpError::Status { status: 404, .. }
                         ) {
                             workspace_cache.set(None);
+                            gone.set(Some(id));
                         }
                         Err(())
                     }
@@ -840,21 +882,19 @@ fn PhysicianShell(
         .as_ref()
         .and_then(|result| result.as_ref().ok())
         .and_then(|list| list.simulation.clone());
-    let practice_read = practice.read();
-    let day = practice_read
-        .as_ref()
-        .and_then(|result| result.as_ref().ok());
+    let practice_state = use_read_view(practice);
+    let updates_state = use_read_view(updates);
+    let schedule = practice_state.stage();
+    let day = practice_state.content();
     let server_now = day.map(|day| day.current_time.clone()).unwrap_or_default();
     let practice_zone = day
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
     let visits = day.map(upcoming_visits).unwrap_or_default();
-    let show_schedule = day.is_some_and(shows_today_schedule);
+    let show_schedule =
+        schedule == ui::ReadStage::Unavailable || day.is_some_and(shows_today_schedule);
     let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
-    let need_you = match &today_state {
-        TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len(),
-        _ => 0,
-    };
+    let need_you = today_state.content().map_or(0, Vec::len);
     let cached_workspace = workspace_cache.read().clone();
     let workspace_read = workspace.read();
     let workspace_current = match workspace_read.as_ref() {
@@ -869,6 +909,13 @@ fn PhysicianShell(
             .as_ref()
             .filter(|open| selected.read().as_deref() == Some(open.patient_workspace_id.as_str()))
             .map(Ok),
+    };
+    let patient_gone = selected.read().is_some() && *gone.read() == *selected.read();
+    let patient_read = match (workspace_read.as_ref(), &workspace_current) {
+        (Some(Err(())), Some(Ok(_))) => ui::ReadStage::Stale,
+        (_, Some(Ok(_))) => ui::ReadStage::Showing,
+        (_, Some(Err(()))) => ui::ReadStage::Unavailable,
+        (_, None) => ui::ReadStage::Loading,
     };
     let chats = chat_view(
         selected.read().as_deref(),
@@ -915,12 +962,9 @@ fn PhysicianShell(
         })
         .unwrap_or_default();
     let recent_read = recent.read();
-    let search_rows = found
-        .read()
-        .as_ref()
-        .and_then(|result| result.as_ref().ok())
-        .cloned()
-        .unwrap_or_default();
+    // A search answers one query, so an earlier query's rows never stand in for it.
+    let search_state = read_view(None, found.read().clone());
+    let search_rows = search_state.content().cloned().unwrap_or_default();
     let modal =
         shortcuts_open() || connections_open() || past_work_open() || reading.read().is_some();
     let shown_focus = if moved() { Some(focus()) } else { None };
@@ -934,24 +978,20 @@ fn PhysicianShell(
                 (Some(workspace_id), Some(chat_id)) => client
                     .chat_snapshot(&workspace_id, &chat_id)
                     .await
-                    .map(Some)
+                    .map(|page| {
+                        page.snapshot
+                            .conversation
+                            .iter()
+                            .filter_map(|turn| turn.body().map(str::to_owned))
+                            .collect::<Vec<_>>()
+                    })
                     .map_err(|_| ()),
-                _ => Ok(None),
+                _ => Ok(Vec::new()),
             }
         }
     });
-    let snapshot_lines = snapshot
-        .read()
-        .as_ref()
-        .and_then(|result| result.as_ref().ok())
-        .and_then(|page| page.as_ref())
-        .map(|page| {
-            page.snapshot
-                .conversation
-                .iter()
-                .filter_map(|turn| turn.body().map(str::to_owned))
-                .collect::<Vec<_>>()
-        });
+    // One conversation's lines never stand in for another's.
+    let conversation = read_view(None, snapshot.read().clone());
     let shell_class = format!(
         "glass-app{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
@@ -1025,17 +1065,18 @@ fn PhysicianShell(
                 }
                 if key == "Enter" && (event.modifiers().meta() || event.modifiers().ctrl()) {
                     event.prevent_default();
-                    send_message(
+                    send_slot.run_or_refuse(
                         client.read().clone(),
-                        selected(),
-                        open_chat(),
-                        workspace_cache
-                            .read()
-                            .as_ref()
-                            .and_then(|open| open.time_zone.clone()),
-                        draft(),
-                        notice,
-                        snapshot_attempt,
+                        message_command(
+                            selected(),
+                            open_chat(),
+                            workspace_cache
+                                .read()
+                                .as_ref()
+                                .and_then(|open| open.time_zone.clone()),
+                            draft(),
+                        ),
+                        move || *snapshot_attempt.write() += 1,
                     );
                     return;
                 }
@@ -1099,14 +1140,14 @@ fn PhysicianShell(
                             class: "icon-button sidebar-collapse",
                             r#type: "button",
                             aria_label: "Collapse navigation",
-                            onclick: move |_| sidebar_collapsed.set(true),
+                            onclick: move |_| remember(Panel::Sidebar, true),
                             Icon { name: IconName::SidebarCollapse }
                         }
                         button {
                             class: "icon-button sidebar-expand",
                             r#type: "button",
                             aria_label: "Expand navigation",
-                            onclick: move |_| sidebar_collapsed.set(false),
+                            onclick: move |_| remember(Panel::Sidebar, false),
                             Icon { name: IconName::SidebarExpand }
                         }
                     }
@@ -1159,6 +1200,7 @@ fn PhysicianShell(
                                 match chats.clone() {
                                     ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
                                     ChatView::Pending => rsx! {},
+                                    ChatView::Unavailable if patient_gone => rsx! {},
                                     ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
                                     ChatView::Chats(lines) => rsx! {
                                         for line in lines {
@@ -1235,9 +1277,11 @@ fn PhysicianShell(
                             connections: connections.clone(),
                             visits: visits.clone(),
                             show_schedule,
+                            schedule,
+                            on_schedule_retry: move |_| *today_attempt.write() += 1,
                             schedule_empty: schedule_empty.clone(),
                             schedule_collapsed: schedule_collapsed(),
-                            on_schedule_collapsed: move |collapsed| schedule_collapsed.set(collapsed),
+                            on_schedule_collapsed: move |collapsed| remember(Panel::Schedule, collapsed),
                             server_now: server_now.clone(),
                             need_you,
                             focused: shown_focus,
@@ -1281,26 +1325,30 @@ fn PhysicianShell(
                                 workspace_attempt.set(workspace_attempt() + 1);
                             },
                             on_resume: move |line: TodayLine| {
-                                let client = client.read().clone();
-                                let zone = practice_zone.clone();
-                                spawn(async move {
-                                    if let (Some(work), Some(run)) = (&line.resume_work_item_id, &line.resume_run_id) {
-                                        let _ = client.resume_work(&line.workspace_id, work, run, &zone).await;
-                                    }
-                                    today_attempt.set(today_attempt() + 1);
-                                });
+                                if let Some(command) = resume_command(&line, &practice_zone) {
+                                    resume_slot.run(client.read().clone(), command, move || *today_attempt.write() += 1);
+                                }
                             },
+                            resume_notice: resume_slot.notice(client),
                         }
                     },
-                    Place::Updates => rsx! { UpdatesSurface { read: updates.read().as_ref().map(|result| result.as_ref().map(|page| page.rows.clone()).map_err(|_| ())) } },
+                    Place::Updates => rsx! { UpdatesSurface { state: updates_state.clone(), on_retry: move |_| *today_attempt.write() += 1 } },
                     Place::Workspace => rsx! {
                         PatientSurface {
+                            gone: patient_gone,
+                            read: patient_read,
+                            on_go_today: move |_| {
+                                selected.set(None);
+                                place.set(Place::Today);
+                            },
                             name: open_name.clone().unwrap_or_default(),
                             workspace: open_workspace.clone(),
                             rows: patient_rows.clone(),
                             visits: patient_visits.clone(),
                             schedule_collapsed: schedule_collapsed(),
-                            on_schedule_collapsed: move |collapsed| schedule_collapsed.set(collapsed),
+                            on_schedule_collapsed: move |collapsed| remember(Panel::Schedule, collapsed),
+                            schedule,
+                            on_schedule_retry: move |_| *today_attempt.write() += 1,
                             focused: shown_focus,
                             chats: chats.clone(),
                             server_now: server_now.clone(),
@@ -1396,34 +1444,49 @@ fn PhysicianShell(
                             on_retry: move |_| workspace_attempt.set(workspace_attempt() + 1),
                             on_decide_recommendation: move |rec_id: String| {
                                 let Some(ws_id) = selected() else { return };
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let _ = client
-                                        .command(&serde_json::json!({
-                                            "type": "plan.decide_recommendation",
-                                            "payload": {
-                                                "patient_workspace_id": ws_id,
-                                                "recommendation_id": rec_id,
-                                            },
-                                        }))
-                                        .await;
-                                    workspace_attempt.set(workspace_attempt() + 1);
-                                    today_attempt.set(today_attempt() + 1);
-                                });
+                                work_slot.run(
+                                    client.read().clone(),
+                                    Command::new(
+                                        "plan.decide_recommendation",
+                                        serde_json::json!({ "patient_workspace_id": ws_id, "recommendation_id": rec_id }),
+                                    ),
+                                    move || {
+                                        *workspace_attempt.write() += 1;
+                                        *today_attempt.write() += 1;
+                                    },
+                                );
                             },
                             on_admit_corrected_labs: move |_| {
                                 let Some(ws_id) = selected() else { return };
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let _ = client
-                                        .command(&serde_json::json!({
-                                            "type": "simulation.admit_corrected_labs",
-                                            "payload": { "patient_workspace_id": ws_id },
-                                        }))
-                                        .await;
-                                    workspace_attempt.set(workspace_attempt() + 1);
-                                    today_attempt.set(today_attempt() + 1);
-                                });
+                                work_slot.run(
+                                    client.read().clone(),
+                                    Command::new(
+                                        "simulation.admit_corrected_labs",
+                                        serde_json::json!({ "patient_workspace_id": ws_id }),
+                                    ),
+                                    move || {
+                                        *workspace_attempt.write() += 1;
+                                        *today_attempt.write() += 1;
+                                    },
+                                );
+                            },
+                            work_busy: work_slot.sending() || resume_slot.sending(),
+                            work_notice: work_slot.notice(client),
+                            resume_notice: resume_slot.notice(client),
+                            on_resume: {
+                                let zone = workspace_cache
+                                    .read()
+                                    .as_ref()
+                                    .and_then(|open| open.time_zone.clone())
+                                    .unwrap_or_else(|| practice_zone.clone());
+                                move |line: TodayLine| {
+                                    if let Some(command) = resume_command(&line, &zone) {
+                                        resume_slot.run(client.read().clone(), command, move || {
+                                            *workspace_attempt.write() += 1;
+                                            *today_attempt.write() += 1;
+                                        });
+                                    }
+                                }
                             },
                             on_read: move |(title, body): (String, String)| {
                                 reading.set(Some(prose_reading(title, body)));
@@ -1432,8 +1495,8 @@ fn PhysicianShell(
                                 reading.set(Some(source_reading(chip)));
                             },
                             on_draft: move |value: String| draft.set(value),
-                            messages: snapshot_lines.clone().unwrap_or_default(),
-                            snapshot_failed: snapshot.read().as_ref().is_some_and(|result| result.is_err()),
+                            conversation: conversation.clone(),
+                            on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_save: move |_| {
                                 let Some(id) = selected() else { return };
@@ -1460,17 +1523,18 @@ fn PhysicianShell(
                                 });
                             },
                             on_send: move |_| {
-                                send_message(
+                                send_slot.run_or_refuse(
                                     client.read().clone(),
-                                    selected(),
-                                    open_chat(),
-                                    workspace_cache
-                                        .read()
-                                        .as_ref()
-                                        .and_then(|open| open.time_zone.clone()),
-                                    draft(),
-                                    notice,
-                                    snapshot_attempt,
+                                    message_command(
+                                        selected(),
+                                        open_chat(),
+                                        workspace_cache
+                                            .read()
+                                            .as_ref()
+                                            .and_then(|open| open.time_zone.clone()),
+                                        draft(),
+                                    ),
+                                    move || *snapshot_attempt.write() += 1,
                                 );
                             },
                             on_dictate: move |_| {
@@ -1484,39 +1548,25 @@ fn PhysicianShell(
                             conversation_open: open_chat.read().is_some(),
                             past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
                             reply_notice: reply_notice(),
-                            reply_busy: reply_busy(),
+                            reply_busy: reply_slot.sending(),
+                            reply_command_notice: reply_slot.notice(client),
+                            send_notice: send_slot.notice(client),
                             on_open_past_work: move |_| past_work_open.set(true),
                             on_close_reply: move |reply_id: String| {
                                 let Some(ws_id) = selected() else { return };
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    reply_busy.set(true);
-                                    reply_notice.set(String::new());
-                                    reply_notice.set(
-                                        match client
-                                            .command(&serde_json::json!({
-                                                "type": "reply.close",
-                                                "idempotency_key": idempotency_key(),
-                                                "payload": {
-                                                    "patient_workspace_id": ws_id,
-                                                    "reply_work_id": reply_id,
-                                                }
-                                            }))
-                                            .await
-                                        {
-                                            Ok(value) => match command_rejection(&value) {
-                                                Some(message) => message,
-                                                None => {
-                                                    workspace_attempt.set(workspace_attempt() + 1);
-                                                    today_attempt.set(today_attempt() + 1);
-                                                    REPLY_CLOSED_NOTICE.to_owned()
-                                                }
-                                            },
-                                            Err(_) => "Coda couldn’t change that reply.".to_owned(),
-                                        },
-                                    );
-                                    reply_busy.set(false);
-                                });
+                                reply_notice.set(String::new());
+                                reply_slot.run(
+                                    client.read().clone(),
+                                    Command::new(
+                                        "reply.close",
+                                        serde_json::json!({ "patient_workspace_id": ws_id, "reply_work_id": reply_id }),
+                                    ),
+                                    move || {
+                                        *workspace_attempt.write() += 1;
+                                        *today_attempt.write() += 1;
+                                        reply_notice.set(REPLY_CLOSED_NOTICE.to_owned());
+                                    },
+                                );
                             },
                             on_revise_reply: move |(reply_id, instruction): (String, String)| {
                                 let Some(ws_id) = selected() else { return };
@@ -1525,36 +1575,20 @@ fn PhysicianShell(
                                     .as_ref()
                                     .and_then(|open| open.time_zone.clone())
                                     .unwrap_or_default();
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    reply_busy.set(true);
-                                    reply_notice.set(String::new());
-                                    reply_notice.set(
-                                        match client
-                                            .command(&serde_json::json!({
-                                                "type": "reply.revise",
-                                                "idempotency_key": idempotency_key(),
-                                                "payload": {
-                                                    "patient_workspace_id": ws_id,
-                                                    "reply_work_id": reply_id,
-                                                    "instruction": instruction,
-                                                    "physician_time_zone": zone,
-                                                }
-                                            }))
-                                            .await
-                                        {
-                                            Ok(value) => match command_rejection(&value) {
-                                                Some(message) => message,
-                                                None => {
-                                                    workspace_attempt.set(workspace_attempt() + 1);
-                                                    String::new()
-                                                }
-                                            },
-                                            Err(_) => "Coda couldn’t revise that reply.".to_owned(),
-                                        },
-                                    );
-                                    reply_busy.set(false);
-                                });
+                                reply_notice.set(String::new());
+                                reply_slot.run(
+                                    client.read().clone(),
+                                    Command::new(
+                                        "reply.revise",
+                                        serde_json::json!({
+                                            "patient_workspace_id": ws_id,
+                                            "reply_work_id": reply_id,
+                                            "instruction": instruction,
+                                            "physician_time_zone": zone,
+                                        }),
+                                    ),
+                                    move || *workspace_attempt.write() += 1,
+                                );
                             },
                         }
                     },
@@ -1564,7 +1598,8 @@ fn PhysicianShell(
         if search_open() {
             SearchDialog {
                 query: query(),
-                results: found.read().as_ref().and_then(|result| result.as_ref().ok()).cloned().unwrap_or_default(),
+                state: search_state.clone(),
+                on_retry: move |_| *search_attempt.write() += 1,
                 on_query: move |value: String| query.set(value),
                 on_close: move |_| search_open.set(false),
                 on_open: move |id: String| {
@@ -1584,7 +1619,7 @@ fn PhysicianShell(
         if connections_open() {
             ConnectionsDialog {
                 lines: connections.clone(),
-                failed: matches!(today_state, TodayView::Unavailable),
+                failed: matches!(today_state, ReadView::Unavailable),
                 on_close: move |_| connections_open.set(false),
             }
         }
@@ -1603,17 +1638,203 @@ fn PhysicianShell(
     }
 }
 
+const COMMAND_REFUSED: &str = "Coda didn’t take that.";
+const COMMAND_SENDING: &str = "Sending…";
+const COMMAND_UNCONFIRMED: &str = "Coda couldn’t confirm that.";
+const CHECK_AGAIN: &str = "Check again";
+const MESSAGE_REFUSED: &str = "Coda couldn’t accept that message.";
+
 fn command_rejection(value: &serde_json::Value) -> Option<String> {
     if value.get("outcome").and_then(serde_json::Value::as_str) == Some("rejected") {
         Some(
             value
                 .get("message")
                 .and_then(serde_json::Value::as_str)
-                .unwrap_or("Coda couldn’t confirm that request. Reconnect to check its status.")
+                .unwrap_or(COMMAND_REFUSED)
                 .to_owned(),
         )
     } else {
         None
+    }
+}
+
+/// One physician command. Its key stays with it, so Check again resends the
+/// same request and the server takes it at most once.
+#[derive(Clone, Debug, PartialEq)]
+struct Command(serde_json::Value);
+
+impl Command {
+    fn new(kind: &str, payload: serde_json::Value) -> Self {
+        Self::keyed(kind, idempotency_key(), payload)
+    }
+
+    fn keyed(kind: &str, key: String, payload: serde_json::Value) -> Self {
+        Self(serde_json::json!({ "type": kind, "idempotency_key": key, "payload": payload }))
+    }
+}
+
+/// How a command was answered.
+#[derive(Debug, PartialEq)]
+enum Answer {
+    Accepted,
+    Refused(String),
+    /// No answer arrived, so whether it took is unknown.
+    Unconfirmed,
+}
+
+fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> Answer {
+    match result {
+        Ok(value) => command_rejection(value).map_or(Answer::Accepted, Answer::Refused),
+        // The server answered and said no: a refusal, with its reason when given.
+        Err(physician_client::HttpError::Status { status, body })
+            if (400..500).contains(status) && !matches!(status, 408 | 429) =>
+        {
+            let value = serde_json::from_str::<serde_json::Value>(body).unwrap_or_default();
+            Answer::Refused(
+                command_rejection(&value)
+                    .or_else(|| {
+                        value
+                            .get("detail")
+                            .and_then(serde_json::Value::as_str)
+                            .map(str::to_owned)
+                    })
+                    .unwrap_or_else(|| COMMAND_REFUSED.to_owned()),
+            )
+        }
+        Err(_) => Answer::Unconfirmed,
+    }
+}
+
+/// One command at a time on one item: what is in flight, and what Check again resends.
+#[derive(Clone, Copy, PartialEq)]
+struct CommandSlot {
+    stage: Signal<CommandStage>,
+    /// The unconfirmed command and what runs once it is taken.
+    last: Signal<Option<(Command, Callback)>>,
+}
+
+/// One read as the page shows it. A failed refresh keeps the last answer.
+fn use_read_view<T: Clone + 'static>(resource: Resource<Result<T, ()>>) -> ReadView<T> {
+    let mut last = use_signal(|| None::<T>);
+    use_effect(move || {
+        if let Some(Ok(value)) = resource.read().as_ref() {
+            last.set(Some(value.clone()));
+        }
+    });
+    read_view(last.read().clone(), resource.read().clone())
+}
+
+fn use_command_slot() -> CommandSlot {
+    CommandSlot {
+        stage: use_signal(|| CommandStage::Idle),
+        last: use_signal(|| None),
+    }
+}
+
+impl CommandSlot {
+    fn sending(&self) -> bool {
+        *self.stage.read() == CommandStage::Sending
+    }
+
+    /// Sends `command` unless one is already in flight; `then` runs once it is taken.
+    fn run(self, client: PhysicianClient, command: Command, mut then: impl FnMut() + 'static) {
+        self.send(client, command, Callback::new(move |()| then()));
+    }
+
+    fn send(mut self, client: PhysicianClient, command: Command, then: Callback) {
+        if *self.stage.peek() == CommandStage::Sending {
+            return;
+        }
+        self.last.set(Some((command.clone(), then)));
+        self.stage.set(CommandStage::Sending);
+        spawn(async move {
+            match answer(&client.command(&command.0).await) {
+                Answer::Accepted => {
+                    self.stage.set(CommandStage::Idle);
+                    self.last.set(None);
+                    then.call(());
+                }
+                Answer::Refused(reason) => {
+                    self.stage.set(CommandStage::Refused(reason));
+                    self.last.set(None);
+                }
+                Answer::Unconfirmed => self.stage.set(CommandStage::Unconfirmed),
+            }
+        });
+    }
+
+    /// Like `run`, for a command that could not be put together: its reason shows as a refusal.
+    fn run_or_refuse(
+        mut self,
+        client: PhysicianClient,
+        command: Result<Command, String>,
+        then: impl FnMut() + 'static,
+    ) {
+        match command {
+            Ok(command) => self.run(client, command, then),
+            Err(reason) if !self.sending() => self.stage.set(CommandStage::Refused(reason)),
+            Err(_) => {}
+        }
+    }
+
+    /// Resends the unconfirmed command as the same request, with its own follow-up.
+    fn check_again(self, client: PhysicianClient) {
+        if let Some((command, then)) = self.last.peek().clone() {
+            self.send(client, command, then);
+        }
+    }
+
+    /// A line beside the command's controls.
+    fn notice(self, client: Signal<PhysicianClient>) -> Element {
+        rsx! {
+            CommandNotice {
+                stage: self.stage.read().clone(),
+                sending: COMMAND_SENDING,
+                unconfirmed: COMMAND_UNCONFIRMED,
+                check_again: CHECK_AGAIN,
+                on_check_again: move |_| self.check_again(client.peek().clone()),
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod command_answer_tests {
+    use super::{Answer, COMMAND_REFUSED, answer};
+    use physician_client::HttpError;
+
+    #[test]
+    fn a_command_is_taken_refused_with_its_reason_or_unconfirmed() {
+        assert_eq!(
+            answer(&Ok(serde_json::json!({ "outcome": "accepted" }))),
+            Answer::Accepted
+        );
+        assert_eq!(
+            answer(&Ok(
+                serde_json::json!({ "outcome": "rejected", "message": "Already closed." })
+            )),
+            Answer::Refused("Already closed.".into())
+        );
+        let status = |status: u16, body: &str| HttpError::Status {
+            status,
+            body: body.into(),
+        };
+        assert_eq!(
+            answer(&Err(status(404, r#"{"detail":"Not found."}"#))),
+            Answer::Refused("Not found.".into())
+        );
+        assert_eq!(
+            answer(&Err(status(409, ""))),
+            Answer::Refused(COMMAND_REFUSED.into())
+        );
+        // No answer, or one that says nothing about the command: unknown.
+        for unknown in [status(503, ""), status(429, ""), status(408, "")] {
+            assert_eq!(answer(&Err(unknown)), Answer::Unconfirmed);
+        }
+        assert_eq!(
+            answer(&Err(HttpError::Transport("reset".into()))),
+            Answer::Unconfirmed
+        );
     }
 }
 
@@ -1979,6 +2200,8 @@ fn TodaySurface(
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
+    schedule: ui::ReadStage,
+    on_schedule_retry: EventHandler,
     schedule_empty: String,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
@@ -1991,14 +2214,12 @@ fn TodaySurface(
     on_open_row: EventHandler<TodayLine>,
     on_open_visit: EventHandler<VisitLine>,
     on_resume: EventHandler<TodayLine>,
+    resume_notice: Element,
 ) -> Element {
     let words = need_you_words(need_you);
     let scheduled = show_schedule;
     let connections_quiet = connections.is_empty();
-    let row_len = match &state {
-        TodayView::Rows(rows) | TodayView::Stale(rows) => rows.len() as i32,
-        _ => 0,
-    };
+    let row_len = state.content().map_or(0, |rows| rows.len() as i32);
     let row_focus = focused.and_then(|index| {
         if index >= 0 && index < row_len {
             Some(index as usize)
@@ -2034,31 +2255,34 @@ fn TodaySurface(
                     for line in connections {
                         p { class: "today-connection", "{line}" }
                     }
-                    match state {
-                        TodayView::Loading => rsx! { EmptyState { message: TODAY_LOADING.to_owned() } },
-                        TodayView::Unavailable => rsx! {
-                            ErrorState { message: TODAY_UNAVAILABLE.to_owned() }
-                            TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
-                        },
-                        TodayView::Quiet if connections_quiet => rsx! {
+                    ReadNotice {
+                        stage: state.stage(),
+                        loading: TODAY_LOADING,
+                        stale: TODAY_STALE,
+                        unavailable: TODAY_UNAVAILABLE,
+                        retry: TRY_AGAIN,
+                        on_retry,
+                    }
+                    {resume_notice}
+                    match state.content().cloned() {
+                        Some(rows) if rows.is_empty() && connections_quiet => rsx! {
                             div { class: "today-list today-quiet",
                                 strong { "{TODAY_QUIET}" }
                                 span { "{TODAY_QUIET_DETAIL}" }
                             }
                         },
-                        TodayView::Quiet => rsx! {},
-                        TodayView::Stale(rows) => rsx! {
-                            ErrorState { message: TODAY_STALE.to_owned() }
-                            TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
+                        Some(rows) if !rows.is_empty() => rsx! {
                             TodayRows { rows, server_now: server_now.clone(), focused: row_focus, on_open: on_open_row, on_resume }
                         },
-                        TodayView::Rows(rows) => rsx! { TodayRows { rows, server_now: server_now.clone(), focused: row_focus, on_open: on_open_row, on_resume } },
+                        _ => rsx! {},
                     }
                 }
                 if show_schedule {
                     ScheduleRail {
                         visits: visits.clone(),
                         title: "Schedule",
+                        read: schedule,
+                        on_retry: on_schedule_retry,
                         empty: schedule_empty.clone(),
                         collapsed: schedule_collapsed,
                         on_collapsed: on_schedule_collapsed,
@@ -2166,6 +2390,9 @@ fn TodayRows(
                             span { class: "today-row-heading",
                                 span { class: "live-dot", aria_hidden: "true" }
                                 strong { class: "today-row-who", "{row.patient}" }
+                                if row.now {
+                                    span { class: "urgency-now", "{NEEDS_YOU_NOW}" }
+                                }
                                 span { class: "state-pill",
                                     Icon { name: IconName::Alert }
                                     "{row.did}"
@@ -2202,6 +2429,8 @@ fn TodayRows(
 fn ScheduleRail(
     visits: Vec<VisitLine>,
     title: &'static str,
+    read: ui::ReadStage,
+    on_retry: EventHandler,
     empty: String,
     collapsed: bool,
     on_collapsed: EventHandler<bool>,
@@ -2252,7 +2481,15 @@ fn ScheduleRail(
                     Icon { name: IconName::PanelRightClose }
                 }
             }
-            if visits.is_empty() {
+            ReadNotice {
+                stage: read,
+                loading: SCHEDULE_LOADING,
+                stale: SCHEDULE_STALE,
+                unavailable: SCHEDULE_UNAVAILABLE,
+                retry: TRY_AGAIN,
+                on_retry,
+            }
+            if visits.is_empty() && read == ui::ReadStage::Showing {
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
@@ -2287,20 +2524,27 @@ fn ScheduleRail(
 }
 
 #[component]
-fn UpdatesSurface(read: Option<Result<Vec<serde_json::Value>, ()>>) -> Element {
+fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandler) -> Element {
     rsx! {
         div { class: "reading-workspace",
             header { class: "today-heading", h1 { "Updates" } }
-            match read {
-                None => rsx! { EmptyState { message: UPDATES_LOADING.to_owned() } },
-                Some(Err(())) => rsx! { ErrorState { message: UPDATES_UNAVAILABLE.to_owned() } },
-                Some(Ok(rows)) if rows.is_empty() => rsx! {
+            ReadNotice {
+                stage: state.stage(),
+                loading: UPDATES_LOADING,
+                stale: UPDATES_STALE,
+                unavailable: UPDATES_UNAVAILABLE,
+                retry: TRY_AGAIN,
+                on_retry,
+            }
+            match state.content().cloned() {
+                None => rsx! {},
+                Some(rows) if rows.is_empty() => rsx! {
                     div { class: "updates-empty",
                         h2 { "{UPDATES_EMPTY}" }
                         p { "{UPDATES_EMPTY_DETAIL}" }
                     }
                 },
-                Some(Ok(rows)) => rsx! {
+                Some(rows) => rsx! {
                     div { class: "today-list",
                         for row in rows {
                             article { class: "today-row",
@@ -2316,12 +2560,17 @@ fn UpdatesSurface(read: Option<Result<Vec<serde_json::Value>, ()>>) -> Element {
 
 #[component]
 fn PatientSurface(
+    gone: bool,
+    read: ui::ReadStage,
+    on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
     rows: Vec<TodayLine>,
     visits: Vec<VisitLine>,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
+    schedule: ui::ReadStage,
+    on_schedule_retry: EventHandler,
     focused: Option<i32>,
     chats: ChatView,
     server_now: String,
@@ -2345,13 +2594,19 @@ fn PatientSurface(
     on_send: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
-    messages: Vec<String>,
-    snapshot_failed: bool,
+    conversation: ReadView<Vec<String>>,
+    on_conversation_retry: EventHandler,
     on_open_chat: EventHandler<String>,
     conversation_open: bool,
     past_work: bool,
     reply_notice: String,
     reply_busy: bool,
+    reply_command_notice: Element,
+    send_notice: Element,
+    work_busy: bool,
+    work_notice: Element,
+    resume_notice: Element,
+    on_resume: EventHandler<TodayLine>,
     on_open_past_work: EventHandler,
     on_close_reply: EventHandler<String>,
     on_revise_reply: EventHandler<(String, String)>,
@@ -2423,6 +2678,15 @@ fn PatientSurface(
         .filter(|value| !value.is_empty())
         .unwrap_or_else(|| name.clone());
     let is_simulated = simulation.is_some();
+    if gone {
+        // Nothing of the patient shows, not even the name.
+        return rsx! {
+            div { class: "reading-workspace patient-page",
+                ErrorState { message: PATIENT_GONE }
+                TextButton { label: GO_TO_TODAY, quiet: true, on_press: on_go_today }
+            }
+        };
+    }
     rsx! {
         div { class: "reading-workspace patient-page",
             header { class: "patient-identity",
@@ -2468,6 +2732,14 @@ fn PatientSurface(
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
             div { class: "today-main",
+            ReadNotice {
+                stage: read,
+                loading: PATIENT_LOADING,
+                stale: PATIENT_STALE,
+                unavailable: PATIENT_UNAVAILABLE,
+                retry: TRY_AGAIN,
+                on_retry,
+            }
             if clinic_demographic {
                 section {
                     class: "patient-section clinic-demographic-card",
@@ -2562,12 +2834,15 @@ fn PatientSurface(
                             class: "control-secondary",
                             r#type: "button",
                             "data-action": "admit-corrected-labs",
+                            disabled: work_busy,
                             onclick: move |_| on_admit_corrected_labs.call(()),
                             "Admit corrected BMP"
                         }
                     }
                 }
             }
+            {work_notice}
+            {resume_notice}
             if !rows.is_empty() {
                 TodayRows {
                     rows,
@@ -2578,7 +2853,7 @@ fn PatientSurface(
                             on_read.call((line.patient.clone(), line.reason.clone()));
                         }
                     },
-                    on_resume: move |_| {},
+                    on_resume,
                 }
             }
             if !replies.is_empty() || !superseded_replies.is_empty() {
@@ -2587,6 +2862,7 @@ fn PatientSurface(
                     if !reply_notice.is_empty() {
                         p { class: "composer-notice", role: "status", "{reply_notice}" }
                     }
+                    {reply_command_notice}
                     for reply in replies {
                         ReplyReviewCard {
                             reply: reply.clone(),
@@ -2695,6 +2971,7 @@ fn PatientSurface(
                                     class: "control-secondary",
                                     r#type: "button",
                                     "data-decide-recommendation": "{rec.recommendation_id}",
+                                    disabled: work_busy,
                                     onclick: {
                                         let id = rec.recommendation_id.clone();
                                         move |_| on_decide_recommendation.call(id.clone())
@@ -2758,10 +3035,8 @@ fn PatientSurface(
                 match chats {
                     ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
                     ChatView::Pending => rsx! {},
-                    ChatView::Unavailable => rsx! {
-                        ErrorState { message: WORKSPACE_UNAVAILABLE.to_owned() }
-                        TextButton { label: TRY_AGAIN.to_owned(), quiet: true, on_press: on_retry }
-                    },
+                    // The page's own read line says the patient couldn't open.
+                    ChatView::Unavailable => rsx! {},
                     ChatView::Empty => rsx! { p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" } },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
@@ -2776,12 +3051,20 @@ fn PatientSurface(
                                 "{line.title}"
                             }
                         }
-                        if snapshot_failed {
-                            p { class: "sidebar-loading", "{CONVERSATION_UNAVAILABLE}" }
-                        } else if conversation_open && messages.is_empty() {
+                        if conversation_open {
+                            ReadNotice {
+                                stage: conversation.stage(),
+                                loading: CONVERSATION_LOADING,
+                                stale: "",
+                                unavailable: CONVERSATION_UNAVAILABLE,
+                                retry: TRY_AGAIN,
+                                on_retry: on_conversation_retry,
+                            }
+                        }
+                        if conversation_open && conversation.content().is_some_and(Vec::is_empty) {
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
-                        for message in messages {
+                        for message in conversation.content().cloned().unwrap_or_default() {
                             FormattedMessage { text: message }
                         }
                         textarea {
@@ -2800,15 +3083,18 @@ fn PatientSurface(
                                 span { class: "composer-notice", "{notice}" }
                             }
                         }
+                        {send_notice}
                     },
                 }
             }
             }
             }
-            if !visits.is_empty() {
+            if !visits.is_empty() || schedule == ui::ReadStage::Unavailable {
                 ScheduleRail {
                     visits: visits.clone(),
                     title: "Upcoming visits",
+                    read: schedule,
+                    on_retry: on_schedule_retry,
                     empty: String::new(),
                     collapsed: schedule_collapsed,
                     on_collapsed: on_schedule_collapsed,
@@ -2831,16 +3117,19 @@ fn PatientSurface(
 #[component]
 fn SearchDialog(
     query: String,
-    results: Vec<physician_wire::PatientSearchRow>,
+    state: ReadView<Vec<physician_wire::PatientSearchRow>>,
+    on_retry: EventHandler,
     on_query: EventHandler<String>,
     on_close: EventHandler,
     on_open: EventHandler<String>,
     on_editing: EventHandler<bool>,
     focused: Option<i32>,
 ) -> Element {
+    let results = state.content().cloned().unwrap_or_default();
     let first = results
         .first()
         .map(|patient| patient.patient_workspace_id.clone());
+    let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
         div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
             section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
@@ -2862,6 +3151,17 @@ fn SearchDialog(
                             }
                         }
                     },
+                }
+                ReadNotice {
+                    stage: state.stage(),
+                    loading: SEARCH_LOADING,
+                    stale: "",
+                    unavailable: SEARCH_UNAVAILABLE,
+                    retry: TRY_AGAIN,
+                    on_retry,
+                }
+                if none {
+                    EmptyState { message: SEARCH_NONE }
                 }
                 ul { class: "dialog-results",
                     for (index, patient) in results.iter().enumerate() {
@@ -3085,7 +3385,7 @@ fn ReplyReviewCard(
     let channel = reply_channel_label(&reply.channel);
     let headline = reply.headline.clone();
     let state = reply.state.clone();
-    let urgency = reply.urgency.clone();
+    let urgency = reply_urgency_words(&reply.urgency);
     let draft = reply.draft_text.clone();
     let reply_id = reply.reply_work_id.clone();
     let can_copy = actions.contains(&ReplyReviewAction::Copy);
@@ -3099,7 +3399,7 @@ fn ReplyReviewCard(
             aria_label: "{label}",
             div { class: "simulation-card-header",
                 strong { "{headline}" }
-                span { class: "state-pill", "Active ({urgency})" }
+                span { class: "state-pill", "{urgency}" }
             }
             p { class: "patient-synopsis-meta", "{label}" }
             FormattedMessage { text: draft.clone() }
@@ -3271,7 +3571,7 @@ fn focus_targets(
         return targets;
     }
     if place == Place::Today {
-        if let TodayView::Rows(rows) | TodayView::Stale(rows) = today {
+        if let Some(rows) = today.content() {
             targets.extend(rows.iter().cloned().map(FocusTarget::Row));
         }
         targets.extend(visits.iter().cloned().map(FocusTarget::Visit));
@@ -3323,63 +3623,47 @@ fn open_target(
     }
 }
 
-fn send_message(
-    client: PhysicianClient,
+/// The message the physician wrote, as one command. Nothing goes without a
+/// patient, a conversation and the practice's time zone.
+fn message_command(
     workspace_id: Option<String>,
     chat_id: Option<String>,
     time_zone: Option<String>,
     text: String,
-    mut notice: Signal<String>,
-    mut snapshot_attempt: Signal<u32>,
-) {
+) -> Result<Command, String> {
     let (Some(workspace_id), Some(chat_id), Some(time_zone)) = (workspace_id, chat_id, time_zone)
     else {
-        notice.set("Coda couldn’t accept that message.".to_owned());
-        return;
+        return Err(MESSAGE_REFUSED.to_owned());
     };
-    spawn(async move {
-        let message = command_message(&client, &workspace_id, &chat_id, &time_zone, &text).await;
-        if message.is_empty() {
-            snapshot_attempt.set(snapshot_attempt() + 1);
-        }
-        notice.set(message);
-    });
+    Ok(Command::new(
+        "message.submit",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "text": text,
+            "physician_time_zone": time_zone,
+            "intent": "queue",
+        }),
+    ))
 }
 
-async fn command_message(
-    client: &PhysicianClient,
-    workspace_id: &str,
-    chat_id: &str,
-    time_zone: &str,
-    text: &str,
-) -> String {
-    match client
-        .command(&serde_json::json!({
-            "type": "message.submit",
-            "idempotency_key": idempotency_key(),
-            "payload": {
-                "patient_workspace_id": workspace_id,
-                "chat_id": chat_id,
-                "text": text,
-                "physician_time_zone": time_zone,
-                "intent": "queue",
-            }
-        }))
-        .await
-    {
-        Ok(value) => {
-            if value.get("outcome").and_then(|item| item.as_str()) == Some("accepted") {
-                String::new()
-            } else {
-                value
-                    .get("message")
-                    .and_then(|message| message.as_str())
-                    .unwrap_or("Coda couldn’t accept that message.")
-                    .to_owned()
-            }
-        }
-        Err(_) => "Coda couldn’t accept that message.".to_owned(),
-    }
+/// Try again on one piece of work. Its key names the run it resumes, so
+/// pressing again for the same run is the same request.
+fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
+    let (work, run) = (
+        line.resume_work_item_id.as_ref()?,
+        line.resume_run_id.as_ref()?,
+    );
+    Some(Command::keyed(
+        "work.resume",
+        format!("resume-{work}-{run}"),
+        serde_json::json!({
+            "patient_workspace_id": line.workspace_id,
+            "work_item_id": work,
+            "expected_run_id": run,
+            "physician_time_zone": time_zone,
+        }),
+    ))
 }
 
 fn idempotency_key() -> String {

@@ -327,28 +327,6 @@ impl PhysicianClient {
             .await
     }
 
-    /// Asks the server to resume one piece of work.
-    pub async fn resume_work(
-        &self,
-        workspace_id: &str,
-        work_item_id: &str,
-        expected_run_id: &str,
-        time_zone: &str,
-    ) -> Result<(), http::HttpError> {
-        let body = serde_json::json!({
-            "type": "work.resume",
-            "idempotency_key": format!("resume-{work_item_id}-{expected_run_id}"),
-            "payload": {
-                "patient_workspace_id": workspace_id,
-                "work_item_id": work_item_id,
-                "expected_run_id": expected_run_id,
-                "physician_time_zone": time_zone,
-            }
-        });
-        let _: serde_json::Value = self.post("/commands", &body).await?;
-        Ok(())
-    }
-
     /// Reads one patient workspace.
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
         self.get(&format!("/patient-workspaces/{id}")).await
