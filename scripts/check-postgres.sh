@@ -40,5 +40,8 @@ cargo test --locked -p local-product --test runtime_publication -- --ignored --t
 cargo test --locked -p local-product --test runtime_recovery -- --ignored --test-threads=1
 # Physician scale proofs. Valkey and the Pub/Sub emulator come from the nix
 # dev shell; each test creates its own database on PHYSICIAN_DATABASE_URL.
+# The bus suite needs Valkey only. The workspace CI job has no Nix shell, so
+# it skips; this job fail-closes when valkey-server is missing.
+cargo test --locked -p physician-bus --test redis -- --test-threads=1
 cargo test --locked -p physician-sample --test fanout -- --test-threads=1
 cargo test --locked -p physician-sample --test worker -- --test-threads=1

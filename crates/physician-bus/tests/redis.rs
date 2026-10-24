@@ -1,5 +1,8 @@
 //! Real disposable Valkey, no shared service, credentials, or fixed ports.
 //! Run from the Nix dev shell: cargo test -p physician-bus --test redis --locked
+//!
+//! Without `valkey-server` the suite returns. The Postgres CI job sets
+//! `CODA_REQUIRE_POSTGRES_TESTS` and fails closed if the binary is missing.
 use fred::prelude::*;
 use physician_bus::{Bus, CHANNEL, Event, RedisBus, Subscription};
 use std::{
@@ -20,8 +23,28 @@ struct Server {
     tls: bool,
 }
 
+fn valkey_available() -> bool {
+    let found = Command::new("valkey-server")
+        .arg("--version")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+        .is_ok_and(|status| status.success());
+    if found {
+        return true;
+    }
+    assert!(
+        std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+        "valkey-server from the Nix dev shell is required for the physician bus proof"
+    );
+    false
+}
+
 impl Server {
-    async fn start(tls: bool) -> Self {
+    async fn start(tls: bool) -> Option<Self> {
+        if !valkey_available() {
+            return None;
+        }
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
         let port = listener.local_addr().unwrap().port();
         let directory = std::env::temp_dir().join(format!(
@@ -106,7 +129,7 @@ impl Server {
         }
         drop(listener);
         server.restart().await;
-        server
+        Some(server)
     }
 
     async fn restart(&mut self) {
@@ -204,7 +227,9 @@ async fn wait_live(bus: &RedisBus, expected: bool) {
 
 #[tokio::test]
 async fn independent_instances_auth_fanout_restart_resync_and_invalid_payload() {
-    let mut server = Server::start(false).await;
+    let Some(mut server) = Server::start(false).await else {
+        return;
+    };
     let bad_url = server
         .url()
         .replace(PASSWORD, "incorrect-synthetic-password");
@@ -281,7 +306,9 @@ async fn independent_instances_auth_fanout_restart_resync_and_invalid_payload() 
 
 #[tokio::test]
 async fn tls_custom_ca_auth_and_untrusted_certificate_rejection() {
-    let server = Server::start(true).await;
+    let Some(server) = Server::start(true).await else {
+        return;
+    };
     assert!(
         RedisBus::connect(&server.url(), None).await.is_err(),
         "self-signed server must not be trusted by default"
