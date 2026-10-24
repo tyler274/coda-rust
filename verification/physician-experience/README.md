@@ -8,22 +8,36 @@ The physician web app's behavior, written as one statechart.
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the audit findings the graph cites. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph leaves to the runtime, and what the runtime must still guarantee. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
-| [sign-in.mmd](sign-in.mmd) | The steps of signing in with an email link, behind the graph's sign-in page. It has no safety rules. |
+| [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, and its Page region is what one browser tab shows. It has no safety rules. |
+| [sign-in.against.json](sign-in.against.json) | The map that connects sign-in.mmd to the graph, in the graph's words. |
 | [evidence/](evidence/) | Screenshots from exercising the running app, such as the staging email sign-in on 2026-10-24. |
 
 ## How sign-in.mmd connects to the graph
 
-sign-in.mmd details one page of the graph, the Sign-in page (`SPage`), and the
-graph stays the owner of everything around it:
+The graph owns sign-in behavior. sign-in.mmd details it, and one map,
+sign-in.against.json, labels sign-in.mmd's session states and steps in the
+graph's words. The page states map to nothing, because the graph has no browser
+tabs. Check the connection from the repository root:
 
-- `verification succeeds` in sign-in.mmd is the graph's `sign in to the practice`
-  for a member: the workspace opens on Today.
-- `sign out` is the same event in both.
-- Session expiry and `sign in again` belong to the graph (decision 14);
-  sign-in.mmd says so and does not model them.
+```bash
+node .agents/skills/coda-statechart/scripts/statechart.mjs against verification/physician-experience/sign-in.mmd verification/physician-experience/physician.mmd --map verification/physician-experience/sign-in.against.json
+```
 
-A change to how signing in behaves goes in the graph first, and sign-in.mmd
-follows it.
+It must report that sign-in.mmd follows the graph in both directions:
+
+- every sign-in step is a graph step, or a page-only step that keeps the session;
+- every graph step from a session state sign-in.mmd reaches is shown, unless the
+  map's `omits` says why.
+
+The omits are the open list. Three are graph behavior that sign-in doesn't do
+yet (Dev 2026-10-24, decisions.md):
+
+- the expired prompt that emails a link and resumes in place;
+- the "No access to this practice" page;
+- keeping a Coda link's patient or item through sign-in.
+
+When one is built, add it to sign-in.mmd and remove its omit. A change to how
+signing in behaves goes in the graph first, and sign-in.mmd and the map follow.
 
 ## What the graph is
 

@@ -1,6 +1,9 @@
 stateDiagram-v2
-  %% Email-link entry detail for physician.mmd's SPage; session expiry and return-in-place
-  %% remain owned by that parent chart. This entry chart does not prove that behavior.
+  %% Email-link sign-in in detail, behind physician.mmd's Physician session. The Session
+  %% region details the graph's session; the Page region is what one browser tab shows,
+  %% which the graph does not model. sign-in.against.json maps it onto the graph, and
+  %% statechart.mjs against checks it (README). The graph owns the behavior; this chart
+  %% follows it.
   %% Decision: Dev 2026-10-24, clicking the email button signs in automatically, no code screen.
   %% Promise: only the server's successful verification opens the workspace. A request
   %% acknowledgement means check email, including unknown accounts; it never authenticates.
@@ -11,6 +14,9 @@ stateDiagram-v2
   %% Existing browser tests cover the real mailed HTML button, public mount, reload,
   %% sign-out, an already-signed-in browser, and reuse refusal. No chart safety rules:
   %% generation/check/trace establish transition correspondence, not data or runtime proof.
+  %% Not built yet, and named by the map's omits: the expired prompt that emails a link and
+  %% resumes in place, the No access to this practice page, and keeping a Coda link's
+  %% destination through sign-in (Dev 2026-10-24, decisions.md).
   %% events declared
   %% event request a link | by you | Enter an email or request a replacement link.
   %% event the request is acknowledged | by the authentication service | Check email; this does not reveal whether the account exists.
@@ -23,32 +29,55 @@ stateDiagram-v2
   %% event reload with a valid session | by you | Restore the browser session through the existing authenticated read.
   %% event sign out | by you | End the server session and clear browser session storage.
   %% event reopen without a valid session | by you | Normal entry returns to the email field. Expiry during active work belongs to physician.mmd.
-  state "Sign-in entry" as Entry {
-    [*] --> Email
-    state "Enter work email" as Email
-    state "Sending link" as Requesting
-    state "Check your email" as CheckEmail
-    state "Signing you in" as SigningIn
-    state "Sign-in recovery" as Recovery
-    Email --> Requesting : request a link
-    CheckEmail --> Requesting : request a link
-    Recovery --> Requesting : request a link
-    Requesting --> CheckEmail : the request is acknowledged
-    Requesting --> Recovery : the request cannot be confirmed
-    Requesting --> SigningIn : local proof returns a token
-    CheckEmail --> Email : use another email
-    Recovery --> Email : use another email
-    SigningIn --> Recovery : verification fails or is uncertain
+  %% event the session expires | by the authentication service | The server session ends; the page learns it on its next request or reopen.
+  state "Sign-in" as SignIn {
+    state "Session" as Session {
+      [*] --> NoSession
+      [*] --> Valid
+      state "No session" as NoSession
+      state "Session valid" as Valid
+      state "Session ended" as Ended
+      NoSession --> Valid : verification succeeds
+      Valid --> Valid : verification succeeds
+      Valid --> NoSession : sign out
+      Valid --> Ended : the session expires
+      Ended --> NoSession : reopen without a valid session
+      Ended --> NoSession : open the email button
+    }
+    --
+    state "Page" as Page {
+      [*] --> Entry
+      [*] --> SigningIn
+      [*] --> SignedIn
+      state "Sign-in entry" as Entry {
+        [*] --> Email
+        state "Enter work email" as Email
+        state "Sending link" as Requesting
+        state "Check your email" as CheckEmail
+        state "Signing you in" as SigningIn
+        state "Sign-in recovery" as Recovery
+        Email --> Requesting : request a link
+        CheckEmail --> Requesting : request a link
+        Recovery --> Requesting : request a link
+        Requesting --> CheckEmail : the request is acknowledged
+        Requesting --> Recovery : the request cannot be confirmed
+        Requesting --> SigningIn : local proof returns a token
+        CheckEmail --> Email : use another email
+        Recovery --> Email : use another email
+        SigningIn --> Recovery : verification fails or is uncertain
+      }
+      state "Workspace open" as SignedIn
+      Entry --> SigningIn : open the email button
+      SignedIn --> SigningIn : open the email button
+      SigningIn --> SignedIn : verification succeeds
+      Entry --> SignedIn : reload with a valid session [session valid]
+      %% when Valid
+      SignedIn --> SignedIn : reload with a valid session [session valid]
+      %% when Valid
+      Entry --> Email : reopen without a valid session [no valid session]
+      %% when not Valid
+      SignedIn --> Email : reopen without a valid session [no valid session]
+      %% when not Valid
+      SignedIn --> Email : sign out
+    }
   }
-  state "Workspace open" as SignedIn
-  [*] --> Entry
-  [*] --> SigningIn
-  [*] --> SignedIn
-  Entry --> SigningIn : open the email button
-  SignedIn --> SigningIn : open the email button
-  SigningIn --> SignedIn : verification succeeds
-  Entry --> SignedIn : reload with a valid session
-  SignedIn --> SignedIn : reload with a valid session
-  Entry --> Email : reopen without a valid session
-  SignedIn --> Email : reopen without a valid session
-  SignedIn --> Email : sign out

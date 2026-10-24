@@ -19,6 +19,9 @@ pub proof fn preserves_event_sign_in_through_a_link(s: State, t: State)
 pub proof fn preserves_event_try_another_account(s: State, t: State)
     requires inductive(s), ensures event_try_another_account(s, t) ==> inductive(t),
 {}
+pub proof fn preserves_event_reopen_coda_after_the_session_ended(s: State, t: State)
+    requires inductive(s), ensures event_reopen_coda_after_the_session_ended(s, t) ==> inductive(t),
+{}
 pub proof fn preserves_event_a_different_physician_signs_in(s: State, t: State)
     requires inductive(s), ensures event_a_different_physician_signs_in(s, t) ==> inductive(t),
 {}
@@ -1890,6 +1893,7 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_sign_in_to_the_practice(s, t);
     preserves_event_sign_in_through_a_link(s, t);
     preserves_event_try_another_account(s, t);
+    preserves_event_reopen_coda_after_the_session_ended(s, t);
     preserves_event_a_different_physician_signs_in(s, t);
     preserves_event_sign_out(s, t);
     preserves_event_the_session_expires(s, t);

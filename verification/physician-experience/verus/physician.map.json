@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "1fa959853ef009bbd21623439017cacfa2835aed84e160846bc9e9bdc433103e",
-  "generated_sha256": "30e580d0b2ab61b04cbcd66ddaf46e2ed364e1e193043984ddf4ccbbab2de15b",
-  "steps_sha256": "8332ca8e14dc404c3257887f56e955e6c1a30a84065cd8a0de751a80aa9a0396",
+  "chart_sha256": "ed68885c0190e71b7e6211ce944165b006fa82d0a6bcba77d871e86b47121420",
+  "generated_sha256": "73a4a855c8f8b415d41c0aed7f7b60864dd2c838979ce721747119ba93d3eda3",
+  "steps_sha256": "97746942cbca88ba8979129542ae6e42325f83b1fb0597114c03baef1fcb97ab",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -3988,7 +3988,7 @@
       "label": "sign in to the practice",
       "function": "event_sign_in_to_the_practice",
       "cause": "you",
-      "intent": "You sign in: a member lands on Today, anyone else is told they have no access to this practice.",
+      "intent": "You open your emailed sign-in link: a member lands on Today, and a link that no longer grants access to this practice says so. Asking for a link never reveals whether an account exists; an address without one is sent nothing (Dev 2026-10-24).",
       "needs": null,
       "transitions": [
         {
@@ -4258,10 +4258,10 @@
       ]
     },
     {
-      "label": "a different physician signs in",
-      "function": "event_a_different_physician_signs_in",
+      "label": "reopen Coda after the session ended",
+      "function": "event_reopen_coda_after_the_session_ended",
       "cause": "you",
-      "intent": "Another account signs in at the prompt; your session ends there, and your drafts and seen state stay yours for when you return (N7).",
+      "intent": "You come back after the session ended while Coda was closed: the sign-in page shows, and signing in opens Today (Dev 2026-10-24).",
       "needs": null,
       "transitions": [
         {
@@ -4279,6 +4279,21 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "label": "a different physician signs in",
+      "function": "event_a_different_physician_signs_in",
+      "cause": "you",
+      "intent": "Another physician's sign-in link opens here: your session ends and theirs starts at Today; drafts and seen state stay with each physician (N7, Dev 2026-10-24). Your own link changes nothing.",
+      "needs": null,
+      "transitions": [
+        {
+          "region": "Physician session",
+          "from": "Signed in",
+          "to": "Signed in",
+          "guard": null
         }
       ]
     },
@@ -4346,7 +4361,7 @@
       "label": "sign in again",
       "function": "event_sign_in_again",
       "cause": "you",
-      "intent": "You sign in at the prompt and are back exactly where you were.",
+      "intent": "You open the sign-in link the prompt emailed you: the covered page and the link's own page are both back exactly where you were (Dev 2026-10-24).",
       "needs": null,
       "transitions": [
         {
