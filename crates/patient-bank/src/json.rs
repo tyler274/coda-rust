@@ -432,7 +432,7 @@ pub fn float_repr(f: f64) -> String {
     let (sign, mantissa) = mantissa
         .strip_prefix('-')
         .map_or(("", mantissa), |m| ("-", m));
-    let digits: String = mantissa.chars().filter(|c| *c != '.').collect();
+    let digits = half_even(f, mantissa.chars().filter(|c| *c != '.').collect());
     if (-4..16).contains(&exp) {
         let point = exp + 1; // digits before the decimal point
         let body = if point <= 0 {
@@ -456,6 +456,36 @@ pub fn float_repr(f: f64) -> String {
         let esign = if exp < 0 { '-' } else { '+' };
         format!("{sign}{}{frac}e{esign}{:02}", &digits[..1], exp.abs())
     }
+}
+
+/// Rust's shortest digits break an exact tie between two shortest candidates upward;
+/// Python's `repr` (David Gay's dtoa, mode 0) takes the even one. A tie needs 16 or more
+/// digits (shorter decimals are coarser than the binary grid), and differs only when Rust's
+/// last digit is odd: then the value's exact expansion is the lower candidate followed by a 5.
+fn half_even(f: f64, mut digits: String) -> String {
+    let n = digits.len();
+    let last = digits.as_bytes()[n - 1];
+    if n < 16 || last.is_multiple_of(2) {
+        return digits;
+    }
+    let exact = format!("{:.800e}", f.abs());
+    let exact: Vec<u8> = exact
+        .split_once('e')
+        .expect("exponent")
+        .0
+        .bytes()
+        .filter(|c| *c != b'.')
+        .collect();
+    let lower = &digits.as_bytes()[..n - 1];
+    if exact[..n - 1] == *lower
+        && exact[n - 1] == last - 1
+        && exact[n] == b'5'
+        && exact[n + 1..].iter().all(|c| *c == b'0')
+    {
+        digits.pop();
+        digits.push(char::from(last - 1));
+    }
+    digits
 }
 
 fn write_str(out: &mut String, s: &str, ascii: bool) {
