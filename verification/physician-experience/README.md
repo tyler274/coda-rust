@@ -29,12 +29,11 @@ It must report that sign-in.mmd follows the graph in both directions:
 - every graph step from a session state sign-in.mmd reaches is shown, unless the
   map's `omits` says why.
 
-The omits are the open list. Three are graph behavior that sign-in doesn't do
-yet (Dev 2026-10-24, decisions.md):
-
-- the expired prompt that emails a link and resumes in place;
-- the "No access to this practice" page;
-- keeping a Coda link's patient or item through sign-in.
+The omits are the open list of graph behavior sign-in doesn't do yet. One is
+left: a Coda link opened while signed out keeps its patient only in the tab
+that opened it, and the emailed link's own tab opens Today. The expired prompt
+and the "No access to this practice" page are built (Dev 2026-10-24,
+decisions.md).
 
 When one is built, add it to sign-in.mmd and remove its omit. A change to how
 signing in behaves goes in the graph first, and sign-in.mmd and the map follow.

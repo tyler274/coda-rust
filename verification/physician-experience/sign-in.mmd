@@ -10,13 +10,14 @@ stateDiagram-v2
   %% Promise: the URL token is cleared before rendering; the server hashes, expires and
   %% consumes it once. These are data obligations, exercised in physician-auth and
   %% physician-sample/tests/site.rs, not represented as invented finite states here.
-  %% Implementation: physician-app/src/lib.rs SignInScreen and PhysicianRoot; main.rs sign_in_link.
-  %% Existing browser tests cover the real mailed HTML button, public mount, reload,
-  %% sign-out, an already-signed-in browser, and reuse refusal. No chart safety rules:
-  %% generation/check/trace establish transition correspondence, not data or runtime proof.
-  %% Not built yet, and named by the map's omits: the expired prompt that emails a link and
-  %% resumes in place, the No access to this practice page, and keeping a Coda link's
-  %% destination through sign-in (Dev 2026-10-24, decisions.md).
+  %% Implementation: physician-app/src/lib.rs SignInScreen, PhysicianRoot and SessionState;
+  %% tabs.rs carries sign-in news between this browser's tabs; main.rs sign_in_link.
+  %% Browser tests cover the real mailed HTML button, public mount, reload, sign-out, an
+  %% already-signed-in browser, reuse refusal, the expired prompt resuming in place (from the
+  %% prompt and from another tab), another physician's sign-in, and No access. No chart safety
+  %% rules: generation/check/trace establish transition correspondence, not data or runtime proof.
+  %% Not built yet, and named by the map's omits: a Coda link opened while signed out keeps
+  %% its patient only in the tab that opened it; the emailed link's own tab opens Today.
   %% events declared
   %% event request a link | by you | Enter an email or request a replacement link.
   %% event the request is acknowledged | by the authentication service | Check email; this does not reveal whether the account exists.
@@ -25,11 +26,13 @@ stateDiagram-v2
   %% event use another email | by you | Return to the editable email field.
   %% event open the email button | by you | Navigate to the mailed link; clear URL credentials and attempt redemption once.
   %% event verification succeeds | by the authentication service | Store the issued session and open the workspace.
+  %% event verification refuses access | by the authentication service | The link matched, but its account no longer has access to this practice.
   %% event verification fails or is uncertain | by the authentication service or network | Show a recovery action; never claim success or automatically resend.
   %% event reload with a valid session | by you | Restore the browser session through the existing authenticated read.
   %% event sign out | by you | End the server session and clear browser session storage.
   %% event reopen without a valid session | by you | Normal entry returns to the email field. Expiry during active work belongs to physician.mmd.
   %% event the session expires | by the authentication service | The server session ends; the page learns it on its next request or reopen.
+  %% event access is removed | by the practice | A read finds this account's access removed; the page returns to sign-in.
   state "Sign-in" as SignIn {
     state "Session" as Session {
       [*] --> NoSession
@@ -37,10 +40,17 @@ stateDiagram-v2
       state "No session" as NoSession
       state "Session valid" as Valid
       state "Session ended" as Ended
+      state "No access" as Refused
       NoSession --> Valid : verification succeeds
+      NoSession --> Refused : verification refuses access
+      Refused --> NoSession : use another email
+      Refused --> Valid : verification succeeds
       Valid --> Valid : verification succeeds
       Valid --> NoSession : sign out
+      Valid --> NoSession : access is removed
       Valid --> Ended : the session expires
+      Ended --> Valid : verification succeeds
+      Ended --> NoSession : sign out
       Ended --> NoSession : reopen without a valid session
       Ended --> NoSession : open the email button
     }
@@ -64,7 +74,10 @@ stateDiagram-v2
         Requesting --> SigningIn : local proof returns a token
         CheckEmail --> Email : use another email
         Recovery --> Email : use another email
+        state "No access to this practice" as NoAccess
         SigningIn --> Recovery : verification fails or is uncertain
+        SigningIn --> NoAccess : verification refuses access
+        NoAccess --> Email : use another email
       }
       state "Workspace open" as SignedIn
       Entry --> SigningIn : open the email button
@@ -79,5 +92,27 @@ stateDiagram-v2
       SignedIn --> Email : reopen without a valid session [no valid session]
       %% when not Valid
       SignedIn --> Email : sign out
+      SignedIn --> Email : access is removed
+      %% The prompt covers the open workspace and hides it; nothing underneath changes.
+      state "Prompt over the workspace" as Covered {
+        [*] --> PromptEmail
+        state "Email me a sign-in link" as PromptEmail
+        state "Sending the prompt's link" as PromptSending
+        state "Check your email for the prompt's link" as PromptCheck
+        state "Signing in under the prompt" as PromptSigning
+        state "Prompt recovery" as PromptRecovery
+        PromptEmail --> PromptSending : request a link
+        PromptCheck --> PromptSending : request a link
+        PromptRecovery --> PromptSending : request a link
+        PromptSending --> PromptCheck : the request is acknowledged
+        PromptSending --> PromptRecovery : the request cannot be confirmed
+        PromptSending --> PromptSigning : local proof returns a token
+        PromptSigning --> PromptRecovery : verification fails or is uncertain
+      }
+      SignedIn --> Covered : the session expires
+      Covered --> SignedIn : verification succeeds
+      Covered --> Email : sign out
+      Covered --> Email : reopen without a valid session [no valid session]
+      %% when not Valid
     }
   }

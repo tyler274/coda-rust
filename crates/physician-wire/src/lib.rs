@@ -783,6 +783,9 @@ pub struct WhoamiResponse {
     pub physician_id: String,
     /// The `practice_id` value.
     pub practice_id: String,
+    #[serde(default)]
+    /// The account's email; the expired-session prompt mails its link here.
+    pub email: String,
     /// The physician's display name.
     pub display_name: String,
     #[serde(default)]
