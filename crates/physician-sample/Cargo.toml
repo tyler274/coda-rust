@@ -10,8 +10,10 @@ version.workspace = true
 sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls"] }
 sha2 = "0.11"
 axum = "0.8"
+base64 = "0.23"
 front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
+gmail = { path = "../gmail" }
 local-product = { path = "../local-product" }
 harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
@@ -25,6 +27,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal
 tracing = "0.1"
 
 [dev-dependencies]
+gmail = { path = "../gmail", features = ["test-util"] }
 public-site = { path = "../public-site" }
 opentelemetry = { version = "0.31", default-features = false, features = ["trace"] }
 opentelemetry_sdk = { version = "0.31", default-features = false, features = ["trace", "testing"] }

@@ -75,6 +75,16 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
             "CODA_CASSETTE_AUTHORIZATION",
             "CODA_PHYSICIAN_SOURCE_SNAPSHOT",
             "CODA_LOCAL_SIMULATION",
+            // Browser tests sign in from the proof token. A shell that already
+            // has the Gmail sender must not flip this server into hosted mode.
+            "PHYSICIAN_GMAIL_FROM",
+            "PHYSICIAN_GMAIL_CLIENT_ID",
+            "PHYSICIAN_GMAIL_CLIENT_SECRET",
+            "PHYSICIAN_GMAIL_REFRESH_TOKEN",
+            "PHYSICIAN_GMAIL_SERVICE_ACCOUNT_KEY",
+            "PHYSICIAN_GMAIL_SEND_URL",
+            "PHYSICIAN_GMAIL_TOKEN_URL",
+            "PHYSICIAN_PUBLIC_ORIGIN",
         ] {
             std::env::remove_var(key);
         }

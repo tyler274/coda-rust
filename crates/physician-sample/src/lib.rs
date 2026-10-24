@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+mod gmail;
 pub mod hosting;
 mod live;
 #[cfg(test)]

@@ -737,13 +737,16 @@ pub struct PhysicianDraft {
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The sign-in route's answer: a token to verify, or the no-account deferral.
 pub struct SignInResponse {
-    /// The `status` value: `token_issued` or `unavailable`.
+    /// The `status` value: `token_issued` when proof delivery returns a code,
+    /// or `unavailable` for the indistinguishable "link is on its way" line.
+    /// Hosted mail uses `unavailable` and omits the code.
     pub status: String,
     #[serde(default)]
     /// The sign-in token when the server issued one (proof delivery).
     pub token: Option<String>,
     #[serde(default)]
-    /// The human line for `unavailable`, such as the no-account deferral.
+    /// The human line for `unavailable`, such as the no-account deferral
+    /// and the hosted "link is on its way" response.
     pub message: Option<String>,
 }
 

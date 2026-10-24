@@ -13,8 +13,8 @@ use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{
-    PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, SimulationStatus,
-    WhoamiResponse, WorkspaceReply,
+    PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, SignInResponse,
+    SimulationStatus, WhoamiResponse, WorkspaceReply,
 };
 
 #[cfg(target_arch = "wasm32")]
@@ -48,6 +48,10 @@ const DICTATION_UNAVAILABLE: &str =
 const CONNECTIONS: &str = "Connections";
 const SIGN_IN_UNAVAILABLE: &str = "Coda couldn’t send a sign-in link right now.";
 const SIGN_IN_INVALID: &str = "That sign-in code is no longer valid.";
+/// The server's indistinguishable sign-in body. Proof mode uses it when the
+/// address has no account. Hosted mode uses it after mailing, and when the
+/// send is missing or fails, and never returns the code.
+const LINK_ON_THE_WAY: &str = "If that address has an account, a sign-in link is on its way.";
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Place {
@@ -1433,21 +1437,25 @@ fn SignInScreen(
             error.set(String::new());
             let email_value = email.read().trim().to_owned();
             match client.begin_sign_in(&email_value).await {
-                Ok(answer) if answer.status == "token_issued" => {
-                    // Without email delivery (the staging preview) the server
-                    // returns the code itself; fill it in so the person who
-                    // asked for it can sign in. A mailed code arrives empty.
-                    token.set(answer.token.clone().unwrap_or_default());
-                    proof_token.set(answer.token);
-                    stage.set(SignInStage::Verify);
-                }
-                Ok(answer) => {
-                    error.set(
-                        answer
-                            .message
-                            .unwrap_or_else(|| SIGN_IN_UNAVAILABLE.to_owned()),
-                    );
-                }
+                Ok(answer) => match sign_in_followup(&answer) {
+                    SignInFollowup::Issued(code) => {
+                        // Proof delivery returns the code. Fill it in so the
+                        // person who asked for it can sign in.
+                        token.set(code.clone());
+                        proof_token.set((!code.is_empty()).then_some(code));
+                        stage.set(SignInStage::Verify);
+                    }
+                    SignInFollowup::Mailed => {
+                        // Hosted delivery (and the same sentence for an unknown
+                        // address) is not a failure. The code stays empty until
+                        // the person pastes it from the mail.
+                        token.set(String::new());
+                        proof_token.set(None);
+                        error.set(String::new());
+                        stage.set(SignInStage::Verify);
+                    }
+                    SignInFollowup::Failed(text) => error.set(text),
+                },
                 Err(_) => error.set(SIGN_IN_UNAVAILABLE.to_owned()),
             }
             busy.set(false);
@@ -1519,6 +1527,7 @@ fn SignInScreen(
                                 "Staging preview: no email is sent; your code is filled in."
                             }
                         } else {
+                            p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
                             p { class: "sign-in-sub", "Paste the code from the sign-in link we sent." }
                         }
                         label { "Sign-in code"
@@ -1565,6 +1574,80 @@ fn SignInScreen(
 enum SignInStage {
     Email,
     Verify,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+enum SignInFollowup {
+    /// Proof mode returned a code to fill in.
+    Issued(String),
+    /// The link is on its way. Leave the code field empty.
+    Mailed,
+    /// The response is not a sign-in the screen can continue.
+    Failed(String),
+}
+
+fn sign_in_followup(answer: &SignInResponse) -> SignInFollowup {
+    if answer.status == "token_issued" {
+        return SignInFollowup::Issued(answer.token.clone().unwrap_or_default());
+    }
+    if answer.message.as_deref() == Some(LINK_ON_THE_WAY) {
+        return SignInFollowup::Mailed;
+    }
+    SignInFollowup::Failed(
+        answer
+            .message
+            .clone()
+            .filter(|text| !text.is_empty())
+            .unwrap_or_else(|| SIGN_IN_UNAVAILABLE.to_owned()),
+    )
+}
+
+#[cfg(test)]
+mod sign_in_followup_tests {
+    use super::{LINK_ON_THE_WAY, SIGN_IN_UNAVAILABLE, SignInFollowup, sign_in_followup};
+    use physician_wire::SignInResponse;
+
+    fn answer(status: &str, token: Option<&str>, message: Option<&str>) -> SignInResponse {
+        SignInResponse {
+            status: status.to_owned(),
+            token: token.map(str::to_owned),
+            message: message.map(str::to_owned),
+        }
+    }
+
+    #[test]
+    fn proof_delivery_fills_the_code() {
+        assert_eq!(
+            sign_in_followup(&answer("token_issued", Some("codas-1"), None)),
+            SignInFollowup::Issued("codas-1".into())
+        );
+    }
+
+    #[test]
+    fn a_hosted_link_leaves_the_code_empty() {
+        assert_eq!(
+            sign_in_followup(&answer("unavailable", None, Some(LINK_ON_THE_WAY))),
+            SignInFollowup::Mailed
+        );
+    }
+
+    #[test]
+    fn a_hosted_response_is_not_token_issued() {
+        let followup = sign_in_followup(&answer("unavailable", None, Some(LINK_ON_THE_WAY)));
+        assert!(!matches!(followup, SignInFollowup::Issued(_)));
+    }
+
+    #[test]
+    fn another_message_stays_a_failure() {
+        assert_eq!(
+            sign_in_followup(&answer("unavailable", None, Some("nope"))),
+            SignInFollowup::Failed("nope".into())
+        );
+        assert_eq!(
+            sign_in_followup(&answer("unavailable", None, None)),
+            SignInFollowup::Failed(SIGN_IN_UNAVAILABLE.into())
+        );
+    }
 }
 
 #[component]

@@ -28,7 +28,7 @@ because it appears in an older contract or generated wire schema.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, and `harness`. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
+Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, `gmail`, and `harness`. `gmail` sends one plain-text message through the Gmail API and does not know either product. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
 
 Duet schema changes go in `crates/duet-api/migrations` and run through `duet-migrate` (`DUET_MIGRATION_DATABASE_URL`, `DUET_RUNTIME_ROLE`), not on API startup. Do not replay the coda-app ledger. Additive wire types go in `crates/duet-api/openapi/additions.json`; regenerate with `cargo run -p workspace-tools -- generate-duet-wire` and do not edit generated DTOs.
 

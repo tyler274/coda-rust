@@ -123,9 +123,13 @@ other profile refuses the list. A rerun never reactivates or edits an existing
 account, so an administrator's deactivation sticks. Invite anyone else from the
 admin surface (`/auth/invitations`) rather than growing the list.
 
-There is no email delivery in the preview: `/auth/sign-in` returns the code and
-the sign-in screen fills it in, saying so. IAP still limits the site to
-`iap_group`.
+Sign-in and invitation mail uses the [`gmail`](/crates/gmail/src/lib.rs) crate
+when `PHYSICIAN_GMAIL_FROM` is set. The Workspace sender is
+`signin@codahealth.ai`. The crate posts one base64url RFC 2822 message to
+`users.messages.send` and the JSON omits the code. Without that sender,
+`/auth/sign-in` still returns the code and the sign-in screen fills it in.
+Doppler holds the sender; a live mailbox check is separate from the fake-server
+proof. IAP still limits the site to `iap_group`.
 
 ### Direct staging rollout
 

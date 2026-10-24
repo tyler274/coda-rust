@@ -74,8 +74,11 @@ pub(crate) struct Auth {
     /// Serializes local authority mutations with publication. PostgreSQL also
     /// holds row locks against mutations from other server instances.
     pub(crate) publication: tokio::sync::Mutex<()>,
-    /// Sign-in tokens are returned to the caller here instead of email.
+    /// Proof-mode sign-in tokens, kept in memory instead of mail. Hosted
+    /// mode leaves this empty.
     pub(crate) delivery: std::sync::Mutex<Vec<String>>,
+    /// Proof mode returns tokens in JSON. Hosted mode sends them through Gmail.
+    pub(crate) mail: crate::gmail::Delivery,
     /// The Duet front door this practice invites patients through. One
     /// store serves every practice; isolation is enforced per request.
     pub(crate) front_door: Arc<dyn FrontDoorStore>,
@@ -112,6 +115,20 @@ impl Auth {
         store: Arc<dyn AuthStore>,
         front_door: Arc<dyn FrontDoorStore>,
     ) -> Arc<Self> {
+        Self::configured(store, front_door, crate::gmail::Delivery::Proof).await
+    }
+
+    /// Builds auth state on one pair of stores and one mail delivery.
+    ///
+    /// [`Delivery::Proof`](crate::gmail::Delivery::Proof) is what local runs
+    /// and tests use. The process entrypoint passes
+    /// [`Delivery::from_env`](crate::gmail::Delivery::from_env) so a configured
+    /// Gmail sender switches the same routes to hosted mail.
+    pub(crate) async fn configured(
+        store: Arc<dyn AuthStore>,
+        front_door: Arc<dyn FrontDoorStore>,
+        mail: crate::gmail::Delivery,
+    ) -> Arc<Self> {
         seed_staging(&*store).await;
         let (events, _) = broadcast::channel(64);
         Arc::new(Self {
@@ -120,11 +137,11 @@ impl Auth {
             delivery: std::sync::Mutex::new(Vec::new()),
             front_door,
             events,
+            mail,
         })
     }
 
-    /// Builds the process-memory auth state for local runs and tests.
-    pub(crate) async fn memory() -> Arc<Self> {
+    async fn memory_with(mail: crate::gmail::Delivery) -> Arc<Self> {
         let store = Arc::new(MemoryAuthStore::new());
         store.seed_account(
             STAGING_PRACTICE_ID,
@@ -133,11 +150,13 @@ impl Auth {
             "Staging Physician",
             true,
         );
-        Self::on(store, Arc::new(MemoryFrontDoorStore::new())).await
+        Self::configured(store, Arc::new(MemoryFrontDoorStore::new()), mail).await
     }
 
-    /// Opens runtime pools without migration rights; the job owns both chains.
-    pub(crate) async fn postgres(database_url: &str) -> Result<Arc<Self>, String> {
+    async fn postgres_with(
+        database_url: &str,
+        mail: crate::gmail::Delivery,
+    ) -> Result<Arc<Self>, String> {
         let store = PostgresAuthStore::connect_without_migrations(database_url)
             .await
             .map_err(|error| format!("physician auth store: {error}"))?;
@@ -152,7 +171,7 @@ impl Auth {
             .check_schema()
             .await
             .map_err(|error| format!("front-door schema; run migration job: {error}"))?;
-        Ok(Self::on(Arc::new(store), Arc::new(front_door)).await)
+        Ok(Self::configured(Arc::new(store), Arc::new(front_door), mail).await)
     }
 }
 
@@ -830,15 +849,21 @@ struct SignInBody {
     email: String,
 }
 
-/// Issues a sign-in token. Proof setups read it from the response; a real
-/// deployment delivers it by email instead.
+/// Issues a sign-in token. Proof setups read it from the response. Hosted
+/// mode mails the link and answers with the same body as an unknown address.
 async fn sign_in(State(auth): State<Arc<Auth>>, body: axum::body::Bytes) -> Response {
     let Ok(body) = serde_json::from_slice::<SignInBody>(&body) else {
         return sign_in_unavailable();
     };
     match auth.store.begin_sign_in(&body.email, now()).await {
-        Ok(token) => {
-            // Proof delivery: the token lands in memory instead of mail.
+        Ok(token) => deliver_sign_in(&auth, &body.email, token).await,
+        Err(_) => sign_in_unavailable(),
+    }
+}
+
+async fn deliver_sign_in(auth: &Auth, email: &str, token: String) -> Response {
+    match &auth.mail {
+        crate::gmail::Delivery::Proof => {
             auth.delivery.lock().expect("delivery").push(token.clone());
             (
                 StatusCode::OK,
@@ -850,7 +875,14 @@ async fn sign_in(State(auth): State<Arc<Auth>>, body: axum::body::Bytes) -> Resp
             )
                 .into_response()
         }
-        Err(_) => sign_in_unavailable(),
+        crate::gmail::Delivery::Gmail(sender) => {
+            if let Err(error) = sender.send_sign_in(email, &token).await {
+                tracing::warn!(%error, "gmail sign-in was not sent");
+            }
+            // The token stays out of the response when the send is missing
+            // or fails, and the body matches an unknown address.
+            sign_in_unavailable()
+        }
     }
 }
 
@@ -1092,8 +1124,8 @@ struct InviteBody {
 /// admins, secretaries, or physicians granted panel-assignment (`admin`)
 /// permission, like the panel changes. The patient must be on the caller's
 /// practice's roster: a cross-practice or unknown patient answers 404, so
-/// the roster's existence stays unknown outside the practice. The token
-/// rides the response here; a real deployment delivers it by email.
+/// the roster's existence stays unknown outside the practice. Proof mode
+/// returns the redeem token. Hosted mode mails it and drops it from the JSON.
 async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Response {
     let token = bearer(&request);
     let Ok(caller) = resolve(&auth, token).await else {
@@ -1127,20 +1159,7 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
         .invite(&patient, &body.email, &body.display_name, now())
         .await
     {
-        Ok(token) => (
-            StatusCode::OK,
-            Json(json!({
-                "practice_id": caller.practice_id,
-                "patient_workspace_id": body.patient_workspace_id,
-                "email": body.email,
-                "display_name": body.display_name,
-                "status": "invited",
-                // Proof delivery: the token lands in the response instead
-                // of mail; the Duet side redeems it at the front door.
-                "token": token,
-            })),
-        )
-            .into_response(),
+        Ok(token) => deliver_invite(&auth, &caller, &body, token).await,
         Err(front_door::InviteError::Conflict) => (
             StatusCode::CONFLICT,
             Json(json!({
@@ -1148,6 +1167,41 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
             })),
         )
             .into_response(),
+    }
+}
+
+async fn deliver_invite(
+    auth: &Auth,
+    caller: &PhysicianIdentity,
+    body: &InviteBody,
+    token: String,
+) -> Response {
+    let invited = json!({
+        "practice_id": caller.practice_id,
+        "patient_workspace_id": body.patient_workspace_id,
+        "email": body.email,
+        "display_name": body.display_name,
+        "status": "invited",
+    });
+    match &auth.mail {
+        crate::gmail::Delivery::Proof => {
+            let mut invited = invited;
+            invited["token"] = json!(token);
+            (StatusCode::OK, Json(invited)).into_response()
+        }
+        crate::gmail::Delivery::Gmail(sender) => {
+            if let Err(error) = sender.send_invite(&body.email, &token).await {
+                tracing::warn!(%error, "gmail invitation was not sent");
+                return (
+                    StatusCode::BAD_GATEWAY,
+                    Json(json!({
+                        "detail": "The invitation email could not be sent.",
+                    })),
+                )
+                    .into_response();
+            }
+            (StatusCode::OK, Json(invited)).into_response()
+        }
     }
 }
 
@@ -1286,15 +1340,16 @@ async fn inject_auth_store(
 /// apply on start), memory otherwise; unset or any other value serves `base`
 /// with the auth routes still present for the client.
 pub async fn authed_router(base: axum::Router) -> axum::Router {
+    let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
     let auth = match (auth_mode(), database_url()) {
-        (AuthMode::Required, Some(url)) => match Auth::postgres(&url).await {
+        (AuthMode::Required, Some(url)) => match Auth::postgres_with(&url, mail).await {
             Ok(auth) => auth,
             Err(error) => {
                 tracing::error!(%error, "physician auth store unavailable");
                 std::process::exit(1);
             }
         },
-        _ => Auth::memory().await,
+        _ => Auth::memory_with(mail).await,
     };
     match auth_mode() {
         AuthMode::Required => required_router(base, auth),
@@ -1341,6 +1396,7 @@ fn database_url() -> Option<String> {
 mod tests {
     use super::*;
     use axum::http::{Method, Request, StatusCode};
+    use base64::Engine;
     use physician_auth::{Membership, MemoryAuthStore, PhysicianIdentity, ReviewCadence};
     use tower::ServiceExt;
 
@@ -2533,5 +2589,257 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::FORBIDDEN, "{body}");
+    }
+
+    fn decode_gmail_raw(sent: &Value) -> String {
+        let raw = sent["raw"].as_str().expect("raw field");
+        assert!(
+            sent.as_object().is_some_and(|object| object.len() == 1),
+            "messages.send body should be only raw: {sent}"
+        );
+        let bytes = base64::engine::general_purpose::URL_SAFE_NO_PAD
+            .decode(raw)
+            .expect("base64url raw");
+        String::from_utf8(bytes).expect("rfc2822")
+    }
+
+    fn query_value<'a>(message: &'a str, key: &str) -> &'a str {
+        let marker = format!("{key}=");
+        message
+            .split(&marker)
+            .nth(1)
+            .unwrap_or_else(|| panic!("missing {key} in {message}"))
+            .split(|c: char| c.is_whitespace() || c == '&')
+            .next()
+            .expect("query value")
+    }
+
+    async fn gmail_sender(fail_send: bool) -> (crate::gmail::Outbound, gmail::testing::FakeGmail) {
+        let fake = gmail::testing::spawn(fail_send).await;
+        let sender = gmail::Sender::refresh(
+            "sign-in@coda.health",
+            fake.endpoints(),
+            "client-id",
+            "client-secret",
+            "refresh-token",
+        );
+        (
+            crate::gmail::Outbound::new("https://physician.example".into(), sender),
+            fake,
+        )
+    }
+
+    async fn hosted_practice(
+        sender: crate::gmail::Outbound,
+    ) -> (axum::Router, Arc<MemoryFrontDoorStore>, String) {
+        let store = Arc::new(MemoryAuthStore::new());
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "staging-physician",
+            STAGING_EMAIL,
+            "Staging Physician",
+            true,
+        );
+        let issued = store
+            .begin_sign_in(STAGING_EMAIL, now())
+            .await
+            .expect("session sign-in");
+        let (_, session) = store
+            .complete_sign_in(STAGING_EMAIL, &issued, now())
+            .await
+            .expect("session");
+        let front_door = Arc::new(MemoryFrontDoorStore::new());
+        let auth = Auth::configured(
+            Arc::clone(&store) as Arc<dyn AuthStore>,
+            Arc::clone(&front_door) as Arc<dyn FrontDoorStore>,
+            crate::gmail::Delivery::Gmail(Box::new(sender)),
+        )
+        .await;
+        (
+            required_router(crate::recorded(), auth),
+            front_door,
+            session,
+        )
+    }
+
+    #[tokio::test]
+    async fn hosted_sign_in_mails_the_link_and_omits_the_token() {
+        let (sender, fake) = gmail_sender(false).await;
+        let (app, _, _) = hosted_practice(sender).await;
+        let (status, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-in",
+            None,
+            Some(json!({ "email": STAGING_EMAIL }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let value: Value = serde_json::from_str(&body).expect("sign-in body");
+        assert_eq!(value["status"], "unavailable");
+        assert_ne!(value["status"], "token_issued");
+        assert!(value.get("token").is_none(), "{body}");
+        assert!(
+            body.contains("If that address has an account, a sign-in link is on its way."),
+            "{body}"
+        );
+        let sent = fake.sent.lock().expect("sent").clone();
+        let message = decode_gmail_raw(sent.first().expect("one message"));
+        assert!(message.contains("From: sign-in@coda.health"), "{message}");
+        assert!(
+            message.contains(&format!("To: {STAGING_EMAIL}")),
+            "{message}"
+        );
+        assert!(message.contains("expires in 24 hours"), "{message}");
+        let code = query_value(&message, "code");
+        assert!(
+            message.contains(&format!("https://physician.example/sign-in?code={code}")),
+            "{message}"
+        );
+        assert!(
+            !body.contains(code),
+            "the response included the mailed code: {body}"
+        );
+        let exchange = fake.token_bodies.lock().expect("tokens").clone();
+        assert!(
+            exchange
+                .first()
+                .is_some_and(|form| form.contains("grant_type=refresh_token")),
+            "token exchange was not a refresh grant: {exchange:?}"
+        );
+        let (status, verified) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/verify",
+            None,
+            Some(json!({ "email": STAGING_EMAIL, "token": code }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{verified}");
+        let (status, unknown) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-in",
+            None,
+            Some(json!({ "email": "nobody@codahealth.test" }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{unknown}");
+        assert_eq!(unknown, body, "an unknown address must match a mailed one");
+        assert_eq!(fake.sent.lock().expect("sent").len(), 1);
+    }
+
+    #[tokio::test]
+    async fn hosted_invite_mails_the_redeem_link_and_omits_the_token() {
+        let (sender, fake) = gmail_sender(false).await;
+        let (app, front_door, session) = hosted_practice(sender).await;
+        let workspace = crate::WORKSPACE_IDS[0];
+        let (status, body) =
+            invite_patient(&app, Some(&session), "luna@example.test", workspace).await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let value: Value = serde_json::from_str(&body).expect("invitation body");
+        assert_eq!(value["status"], "invited");
+        assert_eq!(value["email"], "luna@example.test");
+        assert!(value.get("token").is_none(), "{body}");
+        let message = decode_gmail_raw(&fake.sent.lock().expect("sent")[0]);
+        assert!(message.contains("To: luna@example.test"), "{message}");
+        assert!(message.contains("expires in 14 days"), "{message}");
+        let token = query_value(&message, "token");
+        assert!(
+            message.contains(&format!("https://physician.example/invite?token={token}")),
+            "{message}"
+        );
+        assert!(
+            !body.contains(token),
+            "the response included the mailed token: {body}"
+        );
+        assert!(
+            front_door
+                .redeem_invitation("luna@example.test", token, now())
+                .await
+                .is_ok(),
+            "the mailed redeem token should work once"
+        );
+    }
+
+    #[tokio::test]
+    async fn a_failed_or_missing_gmail_send_does_not_return_the_token() {
+        let (sender, _) = gmail_sender(true).await;
+        let (app, _, session) = hosted_practice(sender).await;
+        let (status, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-in",
+            None,
+            Some(json!({ "email": STAGING_EMAIL }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let value: Value = serde_json::from_str(&body).expect("sign-in body");
+        assert_eq!(value["status"], "unavailable");
+        assert!(value.get("token").is_none(), "{body}");
+        assert!(!body.contains("codas-"), "{body}");
+        let (status, body) = invite_patient(
+            &app,
+            Some(&session),
+            "luna@example.test",
+            crate::WORKSPACE_IDS[0],
+        )
+        .await;
+        assert_eq!(status, StatusCode::BAD_GATEWAY, "{body}");
+        assert!(body.contains("could not be sent"), "{body}");
+        assert!(
+            serde_json::from_str::<Value>(&body)
+                .unwrap()
+                .get("token")
+                .is_none()
+        );
+        assert!(!body.contains("codaf-"), "{body}");
+
+        let missing = crate::gmail::Outbound::new(
+            "https://physician.example".into(),
+            gmail::Sender::refresh(
+                "sign-in@coda.health",
+                gmail::Endpoints {
+                    send: "http://127.0.0.1:9/gmail/v1/users/me/messages/send".into(),
+                    token: "http://127.0.0.1:9/token".into(),
+                },
+                "",
+                "",
+                "",
+            ),
+        );
+        let (app, _, session) = hosted_practice(missing).await;
+        let (status, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-in",
+            None,
+            Some(json!({ "email": STAGING_EMAIL }).to_string()),
+        )
+        .await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        assert!(
+            serde_json::from_str::<Value>(&body)
+                .unwrap()
+                .get("token")
+                .is_none()
+        );
+        assert!(!body.contains("codas-"), "{body}");
+        let (status, body) = invite_patient(
+            &app,
+            Some(&session),
+            "other@example.test",
+            crate::WORKSPACE_IDS[1],
+        )
+        .await;
+        assert_eq!(status, StatusCode::BAD_GATEWAY, "{body}");
+        assert!(!body.contains("codaf-"), "{body}");
+        assert!(
+            serde_json::from_str::<Value>(&body)
+                .unwrap()
+                .get("token")
+                .is_none()
+        );
     }
 }

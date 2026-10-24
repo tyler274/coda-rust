@@ -1,6 +1,6 @@
 # Crate map
 
-Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The product-neutral crates the two products share are `ui`, `http`, and the execution mechanics in `harness` (with its `agent-skills` admission dependency); <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns that boundary.
+Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The product-neutral crates the two products share are `ui`, `http`, `gmail`, and the execution mechanics in `harness` (with its `agent-skills` admission dependency); <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns that boundary.
 
 ## Shared
 
@@ -8,6 +8,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- | --- | --- |
 | `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Shared tokens and the tab bar for both Dioxus apps | [UI surface map](ui-surface-map.md) |
 | `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
+| `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | One plain-text message through the Gmail API. Products own the copy and the links | [GCP](gcp.md) |
 | `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder used by Duet discovery and physician retrieval | [Physician site](physician-site.md) |
 | `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus loading `skills/` once and admitting `skill_view`. Products keep authority, effects, persistence, and recovery. | [Operating invariants](agent-contracts.md) |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
