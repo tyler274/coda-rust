@@ -9,7 +9,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Shared tokens and the tab bar for both Dioxus apps | [UI surface map](ui-surface-map.md) |
 | `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
 | `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder used by Duet discovery and physician retrieval | [Physician site](physician-site.md) |
-| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus loading `skills/` once and admitting `skill_view`. Products keep authority, effects, persistence, and recovery. | [Agent contracts, hoisted](agent-contracts.md) |
+| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus loading `skills/` once and admitting `skill_view`. Products keep authority, effects, persistence, and recovery. | [Operating invariants](agent-contracts.md) |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
 | `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services | [Observability](observability.md) |
 
@@ -17,14 +17,14 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | The four tab roots and the join and consent screens | [North Star](north-star.md), [UI surface map](ui-surface-map.md) |
-| `duet-api` | [`src/lib.rs`](/crates/duet-api/src/lib.rs), [`src/main.rs`](/crates/duet-api/src/main.rs) | Axum owner for moments, account, and session routes, with the front door embedded for join, consent, and premium | [Backend architecture](backend-architecture.md), [Patient front door](front-door.md) |
+| `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | Standalone account entry, current tab roots and connection controls; remaining gaps are tracked in the UI map | [UI and design](ui-surface-map.md) |
+| `duet-api` | [`src/lib.rs`](/crates/duet-api/src/lib.rs), [`src/main.rs`](/crates/duet-api/src/main.rs) | Axum owner for identity, evidence, conversation, saved work, privacy and the existing connection adapter | [Backend architecture](backend-architecture.md), [Patient front door](front-door.md) |
 | `duet-client` | [`src/lib.rs`](/crates/duet-client/src/lib.rs) | Duet caller over the generated client, adding the app-build headers | [Backend architecture](backend-architecture.md) |
 | `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs) | Models and operations generated from <a href="/submodules/coda-app/docs/openapi%2Ejson">coda-app's <code>openapi.json</code></a> by `cargo run -p workspace-tools -- generate-duet-wire` ([`wire.rs`](/crates/workspace-tools/src/wire.rs)). Regenerate it; do not edit it by hand. | [Backend architecture](backend-architecture.md) |
-| `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs) | On-device health samples from HealthKit and Health Connect | [Behaviour contract](behaviour-contract.md) |
-| `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Behaviour contract](behaviour-contract.md) |
-| `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [North Star](north-star.md), [Insight visual contract](visual-contract.md) |
-| `duet-widget` | [`src/lib.rs`](/crates/duet-widget/src/lib.rs) | The snapshot that the native home-screen widgets read | [North Star](north-star.md) |
+| `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs) | On-device health samples from HealthKit and Health Connect | [Duet backend](backend-architecture.md) |
+| `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Duet backend](backend-architecture.md) |
+| `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [UI and design](ui-surface-map.md) |
+| `duet-widget` | [`src/lib.rs`](/crates/duet-widget/src/lib.rs) | The snapshot that the native home-screen widgets read | [UI and design](ui-surface-map.md) |
 | `duet-stub` | [`src/lib.rs`](/crates/duet-stub/src/lib.rs), [`src/main.rs`](/crates/duet-stub/src/main.rs) | Local Duet stand-in for the emulator and tests (`cargo run -p duet-stub`) | [Release](release.md#android-and-google-play) |
 
 ## Physician product
@@ -42,7 +42,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `front-door` | [`src/lib.rs`](/crates/front-door/src/lib.rs), [`src/bin/front-door-migrate.rs`](/crates/front-door/src/bin/front-door-migrate.rs) | Patient accounts, practice invitations, the roster link, consent, and premium | [Patient front door](front-door.md) |
+| `front-door` | [`src/lib.rs`](/crates/front-door/src/lib.rs), [`src/bin/front-door-migrate.rs`](/crates/front-door/src/bin/front-door-migrate.rs) | Existing invitation/roster/consent adapter with legacy account and premium fields; standalone account authority stays in Duet | [Patient front door](front-door.md) |
 | `mobile` | [`src/lib.rs`](/crates/mobile/src/lib.rs), [`src/main.rs`](/crates/mobile/src/main.rs) | The one Android and iOS shell, with an explicit physician or client mode. It is the only crate that mounts both apps. | [Release](release.md#android-and-google-play) |
 
 ## Public website
@@ -55,7 +55,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep the product crates apart and require the book to cite every Duet document heading | This page |
+| `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart and retain the reference shipping clients | This page |
 | `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | The workspace commands that replaced `scripts/`: `generate-duet-wire`, `install-doppler`, `apply-migrations`, and the rest listed in its module doc | [Build, CI, and release](release.md) |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
 
@@ -74,6 +74,10 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
 
-## Not in Rust yet
+## Reference-only products and evidence
 
-Each of these chapters says which part is still owned by Python, Swift, or TypeScript: [Privacy recovery](privacy-recovery.md), [Security posture](security-posture.md), [Clinical catalog](clinical-catalog-migration.md), [Coda Gym](coda-gym.md), and [Computer use](computer-use.md).
+Gym and computer use have no Rust product crates. The [retained reference map](reading.md#retained-references)
+links their owners and historical Duet catalog, licensing and release evidence.
+Rust privacy and identity already have owners; see [privacy recovery](privacy-recovery.md)
+and [security boundaries](security-posture.md). A reference implementation's
+coverage is not proof that the corresponding Rust journey is qualified.

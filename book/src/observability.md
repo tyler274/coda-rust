@@ -89,7 +89,7 @@ scripts/observability-up.sh            # Langfuse + collector, Datadog spans to 
 scripts/observability-up.sh --datadog  # adds the Datadog Agent, DD_API_KEY from Doppler dev
 
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CONTENT=full \
-  CODA_LOCAL_MODEL_EXECUTION=replay cargo run -p physician-sample
+  CODA_LOCAL_MODEL_EXECUTION=replay CODA_CASSETTE_PATH=/absolute/path/cassette.json cargo run -p physician-sample
 ```
 
 Send one physician chat. The trace then appears in Langfuse at

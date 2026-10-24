@@ -4,7 +4,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Continuous integration
 
-- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. The `ci` job runs `cargo fmt --check`, clippy, the workspace tests (excluding the three browser packages), each full browser package (`physician-sample`, `public-site`, and `mobile`) once, then `mdbook build book` with the [book link check](setup.md#reading-and-checking-this-book), and `cargo doc`. The workflow's comments are the maintained step list.
+- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. The `ci` job runs `cargo fmt --check`, clippy, the workspace tests (excluding the three browser packages), each full browser package (`physician-sample`, `public-site`, and `mobile`) once, then `mdbook build book` with the [book link check](/scripts/check-book-links.sh), and `cargo doc`. The workflow's comments are the maintained step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
 - `deploy-staging` runs on pushes to `main` only when the repository variable `RUST_STAGING_DEPLOY` is `enabled`. It pushes the four images by digest, runs both migration jobs, and moves both `coda-rust-staging` services to Ready revisions on the new digests; [direct staging rollout](gcp.md#direct-staging-rollout) describes it and how to turn it off.
 - Rust build caches are best effort. A restore, save, or cache-size failure can make the next build slower; it does not invalidate passing checks.
@@ -16,7 +16,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. The process starts under `doppler run --`. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
 
-## Physician hosting
+## Retained physician infrastructure references
 
 | Root | Owns | Owner document |
 | --- | --- | --- |
@@ -37,13 +37,12 @@ This workspace does not run `init` against a backend and does not apply these ro
 
 ## Duet backend on GCP
 
-Duet's production composition, staging windows, release runner, and rollback belong to <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. [GCP deployment](gcp.md) lists each section.
+The original Python Duet service's production composition, staging windows, release runner, and rollback are retained in <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. [GCP deployment](gcp.md) lists each section.
 
 ## iPhone and TestFlight
 
-- [TestFlight](testflight-release.md) links coda-app's runbook, which owns distribution identity, build history, and the current procedure. A Rust build is not a TestFlight upload.
-- [iOS verification](ios-verification.md) links the proof matrix that a release must meet.
-- [Consumer-health release](consumer-health-release-approval.md) and [Epic MyChart](epic-mychart-release-approval.md) link the approval packets.
+- [ENG-23](https://linear.app/coda-health/issue/ENG-23) and the platform release/readiness outcomes own current Rust iPhone acceptance.
+- The original [TestFlight runbook](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/testflight-release.md), [iOS verification](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/ios-verification.md), and [release packets](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs) preserve historical distribution and approval evidence. They do not qualify the Rust app. A Rust build is not a TestFlight upload.
 - The Rust bindings for iPhone are in [`platform/ios`](/platform/ios) (see the [crate map](crate-map.md#platform-bindings)).
 
 ## Android and Google Play

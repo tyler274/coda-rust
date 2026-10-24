@@ -1,14 +1,14 @@
 # coda-rust
 
-This is the monorepo for Coda's Rust workspace. It holds the shared Duet client, the physician Dioxus client, and the crates they use. The product repositories are checked out here as submodules. Their READMEs own product behavior, setup, and proof. React and SwiftUI remain the shipping clients.
+This is the monorepo for Coda's Rust workspace. It holds the shared Duet client, the physician Dioxus client, and the crates they use. The product repositories are checked out here as submodules. Linear owns product intent and acceptance; this repository owns Rust implementation and proof. Start with the [canonical documentation map](book/src/reading.md). Submodules are read-only historical references. React and SwiftUI remain the shipping clients until the Rust journeys are qualified.
 
 ## Layout
 
-- `crates/` is one Cargo workspace. Duet is `duet-app` and `duet-api`. The physician page is `physician-app`. `physician-sample` serves that page and a recorded projection of the synthetic practice. `local-product` is the model-execution owner. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat uses the Codex CLI subscription. `record` and `replay` use a cassette and do not read an API key. `api` answers physician chat through OpenAI Responses when `CODA_ALLOW_MODEL_CALLS=1`. `ui` and `http` are the only crates the two products share.
+- `crates/` is one Cargo workspace. Duet is `duet-app` and `duet-api`. The physician page is `physician-app`. `physician-sample` serves that page and a recorded projection of the synthetic practice. `local-product` is the model-execution owner. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat uses the Codex CLI subscription. `record` and `replay` use a cassette and do not read an API key. `api` answers physician chat through OpenAI Responses when `CODA_ALLOW_MODEL_CALLS=1`. `ui`, `http`, and the product-neutral `harness` and its neutral supporting libraries are shared; each product keeps its own authority, state and recovery ([ENG-159](https://linear.app/coda-health/issue/ENG-159)).
 - `platform/` holds the iPhone and Android bindings for the shared Duet client.
 - `skills/` is the clinical skill catalog, loaded by `harness`.
-- `book/` is the navigation book over the product documents. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it.
-- `submodules/` checks out the product repositories. Read each README there for that product: [coda-app](submodules/coda-app/README.md), [coda-agents](submodules/coda-agents/README.md), [coda-gym](submodules/coda-gym/README.md), and [Coda-Computer-Use](submodules/Coda-Computer-Use/README.md).
+- `book/` maps current Linear outcomes to Rust owners and operational procedures. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it.
+- `submodules/` checks out the product repositories. Use their pinned READMEs as reference for the original implementation: [coda-app](submodules/coda-app/README.md), [coda-agents](submodules/coda-agents/README.md), [coda-gym](submodules/coda-gym/README.md), and [Coda-Computer-Use](submodules/Coda-Computer-Use/README.md).
 
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
 
@@ -66,8 +66,12 @@ that system).
 
 1. Open the repository in VS Code and choose "Reopen in Container".
 2. The first build installs pinned Nix into a `/nix` volume, fetches missing
-   submodules, materializes the dev shell, and applies the coda-app migration
-   chain (`submodules/coda-app/backend/migrations`) idempotently.
+   submodules and materializes the dev shell. Database initialization is explicit:
+   provision a distinct unprivileged runtime login, then run the Rust-owned
+   `duet-migrate` with `DUET_MIGRATION_DATABASE_URL` and `DUET_RUNTIME_ROLE`
+   as described in [backend migrations](book/src/backend-architecture.md#persistence-and-migrations).
+   Set the API `DATABASE_URL` to that runtime login before starting it. The
+   container-provided `coda` database user is the local bootstrap administrator.
 3. Run from the command palette, Terminal > Run Task: `physician page (recorded)`
    (http://127.0.0.1:8790), `duet-api` (http://127.0.0.1:8080), and the optional
    `React local product` (http://127.0.0.1:8787) after its one-time host-side

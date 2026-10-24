@@ -246,7 +246,7 @@ Recorded final-tree local proof:
   and shared migration-chain/idempotence test, seven physician-auth tests, eight
   front-door tests and two physician-sample front-door tests. Upstream main fixes
   resolved the earlier pre-integration database failures; there is no outstanding
-  database blocker from those runs. See [database-client versions and proof](backend-architecture.md#rust-database-client-versions-and-proof).
+  database blocker from those runs. See [database-client versions and proof](backend-architecture.md#proof).
 - The rebuilt production/staging image passed nonroot/read-only HTTP and shutdown
   smoke checks, as detailed below. It was not published or deployed.
 - cargo-deny passed under inherited main policy. ZIP 8.6.0 is **not remediated**:

@@ -54,12 +54,12 @@ const DUET_STYLES: &str = include_str!("../assets/duet.css");
 pub use roots::{api_base_url, api_bearer};
 
 /// What the front door reports for this session: the consent state Duet's
-/// screens turn into the share toggle and the join gate.
+/// screens turn into the existing practice-sharing controls.
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum FrontDoorStatus {
     /// The consent read succeeded.
     Loaded(ConsentState),
-    /// The session no longer resolves: the person joins again.
+    /// No practice connection resolves for this session.
     NotJoined,
     /// The front door could not answer.
     Unavailable,
@@ -76,8 +76,8 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
-    // The front door gates the app: without a joined session only the join
-    // screen shows.
+    // Standalone account admission is owned by account::DuetRoot. The front
+    // door supplies optional practice-link status; it does not gate the app.
     let mut front_door_attempt = use_signal(|| 0u32);
     let mut joined_session = use_signal(roots::recalled_session);
     let door_url = base_url.clone();

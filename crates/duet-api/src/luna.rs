@@ -3,7 +3,9 @@
 //!
 //! Instruction and skill markdown under `agent/` is copied verbatim from the
 //! product's `backend/app/agent_instructions` and `agent_skills` (coda-app
-//! 8af41d37). Clinical wording is product doctrine: change it there first.
+//! 8af41d37). Current clinical direction and acceptance live in Linear ENG-26
+//! and the Duet project; amend this Rust owner under those decisions. The
+//! pinned original supplies provenance, not authority to edit a submodule.
 //! Composition order follows `agent_instructions.instructions_for("conversation")`.
 //! The version is this workspace's own hash, not byte-identical to Python's.
 use front_door::{

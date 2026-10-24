@@ -8,7 +8,7 @@
 //! on the recording. `PHYSICIAN_UPSTREAM` still forwards physician routes to
 //! the Node server when api mode is unset. The same server serves the Dioxus
 //! page, which mounts into `#main`.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
 mod auth;

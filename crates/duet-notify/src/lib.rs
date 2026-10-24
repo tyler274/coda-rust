@@ -3,7 +3,7 @@
 //! The Swift binding is `platform/ios/NotificationBridge.swift`.
 //! Android local alerts go through `platform/android/NotificationBridge.kt`.
 //! A host build has no center and schedules nothing. Android does not create a remote token.
-//! Book: `book/src/behaviour-contract.md`.
+//! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
 use chrono::{DateTime, Datelike, Duration, TimeZone};

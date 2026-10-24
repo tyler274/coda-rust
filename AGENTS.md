@@ -1,8 +1,9 @@
 # Coda Rust operating contract
 
-This repository is the Rust workspace for Duet and the physician client. Product doctrine
-stays in the product repositories. This file routes work to those contracts. It does not
-copy them.
+This repository is the Rust workspace for Duet and the physician client. Linear owns current product intent and acceptance; this workspace owns Rust
+implementation, operations and proof. Start with the [canonical map](book/src/reading.md).
+Dev's latest explicit decisions take precedence; pinned submodules are historical
+reference, not a competing specification.
 
 ## Where work goes
 
@@ -10,21 +11,20 @@ copy them.
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
 | Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; no production DNS or Vercel cutover |
-| Physician product, clinical runtime, and the clinical skill catalog | [Hoisted Coda Agents contract](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
+| Physician product, clinical runtime, and the clinical skill catalog | [Operating invariants](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
 | Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
 | Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
-| Duet, the patient app | [Hoisted Duet contract](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
-| Gym cases, promotion, and runs | [Hoisted Gym contract](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
-| Computer use | [Hoisted computer-use contract](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
+| Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
+| Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
+| Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
 | Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
 
-The operative rules of all four submodule contracts are hoisted into
-[Agent contracts, hoisted](book/src/agent-contracts.md) so work in this
-workspace can follow them without opening a submodule. Submodules stay
-read-only reference; their sources win over the hoisted page on product semantics.
-The explicitly approved Rust-workspace sharing boundary below governs crate reuse;
-reference-repository ownership does not override that boundary.
+[Operating invariants](book/src/agent-contracts.md) keeps the common authority,
+clinical-intelligence and recovery rules. Product outcomes and design live in
+Linear; the book maps them to actual Rust owners and names remaining gaps.
+Submodules stay read-only reference. Do not restore retired behavior merely
+because it appears in an older contract or generated wire schema.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
@@ -46,18 +46,17 @@ The live Node projection server moves into `physician-sample` route family by ro
   APIs or a demonstrated performance need. Document the reason at the call site
   and test the behavior against Postgres. Bind all runtime values; never
   interpolate user values. Keep dynamic identifiers code-owned and allowlisted.
-- `duet-api`'s moments/schema adapter still uses `sqlx`, a database driver/query
-  library, not an ORM. Its three `src/sql/*.sql` files are migration debt, not the
-  pattern for new CRUD. Adopt a Duet-owned ORM/entity layer in a bounded change;
-  do not import physician entities, combine product stores, or mass-convert
-  persistence merely to comply with this preference.
-- The first Duet slice is `PgMoments`: preserve user-scoped list/delete, descending
-  `(occurred_at, id)` order, unknown-kind errors, affected-row semantics, and the
-  privacy-journal deletion gate. Prove these on disposable Postgres, including
-  cross-account refusal. Coordinate schema readiness/ownership with
-  [ENG-111](https://linear.app/coda-health/issue/ENG-111) under
-  [ENG-161](https://linear.app/coda-health/issue/ENG-161); do not silently replace
-  the externally managed `schema_migrations` contract or rewrite its history.
+- Duet's `PgMoments` uses its own SeaORM entity over the existing SQLx pool.
+  Preserve user-scoped list/delete, descending `(occurred_at, id)` order,
+  unknown-kind errors, affected-row semantics and the privacy-journal deletion
+  gate. Prove changes on disposable Postgres, including cross-account refusal.
+- Duet's schema/account-transaction and other adapters still use SQLx. The
+  remaining `src/sql/has_migration.sql` is a schema-readiness query; it is not a
+  CRUD pattern. Keep migrations with `duet-migrate` and preserve the separate
+  reference `schema_migrations` ledger. Do not import physician entities,
+  combine product stores, or mass-convert persistence merely to comply with
+  this preference. [ENG-161](https://linear.app/coda-health/issue/ENG-161) owns
+  the account/privacy outcome.
 - SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
   coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
   removes a query, update the formatter's required-file inventory and its tests

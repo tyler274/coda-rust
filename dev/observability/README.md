@@ -27,7 +27,8 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
 ## Files
 
 - `collector.yaml` is the one collector config. `infra/gcp/observability`
-  mounts the same file, so a change here is a change to the deployed pipeline.
+  mounts the same file, so a change here changes that deployment definition. An actual rollout
+  and readback are separate.
   Endpoints and Langfuse keys are `${env:...}` references.
 - `collector.debug.yaml` and `collector.datadog.yaml` are local overlays.
   Compose passes exactly one of them after the base file (`COLLECTOR_OVERLAY`),

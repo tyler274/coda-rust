@@ -62,10 +62,8 @@ done
 cd "$workspace"
 nix develop --command true
 
-# --- Database schema ---------------------------------------------------------
-# Fail closed: duet-api refuses to serve a database missing its migration.
-# With network_mode: host the postgres service listens on host loopback 5433,
-# and POSTGRES_HOST_AUTH_METHOD=trust admits the local connection.
-nix develop --command cargo run -p workspace-tools -- apply-migrations -- psql -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 5433 -U coda -d duet
+# Schema setup is explicit; never replay the legacy coda-app ledger here.
+# README.md and book/src/backend-architecture.md describe the Rust migration
+# owner and distinct runtime role. Existing volumes are left untouched.
 
-echo "dev container ready"
+echo "dev shell ready; follow README.md for explicit Rust database setup"

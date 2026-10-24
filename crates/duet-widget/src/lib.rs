@@ -1,6 +1,6 @@
 //! Snapshot the native home-screen widgets read. The widget extensions do not
 //! compute a second copy of these lines.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
 use serde::{Deserialize, Serialize};

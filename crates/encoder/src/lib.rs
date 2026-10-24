@@ -1,5 +1,5 @@
 //! Offline BGE encoder used by Duet and the physician retrieval path.
-//! Book: `book/src/north-star.md` (model boundary).
+//! Book: `book/src/physician-site.md` (model boundary).
 #![deny(missing_docs)]
 
 mod model;

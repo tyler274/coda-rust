@@ -40,7 +40,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      # duet-api reads this; the port maps to the postgres service below.
+      # Local bootstrap administrator, not the duet-api runtime identity.
+      # Follow README schema setup and override with the separate runtime login.
       DATABASE_URL: postgres://coda@127.0.0.1:5433/duet
 
   postgres:

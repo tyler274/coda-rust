@@ -4,7 +4,7 @@
 //! directory once: one folder per skill, `SKILL.md` with a YAML mapping, no
 //! symlinks, and a sha256 identity of the file bytes. A skill never authorizes
 //! a tool or a patient read. The harness in `crates/harness` is the caller.
-//! Book: `book/src/personal-agent-program.md`.
+//! Book: `book/src/agent-contracts.md`.
 #![deny(missing_docs)]
 
 use std::fs;

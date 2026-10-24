@@ -7,7 +7,8 @@
   "remoteUser": "vscode",
   "updateRemoteUserUID": true,
   "remoteEnv": {
-    // duet-api's only setup requirement; migrations are applied post-create.
+    // Local bootstrap administrator. Follow README schema setup, then override
+    // DATABASE_URL with the distinct runtime login before running duet-api.
     "DATABASE_URL": "postgres://coda@127.0.0.1:5433/duet"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",

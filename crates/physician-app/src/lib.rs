@@ -1,6 +1,6 @@
 //! Physician shell: the shipping sidebar, Today, a patient page, and the reader.
 //! The React app remains the shipping client. This client renders the same projections.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
 mod icons;

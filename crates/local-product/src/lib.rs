@@ -7,7 +7,7 @@
 //! `record` and `replay` use that same path and a cassette. They do not read
 //! an API key. `api` calls OpenAI Responses. The key is an argument from the
 //! environment; this crate does not read it from disk.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
 use std::collections::{HashMap, HashSet};

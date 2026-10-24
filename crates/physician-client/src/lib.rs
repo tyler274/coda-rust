@@ -1,5 +1,5 @@
 //! Physician website caller for the existing Node `CodaServer`.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
 pub use http::HttpError;

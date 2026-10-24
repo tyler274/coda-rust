@@ -1,17 +1,56 @@
-# Duet UI: page, state and language map
+# Duet UI and design
 
-Shared tokens and the tab bar live in [`ui`](/crates/ui/src/lib.rs). Screen copy for the four tabs lives in [`duet-app`](/crates/duet-app/src/roots.rs). The native page inventory remains the SwiftUI map.
+The [Duet design language](https://linear.app/coda-health/document/duet-design-language-foundations-patterns-and-current-care-e3d0bc28fa6d)
+is the design corpus. [ENG-168](https://linear.app/coda-health/issue/ENG-168)
+owns unresolved cross-surface choices. This page maps that direction to Rust;
+it does not maintain a second visual specification.
 
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#duet-ui-page-state-and-language-map">Duet UI: page, state and language map</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#coherent-experience-direction">Coherent experience direction</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#decisions-and-vocabulary">Decisions and vocabulary</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#conversation-presentation">Conversation presentation</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#reply-feedback-and-the-reply-menu">Reply feedback and the reply menu</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#reply-activity-integration">Reply activity integration</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#navigation-map">Navigation map</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#page-and-state-inventory">Page and state inventory</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#coda-native-foundation-migration-status">Coda-native foundation migration status</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#open-ui-findings">Open UI findings</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#september-22-subtraction-audit">September 22 subtraction audit</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#findings-that-need-a-separate-behavior-decision">Findings that need a separate behavior decision</a>
-- <a href="/submodules/coda-app/docs/ui-surface-map%2Emd#integrated-native-verification">Integrated native verification</a>
+## Direction and scope
+
+Keep one continuous conversation. Today is the home for insights and current
+care: Plans, reminders and Check-ins move out of the companion card, and the
+duplicate care hub is retired. Use the corpus's system sans, quieter solid
+surfaces and green direction. The full Today → selected item in chat → accepted
+save → same current item and originating conversation path belongs to
+[ENG-34](https://linear.app/coda-health/issue/ENG-34), with conversation quality
+in [ENG-26](https://linear.app/coda-health/issue/ENG-26).
+
+[ENG-141](https://linear.app/coda-health/issue/ENG-141) permanently removes
+person-to-person Shared. Practice connection controls and documented care remain
+reachable under [ENG-70](https://linear.app/coda-health/issue/ENG-70) and
+[ENG-45](https://linear.app/coda-health/issue/ENG-45). Their final placement is an
+ENG-168 design question; removing a tab must not silently redesign consent.
+
+The patient-owned doctor workspace is in MVP under
+[ENG-169](https://linear.app/coda-health/issue/ENG-169): preparation, updates,
+patient review and saving, including patient-provided and connected-practice
+appointment context. Its mockups contain both MVP workspace states and later
+sharing states; label those separately. Sharing with physicians outside Coda is
+post-MVP, with patient-reviewed browser publication and no PDF download. The
+jointly maintained live shared space in [ENG-27](https://linear.app/coda-health/issue/ENG-27)
+is a separate post-MVP concept. Physicians do not approve Duet's wording.
+
+Mockups and interactive packages are attached in the Resources sections of
+[ENG-168](https://linear.app/coda-health/issue/ENG-168) (12 phone screens and
+three flow sheets) and [ENG-169](https://linear.app/coda-health/issue/ENG-169)
+(the updated doctor workspace and clinician-preview prototype). The design
+corpus links these directly under “Mockups and interactive prototypes.”
+
+## Rust owners and gaps
+
+| Owner | What to inspect |
+| --- | --- |
+| [`ui`](/crates/ui/src/lib.rs) | Shared tokens and tab primitives; product-specific layout remains in each app |
+| [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs ENG-141 removal |
+| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
+| [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
+| [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs), [`duet-widget`](/crates/duet-widget/src/lib.rs) | Native health, notification and widget adapters; verify on installed clients under the owning outcomes |
+
+The assistant-ui study in the corpus is a conversation-pattern reference. No
+React library adoption is implied for the Rust/Dioxus client. Source snapshots
+and the October 21 review describe their stated revisions; verify the current
+owner before turning an observation into implementation work.
+
+[Release](release.md) owns platform checks. A rendered screen or sample fixture
+does not establish saved state, consent, background delivery or real-model
+quality; verify the relevant journey through the backend and installed client.

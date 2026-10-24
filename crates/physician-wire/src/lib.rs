@@ -3,7 +3,7 @@
 //! The physician server publishes TypeScript types, not OpenAPI, so these structs
 //! follow `src/server/apiTypes.ts` and `TodayListProjection` for the fields the
 //! screens show. Extra JSON fields are ignored, which keeps a newer server readable.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
 use serde::{Deserialize, Serialize};

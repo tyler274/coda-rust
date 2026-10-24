@@ -4,7 +4,7 @@
 //! [`provider`] are API adapters. Product hosts retain authority, effects,
 //! persistence, and recovery. [`Harness`] admits only `skill_view`. A skill
 //! never authorizes a tool or a patient read. Book:
-//! `book/src/personal-agent-program.md`.
+//! `book/src/agent-contracts.md`.
 #![deny(missing_docs)]
 
 pub mod engine;

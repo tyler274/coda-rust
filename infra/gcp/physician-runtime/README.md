@@ -1,9 +1,12 @@
 # Physician runtime (GKE Autopilot)
 
-This stack owns the hosted physician runtime: one private GKE Autopilot cluster,
+This is a retained GKE deployment reference. The current isolated Rust staging
+path is [Cloud Run](../../../book/src/gcp.md#rust-staging-bootstrap-and-deployment-gate).
+This workspace does not apply this GKE root. Its configuration describes
+ one private GKE Autopilot cluster,
 one private Cloud SQL Postgres 16 instance with IAM database authentication, one
 Artifact Registry repository, the keyless site and migration identities, and
-the private network binding them. It is the deployment target for
+the private network binding them. It describes a deployment target for
 [`physician-sample`](/crates/physician-sample) (the site) and
 [`physician-auth`](/crates/physician-auth) (its store and migration binary).
 
@@ -24,7 +27,8 @@ policy to `NEVER` when the window ends.
   authenticate to Cloud SQL as themselves (`roles/cloudsql.instanceUser`); no
   database password exists. The migration account alone owns schema changes.
 - `PHYSICIAN_AUTH=required` rides the site's environment, so the bearer guard
-  and workspace-membership 404s behave exactly as proved locally.
+  and workspace-membership checks are configured; prove actual hosted access
+  separately from local guard tests.
 - Sign-in tokens are single-use with a 24-hour TTL; sessions are bearer
   tokens with a 30-day TTL and deactivation fencing. Delivery in this
   deployment is `proof` (the token returns in the sign-in response); a real

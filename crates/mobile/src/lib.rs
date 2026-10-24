@@ -1,7 +1,7 @@
 //! One Android and iOS shell with an explicit physician or client mode.
 //!
 //! The product crates stay separate. This shell is the only crate that mounts both.
-//! Book: `book/src/north-star.md`.
+//! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
 use std::path::Path;

@@ -1,13 +1,10 @@
-# Agent contracts, hoisted
+# Operating invariants
 
-The four product repositories keep their full contracts; this page hoists their
-operative rules into this workspace so an agent working on a Rust crate can
-follow them without opening a submodule. Submodules are read-only reference
-(see the <a href="/.cursor/rules/rust-repo-first%2Emdc">rust-repo-first</a> rule). When a
-product-semantic rule here and a submodule source disagree, the submodule source
-wins and this page is a bug. Rust crate sharing follows the explicitly
-user-approved boundary in <a href="/AGENTS%2Emd">AGENTS.md</a>; reference-repository
-ownership does not override that approval.
+These invariants govern Rust work under <a href="/AGENTS%2Emd">AGENTS.md</a>.
+They preserve the useful authority, isolation and recovery rules from the original
+products. Current product scope and acceptance live in [Linear](reading.md),
+not in pinned submodule contracts. The source links below retain provenance;
+consult the owning repository's instructions when working in that repository.
 
 ## Coda Agents (physician product, harness)
 
@@ -50,7 +47,7 @@ Source: <a href="/submodules/coda-agents/AGENTS%2Emd">coda-agents AGENTS.md</a>.
 ## Duet (patient app)
 
 Source: <a href="/submodules/coda-app/AGENTS%2Emd">coda-app AGENTS.md</a>;
-North Star owns product, privacy, consent, and architecture.
+current Duet scope and acceptance live in the [canonical map](reading.md).
 
 - **Boundary.** Preserve patient-owned evidence, source provenance, consent,
   and the separate physician-side boundary. Do not infer new clinical behavior

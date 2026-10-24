@@ -2,7 +2,7 @@
 //! Apple HealthKit is reached through the Swift binding in `platform/ios`.
 //! Android reads granted Health Connect records through `platform/android`.
 //! A missing permission or an empty store contributes no sample.
-//! Book: `book/src/behaviour-contract.md`.
+//! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
 use serde::Deserialize;
