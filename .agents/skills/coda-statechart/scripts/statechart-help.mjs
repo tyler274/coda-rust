@@ -7,7 +7,7 @@ export const USAGE = {
   compare: "node statechart.mjs compare FIRST.mmd SECOND.mmd [--rename MAP.json]",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
-  lint: "node statechart.mjs lint CHART.mmd [--cause TEXT]",
+  lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats]",
 };
 export const usage = (lines) => `Usage: ${lines.join("\n       ")}`;
 export const more = (command) =>
@@ -94,7 +94,7 @@ const QUERY = `query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NA
   Without a flag: chart size, largest regions, widest events, and edges that
   return a region to its start.`;
 
-const LINT = `lint CHART.mmd [--cause TEXT]
+const LINT = `lint CHART.mmd [--cause TEXT] [--repeats]
   Static findings over the flat model (exit 1 when there are any):
   - states unreachable from a region's starts, ignoring guards and other regions;
   - dead edges: a part's edge on an event that always closes or re-enters an
@@ -107,7 +107,9 @@ const LINT = `lint CHART.mmd [--cause TEXT]
   - with --cause TEXT: every limit on an event declared "by TEXT" (case and
     surrounding spaces ignored) that states no reason: a guard on one of its
     moves, or its needs. Tag a limit with "| reason: free text" after the ids of
-    %% when, after the ids of needs, or at the end of a %% never line.
+    %% when, after the ids of needs, or at the end of a %% never line;
+  - with --repeats: each set of events that make the same move together on three or
+    more moves of the flat model and that no one %% events group already names.
   Unreachable-ignoring-guards is structural: a state it lists is never reached;
   one it does not list may still be unreachable once guards are considered.`;
 

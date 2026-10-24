@@ -444,6 +444,9 @@ test("commands: the click moves only the receipt, the item changes on acceptance
   `);
   assert.ok(await agreement(f) > 4);
   verify(f);
+  // Every limit the tool generates states its reason.
+  for (const cause of ["you", "the system", "the client"])
+    assert.match(cmd("lint", f.input, "--cause", cause).stdout, /^No findings\.\n$/, cause);
 });
 
 const shifts = `stateDiagram-v2
@@ -541,6 +544,47 @@ test("templates expand one region per instance with substitutions, instance refe
   assert.match(trace.text, /Exhausted 5 reachable chart states/);
   const except = generated(lockers.replaceAll("%% only b", "%% except a"));
   assert.deepEqual(JSON.parse(fs.readFileSync(except.map, "utf8")).events, map.events);
+});
+
+test("a template region whose states all drop for an instance is left out of that instance", () => {
+  const desks = `stateDiagram-v2
+  state "Desks" as Desks {
+    state "Desk {key}" as Desk {
+      %% template
+      %% instance a: side = left
+      %% instance b: side = right
+      state "Lamp" as Lamp {
+        [*] --> Off
+        Off --> On : turn on lamp {key}
+        On --> Off : turn off lamp {key}
+      }
+      --
+      state "Drawer" as Drawer {
+        %% only b
+        [*] --> Shut
+        Shut --> Open : open drawer {key}
+        Open --> Shut : shut drawer {key}
+      }
+      --
+      state "Chair" as Chair {
+        [*] --> In
+        In --> Out : pull out chair {key}
+        Out --> In : push in chair {key}
+      }
+    }
+  }
+  [*] --> Desks
+`;
+  const { map } = names(generated(desks));
+  assert.deepEqual(map.regions.map((r) => [r.caption, r.states.map((x) => x.caption)]), [
+    ["Desk a/Lamp", ["Off", "On"]],
+    ["Desk a/Chair", ["In", "Out"]],
+    ["Desk b/Lamp", ["Off", "On"]],
+    ["Desk b/Drawer", ["Shut", "Open"]],
+    ["Desk b/Chair", ["In", "Out"]],
+  ]);
+  assert.equal(cmd("lint", fixture(desks).input).status, 0);
+  refused(desks.replace("[*] --> In\n", "%% only b\n        [*] --> In\n"), /Desk keeps fewer than two parallel regions for instance a/);
 });
 
 const shapedDesk = here("./reads.mmd");
@@ -739,6 +783,36 @@ state On {
 }
 `).input);
   assert.match(cooccur.stdout, /dead edge: Main: Off --> Off on "tick": Main would have to be in two states at once/);
+});
+
+test("lint --repeats lists events written together on several moves that no group names yet", () => {
+  const chart = (group) => `stateDiagram-v2
+${group}state Desk {
+ state Panel {
+  [*] --> Open
+  Open --> Shut : close it
+  Open --> Shut : you leave
+ }
+ --
+ state Drawer {
+  [*] --> Out
+  Out --> In : close it
+  Out --> In : you leave
+ }
+ --
+ state Lamp {
+  [*] --> On
+  On --> Off : close it
+  On --> Off : you leave
+  Off --> On : close it
+ }
+}
+[*] --> Desk
+`;
+  const found = cmd("lint", fixture(chart("")).input, "--repeats");
+  assert.match(found.stdout, /^repeated on 3 moves: "close it", "you leave"; one %% events group could name them once\n1 finding\.\n$/);
+  assert.match(cmd("lint", fixture(chart("")).input).stdout, /^No findings\.\n$/);
+  assert.match(cmd("lint", fixture(chart("%% events closing = close it | you leave\n")).input, "--repeats").stdout, /^No findings\.\n$/);
 });
 
 test("query lists ways in and out with cause, needs and intent, reacting regions, and region summaries", () => {

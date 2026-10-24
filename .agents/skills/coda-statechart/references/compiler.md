@@ -127,7 +127,8 @@ part makes it one region written once. Each `%% instance KEY: name = value, ...`
 line makes one copy with `{name}` and `{key}` substituted in captions, labels,
 guards, effects, `%% when` ids and `%% never` lines. Inside, ids are local;
 elsewhere name one copy as `Id@KEY`. `%% only k1, k2` or `%% except k` after a
-state or edge keeps it in just those instances. A `%% never` inside a template
+state or edge keeps it in just those instances. A parallel region whose states all
+drop for an instance is left out of that instance, while at least two remain. A `%% never` inside a template
 holds for every instance, named `Name_KEY`.
 
 ```mermaid

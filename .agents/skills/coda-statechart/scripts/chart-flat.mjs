@@ -296,6 +296,7 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
       needs: decl.needs ? needs({ not: decl.needs.not, ids: decl.needs.ids.map((id) => substitute(id, values)),
         reason: decl.needs.reason && substitute(decl.needs.reason, values) }, label) : null,
       ...(decl.label !== label ? { family: decl.label } : {}),
+      ...(decl.accepts ? { accepts: decl.accepts } : {}),
     });
   return { regions, nevers, owners, instances, ignored, events, declared, groups, strict, problems };
 }

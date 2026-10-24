@@ -83,12 +83,15 @@ export function expand(parsed, options = {}) {
           const caption = substitute(names.get(q.name) ?? q.name, values);
           names.set(rename(q.name), caption);
           if (q.leaf) return { name: rename(q.name), leaf: true };
-          return { name: rename(q.name), ...(q.receipt ? { receipt: { item: substitute(q.receipt.item, values) } } : {}),
-            parts: q.parts.map((sub) => ({
+          // A parallel region whose states all drop for this instance is left out of it.
+          const parts = q.parts.map((sub) => ({
             children: sub.children.map(copy).filter(Boolean),
             transitions: sub.transitions.filter((x) => { check(x.limit, `${x.from} --> ${x.to}`); return keeps(x.limit); })
               .map((x) => bindStep(x, values, rename)),
-          })) };
+          })).filter((sub, i) => sub.children.length || !q.parts[i].children.length);
+          if (q.parts.length > 1 && parts.length < 2)
+            throw new Error(`${q.name} keeps fewer than two parallel regions for instance ${key}; limit the composite itself instead`);
+          return { name: rename(q.name), ...(q.receipt ? { receipt: { item: substitute(q.receipt.item, values) } } : {}), parts };
         };
         const clone = copy(t);
         if (!clone) throw new Error(`template ${t.name} drops its own region for instance ${key}`);
@@ -167,7 +170,8 @@ function expandCommands(root, names, catalog) {
     if (!receipts.has(item)) throw new Error(`the command "${label}" is on ${item}, which no %% receipt composite fills`);
     const needs = decl.needs && { not: decl.needs.not, ids: decl.needs.ids.map((id) => substitute(id, values)),
       ...(decl.needs.reason ? { reason: substitute(decl.needs.reason, values) } : {}) };
-    const client = decl.command.client && { not: false, ids: decl.command.client.map((id) => substitute(id, values)) };
+    const client = decl.command.client && { not: false, ids: decl.command.client.map((id) => substitute(id, values)),
+      reason: "the control shows only while the client's own state allows it" };
     if (needs?.not) throw new Error(`the command "${label}" names what it needs, not what it must avoid`);
     if (!commands.has(item)) commands.set(item, []);
     commands.get(item).push({ click: label, verb, needs, client });
@@ -199,13 +203,14 @@ function expandCommands(root, names, catalog) {
         state(`${slug}_stuck`, `Couldn't confirm ${verb} on ${item}, with Check again`));
       const through = `your ${verb} on ${item} goes through`, refused = `your ${verb} on ${item} is refused`;
       const lost = `your ${verb} on ${item} can't be confirmed`, again = `check your ${verb} on ${item} again`;
-      const inFlight = (at, also) => ({ not: false, ids: [at, ...(also?.ids ?? [])], ...(also?.reason ? { reason: also.reason } : {}) });
-      declare(through, { cause: "the system", needs: inFlight(sending, needs),
+      const inFlight = (at, also, why = "an answer comes only for a command in flight") =>
+        ({ not: false, ids: [at, ...(also?.ids ?? [])], reason: also?.reason ? `${also.reason}; and ${why}` : why });
+      declare(through, { cause: "the system", accepts: click, needs: inFlight(sending, needs),
         intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` });
       declare(refused, { cause: "the system", needs: inFlight(sending),
         intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` });
       declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." });
-      declare(again, { cause: "you", needs: inFlight(stuck), intent: "The same request is resent; it can never be applied twice." });
+      declare(again, { cause: "you", needs: inFlight(stuck, null, "Check again shows only when an answer couldn't be confirmed"), intent: "The same request is resent; it can never be applied twice." });
       const step = (from, to, label, extra = {}) => ({ from, to, text: label, label, ...extra });
       transitions.push(
         step(idle, sending, click, { ...(needs ? { needsIds: needs } : {}), ...(client ? { when: client } : {}) }),
@@ -213,7 +218,7 @@ function expandCommands(root, names, catalog) {
         step(sending, idle, refused, needs ? { refuseIds: needs } : {}),
         step(sending, stuck, lost),
         step(stuck, sending, again));
-      accepted.set(click, { through, sending });
+      accepted.set(click, { through, sending, inFlight });
     }
     node.parts = [{ children, transitions }];
     for (const t of transitions) generated.add(t);
@@ -223,9 +228,8 @@ function expandCommands(root, names, catalog) {
       for (const t of p.transitions) {
         const command = accepted.get(t.label);
         if (!command || generated.has(t)) continue;
-        const { through, sending } = command;
-        Object.assign(t, { label: through, text: t.text.replace(t.label, through),
-          needsIds: { not: false, ids: [sending, ...(t.needsIds?.ids ?? [])], ...(t.needsIds?.reason ? { reason: t.needsIds.reason } : {}) } });
+        const { through, sending, inFlight } = command;
+        Object.assign(t, { label: through, text: t.text.replace(t.label, through), needsIds: inFlight(sending, t.needsIds) });
       }
       for (const c of p.children) if (!c.leaf) relabel(c);
     }

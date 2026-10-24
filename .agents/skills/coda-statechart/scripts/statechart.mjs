@@ -82,9 +82,9 @@ export const COMMANDS = {
     },
   },
   lint: {
-    inputs: 1, values: ["--cause"],
+    inputs: 1, values: ["--cause"], switches: ["--repeats"],
     run: ([chart], flags) => {
-      const findings = lint(compile(read(chart), "Chart", { lenient: true }), { cause: flags.cause });
+      const findings = lint(compile(read(chart), "Chart", { lenient: true }), { cause: flags.cause, repeats: flags.repeats });
       for (const f of findings) console.log(f);
       console.log(findings.length ? `${findings.length} finding${findings.length === 1 ? "" : "s"}.` : "No findings.");
       return findings.length ? 1 : 0;

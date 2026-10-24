@@ -31,15 +31,18 @@ Follow the [shared principles](../../../verification/README.md#principles).
 ## Check the agreed design
 
 Use the [compiler](references/compiler.md) for its supported `stateDiagram-v2`
-subset: nested parallel regions, templates, declared events and `/ effect` labels
-expand into one flat model. Encode real finite-state exclusions with `%% never` and
+subset: nested parallel regions, templates, shapes, declared events, commands and
+`/ effect` labels expand into one flat model. Write shared behavior once (a template,
+a shape or an event group) instead of copying it. Encode real finite-state exclusions with `%% never` and
 state guards with `%% when`. Link identity, revision, collection and progress promises to named data
 proofs; do not invent artificial states to make every chart have a safety rule.
 A chart without rules establishes transition correspondence only.
 
 Generate the model with `statechart.mjs verus`, run its Verus proof and `check`,
 and use `trace` to find shortest reachable chart violations (`rules` when the chart
-is too large to exhaust). Use `lint`, `query`, `flat` and `compare` to read a chart. Show an established violation as numbered
+is too large to exhaust). Use `lint`, `query`, `flat` and `compare` to read a chart: `lint --cause` lists
+limits that state no reason, `lint --repeats` lists events written together that no
+group names, and `compare` proves a rewrite keeps the flat model. Show an established violation as numbered
 user steps and its generated path diagram. Search exhaustion is limited to the
 finite chart; an interrupted or bounded search is incomplete. A failed Verus data
 obligation need not have a reachable counterexample.

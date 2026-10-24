@@ -193,7 +193,7 @@ export function queryRegion(compiled, text) {
 // Static findings. Each is a fact about the flat model, not a judgement of design.
 // With cause, also list every limit (a guard on a move, or the event's needs) on an event
 // declared with that cause that states no reason.
-export function lint(compiled, { cause } = {}) {
+export function lint(compiled, { cause, repeats = false } = {}) {
   const g = graph(compiled);
   const { regions, edges } = g;
   const { parsed } = compiled;
@@ -266,6 +266,31 @@ export function lint(compiled, { cause } = {}) {
       for (const [ri, moves] of a.moves)
         for (const m of moves) if (m.guard && !m.guard.reason)
           findings.push(`${what}: ${regions[ri].caption}: ${m.from} --> ${m.to} ${guardWords(m.guard)}`);
+    }
+  }
+  // With repeats: a set of events written on the same move in several places, which one
+  // %% events group would name once. A set inside one existing group is already named.
+  if (repeats) {
+    const onMove = new Map();
+    for (const t of edges) {
+      if (!t.label) continue;
+      const key = `${t.ri}|${t.from}|${t.to}|${JSON.stringify(t.guard ?? null)}`;
+      if (!onMove.has(key)) onMove.set(key, new Set());
+      onMove.get(key).add(t.label);
+    }
+    const same = (l, m) => m === l || parsed.events?.get(l)?.family === m;
+    const member = (l, m) => same(l, m) || (parsed.events?.get(l)?.accepts !== undefined && same(parsed.events.get(l).accepts, m));
+    const named = (set) => [...(parsed.groups ?? []).values()].some((ms) => [...set].every((l) => ms.some((m) => member(l, m))));
+    const sets = new Map();
+    for (const labels of onMove.values()) {
+      if (labels.size < 2) continue;
+      const key = [...labels].sort().join("\u0000");
+      sets.set(key, (sets.get(key) ?? 0) + 1);
+    }
+    for (const [key, count] of [...sets].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))) {
+      const set = key.split("\u0000");
+      if (count >= 3 && !named(set))
+        findings.push(`repeated on ${count} moves: ${set.map(quoted).join(", ")}; one %% events group could name them once`);
     }
   }
   return findings;
