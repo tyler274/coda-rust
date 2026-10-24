@@ -980,6 +980,106 @@ async fn durable_tool_recovery_memory_and_permission_fences() {
         .await
         .unwrap();
     assert!(!db2.admit_public_retrieval().await.unwrap());
+    sqlx::query("update duet_public_budget set used=0,window_start=now() where id=2")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    assert!(db2.admit_public_retrieval_miss().await.unwrap());
+    assert!(!db2.admit_public_retrieval().await.unwrap());
+    sqlx::query("update duet_public_budget set used=0,window_start=now() where id=1")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    sqlx::query("update duet_public_budget set used=600,window_start=now() where id=2")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    assert!(db2.admit_public_retrieval().await.unwrap());
+    assert!(!db2.admit_public_retrieval_miss().await.unwrap());
+    sqlx::query("update duet_public_budget set used=0,window_start=now()")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    let publications = duet_api::publication::PublicationStore::new(
+        db.clone(),
+        "https://duet.example".into(),
+        "https://viewer.example".into(),
+        [7; 32],
+    )
+    .unwrap();
+    assert!(matches!(
+        publications.retrieve("bad", false).await,
+        Err(duet_api::ApiError::NotFound)
+    ));
+    assert!(matches!(
+        publications.retrieve(&"a".repeat(43), false).await,
+        Err(duet_api::ApiError::NotFound)
+    ));
+    let (hit, miss): (i32, i32) = sqlx::query_as(
+        "select (select used from duet_public_budget where id=1),(select used from duet_public_budget where id=2)",
+    )
+    .fetch_one(&mut admin_db)
+    .await
+    .unwrap();
+    assert_eq!((hit, miss), (0, 2));
+    let workspace = duet_api::workspace::WorkspaceStore::new(db.clone());
+    let current = workspace.read(&c).await.unwrap();
+    let mut content = duet_wire::models::DoctorPageContent::new();
+    content.questions = Some(vec!["What should we discuss?".into()]);
+    let save = duet_wire::models::DoctorPageSave::new(
+        current["note_generation"].as_i64().unwrap() as i32,
+        vec![],
+        content,
+    );
+    let approved = workspace.save(&c, &save).await.unwrap();
+    let view = publications
+        .publish(
+            &c,
+            &duet_api::publication::PublishRequest {
+                operation_id: Uuid::new_v4(),
+                expected_generation: approved["note_generation"].as_i64().unwrap(),
+                expires_in_seconds: 3600,
+            },
+        )
+        .await
+        .unwrap();
+    let token = view.web_url.rsplit('/').next().unwrap().to_owned();
+    sqlx::query("update duet_public_budget set used=600,window_start=now() where id=2")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    publications.retrieve(&token, false).await.unwrap();
+    let (hit, miss): (i32, i32) = sqlx::query_as(
+        "select (select used from duet_public_budget where id=1),(select used from duet_public_budget where id=2)",
+    )
+    .fetch_one(&mut admin_db)
+    .await
+    .unwrap();
+    assert_eq!((hit, miss), (1, 600));
+    assert!(matches!(
+        publications.retrieve("bad", false).await,
+        Err(duet_api::ApiError::Unavailable(_))
+    ));
+    let hit_after: i32 = sqlx::query_scalar("select used from duet_public_budget where id=1")
+        .fetch_one(&mut admin_db)
+        .await
+        .unwrap();
+    assert_eq!(hit_after, 1);
+    sqlx::query("update duet_public_budget set used=0,window_start=now() where id=2")
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
+    assert!(matches!(
+        publications.shl_file("not-a-location").await,
+        Err(duet_api::ApiError::NotFound)
+    ));
+    let (hit, miss): (i32, i32) = sqlx::query_as(
+        "select (select used from duet_public_budget where id=1),(select used from duet_public_budget where id=2)",
+    )
+    .fetch_one(&mut admin_db)
+    .await
+    .unwrap();
+    assert_eq!((hit, miss), (1, 1));
     // Withdrawal fences all effects/completion, but late observations remain billable evidence.
     sqlx::query("update users set intelligence_enabled=false,intelligence_control_revision=intelligence_control_revision+1 where id=$1").bind(account).execute(&mut admin_db).await.unwrap();
     assert!(
