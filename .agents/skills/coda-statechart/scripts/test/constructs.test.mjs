@@ -389,6 +389,108 @@ test("a deeper step wins only while its guard holds; otherwise the enclosing ste
   verify(f);
 });
 
+const office = `stateDiagram-v2
+%% events declared
+%% event sign in | by you | You sign in.
+%% event sign out | by you | You sign out.
+%% event someone else closes the item | by another physician | Another physician closes it first.
+%% event close the item | by you | command on the item: Close, clicked while In | needs Open | reason: only a signed-in physician closes an open item | You close it.
+%% event reopen the item | by you | command on the item: Reopen | needs In, Closed | reason: only a signed-in physician reopens a closed item | You reopen it.
+state Desk {
+ state Session {
+  [*] --> Out
+  Out --> In : sign in
+  In --> Out : sign out
+ }
+ --
+ state Item {
+  [*] --> Open
+  Open --> Closed : close the item
+  Open --> Closed : someone else closes the item
+  Closed --> Open : reopen the item
+ }
+ --
+ state "Your command on the item" as Rc {
+  %% receipt the item
+ }
+}
+[*] --> Desk
+`;
+
+test("commands: the click moves only the receipt, the item changes on acceptance, refusal fires exactly when it is no longer allowed, and no outcome lands unasked", async () => {
+  const f = generated(office);
+  const { state, event: e } = names(f);
+  const idle = "No command on the item in flight";
+  const close = "Close on the item: sending; other commands on it wait";
+  const stuck = "Couldn't confirm Close on the item, with Check again";
+  const s = (a, b, c) => state(a, b, c);
+  addProof(f, `
+    assert forall|b: State| ${e("close the item")}(${s("In", "Open", idle)}, b) == (b == ${s("In", "Open", close)}) by {};
+    assert forall|b: State| ${e("your Close on the item goes through")}(${s("In", "Open", close)}, b) == (b == ${s("In", "Closed", idle)}) by {};
+    assert forall|b: State| !${e("your Close on the item is refused")}(${s("In", "Open", close)}, b) by {};
+    assert forall|b: State| !${e("your Close on the item goes through")}(${s("In", "Closed", close)}, b) by {};
+    assert forall|b: State| ${e("your Close on the item is refused")}(${s("In", "Closed", close)}, b) == (b == ${s("In", "Closed", idle)}) by {};
+    assert forall|b: State| !${e("reopen the item")}(${s("In", "Closed", close)}, b) by {};
+    assert forall|b: State| !${e("close the item")}(${s("Out", "Open", idle)}, b) by {};
+    assert forall|b: State| ${e("your Close on the item goes through")}(${s("Out", "Open", close)}, b) == (b == ${s("Out", "Closed", idle)}) by {};
+    assert forall|b: State| ${e("your Reopen on the item is refused")}(${s("Out", "Open", "Reopen on the item: sending; other commands on it wait")}, b)
+      == (b == ${s("Out", "Open", idle)}) by {};
+    assert forall|b: State| ${e("your Close on the item can't be confirmed")}(${s("In", "Open", close)}, b) == (b == ${s("In", "Open", stuck)}) by {};
+    assert forall|b: State| ${e("check your Close on the item again")}(${s("In", "Open", stuck)}, b) == (b == ${s("In", "Open", close)}) by {};
+    assert forall|b: State| !${e("your Close on the item goes through")}(${s("In", "Open", idle)}, b) by {};
+    assert forall|b: State| !${e("your Close on the item is refused")}(${s("In", "Closed", idle)}, b) by {};
+    assert forall|b: State| !${e("your Close on the item can't be confirmed")}(${s("In", "Open", idle)}, b) by {};
+    assert forall|b: State| !${e("check your Close on the item again")}(${s("In", "Open", close)}, b) by {};
+  `);
+  assert.ok(await agreement(f) > 4);
+  verify(f);
+});
+
+const shifts = `stateDiagram-v2
+%% events declared
+%% event start the {work} | by Coda | Coda starts the {work}.
+%% event stop the {work} | by you | command on the {work}: Stop | needs Run@{key} | reason: only running work stops | You stop the {work}.
+state Desk {
+ state "Work" as Work {
+  %% template
+  %% instance a: work = review
+  %% instance b: work = brief
+  state "{work}" as Life {
+   [*] --> Idle
+   state "{work} idle" as Idle
+   state "{work} running" as Run
+   Idle --> Run : start the {work}
+   Run --> Idle : stop the {work}
+  }
+  --
+  state "Your command on the {work}" as Rc {
+   %% receipt the {work}
+  }
+ }
+}
+[*] --> Desk
+`;
+
+test("a receipt inside a template is one receipt per instance; search and Verus agree", async () => {
+  const f = generated(shifts);
+  const { state, event: e } = names(f);
+  const idle = (w) => `No command on the ${w} in flight`, sending = (w) => `Stop on the ${w}: sending; other commands on it wait`;
+  addProof(f, `
+    assert forall|b: State| ${e("your Stop on the review goes through")}(${state("review running", sending("review"), "brief running", idle("brief"))}, b)
+      == (b == ${state("review idle", idle("review"), "brief running", idle("brief"))}) by {};
+    assert forall|b: State| !${e("your Stop on the review goes through")}(${state("review running", idle("review"), "brief running", sending("brief"))}, b) by {};
+  `);
+  assert.ok(await agreement(f) > 4);
+  verify(f);
+});
+
+test("commands refuse a missing receipt, a receipt with no command or with other content, and a misread command field", () => {
+  refused(office.replace(" state \"Your command on the item\" as Rc {\n  %% receipt the item\n }\n", " state Spare {\n  [*] --> S\n }\n"), /on the item, which no %% receipt composite fills/);
+  refused(office.replace("%% receipt the item\n }\n", "%% receipt the item\n }\n --\n state Drawer {\n  %% receipt the drawer\n }\n"), /the %% receipt for the drawer has no command declared on it/);
+  refused(office.replace("command on the item: Close", "command Close"), /a command reads/);
+  refused(office.replace("%% receipt the item\n", "%% receipt the item\n  [*] --> Spare\n"), /the %% receipt composite for the item holds nothing else/);
+});
+
 test("negative control: differently worded effects stay separate choices", () => {
   const f = generated(desk.replace("Opened --> New : the review finishes / may raise the urgency", "Opened --> New : the review finishes / may mark it new"));
   const { state: s, event: e, map } = names(f);

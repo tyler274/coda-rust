@@ -66,7 +66,8 @@ export function expand(parsed, options = {}) {
           const caption = substitute(names.get(q.name) ?? q.name, values);
           names.set(rename(q.name), caption);
           if (q.leaf) return { name: rename(q.name), leaf: true };
-          return { name: rename(q.name), parts: q.parts.map((sub) => ({
+          return { name: rename(q.name), ...(q.receipt ? { receipt: { item: substitute(q.receipt.item, values) } } : {}),
+            parts: q.parts.map((sub) => ({
             children: sub.children.map(copy).filter(Boolean),
             transitions: sub.transitions.filter((x) => { check(x.limit, `${x.from} --> ${x.to}`); return keeps(x.limit); })
               .map((x) => bindStep(x, values, rename)),
@@ -97,6 +98,7 @@ export function expand(parsed, options = {}) {
   }
   expandIn(root);
   const { catalog, problems } = expandEvents(parsed, instances, options);
+  expandCommands(root, names, catalog);
 
   // Every id a step reads, after templates and events are bound: outside its template, a
   // template-local id must name its instance.
@@ -119,6 +121,98 @@ export function expand(parsed, options = {}) {
 
   validate(root);
   return { ...parsed, nevers, instances, catalog, problems };
+}
+
+// Commands: a declared event with "command on ITEM: VERB" is a request the system accepts
+// exactly while its needs hold; "clicked while Ids" adds what only the click needs (the
+// client's own state). The %% receipt composite for ITEM becomes one receipt for all of ITEM's commands:
+// idle; per command, sending (a lost answer is resent with the same request, so it stays
+// sending) and couldn't confirm. The click moves only the receipt, so the item's other
+// commands wait. Every other step drawn on the click reacts to "your VERB on ITEM goes
+// through" instead, so the item changes only on acceptance; "is refused" fires exactly when
+// the needs fail and changes nothing else. Every outcome needs its command in flight, so no
+// region reacts to an answer nobody asked for.
+function expandCommands(root, names, catalog) {
+  const receipts = new Map(); // item -> composite
+  (function find(q) {
+    for (const p of q.parts) for (const c of p.children) {
+      if (c.leaf) continue;
+      if (c.receipt) {
+        if (receipts.has(c.receipt.item)) throw new Error(`two %% receipt composites fill "${c.receipt.item}"`);
+        receipts.set(c.receipt.item, c);
+      } else find(c);
+    }
+  })(root);
+  const commands = new Map(); // item -> [{ click, verb, needs }]
+  for (const [label, { decl, values }] of catalog) {
+    if (!decl.command) continue;
+    const item = substitute(decl.command.item, values), verb = substitute(decl.command.verb, values);
+    if (!receipts.has(item)) throw new Error(`the command "${label}" is on ${item}, which no %% receipt composite fills`);
+    const needs = decl.needs && { not: decl.needs.not, ids: decl.needs.ids.map((id) => substitute(id, values)),
+      ...(decl.needs.reason ? { reason: substitute(decl.needs.reason, values) } : {}) };
+    const client = decl.command.client && { not: false, ids: decl.command.client.map((id) => substitute(id, values)) };
+    if (needs?.not) throw new Error(`the command "${label}" names what it needs, not what it must avoid`);
+    if (!commands.has(item)) commands.set(item, []);
+    commands.get(item).push({ click: label, verb, needs, client });
+  }
+  const accepted = new Map(); // click label -> { through, sending }
+  const generated = new Set();
+  for (const [item, node] of receipts) {
+    if (node.parts.length > 1 || node.parts[0].children.length || node.parts[0].transitions.length)
+      throw new Error(`the %% receipt composite for ${item} holds nothing else; the tool fills it`);
+    const list = commands.get(item);
+    if (!list) throw new Error(`the %% receipt for ${item} has no command declared on it`);
+    const [base, key] = node.name.split("@");
+    const id = (slug) => `${base}_${slug}${key ? `@${key}` : ""}`;
+    const state = (slug, caption) => { names.set(id(slug), caption); return { name: id(slug), leaf: true }; };
+    const declare = (label, decl) => {
+      if (catalog.has(label)) throw new Error(`the event "${label}" is declared twice`);
+      catalog.set(label, { decl: { label, ...decl }, values: {} });
+    };
+    const idle = id("idle");
+    const children = [state("idle", `No command on ${item} in flight`)];
+    const transitions = [{ from: "[*]", to: idle, text: "", label: "" }];
+    const slugs = new Set();
+    for (const { click, verb, needs, client } of list) {
+      let slug = verb.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") || "command";
+      while (slugs.has(slug)) slug += "_";
+      slugs.add(slug);
+      const sending = id(`${slug}_sending`), stuck = id(`${slug}_stuck`);
+      children.push(state(`${slug}_sending`, `${verb} on ${item}: sending; other commands on it wait`),
+        state(`${slug}_stuck`, `Couldn't confirm ${verb} on ${item}, with Check again`));
+      const through = `your ${verb} on ${item} goes through`, refused = `your ${verb} on ${item} is refused`;
+      const lost = `your ${verb} on ${item} can't be confirmed`, again = `check your ${verb} on ${item} again`;
+      const inFlight = (at, also) => ({ not: false, ids: [at, ...(also?.ids ?? [])], ...(also?.reason ? { reason: also.reason } : {}) });
+      declare(through, { cause: "the system", needs: inFlight(sending, needs),
+        intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` });
+      declare(refused, { cause: "the system", needs: inFlight(sending),
+        intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` });
+      declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." });
+      declare(again, { cause: "you", needs: inFlight(stuck), intent: "The same request is resent; it can never be applied twice." });
+      const step = (from, to, label, extra = {}) => ({ from, to, text: label, label, ...extra });
+      transitions.push(
+        step(idle, sending, click, { ...(needs ? { needsIds: needs } : {}), ...(client ? { when: client } : {}) }),
+        step(sending, idle, through, needs ? { needsIds: needs } : {}),
+        step(sending, idle, refused, needs ? { refuseIds: needs } : {}),
+        step(sending, stuck, lost),
+        step(stuck, sending, again));
+      accepted.set(click, { through, sending });
+    }
+    node.parts = [{ children, transitions }];
+    for (const t of transitions) generated.add(t);
+  }
+  (function relabel(q) {
+    for (const p of q.parts) {
+      for (const t of p.transitions) {
+        const command = accepted.get(t.label);
+        if (!command || generated.has(t)) continue;
+        const { through, sending } = command;
+        Object.assign(t, { label: through, text: t.text.replace(t.label, through),
+          needsIds: { not: false, ids: [sending, ...(t.needsIds?.ids ?? [])], ...(t.needsIds?.reason ? { reason: t.needsIds.reason } : {}) } });
+      }
+      for (const c of p.children) if (!c.leaf) relabel(c);
+    }
+  })(root);
 }
 
 // Declared events. A declaration whose label has {placeholders} is a family: its members

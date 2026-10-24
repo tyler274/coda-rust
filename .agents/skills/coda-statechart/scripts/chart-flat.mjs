@@ -169,6 +169,7 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             ...(t.needsIds ? { needsIds: t.needsIds } : {}),
             ...(within.length ? { within } : {}),
             ...(blockers ? { unless: blockers } : {}),
+            ...(t.refuseIds ? { refuseIds: t.refuseIds } : {}),
             ...(enter ? { enter } : {}),
             ...(t.optional ? { optional: true } : {}),
             ...(t.intent ? { intent: t.intent } : {}),
@@ -278,6 +279,11 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
       }
       // A shallower step yields to each deeper one while that one's guard (and part) holds.
       if (t.unless) t.unless = t.unless.map((c) => [...(c.within ? [c.within] : []), guard(c.when, name)]);
+      // A command is refused exactly while its needs fail.
+      if (t.refuseIds) {
+        t.unless = [...(t.unless ?? []), [needs(t.refuseIds, t.label)]];
+        delete t.refuseIds;
+      }
       if (!t.when) continue;
       t.guard = guard(t.when, name);
       delete t.when;
@@ -310,7 +316,7 @@ export const limitWords = (g) => `${guardWords(g)}${reasonSuffix(g)}`;
 // Print the flat model as plain Mermaid: one holder composite per region, leaf states
 // only, concrete event labels, guards as %% when lines and needs as %% event lines.
 // Without parallel parts or guarded steps that shadow shallower ones, it reads back to
-// the same flat model. Scoped activity, part conditions, yielding to a deeper step and
+// the same flat model. Scoped activity, part conditions, blocking conditions and
 // rules are listed as comments: they are not plain-Mermaid behavior.
 export function printFlat(flat, rules = []) {
   const quote = (s) => s.replace(/"/g, "#quot;");
@@ -351,7 +357,7 @@ export function printFlat(flat, rules = []) {
       out.push(`${pad}${id(name, t.from)} --> ${id(name, t.to)}${t.label || guard || effect ? ` : ${t.label}${guard}${effect}` : ""}`);
       if (t.guard) out.push(`${pad}%% when ${t.guard.not ? "not " : ""}${idsOf(t.guard).join(", ")}${reasonSuffix(t.guard)}`);
       for (const w of t.within ?? []) out.push(`${pad}%% within: ${guardWords(w)}`);
-      for (const c of t.unless ?? []) out.push(`${pad}%% yields to a deeper step: ${c.map(guardWords).join(" and ")}`);
+      for (const c of t.unless ?? []) out.push(`${pad}%% blocked while: ${c.map(guardWords).join(" and ")}`);
       if (t.enter) for (const [part, states] of Object.entries(t.enter)) out.push(`${pad}%% enters ${part} at ${states.join(" or ")}`);
     }
     if (!single) out.push("  }");

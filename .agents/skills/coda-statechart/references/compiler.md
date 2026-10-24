@@ -162,6 +162,32 @@ The same `may` words on one event in several regions are one choice: in a step,
 every region with such an enabled edge takes it, or none does. Use this when one
 decision changes several owners at once.
 
+**Commands.** A declared event with `| command on ITEM: VERB |` after its cause is a
+request the system accepts exactly while its `needs` hold. Write its `needs` as when
+the command is allowed, and draw the owners' edges on the click as usual. One
+composite whose only line is `%% receipt ITEM` holds the receipt for all of ITEM's
+commands; where it sits sets how long a pending command lasts. `command on ITEM: VERB,
+clicked while Ids` adds conditions only the click needs, such as the client's own
+session; acceptance and refusal read only the needs. The receipt has an idle
+state and, per command, *sending* and *couldn't confirm*. The click moves only the
+receipt, so ITEM's other commands wait while one is in flight. Every other edge drawn
+on the click reacts to `your VERB on ITEM goes through` instead (needs as the click),
+so ITEM changes only on acceptance. `your VERB on ITEM is refused` fires exactly while
+the needs fail and changes nothing else. `your VERB on ITEM can't be confirmed` moves
+sending to couldn't confirm, and `check your VERB on ITEM again` moves it back; a
+resent request is the same request, so a lost answer stays *sending*. Every outcome
+needs its command in flight (*sending*, or *couldn't confirm* for Check again), so no
+region reacts to an answer nobody asked for. Inside a template
+the receipt and its commands expand per instance.
+
+```mermaid
+%% event close the item | by you | command on the item: Close | needs In, Open | You close it.
+Open --> Closed : close the item
+state "Your command on the item" as Rc {
+  %% receipt the item
+}
+```
+
 ```mermaid
 Idle --> Ringing : the bell is pressed / may ring the chime
 Today --> Now : the review finishes / may raise the urgency
@@ -185,7 +211,7 @@ These follow Harel and UML where the brief did not decide:
 - Priority compares enabled steps only. Within a region, a step drawn from a
   deeper state takes priority over a same-label step from an enclosing state only
   while its own `%% when` holds; otherwise the enclosing step fires. `flat` lists
-  the yielding step's condition as a `%% yields to a deeper step` comment.
+  the yielding step's condition as a `%% blocked while` comment.
 - An edge may target a state one level inside a composite with parts; deeper
   targets, edges between parts, and labeled starts outside parts are refused.
 - Initial arrows refuse guards and effects; labeled starts take only a label.

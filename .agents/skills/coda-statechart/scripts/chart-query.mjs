@@ -45,7 +45,7 @@ function describe(t, g) {
   const parts = [];
   if (t.guard) parts.push(`guard: ${limitWords(t.guard)}`);
   for (const w of t.within ?? []) parts.push(`part condition: ${guardWords(w)}`);
-  for (const c of t.unless ?? []) parts.push(`yields to a deeper step ${c.map(guardWords).join(" and ")}`);
+  for (const c of t.unless ?? []) parts.push(`blocked while ${c.map(guardWords).join(" and ")}`);
   const e = t.label ? g.info(t.label) : null;
   if (e) {
     parts.push(`cause: ${e.cause}`);

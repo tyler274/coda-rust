@@ -39,7 +39,7 @@ function model(text, renames = { regions: {}, states: {}, events: {} }) {
     for (const t of r.transitions) {
       const extra = [condition(t.guard), t.needs && `needs ${condition(t.needs)}`,
         ...(t.within ?? []).map((w) => `within ${condition(w)}`),
-        ...(t.unless ?? []).map((c) => `yields to a deeper step ${c.map(condition).join(" and ")}`),
+        ...(t.unless ?? []).map((c) => `blocked while ${c.map(condition).join(" and ")}`),
         ...Object.entries(t.enter ?? {}).map(([p, list]) => `enters ${region(p)} at ${states(list).join(" or ")}`),
         t.optional && "may"].filter(Boolean);
       facts.steps.add(`${name}: ${state(t.from)} --> ${state(t.to)} on ${t.label ? `"${event(t.label)}"` : "an unlabeled step"}${extra.length ? ` (${extra.join("; ")})` : ""}`);

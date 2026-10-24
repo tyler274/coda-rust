@@ -140,7 +140,19 @@ export function readChart(text) {
       item = null;
       continue;
     }
-    // Declared events: "%% event LABEL | by CAUSE | needs [not] Id, Id | INTENT" (needs optional).
+    // A receipt: the first line of an empty composite, which the tool fills with the receipt
+    // for every command declared on ITEM.
+    // Elsewhere the line stays a comment; a command on ITEM then finds no receipt and is refused.
+    const receipt = /^%%\s*receipt\s+(.+)$/.exec(line);
+    const holder = stack.at(-1);
+    if (receipt && holder !== root && !holder.receipt && holder.parts.length === 1
+      && !holder.parts[0].children.length && !holder.parts[0].transitions.length) {
+      holder.receipt = { item: receipt[1].trim() };
+      item = null;
+      continue;
+    }
+    // Declared events: "%% event LABEL | by CAUSE | command on ITEM: VERB | needs [not] Id, Id | INTENT"
+    // (command and needs optional).
     const event = /^%%\s*event\s+(.*)$/.exec(line);
     if (event && /\|\s*by\s/.test(event[1])) {
       const fields = event[1].split("|").map((s) => s.trim());
@@ -149,15 +161,21 @@ export function readChart(text) {
       if (!label || /[[\]]/.test(label) || !cause)
         throw new Error(`an event line reads "%% event LABEL | by CAUSE | needs [not] Id, Id | INTENT": ${line}`);
       let next = 2;
-      const needs = /^needs\s+(not\s+)?(.+)$/.exec(fields[2] ?? "");
-      if (needs) next = 3;
-      const why = needs && /^reason:\s*(.+)$/.exec(fields[3] ?? "");
-      if (why) next = 4;
+      const command = /^command\s+on\s+(.+?)\s*:\s*(.+?)(?:\s*,\s*clicked\s+while\s+(.+))?$/.exec(fields[next] ?? "");
+      if (command) next++;
+      else if (/^command\b/.test(fields[next] ?? ""))
+        throw new Error(`a command reads "| command on ITEM: VERB |" or "| command on ITEM: VERB, clicked while Ids |": ${line}`);
+      const needs = /^needs\s+(not\s+)?(.+)$/.exec(fields[next] ?? "");
+      if (needs) next++;
+      const why = needs && /^reason:\s*(.+)$/.exec(fields[next] ?? "");
+      if (why) next++;
       if (/^reason:/.test(fields[next] ?? "")) throw new Error(`a reason follows the needs it explains: ${line}`);
       const intent = fields.slice(next).join(" | ").trim();
       if (!intent) throw new Error(`the event "${label}" needs a one-sentence intent after its cause: ${line}`);
       if (events.some((e) => e.label === label)) throw new Error(`the event "${label}" is declared twice`);
       events.push({ label, cause: cause[1].trim(), intent,
+        ...(command ? { command: { item: command[1].trim(), verb: command[2].trim(),
+          ...(command[3] ? { client: command[3].split(",").map((s) => s.trim()) } : {}) } } : {}),
         ...(needs ? { needs: { not: Boolean(needs[1]), ids: needs[2].split(",").map((s) => s.trim()),
           ...(why ? { reason: why[1].trim() } : {}) } } : {}) });
       item = null;
