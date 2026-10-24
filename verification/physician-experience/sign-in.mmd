@@ -16,8 +16,10 @@ stateDiagram-v2
   %% already-signed-in browser, reuse refusal, the expired prompt resuming in place (from the
   %% prompt and from another tab), another physician's sign-in, and No access. No chart safety
   %% rules: generation/check/trace establish transition correspondence, not data or runtime proof.
-  %% Not built yet, and named by the map's omits: a Coda link opened while signed out keeps
-  %% its patient only in the tab that opened it; the emailed link's own tab opens Today.
+  %% Decision: Dev 2026-10-24, the emailed link carries no patient. A Coda link opened while
+  %% signed out is held by the tab that opened it (Patient link). Signing in in any tab of this
+  %% browser signs in its signed-out tabs, as sign-out reaches every tab, so the holding tab
+  %% lands on its patient; the emailed link's own tab opens Today.
   %% events declared
   %% event request a link | by you | Enter an email or request a replacement link.
   %% event the request is acknowledged | by the authentication service | Check email; this does not reveal whether the account exists.
@@ -25,8 +27,11 @@ stateDiagram-v2
   %% event local proof returns a token | by the local proof transport | Test-only delivery uses the same verifier without a code screen.
   %% event use another email | by you | Return to the editable email field.
   %% event open the email button | by you | Navigate to the mailed link; clear URL credentials and attempt redemption once.
-  %% event verification succeeds | by the authentication service | Store the issued session and open the workspace.
+  %% event verification succeeds | by the authentication service | Store the issued session and open the workspace; this browser's signed-out tabs open too.
+  %% event verification succeeds holding a patient link | by the authentication service | As verification succeeds, in a tab holding a Coda link: it lands on that patient by your access.
   %% event verification refuses access | by the authentication service | The link matched, but its account no longer has access to this practice.
+  %% event verification refuses access holding a patient link | by the authentication service | As verification refuses access, in a tab holding a Coda link; the tab keeps holding it.
+  %% event open a Coda link while signed out | by you | A Coda link to a patient opens the sign-in page; the tab holds the link.
   %% event verification fails or is uncertain | by the authentication service or network | Show a recovery action; never claim success or automatically resend.
   %% event reload with a valid session | by you | Restore the browser session through the existing authenticated read.
   %% event sign out | by you | End the server session and clear browser session storage.
@@ -41,10 +46,19 @@ stateDiagram-v2
       state "Session valid" as Valid
       state "Session ended" as Ended
       state "No access" as Refused
-      NoSession --> Valid : verification succeeds
-      NoSession --> Refused : verification refuses access
+      NoSession --> Valid : verification succeeds [no patient link]
+      %% when NoLink
+      NoSession --> Valid : verification succeeds holding a patient link [holding a patient link]
+      %% when HeldLink
+      NoSession --> Refused : verification refuses access [no patient link]
+      %% when NoLink
+      NoSession --> Refused : verification refuses access holding a patient link [holding a patient link]
+      %% when HeldLink
       Refused --> NoSession : use another email
-      Refused --> Valid : verification succeeds
+      Refused --> Valid : verification succeeds [no patient link]
+      %% when NoLink
+      Refused --> Valid : verification succeeds holding a patient link [holding a patient link]
+      %% when HeldLink
       Valid --> Valid : verification succeeds
       Valid --> NoSession : sign out
       Valid --> NoSession : access is removed
@@ -77,12 +91,15 @@ stateDiagram-v2
         state "No access to this practice" as NoAccess
         SigningIn --> Recovery : verification fails or is uncertain
         SigningIn --> NoAccess : verification refuses access
+        SigningIn --> NoAccess : verification refuses access holding a patient link
         NoAccess --> Email : use another email
       }
       state "Workspace open" as SignedIn
       Entry --> SigningIn : open the email button
       SignedIn --> SigningIn : open the email button
-      SigningIn --> SignedIn : verification succeeds
+      %% Verification in this tab or in another tab of this browser.
+      Entry --> SignedIn : verification succeeds
+      Entry --> SignedIn : verification succeeds holding a patient link
       Entry --> SignedIn : reload with a valid session [session valid]
       %% when Valid
       SignedIn --> SignedIn : reload with a valid session [session valid]
@@ -114,5 +131,16 @@ stateDiagram-v2
       Covered --> Email : sign out
       Covered --> Email : reopen without a valid session [no valid session]
       %% when not Valid
+    }
+    --
+    %% What this tab was opening when it was signed out. The graph has no tabs: holding a link
+    %% decides whether signing in is the graph's "sign in to the practice" or "sign in through a link".
+    state "Patient link" as Link {
+      [*] --> NoLink
+      state "No patient link" as NoLink
+      state "Holding a patient link" as HeldLink
+      NoLink --> HeldLink : open a Coda link while signed out [no valid session]
+      %% when not Valid
+      HeldLink --> NoLink : verification succeeds holding a patient link
     }
   }

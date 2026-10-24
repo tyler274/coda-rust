@@ -25,7 +25,9 @@
     "Prompt over the workspace.Sending the prompt's link": {},
     "Prompt over the workspace.Check your email for the prompt's link": {},
     "Prompt over the workspace.Signing in under the prompt": {},
-    "Prompt over the workspace.Prompt recovery": {}
+    "Prompt over the workspace.Prompt recovery": {},
+    "No patient link": {},
+    "Holding a patient link": {}
   },
   "events": {
     "request a link": null,
@@ -35,13 +37,16 @@
     "use another email": null,
     "open the email button": null,
     "verification succeeds": "sign in to the practice",
+    "verification succeeds holding a patient link": "sign in through a link",
     "verification fails or is uncertain": null,
     "reload with a valid session": null,
     "sign out": "sign out",
     "the session expires": "the session expires",
     "reopen without a valid session": "reopen Coda after the session ended",
     "verification refuses access": "sign in to the practice",
-    "access is removed": "practice access removed"
+    "verification refuses access holding a patient link": "sign in through a link",
+    "access is removed": "practice access removed",
+    "open a Coda link while signed out": null
   },
   "steps": {
     "Session valid --> Session valid on verification succeeds": "a different physician signs in",
@@ -49,7 +54,5 @@
     "Session ended --> Session valid on verification succeeds": "sign in again",
     "No access --> No session on use another email": "try another account"
   },
-  "omits": {
-    "sign in through a link": "partly built: a Coda link opened while signed out keeps its patient in the tab that opened it; the emailed link's own tab opens Today (Dev to decide whether the link carries the place)"
-  }
+  "omits": {}
 }

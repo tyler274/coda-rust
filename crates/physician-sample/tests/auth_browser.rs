@@ -240,6 +240,25 @@ async fn another_physicians_sign_in_starts_this_tab_over_at_today() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn a_signed_out_tab_holding_a_patient_link_lands_on_it_when_another_tab_signs_in() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    // A Coda link to Mary Louis (local-product's MARY_WORKSPACE_ID) opened while signed out.
+    browser.text_until(
+        &format!("{base}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"),
+        "Sign in to Coda",
+    );
+    // The emailed link carries no patient and is opened in another tab; this
+    // tab picks up the sign-in and lands where its own link pointed.
+    browser
+        .page()
+        .evaluate(&another_tab_signs_in("'staging-physician'"));
+    browser.wait_for("Patient summary");
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn a_link_that_no_longer_grants_access_opens_no_access() {
     let server = spawn_required_server().await;
     // The server's refusal is proved in its own tests; this stands in for it so

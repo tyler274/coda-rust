@@ -134,12 +134,18 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
     one is sent nothing. Opening a link that no longer grants access to this
     practice shows "No access to this practice".
   - After the session expires, the prompt emails a link to the same address.
-    Opening it resumes both the covered page and the link's own page exactly
-    where the physician was. If Coda was closed meanwhile, reopening shows the
-    sign-in page and signing in opens Today.
+    Opening it resumes the covered page exactly where the physician was; the
+    link's own tab opens Today, since the email carries no place (below). If
+    Coda was closed meanwhile, reopening shows the sign-in page and signing in
+    opens Today.
   - While signed in, the physician's own link changes nothing; another
     physician's link ends this session and opens Today for them, with drafts and
     seen state kept per physician (N7).
+  - **The sign-in email carries no patient** (Dev, "keep it simple"). A Coda
+    link opened while signed out is held by the tab that opened it. Signing in
+    in any tab of the browser signs in its signed-out tabs, as sign-out reaches
+    every tab, so the holding tab lands on its patient; the emailed link's own
+    tab opens Today.
 - **Records refresh overdue is left out.** A scheduled pull that didn't happen,
   while the source is up, is runtime scheduling; keeping records current is on
   the infrastructure-gaps list, and a source that is actually down is decision 9.

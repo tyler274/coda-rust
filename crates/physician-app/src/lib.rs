@@ -458,6 +458,15 @@ impl SessionState {
     #[cfg(target_arch = "wasm32")]
     fn hear(mut self, news: tabs::TabNews, client: PhysicianClient) {
         if !*self.signed_in.peek() {
+            // A signed-out tab picks up this browser's sign-in, as sign-out
+            // reaches every tab. It keeps what it was opening, so the tab
+            // that opened a Coda link lands on its patient when the emailed
+            // link is opened elsewhere (sign-in.mmd, Patient link).
+            if let tabs::TabNews::SignedIn { session, .. } = news {
+                client.session().set(session.clone());
+                write_stored_session(Some(&session));
+                self.signed_in.set(true);
+            }
             return;
         }
         match news {
