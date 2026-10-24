@@ -558,10 +558,20 @@ async fn guard_event_stream(
         identity,
         watched_workspace,
         initial_panel,
+        String::new(),
     );
     let stream = stream::unfold(
         state,
-        |(mut inner, mut auth_rx, auth, token, identity, watched_workspace, initial_panel)| async move {
+        |(
+            mut inner,
+            mut auth_rx,
+            auth,
+            token,
+            identity,
+            watched_workspace,
+            initial_panel,
+            mut pending,
+        )| async move {
             loop {
                 tokio::select! {
                     biased;
@@ -609,6 +619,7 @@ async fn guard_event_stream(
                                         identity,
                                         watched_workspace,
                                         initial_panel,
+                                        pending,
                                     ),
                                 ));
                             }
@@ -628,13 +639,21 @@ async fn guard_event_stream(
                             return None;
                         }
                         let text = String::from_utf8_lossy(&chunk);
-                        let filtered = filter_sse_chunk(
-                            &text,
-                            &auth,
-                            &identity,
-                            watched_workspace.as_deref(),
-                        )
-                        .await;
+                        let Some(events) = take_sse_events(&mut pending, &text) else {
+                            return None;
+                        };
+                        let mut filtered = String::new();
+                        for event in events {
+                            filtered.push_str(
+                                &filter_sse_chunk(
+                                    &format!("{event}\n\n"),
+                                    &auth,
+                                    &identity,
+                                    watched_workspace.as_deref(),
+                                )
+                                .await,
+                            );
+                        }
                         if !filtered.is_empty() {
                             return Some((
                                 Ok::<Bytes, axum::Error>(Bytes::from(filtered)),
@@ -646,6 +665,7 @@ async fn guard_event_stream(
                                     identity,
                                     watched_workspace,
                                     initial_panel,
+                                    pending,
                                 ),
                             ));
                         }
@@ -655,6 +675,46 @@ async fn guard_event_stream(
         },
     );
     Response::from_parts(parts, Body::from_stream(stream))
+}
+
+const SSE_PENDING_LIMIT: usize = 64 * 1024;
+
+/// Append `chunk` and return events that end in a blank line.
+///
+/// `None` means the buffer passed 64 KiB and the stream must end. A partial
+/// tail stays in `pending` and is not forwarded.
+fn take_sse_events(pending: &mut String, chunk: &str) -> Option<Vec<String>> {
+    pending.push_str(chunk);
+    if pending.len() > SSE_PENDING_LIMIT {
+        return None;
+    }
+    let mut events = Vec::new();
+    while let Some(end) = pending.find("\n\n") {
+        let event: String = pending.drain(..end).collect();
+        pending.drain(..2);
+        if !event.trim().is_empty() {
+            events.push(event);
+        }
+    }
+    Some(events)
+}
+
+/// An event that names a workspace outside `allowed` is not forwarded.
+/// An event that names no workspace is allowed.
+fn sse_event_names_disallowed_workspace(event: &str, allowed: impl Fn(&str) -> bool) -> bool {
+    let mut workspace_id = None;
+    for line in event.lines() {
+        if let Some(data) = line.strip_prefix("data:")
+            && let Ok(val) = serde_json::from_str::<Value>(data.trim())
+            && let Some(ws) = val.get("patient_workspace_id").and_then(Value::as_str)
+        {
+            workspace_id = Some(ws.to_owned());
+        }
+    }
+    match workspace_id {
+        Some(ws) => !allowed(&ws),
+        None => false,
+    }
 }
 
 async fn stream_still_authorized(
@@ -1283,6 +1343,25 @@ mod tests {
     use axum::http::{Method, Request, StatusCode};
     use physician_auth::{Membership, MemoryAuthStore, PhysicianIdentity, ReviewCadence};
     use tower::ServiceExt;
+
+    #[test]
+    fn a_disallowed_event_split_across_chunks_is_not_forwarded() {
+        let mut pending = String::new();
+        let first = take_sse_events(
+            &mut pending,
+            "event: workspace_changed\ndata: {\"patient_workspace_id\":",
+        )
+        .expect("partial event stays buffered");
+        assert!(first.is_empty());
+        assert!(!pending.is_empty());
+        let second = take_sse_events(&mut pending, "\"pw-secret\"}\n\n").expect("complete event");
+        assert!(pending.is_empty());
+        let forwarded: Vec<_> = second
+            .iter()
+            .filter(|event| !sse_event_names_disallowed_workspace(event, |_| false))
+            .collect();
+        assert!(forwarded.is_empty());
+    }
 
     const STAGING_EMAIL: &str = "physician@codahealth.test";
     const COLLEAGUE_EMAIL: &str = "colleague@codahealth.test";
