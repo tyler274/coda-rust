@@ -318,6 +318,11 @@ impl ConversationStore {
             if row.get::<Uuid,_>("conversation_id")!=conversation || row.get::<i64,_>("base_revision")!=revision || row.get::<String,_>("input")!=input || row.get::<Value,_>("submission")!=json!(submission) { return Err(ApiError::Conflict("command identity reused")); }
             return Ok(json!({"id":id,"state":row.get::<String,_>("state")}));
         }
+        sqlx::query("select id from users where id=$1 for update")
+            .bind(c.account_id)
+            .fetch_optional(&mut *tx)
+            .await?
+            .ok_or(ApiError::NotFound)?;
         let collision: bool = sqlx::query_scalar(
             "select exists(select 1 from duet_commands where user_id=$1 and id=$2)",
         )
@@ -342,7 +347,12 @@ impl ConversationStore {
         .bind(conversation)
         .fetch_one(&mut *tx)
         .await?;
-        let busy:bool=sqlx::query_scalar("select exists(select 1 from duet_commands where user_id=$1 and conversation_id=$2 and state in ('accepted','running'))").bind(c.account_id).bind(conversation).fetch_one(&mut *tx).await?;
+        let busy: bool = sqlx::query_scalar(
+            "select exists(select 1 from duet_commands where user_id=$1 and state in ('accepted','running'))",
+        )
+        .bind(c.account_id)
+        .fetch_one(&mut *tx)
+        .await?;
         if current != revision || busy {
             return Err(ApiError::Conflict("conversation changed or busy"));
         }
