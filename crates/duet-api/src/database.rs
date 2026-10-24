@@ -71,6 +71,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0015_legacy_privacy_cohort",
         include_str!("../migrations/0015_legacy_privacy_cohort.sql"),
     ),
+    (
+        "0016_public_budget_misses",
+        include_str!("../migrations/0016_public_budget_misses.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -152,6 +156,7 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select on public.duet_legacy_privacy_accounts to {role}; \
          grant select,insert on public.duet_legacy_privacy_replays to {role}; \
          grant execute on function public.duet_admit_public_retrieval() to {role}; \
+         grant execute on function public.duet_admit_public_retrieval_miss() to {role}; \
          grant execute on function public.acting_account() to {role}; \
          revoke all on public.duet_schema_migrations from {role};"
     )))
@@ -205,9 +210,19 @@ impl AccountDatabase {
         .fetch_all(&self.pool)
         .await
     }
-    /// Shared atomic public retrieval budget, including invalid capability guesses.
+    /// Shared atomic budget for a valid public retrieval.
     pub async fn admit_public_retrieval(&self) -> Result<bool, sqlx::Error> {
         sqlx::query_scalar("select public.duet_admit_public_retrieval()")
+            .fetch_one(&self.pool)
+            .await
+    }
+    /// Shared atomic budget for a failed public lookup.
+    ///
+    /// Raw SQL is allowed because this is the existing plpgsql bucket, not
+    /// ordinary CRUD. The runtime role can only execute the security-definer
+    /// function.
+    pub async fn admit_public_retrieval_miss(&self) -> Result<bool, sqlx::Error> {
+        sqlx::query_scalar("select public.duet_admit_public_retrieval_miss()")
             .fetch_one(&self.pool)
             .await
     }

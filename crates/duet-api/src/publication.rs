@@ -54,6 +54,35 @@ pub struct PublicationView {
     /// SHA-256 of exact PDF bytes.
     pub content_sha256: String,
 }
+/// Independent one-minute windows for valid retrievals and failed lookups.
+struct RetrievalWindow {
+    started: std::time::Instant,
+    used: u32,
+}
+
+impl RetrievalWindow {
+    fn new() -> Self {
+        Self {
+            started: std::time::Instant::now(),
+            used: 0,
+        }
+    }
+}
+
+struct RetrievalBudget {
+    hit: RetrievalWindow,
+    miss: RetrievalWindow,
+}
+
+impl RetrievalBudget {
+    fn new() -> Self {
+        Self {
+            hit: RetrievalWindow::new(),
+            miss: RetrievalWindow::new(),
+        }
+    }
+}
+
 /// Shared capability owner. Public responses always revalidate the pinned source selection.
 #[derive(Clone)]
 pub struct PublicationStore {
@@ -62,7 +91,7 @@ pub struct PublicationStore {
     origin: String,
     viewer: String,
     master: Arc<[u8; 32]>,
-    retrieval_budget: Arc<std::sync::Mutex<(std::time::Instant, u32)>>,
+    retrieval_budget: Arc<std::sync::Mutex<RetrievalBudget>>,
 }
 impl PublicationStore {
     /// Configure canonical HTTPS origin and viewer; localhost HTTP is permitted for isolated proof.
@@ -95,7 +124,7 @@ impl PublicationStore {
             origin,
             viewer,
             master: Arc::new(master),
-            retrieval_budget: Arc::new(std::sync::Mutex::new((std::time::Instant::now(), 0))),
+            retrieval_budget: Arc::new(std::sync::Mutex::new(RetrievalBudget::new())),
         })
     }
     /// Create a pinned snapshot/PDF in the same transaction as generation and exact-source checks.
@@ -227,27 +256,12 @@ impl PublicationStore {
     }
     /// Revalidate public capability on every HTML/PDF/manifest/file request, including source corrections.
     pub async fn retrieve(&self, token: &str, shl: bool) -> Result<PublicSnapshot, ApiError> {
-        if !self.database.admit_public_retrieval().await? {
-            return Err(ApiError::Unavailable("public retrieval capacity reached"));
-        }
-        {
-            let mut budget = self
-                .retrieval_budget
-                .lock()
-                .map_err(|_| ApiError::NotFound)?;
-            if budget.0.elapsed() >= std::time::Duration::from_secs(60) {
-                *budget = (std::time::Instant::now(), 0);
-            }
-            if budget.1 >= 600 {
-                return Err(ApiError::Unavailable("public retrieval capacity reached"));
-            }
-            budget.1 += 1;
-        }
-        if token.len() != 43
-            || !token
+        let well_formed = token.len() == 43
+            && token
                 .bytes()
-                .all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
-        {
+                .all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte));
+        if !well_formed {
+            self.charge_retrieval(false).await?;
             return Err(ApiError::NotFound);
         }
         let Some((id, account)) = self
@@ -255,8 +269,26 @@ impl PublicationStore {
             .publication_owner(&hash(token.as_bytes()), shl)
             .await?
         else {
+            self.charge_retrieval(false).await?;
             return Err(ApiError::NotFound);
         };
+        match self.load_public_snapshot(id, account).await {
+            Ok(snapshot) => {
+                self.charge_retrieval(true).await?;
+                Ok(snapshot)
+            }
+            Err(ApiError::NotFound) => {
+                self.charge_retrieval(false).await?;
+                Err(ApiError::NotFound)
+            }
+            Err(other) => Err(other),
+        }
+    }
+    async fn load_public_snapshot(
+        &self,
+        id: Uuid,
+        account: Uuid,
+    ) -> Result<PublicSnapshot, ApiError> {
         let mut tx = self.database.begin(account).await?;
         sqlx::query("select id from users where id=$1 for update")
             .bind(account)
@@ -285,6 +317,38 @@ impl PublicationStore {
             key: key.try_into().map_err(|_| ApiError::NotFound)?,
         })
     }
+    /// Charge the hit bucket or the miss bucket. A full miss window does not
+    /// affect a valid capability, and the reverse.
+    ///
+    /// Raw SQL is allowed because this is the existing plpgsql bucket, not
+    /// ordinary CRUD.
+    async fn charge_retrieval(&self, hit: bool) -> Result<(), ApiError> {
+        let admitted = if hit {
+            self.database.admit_public_retrieval().await?
+        } else {
+            self.database.admit_public_retrieval_miss().await?
+        };
+        if !admitted {
+            return Err(ApiError::Unavailable("public retrieval capacity reached"));
+        }
+        let mut budget = self
+            .retrieval_budget
+            .lock()
+            .map_err(|_| ApiError::NotFound)?;
+        let window = if hit {
+            &mut budget.hit
+        } else {
+            &mut budget.miss
+        };
+        if window.started.elapsed() >= std::time::Duration::from_secs(60) {
+            *window = RetrievalWindow::new();
+        }
+        if window.used >= 600 {
+            return Err(ApiError::Unavailable("public retrieval capacity reached"));
+        }
+        window.used += 1;
+        Ok(())
+    }
     /// SHL manifest locations are bounded by one hour and publication expiry, and rechecked on fetch.
     pub async fn manifest(&self, token: &str) -> Result<Value, ApiError> {
         let p = self.retrieve(token, true).await?;
@@ -301,10 +365,24 @@ impl PublicationStore {
     }
     /// Serve compact JWE (dir/A256GCM) containing a FHIR R4 DocumentReference with exact PDF attachment.
     pub async fn shl_file(&self, location: &str) -> Result<String, ApiError> {
-        // Charge malformed encrypted locations too, before decrypting attacker input.
-        if !self.database.admit_public_retrieval().await? {
-            return Err(ApiError::Unavailable("public retrieval capacity reached"));
-        }
+        // A failed decrypt or lookup charges the miss bucket only. A valid file
+        // charges one hit inside retrieve.
+        let token = match self.shl_location_token(location) {
+            Ok(token) => token,
+            Err(ApiError::NotFound) => {
+                self.charge_retrieval(false).await?;
+                return Err(ApiError::NotFound);
+            }
+            Err(other) => return Err(other),
+        };
+        let p = self.retrieve(&token, true).await?;
+        let resource = json!({"resourceType":"DocumentReference","status":"current","type":{"text":"Patient-prepared For my doctor"},"content":[{"attachment":{"contentType":"application/pdf","data":STANDARD.encode(&p.pdf),"title":"For my doctor"}}]});
+        compact_jwe(
+            &p.key,
+            &serde_json::to_vec(&resource).map_err(|_| ApiError::NotFound)?,
+        )
+    }
+    fn shl_location_token(&self, location: &str) -> Result<String, ApiError> {
         if location.len() > 1024 {
             return Err(ApiError::NotFound);
         }
@@ -312,20 +390,15 @@ impl PublicationStore {
             &self.master,
             &B64.decode(location).map_err(|_| ApiError::NotFound)?,
             b"shl-file-v1",
-        )
-        .map_err(|_| ApiError::NotFound)?;
-        let v: Value = serde_json::from_slice(&body).map_err(|_| ApiError::NotFound)?;
-        if v["exp"].as_i64().unwrap_or(0) <= Utc::now().timestamp() {
+        )?;
+        let value: Value = serde_json::from_slice(&body).map_err(|_| ApiError::NotFound)?;
+        if value["exp"].as_i64().unwrap_or(0) <= Utc::now().timestamp() {
             return Err(ApiError::NotFound);
         }
-        let p = self
-            .retrieve(v["token"].as_str().ok_or(ApiError::NotFound)?, true)
-            .await?;
-        let resource = json!({"resourceType":"DocumentReference","status":"current","type":{"text":"Patient-prepared For my doctor"},"content":[{"attachment":{"contentType":"application/pdf","data":STANDARD.encode(&p.pdf),"title":"For my doctor"}}]});
-        compact_jwe(
-            &p.key,
-            &serde_json::to_vec(&resource).map_err(|_| ApiError::NotFound)?,
-        )
+        value["token"]
+            .as_str()
+            .map(str::to_owned)
+            .ok_or(ApiError::NotFound)
     }
 }
 /// Authorized pinned bytes returned only after current retrieval checks.
