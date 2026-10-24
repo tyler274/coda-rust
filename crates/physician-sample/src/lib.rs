@@ -1301,6 +1301,12 @@ mod tests {
             "from Quest, via the patient's Duet"
         );
         assert_eq!(records[1]["provenance"], "via the patient's Duet");
+        assert!(
+            records
+                .iter()
+                .all(|record| record["patient_approved_note"] == false),
+            "{records:?}"
+        );
 
         // Workspace endpoint surfaces the patient link and consented Duet records with provenance.
         let (status, ws_body) = request(

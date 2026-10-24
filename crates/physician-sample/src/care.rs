@@ -343,11 +343,15 @@ pub(crate) async fn post_duet_sync(Path(id): Path<String>, request: Request<Body
     let Ok(body) = serde_json::from_slice::<DuetSyncBody>(&bytes) else {
         return StatusCode::BAD_REQUEST.into_response();
     };
+    let mut items = body.items;
+    for item in &mut items {
+        item.patient_approved_note = false;
+    }
     let mut duet_sources = care.duet_sources.lock().expect("duet sources lock");
     for source in &body.practice_sources {
         duet_sources.register_practice_source(&id, &source.content_hash, &source.source_identity);
     }
-    let Ok(ingested_count) = duet_sources.ingest_consented_items(&id, true, &body.items) else {
+    let Ok(ingested_count) = duet_sources.ingest_consented_items(&id, true, &items) else {
         return StatusCode::FORBIDDEN.into_response();
     };
     let last_cursor = duet_sources.last_cursor(&id);
