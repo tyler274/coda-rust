@@ -628,6 +628,72 @@ async fn durable_tool_recovery_memory_and_permission_fences() {
         authenticated_at: chrono::Utc::now(),
     };
     let store = ConversationStore::new(db.clone());
+    let gate_first = Uuid::new_v4();
+    let gate_second = Uuid::new_v4();
+    let gate_conversation = Uuid::new_v4();
+    let other_conversation = Uuid::new_v4();
+    store
+        .accept(
+            &c,
+            gate_first,
+            gate_conversation,
+            0,
+            "Hold the account",
+            "controlled",
+        )
+        .await
+        .unwrap();
+    let retry = store
+        .accept(
+            &c,
+            gate_first,
+            gate_conversation,
+            0,
+            "Hold the account",
+            "controlled",
+        )
+        .await
+        .unwrap();
+    assert_eq!(retry["state"], "accepted");
+    assert!(
+        store
+            .accept(
+                &c,
+                gate_second,
+                other_conversation,
+                0,
+                "Another conversation",
+                "controlled",
+            )
+            .await
+            .is_err(),
+        "a second conversation is refused while the account has a command in flight"
+    );
+    store
+        .claim(&c, gate_first)
+        .await
+        .unwrap()
+        .complete(&response("finished", vec![]))
+        .await
+        .unwrap();
+    store
+        .accept(
+            &c,
+            gate_second,
+            other_conversation,
+            0,
+            "Another conversation",
+            "controlled",
+        )
+        .await
+        .unwrap();
+    store
+        .claim(&c, gate_second)
+        .await
+        .unwrap()
+        .complete(&response("finished too", vec![]))
+        .await
+        .unwrap();
     let id = Uuid::new_v4();
     let conversation = Uuid::new_v4();
     store
@@ -960,8 +1026,22 @@ async fn durable_tool_recovery_memory_and_permission_fences() {
         cited["sources"][0]["source"]["payload"]["value"]["literal"],
         "<0.03"
     );
+    // The cited command is still in flight. Park it so these helpers can admit
+    // their own commands, then restore it for the stale-completion fence.
+    sqlx::query("update duet_commands set state='cancelled' where user_id=$1 and id=$2")
+        .bind(account)
+        .bind(next)
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
     retained_context_families(&store, &db, &c, &mut admin_db).await;
     admission_and_sources(&store, &db, &c, &address, &mut admin_db).await;
+    sqlx::query("update duet_commands set state='running' where user_id=$1 and id=$2")
+        .bind(account)
+        .bind(next)
+        .execute(&mut admin_db)
+        .await
+        .unwrap();
     mutation.operation_id = Uuid::new_v4();
     mutation.expected_revision = Some(i64::from(address.revision));
     mutation.payload["value"]["literal"] = json!("0.04");

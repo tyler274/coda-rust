@@ -328,6 +328,16 @@ async fn admitted_skills_recovery_accounting_and_bounds() {
             .is_err()
     );
     assert_eq!(provider.step, 0);
+    // The bounded command is still in flight. Park it so these price proofs
+    // can admit their own commands; the account admits one at a time.
+    let mut tx = db.begin(a.account_id).await.unwrap();
+    sqlx::query("update duet_commands set state='cancelled' where user_id=$1 and id=$2")
+        .bind(a.account_id)
+        .bind(capped)
+        .execute(&mut *tx)
+        .await
+        .unwrap();
+    tx.commit().await.unwrap();
     // Price boundary is taken from the reference rate, not a local estimate.
     for (input, expected) in [(272_000u64, "0.0272491"), (272_001, "0.0544733")] {
         let priced = Uuid::new_v4();
