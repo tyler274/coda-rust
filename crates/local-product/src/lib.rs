@@ -295,7 +295,10 @@ pub fn format_duet_provenance(origin_label: &str) -> String {
     if trimmed.ends_with("via the patient's Duet") {
         return trimmed.to_owned();
     }
-    if trimmed.len() >= 5 && trimmed[..5].eq_ignore_ascii_case("from ") {
+    if trimmed
+        .get(..5)
+        .is_some_and(|prefix| prefix.eq_ignore_ascii_case("from "))
+    {
         format!("{trimmed}, via the patient's Duet")
     } else {
         format!("from {trimmed}, via the patient's Duet")
@@ -865,6 +868,15 @@ mod tests {
         assert_eq!(
             session.conversation("pw", "chat"),
             vec!["Hello".to_owned(), "Noted.".to_owned()]
+        );
+    }
+
+    #[test]
+    fn provenance_prefix_does_not_split_a_multibyte_character() {
+        let label = format!("from{}", '\u{00e9}');
+        assert_eq!(
+            format_duet_provenance(&label),
+            format!("from {label}, via the patient's Duet")
         );
     }
 
