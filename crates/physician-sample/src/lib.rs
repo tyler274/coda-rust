@@ -25,7 +25,7 @@ mod reply;
 mod simulation;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
-pub use auth::{STAGING_PRACTICE_ID, authed_router_on};
+pub use auth::{STAGING_PRACTICE_ID, authed_router, authed_router_on};
 
 use std::env;
 use std::fs;

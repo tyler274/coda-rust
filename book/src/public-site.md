@@ -12,20 +12,24 @@ test, CI, or runtime dependency.
 
 ### Same-origin physician proxy qualification
 
-The `/physician/` change has local integration proof and is **not yet deployed or
-qualified against Google IAM/IAP**. `cargo test -p public-site` passed, including
-marketing browser regressions; `cargo test -p physician-sample --test site` passed
-all four Chromium journeys. The physician browser tests run through the actual
-public-site proxy to a separate loopback physician server, covering prefixed
-assets/API calls, sign-in, session restoration, sign-out/token revocation, account
-revocation and finite-stream reconnection. Only the explicit `?api=` override
-check uses a separate recorded fixture. These tests do not establish deployed
-service-account permissions or access enforcement by Google.
+The `/physician/` proxy is deployed on staging. On October 24, 2026, an approved
+email to Dev's mailbox completed the actual public-origin sign-in journey:
+request, mailbox delivery, email-button click, automatic Today, reload, sign-out,
+and used-link rejection. Both IAP boundaries remained enabled. This establishes
+the exercised browser and service-account path; it does not establish every
+user's IAP access or complete P1/D1 acceptance.
+
+The local physician browser tests run through the actual public-site proxy to a
+separate loopback physician server. They cover prefixed assets/API calls, the
+mailed HTML button, sign-in, session restoration, sign-out/token revocation,
+account revocation and finite-stream reconnection. The explicit `?api=` override
+check uses a separate recorded fixture. Local tests and live staging evidence
+establish different parts of the flow.
 The same relative entry point is intended for both `staging.codahealth.ai` and
 `codahealth.ai`; this does not authorize production deployment or DNS changes.
-Production must not expose the staging preview sign-in flow, which returns its
-one-time token in the response. A production launch still requires qualified
-production physician authentication and an explicit hosting approval.
+Production must not expose unconfigured proof-token delivery. A production
+launch still requires qualified production physician authentication and an
+explicit hosting approval.
 
 The proxy must preserve physician bearer authorization, query strings and streamed
 responses without forwarding browser cookies, caller-supplied service credentials
@@ -212,7 +216,11 @@ Runtime configuration:
   to a valid IAP assertion; it is not an IAP bypass.
 - `PUBLIC_SITE_MAX_CONCURRENCY`: default 1024, accepted range 1–65536; excess
   concurrent requests receive 503 with `Retry-After: 1`.
-- `PUBLIC_SITE_REQUEST_TIMEOUT_MS`: default 5000, accepted range 100–30000.
+- `PUBLIC_SITE_REQUEST_TIMEOUT_MS`: static-site response deadline; default 5000,
+  accepted range 100–30000. `/physician/` requests have one 60-second deadline
+  through authentication, upstream startup and response headers. The proxy
+  does not impose a second deadline, and streaming response bodies are not
+  capped by this header deadline.
 - `PUBLIC_SITE_INTERNAL_PROBE_ADDR`: optional, loopback-only probe address.
 
 Local startup (from the workspace root):

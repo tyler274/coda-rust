@@ -29,7 +29,7 @@ resource "google_cloud_run_v2_service" "app" {
       max_instance_count = var.max_instances
     }
     vpc_access {
-      egress = "PRIVATE_RANGES_ONLY"
+      egress = each.key == "physician" && var.enable_physician_smtp_relay ? "ALL_TRAFFIC" : "PRIVATE_RANGES_ONLY"
       network_interfaces {
         network    = google_compute_network.private.name
         subnetwork = google_compute_subnetwork.run.name
@@ -89,7 +89,7 @@ resource "google_cloud_run_v2_service" "app" {
     # identity, secret version pins, resource caps and probes. Never ignore template.
     ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]
   }
-  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal]
+  depends_on = [google_secret_manager_secret_iam_binding.bootstrap_reader, google_sql_user.app, google_project_service_identity.iap, google_storage_bucket_iam_member.duet_privacy_journal, google_compute_router_nat.physician_mail]
 }
 
 # Duet's independent privacy receipt journal. Hosted Duet refuses to serve

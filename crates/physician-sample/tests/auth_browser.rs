@@ -1,7 +1,7 @@
 //! Suite 1: the authenticated physician journeys in a real browser.
 //!
 //! `PHYSICIAN_AUTH=required` on the recorded practice: an unauthenticated page
-//! shows the sign-in screen, a proof token signs in through the Dioxus form,
+//! shows the email form, local proof delivery automatically redeems its token,
 //! Today and a panel workspace render, sign-out returns to the sign-in screen,
 //! and the steps hold at desktop, phone, and reduced-motion viewports.
 //! Book: `book/src/physician-site.md`.
@@ -35,44 +35,11 @@ async fn sign_in_and_sign_out_walk_the_browser() {
     browser.resize(DESKTOP);
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
-    let text = browser.wait_for("no email is sent; your code is filled in");
-    assert!(
-        text.contains("Sign-in code"),
-        "the verify stage did not appear:\n{text}"
-    );
-
-    // Proof delivery: the issued code is already in the field, so signing
-    // in needs no paste. The field holds exactly the card's proof token.
-    let filled: serde_json::Value = browser.page().evaluate(
-        "(() => { const card = document.querySelector('.sign-in-card'); \
-         const input = document.querySelector('input.sign-in-input[type=\"text\"]'); \
-         return [card.getAttribute('data-proof-token'), input.value]; })()",
-    );
-    let (proof, value) = (
-        filled[0].as_str().unwrap_or(""),
-        filled[1].as_str().unwrap_or(""),
-    );
-    assert!(
-        !proof.is_empty() && proof == value,
-        "the issued code was not filled in: proof {proof:?}, field {value:?}"
-    );
-    browser.click(".sign-in-primary");
     let text = browser.wait_for("Mary Louis");
     assert!(
         text.contains("Today"),
         "a signed-in Today did not show the practice:\n{text}"
     );
-
-    // A code minted out of band still signs in when pasted over the field.
-    browser.click(r#"button[aria-label="Sign out of Coda"]"#);
-    browser.wait_for("Sign in to Coda");
-    browser.type_into(".sign-in-input", STAGING_EMAIL);
-    browser.click(".sign-in-primary");
-    browser.wait_for("Sign-in code");
-    let token = sign_in_token(&base).await;
-    browser.type_into(".sign-in-input", &token);
-    browser.click(".sign-in-primary");
-    browser.wait_for("Mary Louis");
 
     // The panel workspace opens inside the running app: clicking the Today
     // schedule visit keeps the in-memory bearer session, so the workspace
@@ -128,19 +95,6 @@ async fn the_sign_in_screen_holds_the_phone_and_reduced_motion_viewports() {
         browser.prefers_reduced_motion(),
         "reduced motion did not survive a resize"
     );
-}
-
-/// Mints one sign-in token for the staging account over HTTP.
-async fn sign_in_token(base: &str) -> String {
-    let response = reqwest::Client::new()
-        .post(format!("{base}/auth/sign-in"))
-        .json(&serde_json::json!({ "email": STAGING_EMAIL }))
-        .send()
-        .await
-        .expect("sign-in call");
-    assert_eq!(response.status(), reqwest::StatusCode::OK);
-    let body: serde_json::Value = response.json().await.expect("sign-in body");
-    body["token"].as_str().expect("issued token").to_owned()
 }
 
 /// Boots the recorded practice with `PHYSICIAN_AUTH=required`. The server

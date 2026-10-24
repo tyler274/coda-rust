@@ -232,6 +232,160 @@ fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) ->
 }
 
 #[tokio::test]
+async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
+    use base64::Engine;
+
+    fn mail_body(raw: &str, mime: &str) -> String {
+        let bytes = base64::engine::general_purpose::URL_SAFE_NO_PAD
+            .decode(raw)
+            .unwrap();
+        let message = mailparse::parse_mail(&bytes).expect("valid MIME email");
+        message
+            .subparts
+            .iter()
+            .find(|part| part.ctype.mimetype == mime)
+            .expect("MIME alternative")
+            .get_body()
+            .expect("decoded text")
+    }
+
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let fake = gmail::testing::spawn(false).await;
+    let public_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = public_listener.local_addr().unwrap();
+    let endpoints = fake.endpoints();
+    let mail_env = [
+        ("PHYSICIAN_GMAIL_FROM", "signin@coda.test".to_owned()),
+        (
+            "PHYSICIAN_PUBLIC_ORIGIN",
+            format!("http://{address}/physician"),
+        ),
+        ("PHYSICIAN_GMAIL_CLIENT_ID", "client".to_owned()),
+        ("PHYSICIAN_GMAIL_CLIENT_SECRET", "secret".to_owned()),
+        ("PHYSICIAN_GMAIL_REFRESH_TOKEN", "refresh".to_owned()),
+        ("PHYSICIAN_GMAIL_SEND_URL", endpoints.send),
+        ("PHYSICIAN_GMAIL_TOKEN_URL", endpoints.token),
+    ];
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::set_var("PHYSICIAN_AUTH", "required");
+        env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+        env::remove_var("PHYSICIAN_UPSTREAM");
+        env::remove_var("PHYSICIAN_DATABASE_URL");
+        for (key, value) in &mail_env {
+            env::set_var(key, value);
+        }
+    }
+    let email = "physician@codahealth.test";
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let upstream_address = listener.local_addr().unwrap();
+    let app = physician_sample::authed_router(physician_sample::recorded()).await;
+    let upstream = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(upstream_address).await;
+    let proxy = tokio::spawn(async move {
+        axum::serve(public_listener, public_proxy(upstream_address, address))
+            .await
+            .unwrap()
+    });
+
+    let mut browser =
+        CdpBrowser::launch(&chromium(), &format!("http://{address}/physician/")).await;
+    browser
+        .wait_for_text("Work email", Duration::from_secs(15))
+        .await;
+    browser.request_sign_in(email).await;
+    let waiting = browser
+        .wait_for_text("Check your email", Duration::from_secs(10))
+        .await;
+    assert!(
+        !waiting.contains("Sign-in code") && !waiting.contains("codas-"),
+        "requesting an email must not show a code field or expose the token"
+    );
+    let html = {
+        let sent = fake.sent.lock().unwrap();
+        assert_eq!(sent.len(), 1);
+        mail_body(sent[0]["raw"].as_str().unwrap(), "text/html")
+    };
+    // Render the actual delivered HTML and click its button. Nothing in the
+    // test submits the token or clicks a second confirmation in the app.
+    browser
+        .navigate(&format!(
+            "data:text/html;base64,{}",
+            base64::engine::general_purpose::STANDARD.encode(html)
+        ))
+        .await;
+    browser
+        .wait_for_text("This link expires", Duration::from_secs(10))
+        .await;
+    browser.eval("document.querySelector('a').click()").await;
+    let signed_in = browser
+        .wait_for_text("Staging Physician", Duration::from_secs(15))
+        .await;
+    assert!(
+        !signed_in.contains("Sign-in code"),
+        "the email link must sign in without a code field or another confirmation"
+    );
+    let location = browser.eval("location.href").await;
+    assert_eq!(
+        location["result"]["result"]["value"].as_str(),
+        Some(format!("http://{address}/physician/").as_str()),
+        "the email and token must leave the address bar before redemption"
+    );
+    browser.call("Page.reload", serde_json::json!({})).await;
+    browser
+        .wait_for_text("Staging Physician", Duration::from_secs(10))
+        .await;
+    // A newly mailed link must be redeemed even when a browser session exists.
+    reqwest::Client::new()
+        .post(format!("http://{address}/physician/auth/sign-in"))
+        .header("Origin", format!("http://{address}"))
+        .json(&serde_json::json!({"email": email}))
+        .send()
+        .await
+        .unwrap();
+    let next_message = {
+        let sent = fake.sent.lock().unwrap();
+        assert_eq!(sent.len(), 2);
+        mail_body(sent[1]["raw"].as_str().unwrap(), "text/plain")
+    };
+    let next_link = next_message
+        .lines()
+        .find(|line| line.starts_with("http://"))
+        .expect("second mailed link");
+    browser.navigate(next_link).await;
+    browser
+        .wait_for_text("Staging Physician", Duration::from_secs(10))
+        .await;
+    browser
+        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
+
+    // The same message cannot establish another session after its first use.
+    browser.navigate(next_link).await;
+    let invalid = browser
+        .wait_for_text("That sign-in link", Duration::from_secs(10))
+        .await;
+    assert!(invalid.contains("Send a new link") && !invalid.contains("Sign-in code"));
+    assert_eq!(
+        fake.sent.lock().unwrap().len(),
+        2,
+        "opening the link must not request another email"
+    );
+    proxy.abort();
+    upstream.abort();
+    unsafe {
+        env::remove_var("PHYSICIAN_AUTH");
+        for (key, _) in mail_env {
+            env::remove_var(key);
+        }
+    }
+}
+
+#[tokio::test]
 async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
     let _guard = test_lock().lock().await;
     let site = build_site();
@@ -303,42 +457,8 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "expected SignInScreen before authentication:\n{sign_in_dom}"
     );
 
-    // 2. Complete email + single-use token sign-in flow in the browser.
-    browser
-        .eval(
-            r#"new Promise((resolve) => {
-                const input = document.querySelector('input.sign-in-input[type="email"]');
-                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-                setter.call(input, 'admin@clinic-a.test');
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                setTimeout(() => {
-                    const btn = document.querySelector('button.sign-in-primary');
-                    if (btn) btn.click();
-                    resolve(true);
-                }, 50);
-            })"#,
-        )
-        .await;
-    browser
-        .wait_for_text("Sign-in code", Duration::from_secs(10))
-        .await;
-    browser
-        .eval(
-            r#"new Promise((resolve) => {
-                const card = document.querySelector('.sign-in-card');
-                const code = card ? card.getAttribute('data-proof-token') : '';
-                const input = document.querySelector('input.sign-in-input[type="text"]');
-                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-                setter.call(input, code);
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                setTimeout(() => {
-                    const btn = document.querySelector('button.sign-in-primary');
-                    if (btn) btn.click();
-                    resolve(code);
-                }, 50);
-            })"#,
-        )
-        .await;
+    // 2. Local proof delivery signs in through the same redemption path.
+    browser.request_sign_in("admin@clinic-a.test").await;
     let today_dom = browser
         .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
         .await;
@@ -981,22 +1101,17 @@ impl CdpBrowser {
         .await
     }
 
-    async fn sign_in_again(&mut self) {
-        self.eval(r#"new Promise(resolve => {
+    async fn request_sign_in(&mut self, email: &str) {
+        self.eval(&format!(r#"new Promise(resolve => {{
             const input = document.querySelector('input.sign-in-input[type="email"]');
-            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'admin@clinic-a.test');
-            input.dispatchEvent(new Event('input', {bubbles: true}));
-            setTimeout(() => { document.querySelector('button.sign-in-primary').click(); resolve(true); }, 50);
-        })"#).await;
-        self.wait_for_text("Sign-in code", Duration::from_secs(10))
-            .await;
-        self.eval(r#"new Promise(resolve => {
-            const code = document.querySelector('.sign-in-card').getAttribute('data-proof-token');
-            const input = document.querySelector('input.sign-in-input[type="text"]');
-            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, code);
-            input.dispatchEvent(new Event('input', {bubbles: true}));
-            setTimeout(() => { document.querySelector('button.sign-in-primary').click(); resolve(true); }, 50);
-        })"#).await;
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
+            input.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => {{ document.querySelector('button.sign-in-primary').click(); resolve(true); }}, 50);
+        }})"#, serde_json::to_string(email).unwrap())).await;
+    }
+
+    async fn sign_in_again(&mut self) {
+        self.request_sign_in("admin@clinic-a.test").await;
     }
 
     async fn dom(&mut self) -> String {

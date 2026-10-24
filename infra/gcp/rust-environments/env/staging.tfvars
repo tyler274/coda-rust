@@ -31,6 +31,8 @@ physician_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-stag
 # preview and Duet's Identity Platform API key is a placeholder (ENG-167).
 enable_workloads                       = true
 runtime_and_database_contract_approved = true
+# Approved staging relay networking; preserve the Workspace-allowlisted IP.
+enable_physician_smtp_relay = true
 images = {
   # Initial digests only; later releases own the image field.
   physician = {
@@ -54,11 +56,11 @@ doppler_token_versions = {
 }
 # physician-migrate ensures these preview sign-in accounts exist in the
 # synthetic practice on the staging physician's panel; it never reactivates or
-# edits an existing account. Invite anyone else from the admin surface.
+# edits an existing account. Patient invitations do not create physician users.
 migration_environment = {
   physician = {
     CODA_HOSTED_PROFILE        = "staging-preview"
-    PHYSICIAN_STAGING_ACCOUNTS = "tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin"
+    PHYSICIAN_STAGING_ACCOUNTS = "dev@codahealth.ai|Dev|admin,tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin"
   }
 }
 runtime_environment = {

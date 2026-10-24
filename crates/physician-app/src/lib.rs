@@ -46,8 +46,9 @@ const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation."
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
-const SIGN_IN_UNAVAILABLE: &str = "Coda couldn’t send a sign-in link right now.";
-const SIGN_IN_INVALID: &str = "That sign-in code is no longer valid.";
+const SIGN_IN_UNAVAILABLE: &str =
+    "Coda couldn’t confirm the request. Check your inbox before trying again.";
+const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
 /// send is missing or fails, and never returns the code.
@@ -362,14 +363,27 @@ fn apply_event_frames(
     }
 }
 
+/// A mailed token that is redeemed when its link opens.
+#[derive(Clone, PartialEq)]
+pub struct SignInLink {
+    /// The account the email was sent to.
+    pub email: String,
+    /// The single-use token; the server remains its only verifier.
+    pub code: String,
+}
+
 #[component]
-pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
-    // The first `/today` read decides the screen: a 401 from an auth-required
-    // server drops the shell for the sign-in screen, so the browser shows the
-    // gate before any physician data renders.
-    let mut signed_in = use_signal(|| true);
+pub fn PhysicianRoot(
+    base_url: String,
+    open_patient: String,
+    sign_in: Option<SignInLink>,
+) -> Element {
+    // A mailed link is redeemed even when this browser already has a session.
+    // Otherwise the first `/today` read handles the auth gate.
+    let mut signed_in = use_signal(|| sign_in.is_none());
     let mut whoami_name = use_signal(String::new);
     let mut whoami = use_signal(|| None::<WhoamiResponse>);
+    let mut pending_sign_in = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
         let client = PhysicianClient::new(base_url.clone());
@@ -381,6 +395,9 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
     });
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
+        if pending_sign_in.peek().is_some() {
+            return;
+        }
         let client = client.read().clone();
         spawn(async move {
             match client.today().await {
@@ -396,7 +413,9 @@ pub fn PhysicianRoot(base_url: String, open_patient: String) -> Element {
             style { "{ui::STYLESHEET}{SHELL_STYLES}" }
             SignInScreen {
                 client,
+                link: pending_sign_in(),
                 on_signed_in: move |who: Option<WhoamiResponse>| {
+                    pending_sign_in.set(None);
                     let name = who
                         .as_ref()
                         .map(|account| account.display_name.clone())
@@ -1421,149 +1440,183 @@ fn command_rejection(value: &serde_json::Value) -> Option<String> {
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
+    link: Option<SignInLink>,
     on_signed_in: EventHandler<Option<WhoamiResponse>>,
 ) -> Element {
-    let mut email = use_signal(String::new);
-    let mut token = use_signal(String::new);
-    let mut proof_token = use_signal(|| None::<String>);
-    let mut stage = use_signal(|| SignInStage::Email);
+    let mut email = use_signal(|| {
+        link.as_ref()
+            .map(|link| link.email.clone())
+            .unwrap_or_default()
+    });
+    let mut stage = use_signal(|| {
+        if link.is_some() {
+            SignInStage::SigningIn
+        } else {
+            SignInStage::Email
+        }
+    });
     let mut error = use_signal(String::new);
-    let mut busy = use_signal(|| false);
 
-    let request_token = move |_: ()| {
-        let client = client.read().clone();
+    let mut verify_link = move |link: SignInLink| {
+        let client = client.peek().clone();
+        stage.set(SignInStage::SigningIn);
+        error.set(String::new());
         spawn(async move {
-            busy.set(true);
-            error.set(String::new());
-            let email_value = email.read().trim().to_owned();
-            match client.begin_sign_in(&email_value).await {
-                Ok(answer) => match sign_in_followup(&answer) {
-                    SignInFollowup::Issued(code) => {
-                        // Proof delivery returns the code. Fill it in so the
-                        // person who asked for it can sign in.
-                        token.set(code.clone());
-                        proof_token.set((!code.is_empty()).then_some(code));
-                        stage.set(SignInStage::Verify);
-                    }
-                    SignInFollowup::Mailed => {
-                        // Hosted delivery (and the same sentence for an unknown
-                        // address) is not a failure. The code stays empty until
-                        // the person pastes it from the mail.
-                        token.set(String::new());
-                        proof_token.set(None);
-                        error.set(String::new());
-                        stage.set(SignInStage::Verify);
-                    }
-                    SignInFollowup::Failed(text) => error.set(text),
-                },
-                Err(_) => error.set(SIGN_IN_UNAVAILABLE.to_owned()),
-            }
-            busy.set(false);
-        });
-    };
-    let verify_token = move |_: ()| {
-        let client = client.read().clone();
-        spawn(async move {
-            busy.set(true);
-            error.set(String::new());
-            let email_value = email.read().trim().to_owned();
-            let token_value = token.read().trim().to_owned();
-            match client.verify(&email_value, &token_value).await {
+            match client.verify(&link.email, &link.code).await {
                 Ok(_) => {
                     #[cfg(target_arch = "wasm32")]
                     write_stored_session(client.session().get().as_deref());
-                    match client.whoami().await {
-                        Ok(who) => on_signed_in.call(Some(who)),
-                        Err(_) => on_signed_in.call(None),
-                    }
+                    on_signed_in.call(client.whoami().await.ok());
                 }
-                Err(_) => error.set(SIGN_IN_INVALID.to_owned()),
+                Err(failure) => {
+                    let message = match failure {
+                        physician_client::HttpError::Status { status: 401, .. } => SIGN_IN_INVALID,
+                        _ => {
+                            "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
+                        }
+                    };
+                    error.set(message.to_owned());
+                    stage.set(SignInStage::Recovery);
+                }
             }
-            busy.set(false);
         });
     };
-    let proof_attr = proof_token().unwrap_or_default();
+    // This effect has no reactive reads: one page load redeems its mailed link
+    // once. Ordinary rerenders and request failures never retry the token.
+    use_effect(move || {
+        if let Some(link) = link.clone() {
+            verify_link(link);
+        }
+    });
+
+    let mut request_token = move |_: ()| {
+        if matches!(
+            *stage.peek(),
+            SignInStage::Requesting | SignInStage::SigningIn
+        ) {
+            return;
+        }
+        let client = client.peek().clone();
+        let email_value = email.peek().trim().to_owned();
+        stage.set(SignInStage::Requesting);
+        error.set(String::new());
+        spawn(async move {
+            match client.begin_sign_in(&email_value).await {
+                Ok(answer) => match sign_in_followup(&answer) {
+                    SignInFollowup::Issued(code) => {
+                        // Local proof delivery returns the token directly;
+                        // redeem it through the same path without a code UI.
+                        verify_link(SignInLink {
+                            email: email_value,
+                            code,
+                        });
+                    }
+                    SignInFollowup::Mailed => {
+                        // Hosted delivery and unknown addresses share this
+                        // confirmation. Only the emailed link can sign in.
+                        stage.set(SignInStage::CheckEmail);
+                    }
+                    SignInFollowup::Failed(text) => {
+                        error.set(text);
+                        stage.set(SignInStage::Recovery);
+                    }
+                },
+                Err(_) => {
+                    error.set(SIGN_IN_UNAVAILABLE.to_owned());
+                    stage.set(SignInStage::Recovery);
+                }
+            }
+        });
+    };
+    let working = matches!(stage(), SignInStage::Requesting | SignInStage::SigningIn);
     rsx! {
         div { class: "sign-in-screen",
             section {
                 class: "sign-in-card",
                 aria_label: "Sign in to Coda",
-                "data-proof-token": "{proof_attr}",
-                h1 { "Sign in to Coda" }
-                match stage() {
-                    SignInStage::Email => rsx! {
-                        p { class: "sign-in-sub", "We'll email you a single-use sign-in link." }
-                        label { "Work email"
-                            input {
-                                class: "sign-in-input",
-                                r#type: "email",
-                                autocomplete: "email",
-                                placeholder: "you@practice.test",
-                                value: "{email}",
-                                oninput: move |event| email.set(event.value()),
-                                onkeydown: move |event| {
-                                    if event.key().to_string() == "Enter" {
-                                        request_token(());
+                img {
+                    class: "sign-in-logo",
+                    src: "./assets/coda-health-logo-transparent.png",
+                    alt: "Coda Health",
+                    width: "152",
+                }
+                div { class: "sign-in-content", aria_live: "polite", aria_busy: working,
+                    h1 {
+                        match stage() {
+                            SignInStage::CheckEmail => "Check your email",
+                            SignInStage::Requesting => "Sending your link…",
+                            SignInStage::SigningIn => "Signing you in…",
+                            SignInStage::Recovery => "Let’s get you signed in",
+                            SignInStage::Email => "Sign in to Coda",
+                        }
+                    }
+                    match stage() {
+                        SignInStage::Email => rsx! {
+                            p { class: "sign-in-sub", "Your practice, with you." }
+                            div { class: "sign-in-form",
+                                label { "Work email"
+                                    input {
+                                        class: "sign-in-input",
+                                        r#type: "email",
+                                        autocomplete: "email",
+                                        placeholder: "you@practice.com",
+                                        value: "{email}",
+                                        oninput: move |event| email.set(event.value()),
+                                        onkeydown: move |event| {
+                                            if event.key().to_string() == "Enter" && !email.peek().trim().is_empty() {
+                                                request_token(());
+                                            }
+                                        },
                                     }
-                                },
+                                }
+                                button {
+                                    class: "sign-in-primary",
+                                    r#type: "button",
+                                    disabled: email.read().trim().is_empty(),
+                                    onclick: move |_| request_token(()),
+                                    "Send sign-in link"
+                                }
+                                p { class: "sign-in-hint", "We’ll email you a link. No password needed." }
                             }
-                        }
-                        if !error().is_empty() {
-                            p { class: "sign-in-error", "{error}" }
-                        }
-                        div { class: "sign-in-actions",
-                            button {
-                                class: "sign-in-primary",
-                                r#type: "button",
-                                disabled: busy() || email.read().trim().is_empty(),
-                                onclick: move |_| request_token(()),
-                                if busy() { "Sending…" } else { "Send sign-in link" }
+                        },
+                        SignInStage::Requesting | SignInStage::SigningIn => rsx! {
+                            p { class: "sign-in-sub", role: "status",
+                                if stage() == SignInStage::Requesting {
+                                    "This may take a moment."
+                                } else {
+                                    "Opening your Coda workspace."
+                                }
                             }
-                        }
-                    },
-                    SignInStage::Verify => rsx! {
-                        if proof_token().is_some() {
-                            p { class: "sign-in-sub sign-in-note",
-                                "Staging preview: no email is sent; your code is filled in."
+                            div { class: "sign-in-progress", aria_hidden: "true", span {} }
+                        },
+                        SignInStage::CheckEmail | SignInStage::Recovery => rsx! {
+                            if stage() == SignInStage::CheckEmail {
+                                p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
+                                p { class: "sign-in-email", "{email}" }
+                                p { class: "sign-in-sub", "Choose Sign in in the email to open your workspace." }
                             }
-                        } else {
-                            p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
-                            p { class: "sign-in-sub", "Paste the code from the sign-in link we sent." }
-                        }
-                        label { "Sign-in code"
-                            input {
-                                class: "sign-in-input",
-                                r#type: "text",
-                                autocomplete: "one-time-code",
-                                placeholder: "Paste the code",
-                                value: "{token}",
-                                oninput: move |event| token.set(event.value()),
-                                onkeydown: move |event| {
-                                    if event.key().to_string() == "Enter" {
-                                        verify_token(());
-                                    }
-                                },
+                            if !error().is_empty() {
+                                p { class: "sign-in-error", role: "alert", "{error}" }
                             }
-                        }
-                        if !error().is_empty() {
-                            p { class: "sign-in-error", "{error}" }
-                        }
-                        div { class: "sign-in-actions",
-                            button {
-                                class: "sign-in-primary",
-                                r#type: "button",
-                                disabled: busy() || token.read().trim().is_empty(),
-                                onclick: move |_| verify_token(()),
-                                if busy() { "Checking…" } else { "Sign in" }
+                            div { class: "sign-in-actions",
+                                button {
+                                    class: "sign-in-text-action",
+                                    r#type: "button",
+                                    onclick: move |_| request_token(()),
+                                    "Send a new link"
+                                }
+                                button {
+                                    class: "sign-in-text-action sign-in-change",
+                                    r#type: "button",
+                                    onclick: move |_| {
+                                        error.set(String::new());
+                                        stage.set(SignInStage::Email);
+                                    },
+                                    "Use a different email"
+                                }
                             }
-                            button {
-                                class: "control-secondary",
-                                r#type: "button",
-                                onclick: move |_| stage.set(SignInStage::Email),
-                                "Use a different email"
-                            }
-                        }
-                    },
+                        },
+                    }
                 }
             }
         }
@@ -1573,14 +1626,17 @@ fn SignInScreen(
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum SignInStage {
     Email,
-    Verify,
+    Requesting,
+    CheckEmail,
+    SigningIn,
+    Recovery,
 }
 
 #[derive(Debug, PartialEq, Eq)]
 enum SignInFollowup {
-    /// Proof mode returned a code to fill in.
+    /// Proof mode returned a token to redeem directly.
     Issued(String),
-    /// The link is on its way. Leave the code field empty.
+    /// The link is on its way; the person continues from their email.
     Mailed,
     /// The response is not a sign-in the screen can continue.
     Failed(String),
@@ -1616,7 +1672,7 @@ mod sign_in_followup_tests {
     }
 
     #[test]
-    fn proof_delivery_fills_the_code() {
+    fn proof_delivery_provides_the_token_for_redemption() {
         assert_eq!(
             sign_in_followup(&answer("token_issued", Some("codas-1"), None)),
             SignInFollowup::Issued("codas-1".into())
@@ -1624,7 +1680,7 @@ mod sign_in_followup_tests {
     }
 
     #[test]
-    fn a_hosted_link_leaves_the_code_empty() {
+    fn a_hosted_link_waits_for_email() {
         assert_eq!(
             sign_in_followup(&answer("unavailable", None, Some(LINK_ON_THE_WAY))),
             SignInFollowup::Mailed

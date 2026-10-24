@@ -145,6 +145,10 @@ jobs:
           restore-keys: |
             rust-v2-${{ runner.os }}-${{ steps.rustc.outputs.version }}-
             rust-v2-${{ runner.os }}-
+      # Browser proofs build their WebAssembly bundles offline. A restored
+      # native build cache is not guaranteed to contain target-only crates.
+      - name: Fetch locked browser build dependencies
+        run: cargo fetch --locked --target wasm32-unknown-unknown
       - name: Install Chromium
         id: chrome
         uses: browser-actions/setup-chrome@v2
@@ -153,10 +157,10 @@ jobs:
       # The doctor-page PDF proof reads the rendered file with an independent
       # extractor and rasterizer (pdftotext, pdfinfo, pdftoppm). The Nix
       # shell carries poppler-utils; this job is not in that shell (ENG-46).
-      - name: Install poppler-utils
+      - name: Install browser proof and static-build tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends poppler-utils
+          sudo apt-get install -y --no-install-recommends poppler-utils musl-tools
           pdftotext -v
       - name: Check formatting
         run: cargo fmt --check
@@ -190,6 +194,44 @@ jobs:
           name: public-site-browser
           path: ${{ runner.temp }}/public-site-screenshots
           if-no-files-found: ignore
+      # Keep a native Linux build for operator-run staging qualification before
+      # merge. The artifact cannot publish or deploy, and carries its source SHA.
+      - name: Build public-site PR binary
+        if: github.event_name == 'pull_request'
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+          PR_HEAD_REVISION: ${{ github.event.pull_request.head.sha }}
+          RUSTFLAGS: -C target-feature=+crt-static -C strip=symbols
+        run: |
+          rustup target add x86_64-unknown-linux-musl
+          cargo build --locked --release -p public-site --bin public-site --target x86_64-unknown-linux-musl
+          binary=target/x86_64-unknown-linux-musl/release/public-site
+          readelf -lW "$binary" > "$RUNNER_TEMP/public-site-elf"
+          if grep -q INTERP "$RUNNER_TEMP/public-site-elf"; then
+            echo '::error::public-site must be a static executable'
+            exit 1
+          fi
+          mkdir -p public-site-pr-binary
+          cp "$binary" public-site-pr-binary/public-site
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          output = Path('public-site-pr-binary')
+          binary = output / 'public-site'
+          (output / 'source.json').write_text(json.dumps({
+              'source_revision': os.environ['SOURCE_REVISION'],
+              'pr_head_revision': os.environ['PR_HEAD_REVISION'],
+              'binary_sha256': hashlib.file_digest(binary.open('rb'), 'sha256').hexdigest(),
+              'target': 'x86_64-unknown-linux-musl',
+          }, indent=2) + '\n')
+          PY
+      - name: Save public-site PR binary
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: public-site-pr-binary-${{ github.sha }}
+          path: public-site-pr-binary
+          retention-days: 3
       - name: Browser proof (mode shells)
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
@@ -346,6 +388,47 @@ jobs:
         with:
           name: image-paths-${{ github.sha }}
           path: image-paths
+      # An operator can test the exact PR image on staging before merging.
+      # This job retains the already-tested archive; it has no cloud credentials
+      # and cannot publish or deploy it.
+      - name: Retain tested physician PR image
+        if: github.event_name == 'pull_request'
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+          PR_HEAD_REVISION: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, shutil, tarfile
+          from pathlib import Path
+          matches = []
+          for line in Path('image-paths').read_text().splitlines():
+              with tarfile.open(line) as archive:
+                  manifest = json.load(archive.extractfile('manifest.json'))
+              if any(tag.startswith('coda-physician-sample:')
+                     for entry in manifest for tag in entry.get('RepoTags', [])):
+                  matches.append(Path(line))
+          if len(matches) != 1:
+              raise SystemExit('Expected exactly one tested physician image')
+          output = Path('physician-pr-image')
+          output.mkdir()
+          target = output / 'physician-image.tar.gz'
+          shutil.copyfile(matches[0], target)
+          digest = hashlib.file_digest(target.open('rb'), 'sha256').hexdigest()
+          (output / 'source.json').write_text(json.dumps({
+              'source_revision': os.environ['SOURCE_REVISION'],
+              'pr_head_revision': os.environ['PR_HEAD_REVISION'],
+              'archive_sha256': digest,
+              'archive': target.name,
+          }, indent=2) + '\n')
+          PY
+      - name: Save tested physician PR image
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: physician-pr-image-${{ github.sha }}
+          path: physician-pr-image
+          retention-days: 3
+          compression-level: 0
 
   postgres:
     name: Fresh Postgres migrations and tests

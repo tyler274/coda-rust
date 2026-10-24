@@ -118,6 +118,20 @@ class ReleaseTests(unittest.TestCase):
     def assert_no_mutations(self):
         self.assertFalse(set(self.operations()) & MUTATIONS)
 
+    def test_release_preserves_explicit_physician_relay_routing(self):
+        self.env.release_contract["physician_smtp_relay_egress_enabled"] = True
+        self.env.resources["physician"]["vpcAccess"]["egress"] = "ALL_TRAFFIC"
+        self.runner = MockRunner(self.env)
+        self.engine = Orchestrator(self.runner, self.env)
+        self.assertEqual(self.run_release().status, "succeeded")
+        self.assertEqual(self.runner.resources["physician"]["spec"]["vpcAccess"]["egress"], "ALL_TRAFFIC")
+        self.assertEqual(self.runner.resources["duet"]["spec"]["vpcAccess"]["egress"], "PRIVATE_RANGES_ONLY")
+
+    def test_relay_routing_requires_the_infrastructure_contract(self):
+        self.env.resources["physician"]["vpcAccess"]["egress"] = "ALL_TRAFFIC"
+        self.assertEqual(self.run_release().status, "failed")
+        self.assert_no_mutations()
+
     def test_success_orders_all_gates_and_records_identity(self):
         receipt = self.run_release()
         self.assertEqual(receipt.status, "succeeded")

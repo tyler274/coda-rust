@@ -16,7 +16,35 @@ fn main() {
 fn App() -> Element {
     let base = api_base();
     let open_patient = open_patient();
-    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient } }
+    let sign_in = use_hook(sign_in_link);
+    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, sign_in } }
+}
+
+fn sign_in_link() -> Option<physician_app::SignInLink> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        let email = query_value("email")?;
+        let code = query_value("code")?;
+        // Keep the secret in component state, not the address bar or a later reload.
+        // The sign-in screen redeems it automatically after the URL is cleared.
+        if let Some(window) = web_sys::window()
+            && let Ok(href) = window.location().href()
+            && let Ok(url) = web_sys::Url::new(&href)
+        {
+            url.search_params().delete("email");
+            url.search_params().delete("code");
+            if let Ok(history) = window.history() {
+                let _ = history.replace_state_with_url(
+                    &wasm_bindgen::JsValue::NULL,
+                    "",
+                    Some(&url.href()),
+                );
+            }
+        }
+        return Some(physician_app::SignInLink { email, code });
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    None
 }
 
 // The query-parameter and origin lookups are wasm-only; on other targets the

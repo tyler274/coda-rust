@@ -195,13 +195,12 @@ impl PhysicianProxy {
             .request(parts.method, target.clone())
             .headers(headers)
             .body(reqwest::Body::wrap_stream(body.into_data_stream()));
-        // Header deadline only: SSE and downloads have no whole-body timeout.
-        let mut upstream =
-            match tokio::time::timeout(Duration::from_secs(10), outgoing.send()).await {
-                Ok(Ok(response)) => response,
-                Ok(Err(_)) => return failure(StatusCode::BAD_GATEWAY),
-                Err(_) => return failure(StatusCode::GATEWAY_TIMEOUT),
-            };
+        // The server boundary owns the response deadline, including credentials
+        // and upstream startup. Do not impose a second, shorter deadline here.
+        let mut upstream = match outgoing.send().await {
+            Ok(response) => response,
+            Err(_) => return failure(StatusCode::BAD_GATEWAY),
+        };
         let status = upstream.status();
         let mut headers = std::mem::take(upstream.headers_mut());
         if headers.get_all(header::LOCATION).iter().count() > 1 {

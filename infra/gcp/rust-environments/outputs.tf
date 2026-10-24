@@ -9,20 +9,21 @@ output "backend_configuration" {
 output "release_contract" {
   description = "Deployment interface. Only main push may enter staging; dev/prod require workflow_dispatch plus protected environment approval. Updates must preserve IAP/env/identity/network/caps; IAM cannot field-scope run.services.update."
   value = {
-    project_id                  = google_project.environment.project_id
-    region                      = var.region
-    github_environment          = local.github_environment
-    oidc_provider               = google_iam_workload_identity_pool_provider.github.name
-    deployer_service_account    = google_service_account.deployer.email
-    artifact_repository         = "${var.region}-docker.pkg.dev/${local.project_id}/apps"
-    workloads_enabled           = var.enable_workloads
-    services                    = { for app, service in google_cloud_run_v2_service.app : app => service.name }
-    migration_jobs              = { for app, job in google_cloud_run_v2_job.migration : app => job.name }
-    urls                        = { for app, service in google_cloud_run_v2_service.app : app => service.uri }
-    release_managed_fields      = ["service image digest", "service revision name", "service traffic and tags", "job image digest", "client metadata"]
-    infrastructure_owned_fields = ["IAP", "IAM", "service accounts", "network", "env and secret pins", "caps", "probes"]
-    readiness_path              = "/readyz"
-    smoke_test_identity         = "No deployer IAP access granted. Operator must separately authorize a dedicated in-org test identity and OAuth audience for authenticated smoke tests."
+    project_id                          = google_project.environment.project_id
+    region                              = var.region
+    github_environment                  = local.github_environment
+    oidc_provider                       = google_iam_workload_identity_pool_provider.github.name
+    deployer_service_account            = google_service_account.deployer.email
+    artifact_repository                 = "${var.region}-docker.pkg.dev/${local.project_id}/apps"
+    workloads_enabled                   = var.enable_workloads
+    physician_smtp_relay_egress_enabled = var.enable_physician_smtp_relay
+    services                            = { for app, service in google_cloud_run_v2_service.app : app => service.name }
+    migration_jobs                      = { for app, job in google_cloud_run_v2_job.migration : app => job.name }
+    urls                                = { for app, service in google_cloud_run_v2_service.app : app => service.uri }
+    release_managed_fields              = ["service image digest", "service revision name", "service traffic and tags", "job image digest", "client metadata"]
+    infrastructure_owned_fields         = ["IAP", "IAM", "service accounts", "network", "env and secret pins", "caps", "probes"]
+    readiness_path                      = "/readyz"
+    smoke_test_identity                 = "No deployer IAP access granted. Operator must separately authorize a dedicated in-org test identity and OAuth audience for authenticated smoke tests."
   }
 }
 

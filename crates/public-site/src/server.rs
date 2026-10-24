@@ -175,9 +175,17 @@ async fn serve_physician(State(state): State<Arc<SiteState>>, request: Request) 
 async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: Next) -> Response {
     let physician =
         request.uri().path() == "/physician" || request.uri().path().starts_with("/physician/");
+    // This is the single deadline for response headers. Physician requests can
+    // include a Cloud Run cold start and mail delivery; the static-page budget
+    // must not cut off their acknowledgement. Streaming bodies stay unbounded.
+    let response_timeout = if physician {
+        std::time::Duration::from_secs(60)
+    } else {
+        state.runtime.request_timeout
+    };
     let head = request.method() == Method::HEAD;
     let mut response = if let Ok(_permit) = state.permits.clone().try_acquire_owned() {
-        match tokio::time::timeout(state.runtime.request_timeout, async {
+        match tokio::time::timeout(response_timeout, async {
             if state.runtime.staging && !state.gate.allows(request.headers()).await {
                 return (StatusCode::FORBIDDEN, "Google IAP assertion required").into_response();
             }
@@ -500,15 +508,26 @@ mod tests {
         }
     }
     #[tokio::test]
-    async fn outer_iap_guards_proxy_and_redirect_before_any_upstream_call() {
+    async fn physician_proxy_preserves_access_and_waits_for_upstream_responses() {
         use std::sync::atomic::AtomicUsize;
         let calls = Arc::new(AtomicUsize::new(0));
         let observed = calls.clone();
-        let upstream = Router::new().fallback(move || {
+        let upstream = Router::new().fallback(move |request: Request| {
             let calls = observed.clone();
             async move {
                 calls.fetch_add(1, Ordering::SeqCst);
-                "upstream"
+                if request.uri().path() == "/auth/sign-in" {
+                    assert_eq!(request.method(), Method::POST);
+                    let body = axum::body::to_bytes(request.into_body(), 1024)
+                        .await
+                        .unwrap();
+                    assert_eq!(body, r#"{"email":"doctor@example.test"}"#);
+                    // An upstream cold start and mail delivery can outlast the
+                    // static site's deadline. Its acknowledgement must survive.
+                    tokio::time::sleep(std::time::Duration::from_millis(250)).await;
+                    return axum::Json(serde_json::json!({"status": "accepted"})).into_response();
+                }
+                "upstream".into_response()
             }
         });
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -517,6 +536,7 @@ mod tests {
             axum::serve(listener, upstream).await.unwrap();
         });
         let mut runtime = staged();
+        runtime.request_timeout = std::time::Duration::from_millis(100);
         runtime.physician_proxy =
             crate::proxy::ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false)
                 .unwrap();
@@ -542,13 +562,38 @@ mod tests {
         );
         assert_eq!(calls.load(Ordering::SeqCst), 0);
         assert_eq!(
-            app.oneshot(request("/physician/", true))
+            app.clone()
+                .oneshot(request("/physician/", true))
                 .await
                 .unwrap()
                 .status(),
             StatusCode::OK
         );
         assert_eq!(calls.load(Ordering::SeqCst), 1);
+        let mut sign_in = request("/physician/auth/sign-in", true);
+        *sign_in.method_mut() = Method::POST;
+        sign_in
+            .headers_mut()
+            .insert(header::ORIGIN, "http://127.0.0.1:8791".parse().unwrap());
+        *sign_in.body_mut() = Body::from(r#"{"email":"doctor@example.test"}"#);
+        let response = app.oneshot(sign_in).await.unwrap();
+        assert_eq!(response.status(), StatusCode::OK);
+        assert_eq!(
+            response.headers()[header::CACHE_CONTROL],
+            "private, no-store, max-age=0"
+        );
+        let body = axum::body::to_bytes(response.into_body(), 1024)
+            .await
+            .unwrap();
+        assert_eq!(
+            serde_json::from_slice::<serde_json::Value>(&body).unwrap()["status"],
+            "accepted"
+        );
+        assert_eq!(
+            calls.load(Ordering::SeqCst),
+            2,
+            "the proxy must not retry a POST"
+        );
         task.abort();
     }
 

@@ -167,7 +167,12 @@ def validate(env: Environment, candidate: Candidate) -> None:
             tokens.add(spec["dopplerTokenSecret"])
             require(str(spec["dopplerTokenVersion"]).isdigit() and int(spec["dopplerTokenVersion"]) > 0,
                     "Numeric pinned Doppler token version required")
-            require(spec["vpcAccess"]["egress"] == "PRIVATE_RANGES_ONLY", "Private SQL routing required")
+            expected_egress = (
+                "ALL_TRAFFIC" if name == "physician" and c.get("physician_smtp_relay_egress_enabled", False)
+                else "PRIVATE_RANGES_ONLY"
+            )
+            require(spec["vpcAccess"]["egress"] == expected_egress,
+                    "VPC routing must match the infrastructure-owned relay contract")
             if role == "runtime":
                 require(spec["iapEnabled"] is True and spec["invokerIamDisabled"] is False,
                         "IAP and invoker IAM must remain enabled")

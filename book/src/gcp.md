@@ -108,8 +108,10 @@ Activating it took these operator steps, in order:
 5. Apply the migration jobs, execute both (a second execution is a no-op), then
    apply the services.
 
-Physician sign-in still returns proof tokens and Duet's Identity Platform API key
-is a placeholder, so this preview is not ENG-167's hosted acceptance.
+The initial preview uses proof-token delivery until physician mail is configured
+as below. Staging physician email sign-in was qualified on October 24, 2026;
+Duet identity and the full P1/D1 journeys remain outside that result, so this is
+not ENG-167's hosted acceptance.
 
 ### Staging sign-in accounts
 
@@ -120,16 +122,61 @@ server seeds with the five synthetic workspaces on startup. The list and
 `CODA_HOSTED_PROFILE=staging-preview` come from `migration_environment` in
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars); any
 other profile refuses the list. A rerun never reactivates or edits an existing
-account, so an administrator's deactivation sticks. Invite anyone else from the
-admin surface (`/auth/invitations`) rather than growing the list.
+account, so an administrator's deactivation sticks. This is the staging
+physician-account bootstrap. `/auth/invitations` invites roster patients to
+Duet; it does not create physician accounts.
 
-Sign-in and invitation mail uses the [`gmail`](/crates/gmail/src/lib.rs) crate
-when `PHYSICIAN_GMAIL_FROM` is set. The Workspace sender is
-`signin@codahealth.ai`. The crate posts one base64url RFC 2822 message to
-`users.messages.send` and the JSON omits the code. Without that sender,
-`/auth/sign-in` still returns the code and the sign-in screen fills it in.
-Doppler holds the sender; a live mailbox check is separate from the fake-server
-proof. IAP still limits the site to `iap_group`.
+Sign-in and invitation mail uses the shared [`gmail`](/crates/gmail/src/lib.rs)
+transport. The Workspace relay option uses these values in
+`stg_physician_runtime`:
+
+```text
+PHYSICIAN_MAIL_TRANSPORT=smtp-relay
+PHYSICIAN_MAIL_FROM=signin@codahealth.ai
+PHYSICIAN_PUBLIC_ORIGIN=https://staging.codahealth.ai/physician
+```
+
+The sender is `Coda Health <signin@codahealth.ai>`. It requires no mailbox, Gmail
+settings change, OAuth grant, or SMTP password. Delivery connects to
+`smtp-relay.gmail.com:587` with mandatory STARTTLS. A configured but invalid
+transport stays in mailed mode: the sign-in API does not return the token.
+The existing Gmail API option remains available through `PHYSICIAN_GMAIL_FROM`
+and its credentials. With neither transport configured, local proof mode still
+returns the code.
+
+Enable the relay in this order:
+
+1. Review a saved plan with `enable_physician_smtp_relay=true` and obtain separate
+   apply authorization. It reserves one regional IPv4 address and creates a
+   Cloud Router and Cloud NAT on `rust-run`. Only the physician runtime changes
+   to `ALL_TRAFFIC`; other workloads keep private-range egress. The release
+   contract carries that choice so later image releases preserve it.
+2. In Workspace Admin, add an SMTP relay rule for domain-owned addresses,
+   authenticated by only the exact `physician_mail_egress_ip` output, with TLS
+   required. Do not enable SMTP authentication or add a Workspace user.
+3. Deploy the relay-capable image through the reviewed staging release path,
+   then set the three Doppler values above and start a revision that reads them.
+4. Send an explicitly approved test message and verify recipient delivery, the
+   branded sender, sign-in, reload, sign-out, and rejection of a reused link.
+
+Sign-in links open the mounted physician root with the email and code. The
+client removes both from the address bar, redeems the single-use token
+automatically, and opens Today after the server verifies it. The email contains
+one Sign in button and an equivalent plain-text link; there is no code field or
+second confirmation. Used or expired links offer a new link. The
+[sign-in graph](/verification/physician-experience/sign-in.mmd) maps entry and
+recovery; in-workspace session expiry remains a separate behavior.
+
+Local browser tests exercise the actual HTML email button through the
+public-site proxy using a stand-in mail service. Live staging qualification
+separately checks delivery to the approved mailbox, automatic sign-in, reload,
+sign-out and used-link refusal. Invitation recipient navigation has separate
+front-door acceptance work. IAP still limits the site to `iap_group`.
+
+Cloud NAT adds an IP-hour charge, gateway usage, data processing, and applicable
+network egress; see [Google's current pricing](https://cloud.google.com/nat/pricing).
+The relay is disabled by default and this configuration does not itself prove
+staging activation.
 
 ### Direct staging rollout
 
@@ -164,8 +211,10 @@ This direct rollout stands in for the
 the producers below exist. It is not ENG-167's hosted acceptance, and the work
 below remains outstanding:
 
-- **Hosted identity:** physician [`auth.rs`](/crates/physician-sample/src/auth.rs)
-  still returns proof tokens from sign-in. Duet web requires a registered Apple
+- **Hosted identity:** physician email sign-in through the public `/physician/`
+  mount has live mailbox, reload, sign-out and used-link evidence. Invitation
+  recipient acceptance and in-workspace session-expiry recovery remain separate.
+  Duet web requires a registered Apple
   Services ID/return URL, its SDK, Identity Platform configuration and the public
   build-time settings consumed by [`browser_identity.rs`](/crates/duet-app/src/browser_identity.rs)
   and [`account.rs`](/crates/duet-app/src/account.rs); the current Nix image builder

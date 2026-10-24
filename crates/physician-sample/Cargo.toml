@@ -27,6 +27,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal
 tracing = "0.1"
 
 [dev-dependencies]
+mailparse = "0.16"
 gmail = { path = "../gmail", features = ["test-util"] }
 public-site = { path = "../public-site" }
 opentelemetry = { version = "0.31", default-features = false, features = ["trace"] }

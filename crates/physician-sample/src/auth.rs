@@ -77,7 +77,7 @@ pub(crate) struct Auth {
     /// Proof-mode sign-in tokens, kept in memory instead of mail. Hosted
     /// mode leaves this empty.
     pub(crate) delivery: std::sync::Mutex<Vec<String>>,
-    /// Proof mode returns tokens in JSON. Hosted mode sends them through Gmail.
+    /// Proof mode returns tokens in JSON. Hosted mode uses the configured mail transport.
     pub(crate) mail: crate::gmail::Delivery,
     /// The Duet front door this practice invites patients through. One
     /// store serves every practice; isolation is enforced per request.
@@ -123,7 +123,7 @@ impl Auth {
     /// [`Delivery::Proof`](crate::gmail::Delivery::Proof) is what local runs
     /// and tests use. The process entrypoint passes
     /// [`Delivery::from_env`](crate::gmail::Delivery::from_env) so a configured
-    /// Gmail sender switches the same routes to hosted mail.
+    /// mail transport switches the same routes to hosted mail.
     pub(crate) async fn configured(
         store: Arc<dyn AuthStore>,
         front_door: Arc<dyn FrontDoorStore>,
@@ -875,9 +875,9 @@ async fn deliver_sign_in(auth: &Auth, email: &str, token: String) -> Response {
             )
                 .into_response()
         }
-        crate::gmail::Delivery::Gmail(sender) => {
+        crate::gmail::Delivery::Hosted(sender) => {
             if let Err(error) = sender.send_sign_in(email, &token).await {
-                tracing::warn!(%error, "gmail sign-in was not sent");
+                tracing::warn!(%error, "sign-in mail was not sent");
             }
             // The token stays out of the response when the send is missing
             // or fails, and the body matches an unknown address.
@@ -1189,9 +1189,9 @@ async fn deliver_invite(
             invited["token"] = json!(token);
             (StatusCode::OK, Json(invited)).into_response()
         }
-        crate::gmail::Delivery::Gmail(sender) => {
+        crate::gmail::Delivery::Hosted(sender) => {
             if let Err(error) = sender.send_invite(&body.email, &token).await {
-                tracing::warn!(%error, "gmail invitation was not sent");
+                tracing::warn!(%error, "invitation mail was not sent");
                 return (
                     StatusCode::BAD_GATEWAY,
                     Json(json!({
@@ -2652,7 +2652,7 @@ mod tests {
         let auth = Auth::configured(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::clone(&front_door) as Arc<dyn FrontDoorStore>,
-            crate::gmail::Delivery::Gmail(Box::new(sender)),
+            crate::gmail::Delivery::Hosted(Box::new(sender)),
         )
         .await;
         (
@@ -2690,12 +2690,31 @@ mod tests {
             message.contains(&format!("To: {STAGING_EMAIL}")),
             "{message}"
         );
-        assert!(message.contains("expires in 24 hours"), "{message}");
-        let code = query_value(&message, "code");
-        assert!(
-            message.contains(&format!("https://physician.example/sign-in?code={code}")),
-            "{message}"
-        );
+        let parsed = mailparse::parse_mail(message.as_bytes()).expect("valid MIME email");
+        assert_eq!(parsed.ctype.mimetype, "multipart/alternative");
+        let text = parsed
+            .subparts
+            .iter()
+            .find(|part| part.ctype.mimetype == "text/plain")
+            .expect("plain-text alternative")
+            .get_body()
+            .expect("decoded text");
+        let html = parsed
+            .subparts
+            .iter()
+            .find(|part| part.ctype.mimetype == "text/html")
+            .expect("HTML alternative")
+            .get_body()
+            .expect("decoded HTML");
+        assert!(text.contains("expires in 24 hours"), "{text}");
+        let code = query_value(&text, "code");
+        let link =
+            format!("https://physician.example/?code={code}&email=physician%40codahealth.test");
+        assert!(text.contains(&link), "{text}");
+        assert_eq!(html.matches("href=").count(), 1, "one sign-in action");
+        assert!(html.contains(&format!("href=\"{}\"", link.replace('&', "&amp;"))));
+        assert!(html.contains(">Sign in</a>"));
+        assert!(!html.contains("Sign-in code") && !text.contains("sign-in code"));
         assert!(
             !body.contains(code),
             "the response included the mailed code: {body}"

@@ -1,17 +1,18 @@
-//! One plain-text message through the Gmail API.
+//! A plain-text or HTML message through the Gmail API or Workspace SMTP relay.
 //!
 //! Google Cloud does not run a transactional email product, and Cloud Run
-//! cannot use the App Engine Mail API (standard environment only). Compute
-//! Engine blocks outbound SMTP on port 25. This crate does not use SMTP.
+//! cannot use the App Engine Mail API (standard environment only). Workspace's
+//! SMTP relay supports unattended domain senders over STARTTLS on port 587,
+//! authenticated by an administrator-approved static outbound IP.
 //!
-//! The send call is Gmail `users.messages.send`:
+//! The Gmail API send call is `users.messages.send`:
 //! `POST https://gmail.googleapis.com/gmail/v1/users/me/messages/send`
 //! with `{ "raw": "<base64url RFC 2822>" }`.
 //! See <https://developers.google.com/workspace/gmail/api/guides/sending>
 //! and <https://developers.google.com/gmail/api/reference/rest/v1/users.messages/send>.
 //!
-//! Products own the message text and the links. This crate owns the token
-//! exchange and the post. A service-account assertion has no `sub` claim,
+//! Products own the message text and the links. This crate owns mail transport
+//! and the Gmail API token exchange. A service-account assertion has no `sub` claim,
 //! so this process does not use domain-wide delegation.
 //! Book: `book/src/gcp.md`.
 #![deny(missing_docs)]
@@ -20,6 +21,9 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use base64::Engine;
 use serde::{Deserialize, Serialize};
+
+mod relay;
+pub use relay::SmtpRelay;
 
 /// Gmail `users.messages.send`.
 const GMAIL_SEND: &str = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send";
@@ -30,9 +34,15 @@ const GMAIL_SEND_SCOPE: &str = "https://www.googleapis.com/auth/gmail.send";
 /// Refresh an access token this many seconds before it expires.
 const TOKEN_SKEW_SECONDS: u64 = 60;
 
-/// Why a Gmail send or token exchange failed.
+/// Why mail delivery, configuration, or a Gmail token exchange failed.
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    /// The relay sender or TLS configuration is invalid.
+    #[error("Workspace SMTP relay is not configured")]
+    RelayConfiguration,
+    /// SMTP connection, TLS negotiation, or message acceptance failed.
+    #[error("Workspace SMTP relay did not accept the message")]
+    RelayDelivery,
     /// From, To, or Subject contained a character a header must not carry.
     #[error("gmail message headers were refused")]
     Headers,
@@ -197,9 +207,34 @@ impl Sender {
         if !header_value_ok(&self.from) || !header_value_ok(to) || !header_value_ok(subject) {
             return Err(Error::Headers);
         }
+        self.send_raw(rfc2822(&self.from, to, subject, body).as_bytes())
+            .await
+    }
+
+    /// Mails HTML with an equivalent plain-text alternative. Products own both bodies.
+    pub async fn send_html(
+        &self,
+        to: &str,
+        subject: &str,
+        text: &str,
+        html: &str,
+    ) -> Result<(), Error> {
+        if !header_value_ok(&self.from) {
+            return Err(Error::Headers);
+        }
+        let message = html_message(
+            self.from.parse().map_err(|_| Error::Headers)?,
+            to,
+            subject,
+            text,
+            html,
+        )?;
+        self.send_raw(&message.formatted()).await
+    }
+
+    async fn send_raw(&self, message: &[u8]) -> Result<(), Error> {
         let access = self.access_token().await?;
-        let raw = base64::engine::general_purpose::URL_SAFE_NO_PAD
-            .encode(rfc2822(&self.from, to, subject, body));
+        let raw = base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(message);
         let response = self
             .http
             .post(&self.endpoints.send)
@@ -338,6 +373,27 @@ fn rfc2822(from: &str, to: &str, subject: &str, body: &str) -> String {
     format!(
         "From: {from}\r\nTo: {to}\r\nSubject: {subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n{body}"
     )
+}
+
+fn html_message(
+    from: lettre::message::Mailbox,
+    to: &str,
+    subject: &str,
+    text: &str,
+    html: &str,
+) -> Result<lettre::Message, Error> {
+    if !header_value_ok(to) || !header_value_ok(subject) {
+        return Err(Error::Headers);
+    }
+    lettre::Message::builder()
+        .from(from)
+        .to(to.parse().map_err(|_| Error::Headers)?)
+        .subject(subject)
+        .multipart(lettre::message::MultiPart::alternative_plain_html(
+            text.to_owned(),
+            html.to_owned(),
+        ))
+        .map_err(|_| Error::Headers)
 }
 
 /// A local stand-in for the Gmail HTTP API.

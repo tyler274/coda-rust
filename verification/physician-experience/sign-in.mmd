@@ -1,0 +1,54 @@
+stateDiagram-v2
+  %% Email-link entry detail for physician.mmd's SPage; session expiry and return-in-place
+  %% remain owned by that parent chart. This entry chart does not prove that behavior.
+  %% Decision: Dev 2026-10-24, clicking the email button signs in automatically, no code screen.
+  %% Promise: only the server's successful verification opens the workspace. A request
+  %% acknowledgement means check email, including unknown accounts; it never authenticates.
+  %% Promise: the URL token is cleared before rendering; the server hashes, expires and
+  %% consumes it once. These are data obligations, exercised in physician-auth and
+  %% physician-sample/tests/site.rs, not represented as invented finite states here.
+  %% Implementation: physician-app/src/lib.rs SignInScreen and PhysicianRoot; main.rs sign_in_link.
+  %% Existing browser tests cover the real mailed HTML button, public mount, reload,
+  %% sign-out, an already-signed-in browser, and reuse refusal. No chart safety rules:
+  %% generation/check/trace establish transition correspondence, not data or runtime proof.
+  %% events declared
+  %% event request a link | by you | Enter an email or request a replacement link.
+  %% event the request is acknowledged | by the authentication service | Check email; this does not reveal whether the account exists.
+  %% event the request cannot be confirmed | by the authentication service or network | Show the failure or uncertainty; a message may still have arrived.
+  %% event local proof returns a token | by the local proof transport | Test-only delivery uses the same verifier without a code screen.
+  %% event use another email | by you | Return to the editable email field.
+  %% event open the email button | by you | Navigate to the mailed link; clear URL credentials and attempt redemption once.
+  %% event verification succeeds | by the authentication service | Store the issued session and open the workspace.
+  %% event verification fails or is uncertain | by the authentication service or network | Show a recovery action; never claim success or automatically resend.
+  %% event reload with a valid session | by you | Restore the browser session through the existing authenticated read.
+  %% event sign out | by you | End the server session and clear browser session storage.
+  %% event reopen without a valid session | by you | Normal entry returns to the email field. Expiry during active work belongs to physician.mmd.
+  state "Sign-in entry" as Entry {
+    [*] --> Email
+    state "Enter work email" as Email
+    state "Sending link" as Requesting
+    state "Check your email" as CheckEmail
+    state "Signing you in" as SigningIn
+    state "Sign-in recovery" as Recovery
+    Email --> Requesting : request a link
+    CheckEmail --> Requesting : request a link
+    Recovery --> Requesting : request a link
+    Requesting --> CheckEmail : the request is acknowledged
+    Requesting --> Recovery : the request cannot be confirmed
+    Requesting --> SigningIn : local proof returns a token
+    CheckEmail --> Email : use another email
+    Recovery --> Email : use another email
+    SigningIn --> Recovery : verification fails or is uncertain
+  }
+  state "Workspace open" as SignedIn
+  [*] --> Entry
+  [*] --> SigningIn
+  [*] --> SignedIn
+  Entry --> SigningIn : open the email button
+  SignedIn --> SigningIn : open the email button
+  SigningIn --> SignedIn : verification succeeds
+  Entry --> SignedIn : reload with a valid session
+  SignedIn --> SignedIn : reload with a valid session
+  Entry --> Email : reopen without a valid session
+  SignedIn --> Email : reopen without a valid session
+  SignedIn --> Email : sign out
