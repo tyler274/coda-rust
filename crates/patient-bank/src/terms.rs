@@ -35,12 +35,21 @@ fn numbers(text: &str) -> BTreeSet<&str> {
         .collect()
 }
 
+/// Python's `str.strip()`: `str.isspace` is Unicode White_Space plus the
+/// information separators U+001C..U+001F, which Rust's `trim` keeps.
+pub fn py_strip(s: &str) -> &str {
+    s.trim_matches(|c: char| c.is_whitespace() || ('\u{1c}'..='\u{1f}').contains(&c))
+}
+
 /// Python's `str()` of the JSON scalars a ledger field can hold.
 fn py_str(v: &Json) -> Result<String> {
     Ok(match v {
         Json::Null => "None".into(),
         Json::Str(s) => s.clone(),
         Json::Int(i) => i.to_string(),
+        Json::Float(f) if f.is_nan() => "nan".into(),
+        Json::Float(f) if f.is_infinite() => if *f > 0.0 { "inf" } else { "-inf" }.into(),
+        Json::Float(f) => json::float_repr(*f),
         Json::Bool(b) => if *b { "True" } else { "False" }.into(),
         _ => return Err(format!("unexpected ledger value {v:?}").into()),
     })
@@ -122,7 +131,7 @@ pub fn resolve_extras_with(look: &mut Lookup, ledgers: &Path, catalog: &Json) ->
                     if conditions.contains(&key) {
                         continue;
                     }
-                    let upper = code.trim().to_uppercase();
+                    let upper = py_strip(code).to_uppercase();
                     match look.icd10(&upper)? {
                         Some(display) if !display.is_empty() => conditions.set(
                             &key,

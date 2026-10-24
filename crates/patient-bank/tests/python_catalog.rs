@@ -114,3 +114,40 @@ fn repr_and_urlencode_match_python() {
         assert_eq!(got, c[1].as_str().unwrap());
     }
 }
+
+#[test]
+fn resolve_extras_matches_python_on_unusual_ledger_fields() {
+    // CPython 3.14 wrote expected.json: str.strip() also drops U+001C..U+001F, the
+    // first Clinical Tables row with the code decides (a null name rejects), and a
+    // float label formats as str(float).
+    let dir = scratch("terms-edge");
+    let cache = dir.join("terminology-cache.json");
+    fs::copy(data("terms-edge/cache.json"), &cache).unwrap();
+    let mut look = Lookup::new(&cache, true).unwrap();
+    let catalog = json::parse(include_str!("data/terms-edge/catalog.json")).unwrap();
+    let got = terms::resolve_extras_with(&mut look, &data("terms-edge/ledgers"), &catalog).unwrap();
+    assert_eq!(
+        json::dumps(&got, Layout::Indent(1), false) + "\n",
+        include_str!("data/terms-edge/expected.json")
+    );
+}
+
+#[test]
+fn fixture_path_displays_as_pathlib_does() {
+    // str(PurePosixPath(p) / "Procedure.ndjson") from CPython 3.14
+    let cases = [
+        ("./missing//dir/", "missing/dir/Procedure.ndjson"),
+        ("missing/./dir", "missing/dir/Procedure.ndjson"),
+        ("", "Procedure.ndjson"),
+        (".", "Procedure.ndjson"),
+        ("/abs//x/", "/abs/x/Procedure.ndjson"),
+        ("//net/x", "//net/x/Procedure.ndjson"),
+        ("///three/x", "/three/x/Procedure.ndjson"),
+        ("a/../b", "a/../b/Procedure.ndjson"),
+        ("../up", "../up/Procedure.ndjson"),
+    ];
+    for (roger, want) in cases {
+        let got = catalog::pathlib_str(&Path::new(roger).join("Procedure.ndjson"));
+        assert_eq!(got, want, "roger fixture {roger:?}");
+    }
+}

@@ -208,12 +208,38 @@ impl Lookup {
     }
 }
 
-/// The display of the NLM Clinical Tables row whose code is exactly `code`.
+/// The display of the first NLM Clinical Tables row whose code is exactly `code`.
+/// That row decides, as Python's loop returns its name: a null name is "not found".
 fn search_hit(found: &Json, code: &str) -> Option<String> {
-    found.as_array().get(3)?.as_array().iter().find_map(|row| {
-        let row = row.as_array();
-        (row.first()?.as_str()? == code).then(|| row.get(1)?.as_str().map(String::from))?
-    })
+    let row = found
+        .as_array()
+        .get(3)?
+        .as_array()
+        .iter()
+        .map(Json::as_array)
+        .find(|row| row.first().and_then(Json::as_str) == Some(code))?;
+    row.get(1)?.as_str().map(String::from)
+}
+
+/// `str(pathlib.PurePosixPath(p))`: empty and `.` components dropped, repeated and
+/// trailing slashes collapsed, a leading `//` (exactly two) kept, `""` read as `.`.
+pub fn pathlib_str(p: &Path) -> String {
+    let s = p.to_string_lossy();
+    let (root, rest) = if s.starts_with("//") && !s.starts_with("///") {
+        ("//", &s[2..])
+    } else if s.starts_with('/') {
+        ("/", s.trim_start_matches('/'))
+    } else {
+        ("", &s[..])
+    };
+    let parts: Vec<&str> = rest
+        .split('/')
+        .filter(|part| !part.is_empty() && *part != ".")
+        .collect();
+    if root.is_empty() && parts.is_empty() {
+        return ".".into();
+    }
+    format!("{root}{}", parts.join("/"))
 }
 
 fn into_map(v: Json) -> Result<BTreeMap<String, Json>> {
@@ -561,7 +587,7 @@ pub fn build_with(look: &mut Lookup, gym_labs: &Path, roger: &Path, out: &Path) 
     if !fixture.exists() {
         problems.push(format!(
             "Roger fixture not found at {}; pass --roger-fixture",
-            fixture.display()
+            pathlib_str(&fixture)
         ));
     } else {
         for line in fs::read_to_string(&fixture)?.lines() {
