@@ -3,14 +3,11 @@
 //!
 //! Under the staging-preview profile, `PHYSICIAN_STAGING_ACCOUNTS` also
 //! ensures the preview sign-in accounts exist in the recorded synthetic
-//! practice, on the staging physician's panel. Existing accounts are left as
-//! they are; every other profile refuses the list.
+//! practice. Each email gets its own stable physician id. Existing accounts
+//! are left as they are; every other profile refuses the list.
 
 use physician_sample::STAGING_PRACTICE_ID;
-use physician_sample::hosting::{StagingAccount, staging_accounts};
-
-/// The physician whose panel the server seeds with the fixture workspaces.
-const STAGING_PHYSICIAN_ID: &str = "staging-physician";
+use physician_sample::hosting::{StagingAccount, staging_accounts, staging_physician_id};
 
 #[tokio::main]
 async fn main() {
@@ -53,7 +50,7 @@ async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
         let created = auth
             .ensure_account(
                 STAGING_PRACTICE_ID,
-                STAGING_PHYSICIAN_ID,
+                &staging_physician_id(&account.email),
                 &account.email,
                 &account.display_name,
                 account.admin,

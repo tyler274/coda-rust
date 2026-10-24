@@ -477,7 +477,7 @@ async fn ensure_account_seeds_once_and_never_undoes_an_admin_change() {
         !store
             .ensure_account(
                 "pg-proof",
-                "staging-physician",
+                "replacement-physician",
                 email,
                 "Renamed",
                 false,
@@ -491,9 +491,175 @@ async fn ensure_account_seeds_once_and_never_undoes_an_admin_change() {
         .await
         .expect("still one account");
     assert!(!account.active, "a rerun leaves the deactivation in place");
+    assert!(account.admin, "a rerun leaves the admin flag in place");
     assert_eq!(account.display_name, "Seeded");
+    assert_eq!(account.identity.physician_id, "staging-physician");
     assert_eq!(
         store.begin_sign_in(email, NOW + 2).await.unwrap_err(),
         SignInError::Inactive
     );
+}
+
+#[tokio::test]
+async fn distinct_preview_accounts_resolve_their_own_admin_flag_and_panel() {
+    let Some(store) = store("distinct_physicians").await else {
+        return;
+    };
+    let practice = "pg-proof";
+    assert!(
+        store
+            .ensure_account(
+                practice,
+                "physician-admin",
+                "admin@practice.test",
+                "Admin",
+                true,
+                NOW
+            )
+            .await
+            .expect("admin")
+    );
+    assert!(
+        store
+            .ensure_account(
+                practice,
+                "physician-member",
+                "member@practice.test",
+                "Member",
+                false,
+                NOW
+            )
+            .await
+            .expect("member")
+    );
+    store.register_patient(practice, "pw-admin").await;
+    store.register_patient(practice, "pw-member").await;
+    let admin = PhysicianIdentity {
+        practice_id: practice.to_owned(),
+        physician_id: "physician-admin".to_owned(),
+    };
+    store
+        .assign_panel(&admin, "physician-admin", "pw-admin", Membership::Allowed)
+        .await
+        .expect("admin panel");
+    store
+        .assign_panel(&admin, "physician-member", "pw-member", Membership::Allowed)
+        .await
+        .expect("member panel");
+
+    let admin_token = store
+        .begin_sign_in("admin@practice.test", NOW)
+        .await
+        .expect("admin token");
+    let (_, admin_session) = store
+        .complete_sign_in("admin@practice.test", &admin_token, NOW)
+        .await
+        .expect("admin session");
+    let member_token = store
+        .begin_sign_in("member@practice.test", NOW)
+        .await
+        .expect("member token");
+    let (_, member_session) = store
+        .complete_sign_in("member@practice.test", &member_token, NOW)
+        .await
+        .expect("member session");
+
+    let admin_identity = store.session(&admin_session, NOW).await.expect("admin");
+    let member_identity = store.session(&member_session, NOW).await.expect("member");
+    assert_ne!(admin_identity.physician_id, member_identity.physician_id);
+    let admin_account = store
+        .account_by_identity(&admin_identity)
+        .await
+        .expect("admin account");
+    let member_account = store
+        .account_by_identity(&member_identity)
+        .await
+        .expect("member account");
+    assert!(admin_account.admin);
+    assert!(!member_account.admin);
+    assert_eq!(
+        store.panel(&admin_identity).await,
+        vec!["pw-admin".to_owned()]
+    );
+    assert_eq!(
+        store.panel(&member_identity).await,
+        vec!["pw-member".to_owned()]
+    );
+}
+
+#[tokio::test]
+async fn duplicate_physician_ids_keep_the_earliest_account_and_its_panel() {
+    let Some(url) = fresh_database("physician_identity_repair").await else {
+        return;
+    };
+    PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .expect("migrate");
+    let db = sea_orm::Database::connect(&url)
+        .await
+        .expect("repair connection");
+    db.execute_unprepared("drop index physician_accounts_practice_physician_uidx")
+        .await
+        .expect("drop identity index");
+    db.execute_unprepared(
+        "insert into physician_accounts (id, practice_id, physician_id, email, display_name, active, admin, sessions_ended_before, created_at) values \
+         ('00000000-0000-0000-0000-000000000001', 'pg', 'shared-doc', 'early@test', 'Early', true, true, 0, 10), \
+         ('00000000-0000-0000-0000-000000000002', 'pg', 'shared-doc', 'late@test', 'Late', true, false, 0, 20)",
+    )
+    .await
+    .expect("duplicate identities");
+    db.execute_unprepared(
+        "insert into physician_memberships (practice_id, physician_id, patient_workspace_id, allowed, created_at) values \
+         ('pg', 'shared-doc', 'pw-1', true, 10)",
+    )
+    .await
+    .expect("surviving panel");
+    db.execute_unprepared(physician_auth::migration::REASSIGN_DUPLICATE_PHYSICIAN_IDS)
+        .await
+        .expect("reassign");
+    let early: String = db
+        .query_one_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            "select physician_id from physician_accounts where email='early@test'".to_owned(),
+        ))
+        .await
+        .expect("early query")
+        .expect("early row")
+        .try_get("", "physician_id")
+        .expect("early id");
+    let late: String = db
+        .query_one_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            "select physician_id from physician_accounts where email='late@test'".to_owned(),
+        ))
+        .await
+        .expect("late query")
+        .expect("late row")
+        .try_get("", "physician_id")
+        .expect("late id");
+    assert_eq!(early, "shared-doc");
+    assert_ne!(late, "shared-doc");
+    assert!(late.starts_with("migrated-"));
+    let surviving: i64 = db
+        .query_one_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            "select count(*) as n from physician_memberships where physician_id='shared-doc' and patient_workspace_id='pw-1' and allowed".to_owned(),
+        ))
+        .await
+        .expect("panel query")
+        .expect("panel row")
+        .try_get("", "n")
+        .expect("panel count");
+    let reassigned: i64 = db
+        .query_one_raw(sea_orm::Statement::from_string(
+            sea_orm::DbBackend::Postgres,
+            format!("select count(*) as n from physician_memberships where physician_id='{late}'"),
+        ))
+        .await
+        .expect("reassigned query")
+        .expect("reassigned row")
+        .try_get("", "n")
+        .expect("reassigned count");
+    assert_eq!(surviving, 1);
+    assert_eq!(reassigned, 0);
 }
