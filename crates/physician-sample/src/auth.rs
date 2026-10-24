@@ -189,20 +189,40 @@ pub(crate) fn bearer(request: &Request<Body>) -> Option<String> {
         .map(str::to_owned)
 }
 
+/// Why a presented session does not resolve. The page answers each one
+/// differently: an ended session asks to sign in again over the open page,
+/// and removed access returns to the sign-in page.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Refused {
+    /// No session, or it ended or expired.
+    NoSession,
+    /// The session's account no longer has access to the practice.
+    AccessRemoved,
+}
+
+impl Refused {
+    /// The `reason` a refused read carries beside its 401.
+    fn reason(self) -> &'static str {
+        match self {
+            Self::NoSession => "no_session",
+            Self::AccessRemoved => "access_removed",
+        }
+    }
+}
+
 /// Resolves the presented bearer token.
 pub(crate) async fn resolve(
     auth: &Auth,
     token: Option<String>,
-) -> Result<ResolvedSession, StatusCode> {
-    let token = token.ok_or(StatusCode::UNAUTHORIZED)?;
-    let identity = auth
-        .store
+) -> Result<ResolvedSession, Refused> {
+    let token = token.ok_or(Refused::NoSession)?;
+    auth.store
         .session(&token, now())
         .await
         .map_err(|error| match error {
-            SessionError::Invalid | SessionError::Inactive => StatusCode::UNAUTHORIZED,
-        })?;
-    Ok(identity)
+            SessionError::Invalid => Refused::NoSession,
+            SessionError::Inactive => Refused::AccessRemoved,
+        })
 }
 
 /// Whether this path is one the guard protects: exactly the physician
@@ -230,10 +250,13 @@ pub(crate) async fn guard(
     let token = bearer(&request);
     let identity = match resolve(&auth, token.clone()).await {
         Ok(identity) => identity,
-        Err(status) => {
+        Err(refused) => {
             return (
-                status,
-                Json(json!({ "detail": "Sign in to read the practice." })),
+                StatusCode::UNAUTHORIZED,
+                Json(json!({
+                    "detail": "Sign in to read the practice.",
+                    "reason": refused.reason(),
+                })),
             )
                 .into_response();
         }
@@ -922,9 +945,19 @@ async fn verify(State(auth): State<Arc<Auth>>, body: axum::body::Bytes) -> Respo
             })),
         )
             .into_response(),
-        Err(SignInError::Invalid | SignInError::Inactive) => (
+        Err(SignInError::Invalid) => (
             StatusCode::UNAUTHORIZED,
             Json(json!({ "detail": "That sign-in link is no longer valid." })),
+        )
+            .into_response(),
+        // Only a matching, unexpired token reaches the account check, so only
+        // the link's holder learns that it no longer grants access.
+        Err(SignInError::Inactive) => (
+            StatusCode::FORBIDDEN,
+            Json(json!({
+                "detail": "This sign-in link no longer gives access to this practice.",
+                "reason": "no_access",
+            })),
         )
             .into_response(),
     }
@@ -970,9 +1003,15 @@ async fn whoami(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     } else {
         Vec::new()
     };
+    // The expired-session prompt emails its link to this address.
+    let email = account
+        .as_ref()
+        .map(|account| account.email.clone())
+        .unwrap_or_default();
     Json(json!({
         "physician_id": identity.physician_id,
         "practice_id": identity.practice_id,
+        "email": email,
         "display_name": account.map(|account| account.display_name)
             .unwrap_or_else(|| identity.physician_id.clone()),
         "admin": admin,
@@ -1579,6 +1618,88 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK, "{body}");
         assert!(body.contains("Staging Physician"), "{body}");
+        assert!(
+            body.contains(&format!("\"email\":\"{STAGING_EMAIL}\"")),
+            "{body}"
+        );
+    }
+
+    fn reason(body: &str) -> String {
+        serde_json::from_str::<Value>(body).expect("refusal body")["reason"]
+            .as_str()
+            .unwrap_or_default()
+            .to_owned()
+    }
+
+    #[tokio::test]
+    async fn a_refused_read_says_whether_the_session_ended_or_access_was_removed() {
+        let (app, store, _) = authed_recorded().await;
+        let (status, body) = send(&app, Method::GET.as_str(), "/today", None, None).await;
+        assert_eq!(
+            (status, reason(&body).as_str()),
+            (StatusCode::UNAUTHORIZED, "no_session")
+        );
+        let ended = session_for(&app, STAGING_EMAIL).await;
+        send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-out",
+            Some(&ended),
+            None,
+        )
+        .await;
+        let (status, body) = send(&app, Method::GET.as_str(), "/today", Some(&ended), None).await;
+        assert_eq!(
+            (status, reason(&body).as_str()),
+            (StatusCode::UNAUTHORIZED, "no_session")
+        );
+        let held = session_for(&app, COLLEAGUE_EMAIL).await;
+        store.deactivate(COLLEAGUE_EMAIL).await;
+        let (status, body) = send(&app, Method::GET.as_str(), "/today", Some(&held), None).await;
+        assert_eq!(
+            (status, reason(&body).as_str()),
+            (StatusCode::UNAUTHORIZED, "access_removed")
+        );
+    }
+
+    #[tokio::test]
+    async fn a_held_link_without_access_says_so_and_a_guessed_one_does_not() {
+        let (app, store, _) = authed_recorded().await;
+        let (_, body) = send(
+            &app,
+            Method::POST.as_str(),
+            "/auth/sign-in",
+            None,
+            Some(json!({ "email": COLLEAGUE_EMAIL }).to_string()),
+        )
+        .await;
+        let token = serde_json::from_str::<Value>(&body).expect("sign-in body")["token"]
+            .as_str()
+            .expect("token")
+            .to_owned();
+        store.deactivate(COLLEAGUE_EMAIL).await;
+        let verify = |token: &str| {
+            let body = json!({ "email": COLLEAGUE_EMAIL, "token": token }).to_string();
+            let app = app.clone();
+            async move {
+                send(
+                    &app,
+                    Method::POST.as_str(),
+                    "/auth/verify",
+                    None,
+                    Some(body),
+                )
+                .await
+            }
+        };
+        let (status, body) = verify(&token).await;
+        assert_eq!(
+            (status, reason(&body).as_str()),
+            (StatusCode::FORBIDDEN, "no_access")
+        );
+        let (status, body) = verify("codas-guessed").await;
+        assert_eq!(status, StatusCode::UNAUTHORIZED, "{body}");
+        assert!(reason(&body).is_empty(), "a guess learns nothing: {body}");
     }
 
     #[tokio::test]

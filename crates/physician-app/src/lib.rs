@@ -5,6 +5,7 @@
 
 mod icons;
 mod shell;
+mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -49,6 +50,8 @@ const CONNECTIONS: &str = "Connections";
 const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
+const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
+const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
 /// send is missing or fails, and never returns the code.
@@ -372,6 +375,130 @@ pub struct SignInLink {
     pub code: String,
 }
 
+/// Why the server refused a signed-in read: the `reason` beside its 401.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Refusal {
+    /// The session ended or expired.
+    SessionEnded,
+    /// The practice removed this physician's access.
+    AccessRemoved,
+}
+
+fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
+    let physician_client::HttpError::Status { status: 401, body } = error else {
+        return None;
+    };
+    let removed = serde_json::from_str::<serde_json::Value>(body)
+        .ok()
+        .is_some_and(|value| {
+            value.get("reason").and_then(|r| r.as_str()) == Some("access_removed")
+        });
+    Some(if removed {
+        Refusal::AccessRemoved
+    } else {
+        Refusal::SessionEnded
+    })
+}
+
+/// The tab's sign-in state, owned by [`PhysicianRoot`] and changed only here.
+#[derive(Clone, Copy, PartialEq)]
+struct SessionState {
+    signed_in: Signal<bool>,
+    /// The sign-in prompt covers the open page (physician.mmd: Session expired,
+    /// sign in to continue). Nothing underneath changes.
+    expired: Signal<bool>,
+    whoami_name: Signal<String>,
+    whoami: Signal<Option<WhoamiResponse>>,
+    /// Bumped when another physician signs in here: the shell starts over at Today.
+    generation: Signal<u32>,
+}
+
+impl SessionState {
+    /// Back to the sign-in page.
+    fn sign_out(mut self) {
+        #[cfg(target_arch = "wasm32")]
+        write_stored_session(None);
+        self.expired.set(false);
+        self.signed_in.set(false);
+        self.whoami_name.set(String::new());
+        self.whoami.set(None);
+    }
+
+    /// A refused read. An ended session covers a page this tab already showed
+    /// with the sign-in prompt; a tab that showed nothing yet was reopened after
+    /// the session ended, so it shows the sign-in page, as removed access does.
+    fn refused(mut self, refusal: Refusal, shown: bool) {
+        match refusal {
+            Refusal::SessionEnded if shown => {
+                #[cfg(target_arch = "wasm32")]
+                write_stored_session(None);
+                self.expired.set(true);
+            }
+            _ => self.sign_out(),
+        }
+    }
+
+    /// Another tab's sign-in news.
+    #[cfg(target_arch = "wasm32")]
+    fn hear(mut self, news: tabs::TabNews, client: PhysicianClient) {
+        if !*self.signed_in.peek() {
+            return;
+        }
+        match news {
+            tabs::TabNews::SignedOut => {
+                spawn(async move {
+                    let _ = client.sign_out().await;
+                    self.sign_out();
+                });
+            }
+            tabs::TabNews::SignedIn {
+                physician_id,
+                session,
+            } => {
+                let mine = self
+                    .whoami
+                    .peek()
+                    .as_ref()
+                    .map(|account| account.physician_id.clone());
+                if mine.as_deref() == Some(physician_id.as_str()) {
+                    // Your own link: a covered page picks up where it was;
+                    // an open one changes nothing.
+                    if *self.expired.peek() {
+                        client.session().set(session.clone());
+                        write_stored_session(Some(&session));
+                        self.expired.set(false);
+                    }
+                    return;
+                }
+                if mine.is_none() {
+                    return;
+                }
+                // Another physician's link: this session ends and theirs
+                // starts at Today; nothing of yours carries over.
+                spawn(async move {
+                    let _ = client.sign_out().await;
+                    client.session().set(session.clone());
+                    write_stored_session(Some(&session));
+                    self.whoami_name.set(String::new());
+                    self.whoami.set(None);
+                    self.expired.set(false);
+                    *self.generation.write() += 1;
+                });
+            }
+        }
+    }
+}
+
+/// Signing out ends this session and reaches this browser's other Coda tabs.
+fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
+    spawn(async move {
+        let _ = client.sign_out().await;
+        #[cfg(target_arch = "wasm32")]
+        tabs::announce(&tabs::TabNews::SignedOut);
+        session.sign_out();
+    });
+}
+
 #[component]
 pub fn PhysicianRoot(
     base_url: String,
@@ -383,6 +510,15 @@ pub fn PhysicianRoot(
     let mut signed_in = use_signal(|| sign_in.is_none());
     let mut whoami_name = use_signal(String::new);
     let mut whoami = use_signal(|| None::<WhoamiResponse>);
+    let expired = use_signal(|| false);
+    let generation = use_signal(|| 0u32);
+    let session = SessionState {
+        signed_in,
+        expired,
+        whoami_name,
+        whoami,
+        generation,
+    };
     let mut pending_sign_in = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
@@ -393,6 +529,16 @@ pub fn PhysicianRoot(
         }
         client
     });
+    // Other tabs' sign-in news arrives outside the Dioxus runtime, so it
+    // re-enters this scope before touching the session.
+    #[cfg(target_arch = "wasm32")]
+    use_hook(move || {
+        let runtime = dioxus::core::Runtime::current();
+        let scope = dioxus::core::current_scope_id();
+        std::rc::Rc::new(tabs::listen(move |news| {
+            runtime.in_scope(scope, || session.hear(news, client.peek().clone()));
+        }))
+    });
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
         if pending_sign_in.peek().is_some() {
@@ -400,11 +546,10 @@ pub fn PhysicianRoot(
         }
         let client = client.read().clone();
         spawn(async move {
-            match client.today().await {
-                Err(physician_client::HttpError::Status { status: 401, .. }) => {
-                    signed_in.set(false);
-                }
-                _ => {}
+            if let Err(error) = client.today().await
+                && refusal(&error).is_some()
+            {
+                session.sign_out();
             }
         });
     });
@@ -427,14 +572,19 @@ pub fn PhysicianRoot(
             }
         }
     } else {
+        // A different physician's sign-in starts a fresh shell at Today. A
+        // keyed list replaces the shell when the key changes; a lone keyed
+        // component is diffed in place and keeps its state.
+        let shell = generation();
         rsx! {
-            PhysicianShell {
-                base_url,
-                open_patient,
-                client,
-                signed_in,
-                whoami_name,
-                whoami,
+            for shell in std::iter::once(shell) {
+                PhysicianShell {
+                    key: "{shell}",
+                    base_url: base_url.clone(),
+                    open_patient: if shell == 0 { open_patient.clone() } else { String::new() },
+                    client,
+                    session,
+                }
             }
         }
     }
@@ -445,10 +595,13 @@ fn PhysicianShell(
     base_url: String,
     open_patient: String,
     client: Signal<PhysicianClient>,
-    mut signed_in: Signal<bool>,
-    mut whoami_name: Signal<String>,
-    mut whoami: Signal<Option<WhoamiResponse>>,
+    session: SessionState,
 ) -> Element {
+    let mut whoami_name = session.whoami_name;
+    let mut whoami = session.whoami;
+    let expired = session.expired;
+    // Whether this tab has shown the practice yet; see SessionState::refused.
+    let mut shown = use_signal(|| false);
     let mut place = use_signal(|| {
         if open_patient.is_empty() {
             Place::Today
@@ -479,7 +632,7 @@ fn PhysicianShell(
     let mut query = use_signal(String::new);
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
-    let snapshot_attempt = use_signal(|| 0u32);
+    let mut snapshot_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
     let mut target_physician = use_signal(String::new);
@@ -497,8 +650,23 @@ fn PhysicianShell(
             past_work_open.set(false);
         }
     });
+    // Signing in again under the prompt re-reads the page in place; the stream
+    // restarts on the new session (an ended one stops on its refusal).
+    let mut was_expired = use_signal(|| false);
+    use_effect(move || {
+        let now_expired = expired();
+        if *was_expired.peek() && !now_expired {
+            *today_attempt.write() += 1;
+            *workspace_attempt.write() += 1;
+            *snapshot_attempt.write() += 1;
+        }
+        was_expired.set(now_expired);
+    });
     #[cfg(target_arch = "wasm32")]
     use_effect(move || {
+        if expired() {
+            return;
+        }
         let session = client.read().session().get();
         follow_workspace_events(
             &base_url,
@@ -531,16 +699,16 @@ fn PhysicianShell(
         let client = client.read().clone();
         async move {
             match client.today().await {
-                Ok(response) => Ok(response),
-                Err(physician_client::HttpError::Status { status: 401, .. }) => {
-                    #[cfg(target_arch = "wasm32")]
-                    write_stored_session(None);
-                    signed_in.set(false);
-                    whoami_name.set(String::new());
-                    whoami.set(None);
+                Ok(response) => {
+                    shown.set(true);
+                    Ok(response)
+                }
+                Err(error) => {
+                    if let Some(refused) = refusal(&error) {
+                        session.refused(refused, *shown.peek());
+                    }
                     Err(())
                 }
-                Err(_) => Err(()),
             }
         }
     });
@@ -598,21 +766,23 @@ fn PhysicianShell(
         async move {
             match open_id {
                 Some(id) => match client.workspace(&id).await {
-                    Ok(open) => Ok(Some(open)),
-                    Err(physician_client::HttpError::Status { status: 401, .. }) => {
-                        #[cfg(target_arch = "wasm32")]
-                        write_stored_session(None);
-                        signed_in.set(false);
-                        whoami_name.set(String::new());
-                        whoami.set(None);
-                        workspace_cache.set(None);
+                    Ok(open) => {
+                        shown.set(true);
+                        Ok(Some(open))
+                    }
+                    // A covered page keeps what it showed; signing out leaves
+                    // the shell, so nothing of it stays either way.
+                    Err(error) => {
+                        if let Some(refused) = refusal(&error) {
+                            session.refused(refused, *shown.peek());
+                        } else if matches!(
+                            error,
+                            physician_client::HttpError::Status { status: 404, .. }
+                        ) {
+                            workspace_cache.set(None);
+                        }
                         Err(())
                     }
-                    Err(physician_client::HttpError::Status { status: 404, .. }) => {
-                        workspace_cache.set(None);
-                        Err(())
-                    }
-                    Err(_) => Err(()),
                 },
                 None => Ok(None),
             }
@@ -802,9 +972,29 @@ fn PhysicianShell(
                 img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
             }
         }
+        if expired() {
+            // Covers and hides the page; nothing underneath changes.
+            div {
+                class: "session-prompt",
+                role: "dialog",
+                aria_modal: "true",
+                aria_label: "Sign in to continue",
+                SignInScreen {
+                    client,
+                    link: None,
+                    resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
+                    on_signed_in: move |_| {
+                        let mut expired = expired;
+                        expired.set(false);
+                    },
+                    on_sign_out: move |_| sign_out_everywhere(client.read().clone(), session),
+                }
+            }
+        }
         div {
             class: "{shell_class}",
-            aria_hidden: if app_collapsed() { "true" } else { "false" },
+            aria_hidden: if app_collapsed() || expired() { "true" } else { "false" },
+            "inert": expired().then_some("true"),
             tabindex: "0",
             onkeydown: move |event| {
                 let key = event.key().to_string();
@@ -1023,17 +1213,7 @@ fn PhysicianShell(
                         button {
                             r#type: "button",
                             aria_label: "Sign out of Coda",
-                            onclick: move |_| {
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let _ = client.sign_out().await;
-                                    #[cfg(target_arch = "wasm32")]
-                                    write_stored_session(None);
-                                    signed_in.set(false);
-                                    whoami_name.set(String::new());
-                                    whoami.set(None);
-                                });
-                            },
+                            onclick: move |_| sign_out_everywhere(client.read().clone(), session),
                             Icon { name: IconName::Users }
                             "Sign out"
                         }
@@ -1437,15 +1617,21 @@ fn command_rejection(value: &serde_json::Value) -> Option<String> {
     }
 }
 
+/// The sign-in page, or with `resume_email` the prompt covering a page whose
+/// session ended: it mails the same address, and signing in picks up there.
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
     link: Option<SignInLink>,
     on_signed_in: EventHandler<Option<WhoamiResponse>>,
+    resume_email: Option<String>,
+    on_sign_out: Option<EventHandler<()>>,
 ) -> Element {
+    let resuming = resume_email.is_some();
     let mut email = use_signal(|| {
         link.as_ref()
             .map(|link| link.email.clone())
+            .or_else(|| resume_email.clone())
             .unwrap_or_default()
     });
     let mut stage = use_signal(|| {
@@ -1463,10 +1649,21 @@ fn SignInScreen(
         error.set(String::new());
         spawn(async move {
             match client.verify(&link.email, &link.code).await {
-                Ok(_) => {
+                Ok(verified) => {
                     #[cfg(target_arch = "wasm32")]
-                    write_stored_session(client.session().get().as_deref());
+                    {
+                        write_stored_session(Some(&verified.session));
+                        tabs::announce(&tabs::TabNews::SignedIn {
+                            physician_id: verified.physician_id.clone(),
+                            session: verified.session.clone(),
+                        });
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    let _ = verified;
                     on_signed_in.call(client.whoami().await.ok());
+                }
+                Err(physician_client::HttpError::Status { status: 403, .. }) => {
+                    stage.set(SignInStage::NoAccess);
                 }
                 Err(failure) => {
                     let message = match failure {
@@ -1547,10 +1744,40 @@ fn SignInScreen(
                             SignInStage::Requesting => "Sending your link…",
                             SignInStage::SigningIn => "Signing you in…",
                             SignInStage::Recovery => "Let’s get you signed in",
+                            SignInStage::NoAccess => "No access to this practice",
+                            SignInStage::Email if resuming => "Sign in to continue",
                             SignInStage::Email => "Sign in to Coda",
                         }
                     }
                     match stage() {
+                        SignInStage::Email if resuming => rsx! {
+                            p { class: "sign-in-sub", "{SESSION_ENDED}" }
+                            p { class: "sign-in-email", "{email}" }
+                            div { class: "sign-in-form",
+                                button {
+                                    class: "sign-in-primary",
+                                    r#type: "button",
+                                    disabled: email.read().trim().is_empty(),
+                                    onclick: move |_| request_token(()),
+                                    "Email me a sign-in link"
+                                }
+                                p { class: "sign-in-hint", "Open it to pick up where you were." }
+                            }
+                        },
+                        SignInStage::NoAccess => rsx! {
+                            p { class: "sign-in-sub", "{NO_ACCESS}" }
+                            div { class: "sign-in-actions",
+                                button {
+                                    class: "sign-in-text-action",
+                                    r#type: "button",
+                                    onclick: move |_| {
+                                        email.set(String::new());
+                                        stage.set(SignInStage::Email);
+                                    },
+                                    "Use a different email"
+                                }
+                            }
+                        },
                         SignInStage::Email => rsx! {
                             p { class: "sign-in-sub", "Your practice, with you." }
                             div { class: "sign-in-form",
@@ -1593,7 +1820,13 @@ fn SignInScreen(
                             if stage() == SignInStage::CheckEmail {
                                 p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
                                 p { class: "sign-in-email", "{email}" }
-                                p { class: "sign-in-sub", "Choose Sign in in the email to open your workspace." }
+                                p { class: "sign-in-sub",
+                                    if resuming {
+                                        "Choose Sign in in the email to pick up where you were."
+                                    } else {
+                                        "Choose Sign in in the email to open your workspace."
+                                    }
+                                }
                             }
                             if !error().is_empty() {
                                 p { class: "sign-in-error", role: "alert", "{error}" }
@@ -1605,17 +1838,29 @@ fn SignInScreen(
                                     onclick: move |_| request_token(()),
                                     "Send a new link"
                                 }
-                                button {
-                                    class: "sign-in-text-action sign-in-change",
-                                    r#type: "button",
-                                    onclick: move |_| {
-                                        error.set(String::new());
-                                        stage.set(SignInStage::Email);
-                                    },
-                                    "Use a different email"
+                                if !resuming {
+                                    button {
+                                        class: "sign-in-text-action sign-in-change",
+                                        r#type: "button",
+                                        onclick: move |_| {
+                                            error.set(String::new());
+                                            stage.set(SignInStage::Email);
+                                        },
+                                        "Use a different email"
+                                    }
                                 }
                             }
                         },
+                    }
+                    if let Some(sign_out) = on_sign_out {
+                        div { class: "sign-in-actions",
+                            button {
+                                class: "sign-in-text-action sign-in-change",
+                                r#type: "button",
+                                onclick: move |_| sign_out.call(()),
+                                "Sign out"
+                            }
+                        }
                     }
                 }
             }
@@ -1630,6 +1875,8 @@ enum SignInStage {
     CheckEmail,
     SigningIn,
     Recovery,
+    /// A held link whose account no longer has access to this practice.
+    NoAccess,
 }
 
 #[derive(Debug, PartialEq, Eq)]

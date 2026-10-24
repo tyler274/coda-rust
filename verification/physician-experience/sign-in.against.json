@@ -1,14 +1,31 @@
 {
   "states": {
-    "No session": { "Physician session": "Signed out.Sign-in page" },
-    "Session valid": { "Physician session": "Signed in", "Physician session/Signed in/Sign-in state": "Signed in to the practice" },
-    "Session ended": { "Physician session": "Signed in", "Physician session/Signed in/Sign-in state": "Session expired, sign in to continue" },
+    "No session": {
+      "Physician session": "Signed out.Sign-in page"
+    },
+    "Session valid": {
+      "Physician session": "Signed in",
+      "Physician session/Signed in/Sign-in state": "Signed in to the practice"
+    },
+    "Session ended": {
+      "Physician session": "Signed in",
+      "Physician session/Signed in/Sign-in state": "Session expired, sign in to continue"
+    },
+    "No access": {
+      "Physician session": "Signed out.No access to this practice"
+    },
     "Sign-in entry.Enter work email": {},
     "Sign-in entry.Sending link": {},
     "Sign-in entry.Check your email": {},
     "Sign-in entry.Signing you in": {},
     "Sign-in entry.Sign-in recovery": {},
-    "Workspace open": {}
+    "Workspace open": {},
+    "Sign-in entry.No access to this practice": {},
+    "Prompt over the workspace.Email me a sign-in link": {},
+    "Prompt over the workspace.Sending the prompt's link": {},
+    "Prompt over the workspace.Check your email for the prompt's link": {},
+    "Prompt over the workspace.Signing in under the prompt": {},
+    "Prompt over the workspace.Prompt recovery": {}
   },
   "events": {
     "request a link": null,
@@ -22,16 +39,17 @@
     "reload with a valid session": null,
     "sign out": "sign out",
     "the session expires": "the session expires",
-    "reopen without a valid session": "reopen Coda after the session ended"
+    "reopen without a valid session": "reopen Coda after the session ended",
+    "verification refuses access": "sign in to the practice",
+    "access is removed": "practice access removed"
   },
   "steps": {
     "Session valid --> Session valid on verification succeeds": "a different physician signs in",
-    "Session ended --> No session on open the email button": "reopen Coda after the session ended"
+    "Session ended --> No session on open the email button": "reopen Coda after the session ended",
+    "Session ended --> Session valid on verification succeeds": "sign in again",
+    "No access --> No session on use another email": "try another account"
   },
   "omits": {
-    "sign in to the practice": "not built yet: a link that no longer grants access opens No access to this practice (Dev 2026-10-24)",
-    "sign in again": "not built yet: the expired prompt emails a link, and opening it resumes both pages in place (Dev 2026-10-24)",
-    "sign in through a link": "not built yet: a Coda link opened while signed out keeps its patient or item through sign-in",
-    "practice access removed": "losing access is the graph's account lifecycle (ENG-19), not part of signing in"
+    "sign in through a link": "partly built: a Coda link opened while signed out keeps its patient in the tab that opened it; the emailed link's own tab opens Today (Dev to decide whether the link carries the place)"
   }
 }
