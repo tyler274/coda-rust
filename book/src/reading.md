@@ -29,7 +29,7 @@ keep the gap visible and update the responsible owner as the work lands.
 | Post-MVP sharing with physicians outside Coda | [ENG-169](https://linear.app/coda-health/issue/ENG-169) | Later browser publication, no PDF download |
 | Post-MVP jointly maintained live patient–physician shared space | [ENG-27](https://linear.app/coda-health/issue/ENG-27) | Background design; distinct from the patient-owned doctor workspace |
 | Separate product authority over shared execution mechanics | [ENG-159](https://linear.app/coda-health/issue/ENG-159) | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
-| Physician experience and formal-design foundation | [ENG-185](https://linear.app/coda-health/issue/ENG-185) | [Physician site](physician-site.md), <a href="/verification/README%2Emd">verification</a>; design proof is separate from runtime and clinical qualification |
+| Physician experience and formal-design foundation | [ENG-185](https://linear.app/coda-health/issue/ENG-185) | [Physician site](physician-site.md), <a href="/verification/physician-experience/README%2Emd">physician statechart</a>, <a href="/verification/README%2Emd">verification</a>; design proof is separate from runtime and clinical qualification |
 
 ## Retained references
 

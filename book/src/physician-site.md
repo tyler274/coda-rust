@@ -8,7 +8,8 @@ The [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d
 and its outcome tickets own current physician behavior. [ENG-160](https://linear.app/coda-health/issue/ENG-160)
 owns the physician UI, [ENG-159](https://linear.app/coda-health/issue/ENG-159)
 the shared execution boundary, and [ENG-185](https://linear.app/coda-health/issue/ENG-185)
-the physician design foundation. <a href="/verification/README%2Emd">Verification</a>
+the physician design foundation: the <a href="/verification/physician-experience/README%2Emd">physician statechart</a>,
+which is the behavior spec, and its Verus proof. <a href="/verification/README%2Emd">Verification</a>
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
 specification or a claim of current Rust completeness.

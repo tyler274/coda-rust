@@ -63,6 +63,12 @@ Charts without safety rules establish transition correspondence only. Keep gener
 behavior separate from editable proofs; `--check` detects generated drift. Review
 manual data refinements and implementation connections separately.
 
+## Feature specs
+
+| Folder | Spec |
+| --- | --- |
+| [physician-experience](physician-experience/README.md) | The physician web app's ideal behavior as one statechart, with its Verus model and proof. |
+
 ## How the skills fit
 
 | Skill | Use |
