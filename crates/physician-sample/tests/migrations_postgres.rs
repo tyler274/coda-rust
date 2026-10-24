@@ -69,7 +69,8 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                 rows.iter().map(|row| row.0.as_str()).collect::<Vec<_>>(),
                 [
                     "physician_auth_20260101_000001_init",
-                    "physician_auth_20260101_000002_practice_patients"
+                    "physician_auth_20260101_000002_practice_patients",
+                    "physician_auth_20261023_000003_unique_physician_identity",
                 ]
             );
             histories.push(("physician_auth_migrations", rows));
