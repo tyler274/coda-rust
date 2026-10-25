@@ -127,6 +127,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         worker.adapter,
     );
     genai::record_input(&span, &input_text);
+    let provider = worker.model.provider(&delivery, &input_text);
     drop(input_text);
     let mut host = PhysicianHost {
         store: worker.store.clone(),
@@ -139,7 +140,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     let cancel = Cancellation::default();
     // One provider per turn: concurrent pushes on this instance run side by
     // side instead of queueing behind one another's model call.
-    let mut provider = match worker.model.provider() {
+    let mut provider = match provider {
         Ok(provider) => provider,
         Err(_) => {
             tracing::error!("physician chat provider unavailable");
@@ -310,6 +311,23 @@ impl Worker {
                 "PHYSICIAN_WORKER_FIXED_DELAY_MS requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
             );
         }
+        // Non-hosted proof only: a message containing `[fail:K]` fails its
+        // first K attempts, counted per input id, so one stack can drive a
+        // retry, a dead letter and Try again alongside ordinary turns.
+        let marker = configured(&get, "PHYSICIAN_WORKER_FIXED_FAIL_MARKER");
+        if hosted && marker.is_some() {
+            return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER is refused in hosted execution".into());
+        }
+        let marker = match marker.as_deref() {
+            None | Some("0") => None,
+            Some("1") => Some(FailMarker::default()),
+            Some(_) => return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER must be 0 or 1".into()),
+        };
+        if marker.is_some() && fixed.is_none() {
+            return Err(
+                "PHYSICIAN_WORKER_FIXED_FAIL_MARKER requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
+            );
+        }
         let execution = local_product::model_execution(
             configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
         )?;
@@ -325,11 +343,15 @@ impl Worker {
             } else {
                 tracing::info!("physician worker model execution: fixed text");
             }
+            if marker.is_some() {
+                tracing::info!("physician worker fixed provider honors [fail:K] markers");
+            }
             (
                 ModelSource::Fixed {
                     text,
                     failures_remaining: Arc::new(std::sync::atomic::AtomicU32::new(failure_count)),
                     delay,
+                    marker,
                 },
                 "fixed",
                 "fixed".to_owned(),
@@ -499,11 +521,14 @@ enum ModelSource {
         text: String,
         failures_remaining: Arc<std::sync::atomic::AtomicU32>,
         delay: Duration,
+        marker: Option<FailMarker>,
     },
 }
 
 impl ModelSource {
-    fn provider(&self) -> Result<Model, String> {
+    /// One provider for one attempt at `delivery`, whose physician message is
+    /// `input`. Only the fixed provider reads either, for its fail marker.
+    fn provider(&self, delivery: &Delivery, input: &str) -> Result<Model, String> {
         match self {
             Self::Api { key, model } => Ok(Model::Api(harness::responses::Responses::new(
                 key.clone(),
@@ -513,13 +538,49 @@ impl ModelSource {
                 text,
                 failures_remaining,
                 delay,
+                marker,
             } => Ok(Model::Fixed {
                 text: text.clone(),
                 failures_remaining: failures_remaining.clone(),
                 delay: *delay,
+                marked_failure: marker
+                    .as_ref()
+                    .is_some_and(|marker| marker.attempt_fails(&delivery.input_id, input)),
             }),
         }
     }
+}
+
+/// Counts attempts per input id for messages marked `[fail:K]`. Try again
+/// keeps the input id, so a message marked `[fail:5]` dead-letters on its
+/// fifth failure and its Try again then succeeds. Process memory only: a
+/// worker restart starts every count again.
+#[derive(Default)]
+struct FailMarker {
+    attempts: std::sync::Mutex<std::collections::HashMap<String, u32>>,
+}
+
+impl FailMarker {
+    /// Whether this attempt fails, counting it when the message is marked.
+    fn attempt_fails(&self, input_id: &str, input: &str) -> bool {
+        let Some(failures) = marked_failures(input) else {
+            return false;
+        };
+        let mut attempts = self
+            .attempts
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        let count = attempts.entry(input_id.to_owned()).or_default();
+        *count = count.saturating_add(1);
+        *count <= failures
+    }
+}
+
+/// K from the first `[fail:K]` in `input`, if K is a whole number.
+fn marked_failures(input: &str) -> Option<u32> {
+    let (_, rest) = input.split_once("[fail:")?;
+    let (count, _) = rest.split_once(']')?;
+    count.parse().ok()
 }
 
 enum Model {
@@ -528,6 +589,7 @@ enum Model {
         text: String,
         failures_remaining: Arc<std::sync::atomic::AtomicU32>,
         delay: Duration,
+        marked_failure: bool,
     },
 }
 
@@ -549,6 +611,10 @@ impl Provider for Model {
         }
         match self {
             Self::Api(provider) => provider.complete(request).await,
+            Self::Fixed {
+                marked_failure: true,
+                ..
+            } => Err("fixed physician reply failed by marker".into()),
             Self::Fixed {
                 failures_remaining, ..
             } if failures_remaining
@@ -650,6 +716,54 @@ mod tests {
             }
             Ok(_) => panic!("hosted fixed failures must refuse to start"),
         }
+        let hosted_marker = |name: &str| match name {
+            "K_SERVICE" => Some("physician-worker".into()),
+            "PHYSICIAN_WORKER_FIXED_FAIL_MARKER" => Some("1".into()),
+            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
+            _ => None,
+        };
+        match block(Worker::from_env(hosted_marker)) {
+            Err(error) => {
+                assert!(
+                    error.contains("PHYSICIAN_WORKER_FIXED_FAIL_MARKER"),
+                    "{error}"
+                );
+            }
+            Ok(_) => panic!("a hosted fail marker must refuse to start"),
+        }
+        let marker_without_text =
+            |name: &str| (name == "PHYSICIAN_WORKER_FIXED_FAIL_MARKER").then(|| "1".into());
+        match block(Worker::from_env(marker_without_text)) {
+            Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
+            Ok(_) => panic!("a fail marker without fixed text must refuse to start"),
+        }
+    }
+
+    #[test]
+    fn fail_marker_parses_whole_counts_only() {
+        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
+        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
+        assert_eq!(marked_failures("Plain turn"), None);
+        assert_eq!(marked_failures("[fail:]"), None);
+        assert_eq!(marked_failures("[fail:-1]"), None);
+        assert_eq!(marked_failures("[fail:2"), None);
+        assert_eq!(marked_failures("[fail:x]"), None);
+    }
+
+    #[test]
+    fn fail_marker_counts_attempts_per_input_id() {
+        let marker = FailMarker::default();
+        // `[fail:2]` fails its first two attempts, then succeeds for good.
+        assert!(marker.attempt_fails("input-a", "Retry [fail:2]"));
+        assert!(marker.attempt_fails("input-a", "Retry [fail:2]"));
+        assert!(!marker.attempt_fails("input-a", "Retry [fail:2]"));
+        assert!(!marker.attempt_fails("input-a", "Retry [fail:2]"));
+        // Another input id has its own count; an unmarked turn never fails.
+        assert!(marker.attempt_fails("input-b", "Again [fail:1]"));
+        assert!(!marker.attempt_fails("input-b", "Again [fail:1]"));
+        assert!(!marker.attempt_fails("input-c", "Plain turn"));
+        assert!(!marker.attempt_fails("input-c", "Plain turn"));
+        assert!(!marker.attempt_fails("input-d", "[fail:0]"));
     }
 
     fn block<T>(future: impl std::future::Future<Output = T>) -> T {

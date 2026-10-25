@@ -6,7 +6,7 @@ Reads the newest target/verification/runs/physician-scale-stack-*/stack.json
 writes it there too. No credentials: proof sign-in for the synthetic account.
 
   sign-in   [--site a|b]                          print a bearer session
-  page-url  --chat C [--site b]                   the page opened on that chat (?patient=&chat=)
+  page-url  [--chat C] [--site b]                 the page on Mary Louis, opened on that chat (?patient=[&chat=])
   send      --session S --chat C --text T [--site a] [--key K]
   snapshot  --session S --chat C [--site b] [--wait-text T | --wait-failed] [--timeout 90]
   resume    --session S --chat C [--site a]       Try again on the failed run
@@ -127,7 +127,7 @@ def main():
     sub = parser.add_subparsers(dest="action", required=True)
     s = sub.add_parser("sign-in"); s.add_argument("--site", default="a")
     s = sub.add_parser("page-url"); s.add_argument("--site", default="b")
-    s.add_argument("--chat", required=True)
+    s.add_argument("--chat", help="omit to open the workspace without a chat")
     s = sub.add_parser("send")
     s.add_argument("--site", default="a"); s.add_argument("--session", required=True)
     s.add_argument("--chat", required=True); s.add_argument("--text", required=True)
@@ -154,7 +154,8 @@ def main():
         print(session)
         return 0
     if args.action == "page-url":
-        print(f"http://127.0.0.1:{port(stack, args.site)}/?patient={stack['workspace']}&chat={args.chat}")
+        chat = f"&chat={args.chat}" if args.chat else ""
+        print(f"http://127.0.0.1:{port(stack, args.site)}/?patient={stack['workspace']}{chat}")
         return 0
     if args.action == "send":
         key = args.key or f"key-{uuid.uuid4().hex}"

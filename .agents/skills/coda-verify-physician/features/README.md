@@ -9,7 +9,7 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 
 - The binaries in `target/stream-e/debug` (or the `--bin-dir` you pass) were built from
   the current worktree, and `target/physician-web` holds the current page.
-- `scripts/physician-scale-stack.py --bin-dir target/stream-e/debug [--worker-failures N]`
+- `scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-fail-marker`
   is running in its own terminal and has printed `Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>`.
 - `RUN=$(ls -td target/verification/runs/physician-scale-stack-* | head -1)` names that
   stack, and every [doctor](../SKILL.md#doctor) check passes.
@@ -28,8 +28,9 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 - Wait on a state (`--wait-text`, `--wait-failed`, `watch --until`), never a fixed sleep.
   The only exception is Pub/Sub backoff, which the recipe names.
 - Use `--out "$RUN/<feature-id>"` on every call whose result is proof.
-- The happy-path features need `fixed_failures` 0. Try again needs 5: start a fresh stack
-  because the worker counts failures per process.
+- One stack serves every feature. With `--worker-fail-marker`, a message containing
+  `[fail:K]` fails its first K attempts, counted per `input_id`; unmarked messages never
+  fail. Retry uses `[fail:1]`, Try again uses `[fail:5]`, and both leave `fixed_failures` 0.
 
 ## Proof and skip reporting
 

@@ -23,7 +23,7 @@ resubscribe. Owners: `crates/physician-bus` (`Event::Resync`), the SSE writer in
 
 Preconditions:
 
-- Baseline from [README](./README.md), stack started with `--worker-failures 0`.
+- Baseline from [README](./README.md). Unmarked messages never fail on the shared stack.
 - `OUT="$RUN/resync-after-redis-restart"`.
 
 - **Hold streams on both sites.** Run `$D --out "$OUT" watch --site b --session "$S" --until resync --timeout 60 &` and `$D --out "$OUT" watch --site a --session "$S" --until resync --timeout 60 &`.
