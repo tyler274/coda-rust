@@ -54,14 +54,26 @@ everything is dated before it. Only two things reach past today:
 - **A visit already booked.** A primary-care visit after today is an event with
   `"appointment": "booked"`, its time, kind and `reason`, and nothing else.
 
-What happens after today is decided later, not written here. Leave the chart
-mid-life: an open referral, a recent message, an abnormal value nobody has
-commented on yet. A quiet patient may have nothing open.
+What happens after today is decided later, not written here. The chart stops
+mid-life, not at a turning point. Most patients have nothing open today; some
+have one thing (an open referral, a recent message, a value nobody has commented
+on yet).
 
 The patient joined the practice about `years_with_practice` years before today.
 Earlier history comes in through outside records, the establish-care history or
 patient report. An outside document is dated when it was received, with the
 original date inside it.
+
+## A life, not a plot
+
+- Most years are routine. A life has no arc and no resolution, and most patients
+  have a dramatic event once or twice in a decade, at no particular spacing.
+- Personal detail appears only where the writer would record it, not as color.
+- Mistakes go unexplained. Nobody writes down where an error came from, and many
+  are never caught.
+- Clinicians make ordinary decisions, and some are not the best ones.
+- Values wobble from draw to draw and visit to visit, with no pattern that
+  repeats every year.
 
 ## Chronology
 
