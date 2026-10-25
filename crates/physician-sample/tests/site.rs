@@ -107,6 +107,101 @@ async fn the_recorded_practice_is_visible() {
     );
 }
 
+/// New conversation, send, then a reload without `?chat=`: the workspace
+/// lists the chat the physician started, titled by its first message.
+#[tokio::test]
+async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let workspace_url = format!("http://{address}/?patient={patient}");
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, &workspace_url).await;
+    browser
+        .wait_for_text("This workspace has no chats.", Duration::from_secs(20))
+        .await;
+
+    // The empty state and the sidebar both offer it; use the sidebar's.
+    let clicked = browser
+        .eval("(() => { const b = document.querySelector('button.sidebar-new-conversation'); if (!b) return false; b.click(); return true; })()")
+        .await;
+    assert_eq!(
+        clicked.pointer("/result/result/value"),
+        Some(&serde_json::json!(true)),
+        "no New conversation button in the sidebar: {}",
+        browser.dom().await
+    );
+    browser
+        .wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(10),
+        )
+        .await;
+    let address_chat = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    let chat = address_chat
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .unwrap_or_default()
+        .to_owned();
+    assert!(
+        chat.starts_with("chat-"),
+        "the address names no chat: {address_chat}"
+    );
+
+    let message = "Review the discharge summary before the follow-up visit";
+    browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const box = document.querySelector('textarea.composer');
+            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
+            box.dispatchEvent(new Event('input', {{bubbles: true}}));
+            setTimeout(() => {{
+                const send = [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send');
+                send.click();
+                resolve(true);
+            }}, 100);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    // The inline session saves the turn before calling the (empty) replay.
+    browser
+        .wait_for_text(message, Duration::from_secs(15))
+        .await;
+
+    browser.navigate(&workspace_url).await;
+    let html = browser
+        .wait_for_text(message, Duration::from_secs(20))
+        .await;
+    assert!(
+        !html.contains("This workspace has no chats.")
+            && html.contains("sidebar-conversation-link"),
+        "the reloaded workspace did not list the new chat:\n{html}"
+    );
+    let reopened = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    assert_eq!(
+        reopened.pointer("/result/result/value"),
+        Some(&serde_json::Value::Null),
+        "the reload must not carry ?chat=: {reopened}"
+    );
+}
+
 #[tokio::test]
 async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {
     use std::sync::atomic::{AtomicUsize, Ordering};

@@ -57,6 +57,8 @@ const NEEDS_YOU_NOW: &str = "Needs you now";
 const RECENT_NONE: &str = "Conversations with Coda will appear here.";
 const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
+/// The React shell's `new_conversation` command label.
+const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
 const DICTATION_UNAVAILABLE: &str =
@@ -1020,6 +1022,15 @@ fn PhysicianShell(
     });
     // One conversation's lines never stand in for another's.
     let conversation = read_view(None, snapshot.read().clone());
+    // New conversation: a fresh id the server keeps once a message is sent.
+    // The address names it, so a reload before the reply still reopens it.
+    let mut start_chat = move || {
+        let Some(patient) = selected() else { return };
+        let chat = new_chat_id();
+        write_address_chat(&patient, &chat);
+        draft.set(String::new());
+        open_chat.set(Some(chat));
+    };
     let shell_class = format!(
         "glass-app{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
@@ -1224,6 +1235,15 @@ fn PhysicianShell(
                                 div { class: "sidebar-section-heading", h2 { "Clinic record" } }
                                 p { class: "sidebar-empty", "Not on your panel" }
                             } else {
+                                if !matches!(chats, ChatView::Closed | ChatView::Pending | ChatView::Unavailable) {
+                                    button {
+                                        class: "control-secondary sidebar-new-conversation",
+                                        r#type: "button",
+                                        onclick: move |_| start_chat(),
+                                        Icon { name: IconName::Plus }
+                                        "{NEW_CONVERSATION}"
+                                    }
+                                }
                                 div { class: "sidebar-section-heading", h2 { "Conversations" } }
                                 match chats.clone() {
                                     ChatView::Empty | ChatView::Closed => rsx! { p { class: "sidebar-empty", "{NO_CONVERSATIONS}" } },
@@ -1537,6 +1557,7 @@ fn PhysicianShell(
                                 }
                             },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
+                            on_new_chat: move |_| start_chat(),
                             on_save: move |_| {
                                 let Some(id) = selected() else { return };
                                 let client = client.read().clone();
@@ -2639,6 +2660,7 @@ fn PatientSurface(
     conversation_resume_notice: Element,
     on_conversation_resume: EventHandler<WorkResumeTarget>,
     on_open_chat: EventHandler<String>,
+    on_new_chat: EventHandler,
     conversation_open: bool,
     past_work: bool,
     reply_notice: String,
@@ -3079,7 +3101,16 @@ fn PatientSurface(
                     ChatView::Pending => rsx! {},
                     // The page's own read line says the patient couldn't open.
                     ChatView::Unavailable => rsx! {},
-                    ChatView::Empty => rsx! { p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" } },
+                    ChatView::Empty => rsx! {
+                        p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" }
+                        button {
+                            class: "control-secondary",
+                            r#type: "button",
+                            onclick: move |_| on_new_chat.call(()),
+                            Icon { name: IconName::Plus }
+                            "{NEW_CONVERSATION}"
+                        }
+                    },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
                             button {
@@ -3773,6 +3804,34 @@ fn idempotency_key() -> String {
     format!("submit-{}-{n}", now_millis())
 }
 
+/// A conversation id the page picks itself, built like [`idempotency_key`].
+/// The server keeps a chat once its first message is accepted.
+fn new_chat_id() -> String {
+    static NEXT: AtomicU64 = AtomicU64::new(1);
+    let n = NEXT.fetch_add(1, Ordering::Relaxed);
+    format!("chat-{}-{n}", now_millis())
+}
+
+/// Puts the open patient and conversation in the address, without a history
+/// entry, so a reload reopens the same chat.
+#[cfg(target_arch = "wasm32")]
+fn write_address_chat(patient: &str, chat: &str) {
+    if let Some(window) = web_sys::window()
+        && let Ok(href) = window.location().href()
+        && let Ok(url) = web_sys::Url::new(&href)
+    {
+        url.search_params().set("patient", patient);
+        url.search_params().set("chat", chat);
+        if let Ok(history) = window.history() {
+            let _ =
+                history.replace_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(&url.href()));
+        }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn write_address_chat(_patient: &str, _chat: &str) {}
+
 /// Milliseconds since the epoch. `std::time::SystemTime::now` panics on
 /// wasm32-unknown-unknown, so the browser build asks the page's clock.
 #[cfg(target_arch = "wasm32")]
@@ -3791,8 +3850,15 @@ fn now_millis() -> u128 {
 
 #[cfg(test)]
 mod conversation_line_tests {
-    use super::{ConversationLine, chat_resume_command, conversation_lines};
+    use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
     use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+
+    #[test]
+    fn new_conversation_ids_are_distinct_chat_ids() {
+        let (first, second) = (new_chat_id(), new_chat_id());
+        assert!(first.starts_with("chat-") && second.starts_with("chat-"));
+        assert_ne!(first, second);
+    }
 
     fn target() -> WorkResumeTarget {
         WorkResumeTarget {
