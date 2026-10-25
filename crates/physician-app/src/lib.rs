@@ -538,6 +538,9 @@ fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
 pub fn PhysicianRoot(
     base_url: String,
     open_patient: String,
+    /// A conversation of `open_patient` to open first; empty opens the first listed.
+    #[props(default)]
+    open_chat: String,
     sign_in: Option<SignInLink>,
 ) -> Element {
     // A mailed link is redeemed even when this browser already has a session.
@@ -617,6 +620,7 @@ pub fn PhysicianRoot(
                     key: "{shell}",
                     base_url: base_url.clone(),
                     open_patient: if shell == 0 { open_patient.clone() } else { String::new() },
+                    open_chat: if shell == 0 { open_chat.clone() } else { String::new() },
                     client,
                     session,
                 }
@@ -629,9 +633,13 @@ pub fn PhysicianRoot(
 fn PhysicianShell(
     base_url: String,
     open_patient: String,
+    open_chat: String,
     client: Signal<PhysicianClient>,
     session: SessionState,
 ) -> Element {
+    // The address's conversation belongs to the address's patient only.
+    let requested_chat = (!open_patient.is_empty() && !open_chat.is_empty())
+        .then(|| (open_patient.clone(), open_chat));
     let mut whoami_name = session.whoami_name;
     let mut whoami = session.whoami;
     let expired = session.expired;
@@ -874,9 +882,14 @@ fn PhysicianShell(
             }
             return;
         }
+        let requested = requested_chat
+            .as_ref()
+            .filter(|(patient, _)| Some(patient.as_str()) == current.as_deref())
+            .map(|(_, chat)| chat.clone());
         if open_chat.read().is_none()
-            && let Some(chat_id) =
+            && let Some(chat_id) = requested.or_else(|| {
                 cached.and_then(|open| open.chats.first().map(|chat| chat.chat_id.clone()))
+            })
         {
             open_chat.set(Some(chat_id));
         }
@@ -943,6 +956,7 @@ fn PhysicianShell(
             Ok(open) => Ok(*open),
             Err(_) => Err(()),
         }),
+        open_chat.read().as_deref(),
     );
     let patient_list = patients
         .read()
