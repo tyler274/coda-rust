@@ -352,12 +352,12 @@ jobs:
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
       - name: Prove mocked release adapters (no cloud credentials)
         run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
-      # Adapter tests do not authorize deployment. Artifact handoff, operator
-      # inputs and hosted runtime qualification remain blocking; no release job.
+      # Adapter tests do not authorize deployment. The staging rollout is the
+      # deploy-staging job below; hosted runtime qualification is separate.
 
   # Builds every runtime, migration and job image with Nix on PRs and main and
-  # runs them locally; nothing is pushed. Publishing to Artifact Registry is a
-  # later release step behind operator-provisioned OIDC (ENG-167).
+  # runs them locally; this job pushes nothing. deploy-staging publishes them to
+  # Artifact Registry on main (ENG-167).
   images:
     name: Locked Nix images (build, run, migrate; no push)
     runs-on: blacksmith-2vcpu-ubuntu-2404

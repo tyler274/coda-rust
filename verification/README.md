@@ -53,14 +53,14 @@ proofs is not full coverage.
 The [compiler](../.agents/skills/coda-statechart/references/compiler.md) shares one
 flattened representation between Verus generation and finite reachability search.
 `%% when` encodes state guards; `%% never` encodes actual forbidden combinations.
-`--trace` prints a shortest violating path and numbered Mermaid diagram. A completed
+`statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
 
 Do not force every promise into finite states. Identity, revisions, collections,
 atomic batches and progress need linked data proofs and explicit assumptions.
 Charts without safety rules establish transition correspondence only. Keep generated
-behavior separate from editable proofs; `--check` detects generated drift. Review
+behavior separate from editable proofs; `statechart.mjs check` detects generated drift. Review
 manual data refinements and implementation connections separately.
 
 ## Feature specs
@@ -94,10 +94,11 @@ Add mechanisms for observed failures or necessary guarantees, not hypothetical r
 
 ## Commands
 
-Install the pinned, checksum-verified Verus under ignored `target/verification/tools`:
+Install the pinned, checksum-verified Verus under ignored `target/verification/tools`,
+after `rustup toolchain install <rust_toolchain> --profile minimal` for the
+toolchain [verus.json](verus.json) names:
 
 ```sh
-rustup toolchain install 1.99.1 --profile minimal
 python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
 ```
@@ -125,7 +126,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query` and `lint`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model

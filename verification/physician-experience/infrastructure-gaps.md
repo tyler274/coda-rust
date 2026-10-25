@@ -87,9 +87,9 @@ expiry and ends at sign-out (decision 8).
 
 **Assumed away.** Milestone stopgaps such as a Copy-only reply card (px.md:153).
 
-**Must guarantee.** Until Send ships, Copy is the way out, and the graph's Send
-still holds as the target: Coda sends exactly the approved words, shown as sent
-by Coda for the physician (PM:160).
+**Must guarantee.** Coda sends exactly the approved words, shown as sent by Coda
+for the physician (PM:160). Whether the app offers Send yet is coverage.md's row,
+not a guarantee here.
 
 ## Reads and loading
 

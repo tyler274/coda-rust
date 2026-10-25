@@ -24,7 +24,7 @@ scope already granted by the task. Preserve the agreed promise.
    meaning through [statechart design](../coda-statechart/SKILL.md). Missing code
    does not prevent repairing or completing the design proof.
 4. Repair the responsible representation. Regenerate compiled behavior from its
-   chart; preserve editable proofs and run `--check`. Reconcile extra data proofs,
+   chart; preserve editable proofs and run `statechart.mjs check`. Reconcile extra data proofs,
    trusted boundaries and Rust refinements separately. Disclose weaker assumptions
    instead of silently relaxing the intended guarantee.
 5. Run Verus and relevant chart searches. Investigate a failed obligation before

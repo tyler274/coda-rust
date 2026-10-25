@@ -224,8 +224,8 @@ state "Your command on the item" as Rc {
 
 ```mermaid
 Idle --> Ringing : the bell is pressed / may ring the chime
-Today --> Now : the review finishes / may raise the urgency
-Opened --> New : the review finishes / may raise the urgency
+Dark --> Lit : the door opens / may turn on the lights
+Off --> On : the door opens / may turn on the lights
 ```
 
 **Reasons.** Any limit can say what it protects with free text after `| reason:`,
