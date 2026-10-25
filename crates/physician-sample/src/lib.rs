@@ -465,7 +465,8 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 /// One process-wide bus is shared by chat execution and auth. When both
 /// `PHYSICIAN_DATABASE_URL` and `PHYSICIAN_CHAT_TOPIC` are set, `message.submit`
 /// is accepted in Postgres and woken on Pub/Sub; this process does not run
-/// the model. Recovery is aborted after graceful shutdown.
+/// the model. Without the topic, chat runs inline, hosted or not. Recovery is
+/// aborted after graceful shutdown.
 pub async fn serve(listener: tokio::net::TcpListener) {
     let (router, recovery) = match site_from_env(|key| env::var(key).ok()).await {
         Ok(ready) => ready,
@@ -497,7 +498,11 @@ async fn site_from_env(
     let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
     if hosted && topic.is_none() {
-        return Err("hosted physician chat requires PHYSICIAN_CHAT_TOPIC".into());
+        // Merging ahead of the infrastructure plan is safe: until the plan sets
+        // the topic, the hosted site keeps running chat inline as before.
+        tracing::warn!(
+            "PHYSICIAN_CHAT_TOPIC is unset; hosted physician chat runs inline in this process"
+        );
     }
     if topic.is_some() && database.is_none() {
         return Err("PHYSICIAN_CHAT_TOPIC requires PHYSICIAN_DATABASE_URL".into());
@@ -1004,11 +1009,11 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn hosted_site_requires_a_chat_topic() {
-        let error = site_from_env(|name| (name == "K_SERVICE").then(|| "physician".into()))
+    async fn hosted_site_without_a_chat_topic_runs_chat_inline() {
+        let (_, recovery) = site_from_env(|name| (name == "K_SERVICE").then(|| "physician".into()))
             .await
-            .expect_err("hosted without a topic");
-        assert!(error.contains("PHYSICIAN_CHAT_TOPIC"), "{error}");
+            .expect("hosted without a topic starts");
+        assert!(recovery.is_none(), "no durable chat, so no recovery sweep");
     }
 
     #[tokio::test]
