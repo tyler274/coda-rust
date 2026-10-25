@@ -160,235 +160,323 @@ macro_rules! obj {
 
 // ---------------------------------------------------------------- parsing
 
+/// A `json.JSONDecodeError`: Python's message and position, in characters.
 #[derive(Debug)]
 pub struct ParseError {
+    /// Byte offset into the text.
     pub at: usize,
     pub message: String,
+    /// Python's `pos`, `lineno` and `colno`.
+    pub pos: usize,
+    pub line: usize,
+    pub column: usize,
 }
 
 impl std::fmt::Display for ParseError {
+    /// `str(JSONDecodeError)`: `msg: line L column C (char P)`.
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} at byte {}", self.message, self.at)
+        write!(
+            f,
+            "{}: line {} column {} (char {})",
+            self.message, self.line, self.column, self.pos
+        )
     }
 }
 
 impl std::error::Error for ParseError {}
 
+/// `json.loads(text)`: what it accepts, and its error message and position where it
+/// does not. Integers outside i64 and lone surrogate escapes are the exceptions:
+/// the first is an error here, the second reads as U+FFFD.
 pub fn parse(text: &str) -> Result<Json, ParseError> {
-    let mut p = Parser {
-        s: text.as_bytes(),
-        i: 0,
-    };
-    p.ws();
-    let v = p.value()?;
-    p.ws();
-    if p.i != p.s.len() {
-        return Err(p.err("extra data"));
+    let p = Parser { s: text.as_bytes() };
+    if text.starts_with('\u{feff}') {
+        return Err(p.err(0, "Unexpected UTF-8 BOM (decode using utf-8-sig)"));
+    }
+    let start = p.ws(0);
+    let (v, end) = p.scan(start).map_err(|e| p.expecting_value(e))?;
+    let end = p.ws(end);
+    if end != p.s.len() {
+        return Err(p.err(end, "Extra data"));
     }
     Ok(v)
 }
 
+/// The scanner's two failures: `StopIteration(idx)` (no value starts at `idx`),
+/// or a decode error.
+enum Fail {
+    NoValue(usize),
+    Error(ParseError),
+}
+
+impl From<ParseError> for Fail {
+    fn from(e: ParseError) -> Fail {
+        Fail::Error(e)
+    }
+}
+
 struct Parser<'a> {
     s: &'a [u8],
-    i: usize,
 }
 
 impl Parser<'_> {
-    fn err(&self, message: &str) -> ParseError {
+    fn err(&self, at: usize, message: &str) -> ParseError {
+        let before = String::from_utf8_lossy(&self.s[..at]);
+        let pos = before.chars().count();
+        let line = before.matches('\n').count() + 1;
+        let column = before
+            .rfind('\n')
+            .map_or(pos + 1, |nl| before[nl + 1..].chars().count() + 1);
         ParseError {
-            at: self.i,
+            at,
             message: message.to_string(),
+            pos,
+            line,
+            column,
         }
     }
 
-    fn ws(&mut self) {
-        while self.i < self.s.len() && matches!(self.s[self.i], b' ' | b'\t' | b'\n' | b'\r') {
-            self.i += 1;
+    fn expecting_value(&self, f: Fail) -> ParseError {
+        match f {
+            Fail::NoValue(at) => self.err(at, "Expecting value"),
+            Fail::Error(e) => e,
         }
     }
 
-    fn eat(&mut self, lit: &[u8]) -> bool {
-        if self.s[self.i..].starts_with(lit) {
-            self.i += lit.len();
-            true
+    fn at(&self, i: usize) -> Option<u8> {
+        self.s.get(i).copied()
+    }
+
+    /// The end of the whitespace run at `i`.
+    fn ws(&self, mut i: usize) -> usize {
+        while matches!(self.at(i), Some(b' ' | b'\t' | b'\n' | b'\r')) {
+            i += 1;
+        }
+        i
+    }
+
+    /// `scan_once(s, idx)`: a value and the index after it.
+    fn scan(&self, i: usize) -> Result<(Json, usize), Fail> {
+        let rest = &self.s[i.min(self.s.len())..];
+        match rest.first() {
+            None => return Err(Fail::NoValue(i)),
+            Some(b'"') => return Ok(self.string(i + 1).map(|(s, end)| (Json::Str(s), end))?),
+            Some(b'{') => return self.object(i + 1),
+            Some(b'[') => return self.array(i + 1),
+            _ => {}
+        }
+        for (lit, v) in [
+            (&b"null"[..], Json::Null),
+            (b"true", Json::Bool(true)),
+            (b"false", Json::Bool(false)),
+        ] {
+            if rest.starts_with(lit) {
+                return Ok((v, i + lit.len()));
+            }
+        }
+        if let Some(found) = self.number(i)? {
+            return Ok(found);
+        }
+        for (lit, f) in [
+            (&b"NaN"[..], f64::NAN),
+            (b"Infinity", f64::INFINITY),
+            (b"-Infinity", f64::NEG_INFINITY),
+        ] {
+            if rest.starts_with(lit) {
+                return Ok((Json::Float(f), i + lit.len()));
+            }
+        }
+        Err(Fail::NoValue(i))
+    }
+
+    /// `(-?(?:0|[1-9][0-9]*))(\.[0-9]+)?([eE][-+]?[0-9]+)?` matched at `i`.
+    fn number(&self, i: usize) -> Result<Option<(Json, usize)>, ParseError> {
+        let digits = |mut j: usize| {
+            while self.at(j).is_some_and(|c| c.is_ascii_digit()) {
+                j += 1;
+            }
+            j
+        };
+        let mut j = i;
+        if self.at(j) == Some(b'-') {
+            j += 1;
+        }
+        match self.at(j) {
+            Some(b'0') => j += 1,
+            Some(b'1'..=b'9') => j = digits(j + 1),
+            _ => return Ok(None),
+        }
+        let mut float = false;
+        if self.at(j) == Some(b'.') && self.at(j + 1).is_some_and(|c| c.is_ascii_digit()) {
+            j = digits(j + 1);
+            float = true;
+        }
+        if matches!(self.at(j), Some(b'e' | b'E')) {
+            let k = if matches!(self.at(j + 1), Some(b'-' | b'+')) {
+                j + 2
+            } else {
+                j + 1
+            };
+            if self.at(k).is_some_and(|c| c.is_ascii_digit()) {
+                j = digits(k);
+                float = true;
+            }
+        }
+        let text = std::str::from_utf8(&self.s[i..j]).expect("ascii");
+        let v = if float {
+            Json::Float(text.parse::<f64>().expect("float syntax"))
         } else {
-            false
-        }
+            Json::Int(
+                text.parse::<i64>()
+                    .map_err(|_| self.err(i, "integer out of range"))?,
+            )
+        };
+        Ok(Some((v, j)))
     }
 
-    fn value(&mut self) -> Result<Json, ParseError> {
-        match self.s.get(self.i) {
-            None => Err(self.err("unexpected end")),
-            Some(b'{') => self.object(),
-            Some(b'[') => self.array(),
-            Some(b'"') => Ok(Json::Str(self.string()?)),
-            Some(b't') if self.eat(b"true") => Ok(Json::Bool(true)),
-            Some(b'f') if self.eat(b"false") => Ok(Json::Bool(false)),
-            Some(b'n') if self.eat(b"null") => Ok(Json::Null),
-            Some(b'N') if self.eat(b"NaN") => Ok(Json::Float(f64::NAN)),
-            Some(b'I') if self.eat(b"Infinity") => Ok(Json::Float(f64::INFINITY)),
-            Some(b'-') if self.s[self.i..].starts_with(b"-Infinity") => {
-                self.i += 9;
-                Ok(Json::Float(f64::NEG_INFINITY))
+    fn object(&self, mut end: usize) -> Result<(Json, usize), Fail> {
+        let mut members: Vec<(String, Json)> = Vec::new();
+        if self.at(end) != Some(b'"') {
+            end = self.ws(end);
+            match self.at(end) {
+                Some(b'}') => return Ok((Json::Obj(members), end + 1)),
+                Some(b'"') => {}
+                _ => {
+                    return Err(self
+                        .err(end, "Expecting property name enclosed in double quotes")
+                        .into());
+                }
             }
-            Some(c) if *c == b'-' || c.is_ascii_digit() => self.number(),
-            Some(_) => Err(self.err("unexpected character")),
         }
-    }
-
-    fn object(&mut self) -> Result<Json, ParseError> {
-        self.i += 1;
-        let mut members = Vec::new();
-        self.ws();
-        if self.eat(b"}") {
-            return Ok(Json::Obj(members));
-        }
+        end += 1;
         loop {
-            self.ws();
-            if self.s.get(self.i) != Some(&b'"') {
-                return Err(self.err("expected key"));
+            let (key, after) = self.string(end)?;
+            end = self.ws(after);
+            if self.at(end) != Some(b':') {
+                return Err(self.err(end, "Expecting ':' delimiter").into());
             }
-            let key = self.string()?;
-            self.ws();
-            if !self.eat(b":") {
-                return Err(self.err("expected ':'"));
-            }
-            self.ws();
-            let value = self.value()?;
+            end = self.ws(end + 1);
+            let (value, after) = self.scan(end).map_err(|e| self.expecting_value(e))?;
             // Python keeps the last duplicate, in the first one's position.
-            if let Some(slot) = members
-                .iter_mut()
-                .find(|(k, _): &&mut (String, Json)| *k == key)
-            {
+            if let Some(slot) = members.iter_mut().find(|(k, _)| *k == key) {
                 slot.1 = value;
             } else {
                 members.push((key, value));
             }
-            self.ws();
-            if self.eat(b",") {
-                continue;
+            end = self.ws(after);
+            let next = self.at(end);
+            end += 1;
+            match next {
+                Some(b'}') => return Ok((Json::Obj(members), end)),
+                Some(b',') => {}
+                _ => return Err(self.err(end - 1, "Expecting ',' delimiter").into()),
             }
-            if self.eat(b"}") {
-                return Ok(Json::Obj(members));
+            let comma = end - 1;
+            end = self.ws(end);
+            let next = self.at(end);
+            end += 1;
+            match next {
+                Some(b'"') => {}
+                Some(b'}') => {
+                    return Err(self
+                        .err(comma, "Illegal trailing comma before end of object")
+                        .into());
+                }
+                _ => {
+                    return Err(self
+                        .err(end - 1, "Expecting property name enclosed in double quotes")
+                        .into());
+                }
             }
-            return Err(self.err("expected ',' or '}'"));
         }
     }
 
-    fn array(&mut self) -> Result<Json, ParseError> {
-        self.i += 1;
+    fn array(&self, mut end: usize) -> Result<(Json, usize), Fail> {
         let mut items = Vec::new();
-        self.ws();
-        if self.eat(b"]") {
-            return Ok(Json::Arr(items));
+        end = self.ws(end);
+        if self.at(end) == Some(b']') {
+            return Ok((Json::Arr(items), end + 1));
         }
         loop {
-            self.ws();
-            items.push(self.value()?);
-            self.ws();
-            if self.eat(b",") {
-                continue;
+            let (value, after) = self.scan(end).map_err(|e| self.expecting_value(e))?;
+            items.push(value);
+            end = self.ws(after);
+            let next = self.at(end);
+            end += 1;
+            match next {
+                Some(b']') => return Ok((Json::Arr(items), end)),
+                Some(b',') => {}
+                _ => return Err(self.err(end - 1, "Expecting ',' delimiter").into()),
             }
-            if self.eat(b"]") {
-                return Ok(Json::Arr(items));
+            let comma = end - 1;
+            end = self.ws(end);
+            if self.at(end) == Some(b']') {
+                return Err(self
+                    .err(comma, "Illegal trailing comma before end of array")
+                    .into());
             }
-            return Err(self.err("expected ',' or ']'"));
         }
     }
 
-    fn hex4(&mut self) -> Result<u32, ParseError> {
-        let h = self
-            .s
-            .get(self.i..self.i + 4)
-            .ok_or_else(|| self.err("short \\u escape"))?;
-        let h = std::str::from_utf8(h).map_err(|_| self.err("bad \\u escape"))?;
-        let v = u32::from_str_radix(h, 16).map_err(|_| self.err("bad \\u escape"))?;
-        self.i += 4;
-        Ok(v)
+    /// Four hex digits after the `u` at `u`.
+    fn hex4(&self, u: usize) -> Result<u32, ParseError> {
+        self.s
+            .get(u + 1..u + 5)
+            .filter(|h| h.iter().all(u8::is_ascii_hexdigit))
+            .map(|h| u32::from_str_radix(std::str::from_utf8(h).expect("hex"), 16).expect("hex"))
+            .ok_or_else(|| self.err(u, "Invalid \\uXXXX escape"))
     }
 
-    fn string(&mut self) -> Result<String, ParseError> {
-        self.i += 1;
+    /// `scanstring(s, end)`: `end` is just after the opening quote.
+    fn string(&self, mut end: usize) -> Result<(String, usize), ParseError> {
+        let begin = end - 1;
         let mut out = String::new();
         loop {
-            let start = self.i;
-            while self.i < self.s.len() && self.s[self.i] != b'"' && self.s[self.i] != b'\\' {
-                if self.s[self.i] < 0x20 {
-                    return Err(self.err("control character in string"));
+            let start = end;
+            while self
+                .at(end)
+                .is_some_and(|c| c != b'"' && c != b'\\' && c >= 0x20)
+            {
+                end += 1;
+            }
+            // The text is a str, so a run of plain bytes is whole characters.
+            out.push_str(std::str::from_utf8(&self.s[start..end]).expect("valid UTF-8"));
+            match self.at(end) {
+                None => return Err(self.err(begin, "Unterminated string starting at")),
+                Some(b'"') => return Ok((out, end + 1)),
+                Some(b'\\') => {}
+                Some(_) => return Err(self.err(end, "Invalid control character at")),
+            }
+            let backslash = end;
+            end += 1;
+            let Some(esc) = self.at(end) else {
+                return Err(self.err(begin, "Unterminated string starting at"));
+            };
+            if esc != b'u' {
+                out.push(match esc {
+                    b'"' => '"',
+                    b'\\' => '\\',
+                    b'/' => '/',
+                    b'b' => '\u{8}',
+                    b'f' => '\u{c}',
+                    b'n' => '\n',
+                    b'r' => '\r',
+                    b't' => '\t',
+                    _ => return Err(self.err(backslash, "Invalid \\escape")),
+                });
+                end += 1;
+                continue;
+            }
+            let mut code = self.hex4(end)?;
+            end += 5;
+            if (0xd800..0xdc00).contains(&code) && self.s[end..].starts_with(b"\\u") {
+                let lo = self.hex4(end + 1)?;
+                if (0xdc00..0xe000).contains(&lo) {
+                    code = 0x10000 + ((code - 0xd800) << 10) + (lo - 0xdc00);
+                    end += 6;
                 }
-                self.i += 1;
             }
-            out.push_str(
-                std::str::from_utf8(&self.s[start..self.i])
-                    .map_err(|_| self.err("invalid UTF-8"))?,
-            );
-            match self.s.get(self.i) {
-                None => return Err(self.err("unterminated string")),
-                Some(b'"') => {
-                    self.i += 1;
-                    return Ok(out);
-                }
-                _ => {}
-            }
-            self.i += 1;
-            let c = *self.s.get(self.i).ok_or_else(|| self.err("bad escape"))?;
-            self.i += 1;
-            match c {
-                b'"' => out.push('"'),
-                b'\\' => out.push('\\'),
-                b'/' => out.push('/'),
-                b'b' => out.push('\u{8}'),
-                b'f' => out.push('\u{c}'),
-                b'n' => out.push('\n'),
-                b'r' => out.push('\r'),
-                b't' => out.push('\t'),
-                b'u' => {
-                    let hi = self.hex4()?;
-                    let code =
-                        if (0xd800..0xdc00).contains(&hi) && self.s[self.i..].starts_with(b"\\u") {
-                            let save = self.i;
-                            self.i += 2;
-                            let lo = self.hex4()?;
-                            if (0xdc00..0xe000).contains(&lo) {
-                                0x10000 + ((hi - 0xd800) << 10) + (lo - 0xdc00)
-                            } else {
-                                self.i = save;
-                                hi
-                            }
-                        } else {
-                            hi
-                        };
-                    out.push(char::from_u32(code).unwrap_or('\u{fffd}'));
-                }
-                _ => return Err(self.err("bad escape")),
-            }
-        }
-    }
-
-    fn number(&mut self) -> Result<Json, ParseError> {
-        let start = self.i;
-        if self.s[self.i] == b'-' {
-            self.i += 1;
-        }
-        let mut float = false;
-        while self.i < self.s.len() {
-            match self.s[self.i] {
-                b'0'..=b'9' => {}
-                b'.' | b'e' | b'E' => float = true,
-                b'+' | b'-' if float => {}
-                _ => break,
-            }
-            self.i += 1;
-        }
-        let text = std::str::from_utf8(&self.s[start..self.i]).expect("ascii");
-        if float {
-            text.parse::<f64>()
-                .map(Json::Float)
-                .map_err(|_| self.err("bad number"))
-        } else {
-            text.parse::<i64>()
-                .map(Json::Int)
-                .map_err(|_| self.err("integer out of range"))
+            out.push(char::from_u32(code).unwrap_or('\u{fffd}'));
         }
     }
 }
