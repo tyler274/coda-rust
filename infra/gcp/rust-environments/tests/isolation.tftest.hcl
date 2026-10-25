@@ -36,6 +36,67 @@ variables {
   state_admin_members  = ["group:test-infra@example.invalid"]
   github_repository_id = "100000001"
   github_owner_id      = "100000002"
+  database_passwords = {
+    physician-runtime   = "synthetic-physician-runtime-password"
+    physician-migration = "synthetic-physician-migration-password"
+    duet-runtime        = "synthetic-duet-runtime-password"
+    duet-migration      = "synthetic-duet-migration-password"
+  }
+}
+
+run "foundations_need_no_database_passwords" {
+  command = plan
+  variables { database_passwords = {} }
+  assert {
+    condition     = length(google_sql_user.app) == 0
+    error_message = "Foundations must not require database credentials or create SQL users."
+  }
+}
+
+run "reject_missing_database_passwords" {
+  command = plan
+  variables {
+    enable_databases   = true
+    database_passwords = {}
+  }
+  expect_failures = [var.database_passwords]
+}
+
+run "reject_partial_database_passwords" {
+  command = plan
+  variables {
+    enable_databases   = true
+    database_passwords = { physician-runtime = "synthetic-test-password" }
+  }
+  expect_failures = [var.database_passwords]
+}
+
+run "reject_blank_database_password" {
+  command = plan
+  variables {
+    enable_databases = true
+    database_passwords = {
+      physician-runtime   = "synthetic-physician-runtime-password"
+      physician-migration = "synthetic-physician-migration-password"
+      duet-runtime        = "   "
+      duet-migration      = "synthetic-duet-migration-password"
+    }
+  }
+  expect_failures = [var.database_passwords]
+}
+
+run "reject_known_bootstrap_password" {
+  command = plan
+  variables {
+    enable_databases = true
+    database_passwords = {
+      physician-runtime   = "synthetic-physician-runtime-password"
+      physician-migration = "bootstrap-replaced-out-of-band"
+      duet-runtime        = "synthetic-duet-runtime-password"
+      duet-migration      = "synthetic-duet-migration-password"
+    }
+  }
+  expect_failures = [var.database_passwords]
 }
 
 run "foundations_only" {

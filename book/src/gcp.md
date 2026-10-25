@@ -94,6 +94,10 @@ Activating it took these operator steps, in order:
    `stg_physician_migration`, `stg_duet_runtime`, `stg_duet_migration` and
    `stg_sql_admin`, each with a generated `DB_PASSWORD`. Plans read the four
    application passwords into `TF_VAR_database_passwords`; no value is committed.
+   Database-enabled plans reject missing, blank or former placeholder values.
+   Foundation-only plans still need no database credentials. Password rotation
+   remains explicit through `database_password_versions`; removing the fallback
+   does not rotate an already deployed password.
 2. Apply the databases, then set the `postgres` password from `stg_sql_admin`.
 3. Run [`bootstrap-grants.sql`](/infra/gcp/rust-environments/bootstrap-grants.sql)
    once per database from a one-off `postgres:17` Cloud Run job on `rust-private`,
