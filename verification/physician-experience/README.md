@@ -30,26 +30,18 @@ It must report that sign-in.mmd follows the graph in both directions:
 - every graph step from a session state sign-in.mmd reaches is shown, unless the
   map's `omits` says why.
 
-The omits are the open list of graph behavior sign-in doesn't do yet. None is
-left: the expired prompt, the "No access to this practice" page and signing in
-through a Coda link are built (Dev 2026-10-24, decisions.md).
-
-When one is built, add it to sign-in.mmd and remove its omit. A change to how
-signing in behaves goes in the graph first, and sign-in.mmd and the map follow.
+The map's `omits` names graph behavior sign-in.mmd leaves out; it is empty.
+What the app builds for each state is in coverage.md. A change to how signing in
+behaves goes in the graph first, and sign-in.mmd and the map follow.
 
 ## What the graph is
 
 The graph is the spec. It is written from Dev's intent and the settled sources,
 never from existing code. Verification models derive from it.
 
-It sets hard limits only on four things. Each limit names the line it protects,
-and everything Coda judges is a "may" (decisions.md, Charter):
-
-- access;
-- communication standards: Coda never sends on its own, and only the exact words
-  a physician approved go out;
-- data and consent;
-- owner consistency: one owner per fact.
+Its hard limits are the four in decisions.md's Charter: access, communication
+standards, data and consent, and owner consistency. Each limit names the line it
+protects, and everything Coda judges is a "may".
 
 It describes the ideal state. Runtime capacity, retries, timeouts, interruptions
 and sync are left out and listed in infrastructure-gaps.md. Failures from the

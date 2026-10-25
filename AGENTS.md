@@ -16,7 +16,7 @@ explain responsibilities, implemented behavior and operating procedures.
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
 | Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; no production DNS or Vercel cutover |
 | Physician product, clinical runtime, and the clinical skill catalog | [Operating invariants](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
-| Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
+| Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; no product runtime loads it yet |
 | Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
 | Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
@@ -73,7 +73,7 @@ Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in on
 
 Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` installs the pinned, checksum-verified CLI for images and runners.
 
-`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots. The exception is `infra/gcp/public-site`. This workspace owns its staging state (GCS prefix `public-site/staging`) and may init, plan and apply it for staging only, from a reviewed saved plan. Production is never planned or applied from here.
+`infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) lists each one and who applies it. This workspace owns two staging roots, `public-site` and `rust-environments`, and applies each only from a reviewed saved plan. The other roots are references whose apply authority stays in the product repositories. Production is never planned or applied from here.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

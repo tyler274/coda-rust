@@ -26,9 +26,8 @@ state this file doesn't match:
 node .agents/skills/coda-statechart/scripts/statechart.mjs coverage verification/physician-experience/physician.mmd verification/physician-experience/coverage.md
 ```
 
-When the app or the graph changes a state, update its row in the same PR.
-
-As of main 910df41 with #100: 475 states, 82 built, 111 partial, 261 missing and 21 not shown.
+When the app or the graph changes a state, update its row in the same PR. The
+check prints the current counts.
 
 # States by region
 

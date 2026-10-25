@@ -1372,11 +1372,12 @@ async fn inject_auth_store(
     next.run(request).await
 }
 
-/// Builds the router with auth required on the recorded practice.
+/// Builds the router with auth required.
 ///
 /// `PHYSICIAN_AUTH=required` guards every physician route of `base` through
-/// one store — Postgres when `PHYSICIAN_DATABASE_URL` is set (migrations
-/// apply on start), memory otherwise; unset or any other value serves `base`
+/// one store — Postgres when `PHYSICIAN_DATABASE_URL` is set (the migration
+/// job applies schema changes; this connects without migrating), memory
+/// otherwise; unset or any other value serves `base`
 /// with the auth routes still present for the client.
 pub async fn authed_router(base: axum::Router) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
