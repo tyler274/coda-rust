@@ -12,8 +12,8 @@ pub use harness::engine;
 /// Existing API adapter; no second physician provider transport.
 pub use harness::responses::Responses;
 use sea_orm::{
-    ActiveModelTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr, EntityTrait,
-    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
+    ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
+    EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
 use serde::{Deserialize, Serialize};
@@ -108,7 +108,30 @@ pub struct Conversation {
     /// New input and Resume reset it; at [`MAX_FAILED_ATTEMPTS`] the work fails.
     #[serde(default)]
     pub failures: u32,
+    /// Database-clock seconds when the first physician message was accepted.
+    /// Zero on rows saved before the chat list existed.
+    #[serde(default)]
+    pub opened_at: i64,
+    /// Database-clock seconds of the latest accepted message or published reply.
+    #[serde(default)]
+    pub last_activity_at: i64,
 }
+
+/// One chat in a physician's workspace, for the workspace's chat list.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ChatSummary {
+    /// Conversation identity.
+    pub chat: String,
+    /// The first physician message, which names the chat until titles exist.
+    pub first_message: String,
+    /// Database-clock seconds the chat was opened (0 when unknown).
+    pub opened_at: i64,
+    /// Database-clock seconds of the latest visible activity (0 when unknown).
+    pub last_activity_at: i64,
+}
+
+/// The chat list reads at most this many conversations of one workspace.
+pub const MAX_LISTED_CHATS: u64 = 200;
 
 /// Recovery gives up after this many unsuccessful attempts on one input, so a
 /// turn that always fails ends as failed instead of calling the model forever.
@@ -127,6 +150,8 @@ impl Default for Conversation {
             input_id: None,
             dispatch_after: 0,
             failures: 0,
+            opened_at: 0,
+            last_activity_at: 0,
         }
     }
 }
@@ -365,6 +390,11 @@ impl Store {
         state.input_id = Some(input.key.clone());
         state.dispatch_after = 0;
         state.failures = 0;
+        let now = now(&tx).await?;
+        if state.messages.is_empty() {
+            state.opened_at = now;
+        }
+        state.last_activity_at = now;
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
@@ -555,6 +585,7 @@ impl Store {
         }
         attempt.status = "completed".into();
         state.status = "completed".into();
+        state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
             text: candidate.text.clone(),
@@ -686,6 +717,51 @@ impl Store {
         state.session_hash = Some(session_hash);
         Self::save(tx, scope, &state).await?;
         Ok(Resumed::Pending { input_id })
+    }
+
+    /// The physician's chats in one workspace, latest activity first, then
+    /// chat id descending. Another physician's chats are never listed.
+    pub async fn chats(
+        &self,
+        practice: &str,
+        physician: &str,
+        workspace: &str,
+    ) -> Result<Vec<ChatSummary>, DbErr> {
+        use conversation::Column as C;
+        if [practice, physician, workspace]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty physician scope"));
+        }
+        let rows = conversation::Entity::find()
+            .filter(C::Practice.eq(practice))
+            .filter(C::Physician.eq(physician))
+            .filter(C::Workspace.eq(workspace))
+            .order_by_desc(C::Chat)
+            .limit(MAX_LISTED_CHATS)
+            .all(&self.db)
+            .await?;
+        let mut chats = Vec::with_capacity(rows.len());
+        for row in rows {
+            let state: Conversation =
+                serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+            let Some(first) = state.messages.iter().find(|m| m.role == "user") else {
+                continue;
+            };
+            chats.push(ChatSummary {
+                chat: row.chat,
+                first_message: first.text.clone(),
+                opened_at: state.opened_at,
+                last_activity_at: Ord::max(state.last_activity_at, state.opened_at),
+            });
+        }
+        chats.sort_by(|a, b| {
+            b.last_activity_at
+                .cmp(&a.last_activity_at)
+                .then_with(|| b.chat.cmp(&a.chat))
+        });
+        Ok(chats)
     }
 
     /// Enumerates durable pending/expired work for explicit server activation.

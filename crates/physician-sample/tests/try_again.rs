@@ -239,6 +239,27 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
     assert!(mechanical(&answered).is_none(), "{answered}");
     assert_eq!(answered["runs"], json!([]), "{answered}");
 
+    // A reload without `?chat=` still finds this chat: the workspace lists it,
+    // titled by its first message, ahead of the recording's empty list.
+    let (status, listed) = get_json(
+        &site_listen,
+        &format!("/patient-workspaces/{workspace}"),
+        &session,
+    )
+    .await;
+    assert_eq!(status, 200, "{listed}");
+    let listed = &listed["chats"];
+    let chats = listed.as_array().expect("chats");
+    assert_eq!(chats.len(), 1, "{listed}");
+    assert_eq!(chats[0]["chat_id"], chat, "{listed}");
+    assert_eq!(chats[0]["title"], "Hello", "{listed}");
+    assert!(
+        chats[0]["created_at"]
+            .as_str()
+            .is_some_and(|at| at.ends_with('Z') && !at.starts_with("1970")),
+        "{listed}"
+    );
+
     // The same press again is the same request; completed work never reopens.
     let (_, body) = post_json(
         &site_listen,
