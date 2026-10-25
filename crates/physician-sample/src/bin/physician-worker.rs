@@ -712,7 +712,10 @@ mod tests {
         };
         match block(Worker::from_env(hosted_failures)) {
             Err(error) => {
-                assert!(error.contains("PHYSICIAN_WORKER_FIXED_FAILURES"), "{error}");
+                assert_eq!(
+                    error,
+                    "PHYSICIAN_WORKER_FIXED_FAILURES is refused in hosted execution"
+                );
             }
             Ok(_) => panic!("hosted fixed failures must refuse to start"),
         }
@@ -724,9 +727,11 @@ mod tests {
         };
         match block(Worker::from_env(hosted_marker)) {
             Err(error) => {
-                assert!(
-                    error.contains("PHYSICIAN_WORKER_FIXED_FAIL_MARKER"),
-                    "{error}"
+                // Exactly the hosted refusal: the "requires fixed text" error
+                // also names the variable.
+                assert_eq!(
+                    error,
+                    "PHYSICIAN_WORKER_FIXED_FAIL_MARKER is refused in hosted execution"
                 );
             }
             Ok(_) => panic!("a hosted fail marker must refuse to start"),
