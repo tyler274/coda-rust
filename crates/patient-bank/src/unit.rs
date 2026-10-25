@@ -546,7 +546,11 @@ pub fn chart_text(chart: &Chart) -> String {
     for (when, line) in timeline {
         if when[..10] != day {
             day = when[..10].to_string();
-            out.push(format!("\n=== {day}"));
+            let weekday = day
+                .parse::<jiff::civil::Date>()
+                .map(|d| d.strftime("%a").to_string())
+                .unwrap_or_default();
+            out.push(format!("\n=== {day} {weekday}"));
         }
         if line.starts_with("DOCUMENT") || line.starts_with("REPORT") {
             out.push(format!("\n{line}"));

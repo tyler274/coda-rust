@@ -701,3 +701,37 @@ fn check_holds_authors_orders_missed_visits_and_device_vitals() {
     assert!(has(&e, "heart rates are even"), "{e:?}");
     assert!(has(&e, "repeat an earlier pair"), "{e:?}");
 }
+
+#[test]
+fn visits_spread_over_the_week() {
+    let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
+    // sixteen Tuesdays, two weeks apart
+    let tuesdays: Vec<serde_json::Value> = (0..16)
+        .map(|i| {
+            let day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(14 * i);
+            visit(
+                &format!("v{i:02}"),
+                &format!("{day}T09:10"),
+                note(&format!("{body} {i}.")),
+            )
+        })
+        .collect();
+    let e = errors_for(seed(), patient(json!(tuesdays)));
+    assert!(e.iter().any(|x| x.contains("fall on a Tuesday")), "{e:?}");
+    // the same visits on rotating weekdays pass the rule
+    let spread: Vec<serde_json::Value> = (0..16)
+        .map(|i| {
+            let day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(15 * i);
+            visit(
+                &format!("v{i:02}"),
+                &format!("{day}T09:10"),
+                note(&format!("{body} {i}.")),
+            )
+        })
+        .collect();
+    let e = errors_for(seed(), patient(json!(spread)));
+    assert!(
+        !e.iter().any(|x| x.contains("spread them over the week")),
+        "{e:?}"
+    );
+}

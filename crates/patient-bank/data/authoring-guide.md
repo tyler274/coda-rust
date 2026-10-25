@@ -210,7 +210,21 @@ results are normal, and most PHQ-9s are low.
 
 Visit spacing is irregular: delayed follow-ups, missed years, a flurry around an
 illness, telehealth during 2020–2021. Annual visits drift by weeks or months from
-year to year, and screening dates slip; nothing recurs like clockwork.
+year to year, and screening dates slip; nothing recurs like clockwork. Visits fall
+on every weekday (the preview shows each date's weekday, and the check rejects a
+chart where one weekday carries more than a third of them); patients message and
+call any day, weekends included. Roughly one booked visit in twelve is cancelled
+or missed, and most patients land in urgent care or call with a minor illness now
+and then.
+
+**The office layer.** A real chart is thick with small operational notes, and they
+are much of its everyday density: refill authorizations, result routing ("reviewed,
+RN to call"), recall letters for overdue screening, records requests and the faxes
+that answer them (late, partial or twice), check-in and insurance notes, forms,
+prior authorizations, scheduling and reminder calls. Give them to this patient at
+the pace their care would generate. The medication list also carries what the
+patient really takes: over-the-counter drugs, supplements and supplies, not only
+prescriptions.
 
 **Medicine of its time.** Every note practices the medicine of its own date:
 the guidelines, screening ages, vaccine recommendations, drug approvals and

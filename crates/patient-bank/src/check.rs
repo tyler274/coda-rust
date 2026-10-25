@@ -322,6 +322,7 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         }
         check_orders(mrn, &tl, &mut errors);
         check_vitals(mrn, &tl, &mut errors);
+        check_weekdays(mrn, &tl, &mut errors);
         // A stop that finds no open order of its drug documents nothing.
         for ev in &tl.events {
             for m in ev
@@ -393,6 +394,63 @@ fn check_orders(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
                 },
             }
         }
+    }
+}
+
+/// With at least this many dated contacts, their weekdays are judged as a spread.
+const WEEKDAY_SERIES: usize = 15;
+
+/// Contacts spread over the week the way a practice's do: no one weekday carries
+/// more than about a third of the visits or of everything else, and the practice
+/// does not book Sunday visits.
+fn check_weekdays(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
+    let weekday = |s: &Stamp| s.date().weekday().to_sunday_zero_offset();
+    const NAMES: [&str; 7] = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+    ];
+    let visits: Vec<i8> = tl
+        .events
+        .iter()
+        .filter(|e| e.booked())
+        .map(|e| weekday(&e.start))
+        .collect();
+    let all: Vec<i8> = tl.events.iter().map(|e| weekday(&e.start)).collect();
+    for (what, days) in [("practice visits", &visits), ("events", &all)] {
+        if days.len() < WEEKDAY_SERIES {
+            continue;
+        }
+        let mut counts = [0usize; 7];
+        for d in days.iter() {
+            counts[*d as usize] += 1;
+        }
+        let (top, n) = counts
+            .iter()
+            .enumerate()
+            .max_by_key(|(_, n)| **n)
+            .expect("seven days");
+        if *n as f64 > 0.35 * days.len() as f64 {
+            errors.push(format!(
+                "{mrn}: {n} of {} {what} fall on a {}; spread them over the week",
+                days.len(),
+                NAMES[top]
+            ));
+        }
+    }
+    for e in tl
+        .events
+        .iter()
+        .filter(|e| e.booked() && weekday(&e.start) == 0)
+    {
+        errors.push(format!(
+            "{mrn}/{}: the practice books no Sunday visits",
+            e.id
+        ));
     }
 }
 
