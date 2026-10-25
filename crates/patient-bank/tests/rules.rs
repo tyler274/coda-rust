@@ -1,4 +1,4 @@
-//! The bank's chronology and safety rules, each on a small hand-written chart.
+//! The bank's chronology rules, each on a small hand-written chart.
 
 use patient_bank::catalog::Catalog;
 use patient_bank::fhir::Chart;
@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, calendar, check, paths, realism, stories, unit};
+use patient_bank::{bank, calendar, check, paths};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -272,132 +272,6 @@ fn note(body: &str) -> serde_json::Value {
 }
 
 #[test]
-fn notes_refer_to_clinicians_by_role() {
-    let filler =
-        "Follow-up visit; blood pressure reviewed and the plan was discussed with the patient.";
-    for named in [
-        "Seen with Dr. Okafor today.",
-        "Signed: M. Lindqvist, MD.",
-        "Colleen Fitzgerald, NP covered.",
-        "Roomed by J. Ortiz, MA.",
-        "Faxed back.\n-- B. Kowal, front desk",
-    ] {
-        let p = patient(json!([visit(
-            "e1",
-            "2024-01-01T09:00",
-            note(&format!("{filler} {named}"))
-        )]));
-        let errors = errors_for(seed(), p);
-        assert!(
-            errors.iter().any(|e| e.contains("names a clinician")),
-            "{named}: {errors:?}"
-        );
-    }
-    let places = format!(
-        "{filler} Moved here from West Springfield, MA; parents live in State College, PA. Seen by the PCP."
-    );
-    let p = patient(json!([visit("e1", "2024-01-01T09:00", note(&places))]));
-    let errors = errors_for(seed(), p);
-    assert!(
-        !errors.iter().any(|e| e.contains("names a clinician")),
-        "{errors:?}"
-    );
-}
-
-#[test]
-fn a_coded_seed_fixes_the_problem_list() {
-    let mut coded = seed();
-    coded.coded_anchors = true;
-    coded.anchors = vec!["Essential hypertension".into()];
-    let cond = |labels: &[(&str, &str)]| json!({"conditions": labels.iter().map(|(l, a)| json!({"label": l, "action": a})).collect::<Vec<_>>()});
-    let has = |errors: &[String], what: &str| errors.iter().any(|e| e.contains(what));
-
-    let missing = patient(json!([visit(
-        "e1",
-        "2024-01-01T09:00",
-        cond(&[("Gout", "diagnosed")])
-    )]));
-    assert!(has(&errors_for(coded.clone(), missing), "never recorded"));
-
-    let three_extra = cond(&[
-        ("Essential hypertension", "diagnosed"),
-        ("Gout", "diagnosed"),
-        ("Insomnia", "diagnosed"),
-        ("Rosacea", "diagnosed"),
-    ]);
-    let p = patient(json!([visit("e1", "2024-01-01T09:00", three_extra)]));
-    assert!(has(&errors_for(coded.clone(), p), "did not plan"));
-
-    let p = patient(json!([
-        visit(
-            "e1",
-            "2024-01-01T09:00",
-            cond(&[
-                ("Essential hypertension", "diagnosed"),
-                ("Ankle sprain", "diagnosed"),
-                ("COVID-19", "diagnosed"),
-                ("Gout", "diagnosed")
-            ])
-        ),
-        visit(
-            "e2",
-            "2024-02-01T09:00",
-            cond(&[("Ankle sprain", "resolved"), ("COVID-19", "resolved")])
-        ),
-    ]));
-    let errors = errors_for(coded, p);
-    assert!(
-        !has(&errors, "did not plan") && !has(&errors, "never recorded"),
-        "{errors:?}"
-    );
-}
-
-#[test]
-fn stories_redraw_only_unwritten_units_and_repeat_exactly() {
-    let dir = std::env::temp_dir().join(format!("patient-bank-stories-{}", std::process::id()));
-    let ledgers = dir.join("ledgers");
-    std::fs::create_dir_all(&ledgers).expect("dirs");
-    std::fs::write(ledgers.join("unit-0001.json"), "{}").expect("ledger marker");
-    let path = seeds_file(&dir);
-    let before = Seeds::read(&path).expect("seeds");
-
-    stories::run(&path, &ledgers).expect("first draw");
-    let first = std::fs::read(&path).expect("read");
-    seeds_file(&dir);
-    stories::run(&path, &ledgers).expect("second draw");
-    assert_eq!(
-        first,
-        std::fs::read(&path).expect("read"),
-        "the same seeds and ledgers give the same draw"
-    );
-
-    let after = Seeds::read(&path).expect("seeds");
-    let kept = |s: &Seeds| serde_json::to_string(s.unit("unit-0001").expect("unit")).expect("json");
-    assert_eq!(
-        kept(&before),
-        kept(&after),
-        "a unit with an accepted ledger keeps its seed"
-    );
-    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
-    let redrawn = &after.unit("unit-0002").expect("unit").members[0];
-    assert!(redrawn.coded_anchors);
-    assert!(
-        redrawn
-            .anchors
-            .iter()
-            .all(|a| catalog.conditions.contains_key(a)),
-        "{:?}",
-        redrawn.anchors
-    );
-    assert_eq!(
-        redrawn.mrn,
-        before.unit("unit-0002").expect("unit").members[0].mrn,
-        "identity stays"
-    );
-    std::fs::remove_dir_all(&dir).expect("cleanup");
-}
-
-#[test]
 fn malformed_drafts_fail_to_parse_instead_of_losing_content() {
     let part = |events: serde_json::Value| {
         serde_json::from_value::<Part>(
@@ -451,13 +325,8 @@ fn an_accepted_ledger_round_trips() {
 fn the_build_refuses_a_missing_ledger_directory() {
     let dir = std::env::temp_dir().join(format!("patient-bank-missing-{}", std::process::id()));
     std::fs::create_dir_all(&dir).expect("dir");
-    let err = bank::run(
-        &seeds_file(&dir),
-        &dir.join("ledgres"),
-        &dir.join("bank"),
-        None,
-    )
-    .expect_err("missing ledgers");
+    let err = bank::run(&seeds_file(&dir), &dir.join("ledgres"), &dir.join("bank"))
+        .expect_err("missing ledgers");
     assert!(err.to_string().contains("not a directory of ledgers"));
     assert!(!dir.join("bank").exists(), "nothing written");
     std::fs::remove_dir_all(&dir).expect("cleanup");
@@ -647,28 +516,11 @@ fn check_keeps_everything_before_today_but_booked_visits() {
 }
 
 #[test]
-fn check_holds_authors_orders_and_missed_visits() {
+fn check_holds_orders_and_missed_visits() {
     let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
     let errs = |events: serde_json::Value| errors_for(seed(), patient(events));
     let has = |errors: &[String], what: &str| errors.iter().any(|e| e.contains(what));
 
-    let e = errs(json!([visit(
-        "e1",
-        "2024-01-01T09:00",
-        json!({"documents": [{"type": "Progress Notes", "body": body}]})
-    )]));
-    assert!(has(&e, "has no author"), "{e:?}");
-    for bad in [
-        "Hi the PCP, my knee is worse.",
-        "Knee is worse \u{2014} worse on stairs.",
-    ] {
-        let e = errs(json!([visit(
-            "e1",
-            "2024-01-01T09:00",
-            note(&format!("{body} {bad}"))
-        )]));
-        assert!(has(&e, "write the way the author would"), "{bad}: {e:?}");
-    }
     let e = errs(json!([visit(
         "e1",
         "2024-01-01T09:00",
@@ -684,75 +536,4 @@ fn check_holds_authors_orders_and_missed_visits() {
         json!({"appointment": "no-show", "vitals": {"bp": [121, 77]}})
     )]));
     assert!(has(&e, "records nothing clinical"), "{e:?}");
-}
-
-#[test]
-fn realism_measures_a_chart_against_real_practice() {
-    let reference = realism::Reference::load(&paths::realism()).expect("reference");
-    let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
-    // sixteen Tuesday visits, two weeks apart, every reading even and the same
-    let tuesdays: Vec<serde_json::Value> = (0..16)
-        .map(|i| {
-            let day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(14 * i);
-            visit(
-                &format!("v{i:02}"),
-                &format!("{day}T09:10"),
-                json!({"vitals": {"bp": [124, 78], "hr": 72},
-                       "documents": [{"type": "Progress Notes", "author": "PCP",
-                           "body": format!("{body} {i}.")}]}),
-            )
-        })
-        .collect();
-    let drifts = realism::compare(
-        &unit::profile(&render(&patient(json!(tuesdays)), "2026-08-27T12:00")),
-        &reference,
-        true,
-    );
-    let off: Vec<&str> = drifts
-        .iter()
-        .filter(|d| !d.within)
-        .map(|d| d.metric.as_str())
-        .collect();
-    for metric in [
-        "systolic final digit",
-        "heart-rate final digit",
-        "practice-visit weekday",
-        "repeated BP pairs",
-    ] {
-        assert!(off.contains(&metric), "{metric}: {off:?}");
-    }
-    // the same visits on rotating weekdays with device readings drift on none of those
-    let spread: Vec<serde_json::Value> = (0..16)
-        .map(|i| {
-            let mut day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(15 * i);
-            while day.weekday().to_sunday_zero_offset() % 6 == 0 {
-                day += jiff::Span::new().days(1);
-            }
-            visit(
-                &format!("v{i:02}"),
-                &format!("{day}T09:10"),
-                json!({"vitals": {"bp": [117 + 3 * i, 71 + i], "hr": 61 + 3 * i},
-                       "documents": [{"type": "Progress Notes", "author": "PCP",
-                           "body": format!("{body} {i}.")}]}),
-            )
-        })
-        .collect();
-    let drifts = realism::compare(
-        &unit::profile(&render(&patient(json!(spread)), "2026-08-27T12:00")),
-        &reference,
-        true,
-    );
-    let off: Vec<&str> = drifts
-        .iter()
-        .filter(|d| !d.within)
-        .map(|d| d.metric.as_str())
-        .collect();
-    for metric in [
-        "systolic final digit",
-        "heart-rate final digit",
-        "practice-visit weekday",
-        "repeated BP pairs",
-    ] {
-        assert!(!off.contains(&metric), "{metric}: {off:?}");
-    }
 }

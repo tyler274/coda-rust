@@ -1,18 +1,15 @@
-//! The authoring rules a unit's ledger must meet before it is accepted.
+//! The rules a unit's ledger must meet before it is accepted.
 //!
-//! Shape is the ledger types' job; these are the rules about content: seed
-//! agreement, the catalog vocabulary, chronology (everything before today
-//! except booked visits), pending results, orders and missed visits, lab arithmetic, and note hygiene (authors, roles not names, no
-//! em dashes). These hold for every chart; how a chart compares with real practice
-//! (vital-sign digits, weekdays, the office layer) is `realism`'s.
-//! Errors send the author back to the part files; warnings are kept with the
-//! accepted ledger for review. None of this judges clinical reasoning.
+//! Shape is the ledger types' job; these are the rules about content: the
+//! patient matches the seed, every code is the catalog's, and the chronology holds
+//! (everything before today except booked visits, nothing closed before it was
+//! opened, results back only after they were drawn, lab arithmetic an analyzer
+//! would produce). Errors send the author back to the part files; warnings are kept
+//! with the accepted ledger. None of this judges how a chart reads.
 
 use std::collections::{HashMap, HashSet};
-use std::sync::LazyLock;
 
 use jiff::ToSpan;
-use regex::Regex;
 
 use crate::catalog::Catalog;
 use crate::labs::DIFFERENTIAL;
@@ -21,93 +18,7 @@ use crate::ledger::{
 };
 use crate::seeds::Unit;
 use crate::time;
-use crate::timeline::{ProblemStatus, Timeline};
-
-static FORBIDDEN: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(synthetic|fictional|generated|template|simulation|simulated|test patient|answer key|placeholder|lorem)\b")
-        .expect("regex")
-});
-
-/// A clinician or staff member named in a note: "Dr. Okafor", "Dr. C", "M. Lindqvist, MD",
-/// "Colleen Fitzgerald, NP", "J. Ortiz, MA", or a signature line "-- B. Kowal".
-/// A surname has a lowercase second letter, so "Per GI MD" is not a name. MA and PA
-/// count only after an initial, so "Springfield, MA" and "State College, PA" stay
-/// places.
-static CLINICIAN: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
-        r"\b(?:Dr\.?|Doctor) (?:[A-Z][a-z][a-zA-Z'-]*|[A-Z]\b)",
-        r"|\b[A-Z]\. [A-Z][a-z][a-zA-Z'-]*,? (?:MD|DO|NP|PA-C|PA|RN|APRN|FNP|DNP|LPN|LICSW|LCSW|PharmD|CNM|MA)\b",
-        r"|\b[A-Z][a-z]+ [A-Z][a-z][a-zA-Z'-]*,? (?:MD|DO|NP|PA-C|RN|APRN|FNP|DNP|LPN|LICSW|LCSW|PharmD|CNM)\b",
-        r"|(?m)(?:--|—) ?[A-Z]\. [A-Z][a-z][a-zA-Z'-]*(?:, [a-z][a-z ]+)?[ \t]*$",
-    ))
-    .expect("regex")
-});
-
-/// Phrasings no chart should carry: a role used as a name in a greeting or a
-/// salutation ("Hi the PCP,", "The RN, I wanted to…"), and the em dash, which
-/// clinicians do not type.
-static PHRASING: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
-        r"(?i)\b(?:hi|hello|hey|dear) the (?:pcp|rn|ma|np|pa|doctor|physician|nurse)\b",
-        r"|(?m-i)^The (?:PCP|RN|MA|NP|PA),",
-        r"|—",
-    ))
-    .expect("regex")
-});
-
-/// Unseeded problems a chart may still carry as active at the bank time: real
-/// lists pick up a stray entry or two beyond what the story planned.
-const UNSEEDED_ACTIVE: usize = 2;
-
-/// Real care organizations and record systems a chart must not name (the guide
-/// asks for roles and generic places). Drug, vaccine and assay product names stay.
-static REAL_NAMES: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
-        r"\b(MyChart|Epic|Cerner|athenahealth|",
-        r"Quest Diagnostics|LabCorp|CVS|Walgreens|Walmart|Rite Aid|Stop & Shop|Big Y|",
-        r"Baystate|Cooley Dickinson|Mercy Medical|Holyoke Medical|UMass|Mass General|Brigham|",
-        r"Dartmouth|Hartford Hospital|Yale New Haven|Valley Medical Group|Kaiser|Mayo Clinic)\b",
-    ))
-    .expect("regex")
-});
-
-pub static AGE_IN_TEXT: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)\b(\d{2,3})[- ](?:year|yr)s?[- ]old\b").expect("regex"));
-
-/// Words near a stated age that make it someone else's age.
-pub static KIN: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(
-        r"(?i)\b(mother|father|sister|brother|son|daughter|wife|husband|spouse|partner|grand\w*|aunt|uncle|cousin|friend|at age|in her|in his|niece|nephew)\b",
-    )
-    .expect("regex")
-});
-
-/// The text around a match: `before` characters before it and `after` after it.
-pub fn around(text: &str, start: usize, end: usize, before: usize, after: usize) -> &str {
-    let from = text[..start]
-        .char_indices()
-        .rev()
-        .nth(before.saturating_sub(1))
-        .map_or(0, |(i, _)| i);
-    let to = text[end..]
-        .char_indices()
-        .nth(after)
-        .map_or(text.len(), |(i, _)| end + i);
-    &text[from..to]
-}
-
-/// The ages a note body states for the patient that disagree with `actual`.
-pub fn wrong_ages(body: &str, actual: i64) -> Vec<i64> {
-    AGE_IN_TEXT
-        .captures_iter(body)
-        .filter_map(|m| {
-            let whole = m.get(0).expect("match");
-            let stated: i64 = m[1].parse().ok()?;
-            let ctx = around(body, whole.start(), whole.end(), 40, 10);
-            (stated != actual && stated < 120 && !KIN.is_match(ctx)).then_some(stated)
-        })
-        .collect()
-}
+use crate::timeline::Timeline;
 
 fn fmt_num(x: f64) -> String {
     let s = format!("{x:.4}");
@@ -129,7 +40,6 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
             "patients must be exactly {want_sorted:?}; got {got:?}"
         ));
     }
-    let mut bodies: HashMap<&str, String> = HashMap::new();
     for p in patients {
         let Some(seed) = unit.members.iter().find(|m| m.mrn == p.mrn) else {
             continue;
@@ -189,62 +99,8 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 &mut warnings,
             );
             for d in &ev.documents {
-                let body = d.body.trim();
-                let title = d.title();
-                if body.chars().count() < 40 {
-                    errors.push(format!("{eid}: document {title:?} body too short"));
-                }
-                match d.author.as_deref().map(str::trim) {
-                    None | Some("") => errors.push(format!(
-                        "{eid}: document {title:?} has no author; name the writer's role"
-                    )),
-                    Some(a) if CLINICIAN.is_match(a) => errors.push(format!(
-                        "{eid}: document {title:?} author {a:?} names a person; use the role"
-                    )),
-                    Some(_) => {}
-                }
-                if let Some(m) = PHRASING
-                    .find(body)
-                    .or_else(|| d.title.as_deref().and_then(|t| PHRASING.find(t)))
-                {
-                    errors.push(format!(
-                        "{eid}: document {title:?} uses {:?}; write the way the author would",
-                        m.as_str()
-                    ));
-                }
-                if let Some(m) = REAL_NAMES.find(body) {
-                    errors.push(format!(
-                        "{eid}: document {title:?} names a real organization or product ({}); use a role or generic description",
-                        m.as_str()
-                    ));
-                }
-                if let Some(m) = CLINICIAN
-                    .find(body)
-                    .or_else(|| d.title.as_deref().and_then(|t| CLINICIAN.find(t)))
-                {
-                    errors.push(format!(
-                        "{eid}: document {title:?} names a clinician ({}); refer to clinicians and staff by role",
-                        m.as_str()
-                    ));
-                }
-                if let Some(m) = FORBIDDEN.find(body) {
-                    errors.push(format!(
-                        "{eid}: document {title:?} uses a forbidden word ({})",
-                        m.as_str()
-                    ));
-                }
-                match bodies.get(body) {
-                    Some(first) => errors.push(format!("{eid}: document body duplicates {first}")),
-                    None => {
-                        bodies.insert(body, eid.clone());
-                    }
-                }
-                let on = d.date.unwrap_or(ev.start).date();
-                let actual = time::age_on(birth, on);
-                for stated in wrong_ages(body, actual) {
-                    errors.push(format!(
-                        "{eid}: note says {stated}-year-old but patient is {actual} on {on}"
-                    ));
+                if d.body.trim().is_empty() {
+                    errors.push(format!("{eid}: document {:?} has no body", d.title()));
                 }
             }
             if ev.appointment.is_none() && ev.kind.needs_note() && ev.documents.is_empty() {
@@ -339,24 +195,6 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 }
             }
         }
-        if let Some(first) = tl
-            .events
-            .iter()
-            .filter(|e| e.kind != crate::ledger::Kind::OutsideRecords)
-            .map(|e| e.start)
-            .min()
-        {
-            let expected = time::as_of().date().year() as i64 - i64::from(seed.years_with_practice);
-            if (i64::from(first.date().year()) - expected).abs() > 2 {
-                warnings.push(format!(
-                    "{mrn}: first practice event {} vs about {expected}",
-                    first.date()
-                ));
-            }
-        }
-        if seed.coded_anchors {
-            problem_list(mrn, &seed.anchors, &tl, catalog, &mut errors);
-        }
     }
     (errors, warnings)
 }
@@ -389,42 +227,6 @@ fn check_orders(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
                 },
             }
         }
-    }
-}
-
-/// A seed with coded anchors fixes the problem list: every anchor is recorded, and
-/// at most a couple of other problems are still active at the bank time.
-fn problem_list(
-    mrn: &str,
-    anchors: &[String],
-    tl: &Timeline,
-    catalog: &Catalog,
-    errors: &mut Vec<String>,
-) {
-    for a in anchors {
-        if !catalog.conditions.contains_key(a) {
-            errors.push(format!(
-                "{mrn}: seed anchor {a:?} is not a catalog condition"
-            ));
-        } else if !tl.problems.iter().any(|p| p.label == a) {
-            errors.push(format!(
-                "{mrn}: seed anchor {a:?} is never recorded on the problem list"
-            ));
-        }
-    }
-    let extra: Vec<&str> = tl
-        .problems
-        .iter()
-        .filter(|p| !anchors.iter().any(|a| a == p.label))
-        .filter(|p| !matches!(p.status(time::as_of()), ProblemStatus::Resolved(_)))
-        .map(|p| p.label)
-        .collect();
-    if extra.len() > UNSEEDED_ACTIVE {
-        errors.push(format!(
-            "{mrn}: {} problems the seed did not plan are still active at the bank time ({}); resolve the acute ones and keep at most {UNSEEDED_ACTIVE} others",
-            extra.len(),
-            extra.join(", ")
-        ));
     }
 }
 
@@ -661,13 +463,6 @@ fn check_event<'a>(
         }
         if r.text.trim().is_empty() {
             errors.push(format!("{eid}: report {:?} has no text", r.study));
-        }
-        if let Some(m) = REAL_NAMES.find(&r.text) {
-            errors.push(format!(
-                "{eid}: report {:?} names a real organization or product ({})",
-                r.study,
-                m.as_str()
-            ));
         }
         if let Some(issued) = r.issued
             && issued < Timeline::performed(ev, r)

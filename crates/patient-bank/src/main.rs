@@ -2,11 +2,9 @@
 //!
 //! ```text
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
-//! cargo run -p patient-bank -- stories [--seeds PATH] [--ledgers DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
-//! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
-//! cargo run -p patient-bank -- validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
-//! cargo run -p patient-bank -- materialize [--bank DIR] [--seeds PATH] --panel N --out DIR [--as-of STAMP]
+//! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR]
+//! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 //! ```
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
@@ -17,7 +15,7 @@ use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use patient_bank::{bank, catalog, materialize, paths, realism, stories, time, unit, validate};
+use patient_bank::{bank, catalog, paths, unit, validate};
 
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -44,23 +42,6 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
                 .unwrap_or_else(paths::roger_fixture);
             catalog::build(&roger, o.on("--offline"))?
         }
-        "realism" => {
-            let o = Opts::parse(rest, &["--gym"], &[])?;
-            let gym = o
-                .path("--gym")
-                .ok_or("--gym <coda-gym authoring/projects> is required")?;
-            let charts = gym_charts(&gym)?;
-            let r = realism::build(&charts, &paths::realism())?;
-            println!("{}", serde_json::to_string_pretty(&r)?);
-            0
-        }
-        "stories" => {
-            let o = Opts::parse(rest, &["--seeds", "--ledgers"], &[])?;
-            stories::run(
-                &o.path("--seeds").unwrap_or_else(paths::seeds),
-                &o.path("--ledgers").unwrap_or_else(paths::ledgers),
-            )?
-        }
         "brief" | "check" | "preview" => {
             let o = Opts::parse(rest, &["--seeds"], &[])?;
             let [uid] = o.positional.as_slice() else {
@@ -70,81 +51,28 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             unit::run(command, uid, &seeds)?
         }
         "build" => {
-            let o = Opts::parse(rest, &["--seeds", "--ledgers", "--out", "--roger"], &[])?;
-            let root = paths::root();
+            let o = Opts::parse(rest, &["--seeds", "--ledgers", "--out"], &[])?;
             bank::run(
                 &o.path("--seeds").unwrap_or_else(paths::seeds),
                 &o.path("--ledgers").unwrap_or_else(paths::ledgers),
-                &o.path("--out").unwrap_or_else(|| root.join("bank")),
-                o.path("--roger").as_deref(),
+                &o.path("--out")
+                    .unwrap_or_else(|| paths::root().join("bank")),
             )?;
             0
         }
         "validate" => {
-            let o = Opts::parse(
-                rest,
-                &["--bank", "--seeds", "--schema", "--jobs", "--report"],
-                &[],
-            )?;
-            let root = paths::root();
+            let o = Opts::parse(rest, &["--bank", "--schema", "--jobs", "--report"], &[])?;
             validate::run(
-                &o.path("--bank").unwrap_or_else(|| root.join("bank")),
-                &o.path("--seeds").unwrap_or_else(paths::seeds),
+                &o.path("--bank")
+                    .unwrap_or_else(|| paths::root().join("bank")),
                 &o.path("--schema").unwrap_or_else(paths::schema),
                 o.number("--jobs")?.unwrap_or(8),
                 o.path("--report").as_deref(),
             )?
         }
-        "materialize" => {
-            let o = Opts::parse(
-                rest,
-                &["--bank", "--seeds", "--panel", "--out", "--as-of"],
-                &[],
-            )?;
-            let root = paths::root();
-            materialize::run(
-                &o.path("--bank").unwrap_or_else(|| root.join("bank")),
-                &o.path("--seeds").unwrap_or_else(paths::seeds),
-                o.number("--panel")?.ok_or("--panel is required")?,
-                &o.path("--out").ok_or("--out is required")?,
-                o.values.get("--as-of").map_or(time::AS_OF, String::as_str),
-            )?;
-            0
-        }
         _ => return Err(usage()),
     };
     Ok(u8::try_from(status).unwrap_or(1))
-}
-
-/// One chart per coda-gym patient: the `resources/` of its first case. Only the
-/// charts are read, never a case's solution or rubric.
-fn gym_charts(projects: &std::path::Path) -> Result<Vec<std::path::PathBuf>, Failure> {
-    let mut out = Vec::new();
-    for project in std::fs::read_dir(projects)? {
-        let project = project?.path();
-        let Ok(specialties) = std::fs::read_dir(&project) else {
-            continue;
-        };
-        for specialty in specialties {
-            let Ok(patients) = std::fs::read_dir(specialty?.path()) else {
-                continue;
-            };
-            for patient in patients {
-                let patient = patient?.path();
-                let Ok(cases) = std::fs::read_dir(&patient) else {
-                    continue;
-                };
-                let mut cases: Vec<_> = cases
-                    .filter_map(|c| c.ok().map(|c| c.path().join("resources")))
-                    .filter(|r| r.join("DocumentReference.ndjson").is_file())
-                    .collect();
-                cases.sort();
-                out.extend(cases.into_iter().next());
-            }
-        }
-    }
-    out.sort();
-    Ok(out)
 }
 
 /// `--flag value`, `--flag=value`, on/off switches and positional arguments.
@@ -208,12 +136,9 @@ fn usage() -> Failure {
 patient-bank runs the synthetic patient bank pipeline.
 
   patient-bank catalog [--offline] [--roger-fixture DIR]
-  patient-bank realism --gym CODA-GYM/authoring/projects
-  patient-bank stories [--seeds PATH] [--ledgers DIR]
   patient-bank brief|check|preview UNIT [--seeds PATH]
-  patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
-  patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
-  patient-bank materialize [--bank DIR] [--seeds PATH] --panel N --out DIR [--as-of STAMP]
+  patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR]
+  patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 
 PATIENT_BANK_DATA and PATIENT_BANK_ROOT override crates/patient-bank/data and target/patient-bank."
         .into()

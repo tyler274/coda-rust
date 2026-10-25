@@ -1,7 +1,7 @@
 //! Every default location the pipeline reads or writes, in one place.
 //!
-//! The tool's inputs (catalog, terminology cache, coda-gym ranges, story tables,
-//! authoring guide) live in this crate's `data/`. The patients themselves, their
+//! The tool's inputs (catalog, terminology cache, coda-gym ranges, authoring
+//! guide) live in this crate's `data/`. The patients themselves, their
 //! seeds and accepted ledgers, live apart from the tool in the workspace's
 //! `patients/`. Drafts, the bank and other derived output live under the ignored
 //! `target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
@@ -47,11 +47,6 @@ pub fn catalog() -> PathBuf {
     data_dir().join("catalog.json")
 }
 
-/// What real practice looks like, metric by metric; `realism` is its only writer.
-pub fn realism() -> PathBuf {
-    data_dir().join("realism.json")
-}
-
 /// Terminology service answers behind the catalog; the catalog build is its only writer.
 pub fn terminology_cache() -> PathBuf {
     data_dir().join("terminology-cache.json")
@@ -70,11 +65,6 @@ pub fn seeds() -> PathBuf {
 /// Accepted ledgers, `<unit>.json`, written only by `check`.
 pub fn ledgers() -> PathBuf {
     patients_dir().join("ledgers")
-}
-
-/// The tables `stories` draws unwritten patients' clinical stories from.
-pub fn stories() -> PathBuf {
-    data_dir().join("stories.json")
 }
 
 pub fn authoring_guide() -> PathBuf {

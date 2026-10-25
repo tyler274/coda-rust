@@ -1,7 +1,6 @@
 //! The synthetic primary-care patient bank: typed ledgers, the verified
-//! terminology catalog, authoring checks, one timeline per patient, the FHIR R4
-//! renderer, the practice calendar, bank
-//! build, validation, panel materialization and the story draw for unwritten seeds. See README.md.
+//! terminology catalog, the authoring check, one timeline per patient, the FHIR R4
+//! renderer, the practice calendar, the bank build and its validation. See README.md.
 
 pub mod bank;
 pub mod calendar;
@@ -11,13 +10,10 @@ pub mod check;
 pub mod fhir;
 pub mod labs;
 pub mod ledger;
-pub mod materialize;
 pub mod paths;
-pub mod realism;
 pub mod render;
 pub mod rng;
 pub mod seeds;
-pub mod stories;
 pub mod terms;
 pub mod time;
 pub mod timeline;

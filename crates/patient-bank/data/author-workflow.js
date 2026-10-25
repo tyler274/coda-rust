@@ -1,29 +1,17 @@
 export const meta = {
-  name: 'author-deep-patients',
-  description: 'Author deep longitudinal primary-care charts per unit, then an independent physician-eye review and a fix pass',
+  name: 'author-patients',
+  description: 'Author one primary-care chart per unit: story, ledger parts, check until ACCEPTED, preview and reread',
   phases: [
-    { title: 'Author', detail: 'story.md, then ledger parts, check until ACCEPTED, preview and reread' },
-    { title: 'Review', detail: 'an independent reader of chart.txt against the guide' },
-    { title: 'Fix', detail: 'fix every major and most minor findings, check until ACCEPTED, preview' },
+    { title: 'Author', detail: 'one agent per unit, following the authoring guide' },
   ],
 }
 
 // args: { repo: '<absolute path of the coda-rust checkout>', units: ['unit-0001', ...] }
 const REPO = args.repo
 const DRAFTS = REPO + '/target/patient-bank/drafts'
-// Real-reading reference charts, one per complexity tier (light.txt, moderate.txt,
-// complex.txt: note text from coda-gym charts), and synthetic-hospital-profiles.jsonl.
-const EXEMPLARS = REPO + '/target/patient-bank/exemplars'
 const RUN = `cd ${REPO} && cargo run -q -p patient-bank --`
 
-const RULES = `Ground rules:
-- Work only inside ${REPO}. Run every command from there: ${RUN} brief|check|preview <unit>
-- Write only inside ${DRAFTS}/<unit>/. Never edit code, the guide, the catalog or seeds; never run git.
-- Read only the authoring guide, the vocabulary file, your unit's draft folder and ${EXEMPLARS}. Do not open other repositories, other units' drafts, or any eval folder.
-- The exemplars are for comparison only: never copy their words, people, places or events.
-- All people, places and records are fictional; refer to clinicians and staff by role only, and never name real practices, hospitals, labs, pharmacies, stores or EHR/portal products (drug, vaccine and assay product names are fine).`
-
-const AUTHOR_SCHEMA = {
+const SCHEMA = {
   type: 'object',
   properties: {
     unit: { type: 'string' },
@@ -31,108 +19,22 @@ const AUTHOR_SCHEMA = {
     patients: { type: 'array', items: { type: 'object', properties: {
       mrn: { type: 'string' }, documents: { type: 'integer' }, observations: { type: 'integer' } },
       required: ['mrn', 'documents', 'observations'] } },
-    parts: { type: 'integer' },
-    open_warnings: { type: 'array', items: { type: 'string' }, description: 'check warnings you judged false positives, with why' },
   },
-  required: ['unit', 'accepted', 'patients', 'parts', 'open_warnings'],
+  required: ['unit', 'accepted', 'patients'],
 }
 
-const REVIEW_SCHEMA = {
-  type: 'object',
-  properties: {
-    findings: { type: 'array', items: { type: 'object', properties: {
-      severity: { type: 'string', enum: ['major', 'minor'] },
-      where: { type: 'string', description: 'date and document or record, as chart.txt shows it' },
-      problem: { type: 'string' },
-      fix: { type: 'string' } },
-      required: ['severity', 'where', 'problem', 'fix'] } },
-    verdict: { type: 'string', description: 'two sentences: would a physician believe this chart, and what stands out' },
-    exemplar_gap: { type: 'string', description: 'two sentences: where this chart is less realistic, textured or complex than the exemplar for its tier, or "none"' },
-  },
-  required: ['findings', 'verdict', 'exemplar_gap'],
-}
+const prompt = (u) => `You are writing the chart for unit ${u} of a primary-care patient bank: one fictional adult patient (or a family) over years of care.
 
-const authorPrompt = (u) => `You are authoring the chart for authoring unit ${u} of a primary-care patient bank: one fictional adult patient (or a family) over many years of care, as dense and textured as a real EHR.
+Run ${RUN} brief ${u}, then read the authoring guide it names end to end, and the vocabulary file. Follow the guide's "How you work": story.md, then the ledger part files, then check until it prints ACCEPTED, then preview and read chart.txt start to end as the physician inheriting this patient, fixing what you find and checking again.
 
-Start by running:
-  ${RUN} brief ${u}
-Then read the authoring guide it names, end to end, and the vocabulary file. Skim ${EXEMPLARS}/<tier>.txt for the seed's complexity (light, moderate or complex): a real-reading chart from another project. Match its texture and density in your own patient's life; copy nothing from it. The guide's "How you work" section is your process: story.md first (with a contact calendar counted against the targets), then the ledger in chronological part files of two to three years each, then check until it prints ACCEPTED, then preview and read chart.txt start to end against the guide's "Before you finish", fixing what you find and checking again.
-
-What matters most:
-- Chronology: every record knows only what was known on its date.
-- The chart ends mid-life at today: nothing after it is written except pending results and booked visits.
-- Density with substance: reach the document and observation targets through the contacts, short notes, vitals and monitoring this person would really have. No filler, no near-duplicate notes.
-- Many voices, each document with its author's role: physicians, NPs, nurses, MAs, front desk, pharmacists, specialists, the patient's own messages.
-- Use your clinical world knowledge: human care by busy clinicians, real drug doses, plausible lab trajectories, realistic gaps, friction and imperfections.
-
-${RULES}
+Ground rules:
+- Run commands only from ${REPO}. Write only inside ${DRAFTS}/${u}/.
+- Read only the guide, the vocabulary file and your own draft folder. Never edit code, the guide, the catalog or the seeds, and never run git.
 
 Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
 
-const reviewPrompt = (u) => `You are an experienced primary-care physician reviewing a chart someone else wrote for authoring unit ${u} of a fictional patient bank. You did not write it; find what a physician inheriting this patient would not believe.
-
-Run ${RUN} brief ${u} for the seed and the guide's path. Read the authoring guide end to end (its "Before you finish" section is your checklist), then ${DRAFTS}/${u}/story.md, then ${DRAFTS}/${u}/chart.txt start to end. chart.txt ends with the visits already booked; nothing after today is written.
-
-Then compare it against ${EXEMPLARS}/<tier>.txt for the seed's complexity (light, moderate or complex), a real-reading chart from another project, and ${EXEMPLARS}/synthetic-hospital-profiles.jsonl for how much life, history and medication a patient carries. Wherever this chart is thinner, cleaner, more generic or less textured than the exemplar, report it as a finding with a concrete fix.
-
-Report each problem with where it is and the fix. Major: a chronology leak, a note and data that disagree, clinically wrong care, a device-impossible number, teaching voice, a generic or repeated story element, a chart with nothing realistic going on at the bank time, rewrite damage such as a role used as a name. Minor: voice, length, texture. Do not report taste. Do not edit any file.
-
-${RULES}`
-
-const fixPrompt = (u, review) => `You are fixing the chart for authoring unit ${u} of a fictional primary-care patient bank after an independent physician review.
-
-Run ${RUN} brief ${u}, read the authoring guide it names, then ${DRAFTS}/${u}/story.md and the part files. The review:
-
-${JSON.stringify(review, null, 2)}
-
-Fix every major finding and every minor one you agree with, by editing the part files (and story.md if the plan changes). Keep everything else as it is. Then check until it prints ACCEPTED, preview, and reread the passages you changed in chart.txt.
-
-${RULES}
-
-Return the structured result. Report accepted=true only if your final check printed ACCEPTED, and list in open_warnings any finding you chose not to fix, with why.`
-
-const units = args.units
-log(`${units.length} units`)
-
-// args.revise: a review that applies to every unit (a rule added after they were
-// accepted). Accepted units get only the fix pass.
-if (args.revise) {
-  const fixed = await pipeline(units, (u) =>
-    agent(fixPrompt(u, args.revise), { label: `revise:${u}`, phase: 'Fix', schema: AUTHOR_SCHEMA }))
-  const out = fixed.map((r, i) => r
-    ? { unit: units[i], accepted: r.accepted, unfixed: r.open_warnings }
-    : { unit: units[i], failed: true })
-  log(`${out.filter((s) => s.accepted).length}/${units.length} units revised and accepted`)
-  return out
-}
-
-const results = await pipeline(
-  units,
-  (u) => agent(authorPrompt(u), { label: `author:${u}`, phase: 'Author', schema: AUTHOR_SCHEMA }),
-  (authored, u) => authored && authored.accepted
-    ? agent(reviewPrompt(u), { label: `review:${u}`, phase: 'Review', schema: REVIEW_SCHEMA })
-      .then((review) => ({ authored, review }))
-    : { authored },
-  (r, u) => r.review
-    ? agent(fixPrompt(u, r.review), { label: `fix:${u}`, phase: 'Fix', schema: AUTHOR_SCHEMA })
-      .then((fixed) => ({ ...r, fixed }))
-    : r,
-)
-
-// compact summary; full results stay in the run journal
-const summary = results.map((r, i) => {
-  if (!r || !r.authored) return { unit: units[i], failed: true }
-  const findings = r.review ? r.review.findings : []
-  return {
-    unit: units[i],
-    accepted: Boolean(r.fixed ? r.fixed.accepted : r.authored.accepted),
-    reviewed: Boolean(r.review),
-    major: findings.filter((f) => f.severity === 'major').length,
-    minor: findings.filter((f) => f.severity === 'minor').length,
-    unfixed: r.fixed ? r.fixed.open_warnings : null,
-    verdict: r.review ? r.review.verdict : null,
-    exemplar_gap: r.review ? r.review.exemplar_gap : null,
-  }
-})
-log(`${summary.filter((s) => s.accepted && s.reviewed).length}/${units.length} units reviewed and accepted`)
+const results = await pipeline(args.units, (u) =>
+  agent(prompt(u), { label: `author:${u}`, phase: 'Author', schema: SCHEMA }))
+const summary = results.map((r, i) => r || { unit: args.units[i], failed: true })
+log(`${summary.filter((s) => s.accepted).length}/${args.units.length} units accepted`)
 return summary

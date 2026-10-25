@@ -2,8 +2,7 @@
 //!
 //! `patients/seeds.json` was designed once (seed 20261024) for all 995 patients and is
 //! kept as data: a chart is authored against its seed, so a seed never changes
-//! under an accepted ledger. `stories` redraws the clinical story (anchors,
-//! episodes, life, occupation) only for units that have no accepted ledger yet.
+//! under an accepted ledger.
 
 use std::path::Path;
 
@@ -109,8 +108,7 @@ pub struct Seed {
     pub years_with_practice: u32,
     pub target_documents: u32,
     pub target_observations: u32,
-    /// The main threads of the history. With `coded_anchors` these are exact catalog
-    /// condition labels and make up the problem list the chart must hold.
+    /// The main threads of the history.
     pub anchors: Vec<String>,
     /// Concrete things that happened somewhere in the history.
     pub episodes: Vec<String>,
@@ -118,8 +116,7 @@ pub struct Seed {
     /// Who the patient is outside the clinic: background, household, work, beliefs.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub life: Vec<String>,
-    /// Drawn by `stories`: the anchors are catalog labels and `check` holds the
-    /// chart's problem list to them.
+    /// The anchors are exact catalog condition labels.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub coded_anchors: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]

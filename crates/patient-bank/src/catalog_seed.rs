@@ -296,7 +296,7 @@ pub const CONDITIONS: &[(&str, &str)] = &[
     ("Presence of cardiac pacemaker", "Z95.0"),
     ("Kidney transplant status", "Z94.0"),
     ("Encounter for general adult medical examination", "Z00.00"),
-    // Long-tail and hospital-event conditions named by data/stories.json
+    // Long-tail and hospital-event conditions
     ("Addison disease", "E27.1"),
     ("Acromegaly", "E22.0"),
     ("Prolactinoma", "D35.2"),

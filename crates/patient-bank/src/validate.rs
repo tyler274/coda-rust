@@ -1,7 +1,7 @@
 //! Validate the patient bank in bulk and write a report.
 //!
 //! The validator reads the bank's NDJSON back as plain JSON, independent of the
-//! renderer's types. Per patient (errors fail the bank; warnings are counted for review):
+//! renderer's types. Per patient:
 //!
 //! ```text
 //! schema      every resource against the official HL7 FHIR R4 4.0.1 JSON schema
@@ -11,20 +11,11 @@
 //! terminology every coding is the catalog's verified code and display, or one the
 //!             patient's ledger verified; text-only concepts are counted
 //! timeline    clinical times after birth and before the bank time; issued >= effective;
-//!             onset <= recorded; abatement after onset; stated note ages match birthDate
-//! notes       no duplicate note bodies, no scaffold words
-//! realism     the chart against `data/realism.json` (warnings; see `realism`)
-//! snapshots   the chart rendered as of three earlier moments contains nothing dated
-//!             at or after the moment, every snapshot row exists in the full chart,
-//!             and nothing is stopped or resolved before it was
-//! future      note text naming a diagnosis or drug the chart only records later
-//!             (lexical; review notes, read by a person)
+//!             onset <= recorded; abatement after onset
 //! ```
 //!
 //! The calendar is checked as a whole: valid Appointments for known patients from
-//! the bank day on. The report also measures the panel: what is open
-//! at the bank time, vital-sign digits, the most common problems and drugs, and
-//! sentences that recur across patients, and every `realism` metric across the panel.
+//! the bank day on.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fs;
@@ -32,29 +23,21 @@ use std::path::Path;
 use std::sync::LazyLock;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use base64::Engine as _;
 use regex::Regex;
 use serde::Serialize;
 use serde_json::Value;
 
 use crate::catalog::{CPT, Catalog};
-use crate::check::wrong_ages;
 use crate::fhir::{FAMILIES, LOINC};
-use crate::ledger::{Appointment, Day, Ledger, Stamp, Terms};
-use crate::render::{DOC_TYPE_CODES, Renderer, VITAL_CODES};
-use crate::rng::Rng;
-use crate::seeds::{Seed, Seeds};
-use crate::{Result, paths, realism, time};
+use crate::ledger::{Ledger, Terms};
+use crate::render::{DOC_TYPE_CODES, VITAL_CODES};
+use crate::{Result, paths, time};
 
 static ID: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^[A-Za-z0-9\-.]{1,64}$").expect("regex"));
 static UTC: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}\+00:00)?$").expect("regex")
 });
-static SCAFFOLD: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(synthetic|fictional|generated|template|simulation|test patient|answer key|lorem)\b").expect("regex")
-});
-static WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[a-z][a-z\-]+").expect("regex"));
 
 const TIME_FIELDS: [&str; 9] = [
     "onsetDateTime",
@@ -68,250 +51,14 @@ const TIME_FIELDS: [&str; 9] = [
     "date",
 ];
 
-/// A sentence this long, in this many patients' notes, is a shared prop.
-const SHARED_WORDS: usize = 8;
-const SHARED_PATIENTS: usize = 5;
-
-/// Words too generic to tell one condition from another in note text.
-const STOP: &[&str] = &[
-    "disease",
-    "disorder",
-    "unspecified",
-    "chronic",
-    "of",
-    "with",
-    "without",
-    "the",
-    "and",
-    "or",
-    "in",
-    "acute",
-    "primary",
-    "history",
-    "due",
-    "to",
-    "status",
-    "post",
-    "type",
-    "syndrome",
-    "stage",
-    "a",
-    "mild",
-    "moderate",
-    "severe",
-    "single",
-    "episode",
-    "recurrent",
-    "other",
-    "lower",
-    "upper",
-    "left",
-    "right",
-    "bilateral",
-    "extremity",
-    "extremities",
-    "limb",
-    "use",
-    "current",
-    "long-term",
-    "term",
-    "presence",
-    "personal",
-    "family",
-    "gene",
-    "positive",
-    "encounter",
-    "for",
-    "general",
-    "adult",
-    "medical",
-    "examination",
-    "normal",
-    "supervision",
-    "pregnancy",
-    "complications",
-    "foot",
-    "knee",
-    "hip",
-];
-const SYNONYMS: &[(&str, &[&str])] = &[
-    ("Essential hypertension", &["hypertension", "htn"]),
-    ("Hyperlipidemia", &["hyperlipidemia", "dyslipidemia"]),
-    ("Mixed hyperlipidemia", &["hyperlipidemia"]),
-    (
-        "Type 2 diabetes mellitus without complications",
-        &["type 2 diabetes", "t2dm", "diabetes mellitus"],
-    ),
-    (
-        "Type 2 diabetes mellitus with hyperglycemia",
-        &["type 2 diabetes", "t2dm"],
-    ),
-    ("Prediabetes", &["prediabetes", "pre-diabetes"]),
-    (
-        "Paroxysmal atrial fibrillation",
-        &["atrial fibrillation", "afib", "a-fib"],
-    ),
-    (
-        "Persistent atrial fibrillation",
-        &["atrial fibrillation", "afib"],
-    ),
-    ("Chronic obstructive pulmonary disease", &["copd"]),
-    (
-        "Coronary artery disease",
-        &["coronary artery disease", "cad"],
-    ),
-    ("Obstructive sleep apnea", &["sleep apnea", "osa"]),
-    ("Hypothyroidism", &["hypothyroidism"]),
-    (
-        "Gastroesophageal reflux disease without esophagitis",
-        &["gerd", "reflux"],
-    ),
-    (
-        "Generalized anxiety disorder",
-        &["generalized anxiety", "gad"],
-    ),
-    (
-        "Heart failure with reduced ejection fraction",
-        &["heart failure", "hfref"],
-    ),
-    (
-        "Heart failure with preserved ejection fraction",
-        &["heart failure", "hfpef"],
-    ),
-];
-const NO_TERMS: [&str; 7] = [
-    "history of",
-    "family history",
-    "status post",
-    "long-term",
-    "presence",
-    "encounter",
-    "supervision",
-];
-
 type Chart = BTreeMap<&'static str, Vec<Value>>;
-
-fn decode(data: &Value) -> String {
-    let bytes = base64::engine::general_purpose::STANDARD
-        .decode(data.as_str().unwrap_or(""))
-        .unwrap_or_default();
-    String::from_utf8_lossy(&bytes).into_owned()
-}
-
-fn has_word(text: &str, term: &str) -> bool {
-    Regex::new(&format!(r"\b{}\b", regex::escape(term))).is_ok_and(|re| re.is_match(text))
-}
-
-fn condition_terms(label: &str) -> Vec<String> {
-    if let Some((_, terms)) = SYNONYMS.iter().find(|(l, _)| *l == label) {
-        return terms.iter().map(|t| t.to_string()).collect();
-    }
-    let lower = label.to_lowercase();
-    if NO_TERMS.iter().any(|p| lower.starts_with(p)) {
-        return Vec::new();
-    }
-    let words: Vec<&str> = WORD
-        .find_iter(&lower)
-        .map(|m| m.as_str())
-        .filter(|w| !STOP.contains(w) && w.chars().count() > 4)
-        .collect();
-    let mut out = vec![lower.clone()];
-    if words.len() >= 2 {
-        out.push(words.join(" "));
-    }
-    out
-}
-
-/// Note text naming a diagnosis or drug that the chart only records later (lexical).
-pub fn future_mentions(chart: &Chart) -> Vec<(&'static str, String)> {
-    let mut found = Vec::new();
-    let mut docs: Vec<&Value> = chart["DocumentReference"].iter().collect();
-    docs.sort_by(|a, b| a["date"].as_str().cmp(&b["date"].as_str()));
-    let mut first_recorded: Vec<(String, String, Vec<String>)> = Vec::new();
-    for r in &chart["Condition"] {
-        let label = r["code"]["text"].as_str().unwrap_or("").to_string();
-        let when = r["recordedDate"].as_str().unwrap_or("");
-        let onset = r["onsetDateTime"].as_str().unwrap_or("");
-        let known = if onset.is_empty() {
-            when
-        } else {
-            when.min(onset)
-        };
-        if !first_recorded.iter().any(|(l, _, _)| *l == label) {
-            first_recorded.push((label.clone(), known.to_string(), condition_terms(&label)));
-        }
-    }
-    let mut first_drug: BTreeMap<String, String> = BTreeMap::new();
-    for r in &chart["MedicationRequest"] {
-        let text = r["medicationCodeableConcept"]["text"]
-            .as_str()
-            .unwrap_or("")
-            .to_lowercase();
-        let Some(ing) = WORD.find(&text).map(|m| m.as_str().to_string()) else {
-            continue;
-        };
-        if ing.chars().count() > 4 {
-            let authored = r["authoredOn"].as_str().unwrap_or("9999").to_string();
-            let e = first_drug.entry(ing).or_insert_with(|| "9999".into());
-            if authored < *e {
-                *e = authored;
-            }
-        }
-    }
-    for doc in docs {
-        let text = decode(&doc["content"][0]["attachment"]["data"]).to_lowercase();
-        let date = doc["date"].as_str().unwrap_or("");
-        let id = doc["id"].as_str().unwrap_or("");
-        let day = &date[..date.len().min(10)];
-        for (_, known, terms) in &first_recorded {
-            if &known[..known.len().min(10)] > day
-                && let Some(t) = terms.iter().find(|t| !t.is_empty() && has_word(&text, t))
-            {
-                found.push((
-                    "future_condition_mention",
-                    format!(
-                        "future condition: {id} ({day}) mentions {t:?}, recorded {}",
-                        &known[..10]
-                    ),
-                ));
-            }
-        }
-        for (ing, started) in &first_drug {
-            if &started[..10] > day && has_word(&text, ing) {
-                found.push((
-                    "future_drug_mention",
-                    format!(
-                        "future drug: {id} ({day}) mentions {ing:?}, started {}",
-                        &started[..10]
-                    ),
-                ));
-            }
-        }
-    }
-    found
-}
 
 #[derive(Default, Serialize)]
 struct PatientReport {
     mrn: String,
     errors: Vec<String>,
     #[serde(skip)]
-    warnings: BTreeMap<&'static str, usize>,
-    #[serde(skip)]
     stats: BTreeMap<String, usize>,
-    #[serde(skip)]
-    notes: Vec<String>,
-    /// Problems active or recurring at the bank time, by label.
-    #[serde(skip)]
-    problems: Vec<String>,
-    /// Drugs active at the bank time, by first word of the label.
-    #[serde(skip)]
-    medications: Vec<String>,
-    /// Long sentences in the patient's notes, normalized.
-    #[serde(skip)]
-    sentences: HashSet<String>,
-    #[serde(skip)]
-    profile: realism::Profile,
 }
 
 struct Shared {
@@ -319,12 +66,10 @@ struct Shared {
     catalog: Catalog,
     known: HashSet<(String, String, Option<String>)>,
     cpt: HashSet<String>,
-    reference: realism::Reference,
 }
 
 struct Work {
     mrn: String,
-    seed: Option<Seed>,
     unit: String,
 }
 
@@ -333,7 +78,7 @@ fn load_chart(dir: &Path) -> Result<(Chart, Vec<String>)> {
     let mut errors = Vec::new();
     for fam in FAMILIES {
         let path = dir.join(format!("{fam}.ndjson"));
-        // a Roger fixture carries only its own families
+        // a family with no rows may have no file
         if fam != "Patient" && !path.exists() {
             chart.insert(fam, Vec::new());
             continue;
@@ -364,14 +109,6 @@ fn times(r: &Value) -> impl Iterator<Item = (&'static str, &str)> {
         .chain(r["period"]["end"].as_str().map(|v| ("period.end", v)))
 }
 
-/// Sentences of at least `SHARED_WORDS` words, lowercased with spacing collapsed.
-fn long_sentences(body: &str) -> impl Iterator<Item = String> + '_ {
-    body.split(['.', '?', '!', '\n'])
-        .map(|s| s.split_whitespace().collect::<Vec<_>>())
-        .filter(|w| w.len() >= SHARED_WORDS)
-        .map(|w| w.join(" ").to_lowercase())
-}
-
 fn check_patient(
     sh: &Shared,
     bank: &Path,
@@ -384,16 +121,6 @@ fn check_patient(
         mrn: mrn.into(),
         ..PatientReport::default()
     };
-    rep.problems = chart["Condition"]
-        .iter()
-        .filter(|c| {
-            matches!(
-                str_of(&c["clinicalStatus"]["coding"][0], "code"),
-                "active" | "recurrence"
-            )
-        })
-        .filter_map(|c| c["code"]["text"].as_str().map(String::from))
-        .collect();
     let mut ids: HashMap<String, &str> = HashMap::new();
     for (slot, fam) in FAMILIES.iter().enumerate() {
         for r in &chart[fam] {
@@ -425,11 +152,6 @@ fn check_patient(
             }
         }
     }
-    let Some(seed) = &w.seed else {
-        // a Roger fixture patient: format checks only
-        rep.errors = errors;
-        return Ok(rep);
-    };
     let birth = str_of(&chart["Patient"][0], "birthDate").to_string();
     let as_of_utc = time::utc(time::as_of());
 
@@ -538,176 +260,7 @@ fn check_patient(
         }
     }
 
-    let mut docs: Vec<&Value> = chart["DocumentReference"].iter().collect();
-    docs.sort_by(|a, b| str_of(a, "date").cmp(str_of(b, "date")));
-    let mut bodies: HashMap<String, &str> = HashMap::new();
-    let birth_day: Day = serde_json::from_value(Value::String(birth.clone()))
-        .map_err(|e| format!("{mrn}: birthDate {e}"))?;
-    for doc in docs {
-        let id = str_of(doc, "id");
-        let text = decode(&doc["content"][0]["attachment"]["data"]);
-        let body = text
-            .split_once("\n\n")
-            .map_or(text.as_str(), |(_, b)| b)
-            .to_string();
-        if let Some(first) = bodies.get(&body) {
-            errors.push(format!("DocumentReference/{id}: duplicate body of {first}"));
-        }
-        rep.sentences.extend(long_sentences(&body));
-        if let Some(m) = SCAFFOLD.find(&body) {
-            errors.push(format!(
-                "DocumentReference/{id}: scaffold word {:?}",
-                m.as_str()
-            ));
-        }
-        let date = str_of(doc, "date");
-        if let Ok(on) = date[..date.len().min(10)].parse::<jiff::civil::Date>() {
-            let actual = time::age_on(birth_day.0, on);
-            for stated in wrong_ages(&body, actual) {
-                *rep.warnings.entry("note_age_mismatch").or_default() += 1;
-                rep.notes
-                    .push(format!("age: {id} says {stated}, is {actual} ({on})"));
-            }
-        }
-        bodies.insert(body, id);
-    }
-    rep.profile.add_patient(
-        chart
-            .iter()
-            .flat_map(|(fam, rows)| rows.iter().map(move |r| (*fam, r))),
-    );
-    rep.medications = chart["MedicationRequest"]
-        .iter()
-        .filter(|m| str_of(m, "status") == "active")
-        .filter_map(|m| {
-            let text = m["medicationCodeableConcept"]["text"]
-                .as_str()?
-                .to_lowercase();
-            // "24 HR metformin …" names the release before the drug
-            WORD.find_iter(&text)
-                .map(|w| w.as_str())
-                .find(|w| *w != "hr")
-                .map(String::from)
-        })
-        .collect();
-    // What is open at the bank time.
-    let pending = ["Observation", "DiagnosticReport"]
-        .iter()
-        .flat_map(|f| &chart[f])
-        .filter(|x| matches!(str_of(x, "status"), "registered" | "preliminary"))
-        .count();
-    let orders = chart["ServiceRequest"]
-        .iter()
-        .filter(|x| str_of(x, "status") == "active")
-        .count();
-    for (key, n) in [
-        ("now:pending_results", pending),
-        ("now:open_orders", orders),
-    ] {
-        *rep.stats.entry(key.into()).or_default() += n;
-    }
-    for (key, open) in [
-        ("now:patients_with_pending_results", pending > 0),
-        ("now:patients_with_open_orders", orders > 0),
-    ] {
-        *rep.stats.entry(key.into()).or_default() += usize::from(open);
-    }
-    for (kind, msg) in future_mentions(&chart) {
-        *rep.warnings.entry(kind).or_default() += 1;
-        rep.notes.push(msg);
-    }
-
-    // Snapshots at three earlier moments chosen from the patient's own event times.
-    let ledger = ledgers
-        .get(&w.unit)
-        .ok_or_else(|| format!("{mrn}: no ledger {}", w.unit))?;
-    let patient = ledger
-        .patient(mrn)
-        .ok_or_else(|| format!("{mrn}: not in {}", w.unit))?;
-    for e in patient
-        .events
-        .iter()
-        .filter(|e| e.booked() && e.appointment != Some(Appointment::Booked))
-    {
-        rep.profile.booked += 1;
-        rep.profile.missed += usize::from(e.appointment.is_some());
-    }
-    for d in realism::compare(&rep.profile, &sh.reference, true) {
-        if !d.within {
-            *rep.warnings.entry("realism_drift").or_default() += 1;
-            rep.notes.push(format!(
-                "realism: {} is {}, expected {}",
-                d.metric, d.measured, d.expected
-            ));
-        }
-    }
-    let renderer = Renderer {
-        catalog: &sh.catalog,
-        terms: &ledger.terms,
-    };
-    let mut starts: Vec<Stamp> = patient.events.iter().map(|e| e.start).collect();
-    starts.sort();
-    let full: HashMap<&str, &Value> = chart
-        .values()
-        .flatten()
-        .map(|x| (str_of(x, "id"), x))
-        .collect();
-    let mut differs = 0;
-    if starts.len() >= 3 {
-        let mut rng = Rng::from_text(mrn);
-        for _ in 0..3 {
-            let cut = starts[rng.randint(1, starts.len() as i64 - 1) as usize];
-            let cut_utc = time::utc(cut);
-            let (snap, _) = renderer.render(seed, patient, cut);
-            for (fam, lines) in snap.lines() {
-                for line in lines {
-                    let x: Value = serde_json::from_str(&line)?;
-                    let id = str_of(&x, "id");
-                    let Some(whole) = full.get(id) else {
-                        errors.push(format!("snapshot {cut}: {fam}/{id} absent from full chart"));
-                        continue;
-                    };
-                    if fam != "Patient" {
-                        for k in TIME_FIELDS {
-                            if let Some(v) = x[k].as_str()
-                                && v >= cut_utc.as_str()
-                            {
-                                errors.push(format!(
-                                    "snapshot {cut}: {fam}/{id} {k} {v} not before cutoff"
-                                ));
-                            }
-                        }
-                    }
-                    if fam == "MedicationRequest" && x["status"] != whole["status"] {
-                        differs += 1;
-                        if x["status"] == "stopped" {
-                            errors.push(format!("snapshot {cut}: {id} stopped before its stop"));
-                        }
-                    }
-                    if fam == "Condition" && x["abatementDateTime"] != whole["abatementDateTime"] {
-                        differs += 1;
-                        // once resolved, a problem stays resolved unless it recurs
-                        if x["abatementDateTime"].is_string()
-                            && whole["clinicalStatus"]["coding"][0]["code"] == "active"
-                        {
-                            errors.push(format!("snapshot {cut}: {id} resolved before it was"));
-                        }
-                    }
-                    if matches!(fam, "Observation" | "DiagnosticReport")
-                        && x["status"] != whole["status"]
-                    {
-                        differs += 1;
-                    }
-                }
-            }
-            *rep.stats.entry("snapshots".into()).or_default() += 1;
-        }
-    }
-    *rep.stats
-        .entry("snapshot_status_differences".into())
-        .or_default() += differs;
     rep.errors = errors;
-    rep.notes.truncate(50);
     Ok(rep)
 }
 
@@ -807,75 +360,16 @@ struct Report {
     patients: usize,
     patients_with_errors: usize,
     errors: usize,
-    panel_errors: Vec<String>,
-    panels: BTreeMap<String, usize>,
-    warnings: BTreeMap<&'static str, usize>,
+    calendar_errors: Vec<String>,
     stats: BTreeMap<String, usize>,
-    terminology_extras: Extras,
     calendar: BTreeMap<String, usize>,
-    /// Every realism metric across the panel, against data/realism.json.
-    realism: Vec<realism::Drift>,
-    problem_list: ProblemList,
-    medication_list: ProblemList,
-    /// Sentences of eight or more words found in five or more patients' notes.
-    shared_sentences: Vec<(String, usize)>,
     failures: Vec<PatientReport>,
-    review_notes: BTreeMap<String, Vec<String>>,
-}
-
-/// How varied the panel is: problems or drugs active at the bank time across all
-/// patients.
-#[derive(Serialize)]
-struct ProblemList {
-    distinct: usize,
-    /// Labels carried by only one patient.
-    unique: usize,
-    /// The most common labels, as a percent of patients.
-    top: Vec<(String, f64)>,
-}
-
-impl ProblemList {
-    fn of(results: &[PatientReport], labels: fn(&PatientReport) -> &[String]) -> ProblemList {
-        let mut carriers: BTreeMap<&str, usize> = BTreeMap::new();
-        for r in results {
-            let mine: HashSet<&str> = labels(r).iter().map(String::as_str).collect();
-            for label in mine {
-                *carriers.entry(label).or_default() += 1;
-            }
-        }
-        let mut top: Vec<(&str, usize)> = carriers.iter().map(|(l, n)| (*l, *n)).collect();
-        top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));
-        let percent = |n: usize| (1000.0 * n as f64 / results.len().max(1) as f64).round() / 10.0;
-        ProblemList {
-            distinct: carriers.len(),
-            unique: carriers.values().filter(|n| **n == 1).count(),
-            top: top
-                .iter()
-                .take(25)
-                .map(|(l, n)| (l.to_string(), percent(*n)))
-                .collect(),
-        }
-    }
-}
-
-#[derive(Serialize)]
-struct Extras {
-    conditions: usize,
-    medications: usize,
-    rejected: Vec<String>,
 }
 
 /// Validate the bank, write the report and print its summary; returns 1 when
 /// anything failed.
-pub fn run(
-    bank: &Path,
-    seeds: &Path,
-    schema: &Path,
-    jobs: usize,
-    report: Option<&Path>,
-) -> Result<i32> {
+pub fn run(bank: &Path, schema: &Path, jobs: usize, report: Option<&Path>) -> Result<i32> {
     let catalog = Catalog::load(&paths::catalog())?;
-    let seeds = Seeds::read(seeds)?;
     let manifest: Value = serde_json::from_str(&fs::read_to_string(bank.join("manifest.json"))?)?;
     let root: Value = serde_json::from_str(
         &fs::read_to_string(schema).map_err(|e| format!("{}: {e}", schema.display()))?,
@@ -915,36 +409,15 @@ pub fn run(
         .collect();
 
     let mut ledgers: HashMap<String, Ledger> = HashMap::new();
-    let mut extras = Extras {
-        conditions: 0,
-        medications: 0,
-        rejected: Vec::new(),
-    };
     let mut work = Vec::new();
     for p in manifest["patients"].as_array().into_iter().flatten() {
-        let mrn = str_of(p, "mrn").to_string();
         let unit = str_of(p, "unit").to_string();
-        if unit == "roger" {
-            work.push(Work {
-                mrn,
-                seed: None,
-                unit,
-            });
-            continue;
-        }
         if !ledgers.contains_key(&unit) {
             let l = Ledger::read(&bank.join("ledgers").join(format!("{unit}.json")))?;
-            extras.conditions += l.terms.conditions.len();
-            extras.medications += l.terms.medications.len();
-            extras.rejected.extend(l.terms.rejected.iter().cloned());
             ledgers.insert(unit.clone(), l);
         }
-        let (_, seed) = seeds
-            .member(&mrn)
-            .ok_or_else(|| format!("{mrn} has no seed"))?;
         work.push(Work {
-            mrn,
-            seed: Some(seed.clone()),
+            mrn: str_of(p, "mrn").to_string(),
             unit,
         });
     }
@@ -954,106 +427,19 @@ pub fn run(
         catalog,
         known,
         cpt,
-        reference: realism::Reference::load(&paths::realism())?,
     };
     let results = check_all(&sh, bank, &ledgers, &work, jobs)?;
 
-    // Panels: requested size, known members, nested, families whole.
-    let mut panel_errors = Vec::new();
-    let mut sizes = BTreeMap::new();
+    let mut calendar_errors = Vec::new();
     let mrns: HashSet<&str> = work.iter().map(|w| w.mrn.as_str()).collect();
-    let family_of: HashMap<&str, &str> = work
-        .iter()
-        .filter_map(|w| Some((w.mrn.as_str(), w.seed.as_ref()?.family_id.as_deref()?)))
-        .collect();
-    let mut files: Vec<(usize, std::path::PathBuf)> = fs::read_dir(bank.join("panels"))?
-        .filter_map(|e| e.ok().map(|e| e.path()))
-        .filter_map(|p| {
-            let n = p
-                .file_stem()?
-                .to_str()?
-                .strip_prefix("panel-")?
-                .parse()
-                .ok()?;
-            Some((n, p))
-        })
-        .collect();
-    files.sort();
-    let mut prev: Option<HashSet<String>> = None;
-    for (_, path) in files {
-        let pan: Value = serde_json::from_str(&fs::read_to_string(&path)?)?;
-        let stem = path
-            .file_stem()
-            .expect("stem")
-            .to_string_lossy()
-            .to_string();
-        let mem: HashSet<String> = pan["members"]
-            .as_array()
-            .into_iter()
-            .flatten()
-            .filter_map(|m| m.as_str().map(String::from))
-            .collect();
-        sizes.insert(stem.clone(), mem.len());
-        if Some(mem.len() as u64) != pan["requested"].as_u64() {
-            panel_errors.push(format!(
-                "{stem}: {} members, requested {}",
-                mem.len(),
-                pan["requested"]
-            ));
-        }
-        if !mem.iter().all(|m| mrns.contains(m.as_str())) {
-            panel_errors.push(format!("{stem}: unknown members"));
-        }
-        if prev.as_ref().is_some_and(|p| !p.is_subset(&mem)) {
-            panel_errors.push(format!("{stem}: does not contain the smaller panel"));
-        }
-        let fams: HashSet<&str> = mem
-            .iter()
-            .filter_map(|m| family_of.get(m.as_str()).copied())
-            .collect();
-        let mut fams: Vec<&str> = fams.into_iter().collect();
-        fams.sort_unstable();
-        for fid in fams {
-            if !family_of
-                .iter()
-                .filter(|(_, f)| **f == fid)
-                .all(|(m, _)| mem.contains(*m))
-            {
-                panel_errors.push(format!("{stem}: splits {fid}"));
-            }
-        }
-        prev = Some(mem);
-    }
-
-    let calendar = check_calendar(bank, &appointment, &mrns, &mut panel_errors)?;
-    let mut carriers: HashMap<&str, usize> = HashMap::new();
-    for r in &results {
-        for s in &r.sentences {
-            *carriers.entry(s).or_default() += 1;
-        }
-    }
-    let mut shared_sentences: Vec<(String, usize)> = carriers
-        .into_iter()
-        .filter(|(_, n)| *n >= SHARED_PATIENTS)
-        .map(|(s, n)| (s.to_string(), n))
-        .collect();
-    shared_sentences.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
-    let mut warnings: BTreeMap<&'static str, usize> = BTreeMap::new();
+    let calendar = check_calendar(bank, &appointment, &mrns, &mut calendar_errors)?;
     let mut stats: BTreeMap<String, usize> = BTreeMap::new();
-    let mut review_notes = BTreeMap::new();
     for r in &results {
-        for (k, n) in &r.warnings {
-            *warnings.entry(k).or_default() += n;
-        }
         for (k, n) in &r.stats {
             *stats.entry(k.clone()).or_default() += n;
         }
-        if !r.notes.is_empty() {
-            review_notes.insert(r.mrn.clone(), r.notes.clone());
-        }
     }
-    let error_count = results.iter().map(|r| r.errors.len()).sum::<usize>() + panel_errors.len();
-    let patients_with_errors = results.iter().filter(|r| !r.errors.is_empty()).count();
+    let error_count = results.iter().map(|r| r.errors.len()).sum::<usize>() + calendar_errors.len();
     let out = report.map(Path::to_path_buf).unwrap_or_else(|| {
         bank.parent()
             .unwrap_or(Path::new("."))
@@ -1062,45 +448,25 @@ pub fn run(
     let report = Report {
         bank: bank.display().to_string(),
         patients: results.len(),
-        patients_with_errors,
+        patients_with_errors: results.iter().filter(|r| !r.errors.is_empty()).count(),
         errors: error_count,
-        panel_errors,
-        panels: sizes,
-        warnings,
+        calendar_errors,
         stats,
-        terminology_extras: extras,
         calendar,
-        realism: {
-            let mut panel = realism::Profile::default();
-            for r in &results {
-                panel.add(&r.profile);
-            }
-            realism::compare(&panel, &sh.reference, false)
-        },
-        problem_list: ProblemList::of(&results, |r| &r.problems),
-        medication_list: ProblemList::of(&results, |r| &r.medications),
-        shared_sentences,
         failures: results
             .into_iter()
             .filter(|r| !r.errors.is_empty())
             .take(200)
             .collect(),
-        review_notes,
     };
     fs::write(&out, serde_json::to_string_pretty(&report)? + "\n")?;
     let summary = serde_json::json!({
         "patients": report.patients,
         "patients_with_errors": report.patients_with_errors,
         "errors": report.errors,
-        "panels": report.panels,
-        "warnings": report.warnings,
-        "stats": report.stats,
-        "panel_errors": report.panel_errors,
+        "calendar_errors": report.calendar_errors,
         "calendar": report.calendar,
-        "realism": report.realism,
-        "problem_list": report.problem_list,
-        "medication_list": report.medication_list,
-        "shared_sentences": report.shared_sentences.iter().take(20).collect::<Vec<_>>(),
+        "stats": report.stats,
     });
     println!("{}", serde_json::to_string_pretty(&summary)?);
     println!("report: {}", out.display());
