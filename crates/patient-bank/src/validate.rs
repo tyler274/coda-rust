@@ -6,8 +6,8 @@
 //! ```text
 //! schema      every resource against the official HL7 FHIR R4 4.0.1 JSON schema
 //! ndjson      one resource type per file, FHIR ids, unique ids, UTC timestamps
-//! references  subject/patient, DiagnosticReport.result, Observation.hasMember resolve
-//!             to the same patient
+//! references  subject/patient, DiagnosticReport.result, Observation.hasMember and
+//!             encounter links resolve to the same patient
 //! terminology every coding is the catalog's verified code and display, or one the
 //!             patient's ledger verified; text-only concepts are counted
 //! timeline    clinical times after birth and before the bank time; issued >= effective;
@@ -18,7 +18,14 @@
 //!             and nothing is stopped or resolved before it was
 //! future      note text naming a diagnosis or drug the chart only records later
 //!             (lexical; review notes, read by a person)
+//! arrivals    every later version is valid FHIR for the same patient, released
+//!             after the bank time and before the horizon
 //! ```
+//!
+//! The calendar is checked as a whole: valid Appointments for known patients from
+//! the bank day to the horizon. The report also measures the panel: what is open
+//! at the bank time, vital-sign digits, the most common problems and drugs, and
+//! sentences that recur across patients.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fs;
@@ -50,7 +57,7 @@ static SCAFFOLD: LazyLock<Regex> = LazyLock::new(|| {
 });
 static WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[a-z][a-z\-]+").expect("regex"));
 
-const TIME_FIELDS: [&str; 8] = [
+const TIME_FIELDS: [&str; 9] = [
     "onsetDateTime",
     "recordedDate",
     "abatementDateTime",
@@ -58,8 +65,13 @@ const TIME_FIELDS: [&str; 8] = [
     "effectiveDateTime",
     "issued",
     "performedDateTime",
+    "occurrenceDateTime",
     "date",
 ];
+
+/// A sentence this long, in this many patients' notes, is a shared prop.
+const SHARED_WORDS: usize = 8;
+const SHARED_PATIENTS: usize = 5;
 
 /// Words too generic to tell one condition from another in note text.
 const STOP: &[&str] = &[
@@ -293,6 +305,12 @@ struct PatientReport {
     /// Problems active or recurring at the bank time, by label.
     #[serde(skip)]
     problems: Vec<String>,
+    /// Drugs active at the bank time, by first word of the label.
+    #[serde(skip)]
+    medications: Vec<String>,
+    /// Long sentences in the patient's notes, normalized.
+    #[serde(skip)]
+    sentences: HashSet<String>,
 }
 
 struct Shared {
@@ -313,6 +331,11 @@ fn load_chart(dir: &Path) -> Result<(Chart, Vec<String>)> {
     let mut errors = Vec::new();
     for fam in FAMILIES {
         let path = dir.join(format!("{fam}.ndjson"));
+        // a Roger fixture carries only its own families
+        if fam != "Patient" && !path.exists() {
+            chart.insert(fam, Vec::new());
+            continue;
+        }
         let text = fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
         let mut rows = Vec::new();
         for line in text.lines() {
@@ -328,6 +351,23 @@ fn load_chart(dir: &Path) -> Result<(Chart, Vec<String>)> {
 
 fn str_of<'a>(v: &'a Value, key: &str) -> &'a str {
     v[key].as_str().unwrap_or("")
+}
+
+/// A resource's clinical times: the dated fields, and an encounter's period.
+fn times(r: &Value) -> impl Iterator<Item = (&'static str, &str)> {
+    TIME_FIELDS
+        .into_iter()
+        .filter_map(|k| r[k].as_str().map(|v| (k, v)))
+        .chain(r["period"]["start"].as_str().map(|v| ("period.start", v)))
+        .chain(r["period"]["end"].as_str().map(|v| ("period.end", v)))
+}
+
+/// Sentences of at least `SHARED_WORDS` words, lowercased with spacing collapsed.
+fn long_sentences(body: &str) -> impl Iterator<Item = String> + '_ {
+    body.split(['.', '?', '!', '\n'])
+        .map(|s| s.split_whitespace().collect::<Vec<_>>())
+        .filter(|w| w.len() >= SHARED_WORDS)
+        .map(|w| w.join(" ").to_lowercase())
 }
 
 fn check_patient(
@@ -375,10 +415,8 @@ fn check_patient(
                 ));
             }
             if *fam != "Patient" {
-                for k in TIME_FIELDS {
-                    if let Some(v) = r[k].as_str()
-                        && !UTC.is_match(v)
-                    {
+                for (k, v) in times(r) {
+                    if !UTC.is_match(v) {
                         errors.push(format!("{fam}/{id}: {k} {v} not UTC +00:00"));
                     }
                 }
@@ -407,16 +445,21 @@ fn check_patient(
                     errors.push(format!("{fam}/{id}: subject {reference}"));
                 }
             }
-            for key in ["result", "hasMember"] {
-                for x in r[key].as_array().into_iter().flatten() {
-                    let reference = str_of(x, "reference");
-                    let (kind, target) = reference.split_once('/').unwrap_or(("", ""));
-                    if ids.get(target).copied() != Some(kind) {
-                        errors.push(format!("{fam}/{id}: {key} {reference} unresolved"));
-                    }
+            let single = [&r["encounter"], &r["context"]["encounter"]]
+                .into_iter()
+                .filter(|x| x.is_object())
+                .map(|x| ("encounter", x));
+            let many = ["result", "hasMember"]
+                .into_iter()
+                .flat_map(|k| r[k].as_array().into_iter().flatten().map(move |x| (k, x)));
+            for (key, x) in single.chain(many) {
+                let reference = str_of(x, "reference");
+                let (kind, target) = reference.split_once('/').unwrap_or(("", ""));
+                if ids.get(target).copied() != Some(kind) {
+                    errors.push(format!("{fam}/{id}: {key} {reference} unresolved"));
                 }
             }
-            for field in ["code", "medicationCodeableConcept", "type"] {
+            for field in ["code", "medicationCodeableConcept", "vaccineCode", "type"] {
                 let Some(cc) = r[field].as_object() else {
                     continue;
                 };
@@ -462,9 +505,9 @@ fn check_patient(
             if *fam == "Patient" {
                 continue;
             }
-            for k in TIME_FIELDS {
-                let Some(v) = r[k].as_str() else { continue };
-                if v >= as_of_utc.as_str() {
+            for (k, v) in times(r) {
+                // an encounter under way at the bank time ends after it
+                if v >= as_of_utc.as_str() && k != "period.end" {
                     errors.push(format!("{fam}/{id}: {k} {v} not before bank time"));
                 }
                 if v[..v.len().min(10)] < *birth {
@@ -508,6 +551,7 @@ fn check_patient(
         if let Some(first) = bodies.get(&body) {
             errors.push(format!("DocumentReference/{id}: duplicate body of {first}"));
         }
+        rep.sentences.extend(long_sentences(&body));
         if let Some(m) = SCAFFOLD.find(&body) {
             errors.push(format!(
                 "DocumentReference/{id}: scaffold word {:?}",
@@ -535,6 +579,71 @@ fn check_patient(
     let repeated = tuples.values().filter(|n| **n >= 4).count();
     if repeated > 0 {
         *rep.warnings.entry("repeated_bp_tuple").or_default() += repeated;
+    }
+    for r in &chart["Observation"] {
+        let code = &r["code"]["coding"][0]["code"];
+        let value = if code == "85354-9" {
+            r["component"][0]["valueQuantity"]["value"].as_f64()
+        } else if code == "8867-4" {
+            r["valueQuantity"]["value"].as_f64()
+        } else {
+            None
+        };
+        let Some(v) = value else { continue };
+        let (all, digit) = if code == "85354-9" {
+            (
+                "vitals:systolic",
+                ("vitals:systolic_odd", v as i64 % 2 != 0),
+            )
+        } else {
+            (
+                "vitals:heart_rate",
+                ("vitals:heart_rate_even", v as i64 % 2 == 0),
+            )
+        };
+        *rep.stats.entry(all.into()).or_default() += 1;
+        if digit.1 {
+            *rep.stats.entry(digit.0.into()).or_default() += 1;
+        }
+    }
+    rep.medications = chart["MedicationRequest"]
+        .iter()
+        .filter(|m| str_of(m, "status") == "active")
+        .filter_map(|m| {
+            let text = m["medicationCodeableConcept"]["text"]
+                .as_str()?
+                .to_lowercase();
+            // "24 HR metformin …" names the release before the drug
+            WORD.find_iter(&text)
+                .map(|w| w.as_str())
+                .find(|w| *w != "hr")
+                .map(String::from)
+        })
+        .collect();
+    // What is open at the bank time.
+    let pending = ["Observation", "DiagnosticReport"]
+        .iter()
+        .flat_map(|f| &chart[f])
+        .filter(|x| matches!(str_of(x, "status"), "registered" | "preliminary"))
+        .count();
+    let orders = chart["ServiceRequest"]
+        .iter()
+        .filter(|x| str_of(x, "status") == "active")
+        .count();
+    let arrivals = check_arrivals(sh, bank, mrn, &mut errors)?;
+    for (key, n) in [
+        ("now:pending_results", pending),
+        ("now:open_orders", orders),
+        ("arrivals", arrivals),
+    ] {
+        *rep.stats.entry(key.into()).or_default() += n;
+    }
+    for (key, open) in [
+        ("now:patients_with_pending_results", pending > 0),
+        ("now:patients_with_open_orders", orders > 0),
+        ("now:patients_with_arrivals", arrivals > 0),
+    ] {
+        *rep.stats.entry(key.into()).or_default() += usize::from(open);
     }
     for (kind, msg) in future_mentions(&chart) {
         *rep.warnings.entry(kind).or_default() += 1;
@@ -618,6 +727,86 @@ fn check_patient(
     Ok(rep)
 }
 
+/// Check a patient's later versions and return how many there are.
+fn check_arrivals(sh: &Shared, bank: &Path, mrn: &str, errors: &mut Vec<String>) -> Result<usize> {
+    let path = bank.join("arrivals").join(format!("{mrn}.ndjson"));
+    let Ok(text) = fs::read_to_string(&path) else {
+        return Ok(0);
+    };
+    let (as_of, horizon) = (time::utc(time::as_of()), time::utc(time::horizon()));
+    let mut n = 0;
+    for line in text.lines() {
+        n += 1;
+        let r: Value = serde_json::from_str(line)?;
+        let fam = str_of(&r, "resourceType");
+        let id = str_of(&r, "id");
+        let Some(slot) = FAMILIES.iter().position(|f| *f == fam) else {
+            errors.push(format!("arrival {fam}/{id}: not a bank family"));
+            continue;
+        };
+        if let Some(e) = sh.validators[slot].iter_errors(&r).next() {
+            let message: String = e.to_string().chars().take(160).collect();
+            errors.push(format!("arrival schema {fam}/{id}: {message}"));
+        }
+        let at = str_of(&r["meta"], "lastUpdated");
+        if at < as_of.as_str() || at >= horizon.as_str() {
+            errors.push(format!(
+                "arrival {fam}/{id}: lastUpdated {at} outside the bank time to the horizon"
+            ));
+        }
+        let owner = if fam == "Patient" {
+            format!("Patient/{id}")
+        } else if r["subject"].is_object() {
+            str_of(&r["subject"], "reference").to_string()
+        } else {
+            str_of(&r["patient"], "reference").to_string()
+        };
+        if owner != format!("Patient/{mrn}") {
+            errors.push(format!("arrival {fam}/{id}: belongs to {owner}"));
+        }
+    }
+    Ok(n)
+}
+
+/// Check the practice calendar and count its visits by status.
+fn check_calendar(
+    bank: &Path,
+    validator: &jsonschema::Validator,
+    mrns: &HashSet<&str>,
+    errors: &mut Vec<String>,
+) -> Result<BTreeMap<String, usize>> {
+    let text = fs::read_to_string(bank.join("calendar").join("Appointment.ndjson"))?;
+    let day = time::utc(time::as_of())[..10].to_string();
+    let horizon = time::utc(time::horizon());
+    let mut ids = HashSet::new();
+    let mut counts = BTreeMap::new();
+    for line in text.lines() {
+        let r: Value = serde_json::from_str(line)?;
+        let id = str_of(&r, "id");
+        if !ids.insert(id.to_string()) {
+            errors.push(format!("calendar: duplicate id {id}"));
+        }
+        if let Some(e) = validator.iter_errors(&r).next() {
+            let message: String = e.to_string().chars().take(160).collect();
+            errors.push(format!("calendar schema Appointment/{id}: {message}"));
+        }
+        let (start, end) = (str_of(&r, "start"), str_of(&r, "end"));
+        if !UTC.is_match(start) || start < day.as_str() || start >= horizon.as_str() || end <= start
+        {
+            errors.push(format!("calendar Appointment/{id}: {start} to {end}"));
+        }
+        let who = str_of(&r["participant"][0]["actor"], "reference");
+        if !who
+            .strip_prefix("Patient/")
+            .is_some_and(|m| mrns.contains(m))
+        {
+            errors.push(format!("calendar Appointment/{id}: unknown patient {who}"));
+        }
+        *counts.entry(str_of(&r, "status").to_string()).or_default() += 1;
+    }
+    Ok(counts)
+}
+
 /// Whether a coding is one the ledger's own verified terms produced.
 fn verified(
     terms: &Terms,
@@ -682,12 +871,17 @@ struct Report {
     warnings: BTreeMap<&'static str, usize>,
     stats: BTreeMap<String, usize>,
     terminology_extras: Extras,
+    calendar: BTreeMap<String, usize>,
     problem_list: ProblemList,
+    medication_list: ProblemList,
+    /// Sentences of eight or more words found in five or more patients' notes.
+    shared_sentences: Vec<(String, usize)>,
     failures: Vec<PatientReport>,
     review_notes: BTreeMap<String, Vec<String>>,
 }
 
-/// How varied the panel is: problems active at the bank time across all patients.
+/// How varied the panel is: problems or drugs active at the bank time across all
+/// patients.
 #[derive(Serialize)]
 struct ProblemList {
     distinct: usize,
@@ -698,10 +892,10 @@ struct ProblemList {
 }
 
 impl ProblemList {
-    fn of(results: &[PatientReport]) -> ProblemList {
+    fn of(results: &[PatientReport], labels: fn(&PatientReport) -> &[String]) -> ProblemList {
         let mut carriers: BTreeMap<&str, usize> = BTreeMap::new();
         for r in results {
-            let mine: HashSet<&str> = r.problems.iter().map(String::as_str).collect();
+            let mine: HashSet<&str> = labels(r).iter().map(String::as_str).collect();
             for label in mine {
                 *carriers.entry(label).or_default() += 1;
             }
@@ -744,7 +938,7 @@ pub fn run(
         &fs::read_to_string(schema).map_err(|e| format!("{}: {e}", schema.display()))?,
     )?;
     let mut validators = Vec::new();
-    for fam in FAMILIES {
+    for fam in FAMILIES.into_iter().chain(["Appointment"]) {
         let mut sub = root.clone();
         let obj = sub
             .as_object_mut()
@@ -811,6 +1005,7 @@ pub fn run(
             unit,
         });
     }
+    let appointment = validators.pop().expect("the Appointment validator");
     let sh = Shared {
         validators,
         catalog,
@@ -886,6 +1081,19 @@ pub fn run(
         prev = Some(mem);
     }
 
+    let calendar = check_calendar(bank, &appointment, &mrns, &mut panel_errors)?;
+    let mut carriers: HashMap<&str, usize> = HashMap::new();
+    for r in &results {
+        for s in &r.sentences {
+            *carriers.entry(s).or_default() += 1;
+        }
+    }
+    let mut shared_sentences: Vec<(String, usize)> = carriers
+        .into_iter()
+        .filter(|(_, n)| *n >= SHARED_PATIENTS)
+        .map(|(s, n)| (s.to_string(), n))
+        .collect();
+    shared_sentences.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
     let mut warnings: BTreeMap<&'static str, usize> = BTreeMap::new();
     let mut stats: BTreeMap<String, usize> = BTreeMap::new();
     let mut review_notes = BTreeMap::new();
@@ -917,7 +1125,10 @@ pub fn run(
         warnings,
         stats,
         terminology_extras: extras,
-        problem_list: ProblemList::of(&results),
+        calendar,
+        problem_list: ProblemList::of(&results, |r| &r.problems),
+        medication_list: ProblemList::of(&results, |r| &r.medications),
+        shared_sentences,
         failures: results
             .into_iter()
             .filter(|r| !r.errors.is_empty())
@@ -934,7 +1145,10 @@ pub fn run(
         "warnings": report.warnings,
         "stats": report.stats,
         "panel_errors": report.panel_errors,
+        "calendar": report.calendar,
         "problem_list": report.problem_list,
+        "medication_list": report.medication_list,
+        "shared_sentences": report.shared_sentences.iter().take(20).collect::<Vec<_>>(),
     });
     println!("{}", serde_json::to_string_pretty(&summary)?);
     println!("report: {}", out.display());

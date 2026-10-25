@@ -2,7 +2,11 @@
 
 You are authoring the complete medical history of a fictional adult patient (or a
 small family) in one adult longitudinal primary-care practice in western
-Massachusetts. The output is the patient's **source of truth**: a dated ledger of
+Massachusetts: a membership-based internal medicine practice. Membership buys
+access (same-day and longer visits, calls and texts that reach the physician);
+patients still carry insurance for labs, imaging, specialists, hospitals and
+drugs, and most arrive after years at fee-for-service practices whose diagnoses,
+claims and records follow them in as outside history. The output is the patient's **source of truth**: a dated ledger of
 everything that happened and every record the chart holds. Code translates it
 into FHIR R4; you never write FHIR yourself.
 
@@ -12,6 +16,13 @@ voices, structured data that agrees with the notes, and the small imperfections
 real charts accumulate. It is not an exam vignette, a hospital simulation or a
 teaching case. Most patients are ordinary. Rare disease only appears when the
 seed asks for it.
+
+The charts are used to watch a physician's assistant work over a practice:
+prepare visits, review what is new, carry follow-through. So a chart does not end
+tidied up. At the bank's "now" some things are still in motion (a result not yet
+back, a referral not yet scheduled, a message from two days ago, an abnormal value
+nobody commented on), and the weeks after "now" are written too, so they can
+arrive on schedule. Most patients, most weeks, need nothing.
 
 Real charts are **dense**. Years of care leave hundreds of records: visit notes,
 and around them a steady stream of short ones (nursing and MA notes, phone calls,
@@ -45,11 +56,14 @@ repository root.
 4. `cargo run -q -p patient-bank -- check <unit>` merges the parts and reports
    errors and counts against the targets. Fix every error by editing the
    parts and re-run until it prints `ACCEPTED`.
-5. `cargo run -q -p patient-bank -- preview <unit>` renders the chart and writes
-   a chronological reading copy, `chart.txt`. Read it start to end the way
-   a physician reviewing the chart would. Fix anything that leaks a later fact
-   backward, contradicts the story, repeats itself or reads as boilerplate; then
-   check again.
+5. `cargo run -q -p patient-bank -- preview <unit>` renders the chart to the
+   horizon and writes a chronological reading copy, `chart.txt`; a line marks the
+   bank time, and everything below it reaches the practice later. Read it start
+   to end the way a physician reviewing the chart would, against "Before you
+   finish" at the end of this guide. Fix what you find; then check again.
+
+An independent reviewer then reads the chart against the same list, and the unit
+is finished only after their findings are fixed.
 
 ## The seed
 
@@ -75,11 +89,16 @@ share a household or family and their charts must agree with each other (shared
 address when living together, consistent family history, a spouse may be
 mentioned in social history, nothing contradictory).
 
-The practice "today" is **2026-08-27**. Every event and record is strictly before
-2026-08-27T12:00 Eastern. The patient joined the practice about
+The bank's "now" is **2026-08-27T12:00** Eastern. The ledger runs on to the
+**horizon, 2026-10-08T12:00**: every event and record is strictly before it. What
+is dated after "now" is hidden from the bank chart and arrives at its own time:
+the pending result's value, the consult letter, the reply to Tuesday's message,
+the visit already booked for September and its note. Write the next six weeks the
+way they would really go for this patient; for most that is one booked visit, a
+refill or nothing at all. The patient joined the practice about
 `years_with_practice` years before that (establish-care visit). Earlier history
 reaches the chart through outside records, the establish-care history, or
-patient report—never as notes that predate when the practice could have held them,
+patient report, never as notes that predate when the practice could have held them,
 except outside documents that arrive later (date the outside document by when it
 was received, and state the original date inside it).
 
@@ -118,7 +137,16 @@ Use these event kinds:
 `procedure_visit`, `outside_records`, `pharmacy`.
 
 Each event lists only what it produced. A primary-care visit usually has vitals,
-a `Progress Notes` document, a CPT visit code, maybe labs and orders. A
+a `Progress Notes` document, a CPT visit code, maybe labs and orders. Labs drawn
+and resulted at the visit are `labs`; a referral, imaging or test sent elsewhere is
+an `orders` item placed at the visit and closed later by a `done` or `cancelled`
+item with the same `id` (the referral seen, the scan read, the order dropped), or
+left open. Some referrals never get scheduled, and some orders are simply never
+done; leave them open or cancel them where the chart would.
+
+A booked visit that did not happen keeps its place on the calendar: give the event
+`"appointment": "cancelled"` or `"no-show"`, no clinical records, and at most an
+administrative note about it. A
 telephone call has a `Telephone Encounter` note and nothing else unless an order
 came from it. A portal message has a `Patient Message` (the patient's own words,
 first person, informal, sometimes with typos) and often a clinician reply in a
@@ -153,7 +181,9 @@ the volume (each 30–150 words, clipped, in the voice of whoever wrote it):
 
 Use the event kinds that fit (`telephone`, `portal_message`, `nurse_visit`,
 `pharmacy`, `outside_records`, `lab_only`); an administrative or coordination
-note rides on the event it belongs to, or on a `telephone` event of its own.
+note rides on the event it belongs to, or on a `telephone` event of its own. In
+this practice a patient's text or call to the physician is a `telephone` or
+`portal_message` event with the physician's short reply.
 
 Not every visit has every vital or lab. Do not run a full panel at every visit.
 Order labs the way a primary-care physician would for this patient: annual
@@ -162,8 +192,13 @@ an ACE inhibitor, TSH after a levothyroxine change, CBC when anemic, urinalysis
 for urinary symptoms. Screening follows age and sex (colonoscopy or FIT,
 mammography, cervical cytology, lung CT for eligible smokers, DXA, hepatitis C
 and HIV once, AAA ultrasound for male ever-smokers 65–75). Immunizations happen
-(influenza most autumns, COVID-19, Tdap, shingles, pneumococcal at 65+); record
-them as `immunizations` on the event.
+the way they do for real adults: influenza in about half of adults' autumns (more
+often after 65, rarely every single year), COVID-19 boosters thinning out after
+2022, Tdap every ten years or with a wound, shingles and pneumococcal when due and
+accepted. Record them as `immunizations` with a label from the vaccine list in the
+vocabulary; a dose given elsewhere (a pharmacy, a prior practice) goes on the
+event that documents it, usually `outside_records` or `pharmacy`. Most screening
+results are normal, and most PHQ-9s are low.
 
 Visit spacing is irregular: delayed follow-ups, missed years, a flurry around an
 illness, telehealth during 2020–2021. Annual visits drift by weeks or months from
@@ -179,14 +214,22 @@ times (clinic 08:00–17:00 with non-round minutes; ED any hour).
 ## Notes
 
 Write the **body** of each document only; code adds the title, date, patient,
-MRN, age and service header. Bodies vary by author and type:
+MRN, age and service header. Every document names its `author` by role: `PCP`,
+`covering NP`, `RN`, `MA`, `front desk`, `practice pharmacist`, `cardiology`,
+`ED physician`, `radiology`, `patient`, `patient's daughter`. Two people in one
+role are told apart the way a chart would ("PCP" and "prior PCP, retired 2021").
+Bodies vary by author and type, and most are short:
 
 - Physician/NP progress notes: subjective or interval history, pertinent ROS,
   medications reviewed (only those current then), exam, data reviewed,
-  assessment and plan by problem. 120–450 words; annual physicals and
-  establish-care notes longer; quick follow-ups shorter.
-- Nursing, MA and triage notes: brief, task-focused, clipped style.
-- Telephone encounters and portal threads: short and conversational.
+  assessment and plan by problem. Most 120–300 words; establish-care, annual and
+  decision-point notes longer; a quick recheck 60 words. Exam and ROS are often
+  templated and carried forward from the last visit with small edits, as real
+  EHRs do.
+- Nursing, MA and triage notes: 20–80 words, task-focused, clipped, fragments.
+- Telephone encounters and portal threads: short and conversational. A patient
+  writes the way they write, greeting no one or by "Hi," and the physician
+  answers in a line or two.
 - Consult letters: addressed back to the primary-care physician by role ("Thank
   you for referring…"), with the specialist's impression and recommendations.
 - Discharge summaries: hospital course, discharge medications (list changes),
@@ -199,6 +242,21 @@ result note or portal reply is `Internal Medicine — Primary Care` even when it
 discusses an MRI. Notes never describe their own tone or the author's intentions
 ("explained without lecturing"); they record what happened. A patient's verbal
 tic or catchphrase may appear once or twice, not in every note.
+
+Notes are written by busy clinicians, not for a textbook. No guideline citations
+or reasoning essays in a progress note ("per USPSTF…", "given the ACC/AHA risk
+calculator…"); the plan says what was decided. No em dashes (the check rejects
+them), no tidy groups of three, no "notably". Real charts carry small
+imperfections and nobody fixes all of them: a med list a visit behind, a problem
+list that lags, a self-reported drink count that changes between notes, an
+abnormal value no note mentions, a result filed to the wrong visit. Things go
+wrong around care the way they do: a prior authorization denied and appealed, a
+fax that arrives twice, a message answered three days later, a referral that
+never gets booked.
+
+Everything about this patient is their own: their people, jobs, pets, phrases and
+mishaps. Invent them fresh from the seed; avoid the first stock choice that comes
+to mind.
 
 Vary sentence structure, abbreviations and length across authors. Use real
 clinical shorthand where clinicians would. Do not reuse paragraphs between notes;
@@ -231,7 +289,7 @@ strength you need is missing, give `"drug_text"` (generic name, strength, form)
 instead of `"drug"` and it will be looked up.
 
 **Labs.** A panel result lists the panel name and the members you have a reason
-to state (anything abnormal or clinically relevant to this patient—A1c, LDL,
+to state (anything abnormal or clinically relevant to this patient: A1c, LDL,
 creatinine, potassium, TSH, hemoglobin and so on). Unstated members of a panel are
 filled with normal values by code, so do not state values merely to be complete,
 and never let a stated value contradict the story. Give eGFR only if you want a
@@ -253,12 +311,15 @@ result only after it was released, and a result note follows the release.
 Qualitative results use `"text"` (e.g. `"Negative"`, `"No growth"`,
 `">100,000 CFU/mL E. coli"`). Units default to the catalog unit.
 
-**Vitals.** Rooming records a full set at nearly every in-person visit: blood
-pressure, heart rate, respiratory rate, temperature, SpO2 and weight; height at
-the first visit and about yearly. Nurse visits record what was checked. ED visits
-and admissions record several sets: give `vitals` as a list of sets each with its
-own `time` (triage and repeat sets in the ED; every 4–8 hours on the ward). Values
-drift realistically, follow the illness, and never repeat as identical tuples.
+**Vitals.** Rooming records blood pressure, heart rate, SpO2 and weight at nearly
+every in-person visit; temperature and respiratory rate at sick visits and when
+the complaint calls for them; height at the first visit and about yearly. Nurse
+visits record what was checked. ED visits and admissions record several sets:
+give `vitals` as a list of sets each with its own `time` (triage and repeat sets
+in the ED; every 4–8 hours on the ward). Values come from automated cuffs and
+oximeters: any final digit, odd as often as even (137/83, 71), a spread from
+visit to visit, rarely the same pair twice. They follow the illness. The check
+rejects a series that is nearly all even or keeps repeating.
 
 **Observation count.** Each vital sign is one observation (blood pressure counts
 once); each lab panel is one observation per member plus one for the panel; each
@@ -306,6 +367,7 @@ patient fields (`given` through `summary`); later parts carry only `mrn` and
           "end": "YYYY-MM-DDTHH:MM (admissions only)",
           "service": "Internal Medicine — Primary Care",
           "reason": "short reason for visit",
+          "appointment": "cancelled|no-show (only for a booked visit that did not happen)",
           "conditions": [{"label": "Essential hypertension", "action": "diagnosed|history|resolved", "onset": "YYYY-MM-DD", "note": "optional qualifier"}],
           "medications": [{"drug": "lisinopril 10 MG Oral Tablet", "action": "start|stop|historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic|short", "reason": "optional"}],
           "allergies": [{"substance": "Penicillin", "reaction": "Hives", "severity": "mild|moderate|severe", "criticality": "low|high", "type": "allergy|intolerance"}],
@@ -317,8 +379,10 @@ patient fields (`given` through `summary`); later parts carry only `mrn` and
           "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}, {"item": "History of alcohol use", "value": "2-3 drinks per week"}],
           "reports": [{"study": "Chest X-ray, 2 views", "performed": "YYYY-MM-DDTHH:MM", "text": "…", "conclusion": "…"}],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "YYYY-MM-DDTHH:MM"}],
-          "immunizations": [{"vaccine": "Influenza, seasonal", "date": "YYYY-MM-DDTHH:MM"}],
-          "documents": [{"type": "Progress Notes", "title": "Primary Care Office Visit", "date": "YYYY-MM-DDTHH:MM", "status": "final|preliminary", "body": "…"}]
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "YYYY-MM-DDTHH:MM"}],
+          "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral|lab|imaging|procedure", "to": "Dermatology", "reason": "changing mole, left shoulder"},
+                     {"id": "derm-referral", "action": "done|cancelled", "date": "YYYY-MM-DDTHH:MM (on a later event)"}],
+          "documents": [{"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "YYYY-MM-DDTHH:MM", "status": "final|preliminary", "body": "…"}]
         }
       ]
     }
@@ -335,6 +399,31 @@ unique across all parts of a patient and sort chronologically; use the date and 
 letter, e.g. `2019-03-14a`. (The key is always `vitals`; the second example only
 shows the list form.)
 
+An order's `order` text names what was ordered; an imaging or procedure order may
+use the matching report or procedure label from the catalog. Visits on the
+practice calendar (establish care, office, annual, telehealth and nurse visits in
+primary care) appear as appointments; give `end` when a visit ran long.
+
 Phone numbers use the 413-555-01xx range; emails use `@example.test`; street
 addresses are plausible for the seed's town; names fit the patient's background
 and generation, and no two patients share a full name.
+
+## Before you finish
+
+Read `chart.txt` as the physician who will inherit this patient, and fix what a
+physician would notice:
+
+- **Now.** At the bank time the chart is mid-life: something is plausibly open for
+  this patient (or, for a quiet patient, nothing is, and that is fine), and the
+  weeks after it go on the way they would.
+- **Truth.** No note knows something before its date; notes and structured data
+  agree; every result, drug and diagnosis in a note exists in the data.
+- **Voice.** Each document sounds like its author. Notes are short unless it is a
+  decision point. No teaching voice, no guideline citations, no em dashes, no
+  greeting addressed to a role ("Hi the PCP").
+- **Texture.** Copy-forward and templated exams, small unreconciled
+  discrepancies, some friction, at least one thing nobody followed up.
+- **Numbers.** Vitals read like a device produced them; lab trends wobble.
+- **This patient.** Nothing generic: the people, events and phrases belong to
+  this life, and nothing repeats from note to note.
+

@@ -1128,6 +1128,59 @@ pub const SOCIAL: &[(&str, &str)] = &[
     ("Electronic cigarette status", "105045-9"),
     ("Tobacco smoking status", "72166-2"),
     ("History of alcohol use", "11331-6"),
+    ("Occupation", "11341-5"),
+    ("Housing status", "71802-3"),
+    ("Highest level of education", "82589-3"),
+];
+
+// Vaccines: label -> CVX, verified against tx.fhir.org. Pick the product given;
+// history from elsewhere with an unknown product uses an "unspecified" entry.
+pub const VACCINES: &[(&str, &str)] = &[
+    ("Influenza, quadrivalent, injectable", "150"),
+    ("Influenza, trivalent, injectable", "140"),
+    ("Influenza, high-dose, quadrivalent", "197"),
+    ("Influenza, high-dose, trivalent", "135"),
+    ("Influenza, adjuvanted, quadrivalent", "205"),
+    ("Influenza, adjuvanted, trivalent", "168"),
+    ("Influenza, recombinant, quadrivalent", "185"),
+    ("Influenza, unspecified", "88"),
+    ("Tdap", "115"),
+    ("Td", "113"),
+    ("COVID-19, mRNA, Pfizer-BioNTech, original", "208"),
+    ("COVID-19, mRNA, Pfizer-BioNTech, bivalent", "300"),
+    ("COVID-19, mRNA, Pfizer-BioNTech, updated formula", "309"),
+    ("COVID-19, mRNA, Moderna, original", "207"),
+    ("COVID-19, mRNA, Moderna, bivalent", "229"),
+    ("COVID-19, mRNA, Moderna, updated formula", "312"),
+    ("COVID-19, protein subunit, Novavax", "313"),
+    ("COVID-19, unspecified", "213"),
+    ("Pneumococcal conjugate PCV20", "216"),
+    ("Pneumococcal conjugate PCV15", "215"),
+    ("Pneumococcal conjugate PCV13", "133"),
+    ("Pneumococcal polysaccharide PPSV23", "33"),
+    ("Zoster recombinant (Shingrix)", "187"),
+    ("Zoster live", "121"),
+    ("RSV, adjuvanted (Arexvy)", "303"),
+    ("RSV, bivalent (Abrysvo)", "305"),
+    ("RSV, unspecified", "314"),
+    ("Hepatitis B, adult", "43"),
+    ("Hepatitis B, CpG-adjuvanted (Heplisav-B)", "189"),
+    ("Hepatitis A, adult", "52"),
+    ("Hepatitis A and B (Twinrix)", "104"),
+    ("HPV, 9-valent", "165"),
+    ("HPV, quadrivalent", "62"),
+    ("MMR", "03"),
+    ("Varicella", "21"),
+    ("Meningococcal conjugate MenACWY", "136"),
+    ("Typhoid Vi polysaccharide", "101"),
+];
+
+// ServiceRequest categories (US Core value set, SNOMED CT).
+pub const ORDER_CATEGORIES: &[(&str, &str)] = &[
+    ("referral", "3457005"),
+    ("lab", "108252007"),
+    ("imaging", "363679005"),
+    ("procedure", "387713003"),
 ];
 
 // Non-laboratory diagnostic reports: label -> (LOINC, v2-0074 section).

@@ -13,8 +13,8 @@ use jiff::{Span, ToSpan};
 use sha2::{Digest, Sha256};
 
 use crate::ledger::{
-    ConditionAction, ConditionItem, Course, Event, Lab, MedicationAction, MedicationItem, Patient,
-    Report, Stamp, VitalSet,
+    ConditionAction, ConditionItem, Course, Event, Lab, MedicationAction, MedicationItem,
+    OrderAction, OrderItem, Patient, Report, Stamp, VitalSet,
 };
 use crate::rng::Rng;
 use crate::time;
@@ -103,12 +103,31 @@ impl Problem<'_> {
     }
 }
 
+/// A referral or test order and what became of it.
+pub struct ServiceOrder<'a> {
+    pub event: &'a Event,
+    pub item: &'a OrderItem,
+    pub placed: Stamp,
+    /// When it was done or cancelled, if it ever was.
+    pub closed: Option<(Stamp, OrderAction)>,
+}
+
+impl ServiceOrder<'_> {
+    pub fn status(&self, at: Stamp) -> OrderAction {
+        match self.closed {
+            Some((when, action)) if when < at => action,
+            _ => OrderAction::Placed,
+        }
+    }
+}
+
 pub struct Timeline<'a> {
     pub patient: &'a Patient,
     /// Events by start time (ties keep authored order).
     pub events: Vec<&'a Event>,
     pub orders: Vec<Order<'a>>,
     pub problems: Vec<Problem<'a>>,
+    pub service_orders: Vec<ServiceOrder<'a>>,
     /// The per-patient number behind every seeded draw.
     pub base: u64,
 }
@@ -174,13 +193,79 @@ impl<'a> Timeline<'a> {
             }
         }
 
+        let mut service_orders: Vec<ServiceOrder> = Vec::new();
+        for ev in &events {
+            for item in &ev.orders {
+                let when = item.date.unwrap_or(ev.start);
+                match item.action {
+                    OrderAction::Placed => service_orders.push(ServiceOrder {
+                        event: ev,
+                        item,
+                        placed: when,
+                        closed: None,
+                    }),
+                    action => {
+                        if let Some(o) = service_orders
+                            .iter_mut()
+                            .rev()
+                            .find(|o| o.item.id == item.id && o.closed.is_none())
+                        {
+                            o.closed = Some((when, action));
+                        }
+                    }
+                }
+            }
+        }
+
         Timeline {
             patient,
             events,
             orders,
             problems,
+            service_orders,
             base: hash_prefix(&patient.mrn, 8),
         }
+    }
+
+    /// Every moment a record of this chart comes into being or changes: the moments
+    /// at which the chart as of a later time can differ from the chart just before.
+    pub fn instants(&self) -> Vec<Stamp> {
+        let mut out = Vec::new();
+        for ev in &self.events {
+            out.push(ev.start);
+            out.extend(ev.end);
+            for set in ev.vitals.sets() {
+                out.push(self.vitals_time(ev, set));
+            }
+            for (i, lab) in ev.labs.iter().enumerate() {
+                out.push(Self::collected(ev, lab));
+                out.push(self.lab_released(ev, i, lab));
+                out.extend(lab.results.iter().filter_map(|r| r.resulted));
+            }
+            for (i, r) in ev.reports.iter().enumerate() {
+                out.push(Self::performed(ev, r));
+                out.push(self.report_issued(ev, i, r));
+            }
+            out.extend(ev.surveys.iter().map(|x| x.date.unwrap_or(ev.start)));
+            out.extend(
+                ev.procedures
+                    .iter()
+                    .map(|x| x.performed.unwrap_or(ev.start)),
+            );
+            out.extend(ev.immunizations.iter().map(|x| x.date.unwrap_or(ev.start)));
+            out.extend(ev.documents.iter().map(|x| x.date.unwrap_or(ev.start)));
+            out.extend(ev.orders.iter().map(|x| x.date.unwrap_or(ev.start)));
+        }
+        for o in &self.orders {
+            out.push(o.authored);
+            out.extend(o.stopped);
+            if o.item.course == Some(Course::Short) {
+                out.push(time::plus(o.authored, (21 * 24 * 60 + 1).minutes()));
+            }
+        }
+        out.sort();
+        out.dedup();
+        out
     }
 
     /// When an untimed rooming set was taken: a few minutes after the visit started.

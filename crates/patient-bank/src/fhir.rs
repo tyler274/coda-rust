@@ -72,6 +72,19 @@ impl Reference {
     }
 }
 
+/// A reference by name only: who wrote a note, by role.
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct Named {
+    pub display: String,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct Period {
+    pub start: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub end: Option<String>,
+}
+
 #[derive(Clone, Debug, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Meta {
@@ -318,6 +331,8 @@ pub struct Observation {
     pub category: Vec<CodeableConcept>,
     pub code: CodeableConcept,
     pub subject: Reference,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<Reference>,
     pub effective_date_time: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub issued: Option<String>,
@@ -353,6 +368,7 @@ impl Observation {
             category: vec![category],
             code,
             subject: subject.clone(),
+            encounter: None,
             effective_date_time: effective,
             issued: None,
             value_quantity: None,
@@ -390,6 +406,8 @@ pub struct DiagnosticReport {
     pub category: Vec<CodeableConcept>,
     pub code: CodeableConcept,
     pub subject: Reference,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<Reference>,
     pub effective_date_time: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub issued: Option<String>,
@@ -416,13 +434,22 @@ pub struct DocumentReference {
     pub category: Vec<CodeableConcept>,
     pub subject: Reference,
     pub date: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub author: Vec<Named>,
     pub description: String,
     pub content: Vec<Content>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub context: Option<DocContext>,
 }
 
 #[derive(Clone, Debug, Serialize, PartialEq)]
 pub struct Content {
     pub attachment: Attachment,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct DocContext {
+    pub encounter: Vec<Reference>,
 }
 
 // ---------------------------------------------------------------- Procedure
@@ -436,13 +463,99 @@ pub struct Procedure {
     pub status: &'static str,
     pub code: CodeableConcept,
     pub subject: Reference,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<Reference>,
     pub performed_date_time: String,
+}
+
+// ---------------------------------------------------------------- Encounter
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct Encounter {
+    pub resource_type: &'static str,
+    pub id: String,
+    pub meta: Meta,
+    pub status: &'static str,
+    pub class: Coding,
+    #[serde(rename = "type")]
+    pub kind: Vec<CodeableConcept>,
+    pub service_type: CodeableConcept,
+    pub subject: Reference,
+    pub period: Period,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub reason_code: Vec<CodeableConcept>,
+}
+
+// ---------------------------------------------------------------- Immunization
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct Immunization {
+    pub resource_type: &'static str,
+    pub id: String,
+    pub meta: Meta,
+    pub status: &'static str,
+    pub vaccine_code: CodeableConcept,
+    pub patient: Reference,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<Reference>,
+    pub occurrence_date_time: String,
+    pub primary_source: bool,
+}
+
+// ---------------------------------------------------------------- ServiceRequest
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct ServiceRequest {
+    pub resource_type: &'static str,
+    pub id: String,
+    pub meta: Meta,
+    pub status: &'static str,
+    pub intent: &'static str,
+    pub category: Vec<CodeableConcept>,
+    pub code: CodeableConcept,
+    pub subject: Reference,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<Reference>,
+    pub authored_on: String,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub performer_type: Vec<CodeableConcept>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub reason_code: Vec<CodeableConcept>,
+}
+
+// ---------------------------------------------------------------- Appointment
+
+/// One visit on the practice calendar.
+#[derive(Clone, Debug, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct Appointment {
+    pub resource_type: &'static str,
+    pub id: String,
+    pub meta: Meta,
+    pub status: &'static str,
+    pub service_type: Vec<CodeableConcept>,
+    pub appointment_type: CodeableConcept,
+    pub description: String,
+    pub start: String,
+    pub end: String,
+    pub minutes_duration: i64,
+    pub participant: Vec<Participant>,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct Participant {
+    pub actor: Reference,
+    pub status: &'static str,
 }
 
 // ---------------------------------------------------------------- one chart
 
-/// The eight resource families, in the Roger fixture's file order.
-pub const FAMILIES: [&str; 8] = [
+/// The resource families: the Roger fixture's eight in its file order, then the
+/// encounters, immunizations and orders it does not carry.
+pub const FAMILIES: [&str; 11] = [
     "Patient",
     "Condition",
     "MedicationRequest",
@@ -451,6 +564,9 @@ pub const FAMILIES: [&str; 8] = [
     "DocumentReference",
     "Procedure",
     "AllergyIntolerance",
+    "Encounter",
+    "Immunization",
+    "ServiceRequest",
 ];
 
 /// One patient's chart, by family.
@@ -464,11 +580,14 @@ pub struct Chart {
     pub documents: Vec<DocumentReference>,
     pub procedures: Vec<Procedure>,
     pub allergies: Vec<AllergyIntolerance>,
+    pub encounters: Vec<Encounter>,
+    pub immunizations: Vec<Immunization>,
+    pub service_requests: Vec<ServiceRequest>,
 }
 
 impl Chart {
     /// Every family's resources as NDJSON lines, in `FAMILIES` order.
-    pub fn lines(&self) -> [(&'static str, Vec<String>); 8] {
+    pub fn lines(&self) -> [(&'static str, Vec<String>); 11] {
         fn each<T: Serialize>(rows: &[T]) -> Vec<String> {
             rows.iter()
                 .map(|r| serde_json::to_string(r).expect("FHIR types serialize"))
@@ -483,10 +602,13 @@ impl Chart {
             ("DocumentReference", each(&self.documents)),
             ("Procedure", each(&self.procedures)),
             ("AllergyIntolerance", each(&self.allergies)),
+            ("Encounter", each(&self.encounters)),
+            ("Immunization", each(&self.immunizations)),
+            ("ServiceRequest", each(&self.service_requests)),
         ]
     }
 
-    pub fn counts(&self) -> [(&'static str, usize); 8] {
+    pub fn counts(&self) -> [(&'static str, usize); 11] {
         [
             ("Patient", 1),
             ("Condition", self.conditions.len()),
@@ -496,6 +618,9 @@ impl Chart {
             ("DocumentReference", self.documents.len()),
             ("Procedure", self.procedures.len()),
             ("AllergyIntolerance", self.allergies.len()),
+            ("Encounter", self.encounters.len()),
+            ("Immunization", self.immunizations.len()),
+            ("ServiceRequest", self.service_requests.len()),
         ]
     }
 }

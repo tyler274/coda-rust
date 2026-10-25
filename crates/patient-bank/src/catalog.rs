@@ -2,11 +2,11 @@
 //!
 //! `data/catalog.json` holds every code authors may use by label: ICD-10-CM
 //! conditions, RxNorm drugs, LOINC labs, panels, surveys, social items and reports,
-//! CPT and HCPCS procedures, SNOMED allergens and reactions. `catalog` reads each
-//! candidate in `catalog_seed` back from its official service and records the
-//! canonical display and a receipt; nothing is guessed. Responses are kept in
-//! `data/terminology-cache.json`, so a rebuild is reproducible offline. The catalog
-//! build is the only writer of that shared cache.
+//! CPT and HCPCS procedures, SNOMED allergens, reactions and order categories, and
+//! CVX vaccines. `catalog` reads each candidate in `catalog_seed` back from its
+//! official service and records the canonical display and a receipt; nothing is
+//! guessed. Responses are kept in `data/terminology-cache.json`, so a rebuild is
+//! reproducible offline. The catalog build is the only writer of that shared cache.
 
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write as _;
@@ -26,6 +26,7 @@ pub const RXNORM: &str = "http://www.nlm.nih.gov/research/umls/rxnorm";
 pub const SNOMED: &str = "http://snomed.info/sct";
 pub const CPT: &str = "http://www.ama-assn.org/go/cpt";
 pub const HCPCS: &str = "https://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets";
+pub const CVX: &str = "http://hl7.org/fhir/sid/cvx";
 
 const V2_0074: &[(&str, &str)] = &[
     ("RAD", "Radiology"),
@@ -57,6 +58,8 @@ pub struct Catalog {
     pub procedures: Section,
     pub allergens: Section,
     pub reactions: Section,
+    pub vaccines: Section,
+    pub order_categories: Section,
 }
 
 impl Catalog {
@@ -74,7 +77,7 @@ impl Catalog {
             .collect()
     }
 
-    pub fn sections(&self) -> [(&'static str, &Section); 10] {
+    pub fn sections(&self) -> [(&'static str, &Section); 12] {
         [
             ("conditions", &self.conditions),
             ("medications", &self.medications),
@@ -86,6 +89,8 @@ impl Catalog {
             ("procedures", &self.procedures),
             ("allergens", &self.allergens),
             ("reactions", &self.reactions),
+            ("vaccines", &self.vaccines),
+            ("order_categories", &self.order_categories),
         ]
     }
 }
@@ -271,9 +276,14 @@ impl Lookup {
 
     /// Any lookup failure, offline misses included, reads as "not found".
     pub fn snomed(&mut self, code: &str) -> Option<String> {
+        self.tx(SNOMED, code)
+    }
+
+    /// A code's display from tx.fhir.org; any failure reads as "not found".
+    pub fn tx(&mut self, system: &str, code: &str) -> Option<String> {
         let url = format!(
             "https://tx.fhir.org/r4/CodeSystem/$lookup?{}",
-            urlencode(&[("system", SNOMED), ("code", code)])
+            urlencode(&[("system", system), ("code", code)])
         );
         let params = self.get(&url, "application/fhir+json").ok()?;
         params["parameter"]
@@ -411,6 +421,7 @@ pub fn build(roger: &Path, offline: bool) -> Result<i32> {
             ("snomed", SNOMED),
             ("cpt", CPT),
             ("hcpcs", HCPCS),
+            ("cvx", CVX),
         ]
         .into_iter()
         .map(|(k, v)| (k.into(), v.into()))
@@ -650,6 +661,28 @@ pub fn build(roger: &Path, offline: bool) -> Result<i32> {
                     .insert(label.into(), entry(SNOMED, code, &display));
             }
             None => problems.push(format!("reaction {label:?}: SNOMED {code} not found")),
+        }
+    }
+
+    for &(label, code) in seed::VACCINES {
+        match look.tx(CVX, code) {
+            Some(display) => {
+                let e = Entry {
+                    receipt: Some("tx.fhir.org CVX".into()),
+                    ..entry(CVX, code, &display)
+                };
+                c.vaccines.insert(label.into(), e);
+            }
+            None => problems.push(format!("vaccine {label:?}: CVX {code} not found")),
+        }
+    }
+    for &(label, code) in seed::ORDER_CATEGORIES {
+        match look.snomed(code) {
+            Some(display) => {
+                c.order_categories
+                    .insert(label.into(), entry(SNOMED, code, &display));
+            }
+            None => problems.push(format!("order category {label:?}: SNOMED {code} not found")),
         }
     }
 

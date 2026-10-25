@@ -22,8 +22,8 @@ use crate::catalog::{Catalog, Category, Entry, RXNORM};
 use crate::fhir::*;
 use crate::labs::{self, Baselines, LabContext, OBS_CAT, V2_0074};
 use crate::ledger::{
-    self, AllergyType, ConditionItem, Criticality, DocStatus, MaritalStatus, MedicationAction,
-    Severity, Stamp, Terms, num,
+    self, AllergyType, ConditionItem, Criticality, DocStatus, Event, Kind, MaritalStatus,
+    MedicationAction, OrderAction, OrderCategory, Severity, Stamp, Terms, num,
 };
 use crate::seeds::Seed;
 use crate::time;
@@ -373,6 +373,14 @@ impl Renderer<'_> {
             documents: Vec::new(),
             procedures: Vec::new(),
             allergies: Vec::new(),
+            encounters: Vec::new(),
+            immunizations: Vec::new(),
+            service_requests: Vec::new(),
+        };
+        // The encounter an event's records belong to, once it has begun.
+        let encounter_of = |ev: &Event| {
+            (ev.start < at && ev.appointment.is_none() && ev.kind.encounter().is_some())
+                .then(|| Reference::to("Encounter", &opaque("enc", &[mrn, &ev.id])))
         };
 
         // Problem list: one row per concept, its status from its whole history.
@@ -504,6 +512,34 @@ impl Renderer<'_> {
         for ev in tl.events.iter().copied().filter(|e| e.start < at) {
             let eid = ev.id.as_str();
             let start = time::utc(ev.start);
+            let enc = encounter_of(ev);
+            if let (Some(r), Some((class, display, label))) = (&enc, ev.kind.encounter()) {
+                let ended = ev.end.filter(|e| *e < at);
+                chart.encounters.push(Encounter {
+                    resource_type: "Encounter",
+                    id: r.reference["Encounter/".len()..].to_string(),
+                    meta: Meta::on(&start),
+                    status: if ev.end.is_some_and(|e| e >= at) {
+                        "in-progress"
+                    } else {
+                        "finished"
+                    },
+                    class: Coding::new(ACT_CODE, class, display),
+                    kind: vec![CodeableConcept::text(label)],
+                    service_type: CodeableConcept::text(ev.service()),
+                    subject: subject.clone(),
+                    period: Period {
+                        start: start.clone(),
+                        end: ended.map(time::utc),
+                    },
+                    reason_code: ev
+                        .reason
+                        .iter()
+                        .filter(|r| !r.is_empty())
+                        .map(|r| CodeableConcept::text(r))
+                        .collect(),
+                });
+            }
 
             for (i, a) in ev.allergies.iter().enumerate() {
                 let entry = self.catalog.allergens.get(&a.substance);
@@ -593,6 +629,7 @@ impl Renderer<'_> {
                         &subject,
                         when.clone(),
                     );
+                    o.encounter = enc.clone();
                     o.component = vec![
                         Component {
                             code: loinc(SBP.0, SBP.1, "Systolic Blood Pressure"),
@@ -637,6 +674,7 @@ impl Renderer<'_> {
                         &subject,
                         when.clone(),
                     );
+                    o.encounter = enc.clone();
                     o.value_quantity = Some(Quantity::ucum(value, unit, ucum));
                     chart.observations.push(o);
                 }
@@ -651,8 +689,16 @@ impl Renderer<'_> {
             };
             for (i, lab) in ev.labs.iter().enumerate() {
                 let out = labs::render(&cx, ev, i, lab, &mut baselines, &mut receipt);
-                chart.observations.extend(out.observations);
-                chart.reports.extend(out.report);
+                chart
+                    .observations
+                    .extend(out.observations.into_iter().map(|mut o| {
+                        o.encounter = enc.clone();
+                        o
+                    }));
+                chart.reports.extend(out.report.map(|mut r| {
+                    r.encounter = enc.clone();
+                    r
+                }));
             }
 
             for (i, s) in ev.surveys.iter().enumerate() {
@@ -674,6 +720,7 @@ impl Renderer<'_> {
                     &subject,
                     time::utc(when),
                 );
+                o.encounter = enc.clone();
                 o.value_quantity = Some(Quantity::ucum(s.value.clone(), "{score}", "{score}"));
                 chart.observations.push(o);
             }
@@ -701,6 +748,7 @@ impl Renderer<'_> {
                     &subject,
                     start.clone(),
                 );
+                o.encounter = enc.clone();
                 o.value_codeable_concept = Some(CodeableConcept::text(&s.value));
                 chart.observations.push(o);
             }
@@ -746,6 +794,7 @@ impl Renderer<'_> {
                     category: vec![CodeableConcept::coding_only(cat)],
                     code,
                     subject: subject.clone(),
+                    encounter: enc.clone(),
                     effective_date_time: effective,
                     issued: (!pending).then(|| time::utc(issued)),
                     result: Vec::new(),
@@ -774,6 +823,7 @@ impl Renderer<'_> {
                     opaque("proc", &[mrn, eid, &i.to_string()]),
                     code,
                     &subject,
+                    enc.clone(),
                     when,
                 ));
             }
@@ -782,17 +832,43 @@ impl Renderer<'_> {
                 if when >= at {
                     continue;
                 }
-                let e = &self.catalog.procedures["Immunization administration"];
-                let code = CodeableConcept::coded(
-                    coding(e),
-                    &format!("{} vaccine administration", imm.vaccine),
-                );
-                chart.procedures.push(procedure(
-                    opaque("proc", &[mrn, eid, "imm", &i.to_string()]),
-                    code,
-                    &subject,
-                    when,
-                ));
+                // History from elsewhere is reported; this practice billed only what it gave.
+                let given_here = ev.kind != Kind::OutsideRecords;
+                let vaccine_code = match self.catalog.vaccines.get(&imm.vaccine) {
+                    Some(e) => CodeableConcept::coded(coding(e), &imm.vaccine),
+                    None => {
+                        receipt
+                            .uncoded
+                            .push(format!("Immunization:{}", imm.vaccine));
+                        CodeableConcept::text(&imm.vaccine)
+                    }
+                };
+                let occurred = time::utc(when);
+                chart.immunizations.push(Immunization {
+                    resource_type: "Immunization",
+                    id: opaque("imm", &[mrn, eid, &i.to_string()]),
+                    meta: Meta::on(&occurred),
+                    status: "completed",
+                    vaccine_code,
+                    patient: subject.clone(),
+                    encounter: enc.clone(),
+                    occurrence_date_time: occurred,
+                    primary_source: given_here,
+                });
+                if given_here {
+                    let e = &self.catalog.procedures["Immunization administration"];
+                    let code = CodeableConcept::coded(
+                        coding(e),
+                        &format!("{} vaccine administration", imm.vaccine),
+                    );
+                    chart.procedures.push(procedure(
+                        opaque("proc", &[mrn, eid, "imm", &i.to_string()]),
+                        code,
+                        &subject,
+                        enc.clone(),
+                        when,
+                    ));
+                }
             }
 
             for (i, doc) in ev.documents.iter().enumerate() {
@@ -839,18 +915,84 @@ impl Renderer<'_> {
                     ))],
                     subject: subject.clone(),
                     date,
+                    author: doc
+                        .author
+                        .iter()
+                        .map(|a| Named { display: a.clone() })
+                        .collect(),
                     description: doc.title().to_string(),
                     content: vec![Content {
                         attachment: attachment(&text),
                     }],
+                    context: enc.clone().map(|e| DocContext { encounter: vec![e] }),
                 });
             }
+        }
+
+        // Referrals and tests ordered: open until done or cancelled.
+        for o in tl.service_orders.iter().filter(|o| o.placed < at) {
+            let item = o.item;
+            let what = item.order.as_deref().unwrap_or("Unspecified order");
+            let category = match item.category.unwrap_or(OrderCategory::Referral) {
+                OrderCategory::Referral => "referral",
+                OrderCategory::Lab => "lab",
+                OrderCategory::Imaging => "imaging",
+                OrderCategory::Procedure => "procedure",
+            };
+            let known = self
+                .catalog
+                .procedures
+                .get(what)
+                .or_else(|| self.catalog.reports.get(what))
+                .filter(|e| e.display.is_some());
+            let code = match known {
+                Some(e) => CodeableConcept::coded(coding(e), what),
+                None => CodeableConcept::text(what),
+            };
+            let authored = time::utc(o.placed);
+            chart.service_requests.push(ServiceRequest {
+                resource_type: "ServiceRequest",
+                id: opaque("sr", &[mrn, &o.event.id, &item.id]),
+                meta: Meta::on(&authored),
+                status: match o.status(at) {
+                    OrderAction::Placed => "active",
+                    OrderAction::Done => "completed",
+                    OrderAction::Cancelled => "revoked",
+                },
+                intent: "order",
+                category: self
+                    .catalog
+                    .order_categories
+                    .get(category)
+                    .map(|e| CodeableConcept::coding_only(coding(e)))
+                    .into_iter()
+                    .collect(),
+                code,
+                subject: subject.clone(),
+                encounter: encounter_of(o.event),
+                authored_on: authored,
+                performer_type: item.to.iter().map(|t| CodeableConcept::text(t)).collect(),
+                reason_code: item
+                    .reason
+                    .iter()
+                    .filter(|r| !r.is_empty())
+                    .map(|r| CodeableConcept::text(r))
+                    .collect(),
+            });
         }
         (chart, receipt)
     }
 }
 
-fn procedure(id: String, code: CodeableConcept, subject: &Reference, when: Stamp) -> Procedure {
+const ACT_CODE: &str = "http://terminology.hl7.org/CodeSystem/v3-ActCode";
+
+fn procedure(
+    id: String,
+    code: CodeableConcept,
+    subject: &Reference,
+    encounter: Option<Reference>,
+    when: Stamp,
+) -> Procedure {
     let performed = time::utc(when);
     Procedure {
         resource_type: "Procedure",
@@ -859,6 +1001,7 @@ fn procedure(id: String, code: CodeableConcept, subject: &Reference, when: Stamp
         status: "completed",
         code,
         subject: subject.clone(),
+        encounter,
         performed_date_time: performed,
     }
 }

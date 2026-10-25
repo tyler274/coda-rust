@@ -69,11 +69,15 @@ pub fn run(bank: &Path, seeds: &Path, panel: usize, out: &Path, as_of: &str) -> 
             .ok_or_else(|| format!("{mrn} is in the panel but not the manifest"))?;
         if !rerender {
             for fam in FAMILIES {
-                let text = fs::read_to_string(
-                    bank.join("patients")
-                        .join(mrn)
-                        .join(format!("{fam}.ndjson")),
-                )?;
+                let path = bank
+                    .join("patients")
+                    .join(mrn)
+                    .join(format!("{fam}.ndjson"));
+                // a Roger fixture carries only its own families
+                if fam != "Patient" && !path.exists() {
+                    continue;
+                }
+                let text = fs::read_to_string(path)?;
                 rows.get_mut(fam)
                     .expect("family")
                     .extend(text.lines().map(String::from));

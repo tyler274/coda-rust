@@ -16,12 +16,15 @@ stories              draws a concrete clinical story from data/stories.json into
 data/author-workflow.js
       |              one agent per unit (a patient, or a family authored together):
       |              story.md first, then the ledger in parts, `check` until ACCEPTED,
-      |              `preview` and reread; batches are then reviewed by hand
+      |              `preview` and reread; then an independent physician-eye review
+      |              against the guide's "Before you finish" and a fix pass
       v
 patients/ledgers/<unit>.json
       |              the clinical source of truth, written only by `check`, with the
       |              unit's verified extra codes (`terms`)
 build                renders every ledger as FHIR R4 as of 2026-08-27T12:00 Eastern;
+      |              arrivals/<MRN>.ndjson, what reaches the practice after that up to
+      |              the horizon (2026-10-08T12:00); calendar/Appointment.ndjson;
       |              panels/panel-{100,300,500,1000}.json (nested, families kept whole);
       |              manifest.json
       v
@@ -63,6 +66,18 @@ the finished directory into place.
   the same ledger rendered as of that moment, so later records are absent, later
   stops and resolutions have not happened, and results not yet released are
   `registered`.
+- **What comes next.** Ledgers run past the bank time to the horizon. The bank
+  chart holds what the practice knew at the bank time; `upcoming.rs` renders the
+  chart again at every later record's instant and writes each changed or new
+  resource as an arrival, a new `meta.versionId` with `lastUpdated` at the moment it
+  became available (a result released, a letter received, an order closed). The
+  calendar is the practice's own booked visits from the bank day to the horizon as
+  FHIR Appointments: fulfilled, booked, cancelled or no-show.
+- **Encounters, immunizations and orders.** Every visit that happened is an
+  Encounter (v3 ActCode class) that its vitals, results, notes and shots point to.
+  Immunizations carry verified CVX codes; a dose reported from elsewhere is not a
+  primary source. An `orders` item is a ServiceRequest, active until a later item
+  marks it done (`completed`) or cancelled (`revoked`).
 - **Verified extra codes.** `check` verifies the ICD-10-CM codes and drug texts an
   author proposed and stores the answers in the ledger, so build, validate and
   materialize need no network. A drug text is coded only when its strength is
@@ -80,7 +95,16 @@ the finished directory into place.
   time. `validate` reports how varied the active problem lists are across the
   panel (`problem_list` in validation.json).
 - **Roles, not names.** `check` rejects a note or title that names a clinician or
-  staff member ("Dr. Okafor", "M. Lindqvist, MD", "-- B. Kowal").
+  staff member ("Dr. Okafor", "M. Lindqvist, MD", "-- B. Kowal"), a document with
+  no `author` role, and a greeting addressed to a role ("Hi the PCP,").
+- **Believable numbers and prose.** `check` rejects em dashes in notes, a vitals
+  series that no automated cuff or oximeter would produce (nearly all even
+  systolics or heart rates, BP pairs that keep repeating, one temperature), an
+  order closed before it was placed, and clinical records on a cancelled or missed
+  visit. `validate` reports what is open at the bank time (pending results, open
+  orders), arrivals and the calendar, vital-sign digit counts, the most common
+  active drugs (`medication_list`), and sentences of eight or more words found in
+  five or more patients' notes (`shared_sentences`).
 
 ## Density
 
@@ -102,7 +126,8 @@ the years they can have. `check` rejects a chart below 80% of either target.
 Reused:
 - **Format bar:** the Roger fixture in coda-agents `docs/local-product-fixtures`. Its
   eight FHIR families, MRN identifier system, note header, code systems and
-  simulation time are followed. Its CPT codes and displays are the only CPT
+  simulation time are followed; Encounter, Immunization and ServiceRequest are added
+  beside them, from the families Coda Agents reads. Its CPT codes and displays are the only CPT
   displays used.
 - **Authoring contract:** coda-gym's `eval-chart` chart-build flow. The patient's truth
   is authored first and then translated to strict FHIR R4, with UTC timestamps
@@ -130,8 +155,10 @@ realism bar.
 
 ## Assumptions
 
-- Adults only, in one practice. The practice's "today" is 2026-08-27, and every
-  record is strictly before 2026-08-27T12:00 Eastern.
+- Adults only, in one membership-based internal medicine practice. Patients keep
+  their insurance for labs, imaging, specialists and drugs, and bring years of
+  care from elsewhere as outside history. The bank time is 2026-08-27T12:00
+  Eastern; ledgers run to the horizon, 2026-10-08T12:00.
 - Western Massachusetts towns, 413-555-01xx-style phones and `@example.test` emails.
   Other area codes appear for people who moved in.
 - Clinicians and staff appear by role only. No real care organization, lab, pharmacy, store or

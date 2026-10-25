@@ -11,11 +11,19 @@ use jiff::{Span, Timestamp};
 
 use crate::ledger::Stamp;
 
-/// The practice's "today": every record is strictly before it.
+/// The practice's "today": the bank chart holds exactly the records before it.
 pub const AS_OF: &str = "2026-08-27T12:00";
+
+/// The end of what happens next: records between `AS_OF` and here are authored too,
+/// and reach the practice as dated arrivals and calendar visits.
+pub const HORIZON: &str = "2026-10-08T12:00";
 
 pub fn as_of() -> Stamp {
     Stamp::parse(AS_OF).expect("AS_OF is a stamp")
+}
+
+pub fn horizon() -> Stamp {
+    Stamp::parse(HORIZON).expect("HORIZON is a stamp")
 }
 
 fn eastern() -> TimeZone {

@@ -3,7 +3,7 @@
 //! ```text
 //! brief   <unit>   seed, targets, paths
 //! check   <unit>   merge parts, check, verify extra codes, count; ACCEPTED writes the ledger
-//! preview <unit>   render and write chart.txt for reading
+//! preview <unit>   render to the horizon and write chart.txt for reading
 //! ```
 //!
 //! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
@@ -18,7 +18,7 @@ use base64::Engine as _;
 
 use crate::catalog::{Catalog, Lookup, write_atomic};
 use crate::fhir::{Chart, Observation};
-use crate::ledger::{Ledger, Part, Patient, Terms};
+use crate::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use crate::render::Renderer;
 use crate::seeds::{Seeds, Unit};
 use crate::{Result, check, paths, terms, time};
@@ -54,6 +54,7 @@ pub fn vocabulary(c: &Catalog) -> String {
         block("Procedures and visit codes", c.procedures.keys()),
         block("Allergens", c.allergens.keys()),
         block("Allergy reactions", c.reactions.keys()),
+        block("Vaccines (CVX)", c.vaccines.keys()),
     ]
     .join("\n")
 }
@@ -144,12 +145,13 @@ pub fn merge(drafts: &Path) -> (Merged, Vec<String>) {
     (Merged { patients, part_of }, errors)
 }
 
-/// Every member's chart at the bank time, rendered with the unit's verified codes.
+/// Every member's chart at `at`, rendered with the unit's verified codes.
 fn render(
     unit: &Unit,
     patients: &[Patient],
     catalog: &Catalog,
     terms: &Terms,
+    at: Stamp,
 ) -> Vec<(String, Chart)> {
     let r = Renderer { catalog, terms };
     unit.members
@@ -157,8 +159,7 @@ fn render(
         .filter_map(|m| {
             Some((
                 m.mrn.clone(),
-                r.render(m, patients.iter().find(|p| p.mrn == m.mrn)?, time::as_of())
-                    .0,
+                r.render(m, patients.iter().find(|p| p.mrn == m.mrn)?, at).0,
             ))
         })
         .collect()
@@ -216,7 +217,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
                 .iter()
                 .map(|x| format!("left text-only (not verified): {x}")),
         );
-        for (mrn, chart) in render(unit, &merged.patients, catalog, &terms) {
+        for (mrn, chart) in render(unit, &merged.patients, catalog, &terms, time::as_of()) {
             let seed = unit.members.iter().find(|m| m.mrn == mrn).expect("member");
             let counts: Vec<String> = chart
                 .counts()
@@ -277,7 +278,7 @@ fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         return Ok(1);
     }
     let terms = verify(drafts, &merged.patients, catalog)?;
-    let text: Vec<String> = render(unit, &merged.patients, catalog, &terms)
+    let text: Vec<String> = render(unit, &merged.patients, catalog, &terms, time::horizon())
         .iter()
         .map(|(_, c)| chart_text(c))
         .collect();
@@ -466,13 +467,55 @@ pub fn chart_text(chart: &Chart) -> String {
             format!("proc {}", x.code.text.as_deref().unwrap_or("")),
         ));
     }
+    for e in &chart.encounters {
+        let label = e.kind.first().and_then(|k| k.text.as_deref()).unwrap_or("");
+        let reason = e
+            .reason_code
+            .first()
+            .and_then(|r| r.text.as_deref())
+            .map(|r| format!(": {r}"))
+            .unwrap_or_default();
+        timeline.push((
+            local(&e.period.start),
+            format!("VISIT {label} ({}){reason}", e.class.code),
+        ));
+    }
+    for i in &chart.immunizations {
+        timeline.push((
+            local(&i.occurrence_date_time),
+            format!(
+                "imm  {}{}",
+                i.vaccine_code.text.as_deref().unwrap_or(""),
+                if i.primary_source { "" } else { " (reported)" }
+            ),
+        ));
+    }
+    for o in &chart.service_requests {
+        let to = o
+            .performer_type
+            .first()
+            .and_then(|p| p.text.as_deref())
+            .map(|p| format!(" -> {p}"))
+            .unwrap_or_default();
+        timeline.push((
+            local(&o.authored_on),
+            format!(
+                "order [{}] {}{to}",
+                o.status,
+                o.code.text.as_deref().unwrap_or("")
+            ),
+        ));
+    }
     for d in &chart.documents {
         let text = decode(&d.content[0].attachment.data);
         timeline.push((
             local(&d.date),
             format!(
-                "DOCUMENT {}\n{}",
+                "DOCUMENT {} by {}\n{}",
                 d.kind.text.as_deref().unwrap_or(""),
+                d.author
+                    .first()
+                    .map_or("(no author)", |a| a.display.as_str()),
                 text.trim()
             ),
         ));
@@ -481,8 +524,17 @@ pub fn chart_text(chart: &Chart) -> String {
         "\n## Chart, oldest first (Eastern time; results show when they were released)".into(),
     );
     timeline.sort_by(|a, b| a.0.cmp(&b.0));
+    let bank_time = time::AS_OF.replace('T', " ");
     let mut day = String::new();
+    let mut later = false;
     for (when, line) in timeline {
+        if !later && when >= bank_time {
+            later = true;
+            out.push(format!(
+                "\n----- bank time {bank_time}: everything below reaches the practice later"
+            ));
+            day.clear();
+        }
         if when[..10] != day {
             day = when[..10].to_string();
             out.push(format!("\n=== {day}"));

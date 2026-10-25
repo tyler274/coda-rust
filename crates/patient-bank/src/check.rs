@@ -1,7 +1,9 @@
 //! The authoring rules a unit's ledger must meet before it is accepted.
 //!
 //! Shape is the ledger types' job; these are the rules about content: seed
-//! agreement, the catalog vocabulary, chronology, lab arithmetic and note hygiene.
+//! agreement, the catalog vocabulary, chronology up to the horizon, orders and
+//! missed visits, lab arithmetic, vitals a device would produce, and note hygiene
+//! (authors, roles not names, no em dashes).
 //! Errors send the author back to the part files; warnings are kept with the
 //! accepted ledger for review. None of this judges clinical reasoning.
 
@@ -12,7 +14,9 @@ use regex::Regex;
 
 use crate::catalog::Catalog;
 use crate::labs::DIFFERENTIAL;
-use crate::ledger::{ConditionAction, Event, MedicationAction, Patient, Stamp, num};
+use crate::ledger::{
+    ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, VitalSet, num,
+};
 use crate::seeds::Unit;
 use crate::time;
 use crate::timeline::{ProblemStatus, Timeline};
@@ -36,6 +40,21 @@ static CLINICIAN: LazyLock<Regex> = LazyLock::new(|| {
     ))
     .expect("regex")
 });
+
+/// Phrasings no chart should carry: a role used as a name in a greeting or a
+/// salutation ("Hi the PCP,", "The RN, I wanted to…"), and the em dash, which
+/// clinicians do not type.
+static PHRASING: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(concat!(
+        r"(?i)\b(?:hi|hello|hey|dear) the (?:pcp|rn|ma|np|pa|doctor|physician|nurse)\b",
+        r"|(?m-i)^The (?:PCP|RN|MA|NP|PA),",
+        r"|—",
+    ))
+    .expect("regex")
+});
+
+/// With at least this many readings, a patient's vitals are judged as a series.
+const SERIES: usize = 8;
 
 /// Unseeded problems a chart may still carry as active at the bank time: real
 /// lists pick up a stray entry or two beyond what the story planned.
@@ -100,7 +119,7 @@ fn fmt_num(x: f64) -> String {
 pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<String>, Vec<String>) {
     let mut errors = Vec::new();
     let mut warnings = Vec::new();
-    let as_of = time::as_of();
+    let horizon = time::horizon();
     let wanted: Vec<&str> = unit.members.iter().map(|m| m.mrn.as_str()).collect();
     let mut got: Vec<&str> = patients.iter().map(|p| p.mrn.as_str()).collect();
     got.sort_unstable();
@@ -148,10 +167,10 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         for ev in &tl.events {
             let eid = format!("{mrn}/{}", ev.id);
             for (what, stamp) in stamps(ev) {
-                if stamp >= as_of && what != "end" {
+                if stamp >= horizon && what != "end" {
                     errors.push(format!(
-                        "{eid}: {what} {stamp} is not before {}",
-                        time::AS_OF
+                        "{eid}: {what} {stamp} is not before the horizon {}",
+                        time::HORIZON
                     ));
                 }
                 if stamp.date() < birth {
@@ -172,6 +191,24 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 let title = d.title();
                 if body.chars().count() < 40 {
                     errors.push(format!("{eid}: document {title:?} body too short"));
+                }
+                match d.author.as_deref().map(str::trim) {
+                    None | Some("") => errors.push(format!(
+                        "{eid}: document {title:?} has no author; name the writer's role"
+                    )),
+                    Some(a) if CLINICIAN.is_match(a) => errors.push(format!(
+                        "{eid}: document {title:?} author {a:?} names a person; use the role"
+                    )),
+                    Some(_) => {}
+                }
+                if let Some(m) = PHRASING
+                    .find(body)
+                    .or_else(|| d.title.as_deref().and_then(|t| PHRASING.find(t)))
+                {
+                    errors.push(format!(
+                        "{eid}: document {title:?} uses {:?}; write the way the author would",
+                        m.as_str()
+                    ));
                 }
                 if let Some(m) = REAL_NAMES.find(body) {
                     errors.push(format!(
@@ -208,10 +245,30 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                     ));
                 }
             }
-            if ev.kind.needs_note() && ev.documents.is_empty() {
+            if ev.appointment.is_none() && ev.kind.needs_note() && ev.documents.is_empty() {
                 errors.push(format!("{eid}: visit without a note"));
             }
+            if ev.appointment.is_some() {
+                if !ev.booked() {
+                    errors.push(format!(
+                        "{eid}: only a visit on the practice calendar can be cancelled or missed"
+                    ));
+                }
+                let happened = !ev.vitals.is_empty()
+                    || !ev.labs.is_empty()
+                    || !ev.reports.is_empty()
+                    || !ev.procedures.is_empty()
+                    || !ev.immunizations.is_empty()
+                    || !ev.surveys.is_empty();
+                if happened {
+                    errors.push(format!(
+                        "{eid}: a cancelled or missed visit records nothing clinical"
+                    ));
+                }
+            }
         }
+        check_orders(mrn, &tl, &mut errors);
+        check_vitals(mrn, &tl, &mut errors);
         // A stop that finds no open order of its drug documents nothing.
         for ev in &tl.events {
             for m in ev
@@ -240,7 +297,7 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
             .map(|e| e.start)
             .min()
         {
-            let expected = as_of.date().year() as i64 - i64::from(seed.years_with_practice);
+            let expected = time::as_of().date().year() as i64 - i64::from(seed.years_with_practice);
             if (i64::from(first.date().year()) - expected).abs() > 2 {
                 warnings.push(format!(
                     "{mrn}: first practice event {} vs about {expected}",
@@ -253,6 +310,102 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         }
     }
     (errors, warnings)
+}
+
+/// Each order is placed once with what it is, and closed only after it was placed.
+fn check_orders(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
+    let mut placed: HashMap<&str, Stamp> = HashMap::new();
+    for ev in &tl.events {
+        for o in &ev.orders {
+            let when = o.date.unwrap_or(ev.start);
+            let eid = format!("{mrn}/{}", ev.id);
+            match o.action {
+                OrderAction::Placed => {
+                    if o.order.as_deref().is_none_or(|t| t.trim().is_empty()) {
+                        errors.push(format!("{eid}: order {:?} placed without `order`", o.id));
+                    }
+                    if o.category.is_none() {
+                        errors.push(format!("{eid}: order {:?} placed without `category`", o.id));
+                    }
+                    if placed.insert(&o.id, when).is_some() {
+                        errors.push(format!("{eid}: order id {:?} placed twice", o.id));
+                    }
+                }
+                _ => match placed.get(o.id.as_str()) {
+                    Some(at) if *at <= when => {}
+                    _ => errors.push(format!(
+                        "{eid}: order {:?} closed before it was placed",
+                        o.id
+                    )),
+                },
+            }
+        }
+    }
+}
+
+/// Vitals a real cuff, monitor and scale would produce: not every systolic even,
+/// not nearly every heart rate even, few exact repeats of a BP pair, and
+/// temperatures that vary.
+fn check_vitals(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
+    let sets: Vec<&VitalSet> = tl.events.iter().flat_map(|e| e.vitals.sets()).collect();
+    let bps: Vec<(i64, i64)> = sets
+        .iter()
+        .filter_map(|v| v.bp.as_ref())
+        .map(|[s, d]| (num(s).round() as i64, num(d).round() as i64))
+        .collect();
+    let share = |n: usize, of: usize| n as f64 / of.max(1) as f64;
+    if bps.len() >= SERIES {
+        let odd = bps.iter().filter(|(s, _)| s % 2 != 0).count();
+        if share(odd, bps.len()) < 0.15 {
+            errors.push(format!(
+                "{mrn}: {odd} of {} systolic readings are odd; automated cuffs read any digit",
+                bps.len()
+            ));
+        }
+        let mut seen: HashSet<(i64, i64)> = HashSet::new();
+        let repeats = bps.iter().filter(|bp| !seen.insert(**bp)).count();
+        if share(repeats, bps.len()) > 0.25 {
+            errors.push(format!(
+                "{mrn}: {repeats} of {} BP readings repeat an earlier pair exactly",
+                bps.len()
+            ));
+        }
+    }
+    let hrs: Vec<i64> = sets
+        .iter()
+        .filter_map(|v| v.hr.as_ref())
+        .map(|h| num(h).round() as i64)
+        .collect();
+    if hrs.len() >= SERIES {
+        let even = hrs.iter().filter(|h| *h % 2 == 0).count();
+        if share(even, hrs.len()) > 0.8 {
+            errors.push(format!(
+                "{mrn}: {even} of {} heart rates are even; pulse oximeters read any digit",
+                hrs.len()
+            ));
+        }
+    }
+    let temps: Vec<String> = sets
+        .iter()
+        .filter_map(|v| v.temp_c.as_ref())
+        .map(|t| format!("{:.1}", num(t)))
+        .collect();
+    if temps.len() >= SERIES {
+        let mut counts: HashMap<&str, usize> = HashMap::new();
+        for t in &temps {
+            *counts.entry(t).or_default() += 1;
+        }
+        let (top, n) = counts
+            .iter()
+            .max_by_key(|(t, n)| (**n, **t))
+            .expect("readings");
+        if share(*n, temps.len()) > 0.4 {
+            errors.push(format!(
+                "{mrn}: {n} of {} temperatures are {top} C; let them vary",
+                temps.len()
+            ));
+        }
+    }
 }
 
 /// A seed with coded anchors fixes the problem list: every anchor is recorded, and
@@ -343,6 +496,12 @@ fn stamps(ev: &Event) -> Vec<(&'static str, Stamp)> {
             .iter()
             .filter_map(|d| d.date)
             .map(|t| ("documents.date", t)),
+    );
+    out.extend(
+        ev.orders
+            .iter()
+            .filter_map(|o| o.date)
+            .map(|t| ("orders.date", t)),
     );
     out
 }
@@ -534,6 +693,14 @@ fn check_event<'a>(
     for x in &ev.procedures {
         if !catalog.procedures.contains_key(&x.procedure) {
             errors.push(format!("{eid}: unknown procedure {:?}", x.procedure));
+        }
+    }
+    for i in &ev.immunizations {
+        if !catalog.vaccines.contains_key(&i.vaccine) {
+            warnings.push(format!(
+                "{eid}: vaccine {:?} not in catalog (text only, no CVX)",
+                i.vaccine
+            ));
         }
     }
     for a in &ev.allergies {

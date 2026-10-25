@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, check, paths, stories};
+use patient_bank::{bank, check, paths, stories, upcoming};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -268,7 +268,7 @@ fn errors_for(seed: Seed, p: Patient) -> Vec<String> {
 }
 
 fn note(body: &str) -> serde_json::Value {
-    json!({"documents": [{"type": "Progress Notes", "body": body}]})
+    json!({"documents": [{"type": "Progress Notes", "author": "PCP", "body": body}]})
 }
 
 #[test]
@@ -472,4 +472,209 @@ fn the_build_refuses_an_output_that_overlaps_its_inputs() {
     assert!(bank::refuse_overlap(&ledgers, &[&dir.join("bank")]).is_err());
     assert!(bank::refuse_overlap(&dir.join("out"), &[&ledgers]).is_ok());
     std::fs::remove_dir_all(&dir).expect("cleanup");
+}
+
+#[test]
+fn a_visit_is_an_encounter_its_records_link_to() {
+    let p = patient(json!([visit(
+        "e1",
+        "2025-10-14T10:00",
+        json!({
+            "end": "2025-10-14T10:30",
+            "vitals": {"bp": [131, 83], "hr": 71},
+            "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable"}],
+            "documents": [{"type": "Progress Notes", "author": "PCP",
+                "body": "Flu shot today. BP a little high, recheck at the next visit."}]
+        })
+    )]));
+    let during = render(&p, "2025-10-14T10:15");
+    assert_eq!(during.encounters[0].status, "in-progress");
+    let chart = render(&p, "2025-11-01T09:00");
+    let enc = &chart.encounters[0];
+    assert_eq!((enc.status, enc.class.code.as_str()), ("finished", "AMB"));
+    let link = format!("Encounter/{}", enc.id);
+    let imm = &chart.immunizations[0];
+    assert_eq!(imm.vaccine_code.coding[0].code, "150");
+    assert_eq!(
+        imm.encounter.as_ref().map(|r| r.reference.as_str()),
+        Some(link.as_str())
+    );
+    assert!(
+        chart
+            .observations
+            .iter()
+            .all(|o| o.encounter.as_ref().map(|r| &r.reference) == Some(&link))
+    );
+    let doc = &chart.documents[0];
+    assert_eq!(doc.author[0].display, "PCP");
+    assert_eq!(
+        doc.context
+            .as_ref()
+            .map(|c| c.encounter[0].reference.as_str()),
+        Some(link.as_str())
+    );
+}
+
+#[test]
+fn an_order_stays_open_until_it_is_done_or_cancelled() {
+    let p = patient(json!([
+        visit("e1", "2026-03-02T09:00", json!({"orders": [
+            {"id": "cards", "action": "placed", "order": "Cardiology referral",
+             "category": "referral", "to": "Cardiology", "reason": "palpitations"},
+            {"id": "echo", "action": "placed", "order": "Transthoracic echocardiogram",
+             "category": "imaging"}
+        ]})),
+        {"id": "e2", "kind": "telephone", "start": "2026-04-10T15:00", "orders": [
+            {"id": "echo", "action": "cancelled"}
+        ]},
+        {"id": "e3", "kind": "outside_records", "start": "2026-05-20T11:00", "orders": [
+            {"id": "cards", "action": "done"}
+        ]}
+    ]));
+    let status = |chart: &Chart, what: &str| {
+        chart
+            .service_requests
+            .iter()
+            .find(|o| o.code.text.as_deref() == Some(what))
+            .map(|o| o.status)
+    };
+    let open = render(&p, "2026-04-01T09:00");
+    assert_eq!(status(&open, "Cardiology referral"), Some("active"));
+    assert_eq!(
+        status(&open, "Transthoracic echocardiogram"),
+        Some("active")
+    );
+    let later = render(&p, "2026-06-01T09:00");
+    assert_eq!(status(&later, "Cardiology referral"), Some("completed"));
+    assert_eq!(
+        status(&later, "Transthoracic echocardiogram"),
+        Some("revoked")
+    );
+    assert!(render(&p, "2026-03-01T09:00").service_requests.is_empty());
+}
+
+#[test]
+fn what_reaches_the_practice_after_the_bank_time_arrives_as_new_versions() {
+    let p = patient(json!([
+        visit(
+            "e1",
+            "2026-08-25T09:30",
+            json!({
+                "labs": [{"panel": null, "collected": "2026-08-25T09:30", "results": [
+                    {"test": "High-risk HPV DNA", "text": "Negative", "resulted": "2026-09-01T14:00"}
+                ]}],
+                "documents": [{"type": "Progress Notes", "author": "PCP",
+                    "body": "Pap and HPV co-test sent today. Will call with results."}]
+            })
+        ),
+        visit(
+            "e2",
+            "2026-09-15T08:40",
+            json!({"documents": [{"type": "Progress Notes",
+            "author": "PCP", "body": "Recheck BP. Doing fine on the new dose, no changes."}]})
+        ),
+        visit(
+            "e3",
+            "2026-09-29T10:00",
+            json!({"appointment": "cancelled"})
+        )
+    ]));
+    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
+    let terms = Terms::default();
+    let r = Renderer {
+        catalog: &catalog,
+        terms: &terms,
+    };
+    let (now, _) = r.render(&seed(), &p, patient_bank::time::as_of());
+    let hpv = |c: &Chart| {
+        c.observations
+            .iter()
+            .find(|o| o.code.text.as_deref() == Some("High-risk HPV DNA"))
+            .map(|o| (o.id.clone(), o.status))
+            .expect("hpv")
+    };
+    let (id, status) = hpv(&now);
+    assert_eq!(status, "registered");
+    assert!(now.documents.len() == 1 && now.encounters.len() == 1);
+
+    let later = upcoming::arrivals(&r, &seed(), &p);
+    let final_hpv = later
+        .iter()
+        .find(|(_, v)| v["id"] == id.as_str())
+        .expect("the HPV result arrives");
+    assert_eq!(final_hpv.1["status"], "final");
+    assert_eq!(final_hpv.1["meta"]["versionId"], "2");
+    assert_eq!(
+        final_hpv.1["meta"]["lastUpdated"],
+        "2026-09-01T18:00:00+00:00"
+    );
+    assert!(later.iter().any(|(f, _)| *f == "DocumentReference"));
+    assert!(
+        later
+            .iter()
+            .all(|(_, v)| v["meta"]["lastUpdated"].as_str() > Some("2026-08-27"))
+    );
+
+    let cal = upcoming::calendar(&seed(), &p);
+    let statuses: Vec<(&str, &str)> = cal.iter().map(|a| (&a.start[..10], a.status)).collect();
+    assert_eq!(
+        statuses,
+        [("2026-09-15", "booked"), ("2026-09-29", "cancelled")]
+    );
+}
+
+#[test]
+fn check_holds_authors_orders_missed_visits_and_device_vitals() {
+    let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
+    let errs = |events: serde_json::Value| errors_for(seed(), patient(events));
+    let has = |errors: &[String], what: &str| errors.iter().any(|e| e.contains(what));
+
+    let e = errs(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"documents": [{"type": "Progress Notes", "body": body}]})
+    )]));
+    assert!(has(&e, "has no author"), "{e:?}");
+    for bad in [
+        "Hi the PCP, my knee is worse.",
+        "Knee is worse \u{2014} worse on stairs.",
+    ] {
+        let e = errs(json!([visit(
+            "e1",
+            "2024-01-01T09:00",
+            note(&format!("{body} {bad}"))
+        )]));
+        assert!(has(&e, "write the way the author would"), "{bad}: {e:?}");
+    }
+    let e = errs(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({
+            "orders": [{"id": "x", "action": "done"}],
+            "documents": [{"type": "Progress Notes", "author": "PCP", "body": body}]
+        })
+    )]));
+    assert!(has(&e, "closed before it was placed"), "{e:?}");
+    let e = errs(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"appointment": "no-show", "vitals": {"bp": [121, 77]}})
+    )]));
+    assert!(has(&e, "records nothing clinical"), "{e:?}");
+
+    let series: Vec<serde_json::Value> = (0..10)
+        .map(|i| {
+            visit(
+                &format!("v{i}"),
+                &format!("202{}-0{}-10T09:00", i / 5, 1 + i % 5),
+                json!({"vitals": {"bp": [120 + 2 * (i % 3), 80], "hr": 70 + 2 * i},
+                   "documents": [{"type": "Progress Notes", "author": "PCP",
+                       "body": format!("{body} Visit {i}.")}]}),
+            )
+        })
+        .collect();
+    let e = errs(json!(series));
+    assert!(has(&e, "systolic readings are odd"), "{e:?}");
+    assert!(has(&e, "heart rates are even"), "{e:?}");
+    assert!(has(&e, "repeat an earlier pair"), "{e:?}");
 }

@@ -1,6 +1,7 @@
 {
   "systems": {
     "cpt": "http://www.ama-assn.org/go/cpt",
+    "cvx": "http://hl7.org/fhir/sid/cvx",
     "hcpcs": "https://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
     "icd10cm": "http://hl7.org/fhir/sid/icd-10-cm",
     "loinc": "http://loinc.org",
@@ -5489,10 +5490,25 @@
       "code": "105045-9",
       "display": "Electronic cigarette status"
     },
+    "Highest level of education": {
+      "system": "http://loinc.org",
+      "code": "82589-3",
+      "display": "Highest level of education"
+    },
     "History of alcohol use": {
       "system": "http://loinc.org",
       "code": "11331-6",
       "display": "History of Alcohol use"
+    },
+    "Housing status": {
+      "system": "http://loinc.org",
+      "code": "71802-3",
+      "display": "Housing status"
+    },
+    "Occupation": {
+      "system": "http://loinc.org",
+      "code": "11341-5",
+      "display": "History of Occupation"
     },
     "Tobacco smoking status": {
       "system": "http://loinc.org",
@@ -6397,6 +6413,252 @@
       "system": "http://snomed.info/sct",
       "code": "56018004",
       "display": "Wheezing"
+    }
+  },
+  "vaccines": {
+    "COVID-19, mRNA, Moderna, bivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "229",
+      "display": "COVID-19, mRNA, LNP-S, bivalent, PF, 50 mcg/0.5 mL or 25mcg/0.25 mL dose",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, mRNA, Moderna, original": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "207",
+      "display": "COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, mRNA, Moderna, updated formula": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "312",
+      "display": "COVID-19, mRNA, LNP-S, PF, 50 mcg/0.5 mL",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, mRNA, Pfizer-BioNTech, bivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "300",
+      "display": "COVID-19, mRNA, LNP-S, bivalent, PF, 30 mcg/0.3 mL dose",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, mRNA, Pfizer-BioNTech, original": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "208",
+      "display": "COVID-19, mRNA, LNP-S, PF, 30 mcg/0.3 mL dose",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, mRNA, Pfizer-BioNTech, updated formula": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "309",
+      "display": "COVID-19, mRNA, LNP-S, PF, tris-sucrose, 30 mcg/0.3 mL",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, protein subunit, Novavax": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "313",
+      "display": "COVID-19, subunit, rS-nanoparticle, adjuvanted, PF, 5 mcg/0.5 mL",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "COVID-19, unspecified": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "213",
+      "display": "SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "HPV, 9-valent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "165",
+      "display": "HPV9",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "HPV, quadrivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "62",
+      "display": "HPV, quadrivalent",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Hepatitis A and B (Twinrix)": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "104",
+      "display": "Hep A-Hep B",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Hepatitis A, adult": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "52",
+      "display": "Hep A, adult",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Hepatitis B, CpG-adjuvanted (Heplisav-B)": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "189",
+      "display": "HepB-CpG",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Hepatitis B, adult": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "43",
+      "display": "Hep B, adult",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, adjuvanted, quadrivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "205",
+      "display": "Influenza, adjuvanted, quadrivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, adjuvanted, trivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "168",
+      "display": "Influenza, adjuvanted, trivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, high-dose, quadrivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "197",
+      "display": "Influenza, high-dose, quadrivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, high-dose, trivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "135",
+      "display": "Influenza, high-dose, trivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, quadrivalent, injectable": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "150",
+      "display": "Influenza, split virus, quadrivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, recombinant, quadrivalent": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "185",
+      "display": "Influenza, recombinant, quadrivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, trivalent, injectable": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "140",
+      "display": "Influenza, split virus, trivalent, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Influenza, unspecified": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "88",
+      "display": "influenza, unspecified formulation",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "MMR": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "03",
+      "display": "MMR",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Meningococcal conjugate MenACWY": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "136",
+      "display": "Meningococcal MCV4O",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Pneumococcal conjugate PCV13": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "133",
+      "display": "Pneumococcal conjugate PCV 13",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Pneumococcal conjugate PCV15": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "215",
+      "display": "Pneumococcal conjugate PCV15, polysaccharide CRM197 conjugate, adjuvant, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Pneumococcal conjugate PCV20": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "216",
+      "display": "Pneumococcal conjugate PCV20, polysaccharide CRM197 conjugate, adjuvant, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Pneumococcal polysaccharide PPSV23": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "33",
+      "display": "pneumococcal polysaccharide PPV23",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "RSV, adjuvanted (Arexvy)": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "303",
+      "display": "RSV, recombinant, protein subunit RSVpreF, adjuvant reconstituted, 0.5 mL, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "RSV, bivalent (Abrysvo)": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "305",
+      "display": "RSV, bivalent, protein subunit RSVpreF, diluent reconstituted, 0.5 mL, PF",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "RSV, unspecified": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "314",
+      "display": "Respiratory syncytial virus (RSV) vaccine, unspecified",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Td": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "113",
+      "display": "Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Tdap": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "115",
+      "display": "Tdap",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Typhoid Vi polysaccharide": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "101",
+      "display": "typhoid, ViCPs",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Varicella": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "21",
+      "display": "varicella",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Zoster live": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "121",
+      "display": "zoster live",
+      "receipt": "tx.fhir.org CVX"
+    },
+    "Zoster recombinant (Shingrix)": {
+      "system": "http://hl7.org/fhir/sid/cvx",
+      "code": "187",
+      "display": "zoster recombinant",
+      "receipt": "tx.fhir.org CVX"
+    }
+  },
+  "order_categories": {
+    "imaging": {
+      "system": "http://snomed.info/sct",
+      "code": "363679005",
+      "display": "Imaging"
+    },
+    "lab": {
+      "system": "http://snomed.info/sct",
+      "code": "108252007",
+      "display": "Laboratory procedure"
+    },
+    "procedure": {
+      "system": "http://snomed.info/sct",
+      "code": "387713003",
+      "display": "Surgical procedure"
+    },
+    "referral": {
+      "system": "http://snomed.info/sct",
+      "code": "3457005",
+      "display": "Patient referral"
     }
   }
 }

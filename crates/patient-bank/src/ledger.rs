@@ -194,6 +194,47 @@ impl Kind {
             Kind::OfficeVisit | Kind::AnnualPhysical | Kind::EstablishCare | Kind::TelehealthVisit
         )
     }
+
+    /// A visit booked on the practice's own calendar, and its usual length in minutes.
+    pub fn booked_minutes(self) -> Option<i64> {
+        match self {
+            Kind::EstablishCare => Some(60),
+            Kind::AnnualPhysical => Some(40),
+            Kind::OfficeVisit => Some(30),
+            Kind::TelehealthVisit => Some(20),
+            Kind::NurseVisit => Some(15),
+            _ => None,
+        }
+    }
+
+    /// The encounter this contact is, as a v3 ActCode class and a label; messages,
+    /// outside records and pharmacy contacts are not encounters.
+    pub fn encounter(self) -> Option<(&'static str, &'static str, &'static str)> {
+        let (code, display) = match self {
+            Kind::TelehealthVisit | Kind::Telephone => ("VR", "virtual"),
+            Kind::EdVisit => ("EMER", "emergency"),
+            Kind::HospitalAdmission => ("IMP", "inpatient encounter"),
+            Kind::PortalMessage | Kind::OutsideRecords | Kind::Pharmacy => return None,
+            _ => ("AMB", "ambulatory"),
+        };
+        let label = match self {
+            Kind::EstablishCare => "New patient visit",
+            Kind::OfficeVisit => "Office visit",
+            Kind::AnnualPhysical => "Annual physical",
+            Kind::TelehealthVisit => "Video visit",
+            Kind::NurseVisit => "Nurse visit",
+            Kind::Telephone => "Telephone encounter",
+            Kind::LabOnly => "Lab visit",
+            Kind::Imaging => "Imaging",
+            Kind::SpecialistVisit => "Specialist visit",
+            Kind::UrgentCare => "Urgent care visit",
+            Kind::EdVisit => "Emergency department visit",
+            Kind::HospitalAdmission => "Hospital admission",
+            Kind::ProcedureVisit => "Procedure visit",
+            Kind::PortalMessage | Kind::OutsideRecords | Kind::Pharmacy => return None,
+        };
+        Some((code, display, label))
+    }
 }
 
 /// One contact with the practice and everything it produced.
@@ -230,15 +271,32 @@ pub struct Event {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub immunizations: Vec<Immunization>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub orders: Vec<OrderItem>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub documents: Vec<Document>,
+    /// A booked visit that did not happen as booked.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub appointment: Option<Missed>,
 }
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum Missed {
+    Cancelled,
+    NoShow,
+}
+
+pub const PRIMARY_CARE: &str = "Internal Medicine — Primary Care";
 
 impl Event {
     /// The department that wrote this event's documents.
     pub fn service(&self) -> &str {
-        self.service
-            .as_deref()
-            .unwrap_or("Internal Medicine — Primary Care")
+        self.service.as_deref().unwrap_or(PRIMARY_CARE)
+    }
+
+    /// A visit on the practice's own calendar.
+    pub fn booked(&self) -> bool {
+        self.kind.booked_minutes().is_some() && self.service() == PRIMARY_CARE
     }
 }
 
@@ -478,6 +536,43 @@ pub struct Immunization {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
+pub enum OrderCategory {
+    Referral,
+    Lab,
+    Imaging,
+    Procedure,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum OrderAction {
+    Placed,
+    Done,
+    Cancelled,
+}
+
+/// A referral or test ordered and not done at the same visit: placed once, then
+/// done or cancelled by a later item with the same `id`, or still open.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct OrderItem {
+    pub id: String,
+    pub action: OrderAction,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub order: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub category: Option<OrderCategory>,
+    /// Who it goes to: a specialty or service.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub to: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub date: Option<Stamp>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum DocStatus {
     Final,
     Preliminary,
@@ -494,6 +589,9 @@ pub struct Document {
     pub date: Option<Stamp>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<DocStatus>,
+    /// Who wrote it, by role: "PCP", "RN care coordinator", "Patient".
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub author: Option<String>,
     pub body: String,
 }
 

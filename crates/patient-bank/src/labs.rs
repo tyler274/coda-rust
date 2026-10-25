@@ -377,6 +377,7 @@ pub fn render(
             ))],
             code: code.clone(),
             subject: cx.subject.clone(),
+            encounter: None,
             effective_date_time: effective.clone(),
             issued: issued.clone(),
             result: refs.clone(),
