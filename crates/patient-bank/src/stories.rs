@@ -11,8 +11,9 @@
 //!   five patients in the panel;
 //! - for some, one hospital-grade event, each used by at most three patients;
 //! - concrete episodes (which injury, what the colonoscopy found) drawn at real rates;
-//! - a life context (two when complex), each shared by at most ten patients, and
-//!   an occupation.
+//! - a life context (two when complex), each shared by at most ten patients and at
+//!   most one from each group, and an occupation (the life context's own, when it
+//!   is a job).
 //!
 //! Labels that exclude one another share a group, and an item is drawn only if it
 //! fits the labels already chosen. Anchors are exact catalog labels, so `check` can
@@ -126,6 +127,10 @@ struct Episode {
 #[derive(Deserialize)]
 struct Life {
     story: String,
+    /// Contexts that cannot both be true of one person (two countries of origin,
+    /// two jobs) share a group; a patient gets at most one from each.
+    #[serde(default)]
+    group: Option<String>,
     #[serde(flatten)]
     fits: Fits,
 }
@@ -354,21 +359,25 @@ fn draw(st: &Stories, groups: &HashMap<&str, &str>, uses: &mut Uses, seed: &Seed
 
     // Life context and occupation.
     let life_count = if tier == Complexity::Complex { 2 } else { 1 };
-    let mut life = Vec::new();
+    let mut life: Vec<&Life> = Vec::new();
     for _ in 0..life_count {
         let eligible: Vec<(usize, &Life)> = st
             .life
             .iter()
             .enumerate()
             .filter(|(k, l)| {
-                uses.life[*k] < LIFE_USES && l.fits.fits(seed) && !life.contains(&l.story)
+                uses.life[*k] < LIFE_USES
+                    && l.fits.fits(seed)
+                    && !life.iter().any(|had| {
+                        had.story == l.story || (had.group.is_some() && had.group == l.group)
+                    })
             })
             .collect();
         let Some(k) = least_used(&mut rng, &eligible, &uses.life) else {
             break;
         };
         uses.life[k] += 1;
-        life.push(st.life[k].story.clone());
+        life.push(&st.life[k]);
     }
     let jobs: Vec<&String> = if age >= 66 {
         st.retired.iter().collect()
@@ -378,12 +387,15 @@ fn draw(st: &Stories, groups: &HashMap<&str, &str>, uses: &mut Uses, seed: &Seed
             .filter(|o| age < 32 || !o.contains("student"))
             .collect()
     };
-    let occupation = jobs[pick_index(&mut rng, jobs.len())].clone();
+    let mut occupation = jobs[pick_index(&mut rng, jobs.len())].clone();
+    if let Some(job) = life.iter().find(|l| l.group.as_deref() == Some("work")) {
+        occupation = job.story.clone();
+    }
 
     Seed {
         anchors: chosen.labels.iter().map(|l| l.to_string()).collect(),
         episodes,
-        life,
+        life: life.iter().map(|l| l.story.clone()).collect(),
         occupation_hint: occupation,
         coded_anchors: true,
         ..seed.clone()

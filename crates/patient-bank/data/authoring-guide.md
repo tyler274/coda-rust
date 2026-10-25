@@ -72,7 +72,10 @@ language, insurance, an occupation hint, complexity, years with the practice,
 target document and observation counts, clinical anchors (the main threads of the history),
 episodes, sometimes a chart-texture item, and often a life context. Honor every
 field. Anchors are the backbone. Episodes and texture are things that happened
-somewhere in the history; place them where they make sense.
+somewhere in the history; place them where they make sense, in an order that lets
+them all be true of one person (the tendon rupture years before the lung disease
+needed oxygen). If one truly cannot fit this person, keep the anchors, leave that
+item out and say why in story.md.
 
 Most seeds carry `"coded_anchors": true`. Their anchors are exact catalog labels
 and are the patient's problem list: record every one, and do not add chronic
