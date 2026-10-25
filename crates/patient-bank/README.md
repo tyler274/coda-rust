@@ -42,7 +42,10 @@ cargo run -q -p patient-bank -- catalog [--offline]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
-`{repo, units}` as args. This crate is the tool; the patients it produces are kept
+`{repo, units}` as args. Authors skim, and reviewers compare against, a reference
+chart for the unit's tier in `target/patient-bank/exemplars/` (`light.txt`,
+`moderate.txt`, `complex.txt`: note text from coda-gym charts' `resources/` only,
+never their solutions or rubrics) and 20 synthetic_hospital patient profiles. This crate is the tool; the patients it produces are kept
 apart from it in the workspace's `patients/` (seeds and accepted ledgers), and the
 crate's tests use their own small fixtures, never that set. The tool's inputs live
 in `data/`; drafts, the bank and the schema live under the ignored

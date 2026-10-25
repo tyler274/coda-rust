@@ -11,12 +11,16 @@ export const meta = {
 // args: { repo: '<absolute path of the coda-rust checkout>', units: ['unit-0001', ...] }
 const REPO = args.repo
 const DRAFTS = REPO + '/target/patient-bank/drafts'
+// Real-reading reference charts, one per complexity tier (light.txt, moderate.txt,
+// complex.txt: note text from coda-gym charts), and synthetic-hospital-profiles.jsonl.
+const EXEMPLARS = REPO + '/target/patient-bank/exemplars'
 const RUN = `cd ${REPO} && cargo run -q -p patient-bank --`
 
 const RULES = `Ground rules:
 - Work only inside ${REPO}. Run every command from there: ${RUN} brief|check|preview <unit>
 - Write only inside ${DRAFTS}/<unit>/. Never edit code, the guide, the catalog or seeds; never run git.
-- Read only the authoring guide, the vocabulary file, and your unit's draft folder. Do not open other repositories, other units' drafts, or any eval folder.
+- Read only the authoring guide, the vocabulary file, your unit's draft folder and ${EXEMPLARS}. Do not open other repositories, other units' drafts, or any eval folder.
+- The exemplars are for comparison only: never copy their words, people, places or events.
 - All people, places and records are fictional; refer to clinicians and staff by role only, and never name real practices, hospitals, labs, pharmacies, stores or EHR/portal products (drug, vaccine and assay product names are fine).`
 
 const AUTHOR_SCHEMA = {
@@ -43,15 +47,16 @@ const REVIEW_SCHEMA = {
       fix: { type: 'string' } },
       required: ['severity', 'where', 'problem', 'fix'] } },
     verdict: { type: 'string', description: 'two sentences: would a physician believe this chart, and what stands out' },
+    exemplar_gap: { type: 'string', description: 'two sentences: where this chart is less realistic, textured or complex than the exemplar for its tier, or "none"' },
   },
-  required: ['findings', 'verdict'],
+  required: ['findings', 'verdict', 'exemplar_gap'],
 }
 
 const authorPrompt = (u) => `You are authoring the chart for authoring unit ${u} of a primary-care patient bank: one fictional adult patient (or a family) over many years of care, as dense and textured as a real EHR.
 
 Start by running:
   ${RUN} brief ${u}
-Then read the authoring guide it names, end to end, and the vocabulary file. The guide's "How you work" section is your process: story.md first (with a contact calendar counted against the targets), then the ledger in chronological part files of two to three years each, then check until it prints ACCEPTED, then preview and read chart.txt start to end against the guide's "Before you finish", fixing what you find and checking again.
+Then read the authoring guide it names, end to end, and the vocabulary file. Skim ${EXEMPLARS}/<tier>.txt for the seed's complexity (light, moderate or complex): a real-reading chart from another project. Match its texture and density in your own patient's life; copy nothing from it. The guide's "How you work" section is your process: story.md first (with a contact calendar counted against the targets), then the ledger in chronological part files of two to three years each, then check until it prints ACCEPTED, then preview and read chart.txt start to end against the guide's "Before you finish", fixing what you find and checking again.
 
 What matters most:
 - Chronology: every record knows only what was known on its date.
@@ -67,6 +72,8 @@ Return the structured result. Report accepted=true only if your final check prin
 const reviewPrompt = (u) => `You are an experienced primary-care physician reviewing a chart someone else wrote for authoring unit ${u} of a fictional patient bank. You did not write it; find what a physician inheriting this patient would not believe.
 
 Run ${RUN} brief ${u} for the seed and the guide's path. Read the authoring guide end to end (its "Before you finish" section is your checklist), then ${DRAFTS}/${u}/story.md, then ${DRAFTS}/${u}/chart.txt start to end. chart.txt ends with the visits already booked; nothing after today is written.
+
+Then compare it against ${EXEMPLARS}/<tier>.txt for the seed's complexity (light, moderate or complex), a real-reading chart from another project, and ${EXEMPLARS}/synthetic-hospital-profiles.jsonl for how much life, history and medication a patient carries. Wherever this chart is thinner, cleaner, more generic or less textured than the exemplar, report it as a finding with a concrete fix.
 
 Report each problem with where it is and the fix. Major: a chronology leak, a note and data that disagree, clinically wrong care, a device-impossible number, teaching voice, a generic or repeated story element, a chart with nothing realistic going on at the bank time, rewrite damage such as a role used as a name. Minor: voice, length, texture. Do not report taste. Do not edit any file.
 
@@ -112,6 +119,7 @@ const summary = results.map((r, i) => {
     minor: findings.filter((f) => f.severity === 'minor').length,
     unfixed: r.fixed ? r.fixed.open_warnings : null,
     verdict: r.review ? r.review.verdict : null,
+    exemplar_gap: r.review ? r.review.exemplar_gap : null,
   }
 })
 log(`${summary.filter((s) => s.accepted && s.reviewed).length}/${units.length} units reviewed and accepted`)
