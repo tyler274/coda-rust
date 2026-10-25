@@ -1,6 +1,6 @@
 # Observability
 
-[ENG-65](https://linear.app/coda-health/issue/ENG-65) uses Datadog for
+The observability stack uses Datadog for
 operations (APM, logs, Error Tracking, monitors, paging) and **self-hosted
 Langfuse** for agent runs. The two use the same OpenTelemetry trace. Datadog
 gets every span with agent content removed. Langfuse gets only model
@@ -33,7 +33,7 @@ stdout JSON logs (dd.trace_id, dd.span_id) → Datadog Agent log collection → 
 - **Generations.** `telemetry::genai::generation_span` opens a
   `gen_ai.generation` span in Langfuse's OTel mapping
   (`langfuse.observation.type=generation`, `gen_ai.system`,
-  `gen_ai.request.model`, `gen_ai.usage.*`). It also carries the ENG-74 run
+  `gen_ai.request.model`, `gen_ai.usage.*`). It also carries the run
   contract: `coda.run_id`, `coda.job`, `coda.recipe_version`, `coda.origin`
   (`simulation` or `real`, also written to `langfuse.environment`),
   `coda.scenario_id`, `langfuse.session.id`, and `langfuse.trace.tags`.
@@ -116,7 +116,7 @@ compose credentials are fixed local development values, and every port binds to
    `coda.origin`, and tags include `coda.job`. The generation shows input and
    output only when the service ran with `CODA_TELEMETRY_CONTENT=full`.
 5. Compare `coda.recipe_version` across runs to see whether a prompt or recipe
-   change caused the regression (ENG-74).
+   change caused the regression.
 
 ## Validation
 

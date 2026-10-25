@@ -22,9 +22,8 @@ configuration, image build/smoke procedure, verification evidence and the
 [staging state and deployment](public-site.md#staging-state-and-deployment)
 procedure.
 
-[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged the implementation;
-[ENG-79](https://linear.app/coda-health/issue/ENG-79) still owns hosting migration
-completion. Dev's staging review and production approval, hostname/IAP/analytics
+[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged the implementation.
+Dev's staging review and production approval, hostname/IAP/analytics
 decisions, verified cutover/recovery procedures and the agreed recovery window
 precede removal of website-only Vercel resources and credentials. Neither this
 chapter nor passing local/CI validation authorizes deployment, DNS changes or
@@ -111,7 +110,7 @@ Activating it took these operator steps, in order:
 The initial preview uses proof-token delivery until physician mail is configured
 as below. Staging physician email sign-in was qualified on October 24, 2026;
 Duet identity and the full P1/D1 journeys remain outside that result, so this is
-not ENG-167's hosted acceptance.
+not complete hosted acceptance.
 
 ### Staging sign-in accounts
 
@@ -208,8 +207,8 @@ gh variable delete RUST_STAGING_DEPLOY               # off
 
 This direct rollout stands in for the
 [`release.py`](/scripts/gcp/release.py) evidence engine, which replaces it once
-the producers below exist. It is not ENG-167's hosted acceptance, and the work
-below remains outstanding:
+the producers below exist. It does not establish complete hosted acceptance;
+the work below remains outstanding:
 
 - **Hosted identity:** physician email sign-in through the public `/physician/`
   mount has live mailbox, reload, sign-out and used-link evidence. Invitation
@@ -231,7 +230,7 @@ below remains outstanding:
   so the first-release bootstrap must be explicitly implemented and verified;
   do not fabricate a previous release or weaken the evidence checks.
 
-None of this is evidence that ENG-167's hosted acceptance is complete. The
+These partial checks do not establish complete hosted acceptance. The
 preview services have IAP-gated `run.app` URLs only; no custom domain points at
 them.
 

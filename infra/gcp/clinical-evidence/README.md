@@ -1,9 +1,14 @@
 # Production Clinical Evidence runbook
 
+This is the Rust workspace's reference copy of the product-owned stack. Source
+paths and operational commands below refer to `submodules/coda-agents`; apply
+authority remains in that product repository. Do not initialize its backend or
+apply this root from the Rust workspace.
+
 This Terraform stack owns the one production Clinical Evidence subsystem in `coda-health-prod`. The
-[architecture](../../../docs/architecture.md#hosted-environments-and-promotion) owns its product
-boundary and the [runtime protocol](../../../docs/runtime-protocol.md) owns the search/read contract.
-[Readiness](../../../docs/readiness.md#clinical-corpus-operations) owns scope decisions, current state
+[architecture](../../../submodules/coda-agents/docs/architecture.md#hosted-environments-and-promotion) owns its product
+boundary and the [runtime protocol](../../../submodules/coda-agents/docs/runtime-protocol.md) owns the search/read contract.
+[Readiness](../../../submodules/coda-agents/docs/readiness.md#clinical-corpus-operations) owns scope decisions, current state
 and open work. This runbook owns how the pipeline works operationally and how to operate it.
 
 The stack provisions:

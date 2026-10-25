@@ -5,14 +5,21 @@ The shipping physician client is the React site in `submodules/coda-agents/web`.
 ## Product direction and proof
 
 The [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
-and its outcome tickets own current physician behavior. [ENG-160](https://linear.app/coda-health/issue/ENG-160)
-owns the physician UI, [ENG-159](https://linear.app/coda-health/issue/ENG-159)
-the shared execution boundary, and [ENG-185](https://linear.app/coda-health/issue/ENG-185)
-the physician design foundation: the <a href="/verification/physician-experience/README%2Emd">physician statechart</a>,
-which is the behavior spec, and its Verus proof. <a href="/verification/README%2Emd">Verification</a>
+owns current product intent. The
+<a href="/verification/physician-experience/README%2Emd">physician statechart</a>
+is the behavior spec, accompanied by its design decisions and Verus proof. <a href="/verification/README%2Emd">Verification</a>
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
 specification or a claim of current Rust completeness.
+
+## Current execution paths
+
+[`physician-sample::live`](/crates/physician-sample/src/live.rs) currently opens
+[`PhysicianSession`](/crates/local-product/src/execution.rs) for mounted chat
+and reply work, using the local session file outside test fixtures. The separate
+Postgres [`runtime::Store`](/crates/local-product/src/runtime.rs) owns durable
+acceptance, leases and recovery primitives; configuring the physician auth
+database does not connect chat routes to that store.
 
 ## Physician sign-in and practice access
 

@@ -9,7 +9,7 @@ import sys
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[3]
-spec = importlib.util.spec_from_file_location("compose", ROOT / "scripts/compose-duet-openapi.py")
+spec = importlib.util.spec_from_file_location("compose", ROOT / "scripts/duet-wire/compose.py")
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 

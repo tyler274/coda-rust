@@ -5,6 +5,10 @@ implementation, operations and proof. Start with the [canonical map](book/src/re
 Dev's latest explicit decisions take precedence; pinned submodules are historical
 reference, not a competing specification.
 
+Keep individual Linear ticket IDs, links and status mappings out of repository
+documentation. Linear owns that tracking; docs use source and document links to
+explain responsibilities, implemented behavior and operating procedures.
+
 ## Where work goes
 
 | Work | Contract |
@@ -28,7 +32,7 @@ because it appears in an older contract or generated wire schema.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, `gmail`, and `harness`. `gmail` sends plain-text or HTML messages through the Gmail API or Workspace SMTP relay and does not know either product. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
+Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, `gmail`, and `harness`. `gmail` sends plain-text or HTML messages through the Gmail API or Workspace SMTP relay and does not know either product. `harness` is product-neutral execution mechanics: it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
 
 Duet schema changes go in `crates/duet-api/migrations` and run through `duet-migrate` (`DUET_MIGRATION_DATABASE_URL`, `DUET_RUNTIME_ROLE`), not on API startup. Do not replay the coda-app ledger. Additive wire types go in `crates/duet-api/openapi/additions.json`; regenerate with `cargo run -p workspace-tools -- generate-duet-wire` and do not edit generated DTOs.
 
@@ -55,8 +59,7 @@ The live Node projection server moves into `physician-sample` route family by ro
   CRUD pattern. Keep migrations with `duet-migrate` and preserve the separate
   reference `schema_migrations` ledger. Do not import physician entities,
   combine product stores, or mass-convert persistence merely to comply with
-  this preference. [ENG-161](https://linear.app/coda-health/issue/ENG-161) owns
-  the account/privacy outcome.
+  this preference.
 - SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
   coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
   removes a query, update the formatter's required-file inventory and its tests

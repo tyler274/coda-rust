@@ -85,7 +85,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**serde_json::Value**](serde_json::Value.md)
+**serde_json::Value**
 
 ### Authorization
 

@@ -2,11 +2,8 @@
 
 [`duet-api`](/crates/duet-api/src/lib.rs) owns Duet's Rust service. It has identity,
 evidence, conversation execution, saved work and privacy owners beyond the
-original moments slice. [ENG-161](https://linear.app/coda-health/issue/ENG-161),
-[ENG-26](https://linear.app/coda-health/issue/ENG-26),
-[ENG-162](https://linear.app/coda-health/issue/ENG-162) and
-[ENG-34](https://linear.app/coda-health/issue/ENG-34) define acceptance. A module's
-presence does not establish the complete real-service journey.
+original moments slice. A module's presence does not establish the complete
+real-service journey.
 
 ## Ownership
 
@@ -15,10 +12,10 @@ presence does not establish the complete real-service journey.
 | Startup, configured stores and hosted profile | [`main.rs`](/crates/duet-api/src/main.rs), [`hosting.rs`](/crates/duet-api/src/hosting.rs) |
 | Duet accounts and authentication | [`identity.rs`](/crates/duet-api/src/identity.rs), [`session.rs`](/crates/duet-api/src/session.rs); [security boundaries](security-posture.md) |
 | Evidence identity, exact reads and paging | [`evidence.rs`](/crates/duet-api/src/evidence.rs), [`evidence_routes.rs`](/crates/duet-api/src/evidence_routes.rs), [`evidence_paging.rs`](/crates/duet-api/src/evidence_paging.rs) |
-| Accepted conversation and execution | [`conversation.rs`](/crates/duet-api/src/conversation.rs), [`conversation_execution.rs`](/crates/duet-api/src/conversation_execution.rs), [`conversation_routes.rs`](/crates/duet-api/src/conversation_routes.rs) |
-| Duet instructions and admitted skills | [`luna.rs`](/crates/duet-api/src/luna.rs), [`skills.rs`](/crates/duet-api/src/skills.rs) |
+| Mounted conversation acceptance and execution | [`conversation.rs`](/crates/duet-api/src/conversation.rs), [`conversation_routes.rs`](/crates/duet-api/src/conversation_routes.rs) |
+| Mounted conversation instructions, context and admitted skills | [`conversation.rs`](/crates/duet-api/src/conversation.rs), [`conversation_context.rs`](/crates/duet-api/src/conversation_context.rs), [`skills.rs`](/crates/duet-api/src/skills.rs) |
 | Saved care, follow-up and Today | [`care.rs`](/crates/duet-api/src/care.rs), [`follow_up.rs`](/crates/duet-api/src/follow_up.rs), [`today.rs`](/crates/duet-api/src/today.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
-| Doctor preparation and publication implementation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs), [`publication.rs`](/crates/duet-api/src/publication.rs); [ENG-169](https://linear.app/coda-health/issue/ENG-169) puts preparation/review/saving in MVP, with publication to physicians outside Coda after MVP |
+| Doctor preparation and publication implementation | [`workspace.rs`](/crates/duet-api/src/workspace.rs), [`doctor_routes.rs`](/crates/duet-api/src/doctor_routes.rs), [`publication.rs`](/crates/duet-api/src/publication.rs); preparation, review and saving are distinct from later publication to physicians outside Coda |
 | Privacy receipts, replay and deletion archive | [Privacy recovery](privacy-recovery.md) |
 | Schema and moments persistence | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
 | Practice invitations and connection adapter | [Accounts and practice connection](front-door.md) |
@@ -26,7 +23,14 @@ presence does not establish the complete real-service journey.
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must
 not import the physician `local-product`; [operating invariants](agent-contracts.md)
-and [ENG-159](https://linear.app/coda-health/issue/ENG-159) define this boundary.
+define this boundary.
+
+The binary mounts `conversation_routes` over `ConversationStore` and starts its
+pending-work recovery. The separate
+[`conversation_execution.rs`](/crates/duet-api/src/conversation_execution.rs)
+front-door-authorized path and its [`luna.rs`](/crates/duet-api/src/luna.rs)
+instruction composer are not wired into that startup. Their presence is not
+evidence of a second mounted conversation service.
 
 ## API and clients
 
@@ -34,10 +38,18 @@ and [ENG-159](https://linear.app/coda-health/issue/ENG-159) define this boundary
 [`duet-wire`](/crates/duet-wire/src/lib.rs). Generate wire types with
 `cargo run -p workspace-tools -- generate-duet-wire`; additive Rust operations
 live in [`openapi/additions.json`](/crates/duet-api/openapi/additions.json).
+[`workspace-tools::wire`](/crates/workspace-tools/src/wire.rs) orchestrates the
+[`composer`](/scripts/duet-wire/compose.py), OpenAPI Generator and
+[`finalizer`](/scripts/duet-wire/finalize.py); their compatibility templates live
+beside those scripts. The <a href="/crates/duet-wire/README%2Emd">generated API index</a>
+and model/operation pages are regenerated with the Rust sources.
+`cargo run -p workspace-tools -- generate-duet-wire --check` compares sources,
+the manifest and documentation against fresh output. Use the pinned toolchain
+in `nix develop`.
+
 The generator still consumes the pinned legacy OpenAPI source. Retained DTOs
 are compatibility artifacts, not a promise to restore retired person-to-person
-sharing. [ENG-141](https://linear.app/coda-health/issue/ENG-141) owns removal
-through actual callers and services.
+sharing. Retiring a wire surface requires checking its actual callers and services.
 
 ## Persistence and migrations
 
@@ -58,14 +70,12 @@ CRUD belongs to the owning product's typed entities; products do not share store
 
 ## Proof
 
-[ENG-98](https://linear.app/coda-health/issue/ENG-98) owns real-service proof;
-[release](release.md) and [GCP](gcp.md) explain the build and hosted boundaries.
-Default tests may skip database-gated checks. The
+[Release](release.md) and [GCP](gcp.md) explain the build and hosted proof
+boundaries. Default tests may skip database-gated checks. The
 [`check-postgres.sh`](/scripts/check-postgres.sh) suites require a disposable
 PostgreSQL 16 instance with pgvector and all three test URLs
 (`MIGRATION_DATABASE_URL`, `PHYSICIAN_DATABASE_URL`, `FRONT_DOOR_DATABASE_URL`).
 They create/drop databases. These suites and image smoke tests establish their
 exercised persistence/startup paths, not sign-in, installed-client or clinical
 qualification. Historical dependency-upgrade proof remains in
-[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) and
-[ENG-163](https://linear.app/coda-health/issue/ENG-163).
+[PR #36](https://github.com/Coda-Health/coda-rust/pull/36).

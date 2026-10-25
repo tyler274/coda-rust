@@ -1,7 +1,6 @@
 # Privacy and recovery
 
-[ENG-161](https://linear.app/coda-health/issue/ENG-161) owns export, deletion and
-session acceptance. Rust has its own privacy receipt and replay implementation;
+Rust has its own privacy receipt and replay implementation;
 the original Python service is historical reference, not its runtime owner.
 
 | Responsibility | Rust owner |
@@ -17,9 +16,7 @@ A journal write, database mutation and restore replay are distinct observations;
 prove the complete affected path before claiming that deleted information cannot
 return. File-backed local proof does not establish independent hosted-journal
 recovery. Keep patient account deletion separate from ending a practice
-connection, whose current semantics live in [ENG-70](https://linear.app/coda-health/issue/ENG-70)
-and [accounts and practice connection](front-door.md).
+connection; see [accounts and practice connection](front-door.md).
 
-[ENG-98](https://linear.app/coda-health/issue/ENG-98) owns real-service proof.
 [Security boundaries](security-posture.md) maps identity and isolation;
 [observability](observability.md) maps diagnostic content handling.

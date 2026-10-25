@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **concept_id** | **String** |  |
 **evidence** | **Vec<std::collections::HashMap<String, serde_json::Value>>** |  |
 **health_records_generation** | **i32** |  |
-**next_cursor** | Option<[**models::Null**](Null.md)> |  | [optional]
+**next_cursor** | Option<**models::Null**> |  | [optional]
 **points** | [**Vec<models::EvidenceSeriesPoint>**](EvidenceSeriesPoint.md) |  |
 **revision** | **i32** |  |
 **source** | Option<[**models::EvidenceSeriesSource**](EvidenceSeriesSource.md)> |  | [optional]
