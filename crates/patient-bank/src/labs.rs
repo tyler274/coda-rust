@@ -135,6 +135,12 @@ fn table<'a, V>(t: &'a [(&str, V)], key: &str) -> Option<&'a V> {
 
 /// `v` rounded to `decimals` places (half to even on the exact value); whole
 /// numbers when `decimals` is 0.
+/// A test's normal range for this sex and the decimals it is reported to.
+pub fn normal(test: &str, female: bool) -> Option<((f64, f64), usize)> {
+    let spec = table(FILL, test)?;
+    Some((if female { spec.female } else { spec.male }, spec.decimals))
+}
+
 pub fn rounded(v: f64, decimals: usize) -> Number {
     let s = format!("{v:.decimals$}");
     if decimals == 0 {

@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, calendar, check, paths, repeats};
+use patient_bank::{bank, calendar, check, measure, paths, repeats};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -601,4 +601,60 @@ fn repeats_find_what_charts_share_but_not_their_own_or_the_practices() {
         "{:?}",
         r.values
     );
+}
+
+#[test]
+fn code_measures_from_the_state_the_author_records() {
+    let visits: Vec<serde_json::Value> = (0..12)
+        .map(|i| {
+            let mut extra = json!({
+                "measure": ["bp", "hr", "weight_kg"],
+                "labs": [{"panel": null, "collected": format!("2024-{:02}-03T09:00", i + 1),
+                    "results": [{"test": "Hemoglobin A1c"}, {"test": "Glucose"}]}]
+            });
+            if i == 0 {
+                extra["state"] =
+                    json!({"bp": [148, 94], "weight_kg": 91.0, "labs": {"Hemoglobin A1c": 7.9}});
+            }
+            visit(
+                &format!("e{i:02}"),
+                &format!("2024-{:02}-03T09:00", i + 1),
+                extra,
+            )
+        })
+        .collect();
+    let p = patient(json!(visits));
+    let (once, errors) = measure::apply(&seed(), &p);
+    assert!(errors.is_empty(), "{errors:?}");
+    let (again, _) = measure::apply(&seed(), &p);
+    assert_eq!(
+        serde_json::to_string(&once).expect("json"),
+        serde_json::to_string(&again).expect("json"),
+        "the same ledger measures the same values"
+    );
+    let systolic: Vec<f64> = once
+        .events
+        .iter()
+        .map(|e| patient_bank::ledger::num(&e.vitals.sets()[0].bp.as_ref().expect("bp")[0]))
+        .collect();
+    let a1c: Vec<f64> = once
+        .events
+        .iter()
+        .map(|e| patient_bank::ledger::num(e.labs[0].results[0].value.as_ref().expect("a1c")))
+        .collect();
+    let mean = |v: &[f64]| v.iter().sum::<f64>() / v.len() as f64;
+    assert!((mean(&systolic) - 148.0).abs() < 8.0, "{systolic:?}");
+    assert!((mean(&a1c) - 7.9).abs() < 0.5, "{a1c:?}");
+    let distinct: std::collections::HashSet<i64> = systolic.iter().map(|x| *x as i64).collect();
+    assert!(
+        distinct.len() > 6,
+        "readings vary like a cuff's: {systolic:?}"
+    );
+    // a weight with no level set is an error, not a made-up number
+    let unset = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"measure": ["weight_kg"]})
+    )]));
+    assert!(!measure::apply(&seed(), &unset).1.is_empty());
 }

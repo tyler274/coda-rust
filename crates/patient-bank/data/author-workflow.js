@@ -2,7 +2,7 @@ export const meta = {
   name: 'author-patients',
   description: 'Author one primary-care chart per unit: story, ledger parts, check until ACCEPTED, preview and reread',
   phases: [
-    { title: 'Author', detail: 'one agent per unit, following the authoring guide' },
+    { title: 'Author', detail: 'one agent per unit (or per year), following the authoring guide' },
   ],
 }
 
@@ -48,6 +48,31 @@ Ground rules:
 - Read only the guide, the vocabulary file and your own draft folder. Never edit code, the guide, the catalog or the seeds, and never run git.
 
 Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
+
+// args.years: { '<unit>': [2017, 2018, ...] }. The chart is written forward, one
+// agent per year, each seeing only the years before it.
+const yearPrompt = (u, y) => `You are writing one year, ${y}, of the chart for unit ${u} of a primary-care patient bank: one fictional adult patient over years of care. The years before it are already written; the years after it do not exist yet.
+
+Run ${RUN} year ${u} ${y}. Then read the authoring guide at ${REPO}/crates/patient-bank/data/authoring-guide.md end to end, the vocabulary file at ${REPO}/target/patient-bank/vocabulary.md, ${DRAFTS}/${u}/taken.md, and the part files already in ${DRAFTS}/${u}/. Follow the guide's "How you work" for ${y}: write ${DRAFTS}/${u}/part-${y}.json with what the brief holds, preview to see the measured numbers, write the documents, and check until it prints ACCEPTED. Then read ${y} in chart.txt as the physician who will inherit this patient and fix what that physician would not believe.
+
+Ground rules:
+- Run commands only from ${REPO}. Write only ${DRAFTS}/${u}/part-${y}.json; never change an earlier year's part.
+- Read only the guide, the vocabulary file, taken.md, the year brief and the part files. Never open the seeds, other units or other years' briefs. Never edit code, and never run git.
+
+Return the structured result. Report accepted=true only if your final check printed ACCEPTED.`
+
+if (args.years) {
+  const out = []
+  for (const u of args.units) {
+    let last = null
+    for (const y of args.years[u]) {
+      last = await agent(yearPrompt(u, y), { label: `${u}:${y}`, phase: 'Author', schema: SCHEMA })
+      if (!last || !last.accepted) { log(`${u} stopped at ${y}`); break }
+    }
+    out.push(last || { unit: u, failed: true })
+  }
+  return out
+}
 
 const results = await pipeline(args.units, (u) => args.revise
   ? agent(revisePrompt(u, args.revise[u]), { label: `revise:${u}`, phase: 'Author', schema: SCHEMA })

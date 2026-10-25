@@ -21,7 +21,7 @@ use crate::fhir::{Chart, Observation};
 use crate::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use crate::render::Renderer;
 use crate::seeds::{Seeds, Unit};
-use crate::{Result, calendar, check, paths, repeats, terms, time};
+use crate::{Result, calendar, check, measure, paths, repeats, terms, time};
 
 pub const MODEL: &str = "claude-opus-5-5 (Claude Code workflow subagent)";
 
@@ -143,6 +143,19 @@ pub fn merge(drafts: &Path) -> (Merged, Vec<String>) {
     (Merged { patients, part_of }, errors)
 }
 
+/// The unit's drafts merged, with every value `measure` makes filled in.
+fn merge_measured(unit: &Unit, drafts: &Path) -> (Merged, Vec<String>) {
+    let (mut merged, mut errors) = merge(drafts);
+    for p in &mut merged.patients {
+        if let Some(seed) = unit.members.iter().find(|m| m.mrn == p.mrn) {
+            let (measured, errs) = measure::apply(seed, p);
+            *p = measured;
+            errors.extend(errs);
+        }
+    }
+    (merged, errors)
+}
+
 /// Every member's chart at `at`, rendered with the unit's verified codes.
 fn render(
     unit: &Unit,
@@ -168,6 +181,25 @@ fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Term
     terms::resolve(patients, catalog, &mut look)
 }
 
+/// Write `taken.md`: what every other accepted unit already uses.
+fn write_taken(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<PathBuf> {
+    let mut others = Vec::new();
+    if let Ok(dir) = fs::read_dir(paths::ledgers()) {
+        for e in dir.filter_map(|e| e.ok()) {
+            let path = e.path();
+            if path.extension().is_some_and(|x| x == "json")
+                && path.file_stem().is_some_and(|s| *s != *unit.unit)
+            {
+                others.push(Ledger::read(&path)?);
+            }
+        }
+    }
+    let taken = drafts.join("taken.md");
+    let found = repeats::find(&others, &repeats::own(seeds), 1);
+    fs::write(&taken, repeats::taken(&found, others.len()))?;
+    Ok(taken)
+}
+
 fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
     let n = unit.members.len();
     println!(
@@ -187,21 +219,7 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
             m.mrn, m.target_documents, m.target_observations, m.years_with_practice
         );
     }
-    // what every other accepted unit already uses
-    let mut others = Vec::new();
-    if let Ok(dir) = fs::read_dir(paths::ledgers()) {
-        for e in dir.filter_map(|e| e.ok()) {
-            let path = e.path();
-            if path.extension().is_some_and(|x| x == "json")
-                && path.file_stem().is_some_and(|s| *s != *unit.unit)
-            {
-                others.push(Ledger::read(&path)?);
-            }
-        }
-    }
-    let taken = drafts.join("taken.md");
-    let found = repeats::find(&others, &repeats::own(seeds), 1);
-    fs::write(&taken, repeats::taken(&found, others.len()))?;
+    let taken = write_taken(unit, seeds, drafts)?;
     println!("\nGuide:      {}", paths::authoring_guide().display());
     println!("Vocabulary: {}", paths::vocabulary().display());
     println!("Taken:      {}", taken.display());
@@ -213,7 +231,7 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
 }
 
 fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
-    let (merged, mut errors) = merge(drafts);
+    let (merged, mut errors) = merge_measured(unit, drafts);
     let (errs, mut warnings) = check::check(unit, &merged.patients, catalog);
     errors.extend(errs.into_iter().map(|e| {
         let eid = e.split(':').next().unwrap_or("");
@@ -276,7 +294,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
 }
 
 fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
-    let (merged, errors) = merge(drafts);
+    let (merged, errors) = merge_measured(unit, drafts);
     if !errors.is_empty() {
         for e in &errors {
             println!("ERROR: {e}");
@@ -314,6 +332,19 @@ fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         fs::metadata(&path)?.len() / 1024
     );
     Ok(0)
+}
+
+/// `year <unit> <year>`: the year's brief, from the parts written so far.
+pub fn year(uid: &str, year: i16, seeds: &Path) -> Result<i32> {
+    let seeds = Seeds::read(seeds)?;
+    let unit = seeds
+        .unit(uid)
+        .ok_or_else(|| format!("unknown unit {uid}"))?;
+    let drafts = paths::root().join("drafts").join(uid);
+    fs::create_dir_all(&drafts)?;
+    write_taken(unit, &seeds, &drafts)?;
+    let (merged, _) = merge_measured(unit, &drafts);
+    crate::year::run(unit, &merged.patients, year, &drafts)
 }
 
 pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {

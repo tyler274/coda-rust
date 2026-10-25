@@ -16,35 +16,39 @@ voices, and the small mess real charts collect. Most patients are ordinary.
 
 ## How you work
 
-Run every command from the repository root. `<unit>` is the unit id you were given.
+You write the chart forward, one year at a time, and you see only the past: the
+years already written, and the brief for the year you are writing. Nobody plans
+the whole life. Code decides what each year holds; you decide what each contact
+was and write it. Run every command from the repository root. `<unit>` and
+`<year>` are the ones you were given.
 
-1. `cargo run -q -p patient-bank -- brief <unit>` prints the seed, the document
-   and observation targets, and the paths you write to. It also writes
-   `taken.md`: the names, phrases and lab values other charts already use. Give
-   this patient their own.
-2. Write `story.md` in the draft folder: who this person is, a dated problem
-   timeline, a dated medication timeline, outside care, and a year-by-year list
-   of contacts with the practice. The ledger must agree with it.
-3. Write the events in chronological part files of two to three years each
-   (`part-01.json`, `part-02.json`, …). Before each part, reread the story and the
-   end of the last part, so current drugs, open problems and last values carry
-   forward.
-4. `cargo run -q -p patient-bank -- check <unit>` merges the parts and lists
-   errors. Fix them and rerun until it prints `ACCEPTED`.
-5. `cargo run -q -p patient-bank -- preview <unit>` writes `chart.txt`, the chart
-   as of today, oldest first. Read it start to end as the physician inheriting
-   this patient, fix what that physician would not believe, and check again.
+1. `cargo run -q -p patient-bank -- year <unit> <year>` prints who the patient is,
+   where the chart stands, and what this year holds: the visits, illnesses,
+   missed visits, office traffic (with how each turns out), and when a seed
+   condition or episode arrives. It also writes `taken.md`: names, phrases and lab
+   values other charts already use. Give this patient their own.
+2. Read the previous years' part files for continuity: current drugs, open
+   problems, levels, and how each writer sounds.
+3. Write `part-<year>.json` with that year's events: the structure first
+   (conditions, medications, orders, `state`, `measure`, tests named in each draw
+   with no values).
+4. `cargo run -q -p patient-bank -- preview <unit>` measures the numbers and writes
+   `chart.txt`. Read this year's section to see them.
+5. Write the documents into the events, using the numbers as measured. Run
+   `cargo run -q -p patient-bank -- check <unit>` until it prints `ACCEPTED`, preview
+   again, and read the year as the physician who will inherit this patient.
 
-The targets say how much a life like this leaves in a chart. Reach them with
-the contacts this patient would really have, not with filler.
+Write what the brief holds and what follows from it (a result call, a referral
+visit, a refill, outside records). Add no illness, emergency or life event the
+brief does not give. A contact the brief gives can move a few days if the story
+needs it. Leave what is unresolved unresolved: next year's author picks it up.
 
 ## The seed
 
-The seed fixes sex, birth date, name, town, insurance, an occupation, complexity,
-years with the practice and the main clinical threads (anchors), plus episodes
-and life context. Honor it. Place each episode where it fits this person; if one
-cannot be true of them, leave it out and say why in story.md. Family members
-authored together share a household or family, and their charts must agree.
+The brief gives the patient's identity and life. Seed conditions and episodes
+arrive in the year code places them; the first year's brief lists the history
+the patient brings. Family members authored together share a household or family,
+and their charts must agree.
 
 ## Today
 
@@ -118,20 +122,28 @@ a prescription is a medication action, and a resulted lab is a lab result.
   condition the catalog lacks, give your `label` and an `icd10` code. For a drug
   the catalog lacks, give `drug_text` (generic name, strength and form). Both are
   verified at check.
-- **Labs.** State the panel and only the members you mean. Code fills the rest
-  with normal values, calculates eGFR from creatinine, and derives hematocrit, RBC,
-  MCH and MCHC from hemoglobin and MCV. A stated differential must leave room for
-  the members you did not state. Qualitative results use `"text"`. Give
-  `"resulted"` (on the draw or on one result) or `"issued"` (on a report) when the
-  story needs a specific release time.
-- **Vitals.** Give the vitals a visit would take. Give ED visits and admissions a
-  list of timed sets.
+- **Numbers come from code.** You record where the patient's body is, and code
+  measures it. Give an event a `state` when a level is first known or changes:
+  weight and height at the first visit, a blood pressure level when it is not
+  normal, a lab level when a condition or a drug moves it (an A1c of 7.9 at
+  diagnosis, 7.1 three months into metformin; a pressure of 148/94 untreated, 134/84
+  on amlodipine). A level stays until a later state changes it, and a level you
+  never set is the patient's own normal. Give `measure` on each contact that takes
+  vitals, and name the tests in each draw without values. Code reads each one the
+  way a cuff, a scale or an analyzer would. Write a value yourself only for what
+  no level can give: a qualitative result (`"text"`), a culture, a one-off number.
+- **Labs.** A panel lists only the members you mean; code fills the rest and
+  derives eGFR, CBC indices and the differential's remainder. Give `"resulted"` (on
+  the draw or one result) or `"issued"` (on a report) when the story needs a
+  specific release time.
+- **Vitals.** `measure` the vitals the contact would take. An ED visit or
+  admission may give `vitals` as a list of timed sets with values you write.
 - **Procedures.** Every primary-care visit gets a visit code from the catalog.
 
 ## Ledger format
 
-`part-01.json` carries the patient fields. Later parts carry only `mrn` and
-`events`. Times are Eastern wall-clock with no offset. Leave out empty arrays.
+The first year's part carries the patient fields. Later parts carry only `mrn`
+and `events`. Times are Eastern wall-clock with no offset. Leave out empty arrays.
 Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
 
 ```json
@@ -155,8 +167,9 @@ Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
           "conditions": [{"label": "Essential hypertension", "action": "diagnosed|history|resolved", "onset": "YYYY-MM-DD", "note": "optional"}],
           "medications": [{"drug": "lisinopril 10 MG Oral Tablet", "action": "start|stop|historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic|short", "reason": "optional"}],
           "allergies": [{"substance": "Penicillin", "reaction": "Hives", "severity": "mild|moderate|severe", "criticality": "low|high", "type": "allergy|intolerance"}],
-          "vitals": {"bp": [128, 82], "hr": 74, "rr": 14, "temp_c": 36.8, "spo2": 98, "weight_kg": 81.4, "height_cm": 172.0},
-          "labs": [{"panel": "Lipid Panel", "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Low Density Lipoprotein", "value": 162}]},
+          "state": {"bp": [146, 92], "weight_kg": 88.4, "height_cm": 177.0, "labs": {"Low Density Lipoprotein": 162}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Lipid Panel", "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Low Density Lipoprotein"}]},
                    {"panel": null, "collected": "YYYY-MM-DDTHH:MM (last two weeks)", "pending": true, "results": [{"test": "Hemoglobin A1c"}]}],
           "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
           "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],

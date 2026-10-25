@@ -10,6 +10,7 @@ pub mod check;
 pub mod fhir;
 pub mod labs;
 pub mod ledger;
+pub mod measure;
 pub mod paths;
 pub mod render;
 pub mod repeats;
@@ -20,6 +21,7 @@ pub mod time;
 pub mod timeline;
 pub mod unit;
 pub mod validate;
+pub mod year;
 
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 pub type Result<T> = std::result::Result<T, Error>;
