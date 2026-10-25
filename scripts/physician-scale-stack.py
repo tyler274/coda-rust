@@ -296,6 +296,7 @@ def load_numbers(stack, database, ports, evidence, idle_seconds, worker_failures
                                        "transactions": after - before - 1,
                                        "streams": ["site-a", "site-b"]}
 
+    # --worker-fail-marker alone keeps this turn: its text carries no [fail:K].
     if worker_failures:
         result["one_turn"] = {"skipped": f"--worker-failures {worker_failures} makes turns fail"}
     else:
@@ -363,7 +364,8 @@ def run(args, root, evidence):
         "postgres": {"port": pg, "url": database}, "valkey": {"port": redis, "channel": CHANNEL},
         "pubsub": {"host": host, "project": PROJECT, "topic": TOPIC, "dead_letter": DLQ},
         "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": FIXED_TEXT,
-                   "fixed_failures": args.worker_failures},
+                   "fixed_failures": args.worker_failures,
+                   "fail_marker": args.worker_fail_marker},
         "sites": {"a": f"http://127.0.0.1:{site_a}", "b": f"http://127.0.0.1:{site_b}"},
         "account": {"email": EMAIL, "practice": PRACTICE, "physician": PHYSICIAN},
         "workspace": WORKSPACE,
@@ -420,6 +422,10 @@ def run(args, root, evidence):
                 # Non-hosted proof only: the first N provider calls of this
                 # worker process fail, then the fixed text answers.
                 worker_env["PHYSICIAN_WORKER_FIXED_FAILURES"] = str(args.worker_failures)
+            if args.worker_fail_marker:
+                # Non-hosted proof only: a message containing [fail:K] fails
+                # its first K attempts; every other turn answers at once.
+                worker_env["PHYSICIAN_WORKER_FIXED_FAIL_MARKER"] = "1"
             stack.start("worker", [str(binary / "physician-worker")], worker_env)
             stack.wait(lambda: healthy(worker), f"worker readiness on {worker}")
             site_env = dict(shared)
@@ -434,7 +440,8 @@ def run(args, root, evidence):
             print(f"Site A: http://127.0.0.1:{site_a} (port {site_a})", flush=True)
             print(f"Site B: http://127.0.0.1:{site_b} (port {site_b})", flush=True)
             print(f"Worker: http://127.0.0.1:{worker} (port {worker}); fixed failures "
-                  f"{args.worker_failures}", flush=True)
+                  f"{args.worker_failures}; fail marker "
+                  f"{'on' if args.worker_fail_marker else 'off'}", flush=True)
             print(f"Sites: http://127.0.0.1:{site_a} and http://127.0.0.1:{site_b}", flush=True)
         print(f"Dependencies ready; emulator {host}, Redis {redis}, Postgres {pg}. Logs: {root}", flush=True)
         write_state(ready_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
@@ -500,6 +507,10 @@ def main():
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
                         help="PHYSICIAN_WORKER_FIXED_FAILURES: the worker's first N provider calls "
                              "fail; 5 dead-letters the first turn")
+    parser.add_argument("--worker-fail-marker", action="store_true",
+                        help="PHYSICIAN_WORKER_FIXED_FAIL_MARKER: a message containing [fail:K] "
+                             "fails its first K attempts, counted per input id; unmarked turns "
+                             "answer, so one stack drives retry, Try again and the happy paths")
     parser.add_argument("--load-numbers", action="store_true",
                         help="after readiness, record Postgres transactions (idle, two streams, one "
                              "turn) and stream-close time to <evidence>/load-numbers.json")
@@ -514,8 +525,10 @@ def main():
         args.command = args.command[1:]
     if args.worker_failures < 0:
         parser.error("--worker-failures must be zero or more")
-    if args.dependencies_only and (args.worker_failures or args.load_numbers):
-        parser.error("--worker-failures and --load-numbers need the application processes")
+    if args.dependencies_only and (args.worker_failures or args.worker_fail_marker
+                                   or args.load_numbers):
+        parser.error("--worker-failures, --worker-fail-marker and --load-numbers need the "
+                     "application processes")
     environment(os.environ, Path("/unused"))  # Refuse hosted before allocating anything.
 
     def stop(_signal, _frame):

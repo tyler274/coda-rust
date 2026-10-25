@@ -32,16 +32,20 @@ active, prefix with `nix develop --command`.
 2. Start the stack in its own terminal and leave it running:
 
    ```bash
-   scripts/physician-scale-stack.py --bin-dir target/stream-e/debug            # happy path
-   scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-failures 5   # Try again
+   scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-fail-marker
    ```
+
+   One stack serves every feature. `--worker-fail-marker` makes a message containing
+   `[fail:K]` fail its first K attempts, counted per `input_id` (Retry `[fail:1]`, Try
+   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
+   provider calls of the process fail, whatever the message) is still available.
 
    Readiness is these lines, in order:
 
    ```text
    Site A: http://127.0.0.1:<a> (port <a>)
    Site B: http://127.0.0.1:<b> (port <b>)
-   Worker: http://127.0.0.1:<w> (port <w>); fixed failures <n>
+   Worker: http://127.0.0.1:<w> (port <w>); fixed failures <n>; fail marker <on|off>
    Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>
    Dependencies ready; emulator 127.0.0.1:<p>, Redis <r>, Postgres <g>. Logs: /tmp/...
    Evidence: <repo>/target/verification/runs/physician-scale-stack-<time>-<pid> ... Restart Valkey: kill -USR1 <pid>. Stop: kill -TERM <pid>
@@ -70,7 +74,7 @@ curl -fsS -o /dev/null -w "%{http_code} page\n" "$(jq -r .sites.a "$RUN/stack.js
 D=.agents/skills/coda-verify-physician/scripts/physician-drive.py
 $D subscribers                       # 3: site A, site B and the worker on physician:workspace-events:v1
 S=$($D sign-in --site a) && echo "${#S}"   # a bearer session; proof sign-in works
-jq .worker.fixed_failures "$RUN/stack.json"   # 0 for happy paths, 5 for Try again
+jq '.worker | {fixed_failures, fail_marker}' "$RUN/stack.json"   # 0 and true
 ```
 
 `physician-drive.py` reads the newest `physician-scale-stack-*/stack.json` (or `--stack`)
@@ -82,18 +86,17 @@ Pick the feature from [features/README.md](features/README.md). Each recipe pair
 action with an HTTP/SSE command through `physician-drive.py` and, where the page can
 show it, a browser step on site A or B.
 
-**Opening a chat.** Every recorded workspace answers `chats: []`, and the page has no
-"new conversation" control. Open a chat from the address instead:
+**Opening a chat.** `GET /patient-workspaces/{id}` lists the signed-in physician's
+runtime chats, newest first, titled by their first message. The page's `New conversation`
+button (Conversations sidebar, and the empty Conversation region) opens a new `chat-…` id
+and writes it to `?chat=`. A drive that needs a known id opens it from the address:
 `$D page-url --site b --chat "$C"` prints
-`http://127.0.0.1:<b>/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e&chat=$C`. The page
-lists that chat as `Untitled` (in the sidebar and in the Conversation region), opens it,
-and renders its snapshot, the composer and any `Try again` line. Before the first message
-it shows `What would you like Coda to review?`. A message sent with the page's own
-`Send` button creates the chat. The drive can also create it with the same
-`POST /commands` `message.submit` that `tests/try_again.rs` and `tests/fanout.rs` use
-(`$D send`). The page still does not *list* a chat after a reload without `&chat=`,
-because the workspace projection does not read runtime chats. That gap is product scope,
-not this recipe's.
+`http://127.0.0.1:<b>/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e&chat=$C`. Before its
+first message the page lists that chat as `Untitled`, opens it, and shows
+`What would you like Coda to review?`. A message sent with the page's own `Send` button
+creates the chat. The drive can also create it with the same `POST /commands`
+`message.submit` that `tests/try_again.rs` and `tests/fanout.rs` use (`$D send`). After
+the first message, a reload without `&chat=` still lists the chat, under its title.
 
 Shared driving conventions:
 
@@ -110,7 +113,7 @@ and survives cleanup:
 
 | Artifact | Written by | Holds |
 | --- | --- | --- |
-| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `valkey_restarts`, `ready_at`, `stopped_at` |
+| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `valkey_restarts`, `ready_at`, `stopped_at` |
 | `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
 | `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
 | `load-numbers.json` | `--load-numbers` | see below |
@@ -125,7 +128,7 @@ transaction. Fields:
   stay at the same small background level.
 - `one_turn` holds the turn's transactions, including the reader's snapshot polls, plus
   `submit_to_reply_seconds` for a reply submitted on A and seen on B. It is skipped under
-  `--worker-failures`.
+  `--worker-failures`, but not under `--worker-fail-marker`: its text carries no marker.
 - `stream_close_after_sign_out` records how long a stream held on site B takes to close
   after its session signs out on site A, and confirms other sessions' streams stay open.
 
@@ -162,7 +165,7 @@ Do not kill processes that belong to another run.
 ## Helpers
 
 - [`scripts/physician-scale-stack.py`](../../../scripts/physician-scale-stack.py):
-  `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
+  `--worker-fail-marker`, `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
   `--site-dir DIR`, `--check`, `--dependencies-only`, `-- <child command>`.
   `kill -USR1 <pid>` restarts Valkey on the same port.
 - [`scripts/physician-drive.py`](scripts/physician-drive.py) (executable):
