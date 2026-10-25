@@ -22,7 +22,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+**std::collections::HashMap<String, serde_json::Value>**
 
 ### Authorization
 

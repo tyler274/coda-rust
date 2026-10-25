@@ -6,14 +6,36 @@ existing ActionsInner dispatch from the input mapping so no action is lost.
 Keep the checked-in client configuration template across generator upgrades.
 """
 import json
+import html
 from pathlib import Path
+import re
 import sys
 
 spec = json.loads(Path(sys.argv[1]).read_text())
 out = Path(sys.argv[2])
-# Generated endpoint index rows contain trailing spaces; keep regenerated docs diff-clean.
-for document in (out / "docs").glob("*.md"):
-    document.write_text("\n".join(line.rstrip() for line in document.read_text().splitlines()) + "\n")
+# The Rust README template omits authorization, although API pages link to each
+# scheme's exact name. Derive the section and anchors from the composed contract.
+readme = out / "README.md"
+authorization = "\n## Authorization\n"
+for name, scheme in spec["components"].get("securitySchemes", {}).items():
+    authorization += f'\n<a id="{html.escape(name, quote=True)}"></a>\n\n### {name}\n\n'
+    authorization += "```json\n" + json.dumps(scheme, indent=2) + "\n```\n"
+readme_text = readme.read_text()
+author = readme_text.index("\n## Author\n")
+readme.write_text(readme_text[:author] + authorization + readme_text[author:])
+
+# These emitted type links have no generated model page. Keep their type labels;
+# fix the inline response's filename to match its actual generated model page.
+for document in [readme, *(out / "docs").glob("*.md")]:
+    documentation = re.sub(
+        r"\[([^\]]+)\]\((?:serde_json::Value|SerdeJson__Value|Uuid__Uuid|Null)\.md\)",
+        r"\1", document.read_text(),
+    ).replace("(readDurableAccountContext_200_response.md)", "(ReadDurableAccountContext200Response.md)")
+    # The new index has a blank footer; retain existing model-page spacing.
+    if document == readme:
+        documentation = documentation.rstrip() + "\n"
+    # Generated endpoint index rows contain trailing spaces.
+    document.write_text("\n".join(line.rstrip() for line in documentation.splitlines()) + "\n")
 actions = out / "src/models/actions_inner.rs"
 text = actions.read_text()
 # The discriminator lives on ConversationMessage.actions.items in the reference.
@@ -80,6 +102,6 @@ sources.write_text(source_text.replace('#[serde(tag = "kind")]', '#[serde(untagg
 lib = out / "src/lib.rs"
 lib.write_text("#![allow(missing_docs)]\n" + lib.read_text())
 # Pin the existing client support surface independently of generated DTOs.
-template = Path(__file__).with_name("duet-wire-configuration.rs.template")
+template = Path(__file__).with_name("configuration.rs.template")
 (out / "src/apis/configuration.rs").write_text(template.read_text())
-(out / "Cargo.toml").write_text(Path(__file__).with_name("duet-wire-Cargo.toml.template").read_text())
+(out / "Cargo.toml").write_text(Path(__file__).with_name("Cargo.toml.template").read_text())

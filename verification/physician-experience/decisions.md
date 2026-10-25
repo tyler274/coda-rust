@@ -75,12 +75,12 @@ Linear, then the settled docs, then mockups.
     where they were, and running work is unaffected.
 
 Applied with these, from sources: a calendar lost mid-session keeps the last good
-day (PX-147); deleting the patient's account while invited cancels the invitation
-(ENG-70); a match decision or its Undo wakes the review (PM-331); physician chat
+day (PX-147); deleting the patient's account while invited cancels the invitation;
+a match decision or its Undo wakes the review (PM-331); physician chat
 can wake another initial-understanding attempt (CT-1196).
 
 Also 2026-10-23: any signed-in physician can match a patient message; the
-patient's connection means sharing, with no pause (ENG-70); a stopped follow-up is
+patient's connection means sharing, with no pause; a stopped follow-up is
 held until Resume (supersedes CT:98's "Pause is removed entirely").
 
 ## Node-and-edge audit decisions (2026-10-23)
@@ -114,7 +114,7 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
 - **Send beside Copy.** The reply card offers Send, which has Coda send exactly
   the approved words, shown as sent by Coda for the physician. This is the ideal
   state; direct sending is not in the MVP, where the physician copies the reply
-  and sends it in Gmail or Spruce (Dev, 2026-10-24; ENG-8).
+  and sends it in Gmail or Spruce (Dev, 2026-10-24).
 - **Work runs side by side.** There is no per-patient work slot; only real
   dependencies order work, such as later work building on the initial
   understanding.
@@ -159,7 +159,7 @@ from the sources:
 | --- | --- | --- |
 | N1 | Every work kind runs on any authorized source, Duet included. | CT:1203-1205 |
 | N2 | From a correction onward, items built on the moved message are withheld until the old patient's re-review revises, re-authors, ends or closes each. | PM:640-711; Dev 2026-10-03 |
-| N3 | Typed input is never lost, including when access is lost or the session ends. | ENG-19 |
+| N3 | Typed input is never lost, including when access is lost or the session ends. | Linear product requirement |
 | N5, N9 | Dictation stores no audio and has no audio retry; expiry cancels a recording and keeps the text. | px.md:349-350 |
 | N7 | A different physician starts at their own Today; drafts and seen state are per physician. | px.md |
 | N8 | Resume re-reads from an authorized source pull. | px.md:130 |

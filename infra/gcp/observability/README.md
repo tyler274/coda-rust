@@ -1,6 +1,6 @@
 # Observability (Datadog + self-hosted Langfuse)
 
-This root adds ENG-65's observability stack to the existing physician runtime
+This root adds the observability stack to the existing physician runtime
 Autopilot cluster (`infra/gcp/physician-runtime`). It reads that cluster and
 its VPC through data sources and never manages them. The data flow, content
 policy, and runbook are in [book/src/observability.md](/book/src/observability.md).

@@ -72,7 +72,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+**std::collections::HashMap<String, serde_json::Value>**
 
 ### Authorization
 
@@ -483,7 +483,7 @@ Evidence Records
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **entity** | **String** |  | [required] |
-**record_ids** | Option<[**Vec<uuid::Uuid>**](Uuid__Uuid.md)> |  |  |
+**record_ids** | Option<**Vec<uuid::Uuid>**> |  |  |
 **concept_id** | Option<**String**> |  |  |
 **source_kind** | Option<**String**> |  |  |
 **clinical_kind** | Option<**String**> |  |  |
@@ -984,7 +984,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**models::ReadDurableAccountContext200Response**](readDurableAccountContext_200_response.md)
+[**models::ReadDurableAccountContext200Response**](ReadDurableAccountContext200Response.md)
 
 ### Authorization
 
@@ -1012,7 +1012,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+**std::collections::HashMap<String, serde_json::Value>**
 
 ### Authorization
 
@@ -1070,7 +1070,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+**std::collections::HashMap<String, serde_json::Value>**
 
 ### Authorization
 
@@ -1236,11 +1236,11 @@ No authorization required
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **token** | **String** |  | [required] |
-**request_body** | [**std::collections::HashMap<String, serde_json::Value>**](SerdeJson__Value.md) |  | [required] |
+**request_body** | **std::collections::HashMap<String, serde_json::Value>** |  | [required] |
 
 ### Return type
 
-[**std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)
+**std::collections::HashMap<String, serde_json::Value>**
 
 ### Authorization
 

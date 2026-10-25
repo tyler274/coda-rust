@@ -1,9 +1,8 @@
 # Duet UI and design
 
 The [Duet design language](https://linear.app/coda-health/document/duet-design-language-foundations-patterns-and-current-care-e3d0bc28fa6d)
-is the design corpus. [ENG-168](https://linear.app/coda-health/issue/ENG-168)
-owns unresolved cross-surface choices. This page maps that direction to Rust;
-it does not maintain a second visual specification.
+is the design corpus. This page maps that direction to Rust; it does not
+maintain a second visual specification.
 
 ## Direction and scope
 
@@ -11,37 +10,30 @@ Keep one continuous conversation. Today is the home for insights and current
 care: Plans, reminders and Check-ins move out of the companion card, and the
 duplicate care hub is retired. Use the corpus's system sans, quieter solid
 surfaces and green direction. The full Today → selected item in chat → accepted
-save → same current item and originating conversation path belongs to
-[ENG-34](https://linear.app/coda-health/issue/ENG-34), with conversation quality
-in [ENG-26](https://linear.app/coda-health/issue/ENG-26).
+save → same current item and originating conversation path must remain coherent
+across the client, backend and model interaction.
 
-[ENG-141](https://linear.app/coda-health/issue/ENG-141) permanently removes
-person-to-person Shared. Practice connection controls and documented care remain
-reachable under [ENG-70](https://linear.app/coda-health/issue/ENG-70) and
-[ENG-45](https://linear.app/coda-health/issue/ENG-45). Their final placement is an
-ENG-168 design question; removing a tab must not silently redesign consent.
+Person-to-person Shared is retired from product scope. Practice connection
+controls and documented care remain reachable. Their final placement is an
+open design question; removing a tab must not silently redesign consent.
 
-The patient-owned doctor workspace is in MVP under
-[ENG-169](https://linear.app/coda-health/issue/ENG-169): preparation, updates,
+The patient-owned doctor workspace is in MVP: preparation, updates,
 patient review and saving, including patient-provided and connected-practice
 appointment context. Its mockups contain both MVP workspace states and later
 sharing states; label those separately. Sharing with physicians outside Coda is
 post-MVP, with patient-reviewed browser publication and no PDF download. The
-jointly maintained live shared space in [ENG-27](https://linear.app/coda-health/issue/ENG-27)
-is a separate post-MVP concept. Physicians do not approve Duet's wording.
+jointly maintained live shared space is a separate post-MVP concept. Physicians
+do not approve Duet's wording.
 
-Mockups and interactive packages are attached in the Resources sections of
-[ENG-168](https://linear.app/coda-health/issue/ENG-168) (12 phone screens and
-three flow sheets) and [ENG-169](https://linear.app/coda-health/issue/ENG-169)
-(the updated doctor workspace and clinician-preview prototype). The design
-corpus links these directly under “Mockups and interactive prototypes.”
+The design corpus links the mockups, flow sheets, doctor workspace and
+clinician-preview prototype under “Mockups and interactive prototypes.”
 
 ## Rust owners and gaps
 
 | Owner | What to inspect |
 | --- | --- |
 | [`ui`](/crates/ui/src/lib.rs) | Shared tokens and tab primitives; product-specific layout remains in each app |
-| [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs ENG-141 removal |
+| [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs), [`duet-widget`](/crates/duet-widget/src/lib.rs) | Native health, notification and widget adapters; verify on installed clients under the owning outcomes |

@@ -32,7 +32,7 @@ This workspace does not run `init` against a backend and does not apply these ro
 | Root | Owns | Owner document |
 | --- | --- | --- |
 | [`infra/gcp/public-site`](/infra/gcp/public-site) | Public-site Cloud Run behind IAP. This workspace owns its staging state and may plan and apply staging from a reviewed saved plan; never production. | [Public site](public-site.md#staging-state-and-deployment) |
-| [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services (ENG-167). It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) |
+| [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services. It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
 
 ## Duet backend on GCP
@@ -41,7 +41,6 @@ The original Python Duet service's production composition, staging windows, rele
 
 ## iPhone and TestFlight
 
-- [ENG-23](https://linear.app/coda-health/issue/ENG-23) and the platform release/readiness outcomes own current Rust iPhone acceptance.
 - The original [TestFlight runbook](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/testflight-release.md), [iOS verification](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/ios-verification.md), and [release packets](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs) preserve historical distribution and approval evidence. They do not qualify the Rust app. A Rust build is not a TestFlight upload.
 - The Rust bindings for iPhone are in [`platform/ios`](/platform/ios) (see the [crate map](crate-map.md#platform-bindings)).
 

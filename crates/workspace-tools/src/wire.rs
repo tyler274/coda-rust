@@ -58,7 +58,7 @@ fn generate_tree(root: &Path, spec: &Path, out: &Path) -> Result<(), Failure> {
 
 fn compose_spec(root: &Path, work: &Path) -> Result<PathBuf, Failure> {
     let spec = work.join("openapi.json");
-    let script = root.join("scripts/compose-duet-openapi.py");
+    let script = root.join("scripts/duet-wire/compose.py");
     let additions = root.join("crates/duet-api/openapi/additions.json");
     run_program(
         "python3",
@@ -81,7 +81,7 @@ fn reference_openapi(root: &Path) -> PathBuf {
 
 fn finish_generated(root: &Path, spec: &Path, out: &Path) -> Result<(), Failure> {
     cargo_fmt(out)?;
-    let script = root.join("scripts/finalize-duet-wire.py");
+    let script = root.join("scripts/duet-wire/finalize.py");
     run_program(
         "python3",
         &[script.as_os_str(), spec.as_os_str(), out.as_os_str()],
@@ -181,7 +181,7 @@ pub fn post_edit(out: &Path) -> Result<(), Failure> {
 
     remove_generated(out.join(".openapi-generator"))?;
     remove_generated(out.join("git_push.sh"))?;
-    remove_generated(out.join("README.md"))?;
+    // Keep README.md: generated API/model pages navigate back to this index.
     Ok(())
 }
 
@@ -250,16 +250,16 @@ pub fn check_wire(
 
 fn diff_wire(committed: &Path, fresh: &Path) -> Result<(), Failure> {
     let mut drift = String::new();
-    drift.push_str(&diff_dir(
-        &committed.join("src"),
-        &fresh.join("src"),
-        "src",
-    )?);
-    drift.push_str(&diff_file(
-        &committed.join("Cargo.toml"),
-        &fresh.join("Cargo.toml"),
-        "Cargo.toml",
-    )?);
+    for directory in ["src", "docs"] {
+        drift.push_str(&diff_dir(
+            &committed.join(directory),
+            &fresh.join(directory),
+            directory,
+        )?);
+    }
+    for file in ["Cargo.toml", "README.md"] {
+        drift.push_str(&diff_file(&committed.join(file), &fresh.join(file), file)?);
+    }
     if drift.is_empty() {
         Ok(())
     } else {
@@ -392,6 +392,7 @@ mod tests {
 
     fn write_generator_output(out: &Path) {
         fs::create_dir_all(out.join("src/models")).unwrap();
+        fs::create_dir_all(out.join("docs")).unwrap();
         fs::create_dir_all(out.join(".openapi-generator")).unwrap();
         fs::write(out.join("src/lib.rs"), "pub fn generated() {}\n").unwrap();
         fs::write(out.join("src/models/mod.rs"), "pub mod thing;\n").unwrap();
@@ -400,7 +401,16 @@ mod tests {
             "license = \"Unlicense\"\nedition = \"2021\"\n",
         )
         .unwrap();
-        fs::write(out.join("README.md"), "generated\n").unwrap();
+        fs::write(
+            out.join("README.md"),
+            "# Generated client\n\n[Thing](docs/Thing.md)\n",
+        )
+        .unwrap();
+        fs::write(
+            out.join("docs/Thing.md"),
+            "# Thing\n\n[Back to README](../README.md)\n",
+        )
+        .unwrap();
         fs::write(out.join("git_push.sh"), "#!/bin/sh\n").unwrap();
         fs::write(out.join(".openapi-generator/FILES"), "x\n").unwrap();
     }
@@ -421,7 +431,12 @@ mod tests {
         let models = fs::read_to_string(out.join("src/models/mod.rs")).unwrap();
         assert!(models.contains("pub struct Null;"));
         assert!(models.contains("serde::Serialize"));
-        assert!(!out.join("README.md").exists());
+        let docs = fs::read_to_string(out.join("docs/Thing.md")).unwrap();
+        let backlink = docs.split("](").nth(1).unwrap().split(')').next().unwrap();
+        assert!(
+            out.join("docs").join(backlink).is_file(),
+            "generated documentation backlink must resolve"
+        );
         assert!(!out.join("git_push.sh").exists());
         assert!(!out.join(".openapi-generator").exists());
     }
@@ -441,5 +456,34 @@ mod tests {
         .unwrap_err();
         assert_eq!(error.code, 1);
         assert!(error.message.contains("src/lib.rs differs"));
+    }
+
+    #[test]
+    fn check_detects_missing_or_changed_generated_documentation() {
+        for path in ["README.md", "docs/Thing.md"] {
+            for remove in [false, true] {
+                let temp = TempDir::new("docs");
+                let committed = temp.0.join("committed");
+                write_generator_output(&committed);
+                // Matching Rust output isolates the documentation check.
+                post_edit(&committed).unwrap();
+                check_wire(&committed, |out| {
+                    write_generator_output(out);
+                    Ok(())
+                })
+                .unwrap();
+                if remove {
+                    fs::remove_file(committed.join(path)).unwrap();
+                } else {
+                    fs::write(committed.join(path), "changed documentation\n").unwrap();
+                }
+                let result = check_wire(&committed, |out| {
+                    write_generator_output(out);
+                    Ok(())
+                });
+                let error = result.expect_err("generated documentation drift must fail --check");
+                assert!(error.message.contains(path), "{}", error.message);
+            }
+        }
     }
 }

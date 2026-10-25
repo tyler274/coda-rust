@@ -77,16 +77,15 @@ and deployment preparation, **not a production release**. Production remains on
 Vercel. The staging root and hostname cutover are applied, and authenticated
 browser access checks passed, as described in
 [Staging deployment status](#staging-deployment-status-2026-10-21). Production
-resources and DNS are unchanged. [ENG-79](https://linear.app/coda-health/issue/ENG-79)
-remains open for visual qualification, release-workflow integration, production
-hosting approval and production recovery/retirement work. The old public-staging
+resources and DNS are unchanged. Production still requires visual qualification,
+release-workflow integration, hosting approval and recovery/retirement work. The old public-staging
 Vercel project and Cloudflare Access application have been retired.
 
 Staging access uses Google Identity-Aware Proxy (IAP) directly on Cloud Run, in
 the existing `coda-health-staging` project (number `134570912572`). The earlier
 Cloudflare Access design was removed: there is no Cloudflare application, service
 token, staging load balancer or staging CDN. This reuses the direct Cloud Run IAP
-pattern of [ENG-167](https://linear.app/coda-health/issue/ENG-167).
+pattern of the [Rust staging environments](gcp.md#rust-staging-bootstrap-and-deployment-gate).
 
 ## Application contract
 
@@ -117,7 +116,7 @@ does. Reduced motion is decided by the original script at load, as on production
 The one deliberate exception is the Duet story (`src/pages/phones.rs`), which runs
 ahead of production and of the app. It replaces the original Duet phones on `/` and
 `/duet` with one story across three phones, drawn from the October 21 Duet mockups
-(ENG-168, ENG-169), in which Duet leads and Maya says yes: Today shows what Duet
+in which Duet leads and Maya says yes: Today shows what Duet
 noticed about her home blood pressure; Duet offers a morning Check-in and she accepts
 it; on Monday the Check-in returns by itself and Duet prepares an update to her page
 for her doctor; she reviews it, saves it and previews it, and the story ends on the
@@ -258,8 +257,8 @@ Recorded final-tree local proof:
 - The rebuilt production/staging image passed nonroot/read-only HTTP and shutdown
   smoke checks, as detailed below. It was not published or deployed.
 - cargo-deny passed under inherited main policy. ZIP 8.6.0 is **not remediated**:
-  the unchanged exceptions for RUSTSEC-2026-0367/0368/0369 remain tracked in
-  [ENG-108](https://linear.app/coda-health/issue/ENG-108).
+  the unchanged exceptions for RUSTSEC-2026-0367/0368/0369 remain in
+  [`deny.toml`](/deny.toml).
 
 Reproduce the site checks from the workspace root, inside the dev shell:
 
@@ -933,14 +932,15 @@ available directly.
   browser render of this revision has been recorded yet: the automation browser
   was signed in with a non-member account, and IAP correctly denied it.
 
-### Remaining qualification
+### Qualification after the October 21 deployment
 
-Access checks passed on both staging hostnames. Dev observed that staging
-animations stuttered relative to production; the cause was the WASM island
-described in [Application contract](#application-contract), which the original
-motion script replaces. Staging needs a redeploy before it shows that change.
-The existing Sign in link points back to the marketing staging site;
-physician/Duet application staging is separate work under ENG-167.
+The October 21 access checks passed on both staging hostnames. That deployment
+still had the WASM animation stutter and a Sign in link back to the marketing
+site. The source now uses the original motion script described in
+[Application contract](#application-contract). The later October 24
+[same-origin physician sign-in qualification](#same-origin-physician-proxy-qualification)
+supersedes the earlier sign-in limitation. Physician/Duet application staging
+has a separate [deployment owner](gcp.md#rust-staging-bootstrap-and-deployment-gate).
 
 CI and deployment identities have no website-access grant, so the CI deploy job
 checks only that anonymous requests are sent to sign-in; an authenticated render
@@ -954,13 +954,13 @@ and production workflow are unchanged. They still require successful legacy
 staging checks for the exact kytos `origin/main` SHA, so new commits cannot pass
 those retired gates. Historical greens and this Rust site's access checks do
 not qualify a new Next.js release. The next production release needs an
-explicitly agreed qualification path under ENG-79 before those gates change.
+explicitly agreed qualification path before those gates change.
 
 There is no DNS-only rollback to Vercel after deleting its public-staging
 project. Keep the `staging` CNAME on `ghs.googlehosted.com` with proxying disabled;
 the protected Cloud Run URL is also available for diagnosis. Do not change the
 root, `www`, app or work records. Production cutover remains a separate decision
-under ENG-79 and is never planned or applied from this workspace.
+and is never planned or applied from this workspace.
 
 ## Local release load check (2026-10-20)
 

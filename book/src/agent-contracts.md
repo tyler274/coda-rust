@@ -102,8 +102,7 @@ When porting a submodule behavior into a crate:
   `patient-work`, `local-product`, `physician-auth`, and `physician-app`.
 - The Duet intelligence boundary governs `duet-api` and `duet-app`.
 - `harness` and its neutral supporting libraries, including the `agent-skills`
-  loader, share execution mechanics under the approved
-  [ENG-159 boundary](https://linear.app/coda-health/issue/ENG-159#comment-0bb61a83-8e56-40d9-aa2c-f8b9960393eb).
+  loader, share product-neutral execution mechanics.
   Common execution-integrity and failure-isolation invariants apply to both
   consumers; physician clinical policy does not become Duet policy. Each product
   supplies its own skills, context, admitted tools and authority checks.
