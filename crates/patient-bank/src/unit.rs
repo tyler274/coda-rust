@@ -21,7 +21,7 @@ use crate::fhir::{Chart, Observation};
 use crate::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use crate::render::Renderer;
 use crate::seeds::{Seeds, Unit};
-use crate::{Result, calendar, check, paths, terms, time};
+use crate::{Result, calendar, check, paths, repeats, terms, time};
 
 pub const MODEL: &str = "claude-opus-5-5 (Claude Code workflow subagent)";
 
@@ -168,7 +168,7 @@ fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Term
     terms::resolve(patients, catalog, &mut look)
 }
 
-fn brief(unit: &Unit, drafts: &Path) -> Result<i32> {
+fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path) -> Result<i32> {
     let n = unit.members.len();
     println!(
         "unit {} ({}, {n} patient{})",
@@ -187,8 +187,24 @@ fn brief(unit: &Unit, drafts: &Path) -> Result<i32> {
             m.mrn, m.target_documents, m.target_observations, m.years_with_practice
         );
     }
+    // what every other accepted unit already uses
+    let mut others = Vec::new();
+    if let Ok(dir) = fs::read_dir(paths::ledgers()) {
+        for e in dir.filter_map(|e| e.ok()) {
+            let path = e.path();
+            if path.extension().is_some_and(|x| x == "json")
+                && path.file_stem().is_some_and(|s| *s != *unit.unit)
+            {
+                others.push(Ledger::read(&path)?);
+            }
+        }
+    }
+    let taken = drafts.join("taken.md");
+    let found = repeats::find(&others, &repeats::own(seeds), 1);
+    fs::write(&taken, repeats::taken(&found, others.len()))?;
     println!("\nGuide:      {}", paths::authoring_guide().display());
     println!("Vocabulary: {}", paths::vocabulary().display());
+    println!("Taken:      {}", taken.display());
     println!(
         "Write to:   {0}/story.md, {0}/part-01.json, part-02.json, ...",
         drafts.display()
@@ -315,7 +331,7 @@ pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
     let drafts = paths::root().join("drafts").join(uid);
     fs::create_dir_all(&drafts)?;
     match command {
-        "brief" => brief(unit, &drafts),
+        "brief" => brief(unit, &seeds, &drafts),
         "check" => accept(unit, &drafts, &catalog),
         _ => preview(unit, &drafts, &catalog),
     }

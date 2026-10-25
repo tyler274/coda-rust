@@ -15,7 +15,8 @@
 //! ```
 //!
 //! The calendar is checked as a whole: valid Appointments for known patients from
-//! the bank day on.
+//! the bank day on. The report also lists what the charts repeat from one another
+//! (see `repeats`).
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fs;
@@ -31,7 +32,8 @@ use crate::catalog::{CPT, Catalog};
 use crate::fhir::{FAMILIES, LOINC};
 use crate::ledger::{Ledger, Terms};
 use crate::render::{DOC_TYPE_CODES, VITAL_CODES};
-use crate::{Result, paths, time};
+use crate::seeds::Seeds;
+use crate::{Result, paths, repeats, time};
 
 static ID: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^[A-Za-z0-9\-.]{1,64}$").expect("regex"));
@@ -363,12 +365,19 @@ struct Report {
     calendar_errors: Vec<String>,
     stats: BTreeMap<String, usize>,
     calendar: BTreeMap<String, usize>,
+    repeats: repeats::Repeats,
     failures: Vec<PatientReport>,
 }
 
 /// Validate the bank, write the report and print its summary; returns 1 when
 /// anything failed.
-pub fn run(bank: &Path, schema: &Path, jobs: usize, report: Option<&Path>) -> Result<i32> {
+pub fn run(
+    bank: &Path,
+    seeds: &Path,
+    schema: &Path,
+    jobs: usize,
+    report: Option<&Path>,
+) -> Result<i32> {
     let catalog = Catalog::load(&paths::catalog())?;
     let manifest: Value = serde_json::from_str(&fs::read_to_string(bank.join("manifest.json"))?)?;
     let root: Value = serde_json::from_str(
@@ -433,6 +442,7 @@ pub fn run(bank: &Path, schema: &Path, jobs: usize, report: Option<&Path>) -> Re
     let mut calendar_errors = Vec::new();
     let mrns: HashSet<&str> = work.iter().map(|w| w.mrn.as_str()).collect();
     let calendar = check_calendar(bank, &appointment, &mrns, &mut calendar_errors)?;
+    let repeats = repeats::find(ledgers.values(), &repeats::own(&Seeds::read(seeds)?), 2);
     let mut stats: BTreeMap<String, usize> = BTreeMap::new();
     for r in &results {
         for (k, n) in &r.stats {
@@ -453,6 +463,7 @@ pub fn run(bank: &Path, schema: &Path, jobs: usize, report: Option<&Path>) -> Re
         calendar_errors,
         stats,
         calendar,
+        repeats,
         failures: results
             .into_iter()
             .filter(|r| !r.errors.is_empty())
@@ -467,6 +478,7 @@ pub fn run(bank: &Path, schema: &Path, jobs: usize, report: Option<&Path>) -> Re
         "calendar_errors": report.calendar_errors,
         "calendar": report.calendar,
         "stats": report.stats,
+        "repeats": report.repeats,
     });
     println!("{}", serde_json::to_string_pretty(&summary)?);
     println!("report: {}", out.display());

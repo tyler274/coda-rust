@@ -14,7 +14,8 @@ patients/seeds.json            who each patient is
   -> patients/ledgers/<unit>.json   the clinical source of truth, written only by `check`
   -> build                     bank/patients/<MRN>/<Family>.ndjson, bank/calendar/
                                Appointment.ndjson (visits from today on), manifest.json
-  -> validate                  HL7 schema, ids, references, codes, times; validation.json
+  -> validate                  HL7 schema, ids, references, codes, times, and what the
+                               charts repeat from one another; validation.json
 ```
 
 ```bash
@@ -46,6 +47,11 @@ and the schema live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA
   CVX and CPT codes. `check` verifies any extra condition code or drug text an
   author proposes and stores the answer in the ledger, so build and validate need
   no network.
+- **Repeats.** Authors write alone, so they fall back on the same defaults.
+  `repeats.rs` finds the names and phrases a few charts share (the practice's own
+  templates are shared by many and do not count) and lab values far more common
+  than the values beside them. `validate` reports them for the bank, and `brief`
+  writes each author a `taken.md` from every other chart.
 - **The check.** `check` holds chronology and codes only: the patient matches
   the seed, every label is the catalog's, nothing is after today but pending
   results and booked visits, nothing stops, resolves or closes before it started,

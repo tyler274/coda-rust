@@ -19,7 +19,9 @@ voices, and the small mess real charts collect. Most patients are ordinary.
 Run every command from the repository root. `<unit>` is the unit id you were given.
 
 1. `cargo run -q -p patient-bank -- brief <unit>` prints the seed, the document
-   and observation targets, and the paths you write to.
+   and observation targets, and the paths you write to. It also writes
+   `taken.md`: the names, phrases and lab values other charts already use. Give
+   this patient their own.
 2. Write `story.md` in the draft folder: who this person is, a dated problem
    timeline, a dated medication timeline, outside care, and a year-by-year list
    of contacts with the practice. The ledger must agree with it.

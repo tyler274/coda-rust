@@ -12,6 +12,7 @@ pub mod labs;
 pub mod ledger;
 pub mod paths;
 pub mod render;
+pub mod repeats;
 pub mod rng;
 pub mod seeds;
 pub mod terms;

@@ -4,7 +4,7 @@
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
 //! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR]
-//! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
+//! cargo run -p patient-bank -- validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
 //! ```
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
@@ -61,10 +61,15 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             0
         }
         "validate" => {
-            let o = Opts::parse(rest, &["--bank", "--schema", "--jobs", "--report"], &[])?;
+            let o = Opts::parse(
+                rest,
+                &["--bank", "--seeds", "--schema", "--jobs", "--report"],
+                &[],
+            )?;
             validate::run(
                 &o.path("--bank")
                     .unwrap_or_else(|| paths::root().join("bank")),
+                &o.path("--seeds").unwrap_or_else(paths::seeds),
                 &o.path("--schema").unwrap_or_else(paths::schema),
                 o.number("--jobs")?.unwrap_or(8),
                 o.path("--report").as_deref(),
@@ -138,7 +143,7 @@ patient-bank runs the synthetic patient bank pipeline.
   patient-bank catalog [--offline] [--roger-fixture DIR]
   patient-bank brief|check|preview UNIT [--seeds PATH]
   patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR]
-  patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
+  patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
 
 PATIENT_BANK_DATA and PATIENT_BANK_ROOT override crates/patient-bank/data and target/patient-bank."
         .into()

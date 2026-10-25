@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, calendar, check, paths};
+use patient_bank::{bank, calendar, check, paths, repeats};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -536,4 +536,69 @@ fn check_holds_orders_and_missed_visits() {
         json!({"appointment": "no-show", "vitals": {"bp": [121, 77]}})
     )]));
     assert!(has(&e, "records nothing clinical"), "{e:?}");
+}
+
+#[test]
+fn repeats_find_what_charts_share_but_not_their_own_or_the_practices() {
+    let ledger = |unit: &str, tsh: f64, body: &str| Ledger {
+        unit: unit.into(),
+        model: "test".into(),
+        warnings: Vec::new(),
+        patients: vec![patient(json!([visit(
+            "e1",
+            "2024-01-01T09:00",
+            json!({
+                "labs": [{"panel": null, "collected": "2024-01-01T09:00",
+                    "results": [{"test": "Thyroid Stimulating Hormone", "value": tsh}]}],
+                "documents": [{"type": "Progress Notes", "author": "PCP", "body": body}]
+            })
+        )]))],
+        terms: Terms::default(),
+    };
+    let template = "Exam: lungs clear heart regular rate and rhythm.";
+    // a relative's name and a phrase in two charts, a default TSH in three, and the
+    // practice's exam template in all ten
+    let units: Vec<Ledger> = (0..10)
+        .map(|i| {
+            let extra = if i < 2 {
+                "Her brother Walter drove her in and asked whether she would need surgery soon."
+            } else {
+                "Doing well, no changes today."
+            };
+            let tsh = if i < 3 {
+                2.14
+            } else {
+                1.0 + f64::from(i) / 7.0
+            };
+            ledger(
+                &format!("unit-{i:04}"),
+                tsh,
+                &format!("{template} Ada says hi. {extra}"),
+            )
+        })
+        .collect();
+    let own = (0..10)
+        .map(|i| (format!("unit-{i:04}"), ["Ada".to_string()].into()))
+        .collect();
+    let r = repeats::find(&units, &own, 2);
+    let has = |items: &[(String, usize)], what: &str| items.iter().any(|(k, _)| k.contains(what));
+    assert!(has(&r.names, "Walter"), "{:?}", r.names);
+    assert!(!has(&r.names, "Ada"), "a patient's own name is theirs");
+    assert!(
+        has(
+            &r.phrases,
+            "her brother walter drove her in and asked whether she would need surgery soon"
+        ),
+        "{:?}",
+        r.phrases
+    );
+    assert!(
+        !has(&r.phrases, "lungs clear heart regular"),
+        "the practice template repeats"
+    );
+    assert!(
+        has(&r.values, "Thyroid Stimulating Hormone 2.14"),
+        "{:?}",
+        r.values
+    );
 }
