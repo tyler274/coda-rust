@@ -165,10 +165,9 @@ jobs:
       - name: Check formatting
         run: cargo fmt --check
       # CI parity with the pre-commit hook (.githooks/pre-commit): a commit
-      # that slips past --no-verify still faces clippy here. Warnings are
-      # reported, not denied, until the tree is clean.
+      # that slips past --no-verify still faces clippy here, warnings denied.
       - name: Lint
-        run: cargo clippy --workspace --all-targets
+        run: cargo clippy --workspace --all-targets -- -D warnings
       # Each package runs once. Browser packages keep dedicated steps below;
       # the workspace step includes the harness streaming suites.
       - name: Test workspace libraries and services
