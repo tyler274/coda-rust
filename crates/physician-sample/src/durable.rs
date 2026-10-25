@@ -2,7 +2,7 @@
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
 use crate::queue::ChatQueue;
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Scope, Store, delivery::Delivery,
+    Accepted, Authority, Conversation, Input, Resumed, Scope, Store, delivery::Delivery,
 };
 use std::sync::Arc;
 
@@ -51,6 +51,40 @@ impl DurableChat {
             tracing::warn!("accepted physician input awaits queue recovery");
         }
         Ok(accepted)
+    }
+
+    /// The physician's Try again on a failed turn. The runtime checks the named
+    /// work and run and saves the receipt; the wakeup then follows the same
+    /// rule as [`Self::accept`]: publish, else leave it for the recovery sweep.
+    pub async fn resume(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+        expected_run_id: &str,
+    ) -> Result<Resumed, String> {
+        let resumed = self
+            .store
+            .resume_authorized(scope, key, session_hash, work_item_id, expected_run_id)
+            .await
+            .map_err(|e| e.to_string())?;
+        let Resumed::Pending { input_id } = &resumed else {
+            return Ok(resumed);
+        };
+        let delivery = Delivery {
+            scope: scope.clone(),
+            input_id: input_id.clone(),
+        };
+        if self.queue.publish(&delivery).await.is_ok() {
+            self.store
+                .dispatched(&delivery, 60)
+                .await
+                .map_err(|e| e.to_string())?;
+        } else {
+            tracing::warn!("resumed physician input awaits queue recovery");
+        }
+        Ok(resumed)
     }
 
     /// Reads only the scoped durable conversation; caller authenticates current

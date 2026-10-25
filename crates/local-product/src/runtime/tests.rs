@@ -429,6 +429,138 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
+async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    let ours = |page: delivery::DispatchPage| -> Vec<Delivery> {
+        page.deliveries
+            .into_iter()
+            .filter(|d| d.scope.practice == practice)
+            .collect()
+    };
+    let scope = delivery_scope(&practice, "chat");
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .await
+        .unwrap();
+    let turn = Delivery {
+        scope: scope.clone(),
+        input_id: "turn".into(),
+    };
+    // Pending work is not failed: nothing to try again.
+    let pending = store.conversation(&scope).await.unwrap();
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "early", vec![6; 32], &pending.work, "none")
+            .await
+            .unwrap(),
+        Resumed::Refused
+    );
+    for _ in 0..MAX_FAILED_ATTEMPTS {
+        let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+        store.retry_delivery(&claim).await.unwrap();
+    }
+    let failed = store.conversation(&scope).await.unwrap();
+    assert_eq!(failed.status, "failed");
+    let work = failed.work.clone();
+    let run = failed.attempts.last().unwrap().id.clone();
+    let earlier = failed.attempts.first().unwrap().id.clone();
+
+    // A wrong run, wrong work, or another chat is refused and changes nothing.
+    for (key, target, work_id, run_id) in [
+        ("wrong-run", &scope, work.as_str(), earlier.as_str()),
+        ("wrong-work", &scope, "other-work", run.as_str()),
+        (
+            "wrong-chat",
+            &delivery_scope(&practice, "other"),
+            work.as_str(),
+            run.as_str(),
+        ),
+    ] {
+        assert_eq!(
+            store
+                .resume_authorized(target, key, vec![6; 32], work_id, run_id)
+                .await
+                .unwrap(),
+            Resumed::Refused,
+            "{key}"
+        );
+    }
+    let unchanged = store.conversation(&scope).await.unwrap();
+    assert_eq!(
+        (unchanged.status.as_str(), unchanged.failures),
+        ("failed", MAX_FAILED_ATTEMPTS)
+    );
+    assert!(
+        store
+            .resume_authorized(&scope, "short", vec![6; 4], &work, &run)
+            .await
+            .is_err()
+    );
+
+    // The named failed run resumes with a fresh budget and the current session.
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "turn".into()
+        }
+    );
+    let resumed = store.conversation(&scope).await.unwrap();
+    assert_eq!((resumed.status.as_str(), resumed.failures), ("pending", 0));
+    assert_eq!(resumed.session_hash.as_deref(), Some(&[6u8; 32][..]));
+    assert_eq!(resumed.work, work, "Try again keeps the work identity");
+    assert_eq!(
+        ours(store.dispatch_due(100, Some(&start)).await.unwrap()),
+        vec![turn.clone()]
+    );
+    // The same request is a duplicate; the same key for another target is not.
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Duplicate
+    );
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &earlier)
+            .await
+            .unwrap(),
+        Resumed::Refused
+    );
+
+    // Completed work is never reopened, even with its last run named.
+    let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().status = "completed".into();
+    state.status = "completed".into();
+    Store::save(tx, &scope, &state).await.unwrap();
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "after-done", vec![6; 32], &work, &claim.attempt)
+            .await
+            .unwrap(),
+        Resumed::Refused
+    );
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        "completed"
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
 async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();

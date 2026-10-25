@@ -151,6 +151,20 @@ pub enum Accepted {
     Duplicate,
 }
 
+/// Outcome of a physician's Try again on failed or held work.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Resumed {
+    /// The work is pending again; publish a wakeup for this input identity.
+    Pending {
+        /// Latest accepted input, the queue delivery's fence.
+        input_id: String,
+    },
+    /// The exact same Try again was already taken; do not publish again.
+    Duplicate,
+    /// The named work or run is not the current failed or held work.
+    Refused,
+}
+
 /// Postgres physician runtime owner. Cloning shares connections, not state.
 #[derive(Clone)]
 pub struct Store {
@@ -583,6 +597,95 @@ impl Store {
             state.failures = 0;
         }
         Self::save(tx, scope, &state).await
+    }
+
+    /// Hosted Try again. Resumes only the named work while it is failed or held
+    /// and its latest attempt is `expected_run_id`, so a stale page never
+    /// restarts newer work and completed work is never reopened. The receipt is
+    /// saved with the change: the same `key` and target answers `Duplicate`.
+    /// The accepted session moves to the physician's current session, because
+    /// the original one may have ended while the work sat failed.
+    pub async fn resume_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+        expected_run_id: &str,
+    ) -> Result<Resumed, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        if [
+            key,
+            work_item_id,
+            expected_run_id,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty command field"));
+        }
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "resume": {"work_item_id": work_item_id, "expected_run_id": expected_run_id},
+        });
+        let inserted = command::Entity::insert(command::ActiveModel {
+            practice: Set(scope.practice.clone()),
+            physician: Set(scope.physician.clone()),
+            key: Set(key.to_owned()),
+            command: Set(command.clone()),
+        })
+        .on_conflict(OnConflict::new().do_nothing().to_owned())
+        .exec_without_returning(&tx)
+        .await?;
+        if inserted == 0 {
+            let previous = command::Entity::find_by_id((
+                scope.practice.clone(),
+                scope.physician.clone(),
+                key.to_owned(),
+            ))
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("missing command receipt"))?
+            .command;
+            tx.commit().await?;
+            return Ok(if previous == command {
+                Resumed::Duplicate
+            } else {
+                Resumed::Refused
+            });
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            // Dropping the transaction rolls the receipt back.
+            return Ok(Resumed::Refused);
+        };
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        let resumable = matches!(state.status.as_str(), "failed" | "held")
+            && state.work == work_item_id
+            && state
+                .attempts
+                .last()
+                .is_some_and(|attempt| attempt.id == expected_run_id);
+        let Some(input_id) = state.input_id.clone().filter(|_| resumable) else {
+            return Ok(Resumed::Refused);
+        };
+        state.status = "pending".into();
+        state.failures = 0;
+        state.dispatch_after = 0;
+        state.session_hash = Some(session_hash);
+        Self::save(tx, scope, &state).await?;
+        Ok(Resumed::Pending { input_id })
     }
 
     /// Enumerates durable pending/expired work for explicit server activation.
