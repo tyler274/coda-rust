@@ -18,7 +18,7 @@ use regex::Regex;
 
 use crate::catalog_seed as seed;
 use crate::json::{self, Json, Layout};
-use crate::obj;
+use crate::{obj, paths};
 
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 pub type Result<T> = std::result::Result<T, Error>;
@@ -43,21 +43,6 @@ const V2_0074: &[(&str, &str)] = &[
     ("AU", "Audiology"),
     ("LAB", "Laboratory"),
 ];
-
-/// The Coda Agents Roger fixture's resources, relative to the repository root.
-pub const ROGER_FIXTURE: &str =
-    "submodules/coda-agents/docs/local-product-fixtures/internal_resources";
-
-/// `scripts/patient-bank` in this checkout, where the shared terminology cache,
-/// the coda-gym lab ranges and the catalog live beside the Python pipeline.
-pub fn data_dir() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../scripts/patient-bank")
-}
-
-/// The shared terminology cache that authoring agents and builds all read and extend.
-pub fn shared_cache() -> PathBuf {
-    data_dir().join("terminology-cache.json")
-}
 
 /// Terminology service lookups, answered from the cache file when possible.
 pub struct Lookup {
@@ -338,13 +323,8 @@ fn opt(s: Option<&str>) -> Json {
 
 /// `build_with` against the shared cache and this checkout's coda-gym ranges.
 pub fn build(roger: &Path, offline: bool, out: &Path) -> Result<i32> {
-    let mut look = Lookup::new(shared_cache(), offline)?;
-    build_with(
-        &mut look,
-        &data_dir().join("gym-lab-ranges.json"),
-        roger,
-        out,
-    )
+    let mut look = Lookup::new(paths::terminology_cache(), offline)?;
+    build_with(&mut look, &paths::gym_lab_ranges(), roger, out)
 }
 
 /// Write the verified catalog to `out`, print the counts and every problem, and

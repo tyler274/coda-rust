@@ -13,9 +13,9 @@ use std::sync::LazyLock;
 
 use regex::Regex;
 
-use crate::catalog::{Lookup, Result, py_repr, shared_cache, urlencode};
+use crate::catalog::{Lookup, Result, py_repr, urlencode};
 use crate::json::{self, Json};
-use crate::obj;
+use crate::{obj, paths};
 
 static NUMBER: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"\d+(?:\.\d+)?").expect("valid regex"));
@@ -99,7 +99,11 @@ pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<Json>> {
 
 /// `resolve_extras_with` against the shared terminology cache.
 pub fn resolve_extras(ledgers: &Path, catalog: &Json, offline: bool) -> Result<Json> {
-    resolve_extras_with(&mut Lookup::new(shared_cache(), offline)?, ledgers, catalog)
+    resolve_extras_with(
+        &mut Lookup::new(paths::terminology_cache(), offline)?,
+        ledgers,
+        catalog,
+    )
 }
 
 pub fn resolve_extras_with(look: &mut Lookup, ledgers: &Path, catalog: &Json) -> Result<Json> {

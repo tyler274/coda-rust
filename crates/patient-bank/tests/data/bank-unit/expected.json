@@ -1,0 +1,109 @@
+{
+ "extra": {
+  "conditions": {},
+  "medications": {
+   "acetaminophen 250 MG / aspirin 250 MG / caffeine 65 MG Oral Tablet": {
+    "code": "308297",
+    "display": "acetaminophen 250 MG / aspirin 250 MG / caffeine 65 MG Oral Tablet",
+    "ingredient": "acetaminophen",
+    "receipt": "NLM RxNav approximateTerm + properties"
+   }
+  },
+  "rejected": []
+ },
+ "build": {
+  "stdout": "{\n \"patients\": 2,\n \"totals\": {\n  \"Patient\": 2,\n  \"Condition\": 8,\n  \"MedicationRequest\": 8,\n  \"Observation\": 177,\n  \"DiagnosticReport\": 14,\n  \"DocumentReference\": 40,\n  \"Procedure\": 29,\n  \"AllergyIntolerance\": 0\n },\n \"panels\": {\n  \"100\": 2,\n  \"300\": 2,\n  \"500\": 2,\n  \"1000\": 2\n },\n \"coding\": {\n  \"Condition:coded\": 8,\n  \"DiagnosticReport:coded\": 14,\n  \"MedicationRequest:coded\": 8,\n  \"Observation:coded\": 177,\n  \"Procedure:coded\": 29\n }\n}\n",
+  "files": {
+   "ledgers/unit-0015.json": "55472ff829367327546b5352ceb60c1ce50acae7ee554f11b00c9bf14bc54c7d",
+   "manifest.json": "ee1c8f88a536a6a50cfb63626bb3c6aeafc90c7e8bbc8a5fc4bed4f18a939fcd",
+   "panels/panel-100.json": "16db64ae3d78d831f21232b829b37231ee0c25aa76adf2278ff4387e62f19175",
+   "panels/panel-1000.json": "95843f174e0ee56a4f79614f4bd8842788f0f1223fdcda5764b7d5565758d047",
+   "panels/panel-300.json": "3de243f076ab3f58f0150d3cae732d1eefbab11f1e97e110c9c8f62751af3fc2",
+   "panels/panel-500.json": "d16b2b086bcc901cb8085794a12659e0bc472bbdad4b99a66662f15afe99af1f",
+   "patients/MRN00000023/AllergyIntolerance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "patients/MRN00000023/Condition.ndjson": "0df9e7b7bb9e0f9bdf4b59963cd541187cbc909b75562687ff4a4265eeedefa7",
+   "patients/MRN00000023/DiagnosticReport.ndjson": "06506759d7b874b41bd292cb14cc77d9761af707f0d9d1459c52bdb6fc929b95",
+   "patients/MRN00000023/DocumentReference.ndjson": "ded18892855ab78bb98a1153048d8e63a561b0f9857e382f6632082fcfb2fb56",
+   "patients/MRN00000023/MedicationRequest.ndjson": "7011a6790498640bf42d18d06da109a2c702584f578c71ef9e72cb21d6fe42eb",
+   "patients/MRN00000023/Observation.ndjson": "7afd4c0b57b4e382db99e2f5e751a10c90b4563b5ccb3410dc7c38b1c6b84d58",
+   "patients/MRN00000023/Patient.ndjson": "6eb023759be69243c076f0b53e90a990d76b22a8824020235d50a32d9d51ed46",
+   "patients/MRN00000023/Procedure.ndjson": "bdc148025273683a2cd26046a860a72e789c1c84dce44a36e97ddc3e0cc80c19",
+   "patients/MRN00000024/AllergyIntolerance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "patients/MRN00000024/Condition.ndjson": "79d97d1810330fa93b6ea50d3ca6364d73c2c06e462879f843a1521f8a257374",
+   "patients/MRN00000024/DiagnosticReport.ndjson": "76f65d5090b9fff2ad0971e77e7ea8f8cd44d0b7e671bac1168c62e5de07d5cf",
+   "patients/MRN00000024/DocumentReference.ndjson": "0d2913de1573478cb69a5bcd7995efcb86d23a93318a607fe2309fe0534e8c04",
+   "patients/MRN00000024/MedicationRequest.ndjson": "618c305a5c51452c338392b5cd6a5a68571f2f98cd3a2f08e70a14acd0503915",
+   "patients/MRN00000024/Observation.ndjson": "1a41e39003d4afe7b6f0e2beccfa4d6d466e4416e57547b2f07167eede70fff9",
+   "patients/MRN00000024/Patient.ndjson": "f70a2e22c57555dcec87c68f893792f8a8d4f46ee57ab1ef8197f76d696593dc",
+   "patients/MRN00000024/Procedure.ndjson": "cfc5c74db84b48cc41683917042b04857792d3b3c829fe91773b12701f792976"
+  }
+ },
+ "materialize": [
+  {
+   "panel": 100,
+   "as_of": "2026-08-27T12:00",
+   "stdout": "{\n \"panel\": 100,\n \"as_of\": \"2026-08-27T12:00\",\n \"patients\": 2,\n \"not_included\": [],\n \"counts\": {\n  \"Patient\": 2,\n  \"Condition\": 8,\n  \"MedicationRequest\": 8,\n  \"Observation\": 177,\n  \"DiagnosticReport\": 14,\n  \"DocumentReference\": 40,\n  \"Procedure\": 29,\n  \"AllergyIntolerance\": 0\n }\n}\n",
+   "files": {
+    "AllergyIntolerance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Condition.ndjson": "98d45659f05e84d2000c005f04863ec0a9a9720ca416a995abbd272d29f7d7ca",
+    "DiagnosticReport.ndjson": "13feee85e25f53708146142c10a9a826334d01276e8ca485767268bfa9ec82af",
+    "DocumentReference.ndjson": "708552abe7500dca1f679766eead8ccbda1e6bb2a9fccb9686014af4567ef2b7",
+    "MedicationRequest.ndjson": "d44099abfa10b6809ea2a5a7bfb6328bb599b8ab833a9c546c2683c11cd30def",
+    "Observation.ndjson": "996dd6af91467c777c6abe12c76e3f07abe87c4f33a48e7b8b60c95946f9c267",
+    "Patient.ndjson": "6522a836c23a673a68740a407e3d77e479c8387e99f48c1c627713a8a446586f",
+    "Procedure.ndjson": "32bea7f4afcc8af27b72c90b926ca98896330f21580d5fcf5ac01667d8fc757b",
+    "materialized.json": "3469c3b9b60936ddb1cce150a43a7140cb2c70e5e8a74bd925caa32405947dbb"
+   }
+  },
+  {
+   "panel": 100,
+   "as_of": "2020-03-08T02:30",
+   "stdout": "{\n \"panel\": 100,\n \"as_of\": \"2020-03-08T02:30\",\n \"patients\": 1,\n \"not_included\": [\n  \"MRN00000024\"\n ],\n \"counts\": {\n  \"Patient\": 1,\n  \"Condition\": 3,\n  \"MedicationRequest\": 3,\n  \"Observation\": 59,\n  \"DiagnosticReport\": 5,\n  \"DocumentReference\": 8,\n  \"Procedure\": 6,\n  \"AllergyIntolerance\": 0\n }\n}\n",
+   "files": {
+    "AllergyIntolerance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Condition.ndjson": "0df9e7b7bb9e0f9bdf4b59963cd541187cbc909b75562687ff4a4265eeedefa7",
+    "DiagnosticReport.ndjson": "ea0271a545f2a66a9f66023b03fbcb2a45437081b3abd67773d56c0fe02b1967",
+    "DocumentReference.ndjson": "2d5ac0559e419eefb802270756ff210e0321f06a5f93cee6989c142c99fc8bae",
+    "MedicationRequest.ndjson": "c5df65234eae7011eb3dc1f7979916f0856097fab7afa8b7affa49d11b6553c7",
+    "Observation.ndjson": "3e4d069fc2464ffe87f2b557f1fa3f6fd5de6ef18234e6b3471429b9c7f62327",
+    "Patient.ndjson": "6eb023759be69243c076f0b53e90a990d76b22a8824020235d50a32d9d51ed46",
+    "Procedure.ndjson": "390ace05a1329bdcafc950d4a8398df01104f338c50422b8fd334adef6aff100",
+    "materialized.json": "2229d9e1c1554c1c5d078065fdfcbee4936aaadc7f95850d41cdbce6c8f764c5"
+   }
+  },
+  {
+   "panel": 300,
+   "as_of": "2021-06-01T08:00",
+   "stdout": "{\n \"panel\": 300,\n \"as_of\": \"2021-06-01T08:00\",\n \"patients\": 1,\n \"not_included\": [\n  \"MRN00000024\"\n ],\n \"counts\": {\n  \"Patient\": 1,\n  \"Condition\": 3,\n  \"MedicationRequest\": 4,\n  \"Observation\": 82,\n  \"DiagnosticReport\": 7,\n  \"DocumentReference\": 18,\n  \"Procedure\": 11,\n  \"AllergyIntolerance\": 0\n }\n}\n",
+   "files": {
+    "AllergyIntolerance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Condition.ndjson": "0df9e7b7bb9e0f9bdf4b59963cd541187cbc909b75562687ff4a4265eeedefa7",
+    "DiagnosticReport.ndjson": "06506759d7b874b41bd292cb14cc77d9761af707f0d9d1459c52bdb6fc929b95",
+    "DocumentReference.ndjson": "ded18892855ab78bb98a1153048d8e63a561b0f9857e382f6632082fcfb2fb56",
+    "MedicationRequest.ndjson": "7011a6790498640bf42d18d06da109a2c702584f578c71ef9e72cb21d6fe42eb",
+    "Observation.ndjson": "7afd4c0b57b4e382db99e2f5e751a10c90b4563b5ccb3410dc7c38b1c6b84d58",
+    "Patient.ndjson": "6eb023759be69243c076f0b53e90a990d76b22a8824020235d50a32d9d51ed46",
+    "Procedure.ndjson": "bdc148025273683a2cd26046a860a72e789c1c84dce44a36e97ddc3e0cc80c19",
+    "materialized.json": "d34adbd516f8bd0cb5bf6f64afc9f8fea6dab6e79697c155d77f6d0a1e41421a"
+   }
+  }
+ ],
+ "future_mentions": {
+  "MRN00000023": [],
+  "MRN00000024": [
+   [
+    "future_drug_mention",
+    "future drug: docref-87cdd567ba2b (2021-08-17) mentions 'varenicline', started 2022-03-15"
+   ],
+   [
+    "future_drug_mention",
+    "future drug: docref-07e934d05f1a (2021-10-05) mentions 'varenicline', started 2022-03-15"
+   ]
+  ]
+ },
+ "chart_text": {
+  "MRN00000023": "5ce767e22164f919280627c80564a7e1d93211405b4bad8b72c255fac9138bea",
+  "MRN00000024": "b4e4519ada0aa20e3f3dd7cff9ca4d3580384f4bec789e38aeae2ee0ad6a8123"
+ },
+ "vocabulary": "10d2cf4f49ba8600eb0f9fc61cbe735109cb29ec1971cc7f98401119621b0aa2"
+}

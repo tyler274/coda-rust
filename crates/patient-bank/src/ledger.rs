@@ -560,7 +560,7 @@ fn check_lab(eid: &str, lab: &Json, catalog: &Json, errors: &mut Vec<String>) {
 
 /// `AGE_IN_TEXT.finditer`, Python's `\b(\d{2,3})[- ](?:year|yr)s?[- ]old\b` with `re.I`:
 /// (start, end, stated age) in characters.
-fn age_in_text(text: &[char]) -> Vec<(usize, usize, i64)> {
+pub(crate) fn age_in_text(text: &[char]) -> Vec<(usize, usize, i64)> {
     let mut out = Vec::new();
     let mut at = 0;
     while at < text.len() {
@@ -616,7 +616,11 @@ fn age_at(text: &[char], at: usize) -> Option<(usize, usize)> {
 
 /// Python's `re.search(r"\b(w1|w2|...)\b", text)` (with `re.I` when `ignore_case`): the first
 /// match as character offsets. Every word starts and ends with a word character.
-fn search_words(text: &[char], words: &[&str], ignore_case: bool) -> Option<(usize, usize)> {
+pub(crate) fn search_words(
+    text: &[char],
+    words: &[&str],
+    ignore_case: bool,
+) -> Option<(usize, usize)> {
     for at in 0..text.len() {
         let mut checked = false;
         for w in words {
@@ -638,7 +642,7 @@ fn search_words(text: &[char], words: &[&str], ignore_case: bool) -> Option<(usi
 }
 
 /// The end of `word` matched at `at`, or None.
-fn match_at(text: &[char], at: usize, word: &str, ignore_case: bool) -> Option<usize> {
+pub(crate) fn match_at(text: &[char], at: usize, word: &str, ignore_case: bool) -> Option<usize> {
     let mut i = at;
     for p in word.chars() {
         let c = *text.get(i)?;
@@ -662,7 +666,7 @@ fn fold_eq(p: char, c: char) -> bool {
 }
 
 /// Python's `\b` at character offset `i`.
-fn boundary(text: &[char], i: usize) -> bool {
+pub(crate) fn boundary(text: &[char], i: usize) -> bool {
     let before = i > 0 && is_word(text[i - 1]);
     let after = i < text.len() && is_word(text[i]);
     before != after
@@ -683,7 +687,7 @@ fn char_is(re: &Regex, c: char) -> bool {
 }
 
 /// A word character of Python's Unicode `\b` and `\w`: `str.isalnum()` or `_`.
-fn is_word(c: char) -> bool {
+pub(crate) fn is_word(c: char) -> bool {
     if c.is_ascii() {
         c.is_ascii_alphanumeric() || c == '_'
     } else {
@@ -697,7 +701,7 @@ fn is_printable(c: char) -> bool {
 }
 
 /// `str.isdecimal()` of one character: Python's `\d`.
-fn is_decimal(c: char) -> bool {
+pub(crate) fn is_decimal(c: char) -> bool {
     if c.is_ascii() {
         c.is_ascii_digit()
     } else {
@@ -737,7 +741,7 @@ fn text_or_empty(v: &Json) -> &str {
 }
 
 /// `s[:n]` in characters.
-fn head(s: &str, n: usize) -> &str {
+pub(crate) fn head(s: &str, n: usize) -> &str {
     s.char_indices().nth(n).map_or(s, |(i, _)| &s[..i])
 }
 

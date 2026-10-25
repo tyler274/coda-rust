@@ -1,0 +1,1389 @@
+{
+ "unit": "unit-0015",
+ "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+ "warnings": [
+  "future drug: docref-87cdd567ba2b (2021-08-17) mentions 'varenicline', started 2022-03-15",
+  "future drug: docref-07e934d05f1a (2021-10-05) mentions 'varenicline', started 2022-03-15"
+ ],
+ "patients": [
+  {
+   "mrn": "MRN00000023",
+   "events": [
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care; headaches; cholesterol",
+     "conditions": [
+      {
+       "label": "Migraine without aura",
+       "action": "history",
+       "onset": "1992-06-01",
+       "note": "since adolescence, menstrually associated"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2017-03-01",
+       "note": "LDL 162 at prior practice 2017 per patient"
+      },
+      {
+       "label": "Family history of ischemic heart disease",
+       "action": "history",
+       "onset": "2019-09-10",
+       "note": "father MI at 51"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "acetaminophen 250 MG / aspirin 250 MG / caffeine 65 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets by mouth at headache onset as needed",
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Migraine"
+      },
+      {
+       "drug": "sumatriptan 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth at migraine onset; may repeat once after 2 hours. Max 4 tablets per day.",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Migraine without aura"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       118,
+       76
+      ],
+      "hr": 72,
+      "rr": 14,
+      "temp_c": 36.7,
+      "spo2": 99,
+      "weight_kg": 64.5,
+      "height_cm": 157.5
+     },
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Rarely, about one glass of wine a month"
+      },
+      {
+       "item": "Electronic cigarette status",
+       "value": "Never used"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-09-10T10:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 40-64",
+       "performed": "2019-09-10T09:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-09-10T10:12"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Rooming",
+       "date": "2019-09-10T09:24",
+       "status": "final",
+       "body": "New pt. Roomed rm 3. Ht/wt/VS obtained, see flowsheet. Pt reports headaches 'a few times a month', takes Excedrin. Brought list of meds: Excedrin only. NKDA confirmed. Last tetanus 'over 10 yrs ago, not sure' - pt agreeable to Tdap today per standing order, VIS given. PHQ-2 = 0. Last Pap 2016 in Lowell, last mammo never. Release for old records offered, pt declined ('nothing much there').\n- K. Dubois, CMA"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit - Establish Care",
+       "date": "2019-09-10T10:05",
+       "status": "final",
+       "body": "Chief complaint: establishing care, headaches, 'my cholesterol was high before.'\n\nHPI: Moved to Southampton from Lowell this spring with her wife. Last PCP visit 2017 at a practice in Lowell. Headaches since about age 15: unilateral, usually L temple, throbbing, nausea, light and sound sensitive, worse around menses. No visual or sensory aura. Lasts most of a day if untreated. Currently 4-5 headache days a month. Takes Excedrin 2 tabs, works 'about half the time.' Never tried a prescription med. Misses no work but drives the route 'squinting.' No thunderclap onset, no change in pattern, no nocturnal awakening, no neuro sx.\nLipids: told LDL was 162 in 2017, advised diet; no meds. No recheck since.\n\nPMH: migraine as above. No surgeries. G0.\nMeds: Excedrin PRN.\nAllergies: NKDA.\nFH: father first MI at 51, died 2016 of a second MI. Mother HTN and type 2 DM (Lowell, lives with her brother). Sister with migraines. No colon/breast cancer known.\nSH: born in Cambodia, came to Lowell age 4. Package-delivery driver x 20 yrs, 10-hr days, heavy lifting. Married to Sophea (police officer). Never smoker, rare wine, no drugs. Walks the dog most evenings. Diet: rice-based, eats on the route.\n\nROS: neg for chest pain, dyspnea, palpitations, wt change, bowel or urinary changes. Menses regular q28d. Mood good.\n\nExam: BP 118/76, HR 72, BMI 26.0. Well appearing. HEENT nl, fundi sharp discs bilat. Neck supple, no thyromegaly. Heart RRR no murmur. Lungs clear. Abd soft NT. No edema. Neuro: CN II-XII intact, strength 5/5, reflexes 2+ symmetric, gait nl.\n\nA/P:\n1. Migraine without aura, episodic, 4-5 days/mo. Normal neuro exam, stable lifelong pattern, no red flags; no imaging. Start sumatriptan 50 mg at onset, may repeat x1 at 2 h. Discussed limiting Excedrin/triptan to <10 days/mo to avoid medication-overuse headache. Headache diary. Triptan ok with driving once headache resolved; do not drive if drowsy.\n2. Hyperlipidemia. Fasting lipid panel, CMP. Father with premature CAD. If LDL remains >160 we will discuss statin.\n3. Health maintenance: Tdap today. Screening mammogram ordered (first). Pap due - will do at follow-up. HCV and HIV screening once - ordered. A1c and TSH with labs. Colon screening not yet due.\n\nRTC 3 months, sooner prn.\n\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2019-09-13a",
+     "kind": "lab_only",
+     "start": "2019-09-13T07:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fasting labs ordered at establish care",
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 252
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 52
+        },
+        {
+         "test": "Triglycerides",
+         "value": 160
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 168
+        },
+        {
+         "test": "Non-HDL Cholesterol",
+         "value": 200
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 92
+        },
+        {
+         "test": "Creatinine",
+         "value": 0.71
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 19
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.6
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 86
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.82
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 5.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-13T07:48",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab results",
+       "date": "2019-09-16T12:10",
+       "status": "final",
+       "body": "LDL 168, total 252, HDL 52, TG 160 - similar to her 2017 number. CMP, CBC, TSH, A1c 5.4 all normal. HCV and HIV screens negative.\n10-yr ASCVD risk by PCE ~1%, but LDL >160 with father's MI at 51. Plan: 3 months of diet/activity changes, repeat lipids, then statin decision at f/u. Released to portal with comment.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2019-09-18a",
+     "kind": "portal_message",
+     "start": "2019-09-18T19:22",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Question about cholesterol result",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "cholesterol question",
+       "date": "2019-09-18T19:22",
+       "status": "final",
+       "body": "Hi Dr Halvorsen, I saw my cholesterol is still high. My dad had his heart attack young so honestly it scares me a little. Should I just start the pill now instead of waiting? I eat a lot of rice and I'm in the truck all day so I dont know how much I can change. Thanks, Sreymom"
+      },
+      {
+       "type": "Portal Message Reply",
+       "title": "RE: cholesterol question",
+       "date": "2019-09-19T08:41",
+       "status": "final",
+       "body": "Hi Sreymom - very reasonable question, and given your dad's history a statin is on the table. Your 10-year risk is low right now, so a few months of trying first is safe. Small swaps help: brown rice or half-and-half, fewer fried snacks on the route, walking the dog you're already doing. If the LDL is still over 160 in December I'd recommend starting a statin, and you can decide then. - Dr. Halvorsen"
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "imaging",
+     "start": "2019-10-08T10:15",
+     "service": "Radiology",
+     "reason": "Screening mammogram, baseline",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2019-10-08T10:15",
+       "text": "EXAM: Bilateral screening digital mammogram with tomosynthesis.\nHISTORY: Baseline screening. No symptoms. No family history of breast cancer.\nCOMPARISON: None.\nFINDINGS: The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.\nIMPRESSION: No mammographic evidence of malignancy. BI-RADS 1: Negative. Recommend routine screening mammography.\nBreast density notification letter sent per Massachusetts requirements.\nD. Moreau, MD, Radiology",
+       "conclusion": "BI-RADS 1, negative. Heterogeneously dense breasts."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-22a",
+     "kind": "nurse_visit",
+     "start": "2019-10-22T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "vitals": {
+      "temp_c": 36.6
+     },
+     "immunizations": [
+      {
+       "vaccine": "Influenza, seasonal",
+       "date": "2019-10-22T16:14"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-22T16:14"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Flu vaccine",
+       "date": "2019-10-22T16:18",
+       "status": "final",
+       "body": "Here after shift for flu shot. Afebrile, no acute illness, no egg/vaccine reactions. Quadrivalent IIV 0.5 mL IM L deltoid, lot recorded. VIS given. Tolerated well, waited 15 min.\n- M. Ortega, MA"
+      }
+     ]
+    },
+    {
+     "id": "2019-12-10a",
+     "kind": "office_visit",
+     "start": "2019-12-10T10:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up lipids and migraine; Pap",
+     "medications": [
+      {
+       "drug": "atorvastatin 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       116,
+       74
+      ],
+      "hr": 70,
+      "rr": 14,
+      "temp_c": 36.5,
+      "spo2": 99,
+      "weight_kg": 63.6
+     },
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2019-12-10T10:58",
+       "issued": "2019-12-16T14:20",
+       "text": "SPECIMEN: Cervical, liquid-based ThinPrep.\nSPECIMEN ADEQUACY: Satisfactory for evaluation; endocervical/transformation zone component present.\nINTERPRETATION: Negative for intraepithelial lesion or malignancy.\nHIGH-RISK HPV (DNA): Not detected.\nRECOMMENDATION: Routine co-testing interval per current guidelines.\nCytotechnologist screened; reviewed by pathology.",
+       "conclusion": "NILM, high-risk HPV negative."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-12-10T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "date": "2019-12-10T11:20",
+       "status": "final",
+       "body": "S: 3-month f/u. Has been walking the dog longer, switched to half brown rice, fewer chips on the route. Down ~1 kg. Did not repeat lipids (forgot fasting) - discussed, she prefers to start statin rather than wait another draw given father. Migraine diary: 5 headache days in Nov, sumatriptan used 4 times, relief within 1-2 h, mild chest tightness x1 lasting minutes, none since. Excedrin 2-3x/mo. Busy season starting at work - 11-hr days through Christmas.\n\nMeds: sumatriptan 50 PRN, Excedrin PRN.\n\nO: BP 116/74, HR 70, wt 63.6 kg. Well. Heart RRR, lungs clear. Pelvic: nl external genitalia, cervix nulliparous without lesions, no CMT, adnexa nontender. Pap with HPV collected.\n\nA/P:\n1. Hyperlipidemia, LDL 168 with family hx premature CAD. Shared decision - start atorvastatin 20 mg daily. Reviewed myalgia, rare LFT issues. Lipids + hepatic panel in ~3 months.\n2. Migraine w/o aura, episodic, responding to sumatriptan. Brief chest tightness is a known triptan effect; no cardiac sx otherwise and no exertional pattern. Continue. Keep acute-med days under 10/mo.\n3. Pap/HPV collected.\n4. Flu done 10/22. Mammogram 10/8 BI-RADS 1, dense breasts.\n\nRTC 3-4 mo with labs.\nR. Halvorsen, MD"
+      },
+      {
+       "type": "Patient Education",
+       "title": "Statin education",
+       "date": "2019-12-10T11:28",
+       "status": "final",
+       "body": "Reviewed atorvastatin with pt: once daily, any time but same time each day; she chose bedtime. Muscle aches that are new/unexplained -> call. Grapefruit in large amounts to avoid. Handout given (cholesterol and heart-healthy eating, Khmer/English). Pt repeated back plan. Lab order for March placed; pt knows to come fasting.\n- K. Dubois, CMA"
+      }
+     ]
+    },
+    {
+     "id": "2020-03-24a",
+     "kind": "telephone",
+     "start": "2020-03-24T09:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Reschedule follow-up during COVID-19 restrictions",
+     "documents": [
+      {
+       "type": "Administrative Note",
+       "title": "Appointment rescheduled",
+       "date": "2020-03-24T09:12",
+       "status": "final",
+       "body": "Called pt re 3/31 f/u - practice converting non-urgent visits. Pt working full time (essential), no sx. Prefers to wait on fasting labs. Rescheduled to video visit 5/19 w/ Dr. Halvorsen. Lab order kept open. Pt has portal access, video link instructions sent.\n- T. Reyes, front desk"
+      }
+     ]
+    },
+    {
+     "id": "2020-05-19a",
+     "kind": "telehealth_visit",
+     "start": "2020-05-19T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Video visit: migraine worse, statin follow-up",
+     "medications": [
+      {
+       "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Migraine prevention"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      },
+      {
+       "survey": "GAD-7 total score",
+       "value": 6
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2020-05-19T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit (video)",
+       "date": "2020-05-19T14:08",
+       "status": "final",
+       "body": "Video visit, pt at home, consented. Identity verified.\n\nS: Headaches up to 8-9 days/mo since March. Package volume 'like Christmas every day,' 11-12 hr shifts, skipping lunch, sleeping ~5.5 h. Same character as usual, no aura, no new features. Using sumatriptan ~6x/mo plus Excedrin 3-4x. Some worry about bringing COVID home - wife is a police officer, both working. Mood 'tired, not sad.' Taking atorvastatin nightly, no muscle aches. Labs not drawn yet.\nHome BP cuff (wife's) 116/72 this morning.\n\nMeds: atorvastatin 20 daily, sumatriptan 50 PRN, Excedrin PRN.\n\nO: Well appearing on video, speech fluent, face symmetric, EOMs full. PHQ-2 1, GAD-7 6.\n\nA/P:\n1. Migraine w/o aura, increased frequency, now 8-9 days/mo, approaching overuse range. Start prophylaxis: propranolol 20 mg BID (no asthma, HR/BP ok). Expect some fatigue first weeks. Diary. Reassess in ~3 months. Cap acute meds < 10 days/mo.\n2. Stress, mild anxiety sx (GAD-7 6) related to work/pandemic. Sleep hygiene, regular meals. Not interested in counseling now; revisit.\n3. Hyperlipidemia on atorva 20. Fasting lipids + hepatic panel in July when lab hours expand.\n\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2020-06-09a",
+     "kind": "portal_message",
+     "start": "2020-06-09T20:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue on propranolol",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "propranolol",
+       "date": "2020-06-09T20:15",
+       "status": "final",
+       "body": "Hi, I've been on the propranolol 3 weeks. Headaches are a little better I think, only 4 so far this month. But I feel kind of tired and slow especially climbing in and out of the truck. My watch says heart rate 58 and BP was 104/66 tonight. Is that ok? I dont want to stop if its working"
+      },
+      {
+       "type": "Portal Message Reply",
+       "title": "RE: propranolol",
+       "date": "2020-06-10T09:27",
+       "status": "final",
+       "body": "Hi Sreymom, covering for Dr. Halvorsen today. Those numbers are expected on propranolol and are safe as long as you are not dizzy, lightheaded or short of breath. Tiredness often eases after the first month. Drink plenty of water on the route and stand up slowly. If you feel faint, or your heart rate is under 50, call us. Keep the diary going and we'll review at your next visit. - Jonah Petrakis, FNP"
+      }
+     ]
+    },
+    {
+     "id": "2020-07-21a",
+     "kind": "lab_only",
+     "start": "2020-07-21T07:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lipids on atorvastatin",
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-07-21T07:35",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 178
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 54
+        },
+        {
+         "test": "Triglycerides",
+         "value": 130
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 98
+        },
+        {
+         "test": "Non-HDL Cholesterol",
+         "value": 124
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2020-07-21T07:35",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 24
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 21
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lipids on statin",
+       "date": "2020-07-22T11:45",
+       "status": "final",
+       "body": "LDL 98 from 168 on atorvastatin 20 (~42% reduction). LFTs normal. Continue current dose. Portal comment sent to pt. Next lipids in a year.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2020-09-15a",
+     "kind": "office_visit",
+     "start": "2020-09-15T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Migraine and lipid follow-up; flu vaccine",
+     "vitals": {
+      "bp": [
+       106,
+       68
+      ],
+      "hr": 60,
+      "rr": 14,
+      "temp_c": 36.4,
+      "spo2": 99,
+      "weight_kg": 65.2
+     },
+     "immunizations": [
+      {
+       "vaccine": "Influenza, seasonal",
+       "date": "2020-09-15T15:58"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-09-15T15:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-15T15:58"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Rooming and flu vaccine",
+       "date": "2020-09-15T15:26",
+       "status": "final",
+       "body": "Masked, COVID screen neg at door. VS per flowsheet; HR 60, BP 106/68. Pt reports fatigue improved. Flu vaccine IIV4 0.5 mL IM R deltoid after provider visit, VIS given, no reaction.\n- K. Dubois, CMA"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "date": "2020-09-15T15:52",
+       "status": "final",
+       "body": "S: First in-person visit since December. Propranolol 20 BID x4 months. Diary: 4 days June, 3 July, 4 Aug. Uses sumatriptan 2-3x/mo, Excedrin rarely. Initial tiredness gone. No lightheadedness. Atorvastatin daily, no myalgias. Still long shifts but volume down a bit.\n\nMeds: atorvastatin 20 daily, propranolol 20 BID, sumatriptan 50 PRN, Excedrin PRN (rare).\n\nO: BP 106/68, HR 60, wt 65.2 kg. Alert, well. Heart regular, no murmur. Lungs clear. Neuro grossly intact.\nData: 7/21 LDL 98, LFTs nl.\n\nA/P:\n1. Migraine w/o aura - good response to propranolol, ~50% fewer headache days. Continue 20 BID; can consider trial off after 6-12 mo of control.\n2. Hyperlipidemia - at goal reduction on atorva 20. Annual lipids.\n3. HCM: flu today. Pap/HPV 12/2019 neg. Mammo 10/2019 neg - next 2021. COVID precautions reviewed.\n\nRTC 6 mo.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "telephone",
+     "start": "2020-12-08T11:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pharmacy refill request",
+     "documents": [
+      {
+       "type": "Administrative Note",
+       "title": "Refill authorization",
+       "date": "2020-12-08T11:02",
+       "status": "final",
+       "body": "Pharmacy fax: 90-day refills requested for atorvastatin 20 mg and propranolol 20 mg. Last OV 9/15/20, labs 7/21/20. Meets refill protocol - authorized x90 days with 1 refill each. Pt due for f/u ~March 2021; recall placed.\n- M. Ortega, MA"
+      }
+     ]
+    },
+    {
+     "id": "2021-02-23a",
+     "kind": "portal_message",
+     "start": "2021-02-23T18:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Reports first COVID-19 vaccine dose",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19 vaccine, mRNA (Moderna)",
+       "date": "2021-02-20T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "covid shot",
+       "date": "2021-02-23T18:40",
+       "status": "final",
+       "body": "Hello, just letting you know I got my first Moderna shot Saturday 2/20 at the regional vaccine site, they had slots for delivery drivers. Arm was really sore and I had chills one night but fine now. 2nd one is March 20. Do you need my card? Also I know I'm supposed to come in March, things are crazy at work, I'll call when I can."
+      },
+      {
+       "type": "Portal Message Reply",
+       "title": "RE: covid shot",
+       "date": "2021-02-24T08:15",
+       "status": "final",
+       "body": "Great news - I've added dose 1 (Moderna, 2/20/21) to your record. A sore arm and a night of chills are common, and the second dose can feel the same. Please send a photo of the card after dose 2. When things settle, call the front desk for your 6-month follow-up; your refills run through about May. - Beth Lindqvist, RN"
+      }
+     ]
+    }
+   ],
+   "given": "Sreymom",
+   "family": "Keo",
+   "birth_date": "1977-04-20",
+   "address_line": "23 Gunn Road",
+   "phone": "+1-978-555-0165",
+   "email": "sreymom.keo@example.test",
+   "marital_status": "married",
+   "summary": "Package-delivery driver with episodic migraine without aura and hyperlipidemia (father with premature MI), who drops out of care for 27 months in 2021-2023. Later course brings a work fall with ankle sprain, a status migrainosus admission leading to neurology and CGRP therapy, and a grief-driven depressive crisis after her mother's death treated with sertraline and counseling."
+  },
+  {
+   "mrn": "MRN00000024",
+   "events": [
+    {
+     "id": "2021-08-17a",
+     "kind": "establish_care",
+     "start": "2021-08-17T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care; COPD; smoker",
+     "conditions": [
+      {
+       "label": "Chronic obstructive pulmonary disease",
+       "action": "history",
+       "onset": "2018-03-01",
+       "note": "diagnosed by prior PCP with spirometry"
+      },
+      {
+       "label": "Nicotine dependence, cigarettes",
+       "action": "diagnosed",
+       "onset": "1992-01-01",
+       "note": "about 1 pack per day, ~27 pack-years"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "10 ACTUAT tiotropium 0.0025 MG/ACTUAT Inhalation Spray",
+       "action": "historical",
+       "sig": "Inhale 2 puffs once daily",
+       "frequency": "DAILY",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4-6 hours as needed for shortness of breath or wheeze",
+       "frequency": "PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "COPD"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       124,
+       80
+      ],
+      "hr": 84,
+      "rr": 16,
+      "temp_c": 36.8,
+      "spo2": 95,
+      "weight_kg": 71.8,
+      "height_cm": 164.0
+     },
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "3-4 beers per week"
+      },
+      {
+       "item": "Electronic cigarette status",
+       "value": "Never used"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 40-64",
+       "performed": "2021-08-17T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Rooming",
+       "date": "2021-08-17T08:45",
+       "status": "final",
+       "body": "New pt, wife of established pt S. Keo. VS per flowsheet, SpO2 95% RA. Smokes ~1 ppd. Meds verified from bottles: Spiriva Respimat 2 puffs daily, albuterol HFA prn (uses ~2x/wk). NKDA. Records release signed for prior PCP in Lowell. Last flu 'a couple years ago.'\n- M. Ortega, MA"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit - Establish Care",
+       "date": "2021-08-17T09:31",
+       "status": "final",
+       "body": "CC: establish care. 'My doctor in Lowell retired.'\n\nHPI: 45F patrol officer, moved to Southampton 2019 with her wife (my pt), kept her long-time Lowell PCP until his retirement this summer. COPD diagnosed 2018 on spirometry after a winter of bronchitis; on tiotropium daily, albuterol ~2x/wk, mostly with exertion (stairs, foot pursuits, carrying gear). Morning cough, clear sputum. One flare 2019 treated at urgent care with an oral steroid burst; no hospitalizations. Smoking since 16, about a pack a day, more on overnight shifts. Has tried cold turkey twice, longest 3 weeks. Not sure she is ready - 'this job.' Can climb 2 flights without stopping.\n\nPMH: COPD. Fertility care in Boston 2010-2011 (IUI with donor sperm); pregnancy 2011 ended in miscarriage at ~9 wk, passed without D&C. Couple stopped trying in 2012. G1P0010. No surgeries.\nMeds: tiotropium Respimat 2.5 mcg 2 inh daily; albuterol HFA prn.\nAllergies: NKDA.\nFH: father died 2009 lung cancer (smoker). Mother COPD and type 2 DM, Lowell. Sister healthy. No colon or breast cancer.\nSH: married to Sreymom since 2015. Police officer x16 yrs (Boston area 14 yrs, now a Hampshire County town department), rotating shifts. 3-4 beers/wk. No drugs. Firearm at home for work, stored in safe.\nGYN: LMP 2 wk ago, cycles regular. Last Pap 2017 per pt, last mammogram 2019 (Lowell).\n\nROS: no hemoptysis, wt loss, night sweats, chest pain, edema. Bowels regular. Mood ok.\n\nExam: BP 124/80, HR 84, SpO2 95%, BMI 26.7. No distress, speaks full sentences. Nicotine stain R index finger. Heart RRR. Lungs: mildly decreased breath sounds bilat, scattered end-expiratory wheeze, prolonged expiration. No clubbing. Abd soft NT. No edema.\n\nA/P:\n1. COPD, by history GOLD 2 per pt; prior records requested. On LAMA, symptoms mild-moderate. Office spirometry at next visit. Inhaler technique reviewed - ok. Continue tiotropium, albuterol prn.\n2. Tobacco dependence, ~27 pk-yr. Advised quitting clearly; pre-contemplative to contemplative. Offered varenicline/NRT and the state quitline; will think about it.\n3. HCM: CBC with diff, CMP, lipids, A1c, HCV, HIV. Colorectal screening now recommended from 45 - she prefers colonoscopy, will refer when her shifts allow. Mammogram order placed. Pap due - schedule. Flu in fall; pneumococcal vaccine to be addressed.\n\nRTC 6-8 wk with spirometry.\nR. Halvorsen, MD"
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Outside records request",
+       "date": "2021-08-17T10:02",
+       "status": "final",
+       "body": "Records request faxed to prior primary care practice in Lowell (physician retired - records custodian per their voicemail). Requested: last 5 yrs office notes, problem list, PFT/spirometry, imaging, immunizations, GYN/fertility correspondence. Signed release scanned to chart. Will follow up in 2 wks if not received.\n- T. Reyes, front desk"
+      }
+     ]
+    },
+    {
+     "id": "2021-08-20a",
+     "kind": "lab_only",
+     "start": "2021-08-20T07:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish-care labs",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 8.9
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 15.1
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 92
+        },
+        {
+         "test": "Platelets",
+         "value": 268
+        },
+        {
+         "test": "Eosinophils %",
+         "value": 4.2
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 94
+        },
+        {
+         "test": "Creatinine",
+         "value": 0.78
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 22
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 205
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 46
+        },
+        {
+         "test": "Triglycerides",
+         "value": 155
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 128
+        },
+        {
+         "test": "Non-HDL Cholesterol",
+         "value": 159
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 5.5
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-20T07:15",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Establish-care labs",
+       "date": "2021-08-23T13:05",
+       "status": "final",
+       "body": "Hgb 15.1 - upper normal, consistent with smoking. Eos 4.2% (abs ~370) - noted for COPD inhaler decisions later. CMP nl. LDL 128, HDL 46; ASCVD 10-yr risk ~3.5% driven by smoking - no statin, smoking cessation is the intervention. A1c 5.5. HCV/HIV neg. Portal note sent.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "outside_records",
+     "start": "2021-09-14T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Records received from prior PCP",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice, Lowell",
+       "date": "2021-09-14T14:30",
+       "status": "final",
+       "body": "Received by fax from the records custodian of the patient's prior primary care practice in Lowell (62 pages), reviewed and abstracted:\n- Problem list: COPD (dx 3/2018), tobacco use, acute bronchitis 2017 and 2019.\n- Spirometry 3/2018: FEV1 2.12 L (71% pred), FVC 3.31 L (89%), FEV1/FVC 0.64; post-bronchodilator FEV1 +5%, not significant. Interpreted as moderate obstruction, GOLD 2. Tiotropium started.\n- 1/2019 urgent care note: COPD flare, oral corticosteroid burst x5 days, no antibiotics.\n- Immunizations: Tdap 5/2016. Influenza 2017. No pneumococcal on record.\n- Pap 2017: NILM, HPV negative.\n- Mammogram 5/2019: BI-RADS 1.\n- Letter 2011 from a reproductive endocrinology clinic in Boston: intrauterine pregnancy after IUI, nonviable at 9 weeks, completed spontaneously; no further treatment.\n- No colonoscopy on file.\nAbstracted to history. Original scanned to media.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "office_visit",
+     "start": "2021-10-05T09:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD follow-up with spirometry; flu vaccine",
+     "vitals": {
+      "bp": [
+       126,
+       78
+      ],
+      "hr": 80,
+      "rr": 16,
+      "temp_c": 36.6,
+      "spo2": 95,
+      "weight_kg": 72.1
+     },
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2021-10-05T09:15",
+       "text": "Office spirometry, pre- and post-bronchodilator (albuterol 360 mcg). Effort and reproducibility acceptable (ATS grade A).\nPre: FVC 3.22 L (88% pred), FEV1 2.01 L (68% pred), FEV1/FVC 0.62.\nPost: FVC 3.30 L (90%), FEV1 2.09 L (71%), FEV1/FVC 0.63. FEV1 change +80 mL (+4%), not significant.\nInterpretation: Moderate airflow obstruction without significant bronchodilator response, consistent with COPD, GOLD 2. Compared with outside study 3/2018 (FEV1 2.12 L), mild decline.\nR. Halvorsen, MD",
+       "conclusion": "Moderate obstruction, FEV1 68% predicted, GOLD 2; no significant bronchodilator response."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, seasonal",
+       "date": "2021-10-05T09:58"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Spirometry",
+       "performed": "2021-10-05T09:15"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-05T09:05"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T09:58"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Spirometry and flu vaccine",
+       "date": "2021-10-05T09:40",
+       "status": "final",
+       "body": "Held albuterol since yesterday per instructions; last cigarette 06:30. Spirometry 3 acceptable efforts pre, albuterol 4 puffs via spacer, post efforts x3 at 15 min. Pt coughed after efforts, no distress. Flu IIV4 IM L deltoid, VIS given. Quitline card given.\n- K. Dubois, CMA"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "COPD Follow-up",
+       "date": "2021-10-05T10:02",
+       "status": "final",
+       "body": "S: Here for spirometry and COPD f/u. Outside records received 9/14 - 2018 spirometry FEV1 71%, one flare 1/2019. Today: cough most mornings, dyspnea when carrying gear upstairs or sprinting. CAT score 14. mMRC 1. Albuterol 2-3x/wk. No exacerbation since 2019. Still ~1 ppd. Has been thinking about quitting since the last visit; wife is pushing. Worried about irritability on the job and weight gain.\n\nMeds: tiotropium Respimat 2 inh daily, albuterol prn.\n\nO: BP 126/78, HR 80, SpO2 95%. Lungs with prolonged expiratory phase, faint scattered wheeze. Heart RRR.\nSpirometry today: post-BD FEV1/FVC 0.63, FEV1 68% pred - GOLD 2. No significant BD response.\nLabs 8/20: eos 4.2% (~370/uL).\n\nA/P:\n1. COPD GOLD 2, group B by symptoms (CAT 14, 0-1 exacerbations/yr). Continue LAMA; if symptoms progress, LAMA/LABA is next step. Eos >300 noted - ICS would be considered if exacerbations recur. Action plan given: increase albuterol, call for green sputum/fever/SpO2 <90.\n2. Tobacco dependence - contemplative. Discussed varenicline (most effective), combination NRT. She wants to set a quit date after the holidays. Will revisit.\n3. Vaccines: flu today. Pneumococcal - recommendation updating this fall for smokers/chronic lung disease; plan at next visit.\n4. Colonoscopy referral after the new year per her schedule. Pap at next visit.\n\nRTC 3-4 mo.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2022-01-10a",
+     "kind": "portal_message",
+     "start": "2022-01-10T07:52",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Positive home COVID-19 test",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "positive covid test",
+       "date": "2022-01-10T07:52",
+       "status": "final",
+       "body": "Tested positive on a home test this morning. Started yesterday with sore throat, cough, fever 100.8 last night. Breathing ok, my oximeter says 95. Half the shift has it. With my COPD should I be getting the Paxlovid pill? I heard its hard to find. Wife tested negative so far."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-10b",
+     "kind": "telehealth_visit",
+     "start": "2022-01-10T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Video visit: COVID-19, high risk",
+     "conditions": [
+      {
+       "label": "COVID-19",
+       "action": "diagnosed",
+       "onset": "2022-01-09"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "{20 (nirmatrelvir 150 MG Oral Tablet) / 10 (ritonavir 100 MG Oral Tablet) } Pack",
+       "action": "start",
+       "sig": "Take 2 nirmatrelvir tablets and 1 ritonavir tablet by mouth twice daily for 5 days",
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "COVID-19, high risk (COPD, smoker)"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2022-01-10T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit (video)",
+       "date": "2022-01-10T11:52",
+       "status": "final",
+       "body": "Video, pt at home, consented.\nS: Sx onset 1/9: sore throat, dry cough, Tmax 100.8, myalgias. Home antigen + this AM. Vaccinated? - 2 doses Pfizer 2021 through work (outside), no booster yet. Mild increase in dyspnea, using albuterol 3x since yesterday. No chest pain. Home SpO2 95-96%.\nMeds: tiotropium daily, albuterol prn. No statins, antiarrhythmics, sedatives or other CYP3A drugs.\nO: Speaking full sentences, mild cough, no visible distress. Home pulse ox on camera 95%.\nA/P:\n1. COVID-19, day 2, mild, high risk for progression (COPD, current smoker). Eligible for nirmatrelvir/ritonavir under EUA; eGFR >60 (Cr 0.78, 8/2021). Interaction check done with clinic pharmacist - none significant. Rx sent; pharmacist located supply. Isolate 5 days, then mask 5 days per current CDC guidance. ED if SpO2 <92%, chest pain, confusion, or breathlessness at rest.\n2. COPD - continue LAMA, albuterol prn; watch for exacerbation.\n3. Booster once recovered.\nWork note provided.\nR. Halvorsen, MD"
+      },
+      {
+       "type": "Pharmacy Notes",
+       "title": "Nirmatrelvir/ritonavir review",
+       "date": "2022-01-10T12:10",
+       "status": "final",
+       "body": "Interaction screen for Paxlovid: tiotropium, albuterol - no clinically relevant interactions. No OTC supplements per pt. Renal: CrCl >60, full dose 300/100 BID x5d. Allocation limited this week; confirmed stock at a designated community pharmacy in Westfield, Rx routed there, wife (negative) to pick up curbside. Counseled by phone: take with or without food, metallic taste common, complete all 5 days.\n- A. Fiske, PharmD"
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Work note",
+       "date": "2022-01-10T12:16",
+       "status": "final",
+       "body": "Work letter for employer (police department): COVID-19 positive 1/10/22, symptom onset 1/9. Isolation through 1/14; may return 1/15 if afebrile and improving, masking through 1/19. Uploaded to portal for pt.\n- T. Reyes, front desk for Dr. Halvorsen"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19 vaccine, mRNA (Pfizer-BioNTech)",
+       "date": "2021-03-06T09:00"
+      },
+      {
+       "vaccine": "COVID-19 vaccine, mRNA (Pfizer-BioNTech)",
+       "date": "2021-03-27T09:00"
+      }
+     ]
+    },
+    {
+     "id": "2022-01-24a",
+     "kind": "telephone",
+     "start": "2022-01-24T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID-19 follow-up call",
+     "conditions": [
+      {
+       "label": "COVID-19",
+       "action": "resolved",
+       "onset": "2022-01-09"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "COVID follow-up",
+       "date": "2022-01-24T14:20",
+       "status": "final",
+       "body": "F/u call. Completed Paxlovid, 'tasted like pennies.' Fever gone day 3. Back at work 1/16. Residual dry cough, worse mornings, albuterol 1x/day, no fever, SpO2 96%. Wife never tested positive. Advised cough can linger weeks; call if fever, sputum change, or worsening SOB. Booster in ~4 wks. Reminded of quitline - smoking 'less while sick, back to normal now.'\n- B. Lindqvist, RN"
+      }
+     ]
+    },
+    {
+     "id": "2022-03-15a",
+     "kind": "office_visit",
+     "start": "2022-03-15T08:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Smoking cessation; Pap; pneumococcal vaccine",
+     "medications": [
+      {
+       "drug": "varenicline 1 MG Oral Tablet",
+       "action": "start",
+       "sig": "Starting pack: 0.5 mg daily days 1-3, 0.5 mg twice daily days 4-7, then 1 mg twice daily. Quit date day 8-35.",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Tobacco dependence"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       122,
+       78
+      ],
+      "hr": 82,
+      "rr": 16,
+      "temp_c": 36.7,
+      "spo2": 95,
+      "weight_kg": 72.4
+     },
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2022-03-15T09:05",
+       "issued": "2022-03-21T15:10",
+       "text": "SPECIMEN: Cervical, liquid-based.\nADEQUACY: Satisfactory for evaluation; transformation zone present.\nINTERPRETATION: Negative for intraepithelial lesion or malignancy. Reactive cellular changes associated with inflammation.\nHIGH-RISK HPV (DNA): Not detected.",
+       "conclusion": "NILM, high-risk HPV negative."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19 vaccine, mRNA (Pfizer-BioNTech)",
+       "date": "2022-02-14T12:00"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate vaccine, 20-valent (PCV20)",
+       "date": "2022-03-15T09:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-03-15T08:35"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-03-15T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "date": "2022-03-15T09:15",
+       "status": "final",
+       "body": "S: Ready to try quitting - 'COVID scared me.' Smoking ~18/day. Triggers: start of shift, after calls, driving. Prior attempts cold turkey. No hx depression, seizures, or psychiatric illness. COPD stable since COVID, cough back to baseline. Got Pfizer booster 2/14 at a pharmacy.\n\nMeds: tiotropium Respimat 2 inh daily, albuterol prn.\n\nO: BP 122/78, HR 82, SpO2 95%. Lungs: diminished, few end-exp wheezes, unchanged. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. No adnexal tenderness.\n\nA/P:\n1. Tobacco dependence - start varenicline starter pack, quit date 3/26 (a day off). Reviewed nausea, sleep/dream changes, rare mood changes - stop and call if mood worsens. Quitline referral faxed. Plan 12 weeks.\n2. COPD GOLD 2 - stable. PCV20 today per current ACIP (smoker, chronic lung disease) - no further pneumococcal doses needed.\n3. Cervical screening - Pap/HPV collected (last 2017).\n4. Colonoscopy referral placed for this summer.\n\nRTC video in 3 mo.\nR. Halvorsen, MD"
+      },
+      {
+       "type": "Patient Education",
+       "title": "Quit plan and varenicline",
+       "date": "2022-03-15T09:32",
+       "status": "final",
+       "body": "Quit plan reviewed with pt: quit date 3/26. Starter pack dosing walked through with calendar. Take after food with full glass of water. Plan for triggers - gum/seeds in cruiser, walk after calls, no smoking in the car. Wife supportive, will not keep cigarettes in house. Quitline enrollment faxed. Pt asked about vaping - advised against as substitute. Booster 2/14 entered from card.\n- B. Lindqvist, RN"
+      }
+     ]
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "portal_message",
+     "start": "2022-04-12T21:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Varenicline side effects",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "chantix",
+       "date": "2022-04-12T21:30",
+       "status": "final",
+       "body": "Quick question. On the full dose now. Nausea pretty bad an hour after the pills and the dreams are insane, like movies. Down to maybe 6 a day though which is a big deal for me. Can I take less?"
+      },
+      {
+       "type": "Portal Message Reply",
+       "title": "RE: chantix",
+       "date": "2022-04-13T08:52",
+       "status": "final",
+       "body": "Nice work getting down to 6 - that is real progress. Take each dose right after a full meal with a big glass of water, and move the evening dose to dinner rather than bedtime, which helps the dreams. If nausea is still bad after a week, you can drop to 0.5 mg twice a day; it still works for many people. Let us know if your mood changes. - Jonah Petrakis, FNP"
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "telehealth_visit",
+     "start": "2022-06-14T13:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Video follow-up smoking cessation",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-06-14T13:05"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current some day smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit (video)",
+       "date": "2022-06-14T13:24",
+       "status": "final",
+       "body": "Video, consented.\nS: Varenicline 0.5 mg BID since mid-April (nausea at full dose), stopped it ~3 wk ago 'because I felt like I had it.' Smoking 3-4/day, mostly after overnight shifts. Breathing better - albuterol maybe once a week. Gained ~1 kg.\nA/P: Tobacco dependence, much reduced. Encouraged full quit; offered restart of varenicline or NRT patch + gum. She wants to try on her own for now; will message if she wants meds. Colonoscopy referral - GI scheduling to call her.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "telephone",
+     "start": "2022-07-26T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Colonoscopy coordination",
+     "documents": [
+      {
+       "type": "Care Coordination Note",
+       "title": "GI referral - screening colonoscopy",
+       "date": "2022-07-26T10:40",
+       "status": "final",
+       "body": "Referral to GI for average-risk screening colonoscopy (age 46). GI scheduled 8/23 at the endoscopy center, arrival 07:30. Split-dose PEG prep instructions mailed and sent to portal. Pt confirmed driver (wife) and day off. Reviewed: albuterol ok day of, bring inhalers. No anticoagulants.\n- M. Ortega, MA"
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "procedure_visit",
+     "start": "2022-08-23T08:05",
+     "service": "Gastroenterology",
+     "reason": "Screening colonoscopy",
+     "conditions": [
+      {
+       "label": "Diverticulosis of colon",
+       "action": "diagnosed",
+       "onset": "2022-08-23",
+       "note": "sigmoid, moderate"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2022-08-23T07:48",
+       "bp": [
+        128,
+        82
+       ],
+       "hr": 78,
+       "rr": 16,
+       "temp_c": 36.5,
+       "spo2": 95,
+       "weight_kg": 72.6
+      },
+      {
+       "time": "2022-08-23T09:02",
+       "bp": [
+        112,
+        70
+       ],
+       "hr": 72,
+       "rr": 14,
+       "spo2": 96
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-08-23T08:31",
+       "issued": "2022-08-29T16:00",
+       "text": "SPECIMEN: Colon, transverse, polyp, cold snare polypectomy.\nGROSS: One tan fragment, 0.4 cm, entirely submitted.\nMICROSCOPIC/DIAGNOSIS: Tubular adenoma. Negative for high-grade dysplasia and malignancy.\nPathologist: H. Lindgren, MD",
+       "conclusion": "Tubular adenoma, no high-grade dysplasia."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Colonoscopy with snare polypectomy",
+       "performed": "2022-08-23T08:18"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Colonoscopy",
+       "date": "2022-08-23T08:52",
+       "status": "final",
+       "body": "Indication: average-risk colorectal cancer screening, age 46.\nSedation: monitored anesthesia care, propofol. ASA II (COPD, tobacco).\nPrep: Boston Bowel Prep Scale 8 (3-3-2).\nProcedure: Scope advanced to cecum, identified by appendiceal orifice and ileocecal valve; terminal ileum intubated. Withdrawal time 11 min.\nFindings:\n- 4 mm sessile polyp, mid transverse colon, removed with cold snare, retrieved.\n- Moderate diverticulosis of the sigmoid colon, scattered descending colon diverticula. No inflammation or bleeding.\n- Small non-bleeding internal hemorrhoids on retroflexion.\n- Otherwise normal mucosa.\nComplications: none. SpO2 nadir 93% on 2 L, recovered.\nImpression: transverse polyp removed; sigmoid diverticulosis.\nPlan: await pathology; repeat interval per histology. High-fiber diet. Resume regular diet.\nS. Okafor, MD, Gastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2022-08-30a",
+     "kind": "telephone",
+     "start": "2022-08-30T11:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pathology result call",
+     "conditions": [
+      {
+       "label": "History of adenomatous colon polyps",
+       "action": "diagnosed",
+       "onset": "2022-08-23",
+       "note": "one 4 mm tubular adenoma"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Colonoscopy pathology",
+       "date": "2022-08-30T11:15",
+       "status": "final",
+       "body": "Path from 8/23 colonoscopy: one 4 mm tubular adenoma, no HGD. GI recommends repeat colonoscopy in 7-10 years (2029-2032). Sigmoid diverticulosis - discussed fiber 25-30 g/day, fluids; nuts/seeds are fine. Called pt, she understood. Recall entered for 2029.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "annual_physical",
+     "start": "2022-10-18T08:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual preventive visit",
+     "medications": [
+      {
+       "drug": "varenicline 1 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Patient stopped May 2022"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       126,
+       80
+      ],
+      "hr": 84,
+      "rr": 16,
+      "temp_c": 36.6,
+      "spo2": 95,
+      "weight_kg": 72.9,
+      "height_cm": 164.0
+     },
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "3-4 beers per week"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, seasonal",
+       "date": "2022-10-18T09:38"
+      },
+      {
+       "vaccine": "COVID-19 vaccine, bivalent mRNA",
+       "date": "2022-10-18T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-10-18T08:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T09:38"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Notes",
+       "title": "Rooming and vaccines",
+       "date": "2022-10-18T09:44",
+       "status": "final",
+       "body": "Annual. VS per flowsheet, SpO2 95%. Smoking ~10/day. Flu IIV4 L deltoid, bivalent COVID booster R deltoid, VIS given, no reaction at 15 min. Mammogram order given - pt has not scheduled the one from last year.\n- K. Dubois, CMA"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Annual Preventive Visit",
+       "date": "2022-10-18T09:30",
+       "status": "final",
+       "body": "Interval: COVID 1/2022 on Paxlovid, recovered. Varenicline started 3/2022, cut down to 3-4/day; stopped it in May. Relapsed to ~10/day in July after a difficult call at work. Colonoscopy 8/23: tubular adenoma, sigmoid diverticulosis. Breathing: baseline, albuterol 1-2x/wk, no flares this year.\nROS: no chest pain, hemoptysis, wt loss. Bowels regular, no abd pain. Menses regular.\nMeds: tiotropium Respimat daily, albuterol prn.\nSH: married, patrol officer, rotating shifts. Beer 3-4/wk.\n\nExam: BP 126/80, HR 84, BMI 27.1. Well. Breasts: no masses or nodes. Lungs: decreased BS, mild end-exp wheeze. Heart RRR. Abd soft NT. Skin nl.\n\nA/P:\n1. Preventive: flu + bivalent COVID today. Pap/HPV 3/2022 neg - next 2027. Mammogram - reordered, due (last 5/2019 outside). Colonoscopy 2029-32. Lipids 8/2021 - repeat 2024-26. Lung cancer screening: not yet eligible (USPSTF from age 50); will start when eligible.\n2. Tobacco dependence - relapse. Motivated but not ready to set date now; will reconsider after the holidays. Offered patch/gum anytime.\n3. COPD GOLD 2 - stable.\n4. Diverticulosis - fiber.\nRTC 6 mo.\nR. Halvorsen, MD"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "imaging",
+     "start": "2022-11-08T15:05",
+     "service": "Radiology",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-11-08T15:05",
+       "text": "EXAM: Bilateral screening digital mammogram with tomosynthesis.\nCOMPARISON: Outside study 5/2019, images obtained.\nFINDINGS: Scattered areas of fibroglandular density. No suspicious mass, calcifications, or architectural distortion.\nIMPRESSION: BI-RADS 1: Negative. Routine screening.\nD. Moreau, MD, Radiology",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ]
+    }
+   ],
+   "given": "Sophea",
+   "family": "Keo",
+   "birth_date": "1975-12-31",
+   "address_line": "23 Gunn Road",
+   "phone": "+1-617-555-0101",
+   "email": "sophea.keo@example.test",
+   "marital_status": "married",
+   "summary": "Patrol officer and long-time smoker with GOLD 2 COPD who establishes care in 2021 after her Lowell PCP retires; past fertility care with a 2011 miscarriage reaches the chart through outside records. Her course brings COVID-19 on Paxlovid, a screening colonoscopy finding diverticulosis and an adenoma, an exacerbation leading to pulmonology switching her inhaler, two diverticulitis episodes, an incidental lung nodule followed to stability, and a successful 2024 quit."
+  }
+ ]
+}
