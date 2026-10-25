@@ -189,11 +189,11 @@ As of main 910df41 with #100: 475 states, 82 built, 111 partial, 261 missing and
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Loading the conversation | built | PatientSurface Conversation section, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the conversation… shows until the chat being opened answers. Not exercised in the browser: the sample's workspaces list no chats. |
+| Loading the conversation | built | PatientSurface Conversation section, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the conversation… shows until the chat being opened answers. The live sample lists the physician's runtime chats; the recorded sample's workspaces list none. |
 | Showing the conversation | built | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Turns with the composer below; another chat's lines never stand in for the one opened. |
 | Showing the conversation, with one quiet line and Retry | missing |  | yes | A failed refresh drops the shown turns to Couldn't open this conversation instead of keeping them under a quiet line. |
 | Couldn't load the conversation, with Retry | built | PatientSurface Conversation section, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t open this conversation. with Try again. |
-| No conversation to read | built | PatientSurface Conversation section, PhysicianShell sidebar (physician-app lib.rs) | yes | Nothing to read until a chat opens; with no chats the copy says This workspace has no chats. and there is no way to start one. |
+| No conversation to read | built | PatientSurface Conversation section, PhysicianShell sidebar (physician-app lib.rs) | yes | Nothing to read until a chat opens; with no chats the copy says This workspace has no chats. New conversation, in the sidebar and here, opens a new chat and writes ?chat=. |
 
 ## Physician session/Signed in/Schedule read
 
