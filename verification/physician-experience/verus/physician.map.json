@@ -1,8 +1,8 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "ed68885c0190e71b7e6211ce944165b006fa82d0a6bcba77d871e86b47121420",
-  "generated_sha256": "73a4a855c8f8b415d41c0aed7f7b60864dd2c838979ce721747119ba93d3eda3",
+  "chart_sha256": "22a339b7331b9d7d478905b22bffdf32e48bb6dae747f7d30971beab77357431",
+  "generated_sha256": "7029a18340db03068aa5f3871e47c314b4484f47fec70cc466cdcf8783df4981",
   "steps_sha256": "97746942cbca88ba8979129542ae6e42325f83b1fb0597114c03baef1fcb97ab",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
@@ -4052,7 +4052,7 @@
       "label": "sign in through a link",
       "function": "event_sign_in_through_a_link",
       "cause": "you",
-      "intent": "You sign in from a Coda link to a patient or an item: a member lands on that patient with exactly the access they have, and the link then opens its item; anyone else is refused.",
+      "intent": "You sign in from a Coda link to a patient or an item: a member lands on that patient with exactly the access they have, and the link then opens its item; anyone else is refused. The sign-in email carries no patient; the place stays with the Coda link (Dev 2026-10-24; sign-in.mmd, Patient link).",
       "needs": null,
       "transitions": [
         {

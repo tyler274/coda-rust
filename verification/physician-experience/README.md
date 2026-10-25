@@ -8,7 +8,7 @@ The physician web app's behavior, written as one statechart.
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the audit findings the graph cites. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph leaves to the runtime, and what the runtime must still guarantee. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
-| [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, and its Page region is what one browser tab shows. It has no safety rules. |
+| [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, its Page region is what one browser tab shows, and its Patient link region is the Coda link that tab holds. It has no safety rules. |
 | [sign-in.against.json](sign-in.against.json) | The map that connects sign-in.mmd to the graph, in the graph's words. |
 | [evidence/](evidence/) | Screenshots from exercising the running app, such as the staging email sign-in on 2026-10-24. |
 
@@ -16,8 +16,8 @@ The physician web app's behavior, written as one statechart.
 
 The graph owns sign-in behavior. sign-in.mmd details it, and one map,
 sign-in.against.json, labels sign-in.mmd's session states and steps in the
-graph's words. The page states map to nothing, because the graph has no browser
-tabs. Check the connection from the repository root:
+graph's words. The page and patient-link states map to nothing, because the
+graph has no browser tabs. Check the connection from the repository root:
 
 ```bash
 node .agents/skills/coda-statechart/scripts/statechart.mjs against verification/physician-experience/sign-in.mmd verification/physician-experience/physician.mmd --map verification/physician-experience/sign-in.against.json
@@ -29,11 +29,9 @@ It must report that sign-in.mmd follows the graph in both directions:
 - every graph step from a session state sign-in.mmd reaches is shown, unless the
   map's `omits` says why.
 
-The omits are the open list of graph behavior sign-in doesn't do yet. One is
-left: a Coda link opened while signed out keeps its patient only in the tab
-that opened it, and the emailed link's own tab opens Today. The expired prompt
-and the "No access to this practice" page are built (Dev 2026-10-24,
-decisions.md).
+The omits are the open list of graph behavior sign-in doesn't do yet. None is
+left: the expired prompt, the "No access to this practice" page and signing in
+through a Coda link are built (Dev 2026-10-24, decisions.md).
 
 When one is built, add it to sign-in.mmd and remove its omit. A change to how
 signing in behaves goes in the graph first, and sign-in.mmd and the map follow.

@@ -11,7 +11,7 @@ stateDiagram-v2
 %% what it is for. Physician commands need an active session (bug 15 becomes structural).
 %% events declared
 %% event sign in to the practice | by you | You open your emailed sign-in link: a member lands on Today, and a link that no longer grants access to this practice says so. Asking for a link never reveals whether an account exists; an address without one is sent nothing (Dev 2026-10-24).
-%% event sign in through a link | by you | You sign in from a Coda link to a patient or an item: a member lands on that patient with exactly the access they have, and the link then opens its item; anyone else is refused.
+%% event sign in through a link | by you | You sign in from a Coda link to a patient or an item: a member lands on that patient with exactly the access they have, and the link then opens its item; anyone else is refused. The sign-in email carries no patient; the place stays with the Coda link (Dev 2026-10-24; sign-in.mmd, Patient link).
 %% event open the patient | by you | needs SIn | reason: commands need an active session | You open the patient: their page, identity only, or a not-available notice, by your access.
 %% event follow a link | by you | needs SIn | reason: commands need an active session | A Coda link opened while signed in lands on its patient by your access, then opens its item.
 %% event try another account | by you | You leave the refusal and return to the sign-in page.
