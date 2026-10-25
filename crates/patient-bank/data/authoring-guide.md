@@ -62,9 +62,10 @@ somewhere in the history; place them where they make sense.
 
 Most seeds carry `"coded_anchors": true`. Their anchors are exact catalog labels
 and are the patient's problem list: record every one, and do not add chronic
-diagnoses the seed did not plan. A real list picks up a stray entry, so at most two
-other problems may still be active at the end; resolve acute ones (a sprain, a
-bladder infection, COVID-19) when they resolve. The episodes are concrete: write
+diagnoses, injuries or procedures the seed did not plan. The only problems you
+may add are self-limited illnesses (a cold, a bladder infection, COVID-19). A
+real list picks up a stray entry, so at most two other problems may still be
+active at the end; resolve acute ones when they resolve. The episodes are concrete: write
 the injury, finding or result the seed names, not the most typical one. The life
 context (a veteran, a Deaf patient who uses an interpreter, a caregiver) shapes
 the visits, the social history and how the patient talks; do not make it the
