@@ -713,6 +713,12 @@ pub struct ChatTurn {
     #[serde(default)]
     /// The `authored_text` value.
     pub authored_text: Option<String>,
+    #[serde(default)]
+    /// `physician`, `model`, or `mechanical`. Older servers omit it.
+    pub kind: Option<String>,
+    #[serde(default)]
+    /// On a mechanical "couldn't finish" line: the work Try again resumes.
+    pub resume_target: Option<WorkResumeTarget>,
 }
 
 impl ChatTurn {
@@ -1020,5 +1026,34 @@ mod tests {
         .unwrap();
         assert_eq!(list.rows[0].patient_display_name, "Ada");
         assert_eq!(list.as_of, 3);
+    }
+
+    #[test]
+    fn reads_a_couldnt_finish_line_and_an_older_snapshot() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {
+                "conversation": [
+                    {"text": "Hello", "kind": "physician"},
+                    {"text": "Coda couldn’t finish this response. Your message is saved.",
+                     "kind": "mechanical",
+                     "resume_target": {"work_item_id": "w1", "expected_run_id": "r1"}}
+                ],
+                "runs": [{"run_id": "r1", "state": "failed"}]
+            }}"#,
+        )
+        .unwrap();
+        let failed = &page.snapshot.conversation[1];
+        assert_eq!(failed.kind.as_deref(), Some("mechanical"));
+        assert_eq!(
+            failed.resume_target,
+            Some(WorkResumeTarget {
+                work_item_id: "w1".into(),
+                expected_run_id: "r1".into(),
+            })
+        );
+        let older: ChatSnapshotResponse =
+            serde_json::from_str(r#"{"snapshot": {"conversation": [{"text": "Hi"}]}}"#).unwrap();
+        assert_eq!(older.snapshot.conversation[0].kind, None);
+        assert_eq!(older.snapshot.conversation[0].resume_target, None);
     }
 }
