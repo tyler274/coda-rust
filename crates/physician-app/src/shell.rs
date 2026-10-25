@@ -935,9 +935,13 @@ pub struct ChatLine {
     pub title: String,
 }
 
+/// The workspace's conversations. `opened` is the conversation the page has
+/// open; one the workspace does not list yet (opened from the address, or just
+/// started elsewhere) is shown last, so its messages and composer appear.
 pub fn chat_view(
     selected: Option<&str>,
     current: Option<Result<&PatientWorkspaceResponse, ()>>,
+    opened: Option<&str>,
 ) -> ChatView {
     if selected.is_none() {
         return ChatView::Closed;
@@ -945,17 +949,27 @@ pub fn chat_view(
     match current {
         None => ChatView::Pending,
         Some(Err(())) => ChatView::Unavailable,
-        Some(Ok(workspace)) if workspace.chats.is_empty() => ChatView::Empty,
-        Some(Ok(workspace)) => ChatView::Chats(
-            workspace
+        Some(Ok(workspace)) => {
+            let mut lines: Vec<ChatLine> = workspace
                 .chats
                 .iter()
                 .map(|chat| ChatLine {
                     id: chat.chat_id.clone(),
                     title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
                 })
-                .collect(),
-        ),
+                .collect();
+            if let Some(id) = opened.filter(|id| lines.iter().all(|line| line.id != *id)) {
+                lines.push(ChatLine {
+                    id: id.to_owned(),
+                    title: "Untitled".to_owned(),
+                });
+            }
+            if lines.is_empty() {
+                ChatView::Empty
+            } else {
+                ChatView::Chats(lines)
+            }
+        }
     }
 }
 
@@ -1328,23 +1342,47 @@ mod tests {
 
     #[test]
     fn workspace_chats_and_reader_use_the_open_selection() {
-        assert_eq!(chat_view(None, None), ChatView::Closed);
+        assert_eq!(chat_view(None, None, None), ChatView::Closed);
         let empty: PatientWorkspaceResponse = serde_json::from_str(
             r#"{"patient_workspace_id":"p1","display_name":"Ada","chats":[]}"#,
         )
         .unwrap();
-        assert_eq!(chat_view(Some("p1"), Some(Ok(&empty))), ChatView::Empty);
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&empty)), None),
+            ChatView::Empty
+        );
         let open: PatientWorkspaceResponse = serde_json::from_str(
             r#"{"patient_workspace_id":"p1","display_name":"Ada","chats":[{"chat_id":"c1","title":"Morning","created_at":"2026-10-09T12:00:00Z"}]}"#,
         )
         .unwrap();
+        let morning = ChatLine {
+            id: "c1".to_owned(),
+            title: "Morning".to_owned(),
+        };
         assert_eq!(
-            chat_view(Some("p1"), Some(Ok(&open))),
-            ChatView::Chats(vec![ChatLine {
-                id: "c1".to_owned(),
-                title: "Morning".to_owned(),
-            }])
+            chat_view(Some("p1"), Some(Ok(&open)), None),
+            ChatView::Chats(vec![morning.clone()])
         );
+        // A listed conversation is not repeated when it is the open one.
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&open)), Some("c1")),
+            ChatView::Chats(vec![morning.clone()])
+        );
+        // A conversation the workspace does not list yet still opens.
+        let started = ChatLine {
+            id: "c9".to_owned(),
+            title: "Untitled".to_owned(),
+        };
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&empty)), Some("c9")),
+            ChatView::Chats(vec![started.clone()])
+        );
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&open)), Some("c9")),
+            ChatView::Chats(vec![morning, started])
+        );
+        assert_eq!(chat_view(Some("p1"), None, Some("c9")), ChatView::Pending);
+        assert_eq!(chat_view(None, None, Some("c9")), ChatView::Closed);
         assert_eq!(
             connection_sentence(Some("gmail"), "not_yet_read").as_deref(),
             Some("Coda hasn’t read Gmail yet.")

@@ -82,6 +82,21 @@ async fn the_recorded_practice_is_visible() {
             && !workspace.contains("Visit preparation failed. No new briefing was completed."),
         "the workspace did not match the React patient page:\n{workspace}"
     );
+    // `?chat=` opens a conversation the recorded workspace does not list.
+    let chat = dump_dom(
+        &chrome,
+        &format!(
+            "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e&chat=chat-from-address"
+        ),
+    )
+    .await;
+    assert!(
+        chat.contains("Patient summary")
+            && chat.contains("What would you like Coda to review?")
+            && chat.contains("Write a message")
+            && !chat.contains("This workspace has no chats."),
+        "?chat= did not open the conversation:\n{chat}"
+    );
     let logo = tokio::task::spawn_blocking(move || read_logo(address))
         .await
         .expect("logo read");
