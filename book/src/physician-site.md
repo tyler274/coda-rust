@@ -27,6 +27,20 @@ The store is the [`AuthStore`](/crates/physician-auth/src/lib.rs) trait over Sea
 
 The retained GKE deployment reference is <a href="/infra/gcp/physician-runtime/README%2Emd"><code>infra/gcp/physician-runtime</code></a>: one private GKE Autopilot cluster, one private Cloud SQL Postgres 16 instance with IAM database authentication (no database password), separate keyless site and migration identities, and `PHYSICIAN_AUTH=required` riding the site's environment as configuration intent. The current isolated Rust staging path is Cloud Run under [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate); configuration is not hosted access proof.
 
+## Scaling across instances
+
+A turn that finishes on one `physician-sample` instance has to show up on a stream another instance is holding open. [`physician-bus`](/crates/physician-bus/src/lib.rs) is the physician product's fan-out. It carries `workspace_changed`, `workspace_settled`, and `resync`. `resync` is what a subscriber gets when it lags or the connection drops, and the Dioxus client refetches on that event. Sign-in and panel changes stay on the existing Postgres `NOTIFY` feed, which also fires for the migration job and for `psql`.
+
+`RedisBus` is the `fred` client: TLS plus AUTH, `PHYSICIAN_REDIS_URL` as a `rediss://` URL and `PHYSICIAN_REDIS_CA_PEM` as the Memorystore server CA. With `PHYSICIAN_REDIS_URL` unset, `LocalBus` keeps those events inside one process. That is the local and test path.
+
+Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, input_id}` on the Pub/Sub topic `physician-chat-turns`. The topic carries only that pair. `physician-worker` checks the push token's audience and the `physician-pubsub-push` email, claims the leased turn, runs the model, commits, and publishes `workspace_changed`. A non-2xx response is a redelivery. After 5 attempts the message goes to the dead-letter topic. The subscription's ack deadline is 600 seconds, and retries back off from 10 seconds to 600 seconds.
+
+The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
+
+Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budget alert. Raise that alert before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
+
+`nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
+
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#system-boundary">Architecture: the system boundary and model roles</a>
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#external-clinical-evidence">Architecture: external clinical evidence</a>
 - <a href="/submodules/coda-agents/docs/runtime-protocol%2Emd">Runtime protocol</a>

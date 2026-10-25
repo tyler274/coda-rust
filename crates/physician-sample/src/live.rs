@@ -21,10 +21,10 @@ use harness::execution::{
 use local_product::ModelBinding;
 use local_product::codex::CodexTransport;
 use local_product::execution::{PhysicianSession, Status, Work};
+use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use telemetry::genai;
-use tokio::sync::broadcast;
 use tracing::Instrument;
 
 use crate::auth::{AuthContext, allows_workspace, now};
@@ -61,9 +61,12 @@ pub(crate) struct Live {
     model: ChatModel,
     pub(crate) binding: ModelBinding,
     pub(crate) session: Mutex<PhysicianSession>,
-    events: broadcast::Sender<String>,
+    pub(crate) bus: Arc<dyn Bus>,
     pub(crate) sources: Vec<local_product::physician_sources::SourceRevision>,
     turns: AtomicU64,
+    /// Set only when both the physician database and chat topic are configured.
+    /// The site accepts and snapshots; the worker runs the model.
+    durable: Option<Arc<crate::durable::DurableChat>>,
 }
 
 impl Live {
@@ -87,18 +90,23 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Ok(Arc::new(Self {
             model,
             binding,
             session: Mutex::new(session),
-            events,
+            bus: Arc::new(LocalBus::new(64)),
             sources,
             turns: AtomicU64::new(0),
+            durable: None,
         }))
     }
     /// Starts an empty chat session for the model's role.
     pub(crate) fn new(model: ChatModel) -> Arc<Self> {
+        Self::with_bus(model, Arc::new(LocalBus::new(64)))
+    }
+
+    /// Same session as [`Self::new`], on a caller-owned bus.
+    pub(crate) fn with_bus(model: ChatModel, bus: Arc<dyn Bus>) -> Arc<Self> {
         let binding = match &model {
             #[cfg(test)]
             ChatModel::Fixed(_) => ModelBinding {
@@ -110,7 +118,6 @@ impl Live {
             | ChatModel::Codex { binding, .. }
             | ChatModel::StructuredReplay { binding, .. } => binding.clone(),
         };
-        let (events, _) = broadcast::channel(64);
         Arc::new(Self {
             model,
             binding,
@@ -123,8 +130,9 @@ impl Live {
                 None => PhysicianSession::open(&default_session_path())
                     .expect("open default persistent physician session"),
             }),
-            events,
+            bus,
             turns: AtomicU64::new(0),
+            durable: None,
             sources: match std::env::var_os("CODA_PHYSICIAN_SOURCE_SNAPSHOT") {
                 Some(path) => {
                     let sources: Vec<local_product::physician_sources::SourceRevision> =
@@ -140,6 +148,39 @@ impl Live {
                 None => Vec::new(),
             },
         })
+    }
+
+    /// Accepts and reads Postgres chat without opening a local session or calling a model.
+    pub(crate) fn durable(
+        bus: Arc<dyn Bus>,
+        chat: Arc<crate::durable::DurableChat>,
+    ) -> Result<Arc<Self>, String> {
+        // The transport is never invoked. Hosted turns run in the worker.
+        let binding = ModelBinding {
+            model: "durable".into(),
+            effort: "none".into(),
+            adapter: "durable".into(),
+        };
+        let transport = local_product::codex::open_codex(
+            local_product::ModelExecution::Live,
+            local_product::codex::CodexSettings {
+                cassette_authorization: None,
+                cassette_output: None,
+                cassette_path: None,
+            },
+        )?;
+        Ok(Arc::new(Self {
+            model: ChatModel::Codex {
+                binding: binding.clone(),
+                transport: Arc::new(Mutex::new(transport)),
+            },
+            binding,
+            session: Mutex::new(PhysicianSession::memory()),
+            bus,
+            sources: Vec::new(),
+            turns: AtomicU64::new(0),
+            durable: Some(chat),
+        }))
     }
 
     /// The `gen_ai.generation` span for one chat turn. Its parent is the
@@ -240,6 +281,9 @@ pub(crate) async fn submit(
     let Some(idempotency_key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
         return rejected_submit();
     };
+    if live.durable.is_some() {
+        return accept_durable(live, auth_ctx, payload, idempotency_key).await;
+    }
     let request = {
         let mut session = live.session.lock().expect("chat session");
         match session.submit(
@@ -281,7 +325,17 @@ pub(crate) async fn submit(
                 match result {
                     Ok(response) => {
                         genai::record_output(&turn, &response.text);
-                        let _ = live.events.send(workspace);
+                        // Lossy invalidation; subscribers refetch on resync.
+                        if live
+                            .bus
+                            .publish(Event::WorkspaceChanged {
+                                workspace_id: workspace,
+                            })
+                            .await
+                            .is_err()
+                        {
+                            tracing::warn!("physician workspace invalidation not published");
+                        }
                     }
                     Err(_) => {
                         // Detailed provider output remains in the protected owner,
@@ -312,6 +366,16 @@ pub(crate) async fn submit(
 }
 
 async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    if live.durable.is_some() {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({
+                "outcome": "rejected",
+                "message": "Hosted reply revision is unavailable.",
+            })),
+        )
+            .into_response();
+    }
     let Some(ctx) = ctx else {
         return StatusCode::UNAUTHORIZED.into_response();
     };
@@ -354,7 +418,16 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
                 .expect("physician session")
                 .settle(&work, Status::Failed);
         }
-        let _ = live.events.send(work.workspace);
+        if live
+            .bus
+            .publish(Event::WorkspaceChanged {
+                workspace_id: work.workspace,
+            })
+            .await
+            .is_err()
+        {
+            tracing::warn!("physician workspace invalidation not published");
+        }
     });
     Json(json!({"outcome":"accepted", "patient_workspace_id":workspace,"run_id":id}))
         .into_response()
@@ -363,8 +436,18 @@ async fn revise(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) ->
 /// The turns recorded for this chat.
 pub(crate) async fn snapshot(
     State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
     Path((workspace, chat)): Path<(String, String)>,
-) -> Json<Value> {
+) -> Response {
+    if let Some(durable) = live.durable.clone() {
+        return durable_snapshot(
+            &durable,
+            auth_ctx.map(|Extension(ctx)| ctx),
+            workspace,
+            chat,
+        )
+        .await;
+    }
     let conversation = live
         .session
         .lock()
@@ -378,15 +461,106 @@ pub(crate) async fn snapshot(
                 .collect::<Vec<_>>()
         }
     }))
+    .into_response()
 }
 
-/// `workspace_changed` frames. The body stays open.
+async fn accept_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    payload: SubmitPayload,
+    idempotency_key: String,
+) -> Response {
+    let Some(chat) = live.durable.clone() else {
+        return rejected_submit();
+    };
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let input = local_product::runtime::Input {
+        key: idempotency_key,
+        text: payload.text,
+        timezone: payload.physician_time_zone,
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match chat.accept(&scope, &input, session_hash).await {
+        Ok(_) => Json(json!({
+            "outcome": "accepted",
+            "patient_workspace_id": payload.patient_workspace_id,
+            "chat_id": payload.chat_id,
+        }))
+        .into_response(),
+        Err(error) => {
+            let collision = error.contains("idempotency collision");
+            tracing::warn!(collision, "physician chat accept failed");
+            let status = if collision {
+                StatusCode::OK
+            } else {
+                StatusCode::SERVICE_UNAVAILABLE
+            };
+            (
+                status,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message("message.submit"),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+async fn durable_snapshot(
+    chat: &crate::durable::DurableChat,
+    ctx: Option<AuthContext>,
+    workspace: String,
+    chat_id: String,
+) -> Response {
+    let Some(ctx) = ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id,
+        physician: ctx.identity.physician_id,
+        workspace,
+        chat: chat_id,
+    };
+    // Unlocked display read. None, before the first accept, is an empty conversation.
+    let conversation = match chat.store.read(&scope).await {
+        Ok(conversation) => conversation,
+        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    };
+    let messages = conversation
+        .map(|conversation| conversation.messages)
+        .unwrap_or_default();
+    Json(json!({
+        "snapshot": {
+            "conversation": messages
+                .into_iter()
+                .map(|message| json!({ "text": message.text }))
+                .collect::<Vec<_>>()
+        }
+    }))
+    .into_response()
+}
+
+/// `workspace_changed` and `resync` frames. The body stays open. A client
+/// refetches what it shows on `resync` (bus lag or a Redis reconnect).
 pub(crate) async fn events(State(live): State<Arc<Live>>) -> Response {
-    let rx = live.events.subscribe();
+    let rx = live.bus.subscribe();
     let stream = stream::unfold(rx, |mut rx| async move {
-        let workspace = rx.recv().await.ok()?;
-        let data = json!({ "patient_workspace_id": workspace }).to_string();
-        let frame = format!("event: workspace_changed\ndata: {data}\n\n");
+        let frame = match rx.recv().await.ok()? {
+            Event::WorkspaceChanged { workspace_id } | Event::WorkspaceSettled { workspace_id } => {
+                let data = json!({ "patient_workspace_id": workspace_id }).to_string();
+                format!("event: workspace_changed\ndata: {data}\n\n")
+            }
+            Event::Resync => "event: resync\ndata: {}\n\n".to_owned(),
+        };
         Some((Ok::<String, Infallible>(frame), rx))
     });
     (

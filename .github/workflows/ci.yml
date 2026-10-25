@@ -603,12 +603,15 @@ jobs:
           done
           echo "Revision $ready serves $IMAGE behind IAP" >> "$GITHUB_STEP_SUMMARY"
 
-  # Publishes the four images by digest and rolls them out to staging
-  # directly: each migration job is updated and executed to completion, then
-  # its service moves to the new runtime digest and must report a Ready
-  # revision serving it. Cloud Run only shifts traffic to a revision that
-  # passes its /readyz startup probe, so a failed rollout leaves the previous
-  # revision serving. Only a push to main, after every check job is green.
+  # Publishes the physician and Duet runtime and migration images, plus
+  # physician-worker, by digest and rolls them out to staging directly: each
+  # migration job is updated and executed to completion, then its service
+  # moves to the new runtime digest and must report a Ready revision serving
+  # it. physician-worker is updated once that Cloud Run service exists; the
+  # first push only publishes the digest so the scaling plan can pin it.
+  # Cloud Run only shifts traffic to a revision that passes its /readyz
+  # startup probe, so a failed rollout leaves the previous revision serving.
+  # Only a push to main, after every check job is green.
   #
   # This direct rollout stands in for the scripts/gcp/release.py evidence
   # engine (verified bundle, IAM baselines, smoke identities); that engine
@@ -650,19 +653,21 @@ jobs:
           token_format: access_token
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
-      - name: Build the four images and push them by digest
+      - name: Build the images and push them by digest
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
           set -euo pipefail
           declare -A attr=(
             [physician-runtime]=physician-sample-image
+            [physician-worker]=physician-worker-image
             [physician-migration]=physician-migration-image
             [duet-runtime]=duet-api-image
             [duet-migration]=duet-migration-image
           )
           declare -A name=(
             [physician-runtime]=coda-physician-sample
+            [physician-worker]=coda-physician-worker
             [physician-migration]=coda-physician-migrate
             [duet-runtime]=coda-duet-api
             [duet-migration]=coda-duet-migrate
@@ -705,6 +710,32 @@ jobs:
             echo "$ready" > "release/$app-revision"
             echo "$app revision $ready serves $runtime" >> "$GITHUB_STEP_SUMMARY"
           done
+      - name: Roll out physician-worker when the service exists
+        run: |
+          set -euo pipefail
+          run() { gcloud --project "$PROJECT" run "$@" --region "$REGION" --quiet; }
+          worker=$(cat "release/physician-worker")
+          # The scaling plan creates this service from the digest published
+          # above. Until then, a missing service is the expected first push.
+          if ! run services describe physician-worker --format 'value(metadata.name)' >/dev/null 2>physician-worker-describe.err; then
+            if grep -Eq 'Cannot find service|NOT_FOUND' physician-worker-describe.err; then
+              echo "physician-worker is not in this project yet. Record \`$worker\` as images.physician.worker, then apply the reviewed scaling plan." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "::error::could not describe physician-worker"
+            cat physician-worker-describe.err >&2
+            exit 1
+          fi
+          run services update physician-worker --image "$worker"
+          service=$(run services describe physician-worker --format json)
+          ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
+          created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
+          served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
+          [ "$ready" = "$created" ] || { echo "::error::physician-worker revision $created is not Ready ($ready is)"; exit 1; }
+          [ "$served" = "$worker" ] || { echo "::error::physician-worker serves $served, expected $worker"; exit 1; }
+          jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
+            || { echo "::error::physician-worker's latest revision does not serve all traffic"; exit 1; }
+          echo "physician-worker revision $ready serves $worker" >> "$GITHUB_STEP_SUMMARY"
       - name: Save the release receipt
         if: always()
         uses: actions/upload-artifact@v7
