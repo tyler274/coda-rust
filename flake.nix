@@ -83,6 +83,9 @@
           zip
           doppler
           google-cloud-sdk
+          # Redis-compatible server for the physician event bus tests
+          # (crates/physician-bus/tests).
+          valkey
           act
           actionlint
           oha

@@ -38,3 +38,7 @@ cargo test --locked -p local-product --lib runtime::tests -- --ignored --test-th
 cargo test --locked -p local-product --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
 cargo test --locked -p local-product --test runtime_publication -- --ignored --test-threads=1
 cargo test --locked -p local-product --test runtime_recovery -- --ignored --test-threads=1
+# Physician scale proofs. Valkey comes from the nix dev shell. The bus suite
+# needs Valkey only. The workspace CI job has no Nix shell, so it skips; this
+# job fail-closes when valkey-server is missing.
+cargo test --locked -p physician-bus --test redis -- --test-threads=1
