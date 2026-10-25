@@ -331,6 +331,11 @@ incomplete. HOLDS covers chart rules only, like an exhausted trace.
   conditions the detail assumes are listed, and `--out` draws each agreed state
   as a box around the detailed states mapped to it. Each difference goes back to
   whoever owns the behavior: either the detail or the agreed chart is wrong.
+- `coverage CHART COVERAGE.md` checks a Markdown table that accounts for every
+  state of the chart, such as what an app shows for each: one `## REGION`
+  section per region, in its caption, and one row per state with its status
+  (built, partial, missing or not shown). It fails when the chart gains or drops
+  a state the table doesn't match, so coverage can't silently fall behind.
 - `flat` prints the expansion; without parallel parts it reads back to the same
   flat model, with rules as comments.
 
