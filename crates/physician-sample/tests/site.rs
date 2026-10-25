@@ -829,6 +829,20 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     browser
         .wait_for_text("MRN 00000003", Duration::from_secs(10))
         .await;
+
+    // A patient link opened directly shows the patient's rail loading too.
+    browser
+        .navigate(&format!(
+            "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"
+        ))
+        .await;
+    browser
+        .wait_for_text("Loading the schedule…", Duration::from_secs(15))
+        .await;
+    browser.eval("window.__release()").await;
+    browser
+        .wait_for_text("Follow-up visit", Duration::from_secs(10))
+        .await;
 }
 
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {

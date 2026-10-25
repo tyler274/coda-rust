@@ -902,11 +902,7 @@ fn PhysicianShell(
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
     let visits = day.map(upcoming_visits).unwrap_or_default();
-    // The rail shows while the day loads; only an answered day can say there is no calendar.
-    let show_schedule = matches!(
-        schedule,
-        ui::ReadStage::Loading | ui::ReadStage::Unavailable
-    ) || day.is_some_and(shows_today_schedule);
+    let show_schedule = schedule_unanswered(schedule) || day.is_some_and(shows_today_schedule);
     let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
     let need_you = today_state.content().map_or(0, Vec::len);
     let cached_workspace = workspace_cache.read().clone();
@@ -1727,6 +1723,15 @@ struct CommandSlot {
     stage: Signal<CommandStage>,
     /// The unconfirmed command and what runs once it is taken.
     last: Signal<Option<(Command, Callback)>>,
+}
+
+/// A schedule rail shows while its day is loading or failed: only an answered day
+/// can say there is no calendar or no visit to show.
+fn schedule_unanswered(schedule: ui::ReadStage) -> bool {
+    matches!(
+        schedule,
+        ui::ReadStage::Loading | ui::ReadStage::Unavailable
+    )
 }
 
 /// One read as the page shows it. A failed refresh keeps the last answer.
@@ -3105,7 +3110,7 @@ fn PatientSurface(
             }
             }
             }
-            if !visits.is_empty() || schedule == ui::ReadStage::Unavailable {
+            if !visits.is_empty() || schedule_unanswered(schedule) {
                 ScheduleRail {
                     visits: visits.clone(),
                     title: "Upcoming visits",
