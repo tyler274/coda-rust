@@ -93,8 +93,8 @@ pub struct Ledger {
     #[serde(default)]
     pub warnings: Vec<String>,
     pub patients: Vec<Patient>,
-    /// Out-of-catalog codes verified for this unit when it was accepted.
-    #[serde(default)]
+    /// Out-of-catalog codes verified for this unit when it was accepted. Required:
+    /// a ledger accepted before codes were stored here must be checked again.
     pub terms: Terms,
 }
 

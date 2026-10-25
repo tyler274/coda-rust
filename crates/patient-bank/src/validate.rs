@@ -310,7 +310,7 @@ fn load_chart(dir: &Path) -> Result<(Chart, Vec<String>)> {
     let mut errors = Vec::new();
     for fam in FAMILIES {
         let path = dir.join(format!("{fam}.ndjson"));
-        let text = fs::read_to_string(&path).unwrap_or_default();
+        let text = fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
         let mut rows = Vec::new();
         for line in text.lines() {
             match serde_json::from_str(line) {

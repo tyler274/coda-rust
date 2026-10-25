@@ -4,9 +4,9 @@ use patient_bank::catalog::Catalog;
 use patient_bank::fhir::Chart;
 use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
-use patient_bank::seeds::Seed;
+use patient_bank::seeds::{Seed, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, paths};
+use patient_bank::{bank, check, paths};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -175,6 +175,64 @@ fn a_result_with_its_own_release_time_stays_pending_until_then() {
 }
 
 #[test]
+fn a_computed_result_waits_for_its_inputs() {
+    let p = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-01T09:00", "resulted": "2024-01-01T15:00", "results": [
+            {"test": "Creatinine", "value": 1.4, "resulted": "2024-01-03T10:00"}
+        ]}]})
+    )]));
+    let status = |when: &str, test: &str| {
+        let chart = render(&p, when);
+        let o = chart
+            .observations
+            .iter()
+            .find(|o| o.code.text.as_deref() == Some(test))
+            .expect("observation");
+        o.status
+    };
+    assert_eq!(status("2024-01-02T09:00", "Sodium"), "final");
+    assert_eq!(status("2024-01-02T09:00", "Creatinine"), "registered");
+    assert_eq!(
+        status(
+            "2024-01-02T09:00",
+            "Estimated Glomerular Filtration Rate (Creatinine)"
+        ),
+        "registered"
+    );
+    assert_eq!(
+        status(
+            "2024-01-04T09:00",
+            "Estimated Glomerular Filtration Rate (Creatinine)"
+        ),
+        "final"
+    );
+}
+
+#[test]
+fn a_test_stated_twice_in_one_draw_is_rejected() {
+    let p = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
+            {"test": "Hemoglobin", "value": 6.0}, {"test": "Hemoglobin", "value": 14.0}
+        ]}]})
+    )]));
+    let unit = Unit {
+        unit: "unit-9999".into(),
+        kind: "individual".into(),
+        members: vec![seed()],
+    };
+    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
+    let (errors, _) = check::check(&unit, &[p], &catalog);
+    assert!(
+        errors.iter().any(|e| e.contains("stated twice")),
+        "{errors:?}"
+    );
+}
+
+#[test]
 fn malformed_drafts_fail_to_parse_instead_of_losing_content() {
     let part = |events: serde_json::Value| {
         serde_json::from_value::<Part>(
@@ -222,6 +280,20 @@ fn an_accepted_ledger_round_trips() {
         text.contains("[128,82]") && text.contains("36.8"),
         "numbers keep their written form"
     );
+}
+
+#[test]
+fn the_build_refuses_a_missing_ledger_directory() {
+    let dir = std::env::temp_dir().join(format!("patient-bank-missing-{}", std::process::id()));
+    let err = bank::run(
+        &paths::seeds(),
+        &dir.join("ledgres"),
+        &dir.join("bank"),
+        None,
+    )
+    .expect_err("missing ledgers");
+    assert!(err.to_string().contains("not a directory of ledgers"));
+    assert!(!dir.join("bank").exists(), "nothing written");
 }
 
 #[test]

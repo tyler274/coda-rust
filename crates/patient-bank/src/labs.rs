@@ -420,7 +420,11 @@ fn derive_and_fill<'a>(
             .map(num)
             .filter(|x| *x != 0.0)
     };
-    let put = |values: &mut HashMap<&'a str, Value<'a>>, t: &'a str, n: Number, origin: Origin| {
+    let put = |values: &mut HashMap<&'a str, Value<'a>>,
+               t: &'a str,
+               n: Number,
+               origin: Origin,
+               released: Stamp| {
         values.insert(
             t,
             Value {
@@ -430,6 +434,13 @@ fn derive_and_fill<'a>(
                 released,
             },
         );
+    };
+    // A computed value is released with the last of its inputs.
+    let after = |values: &HashMap<&str, Value>, inputs: &[&str]| -> Stamp {
+        inputs
+            .iter()
+            .filter_map(|i| values.get(i).map(|v| v.released))
+            .fold(released, Stamp::max)
     };
     let member = |t: &str| members.iter().copied().find(|m| *m == t);
 
@@ -444,7 +455,14 @@ fn derive_and_fill<'a>(
             num_of(values, "Red Blood Cells"),
         )
     {
-        put(values, t, rounded(hct / rbc * 10.0, 0), Origin::Derived);
+        let when = after(values, &["Hematocrit", "Red Blood Cells"]);
+        put(
+            values,
+            t,
+            rounded(hct / rbc * 10.0, 0),
+            Origin::Derived,
+            when,
+        );
     }
     for &t in members {
         if values.contains_key(t) || DERIVED.contains(&t) || diff_open.contains(&t) {
@@ -461,7 +479,7 @@ fn derive_and_fill<'a>(
                 },
             );
         } else if let Some(n) = baselines.fill(t, female, rng) {
-            put(values, t, n, Origin::Filled);
+            put(values, t, n, Origin::Filled, released);
         }
     }
     if !diff_open.is_empty() {
@@ -485,9 +503,10 @@ fn derive_and_fill<'a>(
             .fold(0, |best, (k, s)| if s.1 > share[best].1 { k } else { best });
         let sum: i64 = fill.iter().map(|f| f.1).sum();
         fill[biggest].1 = (fill[biggest].1 + room.round_ties_even() as i64 - sum).max(0);
+        let when = after(values, &DIFFERENTIAL);
         for (t, v) in fill {
             let t = member(t).expect("differential member");
-            put(values, t, Number::from(v), Origin::Filled);
+            put(values, t, Number::from(v), Origin::Filled, when);
         }
     }
     // Red-cell indices from one consistent set: Hgb, MCV and MCHC give Hct and RBC.
@@ -510,9 +529,18 @@ fn derive_and_fill<'a>(
             num(&rounded(hgb / mchc * 100.0, 1))
         });
         let rbc = *rbc.get_or_insert_with(|| num(&rounded(hct / mcv * 10.0, 2)));
+        let when = after(
+            values,
+            &[
+                "Hemoglobin",
+                "Mean Corpuscular Volume",
+                "Hematocrit",
+                "Red Blood Cells",
+            ],
+        );
         for (t, v, dec) in [("Hematocrit", hct, 1), ("Red Blood Cells", rbc, 2)] {
             if let Some(t) = member(t).filter(|t| !values.contains_key(t)) {
-                put(values, t, rounded(v, dec), Origin::Derived);
+                put(values, t, rounded(v, dec), Origin::Derived, when);
             }
         }
     }
@@ -525,7 +553,8 @@ fn derive_and_fill<'a>(
         };
         let got: Option<Vec<f64>> = inputs.iter().map(|i| num_of(values, i)).collect();
         if let Some(got) = got {
-            put(values, t, f(&got), Origin::Derived);
+            let when = after(values, inputs);
+            put(values, t, f(&got), Origin::Derived, when);
         }
     };
     derive(

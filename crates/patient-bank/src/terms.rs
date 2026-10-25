@@ -28,7 +28,7 @@ static STRENGTH: LazyLock<Regex> = LazyLock::new(|| {
     let unit =
         r"(?:mg|mcg|µg|g|gm|ml|unt|units?|iu|meq|actuat(?:ions?)?|puffs?|hr|hours?|h|days?)\b|%";
     Regex::new(&format!(
-        r"(?i)(\d+(?:\.\d+)?)\s*({unit})(?:\s*(?:/|per)\s*(\d+(?:\.\d+)?)?\s*({unit}))?"
+        r"(?i)(\d+(?:\.\d+)?|\.\d+)\s*({unit})(?:\s*(?:/|per)\s*(\d+(?:\.\d+)?|\.\d+)?\s*({unit}))?"
     ))
     .expect("regex")
 });
@@ -294,6 +294,14 @@ mod tests {
         assert!(equivalent(
             "hydrocortisone 1% cream",
             "hydrocortisone 10 MG/ML Topical Cream"
+        ));
+        assert!(equivalent(
+            "triamcinolone .1% cream",
+            "triamcinolone 1 MG/ML Topical Cream"
+        ));
+        assert!(!equivalent(
+            "triamcinolone .1% cream",
+            "triamcinolone 10 MG/ML Topical Cream"
         ));
         assert!(equivalent(
             "lisinopril 20 mg / hydrochlorothiazide 12.5 mg tablet",

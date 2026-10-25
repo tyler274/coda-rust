@@ -354,8 +354,12 @@ fn check_event<'a>(
             None => None,
         };
         let collected = Timeline::collected(ev, lab);
+        let mut seen = HashSet::new();
         for r in &lab.results {
             let test = r.test.as_str();
+            if !seen.insert(test) {
+                errors.push(format!("{eid}: {test:?} is stated twice in one draw"));
+            }
             if !catalog.labs.contains_key(test) {
                 errors.push(format!("{eid}: unknown lab test {test:?}"));
             } else if r.value.is_none() && r.text.is_none() {

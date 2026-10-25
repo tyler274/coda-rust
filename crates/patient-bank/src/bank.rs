@@ -279,6 +279,9 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
     let mut inputs = vec![seeds_path, ledgers];
     inputs.extend(roger);
     refuse_overlap(out, &inputs)?;
+    if !ledgers.is_dir() {
+        return Err(format!("{} is not a directory of ledgers", ledgers.display()).into());
+    }
     let catalog = Catalog::load(&paths::catalog())?;
     let seeds = Seeds::read(seeds_path)?;
 
