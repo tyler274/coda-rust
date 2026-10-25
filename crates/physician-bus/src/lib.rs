@@ -21,7 +21,39 @@ use tokio::{sync::broadcast, task::JoinHandle};
 pub const CHANNEL: &str = "physician:workspace-events:v1";
 const CAPACITY: usize = 1024;
 const MAX_PAYLOAD: usize = 4096;
-const COMMAND_TIMEOUT: Duration = Duration::from_secs(3);
+
+/// Connection timing. [`RedisBus::connect`] uses [`Timing::default`]; tests
+/// pick their own through [`RedisBus::connect_with`] so a proof does not race
+/// production's heartbeat or reconnect jitter.
+#[doc(hidden)]
+#[derive(Clone, Copy, Debug)]
+pub struct Timing {
+    /// Subscriber ping interval. A failed ping resyncs and forces a reconnect.
+    pub heartbeat: Duration,
+    /// Command and connection timeout, including the heartbeat ping.
+    pub command_timeout: Duration,
+    /// First reconnect delay; it doubles up to `reconnect_max`.
+    pub reconnect_min: Duration,
+    pub reconnect_max: Duration,
+    /// Random delay added to each reconnect attempt.
+    pub jitter: Duration,
+}
+
+impl Default for Timing {
+    fn default() -> Self {
+        Self {
+            heartbeat: Duration::from_secs(2),
+            command_timeout: Duration::from_secs(3),
+            reconnect_min: Duration::from_millis(100),
+            reconnect_max: Duration::from_secs(5),
+            jitter: Duration::from_millis(100),
+        }
+    }
+}
+
+fn millis(duration: Duration) -> u32 {
+    u32::try_from(duration.as_millis()).unwrap_or(u32::MAX)
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
@@ -234,11 +266,30 @@ impl RedisBus {
     /// Initial failure returns an error; established connections retry forever
     /// with bounded exponential backoff. No credentials appear in our errors.
     pub async fn connect(url: &str, ca: Option<&[u8]>) -> Result<Self, String> {
+        Self::connect_with(url, ca, Timing::default()).await
+    }
+
+    /// [`RedisBus::connect`] with explicit timing, for tests.
+    #[doc(hidden)]
+    pub async fn connect_with(
+        url: &str,
+        ca: Option<&[u8]>,
+        timing: Timing,
+    ) -> Result<Self, String> {
         let config = config(url, ca)?;
         let mut builder = Builder::from_config(config);
-        builder.set_policy(ReconnectPolicy::new_exponential(0, 100, 5_000, 2));
-        builder.with_performance_config(|config| config.default_command_timeout = COMMAND_TIMEOUT);
-        builder.with_connection_config(|config| config.connection_timeout = COMMAND_TIMEOUT);
+        let mut policy = ReconnectPolicy::new_exponential(
+            0,
+            millis(timing.reconnect_min),
+            millis(timing.reconnect_max),
+            2,
+        );
+        policy.set_jitter(millis(timing.jitter));
+        builder.set_policy(policy);
+        builder.with_performance_config(|config| {
+            config.default_command_timeout = timing.command_timeout
+        });
+        builder.with_connection_config(|config| config.connection_timeout = timing.command_timeout);
         let publisher = builder
             .build()
             .map_err(|_| "cannot build physician Redis publisher")?;
@@ -280,7 +331,7 @@ impl RedisBus {
         let output = events.clone();
         let healthy = live.clone();
         tasks.0.push(tokio::spawn(async move {
-            let mut heartbeat = tokio::time::interval(Duration::from_secs(2));
+            let mut heartbeat = tokio::time::interval(timing.heartbeat);
             loop {
                 tokio::select! {
                     result = reconnects.recv() => {
