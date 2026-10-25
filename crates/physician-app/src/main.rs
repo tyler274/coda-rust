@@ -16,8 +16,9 @@ fn main() {
 fn App() -> Element {
     let base = api_base();
     let open_patient = open_patient();
+    let open_chat = open_chat();
     let sign_in = use_hook(sign_in_link);
-    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, sign_in } }
+    rsx! { physician_app::PhysicianRoot { base_url: base, open_patient, open_chat, sign_in } }
 }
 
 fn sign_in_link() -> Option<physician_app::SignInLink> {
@@ -53,6 +54,17 @@ fn sign_in_link() -> Option<physician_app::SignInLink> {
 fn open_patient() -> String {
     #[cfg(target_arch = "wasm32")]
     if let Some(id) = query_value("patient") {
+        return id;
+    }
+    String::new()
+}
+
+/// `?chat=` opens that conversation of the `?patient=` workspace, including
+/// one the workspace does not list yet (a chat started outside this page).
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+fn open_chat() -> String {
+    #[cfg(target_arch = "wasm32")]
+    if let Some(id) = query_value("chat") {
         return id;
     }
     String::new()
