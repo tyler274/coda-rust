@@ -55,6 +55,11 @@ run "langfuse_has_no_public_ingress" {
   }
 
   assert {
+    condition     = length(google_iap_web_region_backend_service_iam_member.langfuse) == 0
+    error_message = "A disabled Langfuse gateway grants no IAP access."
+  }
+
+  assert {
     condition     = local.langfuse_values.langfuse.features.signUpDisabled && !local.langfuse_values.langfuse.features.telemetryEnabled
     error_message = "Langfuse must not allow open sign-up or phone home."
   }
@@ -79,11 +84,12 @@ run "the_iap_gateway_is_internal_only" {
   command = plan
 
   variables {
-    langfuse_iap_enabled     = true
-    langfuse_hostname        = "langfuse.internal.example.test"
-    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
-    langfuse_iap_certificate = "langfuse-internal"
-    langfuse_iap_members     = ["group:coda-eng@example.test"]
+    langfuse_iap_enabled         = true
+    langfuse_hostname            = "langfuse.internal.example.test"
+    langfuse_iap_client_id       = "000000000000-test.apps.googleusercontent.com"
+    langfuse_iap_certificate     = "langfuse-internal"
+    langfuse_iap_members         = ["group:coda-eng@example.test"]
+    langfuse_iap_backend_service = "test-gke-created-langfuse-backend"
   }
 
   assert {
@@ -100,6 +106,46 @@ run "the_iap_gateway_is_internal_only" {
     condition     = length(helm_release.langfuse_iap) == 1 && contains(keys(local.doppler_secrets), "langfuse-iap-oauth")
     error_message = "The gateway and its Doppler-synced OAuth secret must exist together."
   }
+
+  assert {
+    condition = alltrue([
+      for grant in google_iap_web_region_backend_service_iam_member.langfuse :
+      grant.project == var.project_id && grant.region == var.region && grant.web_region_backend_service == "test-gke-created-langfuse-backend" && grant.role == "roles/iap.httpsResourceAccessor" && grant.member == "group:coda-eng@example.test"
+    ]) && length(google_iap_web_region_backend_service_iam_member.langfuse) == 1
+    error_message = "Langfuse users must receive access only to the verified regional backend."
+  }
+}
+
+run "bootstrap_gateway_without_access_grants" {
+  command = plan
+  variables {
+    langfuse_iap_enabled     = true
+    langfuse_hostname        = "langfuse.internal.example.test"
+    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
+    langfuse_iap_certificate = "langfuse-internal"
+  }
+  assert {
+    condition     = length(helm_release.langfuse_iap) == 1 && length(google_iap_web_region_backend_service_iam_member.langfuse) == 0
+    error_message = "GKE must be able to create the backend before its identity is used for a scoped grant."
+  }
+}
+
+run "reject_members_without_backend_identity" {
+  command = plan
+  variables {
+    langfuse_iap_enabled     = true
+    langfuse_hostname        = "langfuse.internal.example.test"
+    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
+    langfuse_iap_certificate = "langfuse-internal"
+    langfuse_iap_members     = ["group:coda-eng@example.test"]
+  }
+  expect_failures = [var.langfuse_iap_members]
+}
+
+run "reject_blank_backend_identity" {
+  command = plan
+  variables { langfuse_iap_backend_service = "   " }
+  expect_failures = [var.langfuse_iap_backend_service]
 }
 
 run "reject_an_iap_gateway_without_its_inputs" {
