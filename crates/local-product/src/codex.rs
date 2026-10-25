@@ -1306,7 +1306,8 @@ fn random_id() -> String {
     format!("{nanos:x}{:x}", std::process::id())
 }
 
-fn format_rfc3339(time: SystemTime) -> String {
+/// UTC RFC 3339 with milliseconds, e.g. `1970-01-01T00:00:00.000Z`.
+pub fn format_rfc3339(time: SystemTime) -> String {
     let duration = time.duration_since(UNIX_EPOCH).unwrap_or_default();
     let secs = duration.as_secs();
     let millis = duration.subsec_millis();

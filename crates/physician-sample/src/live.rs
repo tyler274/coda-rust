@@ -183,6 +183,56 @@ impl Live {
         }))
     }
 
+    /// The signed-in physician's chats in this workspace as wire
+    /// `WorkspaceChat`s, latest activity first. Hosted chats come from Postgres,
+    /// scoped to this physician; local chats come from the one-process session,
+    /// which, like its snapshots, is not split by physician.
+    pub(crate) async fn chats(
+        &self,
+        ctx: Option<&AuthContext>,
+        workspace: &str,
+    ) -> Result<Vec<Value>, ()> {
+        let chats: Vec<(String, String, i64)> = match (&self.durable, ctx) {
+            // Hosted routes always carry a session; without one there is no physician.
+            (Some(_), None) => vec![],
+            (Some(durable), Some(ctx)) => durable
+                .store
+                .chats(
+                    &ctx.identity.practice_id,
+                    &ctx.identity.physician_id,
+                    workspace,
+                )
+                .await
+                .map_err(|_| ())?
+                .into_iter()
+                .map(|chat| (chat.chat, chat.first_message, chat.opened_at))
+                .collect(),
+            (None, _) => self
+                .session
+                .lock()
+                .expect("chat session")
+                .chats(workspace)
+                .into_iter()
+                .map(|(chat, first, opened_at)| {
+                    (chat, first, i64::try_from(opened_at).unwrap_or_default())
+                })
+                .collect(),
+        };
+        Ok(chats
+            .into_iter()
+            .map(|(chat_id, first, opened_at)| {
+                let created_at = local_product::codex::format_rfc3339(
+                    std::time::UNIX_EPOCH + std::time::Duration::from_secs(opened_at.max(0) as u64),
+                );
+                json!({
+                    "chat_id": chat_id,
+                    "title": chat_title(&first),
+                    "created_at": created_at,
+                })
+            })
+            .collect())
+    }
+
     /// The `gen_ai.generation` span for one chat turn. Its parent is the
     /// current (request) span.
     fn generation_span(&self, chat_id: &str) -> tracing::Span {
@@ -214,6 +264,23 @@ impl Live {
         };
         genai::generation_span(&ctx, system, model, adapter)
     }
+}
+
+/// Chat titles until the model names chats: the first physician message on
+/// one line, cut at a word boundary near [`CHAT_TITLE_CHARS`].
+pub(crate) const CHAT_TITLE_CHARS: usize = 60;
+
+pub(crate) fn chat_title(first: &str) -> String {
+    let line = first.split_whitespace().collect::<Vec<_>>().join(" ");
+    if line.chars().count() <= CHAT_TITLE_CHARS {
+        return line;
+    }
+    let cut: String = line.chars().take(CHAT_TITLE_CHARS).collect();
+    let cut = match cut.rfind(' ') {
+        Some(space) if space > CHAT_TITLE_CHARS / 2 => &cut[..space],
+        _ => cut.as_str(),
+    };
+    format!("{}…", cut.trim_end())
 }
 
 #[cfg(not(test))]

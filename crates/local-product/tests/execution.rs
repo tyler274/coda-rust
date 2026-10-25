@@ -242,3 +242,32 @@ fn corrupt_owner_never_resets_and_cancelled_work_never_resumes() {
     assert!(PhysicianSession::open(&path).is_err());
     cleanup(&path);
 }
+
+#[test]
+fn chats_list_conversations_newest_first_and_skip_reply_drafts() {
+    let mut session = PhysicianSession::memory();
+    session
+        .submit(&binding(), "k1", "ws", "chat-old", "First question")
+        .unwrap();
+    session
+        .submit(&binding(), "k2", "ws", "chat-old", "Follow-up")
+        .unwrap();
+    session
+        .submit(&binding(), "k3", "other", "chat-elsewhere", "Not here")
+        .unwrap();
+    session.save_draft("ws", "reply-draft", 0, "draft").unwrap();
+    session
+        .submit(&binding(), "k4", "ws", "chat-new", "Second chat")
+        .unwrap();
+    let chats = session.chats("ws");
+    let listed: Vec<_> = chats
+        .iter()
+        .map(|(chat, first, _)| (chat.as_str(), first.as_str()))
+        .collect();
+    assert_eq!(
+        listed,
+        [("chat-new", "Second chat"), ("chat-old", "First question")]
+    );
+    assert!(chats.iter().all(|(_, _, opened_at)| *opened_at > 0));
+    assert!(session.chats("missing").is_empty());
+}

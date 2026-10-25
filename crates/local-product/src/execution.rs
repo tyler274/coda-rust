@@ -66,6 +66,9 @@ struct Target {
     turns: Vec<(String, String)>,
     draft: Option<String>,
     restore_text: Option<String>,
+    /// Unix seconds when the target was created; 0 on older session files.
+    #[serde(default)]
+    opened_at: u64,
 }
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 struct State {
@@ -82,6 +85,11 @@ pub struct PhysicianSession {
     // A publication error can follow rename: no further writes may use the
     // pre-write snapshot. Reopen/readback through this owner is required.
     blocked: bool,
+}
+fn unix_now() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |since| since.as_secs())
 }
 impl PhysicianSession {
     /// Ephemeral controlled tests only; server selects `open` when configured.
@@ -201,6 +209,7 @@ impl PhysicianSession {
                         turns: vec![],
                         draft: None,
                         restore_text: None,
+                        opened_at: unix_now(),
                     });
                     state.targets.len() - 1
                 });
@@ -260,6 +269,7 @@ impl PhysicianSession {
                     turns: vec![],
                     draft: None,
                     restore_text: None,
+                    opened_at: unix_now(),
                 });
             }
             let t = state
@@ -426,6 +436,21 @@ impl PhysicianSession {
             .find(|t| t.workspace == workspace && t.id == target)
             .map(|t| t.turns.iter().map(|(_, text)| text.clone()).collect())
             .unwrap_or_default()
+    }
+    /// Chats of a workspace that have a physician turn, newest opened first,
+    /// each with its first physician message and opening Unix second. Reply
+    /// drafts have no turns and are not chats.
+    pub fn chats(&self, workspace: &str) -> Vec<(String, String, u64)> {
+        self.state
+            .targets
+            .iter()
+            .rev()
+            .filter(|t| t.workspace == workspace)
+            .filter_map(|t| {
+                let (_, first) = t.turns.iter().find(|(role, _)| role == "user")?;
+                Some((t.id.clone(), first.clone(), t.opened_at))
+            })
+            .collect()
     }
     /// Saved draft revision, current text, and replaced text.
     pub fn draft(&self, workspace: &str, target: &str) -> Option<(u64, String, Option<String>)> {
