@@ -1,24 +1,22 @@
-//! CPython's `random.Random`, exactly.
+//! A seeded Mersenne Twister with CPython's `random.Random` seeding.
 //!
-//! The panel design, the renderer's filled lab values and result delays, and the
-//! validator's snapshot instants all came from Python's Mersenne Twister. The
-//! bank stays byte-for-byte reproducible only if these draws replay identically,
-//! so this is a direct port of CPython 3.14 `_randommodule.c` and `random.py`
-//! for the calls the bank uses: integer and string seeds, `random`, `uniform`,
-//! `gauss`, `randint`, `choice`, `sample` and `shuffle`.
+//! The bank's derived values (filled lab results, result delays, panel order and
+//! the validator's snapshot instants) are drawn from it. The algorithm is kept
+//! because the bank's first draws came from Python: the same seeds keep giving
+//! the same charts, so a rebuild changes only what an input changed.
 
 use sha2::{Digest, Sha512};
 
 const N: usize = 624;
 const M: usize = 397;
 
-pub struct PyRandom {
+pub struct Rng {
     mt: [u32; N],
     index: usize,
     gauss_next: Option<f64>,
 }
 
-impl PyRandom {
+impl Rng {
     /// `random.Random(n)` for a non-negative integer seed.
     pub fn new(seed: u128) -> Self {
         let mut key = Vec::new();
@@ -82,7 +80,7 @@ impl PyRandom {
             }
         }
         mt[0] = 0x8000_0000;
-        PyRandom {
+        Rng {
             mt,
             index: N,
             gauss_next: None,
@@ -165,47 +163,10 @@ impl PyRandom {
         mu + z * sigma
     }
 
-    pub fn choice<'a, T>(&mut self, items: &'a [T]) -> &'a T {
-        &items[self.randbelow(items.len() as u64) as usize]
-    }
-
     pub fn shuffle<T>(&mut self, items: &mut [T]) {
         for i in (1..items.len()).rev() {
             let j = self.randbelow(i as u64 + 1) as usize;
             items.swap(i, j);
         }
-    }
-
-    /// `sample(population, k)`, including CPython's switch between a pool and a
-    /// selected-set strategy, so the same elements come back in the same order.
-    pub fn sample<T: Clone>(&mut self, population: &[T], k: usize) -> Vec<T> {
-        let n = population.len();
-        assert!(k <= n, "sample larger than population");
-        let mut setsize = 21usize;
-        if k > 5 {
-            // 4 ** ceil(log(k * 3, 4)), computed the way CPython does, in floats.
-            let exp = ((k as f64 * 3.0).ln() / 4f64.ln()).ceil() as u32;
-            setsize += 4usize.pow(exp);
-        }
-        let mut result = Vec::with_capacity(k);
-        if n <= setsize {
-            let mut pool: Vec<T> = population.to_vec();
-            for i in 0..k {
-                let j = self.randbelow((n - i) as u64) as usize;
-                result.push(pool[j].clone());
-                pool[j] = pool[n - i - 1].clone();
-            }
-        } else {
-            let mut selected = std::collections::HashSet::new();
-            for _ in 0..k {
-                let mut j = self.randbelow(n as u64) as usize;
-                while selected.contains(&j) {
-                    j = self.randbelow(n as u64) as usize;
-                }
-                selected.insert(j);
-                result.push(population[j].clone());
-            }
-        }
-        result
     }
 }

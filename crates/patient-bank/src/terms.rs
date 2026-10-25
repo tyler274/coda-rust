@@ -1,180 +1,315 @@
-//! Verify out-of-catalog conditions and drugs that authors proposed.
+//! Verify the out-of-catalog conditions and drugs one unit's authors proposed.
 //!
-//! A proposed ICD-10-CM code is accepted only when NLM Clinical Tables returns it;
-//! its official display replaces the author's. A drug written as text is accepted
-//! only when RxNav resolves it to a clinical or branded drug whose name contains
-//! the same ingredient word and every strength number in the text. Anything else
-//! stays text-only and is counted as uncoded. Lookups share the catalog cache.
+//! A proposed ICD-10-CM code is accepted only when NLM Clinical Tables returns it,
+//! and its official display replaces the author's. A drug written as text is coded
+//! only when RxNav resolves it to a clinical or branded drug with the same
+//! ingredient and an equivalent strength: `3 mg/0.5 mL` is 6 mg/mL, so it never
+//! matches a 3 mg/mL pen. A drug whose text states no strength stays text-only.
+//! Everything that fails stays text-only and is listed as rejected.
 
-use std::collections::BTreeSet;
-use std::fs;
-use std::path::Path;
 use std::sync::LazyLock;
 
 use regex::Regex;
 
-use crate::catalog::{Lookup, Result, py_repr, urlencode};
-use crate::json::{self, Json};
-use crate::{obj, paths};
+use crate::Result;
+use crate::catalog::{Catalog, Lookup};
+use crate::ledger::{Patient, Terms, VerifiedCode};
 
-static NUMBER: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"\d+(?:\.\d+)?").expect("valid regex"));
-static WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[a-z]+").expect("valid regex"));
-
-fn numbers(text: &str) -> BTreeSet<&str> {
-    NUMBER
-        .find_iter(text)
-        .map(|m| {
-            let n = m.as_str();
-            if n.contains('.') {
-                n.trim_end_matches('0').trim_end_matches('.')
-            } else {
-                n
-            }
-        })
-        .collect()
+/// One strength: an amount of a base unit per one base unit of something, or a bare
+/// quantity (a pen's volume, a patch's wear time) when `per` is empty.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Strength {
+    pub amount: f64,
+    pub unit: &'static str,
+    pub per: &'static str,
 }
 
-/// Python's `str.strip()`: `str.isspace` is Unicode White_Space plus the
-/// information separators U+001C..U+001F, which Rust's `trim` keeps.
-pub fn py_strip(s: &str) -> &str {
-    s.trim_matches(|c: char| c.is_whitespace() || ('\u{1c}'..='\u{1f}').contains(&c))
-}
+static STRENGTH: LazyLock<Regex> = LazyLock::new(|| {
+    let unit =
+        r"(?:mg|mcg|µg|g|gm|ml|unt|units?|iu|meq|actuat(?:ions?)?|puffs?|hr|hours?|h|days?)\b|%";
+    Regex::new(&format!(
+        r"(?i)(\d+(?:\.\d+)?)\s*({unit})(?:\s*(?:/|per)\s*(\d+(?:\.\d+)?)?\s*({unit}))?"
+    ))
+    .expect("regex")
+});
 
-/// Python's `str()` of the JSON scalars a ledger field can hold.
-fn py_str(v: &Json) -> Result<String> {
-    Ok(match v {
-        Json::Null => "None".into(),
-        Json::Str(s) => s.clone(),
-        Json::Int(i) => i.to_string(),
-        Json::Float(f) if f.is_nan() => "nan".into(),
-        Json::Float(f) if f.is_infinite() => if *f > 0.0 { "inf" } else { "-inf" }.into(),
-        Json::Float(f) => json::float_repr(*f),
-        Json::Bool(b) => if *b { "True" } else { "False" }.into(),
-        _ => return Err(format!("unexpected ledger value {v:?}").into()),
+/// A unit in base form and the factor to it: mass in mg, volume in mL, time in
+/// hours. Per gram (a cream's mg/g) counts as per mL.
+fn base(unit: &str, denominator: bool) -> Option<(&'static str, f64)> {
+    Some(match unit.to_lowercase().as_str() {
+        "mg" => ("mg", 1.0),
+        "mcg" | "µg" => ("mg", 0.001),
+        "g" | "gm" if denominator => ("ml", 1.0),
+        "g" | "gm" => ("mg", 1000.0),
+        "ml" => ("ml", 1.0),
+        "unt" | "unit" | "units" | "iu" => ("unit", 1.0),
+        "meq" => ("meq", 1.0),
+        "%" => ("%", 1.0),
+        "actuat" | "actuation" | "actuations" | "puff" | "puffs" => ("actuat", 1.0),
+        "hr" | "hour" | "hours" | "h" => ("hr", 1.0),
+        "day" | "days" => ("hr", 24.0),
+        _ => return None,
     })
 }
 
-pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<Json>> {
-    let url = format!(
-        "https://rxnav.nlm.nih.gov/REST/approximateTerm.json?{}",
-        urlencode(&[("term", text), ("maxEntries", "5")])
-    );
-    let Ok(found) = look.get(&url, "application/json") else {
-        return Ok(None);
+/// Every strength stated in a drug name or text, normalized.
+pub fn strengths(text: &str) -> Vec<Strength> {
+    let mut out = Vec::new();
+    for m in STRENGTH.captures_iter(text) {
+        let Some((unit, factor)) = base(&m[2], false) else {
+            continue;
+        };
+        let amount: f64 = m[1].parse().expect("digits");
+        let mut s = match m.get(4).and_then(|u| base(u.as_str(), true)) {
+            Some((per, per_factor)) => {
+                let per_amount: f64 = m
+                    .get(3)
+                    .map_or(1.0, |n| n.as_str().parse().expect("digits"));
+                Strength {
+                    amount: amount * factor / (per_amount * per_factor),
+                    unit,
+                    per,
+                }
+            }
+            None => Strength {
+                amount: amount * factor,
+                unit,
+                per: "",
+            },
+        };
+        // A percentage is grams per 100 mL: 1% is 10 mg/mL.
+        if s.unit == "%" && s.per.is_empty() {
+            s = Strength {
+                amount: s.amount * 10.0,
+                unit: "mg",
+                per: "ml",
+            };
+        }
+        // A mass per mass (mg/mg) is a fraction; as mg/mL it is a thousand times that.
+        if s.unit == "mg" && s.per == "mg" {
+            s = Strength {
+                amount: s.amount * 1000.0,
+                unit: "mg",
+                per: "ml",
+            };
+        }
+        out.push(s);
+    }
+    out
+}
+
+fn same(a: &[Strength], b: &[Strength]) -> bool {
+    let close = |x: &Strength, y: &Strength| {
+        x.unit == y.unit
+            && x.per == y.per
+            && (x.amount - y.amount).abs() <= 1e-9 * x.amount.abs().max(y.amount.abs())
     };
+    a.len() == b.len()
+        && a.iter().all(|x| b.iter().any(|y| close(x, y)))
+        && b.iter().all(|y| a.iter().any(|x| close(x, y)))
+}
+
+/// Whether an author's drug text states the same strength as an RxNorm name.
+///
+/// A pen or patch name leads with its volume or wear time (`0.5 ML dulaglutide 3
+/// MG/ML`); the text matches either its concentrations or the amounts per device,
+/// and must agree with the bare quantity only when it states one.
+pub fn equivalent(text: &str, rxnorm_name: &str) -> bool {
+    let (text_bare, wanted): (Vec<Strength>, Vec<Strength>) = strengths(text)
+        .into_iter()
+        .partition(|s| s.per.is_empty() && s.unit != "mg" && s.unit != "unit" && s.unit != "meq");
+    let (name_bare, offered): (Vec<Strength>, Vec<Strength>) = strengths(rxnorm_name)
+        .into_iter()
+        .partition(|s| s.per.is_empty() && s.unit != "mg" && s.unit != "unit" && s.unit != "meq");
+    if wanted.is_empty() || (!text_bare.is_empty() && !same(&text_bare, &name_bare)) {
+        return false;
+    }
+    if same(&wanted, &offered) {
+        return true;
+    }
+    // Amounts per device: a concentration per mL (or per hour) times the device's
+    // volume (or wear time).
+    let per_device: Vec<Strength> = offered
+        .iter()
+        .map(|s| match name_bare.iter().find(|b| b.unit == s.per) {
+            Some(b) => Strength {
+                amount: s.amount * b.amount,
+                unit: s.unit,
+                per: "",
+            },
+            None => s.clone(),
+        })
+        .collect();
+    same(&wanted, &per_device)
+}
+
+fn ingredient(text: &str) -> Option<String> {
     let lower = text.to_lowercase();
-    let Some(first) = WORD.find(&lower).map(|m| m.as_str()) else {
+    let word = lower
+        .split(|c: char| !c.is_ascii_lowercase())
+        .find(|w| !w.is_empty())?;
+    Some(word.to_string())
+}
+
+/// RxNav's best clinical or branded drug for `text` with the same ingredient and
+/// an equivalent strength.
+pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode>> {
+    let Some(first) = ingredient(text) else {
         return Ok(None);
     };
-    for c in found.get("approximateGroup").get("candidate").as_array() {
-        let rxcui = c.get("rxcui");
-        if !rxcui.truthy() {
+    for rxcui in look.rxnorm_candidates(text)? {
+        let Some((tty, name)) = look.rxnorm_properties(&rxcui)? else {
+            continue;
+        };
+        if !matches!(tty.as_str(), "SCD" | "SBD" | "GPCK" | "BPCK") {
             continue;
         }
-        let url = format!(
-            "https://rxnav.nlm.nih.gov/REST/rxcui/{}/properties.json",
-            py_str(rxcui)?
-        );
-        let props = look.get(&url, "application/json")?;
-        let props = props.get("properties");
-        if !matches!(
-            props.get("tty").as_str(),
-            Some("SCD" | "SBD" | "GPCK" | "BPCK")
-        ) {
-            continue;
-        }
-        let name = props.get("name").as_str().unwrap_or("");
-        if name.to_lowercase().contains(first) && numbers(text).is_subset(&numbers(name)) {
-            return Ok(Some(obj![
-                ("code", rxcui.clone()),
-                ("display", name),
-                ("ingredient", first),
-                ("receipt", "NLM RxNav approximateTerm + properties")
-            ]));
+        if name.to_lowercase().contains(&first) && equivalent(text, &name) {
+            return Ok(Some(VerifiedCode {
+                code: rxcui,
+                display: name,
+                ingredient: Some(first),
+                receipt: "NLM RxNav approximateTerm + properties".into(),
+            }));
         }
     }
     Ok(None)
 }
 
-/// `resolve_extras_with` against the shared terminology cache.
-pub fn resolve_extras(ledgers: &Path, catalog: &Json, offline: bool) -> Result<Json> {
-    resolve_extras_with(
-        &mut Lookup::new(paths::terminology_cache(), offline)?,
-        ledgers,
-        catalog,
-    )
-}
-
-pub fn resolve_extras_with(look: &mut Lookup, ledgers: &Path, catalog: &Json) -> Result<Json> {
-    let mut conditions = Json::obj();
-    let mut medications = Json::obj();
-    let mut rejected: Vec<Json> = Vec::new();
-    let mut paths: Vec<String> = Vec::new();
-    for entry in fs::read_dir(ledgers)? {
-        let name = entry?.file_name().to_string_lossy().into_owned();
-        if name.ends_with(".json") {
-            paths.push(name);
-        }
-    }
-    paths.sort();
-    for name in paths {
-        let led = json::parse(&fs::read_to_string(ledgers.join(&name))?)?;
-        for p in led.get("patients").as_array() {
-            for ev in p.get("events").as_array() {
-                for c in ev.get("conditions").as_array() {
-                    let (label, code) = (c.get("label"), c.get("icd10"));
-                    let known = label
-                        .as_str()
-                        .is_some_and(|l| catalog.get("conditions").contains(l));
-                    if known || !code.truthy() {
-                        continue;
-                    }
-                    let code = code.as_str().ok_or("icd10 is not a string")?;
-                    let key = format!("{}|{code}", py_str(label)?);
-                    if conditions.contains(&key) {
-                        continue;
-                    }
-                    let upper = py_strip(code).to_uppercase();
-                    match look.icd10(&upper)? {
-                        Some(display) if !display.is_empty() => conditions.set(
-                            &key,
-                            obj![
-                                ("code", upper),
-                                ("display", display),
-                                ("receipt", "NLM Clinical Tables ICD-10-CM")
-                            ],
-                        ),
-                        _ => {
-                            let label = match label.as_str() {
-                                Some(l) => py_repr(l),
-                                None => py_str(label)?,
-                            };
-                            rejected.push(format!("condition {label} {code}").into());
-                        }
-                    }
+/// Verify every out-of-catalog condition code and drug text in one unit's charts.
+pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Result<Terms> {
+    let mut terms = Terms::default();
+    for p in patients {
+        for ev in &p.events {
+            for c in &ev.conditions {
+                let Some(code) = c.icd10.as_deref() else {
+                    continue;
+                };
+                if catalog.conditions.contains_key(&c.label) {
+                    continue;
                 }
-                for m in ev.get("medications").as_array() {
-                    let text = m.get("drug_text");
-                    if !text.truthy() {
-                        continue;
+                let key = format!("{}|{code}", c.label);
+                if terms.conditions.contains_key(&key)
+                    || terms.rejected.iter().any(|r| r.contains(&key))
+                {
+                    continue;
+                }
+                let code = code.trim().to_uppercase();
+                match look.icd10(&code) {
+                    Ok(Some(display)) => {
+                        let v = VerifiedCode {
+                            code,
+                            display,
+                            ingredient: None,
+                            receipt: "NLM Clinical Tables ICD-10-CM".into(),
+                        };
+                        terms.conditions.insert(key, v);
                     }
-                    let text = text.as_str().ok_or("drug_text is not a string")?;
-                    if medications.contains(text) {
-                        continue;
+                    Ok(None) => terms.rejected.push(format!("condition {key} not found")),
+                    Err(e) => terms
+                        .rejected
+                        .push(format!("condition {key} lookup failed: {e}")),
+                }
+            }
+            for m in &ev.medications {
+                let Some(text) = m.drug_text.as_deref() else {
+                    continue;
+                };
+                if terms.medications.contains_key(text)
+                    || terms
+                        .rejected
+                        .iter()
+                        .any(|r| r.ends_with(&format!("{text:?}")))
+                {
+                    continue;
+                }
+                match resolve_drug(look, text) {
+                    Ok(Some(v)) => {
+                        terms.medications.insert(text.into(), v);
                     }
-                    match resolve_drug(look, text)? {
-                        Some(hit) => medications.set(text, hit),
-                        None => rejected.push(format!("drug {}", py_repr(text)).into()),
-                    }
+                    Ok(None) => terms.rejected.push(format!("drug {text:?}")),
+                    Err(e) => terms
+                        .rejected
+                        .push(format!("drug lookup failed ({e}): {text:?}")),
                 }
             }
         }
     }
     look.save()?;
-    Ok(obj![
-        ("conditions", conditions),
-        ("medications", medications),
-        ("rejected", rejected)
-    ])
+    Ok(terms)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_pen_matches_only_its_own_strength() {
+        let pen = "0.5 ML dulaglutide 3 MG/ML Auto-Injector";
+        assert!(!equivalent(
+            "dulaglutide 3 mg/0.5 mL subcutaneous auto-injector",
+            pen
+        ));
+        assert!(equivalent(
+            "dulaglutide 1.5 mg/0.5 mL subcutaneous auto-injector",
+            pen
+        ));
+        assert!(equivalent("dulaglutide 1.5 mg weekly pen", pen));
+        assert!(!equivalent(
+            "tirzepatide 5 mg/0.5 mL subcutaneous auto-injector",
+            "0.5 ML tirzepatide 5 MG/ML Auto-Injector"
+        ));
+        assert!(equivalent(
+            "tirzepatide 5 mg/0.5 mL subcutaneous auto-injector",
+            "0.5 ML tirzepatide 10 MG/ML Auto-Injector"
+        ));
+    }
+
+    #[test]
+    fn tablets_patches_inhalers_and_creams_compare_by_quantity() {
+        assert!(equivalent(
+            "ibuprofen 200 mg oral tablet",
+            "ibuprofen 200 MG Oral Tablet"
+        ));
+        assert!(!equivalent(
+            "ibuprofen 200 mg oral tablet",
+            "ibuprofen 400 MG Oral Tablet"
+        ));
+        assert!(equivalent(
+            "valacyclovir 1 g oral tablet",
+            "valacyclovir 1000 MG Oral Tablet"
+        ));
+        assert!(equivalent(
+            "nicotine 21 mg/24 hr patch",
+            "24 HR nicotine 0.875 MG/HR Transdermal System"
+        ));
+        assert!(equivalent(
+            "estradiol 0.05 mg/day patch",
+            "estradiol 0.05 MG/DAY Transdermal System"
+        ));
+        assert!(equivalent(
+            "albuterol 90 mcg/actuation inhaler",
+            "200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler"
+        ));
+        assert!(equivalent(
+            "hydrocortisone 1% cream",
+            "hydrocortisone 10 MG/ML Topical Cream"
+        ));
+        assert!(equivalent(
+            "lisinopril 20 mg / hydrochlorothiazide 12.5 mg tablet",
+            "hydrochlorothiazide 12.5 MG / lisinopril 20 MG Oral Tablet"
+        ));
+    }
+
+    #[test]
+    fn text_without_a_strength_stays_uncoded() {
+        assert!(!equivalent(
+            "nicotine patch",
+            "24 HR nicotine 0.875 MG/HR Transdermal System"
+        ));
+        assert!(!equivalent(
+            "prenatal vitamin",
+            "prenatal multivitamin Oral Tablet"
+        ));
+    }
 }

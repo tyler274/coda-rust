@@ -1,27 +1,24 @@
-//! Verify the candidate terminology and write the authoring catalog.
+//! The verified terminology catalog, and the build that verifies it.
 //!
-//! Reads `catalog_seed`, looks every code up in its official service, and writes
-//! `catalog.json`: the canonical display, the clean label used as `code.text`, and a
-//! receipt naming the service. Responses are cached in `terminology-cache.json` so a
-//! rebuild is reproducible offline. Codes the service does not confirm are reported
-//! and left out; nothing is guessed.
+//! `data/catalog.json` holds every code authors may use by label: ICD-10-CM
+//! conditions, RxNorm drugs, LOINC labs, panels, surveys, social items and reports,
+//! CPT and HCPCS procedures, SNOMED allergens and reactions. `catalog` reads each
+//! candidate in `catalog_seed` back from its official service and records the
+//! canonical display and a receipt; nothing is guessed. Responses are kept in
+//! `data/terminology-cache.json`, so a rebuild is reproducible offline. The catalog
+//! build is the only writer of that shared cache.
 
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write as _;
 use std::fs;
-use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
-use std::sync::LazyLock;
 use std::time::Duration;
 
-use regex::Regex;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use crate::catalog_seed as seed;
-use crate::json::{self, Json, Layout};
-use crate::{obj, paths};
-
-pub type Error = Box<dyn std::error::Error + Send + Sync>;
-pub type Result<T> = std::result::Result<T, Error>;
+use crate::{Result, paths};
 
 pub const ICD: &str = "http://hl7.org/fhir/sid/icd-10-cm";
 pub const LOINC: &str = "http://loinc.org";
@@ -44,45 +41,175 @@ const V2_0074: &[(&str, &str)] = &[
     ("LAB", "Laboratory"),
 ];
 
-/// Terminology service lookups, answered from the cache file when possible.
+type Section = BTreeMap<String, Entry>;
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct Catalog {
+    pub systems: BTreeMap<String, String>,
+    pub conditions: Section,
+    pub medications: Section,
+    pub labs: Section,
+    pub panels: Section,
+    pub surveys: Section,
+    pub social: Section,
+    pub reports: Section,
+    pub procedures: Section,
+    pub allergens: Section,
+    pub reactions: Section,
+}
+
+impl Catalog {
+    pub fn load(path: &Path) -> Result<Catalog> {
+        let text = fs::read_to_string(path)?;
+        Ok(serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?)
+    }
+
+    /// Every lab test that belongs to no panel.
+    pub fn standalone_labs(&self) -> Vec<&str> {
+        self.labs
+            .keys()
+            .filter(|t| !self.panels.values().any(|p| p.members.contains(t)))
+            .map(String::as_str)
+            .collect()
+    }
+
+    pub fn sections(&self) -> [(&'static str, &Section); 10] {
+        [
+            ("conditions", &self.conditions),
+            ("medications", &self.medications),
+            ("labs", &self.labs),
+            ("panels", &self.panels),
+            ("surveys", &self.surveys),
+            ("social", &self.social),
+            ("reports", &self.reports),
+            ("procedures", &self.procedures),
+            ("allergens", &self.allergens),
+            ("reactions", &self.reactions),
+        ]
+    }
+}
+
+/// One verified concept. Which optional fields appear depends on the section.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct Entry {
+    pub system: String,
+    pub code: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub display: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub receipt: Option<String>,
+    /// CPT: `fixture` (display from the Roger fixture) or `recalled` (no display).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub provenance: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ingredient: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub unit: Option<String>,
+    /// Lab reference range from coda-gym: `low`, `high`, `low_f`, `high_f`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub range: Option<BTreeMap<String, Value>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub range_source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub category: Option<Category>,
+    /// Panel members, in reporting order.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub members: Vec<String>,
+}
+
+/// An allergen's FHIR category, or a report's v2-0074 diagnostic section.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(untagged)]
+pub enum Category {
+    Text(String),
+    Section { code: String, display: String },
+}
+
+impl Entry {
+    /// A lab's reference range for this sex, when both ends are numbers.
+    pub fn reference_range(&self, female: bool) -> Option<(f64, f64)> {
+        let range = self.range.as_ref()?;
+        let end = |plain: &str, f: &str| {
+            let v = if female {
+                range.get(f).filter(|v| !blank(v))
+            } else {
+                None
+            };
+            number(v.or_else(|| range.get(plain))?)
+        };
+        Some((end("low", "low_f")?, end("high", "high_f")?))
+    }
+}
+
+fn blank(v: &Value) -> bool {
+    v.is_null() || v.as_str() == Some("")
+}
+
+fn number(v: &Value) -> Option<f64> {
+    match v {
+        Value::Number(n) => n.as_f64(),
+        Value::String(s) => s.trim().parse().ok(),
+        _ => None,
+    }
+}
+
+/// Terminology service lookups, answered from the cache when possible.
+///
+/// The catalog build reads and writes the shared cache. A unit's check layers its
+/// own lookups file over the shared cache, read-only, so concurrent authoring
+/// never writes a file another process writes.
 pub struct Lookup {
-    path: PathBuf,
+    shared: BTreeMap<String, Value>,
+    own: BTreeMap<String, Value>,
+    save_to: PathBuf,
     offline: bool,
-    cache: BTreeMap<String, Json>,
+    dirty: bool,
     client: Option<reqwest::blocking::Client>,
 }
 
 impl Lookup {
-    /// Load the cache at `path` (empty when the file does not exist).
-    pub fn new(path: impl Into<PathBuf>, offline: bool) -> Result<Lookup> {
-        let path = path.into();
-        let mut cache = BTreeMap::new();
-        if path.exists() {
-            cache = into_map(json::parse(&fs::read_to_string(&path)?)?)?;
-        }
+    /// The shared cache, which `save` writes back.
+    pub fn shared(offline: bool) -> Result<Lookup> {
+        let path = paths::terminology_cache();
         Ok(Lookup {
-            path,
+            shared: BTreeMap::new(),
+            own: read_cache(&path)?,
+            save_to: path,
             offline,
-            cache,
+            dirty: false,
             client: None,
         })
     }
 
-    pub fn get(&mut self, url: &str, accept: &str) -> Result<Json> {
-        if let Some(v) = self.cache.get(url) {
+    /// The shared cache read-only, with new answers kept in `own`.
+    pub fn layered(own: &Path, offline: bool) -> Result<Lookup> {
+        Ok(Lookup {
+            shared: read_cache(&paths::terminology_cache())?,
+            own: read_cache(own)?,
+            save_to: own.to_path_buf(),
+            offline,
+            dirty: false,
+            client: None,
+        })
+    }
+
+    pub fn get(&mut self, url: &str, accept: &str) -> Result<Value> {
+        if let Some(v) = self.own.get(url).or_else(|| self.shared.get(url)) {
             return Ok(v.clone());
         }
         if self.offline {
             return Err(format!("offline and not cached: {url}").into());
         }
-        if self.client.is_none() {
-            self.client = Some(
+        let client = match &self.client {
+            Some(c) => c,
+            None => self.client.insert(
                 reqwest::blocking::Client::builder()
                     .timeout(Duration::from_secs(60))
                     .build()?,
-            );
-        }
-        let client = self.client.as_ref().expect("client built above");
+            ),
+        };
         let body = client
             .get(url)
             .header(reqwest::header::ACCEPT, accept)
@@ -90,76 +217,56 @@ impl Lookup {
             .send()?
             .error_for_status()?
             .bytes()?;
-        // json.load reads bytes, so a UTF-8 byte-order mark is dropped.
         let body = body.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&body);
-        let value = json::parse(std::str::from_utf8(body)?)?;
-        self.cache.insert(url.to_string(), value.clone());
+        let value: Value = serde_json::from_slice(body)?;
+        self.own.insert(url.to_string(), value.clone());
+        self.dirty = true;
         Ok(value)
     }
 
+    /// Write new answers, if any, atomically.
     pub fn save(&mut self) -> Result<()> {
-        // authoring agents share the cache: keep their entries, never leave a partial file
-        match fs::read_to_string(&self.path) {
-            Ok(text) => {
-                if let Ok(disk) = json::parse(&text) {
-                    for (url, value) in into_map(disk)? {
-                        self.cache.entry(url).or_insert(value);
-                    }
-                }
-            }
-            Err(e) if e.kind() == ErrorKind::NotFound => {}
-            Err(e) => return Err(e.into()),
+        if !self.dirty {
+            return Ok(());
         }
-        let all = Json::Obj(
-            self.cache
-                .iter()
-                .map(|(url, value)| (url.clone(), sort_keys(value)))
-                .collect(),
-        );
-        let name = self
-            .path
-            .file_name()
-            .ok_or("cache path has no file name")?
-            .to_string_lossy();
-        let tmp = self
-            .path
-            .with_file_name(format!("{name}.{}.tmp", std::process::id()));
-        fs::write(&tmp, json::dumps(&all, Layout::Indent(0), true))?;
-        fs::rename(&tmp, &self.path)?;
+        write_atomic(&self.save_to, &serde_json::to_string_pretty(&self.own)?)?;
+        self.dirty = false;
         Ok(())
     }
 
-    pub fn hcpcs(&mut self, code: &str) -> Result<Option<String>> {
+    fn search(&mut self, api: &str, pairs: &[(&str, &str)], code: &str) -> Result<Option<String>> {
         let url = format!(
-            "https://clinicaltables.nlm.nih.gov/api/hcpcs/v3/search?{}",
-            urlencode(&[
-                ("sf", "code"),
-                ("terms", code),
-                ("df", "code,display"),
-                ("maxList", "10")
-            ])
+            "https://clinicaltables.nlm.nih.gov/api/{api}/v3/search?{}",
+            urlencode(pairs)
         );
         Ok(search_hit(&self.get(&url, "application/json")?, code))
+    }
+
+    pub fn hcpcs(&mut self, code: &str) -> Result<Option<String>> {
+        let q = [
+            ("sf", "code"),
+            ("terms", code),
+            ("df", "code,display"),
+            ("maxList", "10"),
+        ];
+        self.search("hcpcs", &q, code)
     }
 
     pub fn icd10(&mut self, code: &str) -> Result<Option<String>> {
-        let url = format!(
-            "https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?{}",
-            urlencode(&[("sf", "code"), ("terms", code), ("maxList", "50")])
-        );
-        Ok(search_hit(&self.get(&url, "application/json")?, code))
+        self.search(
+            "icd10cm",
+            &[("sf", "code"), ("terms", code), ("maxList", "50")],
+            code,
+        )
     }
 
     pub fn loinc(&mut self, code: &str) -> Result<Option<String>> {
-        let url = format!(
-            "https://clinicaltables.nlm.nih.gov/api/loinc_items/v3/search?{}",
-            urlencode(&[
-                ("terms", code),
-                ("df", "LOINC_NUM,LONG_COMMON_NAME"),
-                ("maxList", "50")
-            ])
-        );
-        Ok(search_hit(&self.get(&url, "application/json")?, code))
+        let q = [
+            ("terms", code),
+            ("df", "LOINC_NUM,LONG_COMMON_NAME"),
+            ("maxList", "50"),
+        ];
+        self.search("loinc_items", &q, code)
     }
 
     /// Any lookup failure, offline misses included, reads as "not found".
@@ -169,88 +276,96 @@ impl Lookup {
             urlencode(&[("system", SNOMED), ("code", code)])
         );
         let params = self.get(&url, "application/fhir+json").ok()?;
-        for p in params.get("parameter").as_array() {
-            if p.get("name").as_str() == Some("display") {
-                return p.get("valueString").as_str().map(String::from);
-            }
-        }
-        None
+        params["parameter"]
+            .as_array()?
+            .iter()
+            .find(|p| p["name"] == "display")?["valueString"]
+            .as_str()
+            .map(String::from)
     }
 
     /// RxNav's clinical drugs and generic packs for an ingredient (concept properties).
-    pub fn rxnorm_drugs(&mut self, ingredient: &str) -> Result<Vec<Json>> {
+    pub fn rxnorm_drugs(&mut self, ingredient: &str) -> Result<Vec<Value>> {
         let url = format!(
             "https://rxnav.nlm.nih.gov/REST/drugs.json?{}",
             urlencode(&[("name", ingredient)])
         );
         let found = self.get(&url, "application/json")?;
-        let groups = found.get("drugGroup").get("conceptGroup").as_array();
+        let groups = found["drugGroup"]["conceptGroup"]
+            .as_array()
+            .cloned()
+            .unwrap_or_default();
         Ok(groups
-            .iter()
-            .filter(|g| matches!(g.get("tty").as_str(), Some("SCD" | "GPCK")))
-            .flat_map(|g| g.get("conceptProperties").as_array().iter().cloned())
+            .into_iter()
+            .filter(|g| matches!(g["tty"].as_str(), Some("SCD" | "GPCK")))
+            .flat_map(|g| {
+                g["conceptProperties"]
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default()
+            })
             .collect())
     }
+
+    /// RxNav's approximate matches for a free-text drug, best first (rxcuis).
+    pub fn rxnorm_candidates(&mut self, text: &str) -> Result<Vec<String>> {
+        let url = format!(
+            "https://rxnav.nlm.nih.gov/REST/approximateTerm.json?{}",
+            urlencode(&[("term", text), ("maxEntries", "5")])
+        );
+        let found = self.get(&url, "application/json")?;
+        Ok(found["approximateGroup"]["candidate"]
+            .as_array()
+            .map(|cands| {
+                cands
+                    .iter()
+                    .filter_map(|c| c["rxcui"].as_str().map(String::from))
+                    .collect()
+            })
+            .unwrap_or_default())
+    }
+
+    /// RxNav's term type and name for a concept.
+    pub fn rxnorm_properties(&mut self, rxcui: &str) -> Result<Option<(String, String)>> {
+        let url = format!("https://rxnav.nlm.nih.gov/REST/rxcui/{rxcui}/properties.json");
+        let props = &self.get(&url, "application/json")?["properties"];
+        Ok(match (props["tty"].as_str(), props["name"].as_str()) {
+            (Some(tty), Some(name)) => Some((tty.to_string(), name.to_string())),
+            _ => None,
+        })
+    }
+}
+
+fn read_cache(path: &Path) -> Result<BTreeMap<String, Value>> {
+    match fs::read_to_string(path) {
+        Ok(text) => {
+            Ok(serde_json::from_str(&text).map_err(|e| format!("{}: {e}", path.display()))?)
+        }
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(BTreeMap::new()),
+        Err(e) => Err(e.into()),
+    }
+}
+
+/// Write `text` to `path` through a temporary file in the same directory.
+pub fn write_atomic(path: &Path, text: &str) -> Result<()> {
+    let name = path
+        .file_name()
+        .ok_or("path has no file name")?
+        .to_string_lossy();
+    let tmp = path.with_file_name(format!(".{name}.{}.tmp", std::process::id()));
+    fs::write(&tmp, text)?;
+    fs::rename(&tmp, path)?;
+    Ok(())
 }
 
 /// The display of the first NLM Clinical Tables row whose code is exactly `code`.
-/// That row decides, as Python's loop returns its name: a null name is "not found".
-fn search_hit(found: &Json, code: &str) -> Option<String> {
-    let row = found
-        .as_array()
-        .get(3)?
-        .as_array()
-        .iter()
-        .map(Json::as_array)
-        .find(|row| row.first().and_then(Json::as_str) == Some(code))?;
-    row.get(1)?.as_str().map(String::from)
+fn search_hit(found: &Value, code: &str) -> Option<String> {
+    found[3].as_array()?.iter().find(|row| row[0] == code)?[1]
+        .as_str()
+        .map(String::from)
 }
 
-/// `str(pathlib.PurePosixPath(p))`: empty and `.` components dropped, repeated and
-/// trailing slashes collapsed, a leading `//` (exactly two) kept, `""` read as `.`.
-pub fn pathlib_str(p: &Path) -> String {
-    let s = p.to_string_lossy();
-    let (root, rest) = if s.starts_with("//") && !s.starts_with("///") {
-        ("//", &s[2..])
-    } else if s.starts_with('/') {
-        ("/", s.trim_start_matches('/'))
-    } else {
-        ("", &s[..])
-    };
-    let parts: Vec<&str> = rest
-        .split('/')
-        .filter(|part| !part.is_empty() && *part != ".")
-        .collect();
-    if root.is_empty() && parts.is_empty() {
-        return ".".into();
-    }
-    format!("{root}{}", parts.join("/"))
-}
-
-fn into_map(v: Json) -> Result<BTreeMap<String, Json>> {
-    match v {
-        Json::Obj(members) => Ok(members.into_iter().collect()),
-        _ => Err("terminology cache is not a JSON object".into()),
-    }
-}
-
-/// The value with every object's keys sorted, as `json.dumps(sort_keys=True)` writes it.
-pub fn sort_keys(v: &Json) -> Json {
-    match v {
-        Json::Obj(members) => {
-            let mut members: Vec<(String, Json)> = members
-                .iter()
-                .map(|(k, v)| (k.clone(), sort_keys(v)))
-                .collect();
-            members.sort_by(|a, b| a.0.cmp(&b.0));
-            Json::Obj(members)
-        }
-        Json::Arr(items) => Json::Arr(items.iter().map(sort_keys).collect()),
-        other => other.clone(),
-    }
-}
-
-/// `urllib.parse.urlencode`: `quote_plus` on every key and value.
+/// Query-string encoding: unreserved characters kept, spaces as `+`.
 pub fn urlencode(pairs: &[(&str, &str)]) -> String {
     let quote = |s: &str| {
         let mut out = String::new();
@@ -274,111 +389,60 @@ pub fn urlencode(pairs: &[(&str, &str)]) -> String {
         .join("&")
 }
 
-/// Python's `repr()` of a string, as f-strings with `!r` write it.
-pub fn py_repr(s: &str) -> String {
-    // str.isprintable() is false for the Other and Separator categories (space aside).
-    static UNPRINTABLE: LazyLock<Regex> =
-        LazyLock::new(|| Regex::new(r"^[\p{C}\p{Z}]$").expect("valid regex"));
-    let quote = if s.contains('\'') && !s.contains('"') {
-        '"'
-    } else {
-        '\''
-    };
-    let mut out = String::new();
-    out.push(quote);
-    let mut buf = [0u8; 4];
-    for c in s.chars() {
-        let n = c as u32;
-        match c {
-            _ if c == quote || c == '\\' => {
-                out.push('\\');
-                out.push(c);
-            }
-            '\t' => out.push_str("\\t"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            _ if n < 0x20 || n == 0x7f => {
-                let _ = write!(out, "\\x{n:02x}");
-            }
-            _ if n < 0x7f => out.push(c),
-            _ if !UNPRINTABLE.is_match(c.encode_utf8(&mut buf)) => out.push(c),
-            _ if n <= 0xff => {
-                let _ = write!(out, "\\x{n:02x}");
-            }
-            _ if n <= 0xffff => {
-                let _ = write!(out, "\\u{n:04x}");
-            }
-            _ => {
-                let _ = write!(out, "\\U{n:08x}");
-            }
-        }
+fn entry(system: &str, code: &str, display: &str) -> Entry {
+    Entry {
+        system: system.into(),
+        code: code.into(),
+        display: Some(display.into()),
+        ..Entry::default()
     }
-    out.push(quote);
-    out
 }
 
-fn opt(s: Option<&str>) -> Json {
-    s.map_or(Json::Null, Json::from)
-}
-
-/// `build_with` against the shared cache and this checkout's coda-gym ranges.
-pub fn build(roger: &Path, offline: bool, out: &Path) -> Result<i32> {
-    let mut look = Lookup::new(paths::terminology_cache(), offline)?;
-    build_with(&mut look, &paths::gym_lab_ranges(), roger, out)
-}
-
-/// Write the verified catalog to `out`, print the counts and every problem, and
-/// return the exit status: 1 when any candidate was not confirmed.
-pub fn build_with(look: &mut Lookup, gym_labs: &Path, roger: &Path, out: &Path) -> Result<i32> {
+/// Verify every candidate and write `data/catalog.json`. Prints the counts and every
+/// problem; returns 1 when any candidate was not confirmed.
+pub fn build(roger: &Path, offline: bool) -> Result<i32> {
+    let mut look = Lookup::shared(offline)?;
     let mut problems: Vec<String> = Vec::new();
-    let mut catalog = obj![(
-        "systems",
-        obj![
+    let mut c = Catalog {
+        systems: [
             ("icd10cm", ICD),
             ("loinc", LOINC),
             ("rxnorm", RXNORM),
             ("snomed", SNOMED),
             ("cpt", CPT),
-            ("hcpcs", HCPCS)
+            ("hcpcs", HCPCS),
         ]
-    )];
-    let rows = if gym_labs.exists() {
-        json::parse(&fs::read_to_string(gym_labs)?)?
-    } else {
-        Json::Arr(Vec::new())
+        .into_iter()
+        .map(|(k, v)| (k.into(), v.into()))
+        .collect(),
+        ..Catalog::default()
     };
-    let mut gym: HashMap<String, &Json> = HashMap::new();
-    for row in rows.as_array() {
-        let label = row.get("label").as_str().ok_or("gym row without a label")?;
-        // first row wins: blood before urine, BMP before ABG
+
+    // coda-gym's lab labels and ranges; the first row wins (blood before urine,
+    // BMP before ABG), and urine rows also answer to "Urine <label>".
+    let gym_rows: Vec<Value> = serde_json::from_str(&fs::read_to_string(paths::gym_lab_ranges())?)?;
+    let mut gym: HashMap<String, &Value> = HashMap::new();
+    for row in &gym_rows {
+        let label = row["label"].as_str().ok_or("gym row without a label")?;
         gym.entry(label.to_string()).or_insert(row);
-        if row.get("category").as_str() == Some("Urine Studies") {
+        if row["category"] == "Urine Studies" {
             gym.entry(format!("Urine {label}")).or_insert(row);
         }
     }
 
-    let mut conditions = Json::obj();
     for &(label, code) in seed::CONDITIONS {
-        let Some(display) = look.icd10(code)? else {
-            problems.push(format!(
-                "condition {}: ICD-10-CM {code} not found",
-                py_repr(label)
-            ));
-            continue;
-        };
-        conditions.set(
-            label,
-            obj![
-                ("system", ICD),
-                ("code", code),
-                ("display", display),
-                ("receipt", "NLM Clinical Tables ICD-10-CM")
-            ],
-        );
+        match look.icd10(code)? {
+            Some(display) => {
+                let e = Entry {
+                    receipt: Some("NLM Clinical Tables ICD-10-CM".into()),
+                    ..entry(ICD, code, &display)
+                };
+                c.conditions.insert(label.into(), e);
+            }
+            None => problems.push(format!("condition {label:?}: ICD-10-CM {code} not found")),
+        }
     }
-    catalog.set("conditions", conditions);
 
-    let mut meds = Json::obj();
     for &(ingredient, strengths, form) in seed::MEDICATIONS {
         let scds = look.rxnorm_drugs(ingredient)?;
         let wanted: Vec<Option<&str>> = if strengths.is_empty() {
@@ -386,281 +450,222 @@ pub fn build_with(look: &mut Lookup, gym_labs: &Path, roger: &Path, out: &Path) 
         } else {
             strengths.iter().copied().map(Some).collect()
         };
-        let form_lower = form.to_lowercase();
         for strength in wanted {
-            let mut matched: Vec<(&str, &Json)> = Vec::new();
-            for c in &scds {
-                let name = c.get("name").as_str().ok_or("SCD without a name")?;
-                if !name.to_lowercase().contains(&form_lower) {
-                    continue;
-                }
-                if let Some(s) = strength
-                    && !format!(" {name} ").contains(&format!(" {s} "))
-                {
-                    continue;
-                }
-                matched.push((name, c));
-            }
-            // Prefer the shortest exact SCD name (no packaging qualifiers).
-            matched.sort_by(|a, b| (a.0.chars().count(), a.0).cmp(&(b.0.chars().count(), b.0)));
-            let Some(&(name, chosen)) = matched.first() else {
+            // The shortest exact SCD name (no packaging qualifiers) of this form and strength.
+            let chosen = scds
+                .iter()
+                .filter_map(|d| Some((d["name"].as_str()?, d)))
+                .filter(|(name, _)| name.to_lowercase().contains(&form.to_lowercase()))
+                .filter(|(name, _)| {
+                    strength.is_none_or(|s| format!(" {name} ").contains(&format!(" {s} ")))
+                })
+                .min_by(|a, b| (a.0.chars().count(), a.0).cmp(&(b.0.chars().count(), b.0)));
+            let Some((name, d)) = chosen else {
                 problems.push(format!(
                     "medication {ingredient} {} {form}: no SCD",
-                    strength.unwrap_or("None")
+                    strength.unwrap_or("-")
                 ));
                 continue;
             };
-            meds.set(
-                name,
-                obj![
-                    ("system", RXNORM),
-                    ("code", chosen.get("rxcui").clone()),
-                    ("display", name),
-                    ("ingredient", ingredient),
-                    ("receipt", "NLM RxNav drugs.json (SCD)")
-                ],
-            );
+            let e = Entry {
+                ingredient: Some(ingredient.into()),
+                receipt: Some("NLM RxNav drugs.json (SCD)".into()),
+                ..entry(RXNORM, d["rxcui"].as_str().unwrap_or_default(), name)
+            };
+            c.medications.insert(name.into(), e);
         }
     }
     for &(ingredient, exact) in seed::EXACT_MEDICATIONS {
         let drugs = look.rxnorm_drugs(ingredient)?;
-        let Some(found) = drugs.iter().find(|c| c.get("name").as_str() == Some(exact)) else {
+        let Some(d) = drugs.iter().find(|d| d["name"] == exact) else {
             problems.push(format!(
-                "medication exact {}: not an RxNorm SCD/GPCK name",
-                py_repr(exact)
+                "medication exact {exact:?}: not an RxNorm SCD/GPCK name"
             ));
             continue;
         };
-        meds.set(
-            exact,
-            obj![
-                ("system", RXNORM),
-                ("code", found.get("rxcui").clone()),
-                ("display", exact),
-                ("ingredient", ingredient),
-                ("receipt", "NLM RxNav drugs.json (exact name)")
-            ],
-        );
+        let e = Entry {
+            ingredient: Some(ingredient.into()),
+            receipt: Some("NLM RxNav drugs.json (exact name)".into()),
+            ..entry(RXNORM, d["rxcui"].as_str().unwrap_or_default(), exact)
+        };
+        c.medications.insert(exact.into(), e);
     }
-    catalog.set("medications", meds);
 
-    let mut labs = Json::obj();
     for &(label, code, unit) in seed::LABS {
         let Some(display) = look.loinc(code)? else {
-            problems.push(format!("lab {}: LOINC {code} not found", py_repr(label)));
+            problems.push(format!("lab {label:?}: LOINC {code} not found"));
             continue;
         };
-        let mut entry = obj![
-            ("system", LOINC),
-            ("code", code),
-            ("display", display),
-            ("unit", opt(unit)),
-            ("receipt", "NLM Clinical Tables LOINC")
-        ];
-        if let Some(g) = gym.get(label).filter(|g| g.truthy()) {
-            let mut range = Json::obj();
-            for k in ["low", "high", "low_f", "high_f"] {
-                let v = g.get(k);
-                if !v.is_null() && v.as_str() != Some("None") {
-                    range.set(k, v.clone());
-                }
-            }
-            entry.set("range", range);
-            entry.set("range_source", "coda-gym lab_reference_ranges.xlsx".into());
+        let mut e = Entry {
+            unit: unit.map(String::from),
+            receipt: Some("NLM Clinical Tables LOINC".into()),
+            ..entry(LOINC, code, &display)
+        };
+        if let Some(g) = gym.get(label) {
+            let range: BTreeMap<String, Value> = ["low", "high", "low_f", "high_f"]
+                .into_iter()
+                .filter(|k| !g[*k].is_null() && g[*k] != "None")
+                .map(|k| (k.to_string(), g[k].clone()))
+                .collect();
+            e.range = Some(range);
+            e.range_source = Some("coda-gym lab_reference_ranges.xlsx".into());
         }
-        labs.set(label, entry);
+        c.labs.insert(label.into(), e);
     }
-
-    let mut panels = Json::obj();
     for &(label, code, members) in seed::PANELS {
         let display = look.loinc(code)?;
         let missing: Vec<&str> = members
             .iter()
             .copied()
-            .filter(|m| !labs.contains(m))
+            .filter(|m| !c.labs.contains_key(*m))
             .collect();
         match display {
-            Some(display) if missing.is_empty() => panels.set(
-                label,
-                obj![
-                    ("system", LOINC),
-                    ("code", code),
-                    ("display", display),
-                    (
-                        "members",
-                        members.iter().map(|m| Json::from(*m)).collect::<Vec<_>>()
-                    )
-                ],
-            ),
-            display => {
-                let missing: Vec<String> = missing.iter().map(|m| py_repr(m)).collect();
-                problems.push(format!(
-                    "panel {}: LOINC {code} found={} missing=[{}]",
-                    py_repr(label),
-                    if display.is_some() { "True" } else { "False" },
-                    missing.join(", ")
-                ));
+            Some(display) if missing.is_empty() => {
+                let e = Entry {
+                    members: members.iter().map(|m| m.to_string()).collect(),
+                    ..entry(LOINC, code, &display)
+                };
+                c.panels.insert(label.into(), e);
             }
+            display => problems.push(format!(
+                "panel {label:?}: LOINC {code} found={} missing={missing:?}",
+                display.is_some()
+            )),
         }
     }
-    catalog.set("labs", labs);
-    catalog.set("panels", panels);
 
-    let surveys: Vec<(&str, &str, Option<&str>)> = seed::SURVEYS
-        .iter()
-        .map(|&(label, code, unit)| (label, code, Some(unit)))
-        .collect();
-    let social: Vec<(&str, &str, Option<&str>)> = seed::SOCIAL
-        .iter()
-        .map(|&(label, code)| (label, code, None))
-        .collect();
-    for (name, table) in [("surveys", surveys), ("social", social)] {
-        let mut out = Json::obj();
-        for (label, code, unit) in table {
-            let Some(display) = look.loinc(code)? else {
-                problems.push(format!("{name} {}: LOINC {code} not found", py_repr(label)));
-                continue;
-            };
-            out.set(
-                label,
-                obj![
-                    ("system", LOINC),
-                    ("code", code),
-                    ("display", display),
-                    ("unit", opt(unit))
-                ],
-            );
+    for &(label, code, unit) in seed::SURVEYS {
+        match look.loinc(code)? {
+            Some(display) => {
+                let e = Entry {
+                    unit: Some(unit.into()),
+                    ..entry(LOINC, code, &display)
+                };
+                c.surveys.insert(label.into(), e);
+            }
+            None => problems.push(format!("surveys {label:?}: LOINC {code} not found")),
         }
-        catalog.set(name, out);
+    }
+    for &(label, code) in seed::SOCIAL {
+        match look.loinc(code)? {
+            Some(display) => {
+                c.social.insert(label.into(), entry(LOINC, code, &display));
+            }
+            None => problems.push(format!("social {label:?}: LOINC {code} not found")),
+        }
     }
 
-    let mut reports = Json::obj();
     for &(label, code, section) in seed::REPORTS {
         let Some(display) = look.loinc(code)? else {
-            problems.push(format!("report {}: LOINC {code} not found", py_repr(label)));
+            problems.push(format!("report {label:?}: LOINC {code} not found"));
             continue;
         };
         let (_, section_display) = V2_0074
             .iter()
             .find(|(s, _)| *s == section)
             .ok_or("unknown v2-0074 section")?;
-        reports.set(
-            label,
-            obj![
-                ("system", LOINC),
-                ("code", code),
-                ("display", display),
-                (
-                    "category",
-                    obj![("code", section), ("display", *section_display)]
-                )
-            ],
-        );
+        let e = Entry {
+            category: Some(Category::Section {
+                code: section.into(),
+                display: (*section_display).into(),
+            }),
+            ..entry(LOINC, code, &display)
+        };
+        c.reports.insert(label.into(), e);
     }
-    catalog.set("reports", reports);
 
-    // CPT has no public verification service. Codes harvested from the Coda
-    // Agents Roger fixture keep that fixture's display; recalled codes carry no
-    // display rather than an unverified one.
+    // CPT has no public verification service. Codes harvested from the Coda Agents
+    // Roger fixture keep that fixture's display; recalled codes carry no display
+    // rather than an unverified one.
     let fixture = roger.join("Procedure.ndjson");
-    let mut fixture_display: HashMap<String, Json> = HashMap::new();
-    if !fixture.exists() {
-        problems.push(format!(
+    let mut fixture_display: HashMap<String, String> = HashMap::new();
+    match fs::read_to_string(&fixture) {
+        Ok(text) => {
+            for line in text.lines() {
+                let r: Value = serde_json::from_str(line)?;
+                let coding = &r["code"]["coding"][0];
+                if let (Some(code), Some(display)) =
+                    (coding["code"].as_str(), coding["display"].as_str())
+                {
+                    fixture_display.insert(code.into(), display.into());
+                }
+            }
+        }
+        Err(_) => problems.push(format!(
             "Roger fixture not found at {}; pass --roger-fixture",
-            pathlib_str(&fixture)
-        ));
-    } else {
-        for line in fs::read_to_string(&fixture)?.lines() {
-            let resource = json::parse(line)?;
-            let coding = &resource.get("code").get("coding").as_array()[0];
-            let code = coding.get("code").as_str().ok_or("fixture code")?;
-            fixture_display.insert(code.to_string(), coding.get("display").clone());
-        }
+            fixture.display()
+        )),
     }
-    let mut procedures = Json::obj();
     for &(label, code, prov) in seed::PROCEDURES {
-        let mut entry = obj![("system", CPT), ("code", code), ("provenance", prov)];
-        if prov == "hcpcs" {
+        let e = match prov {
             // HCPCS Level II is verifiable: NLM Clinical Tables
-            let Some(display) = look.hcpcs(code)? else {
-                problems.push(format!(
-                    "procedure {}: HCPCS {code} not found",
-                    py_repr(label)
-                ));
-                continue;
-            };
-            entry = obj![
-                ("system", HCPCS),
-                ("code", code),
-                ("display", display),
-                ("provenance", "NLM Clinical Tables HCPCS")
-            ];
-        } else if prov == "fixture" {
-            let Some(display) = fixture_display.get(code) else {
-                problems.push(format!(
-                    "procedure {}: CPT {code} not in the Roger fixture",
-                    py_repr(label)
-                ));
-                continue;
-            };
-            entry.set("display", display.clone());
-        }
-        procedures.set(label, entry);
+            "hcpcs" => match look.hcpcs(code)? {
+                Some(display) => Entry {
+                    provenance: Some("NLM Clinical Tables HCPCS".into()),
+                    ..entry(HCPCS, code, &display)
+                },
+                None => {
+                    problems.push(format!("procedure {label:?}: HCPCS {code} not found"));
+                    continue;
+                }
+            },
+            "fixture" => match fixture_display.get(code) {
+                Some(display) => Entry {
+                    provenance: Some(prov.into()),
+                    ..entry(CPT, code, display)
+                },
+                None => {
+                    problems.push(format!(
+                        "procedure {label:?}: CPT {code} not in the Roger fixture"
+                    ));
+                    continue;
+                }
+            },
+            _ => Entry {
+                system: CPT.into(),
+                code: code.into(),
+                provenance: Some(prov.into()),
+                ..Entry::default()
+            },
+        };
+        c.procedures.insert(label.into(), e);
     }
-    catalog.set("procedures", procedures);
 
-    let mut allergens = Json::obj();
     for &(label, code, category) in seed::ALLERGENS {
-        let Some(display) = look.snomed(code) else {
-            problems.push(format!(
-                "allergen {}: SNOMED {code} not found",
-                py_repr(label)
-            ));
-            continue;
-        };
-        allergens.set(
-            label,
-            obj![
-                ("system", SNOMED),
-                ("code", code),
-                ("display", display),
-                ("category", category)
-            ],
-        );
+        match look.snomed(code) {
+            Some(display) => {
+                let e = Entry {
+                    category: Some(Category::Text(category.into())),
+                    ..entry(SNOMED, code, &display)
+                };
+                c.allergens.insert(label.into(), e);
+            }
+            None => problems.push(format!("allergen {label:?}: SNOMED {code} not found")),
+        }
     }
-    catalog.set("allergens", allergens);
-    let mut reactions = Json::obj();
     for &(label, code) in seed::REACTIONS {
-        let Some(display) = look.snomed(code) else {
-            problems.push(format!(
-                "reaction {}: SNOMED {code} not found",
-                py_repr(label)
-            ));
-            continue;
-        };
-        reactions.set(
-            label,
-            obj![("system", SNOMED), ("code", code), ("display", display)],
-        );
+        match look.snomed(code) {
+            Some(display) => {
+                c.reactions
+                    .insert(label.into(), entry(SNOMED, code, &display));
+            }
+            None => problems.push(format!("reaction {label:?}: SNOMED {code} not found")),
+        }
     }
-    catalog.set("reactions", reactions);
 
     look.save()?;
-    fs::write(
-        out,
-        json::dumps(&sort_keys(&catalog), Layout::Indent(1), false) + "\n",
+    write_atomic(
+        &paths::catalog(),
+        &(serde_json::to_string_pretty(&c)? + "\n"),
     )?;
-    let counts = Json::Obj(
-        catalog
-            .as_object()
-            .iter()
-            .filter(|(k, _)| k != "systems")
-            .map(|(k, v)| (k.clone(), Json::Int(v.as_object().len() as i64)))
-            .collect(),
-    );
-    println!("{}", json::dumps(&counts, Layout::Default, true));
+    let counts: Vec<String> = c
+        .sections()
+        .iter()
+        .map(|(name, s)| format!("{name} {}", s.len()))
+        .collect();
+    println!("{}", counts.join(", "));
     for p in &problems {
         println!("PROBLEM {p}");
     }
-    Ok(if problems.is_empty() { 0 } else { 1 })
+    Ok(i32::from(!problems.is_empty()))
 }

@@ -1,7 +1,6 @@
-//! The patient bank pipeline, one command per former Python script.
+//! The patient bank pipeline: one command per step.
 //!
 //! ```text
-//! cargo run -p patient-bank -- design --count N [--first-mrn 6] --out PATH
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
 //! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
@@ -9,15 +8,15 @@
 //! cargo run -p patient-bank -- materialize [--bank DIR] [--seeds PATH] --panel N --out DIR [--as-of STAMP]
 //! ```
 //!
-//! Defaults come from `patient_bank::paths`: inputs beside the Python pipeline in
-//! `scripts/patient-bank/`, outputs under `target/patient-bank/`.
+//! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
+//! drafts, ledgers and the bank under `target/patient-bank/`.
 
 use std::collections::HashMap;
 use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use patient_bank::{bank, catalog, design, materialize, paths, unit, validate};
+use patient_bank::{bank, catalog, materialize, paths, time, unit, validate};
 
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -37,47 +36,26 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
         return Err(usage());
     };
     let status = match command.as_str() {
-        "design" => {
-            let o = Opts::parse(rest, &["--count", "--first-mrn", "--out"], &[])?;
-            let count: usize = o.number("--count")?.ok_or("--count is required")?;
-            let first_mrn: u64 = o.number("--first-mrn")?.unwrap_or(6);
-            let out = o.path("--out").ok_or("--out is required")?;
-            let seeds = design::seeds(count, first_mrn);
-            design::write(&out, &seeds)?;
-            let units = seeds.get("units").as_array();
-            let n: usize = units
-                .iter()
-                .map(|u| u.get("members").as_array().len())
-                .sum();
-            println!(
-                "{n} patients in {} authoring units -> {}",
-                units.len(),
-                catalog::pathlib_str(&out)
-            );
-            0
-        }
         "catalog" => {
             let o = Opts::parse(rest, &["--roger-fixture"], &["--offline"])?;
             let roger = o
                 .path("--roger-fixture")
                 .unwrap_or_else(paths::roger_fixture);
-            catalog::build(&roger, o.on("--offline"), &paths::catalog())?
+            catalog::build(&roger, o.on("--offline"))?
         }
         "brief" | "check" | "preview" => {
             let o = Opts::parse(rest, &["--seeds"], &[])?;
             let [uid] = o.positional.as_slice() else {
                 return Err(format!("{command} takes one unit id").into());
             };
-            let seeds = o
-                .path("--seeds")
-                .unwrap_or_else(|| paths::root().join("seeds.json"));
+            let seeds = o.path("--seeds").unwrap_or_else(paths::seeds);
             unit::run(command, uid, &seeds)?
         }
         "build" => {
             let o = Opts::parse(rest, &["--seeds", "--ledgers", "--out", "--roger"], &[])?;
             let root = paths::root();
             bank::run(
-                &o.path("--seeds").unwrap_or_else(|| root.join("seeds.json")),
+                &o.path("--seeds").unwrap_or_else(paths::seeds),
                 &o.path("--ledgers").unwrap_or_else(|| root.join("ledgers")),
                 &o.path("--out").unwrap_or_else(|| root.join("bank")),
                 o.path("--roger").as_deref(),
@@ -93,7 +71,7 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             let root = paths::root();
             validate::run(
                 &o.path("--bank").unwrap_or_else(|| root.join("bank")),
-                &o.path("--seeds").unwrap_or_else(|| root.join("seeds.json")),
+                &o.path("--seeds").unwrap_or_else(paths::seeds),
                 &o.path("--schema").unwrap_or_else(paths::schema),
                 o.number("--jobs")?.unwrap_or(8),
                 o.path("--report").as_deref(),
@@ -108,10 +86,10 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             let root = paths::root();
             materialize::run(
                 &o.path("--bank").unwrap_or_else(|| root.join("bank")),
-                &o.path("--seeds").unwrap_or_else(|| root.join("seeds.json")),
+                &o.path("--seeds").unwrap_or_else(paths::seeds),
                 o.number("--panel")?.ok_or("--panel is required")?,
                 &o.path("--out").ok_or("--out is required")?,
-                o.values.get("--as-of").map_or(bank::AS_OF, String::as_str),
+                o.values.get("--as-of").map_or(time::AS_OF, String::as_str),
             )?;
             0
         }
@@ -180,13 +158,12 @@ fn usage() -> Failure {
     "\
 patient-bank runs the synthetic patient bank pipeline.
 
-  patient-bank design --count N [--first-mrn 6] --out PATH
   patient-bank catalog [--offline] [--roger-fixture DIR]
   patient-bank brief|check|preview UNIT [--seeds PATH]
   patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
   patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
   patient-bank materialize [--bank DIR] [--seeds PATH] --panel N --out DIR [--as-of STAMP]
 
-PATIENT_BANK_DATA and PATIENT_BANK_ROOT override scripts/patient-bank and target/patient-bank."
+PATIENT_BANK_DATA and PATIENT_BANK_ROOT override crates/patient-bank/data and target/patient-bank."
         .into()
 }

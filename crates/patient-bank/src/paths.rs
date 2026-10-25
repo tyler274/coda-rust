@@ -1,8 +1,8 @@
 //! Every default location the pipeline reads or writes, in one place.
 //!
-//! The inputs (catalog, terminology cache, coda-gym ranges, authoring guide) live
-//! beside the Python pipeline in `scripts/patient-bank/`; outputs live under the
-//! ignored `target/patient-bank/`. `PATIENT_BANK_DATA` and `PATIENT_BANK_ROOT`
+//! The inputs (catalog, terminology cache, coda-gym ranges, seeds, authoring guide)
+//! live in this crate's `data/`; drafts, accepted ledgers and the bank live under
+//! the ignored `target/patient-bank/`. `PATIENT_BANK_DATA` and `PATIENT_BANK_ROOT`
 //! override the two directories, so a scratch copy can be checked or authored in
 //! without touching the checkout.
 
@@ -19,15 +19,15 @@ pub fn workspace_root() -> PathBuf {
         .to_path_buf()
 }
 
-/// The pipeline's inputs: catalog, terminology cache, coda-gym ranges, authoring guide.
+/// The pipeline's inputs.
 pub fn data_dir() -> PathBuf {
     env::var_os("PATIENT_BANK_DATA").map_or_else(
-        || workspace_root().join("scripts/patient-bank"),
+        || Path::new(env!("CARGO_MANIFEST_DIR")).join("data"),
         PathBuf::from,
     )
 }
 
-/// Seeds, drafts, accepted ledgers, the bank and the vocabulary.
+/// Drafts, accepted ledgers, the bank and the vocabulary.
 pub fn root() -> PathBuf {
     env::var_os("PATIENT_BANK_ROOT").map_or_else(
         || workspace_root().join("target/patient-bank"),
@@ -39,7 +39,7 @@ pub fn catalog() -> PathBuf {
     data_dir().join("catalog.json")
 }
 
-/// The shared terminology cache that authoring agents and builds all read and extend.
+/// Terminology service answers behind the catalog; the catalog build is its only writer.
 pub fn terminology_cache() -> PathBuf {
     data_dir().join("terminology-cache.json")
 }
@@ -47,6 +47,11 @@ pub fn terminology_cache() -> PathBuf {
 /// coda-gym's lab labels and reference ranges.
 pub fn gym_lab_ranges() -> PathBuf {
     data_dir().join("gym-lab-ranges.json")
+}
+
+/// Who every patient is, designed once and authored against.
+pub fn seeds() -> PathBuf {
+    data_dir().join("seeds.json")
 }
 
 pub fn authoring_guide() -> PathBuf {

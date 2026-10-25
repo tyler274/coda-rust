@@ -1,148 +1,135 @@
 //! Write one panel as a multi-patient NDJSON directory in the Roger fixture layout.
 //!
-//! At the bank time the per-patient charts are concatenated as they are. With an
-//! earlier `as_of` (Eastern wall clock), each chart is re-rendered from its ledger
-//! by the same renderer, so the directory holds only what the practice knew at that
-//! instant: later records are absent, later stops and resolutions have not
-//! happened, and results not yet back are "registered". Roger fixture patients are
-//! copied only at the bank time.
-//!
-//! A port of `materialize.py`.
+//! At the bank time the per-patient charts are concatenated as they are. At an
+//! earlier moment (Eastern wall clock) each chart is re-rendered from the ledger in
+//! the bank, so the directory holds only what the practice knew then: later
+//! records are absent, later stops and resolutions have not happened, and results
+//! not yet back are `registered`. Roger fixture patients exist only at the bank time.
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
 
-use crate::bank::{AS_OF, py_str, read_ndjson, write_ndjson};
-use crate::catalog::Result;
-use crate::json::{self, Json, Layout};
-use crate::render::{self, FAMILIES, Renderer};
-use crate::{obj, paths, terms};
+use serde::Serialize;
+use serde_json::Value;
 
-/// `materialize.py`: write the panel and print its summary. Re-rendering uses this
-/// checkout's catalog and the verified extra terms of the bank's ledgers.
-pub fn run(bank: &Path, seeds: &Path, panel: i64, out: &Path, as_of: &str) -> Result<()> {
-    if as_of > AS_OF {
-        return Err(format!("--as-of {as_of} is after the bank time {AS_OF}").into());
-    }
-    let renderer = if as_of != AS_OF {
-        let catalog = render::load_catalog(&paths::catalog());
-        let extra = terms::resolve_extras(&bank.join("ledgers"), &catalog, false)?;
-        Some(Renderer::new(&catalog, &extra))
-    } else {
-        None
-    };
-    let summary = write(bank, seeds, panel, out, as_of, renderer.as_ref())?;
-    println!("{}", json::dumps(&summary, Layout::Indent(1), true));
-    Ok(())
+use crate::bank::{refuse_overlap, replace_dir, write_lines};
+use crate::catalog::Catalog;
+use crate::fhir::FAMILIES;
+use crate::ledger::{Ledger, Stamp};
+use crate::render::Renderer;
+use crate::seeds::Seeds;
+use crate::timeline::Timeline;
+use crate::{Result, paths, time};
+
+#[derive(Serialize)]
+struct Summary {
+    panel: usize,
+    as_of: String,
+    patients: usize,
+    not_included: Vec<String>,
+    counts: BTreeMap<&'static str, usize>,
 }
 
-/// Write panel `panel` of `bank` to `out` as of `as_of`, re-rendering with
-/// `renderer` (required before the bank time); the result is `materialized.json`.
-pub fn write(
-    bank: &Path,
-    seeds: &Path,
-    panel: i64,
-    out: &Path,
-    as_of: &str,
-    renderer: Option<&Renderer>,
-) -> Result<Json> {
-    let manifest = json::parse(&fs::read_to_string(bank.join("manifest.json"))?)?;
-    let panel_doc = json::parse(&fs::read_to_string(
-        bank.join("panels").join(format!("panel-{panel}.json")),
-    )?)?;
-    let by_mrn: HashMap<String, &Json> = manifest
-        .get("patients")
-        .as_array()
-        .iter()
-        .map(|p| (py_str(p.get("mrn")), p))
-        .collect();
-    let seeds = json::parse(&fs::read_to_string(seeds)?)?;
-    let mut seed_of: HashMap<String, &Json> = HashMap::new();
-    for u in seeds.get("units").as_array() {
-        for m in u.get("members").as_array() {
-            seed_of.insert(py_str(m.get("mrn")), m);
-        }
+fn read_json(path: &Path) -> Result<Value> {
+    Ok(serde_json::from_str(&fs::read_to_string(path)?)
+        .map_err(|e| format!("{}: {e}", path.display()))?)
+}
+
+pub fn run(bank: &Path, seeds: &Path, panel: usize, out: &Path, as_of: &str) -> Result<()> {
+    let at = Stamp::parse(as_of)
+        .ok_or_else(|| format!("--as-of {as_of:?} is not a 'YYYY-MM-DDTHH:MM' time"))?;
+    if at > time::as_of() {
+        return Err(format!("--as-of {as_of} is after the bank time {}", time::AS_OF).into());
     }
-    let renderer = if as_of == AS_OF {
-        None
-    } else {
-        Some(renderer.ok_or("re-rendering before the bank time needs a renderer")?)
-    };
-    let mut rows: Vec<Vec<Json>> = vec![Vec::new(); FAMILIES.len()];
-    let mut skipped: Vec<Json> = Vec::new();
-    for mrn in panel_doc.get("members").as_array() {
-        let mrn = py_str(mrn);
-        let p = by_mrn
-            .get(&mrn)
-            .ok_or_else(|| format!("KeyError: {mrn} not in the manifest"))?;
-        let Some(r) = renderer else {
-            for (slot, fam) in FAMILIES.iter().enumerate() {
-                let path = bank
-                    .join("patients")
-                    .join(&mrn)
-                    .join(format!("{fam}.ndjson"));
-                rows[slot].extend(read_ndjson(&path)?);
+    refuse_overlap(out, &[bank, seeds])?;
+    let manifest = read_json(&bank.join("manifest.json"))?;
+    let members = read_json(&bank.join("panels").join(format!("panel-{panel}.json")))?;
+    let unit_of: BTreeMap<&str, &str> = manifest["patients"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|p| Some((p["mrn"].as_str()?, p["unit"].as_str()?)))
+        .collect();
+    let rerender = at != time::as_of();
+    let seeds = Seeds::read(seeds)?;
+    let catalog = Catalog::load(&paths::catalog())?;
+    let mut ledgers: BTreeMap<String, Ledger> = BTreeMap::new();
+    let mut rows: BTreeMap<&'static str, Vec<String>> =
+        FAMILIES.iter().map(|f| (*f, Vec::new())).collect();
+    let mut skipped = Vec::new();
+    for mrn in members["members"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(Value::as_str)
+    {
+        let unit = *unit_of
+            .get(mrn)
+            .ok_or_else(|| format!("{mrn} is in the panel but not the manifest"))?;
+        if !rerender {
+            for fam in FAMILIES {
+                let text = fs::read_to_string(
+                    bank.join("patients")
+                        .join(mrn)
+                        .join(format!("{fam}.ndjson")),
+                )?;
+                rows.get_mut(fam)
+                    .expect("family")
+                    .extend(text.lines().map(String::from));
             }
             continue;
-        };
-        if p.get("unit").as_str() == Some("roger") {
-            skipped.push(mrn.into());
+        }
+        if unit == "roger" {
+            skipped.push(mrn.to_string());
             continue;
         }
-        let unit = py_str(p.get("unit"));
-        let led = json::parse(&fs::read_to_string(
-            bank.join("ledgers").join(format!("{unit}.json")),
-        )?)?;
-        let pled = led
-            .get("patients")
-            .as_array()
-            .iter()
-            .find(|x| x.get("mrn").as_str() == Some(&mrn))
-            .ok_or_else(|| format!("StopIteration: {mrn} not in {unit}"))?;
-        let first = pled
-            .get("events")
-            .as_array()
-            .iter()
-            .filter_map(|e| e.get("start").as_str())
-            .min()
-            .ok_or_else(|| format!("ValueError: {mrn} has no events"))?;
-        if first >= as_of {
-            skipped.push(mrn.into()); // not yet a patient of the practice
+        if !ledgers.contains_key(unit) {
+            ledgers.insert(
+                unit.to_string(),
+                Ledger::read(&bank.join("ledgers").join(format!("{unit}.json")))?,
+            );
+        }
+        let ledger = &ledgers[unit];
+        let patient = ledger
+            .patient(mrn)
+            .ok_or_else(|| format!("{unit}: no chart for {mrn}"))?;
+        if Timeline::new(patient)
+            .first()
+            .is_none_or(|first| first >= at)
+        {
+            skipped.push(mrn.to_string()); // not yet a patient of the practice
             continue;
         }
-        let seed = seed_of
-            .get(&mrn)
-            .ok_or_else(|| format!("KeyError: {mrn} not in the seeds"))?;
-        let (chart, _) = r.render(seed, pled, as_of);
-        for (slot, (_, fam_rows)) in chart.iter().enumerate() {
-            rows[slot].extend(fam_rows.iter().cloned());
+        let (_, seed) = seeds
+            .member(mrn)
+            .ok_or_else(|| format!("{mrn} has no seed"))?;
+        let (chart, _) = Renderer {
+            catalog: &catalog,
+            terms: &ledger.terms,
+        }
+        .render(seed, patient, at);
+        for (fam, lines) in chart.lines() {
+            rows.get_mut(fam).expect("family").extend(lines);
         }
     }
-    if out.exists() {
-        fs::remove_dir_all(out)?;
-    }
-    fs::create_dir_all(out)?;
-    for (fam, fam_rows) in FAMILIES.iter().zip(&rows) {
-        write_ndjson(&out.join(format!("{fam}.ndjson")), fam_rows)?;
-    }
-    let counts = Json::Obj(
-        FAMILIES
-            .iter()
-            .zip(&rows)
-            .map(|(f, v)| (f.to_string(), Json::Int(v.len() as i64)))
-            .collect(),
-    );
-    let summary = obj![
-        ("panel", panel),
-        ("as_of", as_of),
-        ("patients", rows[0].len() as i64),
-        ("not_included", skipped),
-        ("counts", counts),
-    ];
-    fs::write(
-        out.join("materialized.json"),
-        json::dumps(&summary, Layout::Indent(1), true) + "\n",
-    )?;
-    Ok(summary)
+    let summary = Summary {
+        panel,
+        as_of: as_of.to_string(),
+        patients: rows["Patient"].len(),
+        not_included: skipped,
+        counts: rows.iter().map(|(f, r)| (*f, r.len())).collect(),
+    };
+    replace_dir(out, |dir| {
+        for (fam, lines) in &rows {
+            write_lines(&dir.join(format!("{fam}.ndjson")), lines)?;
+        }
+        fs::write(
+            dir.join("materialized.json"),
+            serde_json::to_string_pretty(&summary)? + "\n",
+        )?;
+        Ok(())
+    })?;
+    println!("{}", serde_json::to_string_pretty(&summary)?);
+    Ok(())
 }

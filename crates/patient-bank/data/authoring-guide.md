@@ -27,8 +27,8 @@ You have tools. Work in stages, in files, and let the checker catch mistakes.
 `<unit>` is the authoring unit id you were given; every command runs from the
 repository root.
 
-1. `python3 -I scripts/patient-bank/unit.py brief <unit>` prints the seed, the
-   targets and the paths you write to.
+1. `cargo run -q -p patient-bank -- brief <unit>` prints the seed, the targets
+   and the paths you write to.
 2. **Story first.** Write `story.md` in the unit's draft folder: who this person
    is and how their life goes over the years; family history and when each item
    became known; a dated problem timeline (onset, recognition, changes,
@@ -42,11 +42,11 @@ repository root.
    part, then the next; re-read the story and the end of the previous part before
    each so state carries forward: current medications, open problems, pending
    follow-ups, the last values of weight and labs.
-4. `python3 -I scripts/patient-bank/unit.py check <unit>` merges the parts and
-   reports errors and counts against the targets. Fix every error by editing the
+4. `cargo run -q -p patient-bank -- check <unit>` merges the parts and reports
+   errors and counts against the targets. Fix every error by editing the
    parts and re-run until it prints `ACCEPTED`.
-5. `python3 -I scripts/patient-bank/unit.py preview <unit>` renders the chart and
-   writes a chronological reading copy, `chart.txt`. Read it start to end the way
+5. `cargo run -q -p patient-bank -- preview <unit>` renders the chart and writes
+   a chronological reading copy, `chart.txt`. Read it start to end the way
    a physician reviewing the chart would. Fix anything that leaks a later fact
    backward, contradicts the story, repeats itself or reads as boilerplate; then
    check again.
@@ -91,9 +91,11 @@ Every record knows only what was known on its date.
 - Conditions are recorded on the problem list at the first event that documents
   them; `onset` may be earlier (patient-reported history) but never later than the
   recording event. Resolved problems get a `resolved` action at the event that
-  resolves them.
+  resolves them. A resolved problem that comes back is `diagnosed` again at the
+  event that records its return; the problem list shows it as a recurrence.
 - Medications start at the event that prescribes them, change by stopping the old
-  order and starting a new one, and stop at the event that documents the stop.
+  order and starting a new one, and stop at the event that documents the stop. A
+  drug stopped and later restarted is a new `start`, and its next `stop` ends it.
 
 ## Encounters and the records they leave
 
@@ -231,10 +233,11 @@ neutrophils up and lymphocytes down). Unstated values vary from draw to draw.
 
 **Result timing.** Results are final when the lab or reader releases them, not
 when collected. Code allows about two days for cultures and several days for
-pathology and cytology; give `"resulted": "YYYY-MM-DDTHH:MM"` on a lab item (or
-`"issued"` on a report) when the story needs a specific time, such as a send-out
-taking a week. Notes discuss a result only after it was released, and a result
-note follows the release.
+pathology and cytology; give `"resulted": "YYYY-MM-DDTHH:MM"` on a lab item, or on one
+result when it comes back later than the rest of the draw (an HPV test after the
+A1c), or `"issued"` on a report, when the story needs a specific time, such as a
+send-out taking a week. Until then the result shows as pending. Notes discuss a
+result only after it was released, and a result note follows the release.
 Qualitative results use `"text"` (e.g. `"Negative"`, `"No growth"`,
 `">100,000 CFU/mL E. coli"`). Units default to the catalog unit.
 

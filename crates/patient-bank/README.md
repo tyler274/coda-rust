@@ -8,41 +8,60 @@ patient data, and nothing is physician reviewed.
 
 ## Pipeline
 
-```
-design_panel.py   seeds.json: identity, demographics, complexity, targets, anchors, episodes, texture
-      |
-author-workflow.js  one agent per unit (a patient, or a family authored together):
-      |               story.md first, then the ledger in parts, unit.py check until ACCEPTED,
-      |               unit.py preview and reread; then an independent physician-eye review
-      |               and, for major findings, a fix pass
+```text
+data/seeds.json      who each patient is: identity, demographics, complexity, targets,
+      |              anchors, episodes, texture (designed once; authored against, so fixed)
+data/author-workflow.js
+      |              one agent per unit (a patient, or a family authored together):
+      |              story.md first, then the ledger in parts, `check` until ACCEPTED,
+      |              `preview` and reread; batches are then reviewed by hand
       v
-ledgers/<unit>.json   the clinical source of truth (written only by unit.py check)
-      |
-build_bank.py     render.py encodes every ledger as FHIR R4 as of 2026-08-27T12:00 Eastern;
-      |           panels/panel-{100,300,500,1000}.json (nested, families kept whole); manifest.json
+ledgers/<unit>.json  the clinical source of truth, written only by `check`, with the
+      |              unit's verified extra codes (`terms`)
+build                renders every ledger as FHIR R4 as of 2026-08-27T12:00 Eastern;
+      |              panels/panel-{100,300,500,1000}.json (nested, families kept whole);
+      |              manifest.json
       v
-validate.py       bulk checks and validation.json
-materialize.py    one panel as a multi-patient NDJSON directory, optionally as of an earlier instant
+validate             bulk checks and validation.json
+materialize          one panel as a multi-patient NDJSON directory, optionally as of an
+                     earlier moment
 ```
 
-The renderer is the only owner of FHIR encoding and of time: an earlier snapshot is
-the same ledger rendered with an earlier `as_of`, so later records are absent,
-later stops and resolutions have not happened, and results not yet released are
-`registered`.
-
-```
-python3 -I scripts/patient-bank/design_panel.py --count 995 --first-mrn 6 --out target/patient-bank/seeds.json
-# author: run author-workflow.js through Claude Code's Workflow tool with a list of unit ids as args
-python3 -I scripts/patient-bank/build_bank.py --seeds target/patient-bank/seeds.json \
-    --ledgers target/patient-bank/ledgers --out target/patient-bank/bank \
-    [--roger submodules/coda-agents/docs/local-product-fixtures/internal_resources]
-python3 -I scripts/patient-bank/validate.py --bank target/patient-bank/bank \
-    --seeds target/patient-bank/seeds.json --schema <HL7 fhir.schema.json R4 4.0.1>
-python3 -I scripts/patient-bank/materialize.py --bank target/patient-bank/bank \
-    --seeds target/patient-bank/seeds.json --panel 100 --out target/patient-bank/out/panel-100 [--as-of 2024-03-01T09:00]
+```bash
+cargo run -q -p patient-bank -- brief|check|preview <unit>
+cargo run -q -p patient-bank -- build [--roger submodules/coda-agents/docs/local-product-fixtures/internal_resources]
+cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
+cargo run -q -p patient-bank -- materialize --panel 100 --out target/patient-bank/out/panel-100 [--as-of 2024-03-01T09:00]
+cargo run -q -p patient-bank -- catalog [--offline]
 ```
 
-Outputs live under the ignored `target/patient-bank/`.
+Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
+`{repo, units}` as args. Inputs live in `data/`; drafts, ledgers, the bank and the
+schema live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA` and
+`PATIENT_BANK_ROOT` move the two, and `build` and `materialize` refuse an output
+directory that overlaps their inputs. The build reads every input first and swaps
+the finished directory into place.
+
+### What the code owns
+
+- **The ledger format.** Part files and ledgers parse into typed structs that
+  reject unknown fields, misspelled actions and times not written
+  `YYYY-MM-DDTHH:MM`, so a malformed draft fails with its path instead of losing
+  content.
+- **Time.** `timeline.rs` is the only owner of time. Every record has its own
+  instant (an order's date, a vital set's time, a result's release), and a chart as
+  of a moment holds exactly the records before it. Medication and problem status
+  come from each concept's whole history: a restarted drug stops again at its own
+  stop, and a resolved problem that returns is a `recurrence`. An earlier snapshot is
+  the same ledger rendered as of that moment, so later records are absent, later
+  stops and resolutions have not happened, and results not yet released are
+  `registered`.
+- **Verified extra codes.** `check` verifies the ICD-10-CM codes and drug texts an
+  author proposed and stores the answers in the ledger, so build, validate and
+  materialize need no network. A drug text is coded only when its strength is
+  equivalent to the RxNorm drug's (`3 mg/0.5 mL` is 6 mg/mL, never a 3 mg/mL pen);
+  text with no strength stays text-only. Each unit's new lookups go to its own
+  `drafts/<unit>/lookups.json`; only `catalog` writes the shared cache.
 
 ## Density
 
@@ -57,7 +76,7 @@ years with 25-280 notes (median about 108) and 100-900 observations (median abou
 | complex | 12-20 | 150-300 | 1,000-2,500 |
 
 Young adults join the adult practice no earlier than 18; their targets scale with
-the years they can have. `unit.py check` rejects a chart below 80% of either target.
+the years they can have. `check` rejects a chart below 80% of either target.
 
 ## What is reused and what is new
 
@@ -71,19 +90,19 @@ Reused:
   derived from Eastern wall-clock time, opaque IDs, BP as a panel with components,
   lab panels as a DiagnosticReport plus a panel Observation with `hasMember`, and
   non-lab reports with `presentedForm`. Lab labels and ranges come from coda-gym's
-  `lab_reference_ranges.xlsx` (`gym-lab-ranges.json`); vital codes come from its
+  `lab_reference_ranges.xlsx` (`data/gym-lab-ranges.json`); vital codes come from its
   `vital_fields.md`.
 - **Realism ideas:** the synthetic_hospital project, for clinical voices, between-visit
   documentation and chart imperfections. None of its data is used.
 - **Official HL7 R4 4.0.1 JSON schema:** used for validation.
 
 New:
-- The verified terminology catalog (`catalog_seed.py`, `build_catalog.py`, `catalog.json`).
+- The verified terminology catalog (`src/catalog_seed.rs`, `catalog`, `data/catalog.json`).
   Every ICD-10-CM, LOINC, RxNorm, SNOMED and HCPCS code is read back from NLM
   Clinical Tables, RxNav or tx.fhir.org, and lookups are cached in
-  `terminology-cache.json`. CPT has no public service: codes outside the fixture are
+  `data/terminology-cache.json`. CPT has no public service: codes outside the fixture are
   marked `recalled` and carry no display.
-- The seed design, authoring guide, agent tool, renderer, builder, validator and
+- The seeds, authoring guide, authoring commands, renderer, builder, validator and
   materializer.
 
 Not reused: the earlier Synthetic Hospital import package. The later 74,799-resource
@@ -105,13 +124,13 @@ realism bar.
   100%. eGFR (CKD-EPI 2021), anion gap, cholesterol totals and transferrin saturation
   are derived.
 - Turnaround is about two days for cultures and three to eight days for pathology and
-  cytology unless the ledger sets `resulted` or `issued`.
+  cytology unless the ledger sets `resulted` (on a draw or one result) or `issued`.
 - Drugs that are not in the catalog are coded only when RxNav resolves them with a
   matching ingredient and strength. Otherwise they stay text-only and are counted.
 - No scenarios, answer keys or evaluation splits. The panels are plain nested
   membership lists.
 - The bank includes the five Roger fixture patients (MRN00000001-5) verbatim only when
-  `build_bank.py --roger` is passed. With them, 995 authored patients make 1,000.
+  `build --roger` is passed. With them, 995 authored patients make 1,000.
 
 ## Lineage
 

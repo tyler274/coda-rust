@@ -2,361 +2,244 @@
 //!
 //! ```text
 //! brief   <unit>   seed, targets, paths
-//! check   <unit>   merge parts, check, count; ACCEPTED writes the ledger
+//! check   <unit>   merge parts, check, verify extra codes, count; ACCEPTED writes the ledger
 //! preview <unit>   render and write chart.txt for reading
 //! ```
 //!
 //! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
-//! ledger is written to `<root>/ledgers/<unit>.json`, the only input the bank
-//! build renders. See authoring-guide.md for the process.
-//!
-//! A port of `unit.py`, with one difference: where the ledger check meets a
-//! ledger it cannot read (Python raised and `unit.py check` stopped with a
-//! traceback), `check` reports that as an error line.
+//! ledger is written to `<root>/ledgers/<unit>.json`, the only input the bank build
+//! renders; `check` is its only writer. See `data/authoring-guide.md`.
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
-use std::panic::{self, AssertUnwindSafe};
 use std::path::{Path, PathBuf};
 
 use base64::Engine as _;
 
-use crate::bank::{AS_OF, py_str};
-use crate::catalog::{Result, pathlib_str};
-use crate::json::{self, Json, Layout};
-use crate::ledger::{self, head};
-use crate::render::{self, Chart, Renderer};
-use crate::terms::py_strip;
-use crate::validate::future_mentions;
-use crate::{obj, paths, terms, time};
+use crate::catalog::{Catalog, Lookup, write_atomic};
+use crate::fhir::{Chart, Observation};
+use crate::ledger::{Ledger, Part, Patient, Terms};
+use crate::render::Renderer;
+use crate::seeds::{Seeds, Unit};
+use crate::{Result, check, paths, terms, time};
 
 pub const MODEL: &str = "claude-opus-5-5 (Claude Code workflow subagent)";
-/// Share of each target a chart must reach.
-pub const FLOOR: f64 = 0.8;
-const HEADER: [&str; 8] = [
-    "given",
-    "family",
-    "birth_date",
-    "address_line",
-    "phone",
-    "email",
-    "marital_status",
-    "summary",
-];
+/// The share of each density target a chart must reach.
+const FLOOR: f64 = 0.8;
 
-fn names(section: &Json) -> Vec<String> {
-    let mut out: Vec<String> = section.as_object().iter().map(|(k, _)| k.clone()).collect();
-    out.sort();
-    out
-}
-
-/// The catalog's labels as authors use them (`vocabulary.md`).
-pub fn vocabulary(catalog: &Json) -> String {
-    let block = |title: &str, names: &[String]| {
-        let lines: Vec<String> = names.iter().map(|n| format!("- {n}")).collect();
+/// The catalog's labels as authors see them.
+pub fn vocabulary(c: &Catalog) -> String {
+    fn block<'a>(title: &str, names: impl IntoIterator<Item = &'a String>) -> String {
+        let lines: Vec<String> = names.into_iter().map(|n| format!("- {n}")).collect();
         format!("### {title}\n{}\n", lines.join("\n"))
-    };
-    let panels: Vec<String> = catalog
-        .get("panels")
-        .as_object()
+    }
+    let panels: Vec<String> = c
+        .panels
         .iter()
-        .map(|(k, v)| {
-            let members: Vec<String> = v.get("members").as_array().iter().map(py_str).collect();
-            format!("- {k}: {}", members.join(", "))
-        })
+        .map(|(k, v)| format!("- {k}: {}", v.members.join(", ")))
         .collect();
-    let in_panels: Vec<String> = catalog
-        .get("panels")
-        .as_object()
-        .iter()
-        .flat_map(|(_, v)| v.get("members").as_array().iter().map(py_str))
-        .collect();
-    let standalone: Vec<String> = names(catalog.get("labs"))
-        .into_iter()
-        .filter(|l| !in_panels.contains(l))
-        .collect();
-    let section = |k: &str| names(catalog.get(k));
+    let standalone: Vec<String> = c.standalone_labs().into_iter().map(String::from).collect();
     [
         "## Catalog (use these labels exactly)".to_string(),
-        block("Conditions (ICD-10-CM)", &section("conditions")),
+        block("Conditions (ICD-10-CM)", c.conditions.keys()),
         block(
             "Medications (RxNorm clinical drug names)",
-            &section("medications"),
+            c.medications.keys(),
         ),
         format!("### Lab panels and their members\n{}\n", panels.join("\n")),
         block("Standalone labs (panel: null)", &standalone),
-        block("Surveys", &section("surveys")),
-        block("Social history items", &section("social")),
-        block(
-            "Reports (imaging, ECG and other studies)",
-            &section("reports"),
-        ),
-        block("Procedures and visit codes", &section("procedures")),
-        block("Allergens", &section("allergens")),
-        block("Allergy reactions", &section("reactions")),
+        block("Surveys", c.surveys.keys()),
+        block("Social history items", c.social.keys()),
+        block("Reports (imaging, ECG and other studies)", c.reports.keys()),
+        block("Procedures and visit codes", c.procedures.keys()),
+        block("Allergens", c.allergens.keys()),
+        block("Allergy reactions", c.reactions.keys()),
     ]
     .join("\n")
 }
 
-/// The draft parts merged into one ledger (events still carry `_part`), and the
-/// problems found merging.
-pub fn merge(drafts: &Path) -> Result<(Json, Vec<String>)> {
-    let mut errors: Vec<String> = Vec::new();
-    let mut parts: Vec<String> = Vec::new();
-    for entry in fs::read_dir(drafts)? {
-        let name = entry?.file_name().to_string_lossy().into_owned();
-        if name.starts_with("part-") && name.ends_with(".json") && name.len() >= 10 {
-            parts.push(name);
-        }
-    }
+/// The unit's draft parts merged into charts, and which part each event came from.
+pub struct Merged {
+    pub patients: Vec<Patient>,
+    pub part_of: BTreeMap<String, String>,
+}
+
+pub fn merge(drafts: &Path) -> (Merged, Vec<String>) {
+    let mut errors = Vec::new();
+    let mut part_of = BTreeMap::new();
+    let mut parts: Vec<PathBuf> = fs::read_dir(drafts)
+        .map(|dir| {
+            dir.filter_map(|e| e.ok().map(|e| e.path()))
+                .filter(|p| {
+                    p.file_name()
+                        .and_then(|n| n.to_str())
+                        .is_some_and(|n| n.starts_with("part-") && n.ends_with(".json"))
+                })
+                .collect()
+        })
+        .unwrap_or_default();
     parts.sort();
     if parts.is_empty() {
-        return Ok((
-            obj![("patients", Json::Arr(Vec::new()))],
-            vec![format!("no part-*.json files in {}", pathlib_str(drafts))],
-        ));
+        errors.push(format!("no part-*.json files in {}", drafts.display()));
     }
-    let mut patients: Vec<Json> = Vec::new();
-    for name in &parts {
-        let data = match json::parse(&fs::read_to_string(drafts.join(name))?) {
-            Ok(data) => data,
-            Err(exc) => {
-                errors.push(format!("{name}: invalid JSON ({exc})"));
+    let mut merged: Vec<crate::ledger::PartPatient> = Vec::new();
+    for path in &parts {
+        let name = path
+            .file_name()
+            .expect("file")
+            .to_string_lossy()
+            .to_string();
+        let part: Part = match fs::read_to_string(path)
+            .map_err(|e| e.to_string())
+            .and_then(|t| serde_json::from_str(&t).map_err(|e| e.to_string()))
+        {
+            Ok(p) => p,
+            Err(e) => {
+                errors.push(format!("{name}: {e}"));
                 continue;
             }
         };
-        for p in data.get("patients").as_array() {
-            let mrn = p.get("mrn");
-            let at = match patients.iter().position(|x| x.get("mrn") == mrn) {
-                Some(at) => at,
-                None => {
-                    patients.push(obj![
-                        ("mrn", mrn.clone()),
-                        ("events", Json::Arr(Vec::new()))
-                    ]);
-                    patients.len() - 1
-                }
-            };
-            let into = &mut patients[at];
-            for k in HEADER {
-                if p.contains(k) && !into.contains(k) {
-                    into.set(k, p.get(k).clone());
-                }
+        for p in part.patients {
+            for ev in &p.events {
+                part_of.insert(format!("{}/{}", p.mrn, ev.id), name.clone());
             }
-            let Some(Json::Arr(events)) = into.get_mut("events") else {
-                unreachable!("events is a list");
-            };
-            for ev in p.get("events").as_array() {
-                let mut ev = ev.clone();
-                if let Json::Obj(_) = ev {
-                    ev.set("_part", name.as_str().into());
+            match merged.iter_mut().find(|m| m.mrn == p.mrn) {
+                None => merged.push(p),
+                Some(into) => {
+                    // the first part that gives a patient field wins
+                    into.given = into.given.take().or(p.given);
+                    into.family = into.family.take().or(p.family);
+                    into.birth_date = into.birth_date.take().or(p.birth_date);
+                    into.address_line = into.address_line.take().or(p.address_line);
+                    into.phone = into.phone.take().or(p.phone);
+                    into.email = into.email.take().or(p.email);
+                    into.marital_status = into.marital_status.take().or(p.marital_status);
+                    into.summary = into.summary.take().or(p.summary);
+                    into.events.extend(p.events);
                 }
-                events.push(ev);
             }
         }
     }
-    for p in &mut patients {
-        if let Some(Json::Arr(events)) = p.get_mut("events") {
-            events.sort_by(|a, b| {
-                let start = |e: &Json| e.get("start").as_str().unwrap_or("").to_string();
-                start(a).cmp(&start(b))
-            });
-        }
-        for k in ["given", "family", "birth_date"] {
-            if !p.contains(k) {
-                errors.push(format!(
-                    "{}: {k} missing (put the patient fields in part-01.json)",
-                    py_str(p.get("mrn"))
-                ));
-            }
-        }
-    }
-    Ok((obj![("patients", Json::Arr(patients))], errors))
-}
-
-/// The ledger without the `_part` markers.
-pub fn strip(led: &Json) -> Json {
-    let patients: Vec<Json> = led
-        .get("patients")
-        .as_array()
-        .iter()
-        .map(|p| {
-            let mut p = p.clone();
-            let events: Vec<Json> = p
-                .get("events")
-                .as_array()
-                .iter()
-                .map(|e| {
-                    let mut e = e.clone();
-                    e.remove("_part");
-                    e
-                })
-                .collect();
-            p.set("events", Json::Arr(events));
-            p
-        })
-        .collect();
-    obj![("patients", Json::Arr(patients))]
-}
-
-/// Each member's chart as of the bank time, and the extra terms resolved for the draft.
-fn rendered(
-    unit: &Json,
-    led: &Json,
-    catalog: &Json,
-    drafts: &Path,
-) -> Result<(Vec<(String, Chart)>, Json)> {
-    let merged = drafts.join("merged");
-    fs::create_dir_all(&merged)?;
-    let stripped = strip(led);
-    fs::write(
-        merged.join("ledger.json"),
-        json::dumps(&stripped, Layout::Default, false),
-    )?;
-    let extra = terms::resolve_extras(&merged, catalog, false)?;
-    let r = Renderer::new(catalog, &extra);
-    let by = stripped.get("patients").as_array();
-    let mut charts: Vec<(String, Chart)> = Vec::new();
-    for m in unit.get("members").as_array() {
-        // a dict comprehension keeps the last patient with an MRN, and the first key
-        let Some(p) = by.iter().rev().find(|p| p.get("mrn") == m.get("mrn")) else {
+    let mut patients = Vec::new();
+    for mut p in merged {
+        p.events.sort_by_key(|e| e.start);
+        let (Some(given), Some(family), Some(birth_date)) = (p.given, p.family, p.birth_date)
+        else {
+            errors.push(format!("{}: given, family and birth_date are required (put the patient fields in part-01.json)", p.mrn));
             continue;
         };
-        let mrn = py_str(m.get("mrn"));
-        let chart = r.render(m, p, AS_OF).0;
-        match charts.iter_mut().find(|(k, _)| *k == mrn) {
-            Some(slot) => slot.1 = chart,
-            None => charts.push((mrn, chart)),
-        }
+        patients.push(Patient {
+            mrn: p.mrn,
+            given,
+            family,
+            birth_date,
+            address_line: p.address_line,
+            phone: p.phone,
+            email: p.email,
+            marital_status: p.marital_status,
+            summary: p.summary,
+            events: p.events,
+        });
     }
-    Ok((charts, extra))
+    (Merged { patients, part_of }, errors)
 }
 
-pub fn cmd_brief(unit: &Json, drafts: &Path) {
-    let members: Vec<Json> = unit
-        .get("members")
-        .as_array()
+/// Every member's chart at the bank time, rendered with the unit's verified codes.
+fn render(
+    unit: &Unit,
+    patients: &[Patient],
+    catalog: &Catalog,
+    terms: &Terms,
+) -> Vec<(String, Chart)> {
+    let r = Renderer { catalog, terms };
+    unit.members
         .iter()
-        .map(|m| {
-            let mut out = Json::Obj(
-                m.as_object()
-                    .iter()
-                    .filter(|(k, _)| k != "age_at_as_of")
-                    .cloned()
-                    .collect(),
-            );
-            out.set("age_on_2026_08_27", m.get("age_at_as_of").clone());
-            out
+        .filter_map(|m| {
+            Some((
+                m.mrn.clone(),
+                r.render(m, patients.iter().find(|p| p.mrn == m.mrn)?, time::as_of())
+                    .0,
+            ))
         })
-        .collect();
-    let n = members.len();
+        .collect()
+}
+
+fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Terms> {
+    let mut look = Lookup::layered(&drafts.join("lookups.json"), false)?;
+    terms::resolve(patients, catalog, &mut look)
+}
+
+fn brief(unit: &Unit, drafts: &Path) -> Result<i32> {
+    let n = unit.members.len();
     println!(
         "unit {} ({}, {n} patient{})",
-        py_str(unit.get("unit")),
-        py_str(unit.get("kind")),
+        unit.unit,
+        unit.kind,
         if n > 1 { "s" } else { "" }
     );
     if n > 1 {
         println!("Author these patients together; they are a family and their charts must agree.");
     }
-    println!(
-        "\nSeed:\n{}",
-        json::dumps(&Json::Arr(members), Layout::Indent(1), true)
-    );
+    println!("\nSeed:\n{}", serde_json::to_string_pretty(&unit.members)?);
     println!("\nTargets (the check requires at least 80% of each):");
-    for m in unit.get("members").as_array() {
+    for m in &unit.members {
         println!(
             "  {}: {} documents, {} observations, about {} years with the practice",
-            py_str(m.get("mrn")),
-            py_str(m.get("target_documents")),
-            py_str(m.get("target_observations")),
-            py_str(m.get("years_with_practice"))
+            m.mrn, m.target_documents, m.target_observations, m.years_with_practice
         );
     }
-    let drafts = pathlib_str(drafts);
-    println!("\nGuide:      {}", pathlib_str(&paths::authoring_guide()));
-    println!("Vocabulary: {}", pathlib_str(&paths::vocabulary()));
-    println!("Write to:   {drafts}/story.md, {drafts}/part-01.json, part-02.json, ...");
+    println!("\nGuide:      {}", paths::authoring_guide().display());
+    println!("Vocabulary: {}", paths::vocabulary().display());
+    println!(
+        "Write to:   {0}/story.md, {0}/part-01.json, part-02.json, ...",
+        drafts.display()
+    );
+    Ok(0)
 }
 
-/// `ledger::check`, with a panic (Python's exception) reported as an error.
-fn ledger_check(unit: &Json, led: &Json, catalog: &Json) -> (Vec<String>, Vec<String>) {
-    let quiet = panic::take_hook();
-    panic::set_hook(Box::new(|_| {}));
-    let got = panic::catch_unwind(AssertUnwindSafe(|| ledger::check(unit, led, catalog)));
-    panic::set_hook(quiet);
-    got.unwrap_or_else(|payload| {
-        let why = payload
-            .downcast_ref::<String>()
-            .map(String::as_str)
-            .or_else(|| payload.downcast_ref::<&str>().copied())
-            .unwrap_or("unknown failure");
-        (
-            vec![format!(
-                "the ledger check could not read this ledger: {why}"
-            )],
-            Vec::new(),
-        )
-    })
-}
-
-pub fn cmd_check(unit: &Json, drafts: &Path, catalog: &Json) -> Result<i32> {
-    let (led, mut errors) = merge(drafts)?;
-    let (errs, mut warnings) = ledger_check(unit, &strip(&led), catalog);
-    let mut part_of: HashMap<String, String> = HashMap::new();
-    for p in led.get("patients").as_array() {
-        for e in p.get("events").as_array() {
-            part_of.insert(
-                format!("{}/{}", py_str(p.get("mrn")), py_str(e.get("id"))),
-                py_str(e.get("_part")),
-            );
-        }
-    }
-    for e in errs {
-        let key = e.split(':').next().unwrap_or("");
-        errors.push(match part_of.get(key) {
+fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
+    let (merged, mut errors) = merge(drafts);
+    let (errs, mut warnings) = check::check(unit, &merged.patients, catalog);
+    errors.extend(errs.into_iter().map(|e| {
+        let eid = e.split(':').next().unwrap_or("");
+        match merged.part_of.get(eid) {
             Some(part) => format!("[{part}] {e}"),
             None => e,
-        });
-    }
-    let mut counts: Vec<(String, Vec<(&str, usize)>)> = Vec::new();
-    if errors.is_empty() {
-        let (charts, extra) = rendered(unit, &led, catalog, drafts)?;
-        for x in extra.get("rejected").as_array() {
-            warnings.push(format!("left text-only (lookup failed): {}", py_str(x)));
         }
-        for m in unit.get("members").as_array() {
-            let mrn = py_str(m.get("mrn"));
-            let Some((_, chart)) = charts.iter().find(|(k, _)| *k == mrn) else {
-                continue;
-            };
-            let docs = chart.get("DocumentReference").len();
-            let obs = chart.get("Observation").len();
-            counts.push((
-                mrn.clone(),
-                chart.iter().map(|(f, v)| (f, v.len())).collect(),
-            ));
+    }));
+    let mut terms = Terms::default();
+    if errors.is_empty() {
+        terms = verify(drafts, &merged.patients, catalog)?;
+        warnings.extend(
+            terms
+                .rejected
+                .iter()
+                .map(|x| format!("left text-only (not verified): {x}")),
+        );
+        for (mrn, chart) in render(unit, &merged.patients, catalog, &terms) {
+            let seed = unit.members.iter().find(|m| m.mrn == mrn).expect("member");
+            let counts: Vec<String> = chart
+                .counts()
+                .iter()
+                .map(|(f, n)| format!("{f} {n}"))
+                .collect();
+            println!("{mrn}: {}", counts.join(", "));
             for (what, have, want) in [
-                ("documents", docs, m.get("target_documents")),
-                ("observations", obs, m.get("target_observations")),
+                ("documents", chart.documents.len(), seed.target_documents),
+                (
+                    "observations",
+                    chart.observations.len(),
+                    seed.target_observations,
+                ),
             ] {
-                let want_n = want.as_f64().ok_or("target is not a number")?;
-                if (have as f64) < FLOOR * want_n {
+                let need = (FLOOR * f64::from(want)) as usize;
+                if have < need {
                     errors.push(format!(
-                        "{mrn}: {have} {what}, target {} (need at least {})",
-                        py_str(want),
-                        (FLOOR * want_n).trunc() as i64
+                        "{mrn}: {have} {what}, target {want} (need at least {need})"
                     ));
                 }
             }
-            for (_, msg) in future_mentions(chart)? {
-                warnings.push(msg);
-            }
         }
-    }
-    for (mrn, c) in &counts {
-        let parts: Vec<String> = c.iter().map(|(k, v)| format!("{k} {v}")).collect();
-        println!("{mrn}: {}", parts.join(", "));
     }
     for w in &warnings {
         println!("warning: {w}");
@@ -371,217 +254,228 @@ pub fn cmd_check(unit: &Json, drafts: &Path, catalog: &Json) -> Result<i32> {
         );
         return Ok(1);
     }
+    let ledger = Ledger {
+        unit: unit.unit.clone(),
+        model: MODEL.into(),
+        warnings,
+        patients: merged.patients,
+        terms,
+    };
     let out = paths::root()
         .join("ledgers")
-        .join(format!("{}.json", py_str(unit.get("unit"))));
-    fs::create_dir_all(out.parent().expect("ledgers directory"))?;
-    let tmp = out.with_extension("tmp");
-    let mut accepted = obj![
-        ("unit", unit.get("unit").clone()),
-        ("model", MODEL),
-        (
-            "warnings",
-            warnings
-                .iter()
-                .map(|w| Json::from(w.as_str()))
-                .collect::<Vec<_>>()
-        ),
-    ];
-    accepted.set("patients", strip(&led).get("patients").clone());
-    fs::write(&tmp, json::dumps(&accepted, Layout::Indent(1), false))?;
-    fs::rename(&tmp, &out)?;
-    println!("\nACCEPTED -> {}", pathlib_str(&out));
-    if !warnings.is_empty() {
-        println!(
-            "Review the warnings above; future-mention warnings are often real chronology leaks."
-        );
-    }
+        .join(format!("{}.json", unit.unit));
+    fs::create_dir_all(out.parent().expect("ledgers dir"))?;
+    write_atomic(&out, &serde_json::to_string_pretty(&ledger)?)?;
+    println!("\nACCEPTED -> {}", out.display());
     Ok(0)
 }
 
-/// A UTC instant as the practice's Eastern wall clock, the way the chart UI shows it.
+fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
+    let (merged, errors) = merge(drafts);
+    if !errors.is_empty() {
+        for e in &errors {
+            println!("ERROR: {e}");
+        }
+        return Ok(1);
+    }
+    let terms = verify(drafts, &merged.patients, catalog)?;
+    let text: Vec<String> = render(unit, &merged.patients, catalog, &terms)
+        .iter()
+        .map(|(_, c)| chart_text(c))
+        .collect();
+    let path = drafts.join("chart.txt");
+    fs::write(&path, text.join("\n\n"))?;
+    println!(
+        "wrote {} ({} KB). Read it start to end.",
+        path.display(),
+        fs::metadata(&path)?.len() / 1024
+    );
+    Ok(0)
+}
+
+pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
+    let catalog = Catalog::load(&paths::catalog())?;
+    let vocab = paths::vocabulary();
+    let text = vocabulary(&catalog);
+    if fs::read_to_string(&vocab).ok().as_deref() != Some(text.as_str()) {
+        fs::create_dir_all(vocab.parent().expect("root"))?;
+        write_atomic(&vocab, &text)?;
+    }
+    let seeds = Seeds::read(seeds)?;
+    let unit = seeds
+        .unit(uid)
+        .ok_or_else(|| format!("unknown unit {uid}"))?;
+    let drafts = paths::root().join("drafts").join(uid);
+    fs::create_dir_all(&drafts)?;
+    match command {
+        "brief" => brief(unit, &drafts),
+        "check" => accept(unit, &drafts, &catalog),
+        _ => preview(unit, &drafts, &catalog),
+    }
+}
+
+// ---------------------------------------------------------------- chart.txt
+
+/// A FHIR instant on the practice's wall clock, the way the chart UI shows it.
 fn local(utc: &str) -> String {
-    if utc.chars().count() <= 10 {
+    if utc.len() <= 10 {
         return utc.to_string();
     }
-    let at = time::utc_to_local(utc).unwrap_or_else(|| panic!("ValueError: {utc:?}"));
-    at.strftime("%Y-%m-%d %H:%M").to_string()
+    time::eastern_of(utc).map_or_else(
+        || utc.to_string(),
+        |s| s.0.strftime("%Y-%m-%d %H:%M").to_string(),
+    )
 }
 
-fn released(row: &Json) -> String {
-    let (issued, eff) = (row.get("issued"), row.get("effectiveDateTime"));
-    if issued.truthy()
-        && eff.truthy()
-        && time::utc_seconds_between(py_str(issued).as_str(), py_str(eff).as_str())
-            .is_some_and(|s| s >= 6 * 3600)
-    {
-        return format!(" (resulted {})", local(&py_str(issued)));
+/// " (resulted …)" when a result came back six or more hours after collection.
+fn released(issued: Option<&str>, effective: &str) -> String {
+    match (
+        issued.and_then(time::eastern_of),
+        time::eastern_of(effective),
+    ) {
+        (Some(i), Some(e)) if time::minutes_between(e, i) >= 6 * 60 => {
+            format!(" (resulted {})", i.0.strftime("%Y-%m-%d %H:%M"))
+        }
+        _ => String::new(),
     }
-    String::new()
 }
 
-fn str_or<'a>(v: &'a Json, default: &'a str) -> &'a str {
-    v.as_str().unwrap_or(default)
+fn decode(data: &str) -> String {
+    let bytes = base64::engine::general_purpose::STANDARD
+        .decode(data)
+        .unwrap_or_default();
+    String::from_utf8_lossy(&bytes).into_owned()
 }
 
-fn decode(data: &Json) -> Result<String> {
-    let bytes = base64::engine::general_purpose::STANDARD.decode(str_or(data, ""))?;
-    Ok(String::from_utf8(bytes)?)
+fn value(o: &Observation) -> String {
+    if let Some(q) = &o.value_quantity {
+        return format!("{} {}", q.value, q.unit.as_deref().unwrap_or(""))
+            .trim()
+            .to_string();
+    }
+    if !o.component.is_empty() {
+        return o
+            .component
+            .iter()
+            .map(|c| c.value_quantity.value.to_string())
+            .collect::<Vec<_>>()
+            .join("/");
+    }
+    o.value_codeable_concept
+        .as_ref()
+        .and_then(|c| c.text.clone())
+        .unwrap_or_else(|| "-".into())
 }
 
-/// `(x.get(key) or [{}])[0]`
-fn first_or_empty<'a>(v: &'a Json, key: &str) -> &'a Json {
-    static EMPTY: Json = Json::Obj(Vec::new());
-    v.get(key).as_array().first().unwrap_or(&EMPTY)
-}
-
-/// The chart as one reading copy: problems, medications, allergies, then every
-/// dated record oldest first on the Eastern wall clock.
-pub fn chart_text(chart: &Chart) -> Result<String> {
-    let mut out: Vec<String> = Vec::new();
-    let p = &chart.get("Patient")[0];
-    let name = &p.get("name").as_array()[0];
-    out.push(format!(
+/// A chronological reading copy of one chart.
+pub fn chart_text(chart: &Chart) -> String {
+    let p = &chart.patient;
+    let mut out = vec![format!(
         "{} {} | {} | born {} | {}",
-        py_str(&name.get("given").as_array()[0]),
-        py_str(name.get("family")),
-        py_str(p.get("gender")),
-        py_str(p.get("birthDate")),
-        py_str(p.get("address").as_array()[0].get("city"))
-    ));
+        p.name[0].given[0], p.name[0].family, p.gender, p.birth_date, p.address[0].city
+    )];
     out.push("\n## Problem list".into());
-    let mut conditions: Vec<&Json> = chart.get("Condition").iter().collect();
-    conditions
-        .sort_by(|a, b| str_or(a.get("recordedDate"), "").cmp(str_or(b.get("recordedDate"), "")));
+    let mut conditions: Vec<_> = chart.conditions.iter().collect();
+    conditions.sort_by(|a, b| a.recorded_date.cmp(&b.recorded_date));
     for c in conditions {
-        let resolved = if c.get("abatementDateTime").truthy() {
-            let when = local(&py_str(c.get("abatementDateTime")));
-            format!(" (resolved {})", head(&when, 10))
-        } else {
-            String::new()
-        };
+        let resolved = c
+            .abatement_date_time
+            .as_deref()
+            .map(|a| format!(" (resolved {})", &local(a)[..10]))
+            .unwrap_or_default();
         out.push(format!(
             "  recorded {} onset {} {}: {}{resolved}",
-            head(&local(str_or(c.get("recordedDate"), "")), 10),
-            head(&local(str_or(c.get("onsetDateTime"), "")), 10),
-            py_str(c.get("clinicalStatus").get("coding").as_array()[0].get("code")),
-            py_str(c.get("code").get("text"))
+            &local(&c.recorded_date)[..10],
+            &local(&c.onset_date_time)[..10],
+            c.clinical_status.coding[0].code,
+            c.code.text.as_deref().unwrap_or("")
         ));
     }
     out.push("\n## Medications".into());
-    let mut meds: Vec<&Json> = chart.get("MedicationRequest").iter().collect();
-    meds.sort_by(|a, b| str_or(a.get("authoredOn"), "").cmp(str_or(b.get("authoredOn"), "")));
+    let mut meds: Vec<_> = chart.medications.iter().collect();
+    meds.sort_by(|a, b| a.authored_on.cmp(&b.authored_on));
     for m in meds {
-        let dose = first_or_empty(m, "dosageInstruction");
-        let dose = if dose.contains("text") {
-            py_str(dose.get("text"))
-        } else {
-            String::new()
-        };
+        let dose = m
+            .dosage_instruction
+            .first()
+            .map(|d| d.text.as_str())
+            .unwrap_or("");
         out.push(format!(
             "  {} {}: {} | {dose}",
-            head(&local(&py_str(m.get("authoredOn"))), 10),
-            py_str(m.get("status")),
-            py_str(m.get("medicationCodeableConcept").get("text"))
+            &local(&m.authored_on)[..10],
+            m.status,
+            m.medication_codeable_concept.text.as_deref().unwrap_or("")
         ));
     }
     out.push("\n## Allergies".into());
-    let allergies = chart.get("AllergyIntolerance");
-    if allergies.is_empty() {
+    if chart.allergies.is_empty() {
         out.push("  none recorded".into());
     }
-    for a in allergies {
-        out.push(format!("  {}", py_str(a.get("code").get("text"))));
-    }
+    out.extend(
+        chart
+            .allergies
+            .iter()
+            .map(|a| format!("  {}", a.code.text.as_deref().unwrap_or(""))),
+    );
+
     let mut timeline: Vec<(String, String)> = Vec::new();
-    for o in chart.get("Observation") {
-        if o.get("hasMember").truthy() {
-            continue;
+    for o in chart
+        .observations
+        .iter()
+        .filter(|o| o.has_member.is_empty())
+    {
+        let name = o
+            .code
+            .text
+            .clone()
+            .or_else(|| o.code.coding.first().and_then(|c| c.display.clone()))
+            .unwrap_or_default();
+        let flag = o
+            .interpretation
+            .first()
+            .and_then(|i| i.coding.first())
+            .map(|c| c.code.as_str())
+            .filter(|c| matches!(*c, "H" | "L"))
+            .map(|c| format!(" {c}"))
+            .unwrap_or_default();
+        let line = format!(
+            "obs  {name} {}{flag}{}",
+            value(o),
+            released(o.issued.as_deref(), &o.effective_date_time)
+        );
+        timeline.push((local(&o.effective_date_time), line));
+    }
+    for r in &chart.reports {
+        let text = r
+            .presented_form
+            .first()
+            .map(|f| decode(&f.data))
+            .unwrap_or_default();
+        let mut line = format!(
+            "REPORT {} [{}]{}",
+            r.code.text.as_deref().unwrap_or(""),
+            r.status,
+            released(r.issued.as_deref(), &r.effective_date_time)
+        );
+        if !text.is_empty() {
+            line.push_str(&format!("\n{}", text.trim()));
         }
-        let name = if o.get("code").get("text").truthy() {
-            o.get("code").get("text")
-        } else {
-            o.get("code").get("coding").as_array()[0].get("display")
-        };
-        let v = if o.contains("valueQuantity") {
-            let q = o.get("valueQuantity");
-            let unit = if q.contains("unit") {
-                py_str(q.get("unit"))
-            } else {
-                String::new()
-            };
-            py_strip(&format!("{} {unit}", py_str(q.get("value")))).to_string()
-        } else if o.contains("component") {
-            let values: Vec<String> = o
-                .get("component")
-                .as_array()
-                .iter()
-                .map(|c| py_str(c.get("valueQuantity").get("value")))
-                .collect();
-            values.join("/")
-        } else if o.get("valueString").truthy() {
-            py_str(o.get("valueString"))
-        } else if first_text(o.get("valueCodeableConcept")).truthy() {
-            py_str(first_text(o.get("valueCodeableConcept")))
-        } else {
-            "-".into()
-        };
-        let interpretation = first_or_empty(o, "interpretation");
-        let coding = if interpretation.contains("coding") {
-            interpretation.get("coding").as_array()[0].clone()
-        } else {
-            Json::obj()
-        };
-        let flag = if coding.contains("code") {
-            py_str(coding.get("code"))
-        } else {
-            String::new()
-        };
-        let flag = if flag == "H" || flag == "L" {
-            format!(" {flag}")
-        } else {
-            String::new()
-        };
+        timeline.push((local(&r.effective_date_time), line));
+    }
+    for x in &chart.procedures {
         timeline.push((
-            local(str_or(o.get("effectiveDateTime"), "")),
-            format!("obs  {} {v}{flag}{}", py_str(name), released(o)),
+            local(&x.performed_date_time),
+            format!("proc {}", x.code.text.as_deref().unwrap_or("")),
         ));
     }
-    for r in chart.get("DiagnosticReport") {
-        let text = if r.get("presentedForm").truthy() {
-            decode(r.get("presentedForm").as_array()[0].get("data"))?
-        } else {
-            String::new()
-        };
-        let body = if text.is_empty() {
-            String::new()
-        } else {
-            format!("\n{}", py_strip(&text))
-        };
+    for d in &chart.documents {
+        let text = decode(&d.content[0].attachment.data);
         timeline.push((
-            local(str_or(r.get("effectiveDateTime"), "")),
-            format!(
-                "REPORT {} [{}]{}{body}",
-                py_str(r.get("code").get("text")),
-                py_str(r.get("status")),
-                released(r)
-            ),
-        ));
-    }
-    for x in chart.get("Procedure") {
-        timeline.push((
-            local(str_or(x.get("performedDateTime"), "")),
-            format!("proc {}", py_str(x.get("code").get("text"))),
-        ));
-    }
-    for d in chart.get("DocumentReference") {
-        let text = decode(d.get("content").as_array()[0].get("attachment").get("data"))?;
-        timeline.push((
-            local(&py_str(d.get("date"))),
+            local(&d.date),
             format!(
                 "DOCUMENT {}\n{}",
-                py_str(d.get("type").get("text")),
-                py_strip(&text)
+                d.kind.text.as_deref().unwrap_or(""),
+                text.trim()
             ),
         ));
     }
@@ -589,12 +483,11 @@ pub fn chart_text(chart: &Chart) -> Result<String> {
         "\n## Chart, oldest first (Eastern time; results show when they were released)".into(),
     );
     timeline.sort_by(|a, b| a.0.cmp(&b.0));
-    let mut day: Option<String> = None;
+    let mut day = String::new();
     for (when, line) in timeline {
-        let today = head(&when, 10).to_string();
-        if day.as_deref() != Some(today.as_str()) {
-            out.push(format!("\n=== {today}"));
-            day = Some(today);
+        if when[..10] != day {
+            day = when[..10].to_string();
+            out.push(format!("\n=== {day}"));
         }
         if line.starts_with("DOCUMENT") || line.starts_with("REPORT") {
             out.push(format!("\n{line}"));
@@ -602,70 +495,5 @@ pub fn chart_text(chart: &Chart) -> Result<String> {
             out.push(line);
         }
     }
-    Ok(out.join("\n") + "\n")
-}
-
-/// `(v or {}).get("text")`
-fn first_text(v: &Json) -> &Json {
-    if v.truthy() {
-        v.get("text")
-    } else {
-        &Json::Null
-    }
-}
-
-pub fn cmd_preview(unit: &Json, drafts: &Path, catalog: &Json) -> Result<i32> {
-    let (led, errors) = merge(drafts)?;
-    if !errors.is_empty() {
-        let lines: Vec<String> = errors.iter().map(|e| format!("ERROR: {e}")).collect();
-        println!("{}", lines.join("\n"));
-        return Ok(1);
-    }
-    let (charts, _) = rendered(unit, &led, catalog, drafts)?;
-    let mut texts = Vec::new();
-    for (_, c) in &charts {
-        texts.push(chart_text(c)?);
-    }
-    let path = drafts.join("chart.txt");
-    fs::write(&path, texts.join("\n\n"))?;
-    let kb = fs::metadata(&path)?.len() / 1024;
-    println!(
-        "wrote {} ({kb} KB). Read it start to end.",
-        pathlib_str(&path)
-    );
-    Ok(0)
-}
-
-/// Run `brief`, `check` or `preview` for `uid`: refresh the shared vocabulary, find
-/// the unit in `seeds`, and make its draft directory. The result is the exit status.
-pub fn run(command: &str, uid: &str, seeds: &Path) -> Result<i32> {
-    let catalog = render::load_catalog(&paths::catalog());
-    let vocab = paths::vocabulary();
-    let text = vocabulary(&catalog);
-    // follows the catalog; agents share it
-    if fs::read_to_string(&vocab).ok().as_deref() != Some(text.as_str()) {
-        let tmp = vocab.with_file_name(format!("vocabulary.{}.tmp", std::process::id()));
-        fs::write(&tmp, &text)?;
-        fs::rename(&tmp, &vocab)?;
-    }
-    let seeds = json::parse(&fs::read_to_string(seeds)?)?;
-    let Some(unit) = seeds
-        .get("units")
-        .as_array()
-        .iter()
-        .find(|u| u.get("unit").as_str() == Some(uid))
-    else {
-        return Err(format!("unknown unit {uid}").into());
-    };
-    let drafts: PathBuf = paths::root().join("drafts").join(uid);
-    fs::create_dir_all(&drafts)?;
-    match command {
-        "brief" => {
-            cmd_brief(unit, &drafts);
-            Ok(0)
-        }
-        "check" => cmd_check(unit, &drafts, &catalog),
-        "preview" => cmd_preview(unit, &drafts, &catalog),
-        other => Err(format!("unknown unit command {other}").into()),
-    }
+    out.join("\n") + "\n"
 }
