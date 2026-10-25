@@ -44,6 +44,17 @@ A turn that finishes on one `physician-sample` instance has to show up on a stre
 
 Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, input_id}` on the Pub/Sub topic `physician-chat-turns`. The topic carries only that pair. `physician-worker` checks the push token's audience and the `physician-pubsub-push` email, claims the leased turn, runs the model, commits, and publishes `workspace_changed`. A non-2xx response is a redelivery. After 5 attempts the message goes to the dead-letter topic. The subscription's ack deadline is 600 seconds, and retries back off from 10 seconds to 600 seconds.
 
+The site queues turns only when `PHYSICIAN_CHAT_TOPIC` is set. Without it, hosted or not, chat runs inline in the site process as it did before the worker, and a hosted start logs a warning. `PHYSICIAN_CHAT_TOPIC` without `PHYSICIAN_DATABASE_URL` refuses to start, because the turn is accepted in Postgres.
+
+| `PHYSICIAN_CHAT_TOPIC` | `PHYSICIAN_DATABASE_URL` | Startup |
+| --- | --- | --- |
+| unset | unset | Chat runs inline. Hosted logs a warning. |
+| unset | set | Chat runs inline. Hosted logs a warning. |
+| set | unset | Refuses to start. |
+| set | set | Turns go to Postgres and the topic. The worker runs the model. |
+
+With the topic set, `reply.revise` answers 503 "Hosted reply revision is unavailable." Reply revision runs the model in the site process, and with the topic set the site no longer runs the model. It works again once revision moves to the worker.
+
 The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
 
 Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budget alert. Raise that alert before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
@@ -59,3 +70,7 @@ Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budge
 - <a href="/submodules/coda-agents/docs/readiness%2Emd#current-local-product-work">Readiness: current work</a>
 - <a href="/submodules/coda-agents/docs/testing%2Emd#proof-by-boundary">Testing: proof by boundary</a>
 - <a href="/submodules/coda-agents/README%2Emd#run-and-verify">Run and verify</a>
+
+## Remaining gaps
+
+- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Follow-up: accept the revision in Postgres, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs).

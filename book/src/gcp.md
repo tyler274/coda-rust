@@ -289,8 +289,17 @@ grant or setting, and the root's tests check this.
   scaling keys, and Duet may not set any `PHYSICIAN_*` key.
 
 `PHYSICIAN_REDIS_URL` embeds the AUTH string, so it lives only in Doppler, as
-does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed. Activation, in
-order, from an authorized engineering account:
+does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed.
+
+Merge the code before applying the plan. That order is safe: without
+`PHYSICIAN_CHAT_TOPIC` the site starts, logs a warning and runs chat inline, as
+it did before the worker. Without `PHYSICIAN_REDIS_URL` it keeps the in-process
+bus. Applying the plan sets the topic on the service, and from then on the site
+queues turns for the worker. With the topic set, `reply.revise` answers 503
+"Hosted reply revision is unavailable." until reply revision also moves to the
+worker (see [Remaining gaps](physician-site.md#remaining-gaps)).
+
+Activation, in order, from an authorized engineering account:
 
 1. **Publish the worker image.** The initial `coda-physician-worker` digest is
    already pinned as `images.physician.worker` in
