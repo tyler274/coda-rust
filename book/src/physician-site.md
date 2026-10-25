@@ -79,4 +79,4 @@ The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` se
 
 ## Remaining gaps
 
-- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Hosted drafts don't exist yet either: drafts live only in the inline session, and there is no Postgres draft owner. Follow-up: add a Postgres draft store, accept the revision there, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs). [ENG-199](https://linear.app/coda-health/issue/ENG-199) owns it.
+- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Hosted drafts don't exist yet either: drafts live only in the inline session, and there is no Postgres draft owner. Follow-up: add a Postgres draft store, accept the revision there, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs).

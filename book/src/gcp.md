@@ -242,8 +242,7 @@ them.
 
 ### Physician scaling (Redis fan-out and Pub/Sub chat turns)
 
-`enable_physician_scale` ([ENG-177](https://linear.app/coda-health/issue/ENG-177))
-lets the physician site run on more than one instance. It takes effect only
+`enable_physician_scale` lets the physician site run on more than one instance. It takes effect only
 together with `enable_workloads`, and the committed staging inputs turn it on.
 Everything it creates belongs to physician; Duet gets no cache, topic, worker,
 grant or setting, and the root's tests check this.
