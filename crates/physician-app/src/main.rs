@@ -1,3 +1,7 @@
+// Without `web` or `desktop` the binary only explains how to build it, so the
+// address helpers below have no caller.
+#![cfg_attr(not(any(feature = "web", feature = "desktop")), allow(dead_code))]
+
 #[cfg(any(feature = "web", feature = "desktop"))]
 use dioxus::prelude::*;
 
