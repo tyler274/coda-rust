@@ -4,5 +4,6 @@
 
 pub mod json;
 pub mod ledger;
+pub mod render;
 pub mod rng;
 pub mod time;
