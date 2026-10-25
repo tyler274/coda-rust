@@ -45,3 +45,7 @@ cargo test --locked -p local-product --test runtime_recovery -- --ignored --test
 cargo test --locked -p physician-bus --test redis -- --test-threads=1
 cargo test --locked -p physician-sample --test fanout -- --test-threads=1
 cargo test --locked -p physician-sample --test worker -- --test-threads=1
+# A failed publish is republished by the recovery sweep; a dead-lettered turn
+# shows "couldn't finish" and Try again (work.resume) gets the reply.
+cargo test --locked -p physician-sample --test recovery -- --test-threads=1
+cargo test --locked -p physician-sample --test try_again -- --test-threads=1
