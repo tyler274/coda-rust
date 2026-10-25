@@ -12,7 +12,8 @@
 //!             patient's ledger verified; text-only concepts are counted
 //! timeline    clinical times after birth and before the bank time; issued >= effective;
 //!             onset <= recorded; abatement after onset; stated note ages match birthDate
-//! realism     no duplicate note bodies, no scaffold words, no repeated vital tuples
+//! notes       no duplicate note bodies, no scaffold words
+//! realism     the chart against `data/realism.json` (warnings; see `realism`)
 //! snapshots   the chart rendered as of three earlier moments contains nothing dated
 //!             at or after the moment, every snapshot row exists in the full chart,
 //!             and nothing is stopped or resolved before it was
@@ -23,7 +24,7 @@
 //! The calendar is checked as a whole: valid Appointments for known patients from
 //! the bank day on. The report also measures the panel: what is open
 //! at the bank time, vital-sign digits, the most common problems and drugs, and
-//! sentences that recur across patients.
+//! sentences that recur across patients, and every `realism` metric across the panel.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::fs;
@@ -39,11 +40,11 @@ use serde_json::Value;
 use crate::catalog::{CPT, Catalog};
 use crate::check::wrong_ages;
 use crate::fhir::{FAMILIES, LOINC};
-use crate::ledger::{Day, Ledger, Stamp, Terms};
+use crate::ledger::{Appointment, Day, Ledger, Stamp, Terms};
 use crate::render::{DOC_TYPE_CODES, Renderer, VITAL_CODES};
 use crate::rng::Rng;
 use crate::seeds::{Seed, Seeds};
-use crate::{Result, paths, time};
+use crate::{Result, paths, realism, time};
 
 static ID: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^[A-Za-z0-9\-.]{1,64}$").expect("regex"));
@@ -309,6 +310,8 @@ struct PatientReport {
     /// Long sentences in the patient's notes, normalized.
     #[serde(skip)]
     sentences: HashSet<String>,
+    #[serde(skip)]
+    profile: realism::Profile,
 }
 
 struct Shared {
@@ -316,6 +319,7 @@ struct Shared {
     catalog: Catalog,
     known: HashSet<(String, String, Option<String>)>,
     cpt: HashSet<String>,
+    reference: realism::Reference,
 }
 
 struct Work {
@@ -567,43 +571,11 @@ fn check_patient(
         }
         bodies.insert(body, id);
     }
-    let mut tuples: HashMap<(String, String), usize> = HashMap::new();
-    for r in &chart["Observation"] {
-        if r["code"]["coding"][0]["code"] == "85354-9" {
-            let v = |i: usize| r["component"][i]["valueQuantity"]["value"].to_string();
-            *tuples.entry((v(0), v(1))).or_default() += 1;
-        }
-    }
-    let repeated = tuples.values().filter(|n| **n >= 4).count();
-    if repeated > 0 {
-        *rep.warnings.entry("repeated_bp_tuple").or_default() += repeated;
-    }
-    for r in &chart["Observation"] {
-        let code = &r["code"]["coding"][0]["code"];
-        let value = if code == "85354-9" {
-            r["component"][0]["valueQuantity"]["value"].as_f64()
-        } else if code == "8867-4" {
-            r["valueQuantity"]["value"].as_f64()
-        } else {
-            None
-        };
-        let Some(v) = value else { continue };
-        let (all, digit) = if code == "85354-9" {
-            (
-                "vitals:systolic",
-                ("vitals:systolic_odd", v as i64 % 2 != 0),
-            )
-        } else {
-            (
-                "vitals:heart_rate",
-                ("vitals:heart_rate_even", v as i64 % 2 == 0),
-            )
-        };
-        *rep.stats.entry(all.into()).or_default() += 1;
-        if digit.1 {
-            *rep.stats.entry(digit.0.into()).or_default() += 1;
-        }
-    }
+    rep.profile.add_patient(
+        chart
+            .iter()
+            .flat_map(|(fam, rows)| rows.iter().map(move |r| (*fam, r))),
+    );
     rep.medications = chart["MedicationRequest"]
         .iter()
         .filter(|m| str_of(m, "status") == "active")
@@ -652,6 +624,23 @@ fn check_patient(
     let patient = ledger
         .patient(mrn)
         .ok_or_else(|| format!("{mrn}: not in {}", w.unit))?;
+    for e in patient
+        .events
+        .iter()
+        .filter(|e| e.booked() && e.appointment != Some(Appointment::Booked))
+    {
+        rep.profile.booked += 1;
+        rep.profile.missed += usize::from(e.appointment.is_some());
+    }
+    for d in realism::compare(&rep.profile, &sh.reference, true) {
+        if !d.within {
+            *rep.warnings.entry("realism_drift").or_default() += 1;
+            rep.notes.push(format!(
+                "realism: {} is {}, expected {}",
+                d.metric, d.measured, d.expected
+            ));
+        }
+    }
     let renderer = Renderer {
         catalog: &sh.catalog,
         terms: &ledger.terms,
@@ -824,6 +813,8 @@ struct Report {
     stats: BTreeMap<String, usize>,
     terminology_extras: Extras,
     calendar: BTreeMap<String, usize>,
+    /// Every realism metric across the panel, against data/realism.json.
+    realism: Vec<realism::Drift>,
     problem_list: ProblemList,
     medication_list: ProblemList,
     /// Sentences of eight or more words found in five or more patients' notes.
@@ -963,6 +954,7 @@ pub fn run(
         catalog,
         known,
         cpt,
+        reference: realism::Reference::load(&paths::realism())?,
     };
     let results = check_all(&sh, bank, &ledgers, &work, jobs)?;
 
@@ -1078,6 +1070,13 @@ pub fn run(
         stats,
         terminology_extras: extras,
         calendar,
+        realism: {
+            let mut panel = realism::Profile::default();
+            for r in &results {
+                panel.add(&r.profile);
+            }
+            realism::compare(&panel, &sh.reference, false)
+        },
         problem_list: ProblemList::of(&results, |r| &r.problems),
         medication_list: ProblemList::of(&results, |r| &r.medications),
         shared_sentences,
@@ -1098,6 +1097,7 @@ pub fn run(
         "stats": report.stats,
         "panel_errors": report.panel_errors,
         "calendar": report.calendar,
+        "realism": report.realism,
         "problem_list": report.problem_list,
         "medication_list": report.medication_list,
         "shared_sentences": report.shared_sentences.iter().take(20).collect::<Vec<_>>(),

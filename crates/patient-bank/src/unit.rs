@@ -21,7 +21,7 @@ use crate::fhir::{Chart, Observation};
 use crate::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use crate::render::Renderer;
 use crate::seeds::{Seeds, Unit};
-use crate::{Result, calendar, check, paths, terms, time};
+use crate::{Result, calendar, check, paths, realism, terms, time};
 
 pub const MODEL: &str = "claude-opus-5-5 (Claude Code workflow subagent)";
 /// The share of each density target a chart must reach.
@@ -165,6 +165,25 @@ fn render(
         .collect()
 }
 
+/// A rendered chart measured for `realism`.
+pub fn profile(chart: &Chart) -> realism::Profile {
+    let rows: Vec<(&str, serde_json::Value)> = chart
+        .lines()
+        .into_iter()
+        .flat_map(|(fam, lines)| {
+            lines.into_iter().map(move |l| {
+                (
+                    fam,
+                    serde_json::from_str(&l).expect("rendered FHIR is JSON"),
+                )
+            })
+        })
+        .collect();
+    let mut p = realism::Profile::default();
+    p.add_patient(rows.iter().map(|(f, v)| (*f, v)));
+    p
+}
+
 fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Terms> {
     let mut look = Lookup::layered(&drafts.join("lookups.json"), false)?;
     terms::resolve(patients, catalog, &mut look)
@@ -217,8 +236,17 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
                 .iter()
                 .map(|x| format!("left text-only (not verified): {x}")),
         );
+        let reference = realism::Reference::load(&paths::realism())?;
         for (mrn, chart) in render(unit, &merged.patients, catalog, &terms, time::as_of()) {
             let seed = unit.members.iter().find(|m| m.mrn == mrn).expect("member");
+            for d in realism::compare(&profile(&chart), &reference, true) {
+                if !d.within {
+                    errors.push(format!(
+                        "{mrn}: {} is {}, real practice {}",
+                        d.metric, d.measured, d.expected
+                    ));
+                }
+            }
             let counts: Vec<String> = chart
                 .counts()
                 .iter()

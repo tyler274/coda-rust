@@ -2,8 +2,9 @@
 //!
 //! Shape is the ledger types' job; these are the rules about content: seed
 //! agreement, the catalog vocabulary, chronology (everything before today
-//! except booked visits), pending results, orders and missed visits, lab arithmetic, vitals a device would produce, and note hygiene
-//! (authors, roles not names, no em dashes).
+//! except booked visits), pending results, orders and missed visits, lab arithmetic, and note hygiene (authors, roles not names, no
+//! em dashes). These hold for every chart; how a chart compares with real practice
+//! (vital-sign digits, weekdays, the office layer) is `realism`'s.
 //! Errors send the author back to the part files; warnings are kept with the
 //! accepted ledger for review. None of this judges clinical reasoning.
 
@@ -16,8 +17,7 @@ use regex::Regex;
 use crate::catalog::Catalog;
 use crate::labs::DIFFERENTIAL;
 use crate::ledger::{
-    Appointment, ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, VitalSet,
-    num,
+    Appointment, ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, num,
 };
 use crate::seeds::Unit;
 use crate::time;
@@ -54,9 +54,6 @@ static PHRASING: LazyLock<Regex> = LazyLock::new(|| {
     ))
     .expect("regex")
 });
-
-/// With at least this many readings, a patient's vitals are judged as a series.
-const SERIES: usize = 8;
 
 /// Unseeded problems a chart may still carry as active at the bank time: real
 /// lists pick up a stray entry or two beyond what the story planned.
@@ -321,8 +318,6 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
             }
         }
         check_orders(mrn, &tl, &mut errors);
-        check_vitals(mrn, &tl, &mut errors);
-        check_weekdays(mrn, &tl, &mut errors);
         // A stop that finds no open order of its drug documents nothing.
         for ev in &tl.events {
             for m in ev
@@ -393,128 +388,6 @@ fn check_orders(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
                     )),
                 },
             }
-        }
-    }
-}
-
-/// With at least this many dated contacts, their weekdays are judged as a spread.
-const WEEKDAY_SERIES: usize = 15;
-
-/// Contacts spread over the week the way a practice's do: no one weekday carries
-/// more than about a third of the visits or of everything else, and the practice
-/// does not book Sunday visits.
-fn check_weekdays(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
-    let weekday = |s: &Stamp| s.date().weekday().to_sunday_zero_offset();
-    const NAMES: [&str; 7] = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-    ];
-    let visits: Vec<i8> = tl
-        .events
-        .iter()
-        .filter(|e| e.booked())
-        .map(|e| weekday(&e.start))
-        .collect();
-    let all: Vec<i8> = tl.events.iter().map(|e| weekday(&e.start)).collect();
-    for (what, days) in [("practice visits", &visits), ("events", &all)] {
-        if days.len() < WEEKDAY_SERIES {
-            continue;
-        }
-        let mut counts = [0usize; 7];
-        for d in days.iter() {
-            counts[*d as usize] += 1;
-        }
-        let (top, n) = counts
-            .iter()
-            .enumerate()
-            .max_by_key(|(_, n)| **n)
-            .expect("seven days");
-        if *n as f64 > 0.35 * days.len() as f64 {
-            errors.push(format!(
-                "{mrn}: {n} of {} {what} fall on a {}; spread them over the week",
-                days.len(),
-                NAMES[top]
-            ));
-        }
-    }
-    for e in tl
-        .events
-        .iter()
-        .filter(|e| e.booked() && weekday(&e.start) == 0)
-    {
-        errors.push(format!(
-            "{mrn}/{}: the practice books no Sunday visits",
-            e.id
-        ));
-    }
-}
-
-/// Vitals a real cuff, monitor and scale would produce: not every systolic even,
-/// not nearly every heart rate even, few exact repeats of a BP pair, and
-/// temperatures that vary.
-fn check_vitals(mrn: &str, tl: &Timeline, errors: &mut Vec<String>) {
-    let sets: Vec<&VitalSet> = tl.events.iter().flat_map(|e| e.vitals.sets()).collect();
-    let bps: Vec<(i64, i64)> = sets
-        .iter()
-        .filter_map(|v| v.bp.as_ref())
-        .map(|[s, d]| (num(s).round() as i64, num(d).round() as i64))
-        .collect();
-    let share = |n: usize, of: usize| n as f64 / of.max(1) as f64;
-    if bps.len() >= SERIES {
-        let odd = bps.iter().filter(|(s, _)| s % 2 != 0).count();
-        if share(odd, bps.len()) < 0.15 {
-            errors.push(format!(
-                "{mrn}: {odd} of {} systolic readings are odd; automated cuffs read any digit",
-                bps.len()
-            ));
-        }
-        let mut seen: HashSet<(i64, i64)> = HashSet::new();
-        let repeats = bps.iter().filter(|bp| !seen.insert(**bp)).count();
-        if share(repeats, bps.len()) > 0.25 {
-            errors.push(format!(
-                "{mrn}: {repeats} of {} BP readings repeat an earlier pair exactly",
-                bps.len()
-            ));
-        }
-    }
-    let hrs: Vec<i64> = sets
-        .iter()
-        .filter_map(|v| v.hr.as_ref())
-        .map(|h| num(h).round() as i64)
-        .collect();
-    if hrs.len() >= SERIES {
-        let even = hrs.iter().filter(|h| *h % 2 == 0).count();
-        if share(even, hrs.len()) > 0.8 {
-            errors.push(format!(
-                "{mrn}: {even} of {} heart rates are even; pulse oximeters read any digit",
-                hrs.len()
-            ));
-        }
-    }
-    let temps: Vec<String> = sets
-        .iter()
-        .filter_map(|v| v.temp_c.as_ref())
-        .map(|t| format!("{:.1}", num(t)))
-        .collect();
-    if temps.len() >= SERIES {
-        let mut counts: HashMap<&str, usize> = HashMap::new();
-        for t in &temps {
-            *counts.entry(t).or_default() += 1;
-        }
-        let (top, n) = counts
-            .iter()
-            .max_by_key(|(t, n)| (**n, **t))
-            .expect("readings");
-        if share(*n, temps.len()) > 0.4 {
-            errors.push(format!(
-                "{mrn}: {n} of {} temperatures are {top} C; let them vary",
-                temps.len()
-            ));
         }
     }
 }

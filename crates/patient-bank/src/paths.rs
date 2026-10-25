@@ -47,6 +47,11 @@ pub fn catalog() -> PathBuf {
     data_dir().join("catalog.json")
 }
 
+/// What real practice looks like, metric by metric; `realism` is its only writer.
+pub fn realism() -> PathBuf {
+    data_dir().join("realism.json")
+}
+
 /// Terminology service answers behind the catalog; the catalog build is its only writer.
 pub fn terminology_cache() -> PathBuf {
     data_dir().join("terminology-cache.json")

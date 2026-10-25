@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, calendar, check, paths, stories};
+use patient_bank::{bank, calendar, check, paths, realism, stories, unit};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -647,7 +647,7 @@ fn check_keeps_everything_before_today_but_booked_visits() {
 }
 
 #[test]
-fn check_holds_authors_orders_missed_visits_and_device_vitals() {
+fn check_holds_authors_orders_and_missed_visits() {
     let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
     let errs = |events: serde_json::Value| errors_for(seed(), patient(events));
     let has = |errors: &[String], what: &str| errors.iter().any(|e| e.contains(what));
@@ -684,54 +684,75 @@ fn check_holds_authors_orders_missed_visits_and_device_vitals() {
         json!({"appointment": "no-show", "vitals": {"bp": [121, 77]}})
     )]));
     assert!(has(&e, "records nothing clinical"), "{e:?}");
-
-    let series: Vec<serde_json::Value> = (0..10)
-        .map(|i| {
-            visit(
-                &format!("v{i}"),
-                &format!("202{}-0{}-10T09:00", i / 5, 1 + i % 5),
-                json!({"vitals": {"bp": [120 + 2 * (i % 3), 80], "hr": 70 + 2 * i},
-                   "documents": [{"type": "Progress Notes", "author": "PCP",
-                       "body": format!("{body} Visit {i}.")}]}),
-            )
-        })
-        .collect();
-    let e = errs(json!(series));
-    assert!(has(&e, "systolic readings are odd"), "{e:?}");
-    assert!(has(&e, "heart rates are even"), "{e:?}");
-    assert!(has(&e, "repeat an earlier pair"), "{e:?}");
 }
 
 #[test]
-fn visits_spread_over_the_week() {
+fn realism_measures_a_chart_against_real_practice() {
+    let reference = realism::Reference::load(&paths::realism()).expect("reference");
     let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
-    // sixteen Tuesdays, two weeks apart
+    // sixteen Tuesday visits, two weeks apart, every reading even and the same
     let tuesdays: Vec<serde_json::Value> = (0..16)
         .map(|i| {
             let day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(14 * i);
             visit(
                 &format!("v{i:02}"),
                 &format!("{day}T09:10"),
-                note(&format!("{body} {i}.")),
+                json!({"vitals": {"bp": [124, 78], "hr": 72},
+                       "documents": [{"type": "Progress Notes", "author": "PCP",
+                           "body": format!("{body} {i}.")}]}),
             )
         })
         .collect();
-    let e = errors_for(seed(), patient(json!(tuesdays)));
-    assert!(e.iter().any(|x| x.contains("fall on a Tuesday")), "{e:?}");
-    // the same visits on rotating weekdays pass the rule
+    let drifts = realism::compare(
+        &unit::profile(&render(&patient(json!(tuesdays)), "2026-08-27T12:00")),
+        &reference,
+        true,
+    );
+    let off: Vec<&str> = drifts
+        .iter()
+        .filter(|d| !d.within)
+        .map(|d| d.metric.as_str())
+        .collect();
+    for metric in [
+        "systolic final digit",
+        "heart-rate final digit",
+        "practice-visit weekday",
+        "repeated BP pairs",
+    ] {
+        assert!(off.contains(&metric), "{metric}: {off:?}");
+    }
+    // the same visits on rotating weekdays with device readings drift on none of those
     let spread: Vec<serde_json::Value> = (0..16)
         .map(|i| {
-            let day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(15 * i);
+            let mut day = jiff::civil::date(2024, 1, 2) + jiff::Span::new().days(15 * i);
+            while day.weekday().to_sunday_zero_offset() % 6 == 0 {
+                day += jiff::Span::new().days(1);
+            }
             visit(
                 &format!("v{i:02}"),
                 &format!("{day}T09:10"),
-                note(&format!("{body} {i}.")),
+                json!({"vitals": {"bp": [117 + 3 * i, 71 + i], "hr": 61 + 3 * i},
+                       "documents": [{"type": "Progress Notes", "author": "PCP",
+                           "body": format!("{body} {i}.")}]}),
             )
         })
         .collect();
-    let e = errors_for(seed(), patient(json!(spread)));
-    assert!(
-        !e.iter().any(|x| x.contains("spread them over the week")),
-        "{e:?}"
+    let drifts = realism::compare(
+        &unit::profile(&render(&patient(json!(spread)), "2026-08-27T12:00")),
+        &reference,
+        true,
     );
+    let off: Vec<&str> = drifts
+        .iter()
+        .filter(|d| !d.within)
+        .map(|d| d.metric.as_str())
+        .collect();
+    for metric in [
+        "systolic final digit",
+        "heart-rate final digit",
+        "practice-visit weekday",
+        "repeated BP pairs",
+    ] {
+        assert!(!off.contains(&metric), "{metric}: {off:?}");
+    }
 }

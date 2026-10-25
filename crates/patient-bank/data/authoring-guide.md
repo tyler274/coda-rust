@@ -211,8 +211,7 @@ results are normal, and most PHQ-9s are low.
 Visit spacing is irregular: delayed follow-ups, missed years, a flurry around an
 illness, telehealth during 2020–2021. Annual visits drift by weeks or months from
 year to year, and screening dates slip; nothing recurs like clockwork. Visits fall
-on every weekday (the preview shows each date's weekday, and the check rejects a
-chart where one weekday carries more than a third of them); patients message and
+on every weekday (the preview shows each date's weekday); patients message and
 call any day, weekends included. Roughly one booked visit in twelve is cancelled
 or missed, and most patients land in urgent care or call with a minor illness now
 and then.
@@ -340,8 +339,14 @@ visits record what was checked. ED visits and admissions record several sets:
 give `vitals` as a list of sets each with its own `time` (triage and repeat sets
 in the ED; every 4–8 hours on the ward). Values come from automated cuffs and
 oximeters: any final digit, odd as often as even (137/83, 71), a spread from
-visit to visit, rarely the same pair twice. They follow the illness. The check
-rejects a series that is nearly all even or keeps repeating.
+visit to visit, rarely the same pair twice. They follow the illness.
+
+**Measured against real practice.** `check` measures the rendered chart the way
+`validate` measures the panel: vital-sign final digits, repeated blood-pressure
+pairs, temperatures, the weekdays of practice visits and the share of office notes,
+each against `data/realism.json` (how devices and clinics behave, and what
+coda-gym's charts hold). It names any metric that drifts and by how much. Fix the
+chart, not the numbers: a drift means the life on the page is less real.
 
 **Observation count.** Each vital sign is one observation (blood pressure counts
 once); each lab panel is one observation per member plus one for the panel; each

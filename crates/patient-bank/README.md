@@ -97,14 +97,20 @@ the finished directory into place.
 - **Roles, not names.** `check` rejects a note or title that names a clinician or
   staff member ("Dr. Okafor", "M. Lindqvist, MD", "-- B. Kowal"), a document with
   no `author` role, and a greeting addressed to a role ("Hi the PCP,").
-- **Believable numbers and prose.** `check` rejects em dashes in notes, a vitals
-  series that no automated cuff or oximeter would produce (nearly all even
-  systolics or heart rates, BP pairs that keep repeating, one temperature), an
-  order closed before it was placed, and clinical records on a cancelled or missed
-  visit. `validate` reports what is open at the bank time (pending results, open
-  orders) and the calendar, vital-sign digit counts, the most common
-  active drugs (`medication_list`), and sentences of eight or more words found in
-  five or more patients' notes (`shared_sentences`).
+- **Hard truths and realism, kept apart.** `check` holds every chart to what is
+  always true: chronology, verified codes, authors by role, no em dashes, orders
+  closed only after they were placed, nothing clinical on a missed visit, nothing
+  after today. How a chart compares with real practice has one owner,
+  `realism.rs`: a profile of vital-sign digits, repeated BP pairs, temperatures,
+  practice-visit weekdays, the office-note share, note length by kind and missed
+  visits, measured from FHIR so the same code measures the bank and coda-gym, and
+  compared with `data/realism.json` (`patient-bank realism --gym <coda-gym
+  authoring/projects>`). Each metric names its source. coda-gym's charts carry the
+  same authoring biases on digits and weekdays, so those references come from how
+  devices and clinics work; the office share and note lengths come from coda-gym.
+  `check` gates a unit on the metrics reliable for one chart, scaled to its sample
+  size; `validate` reports every metric across the panel, with what is open at the
+  bank time, the commonest drugs and sentences shared across patients.
 
 ## Density
 

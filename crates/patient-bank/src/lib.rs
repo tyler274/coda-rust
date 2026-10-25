@@ -13,6 +13,7 @@ pub mod labs;
 pub mod ledger;
 pub mod materialize;
 pub mod paths;
+pub mod realism;
 pub mod render;
 pub mod rng;
 pub mod seeds;
