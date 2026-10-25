@@ -175,6 +175,17 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
             if worker.store.retry_delivery(&host.claim).await.is_err() {
                 tracing::warn!("physician chat delivery was not returned to pending");
             }
+            // Lossy invalidation, as on success: after the last failure the
+            // snapshot shows "couldn't finish", and a held page only learns
+            // that by refetching.
+            if worker
+                .bus
+                .publish(Event::WorkspaceChanged { workspace_id })
+                .await
+                .is_err()
+            {
+                tracing::warn!("physician workspace invalidation not published");
+            }
             StatusCode::INTERNAL_SERVER_ERROR
         }
     }

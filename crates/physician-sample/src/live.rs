@@ -239,6 +239,20 @@ struct CommandBody {
     payload: Option<Value>,
 }
 
+/// `work.resume` on a failed chat turn. The workspace is checked by the auth
+/// middleware; the runtime checks that the work and run are the failed ones.
+#[derive(Deserialize)]
+struct ResumePayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    work_item_id: String,
+    expected_run_id: String,
+}
+
+/// The mechanical line a failed turn shows, as the reference product words it.
+pub(crate) const COULDNT_FINISH: &str =
+    "Coda couldn’t finish this response. Your message is saved.";
+
 #[derive(Deserialize)]
 struct SubmitPayload {
     patient_workspace_id: String,
@@ -258,6 +272,9 @@ pub(crate) async fn submit(
     };
     if body.kind == "reply.revise" {
         return revise(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
+    }
+    if body.kind == "work.resume" && live.durable.is_some() {
+        return resume_durable(live, auth_ctx, body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -535,16 +552,113 @@ async fn durable_snapshot(
         Ok(conversation) => conversation,
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    let messages = conversation
-        .map(|conversation| conversation.messages)
-        .unwrap_or_default();
-    Json(json!({
-        "snapshot": {
-            "conversation": messages
-                .into_iter()
-                .map(|message| json!({ "text": message.text }))
-                .collect::<Vec<_>>()
+    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
+}
+
+/// The reference `SnapshotResponse` subset this site owns. A failed turn adds
+/// its run and a mechanical "couldn't finish" line whose `resume_target` names
+/// the exact work and run Try again resumes; the physician's text stays saved.
+fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
+    let Some(conversation) = conversation else {
+        return json!({ "conversation": [], "runs": [] });
+    };
+    let mut items: Vec<Value> = conversation
+        .messages
+        .iter()
+        .map(|message| {
+            let kind = if message.role == "assistant" {
+                "model"
+            } else {
+                "physician"
+            };
+            json!({ "kind": kind, "text": message.text })
+        })
+        .collect();
+    let mut runs = Vec::new();
+    if conversation.status == "failed"
+        && let Some(attempt) = conversation.attempts.last()
+    {
+        runs.push(json!({ "run_id": attempt.id, "state": "failed" }));
+        items.push(json!({
+            "kind": "mechanical",
+            "text": COULDNT_FINISH,
+            "resume_target": {
+                "work_item_id": conversation.work,
+                "expected_run_id": attempt.id,
+            },
+        }));
+    }
+    json!({ "conversation": items, "runs": runs })
+}
+
+async fn resume_durable(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let Some(chat) = live.durable.clone() else {
+        return rejected("work.resume");
+    };
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|p| serde_json::from_value::<ResumePayload>(p).ok())
+    else {
+        return rejected("work.resume");
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected("work.resume");
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match chat
+        .resume(
+            &scope,
+            &key,
+            session_hash,
+            &payload.work_item_id,
+            &payload.expected_run_id,
+        )
+        .await
+    {
+        Ok(local_product::runtime::Resumed::Refused) => rejected("work.resume"),
+        Ok(_) => Json(json!({
+            "outcome": "accepted",
+            "patient_workspace_id": payload.patient_workspace_id,
+            "chat_id": payload.chat_id,
+            "run_id": payload.expected_run_id,
+        }))
+        .into_response(),
+        Err(error) => {
+            // Empty fields are the caller's; anything else is the database.
+            let invalid = error.contains("empty command field");
+            tracing::warn!(invalid, "physician work resume failed");
+            if invalid {
+                return rejected("work.resume");
+            }
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message("work.resume"),
+                })),
+            )
+                .into_response()
         }
+    }
+}
+
+fn rejected(kind: &str) -> Response {
+    Json(json!({
+        "outcome": "rejected",
+        "message": rejection_message(kind),
     }))
     .into_response()
 }
@@ -749,5 +863,61 @@ async fn complete(
                 Err(_) => Err("Codex exec task stopped".to_owned()),
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod durable_snapshot_tests {
+    use super::{COULDNT_FINISH, durable_snapshot_body};
+    use local_product::runtime::{Attempt, Conversation, Message};
+
+    fn conversation(status: &str) -> Conversation {
+        Conversation {
+            messages: vec![Message {
+                role: "user".into(),
+                text: "Hello".into(),
+            }],
+            status: status.into(),
+            work: "work-1".into(),
+            attempts: vec![Attempt {
+                id: "run-1".into(),
+                predecessor: None,
+                work: "work-1".into(),
+                revision: 1,
+                status: "interrupted".into(),
+                expires: 0,
+                events: vec![],
+            }],
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn a_failed_turn_keeps_the_message_and_names_the_run_to_resume() {
+        let body = durable_snapshot_body(Some(&conversation("failed")));
+        let items = body["conversation"].as_array().unwrap();
+        assert_eq!(items[0]["kind"], "physician");
+        assert_eq!(items[0]["text"], "Hello");
+        assert_eq!(items[1]["kind"], "mechanical");
+        assert_eq!(items[1]["text"], COULDNT_FINISH);
+        assert_eq!(items[1]["resume_target"]["work_item_id"], "work-1");
+        assert_eq!(items[1]["resume_target"]["expected_run_id"], "run-1");
+        assert_eq!(body["runs"][0]["run_id"], "run-1");
+        assert_eq!(body["runs"][0]["state"], "failed");
+    }
+
+    #[test]
+    fn pending_and_absent_turns_offer_no_try_again() {
+        for status in ["pending", "active", "held", "completed"] {
+            let body = durable_snapshot_body(Some(&conversation(status)));
+            assert_eq!(
+                body["conversation"].as_array().unwrap().len(),
+                1,
+                "{status}"
+            );
+            assert!(body["runs"].as_array().unwrap().is_empty(), "{status}");
+        }
+        let empty = durable_snapshot_body(None);
+        assert!(empty["conversation"].as_array().unwrap().is_empty());
     }
 }
