@@ -9,7 +9,7 @@ patient data, and nothing is physician reviewed.
 ## Pipeline
 
 ```text
-data/seeds.json      who each patient is: identity, demographics, complexity, targets,
+patients/seeds.json  who each patient is: identity, demographics, complexity, targets,
       |              anchors, episodes, texture, life context
 stories              draws a concrete clinical story from data/stories.json into every
       |              seed without an accepted ledger; authored seeds never change
@@ -18,7 +18,8 @@ data/author-workflow.js
       |              story.md first, then the ledger in parts, `check` until ACCEPTED,
       |              `preview` and reread; batches are then reviewed by hand
       v
-ledgers/<unit>.json  the clinical source of truth, written only by `check`, with the
+patients/ledgers/<unit>.json
+      |              the clinical source of truth, written only by `check`, with the
       |              unit's verified extra codes (`terms`)
 build                renders every ledger as FHIR R4 as of 2026-08-27T12:00 Eastern;
       |              panels/panel-{100,300,500,1000}.json (nested, families kept whole);
@@ -39,9 +40,12 @@ cargo run -q -p patient-bank -- catalog [--offline]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
-`{repo, units}` as args. Inputs live in `data/`; drafts, ledgers, the bank and the
-schema live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA` and
-`PATIENT_BANK_ROOT` move the two, and `build` and `materialize` refuse an output
+`{repo, units}` as args. This crate is the tool; the patients it produces are kept
+apart from it in the workspace's `patients/` (seeds and accepted ledgers), and the
+crate's tests use their own small fixtures, never that set. The tool's inputs live
+in `data/`; drafts, the bank and the schema live under the ignored
+`target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
+`PATIENT_BANK_ROOT` move the three, and `build` and `materialize` refuse an output
 directory that overlaps their inputs. The build reads every input first and swaps
 the finished directory into place.
 

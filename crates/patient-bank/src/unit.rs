@@ -7,7 +7,7 @@
 //! ```
 //!
 //! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
-//! ledger is written to `<root>/ledgers/<unit>.json`, the only input the bank build
+//! ledger is written to `patients/ledgers/<unit>.json`, the only input the bank build
 //! renders; `check` is its only writer. See `data/authoring-guide.md`.
 
 use std::collections::BTreeMap;
@@ -261,9 +261,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         patients: merged.patients,
         terms,
     };
-    let out = paths::root()
-        .join("ledgers")
-        .join(format!("{}.json", unit.unit));
+    let out = paths::ledgers().join(format!("{}.json", unit.unit));
     fs::create_dir_all(out.parent().expect("ledgers dir"))?;
     write_atomic(&out, &serde_json::to_string_pretty(&ledger)?)?;
     println!("\nACCEPTED -> {}", out.display());

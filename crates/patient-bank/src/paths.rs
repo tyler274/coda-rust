@@ -1,10 +1,12 @@
 //! Every default location the pipeline reads or writes, in one place.
 //!
-//! The inputs (catalog, terminology cache, coda-gym ranges, seeds, authoring guide)
-//! live in this crate's `data/`; drafts, accepted ledgers and the bank live under
-//! the ignored `target/patient-bank/`. `PATIENT_BANK_DATA` and `PATIENT_BANK_ROOT`
-//! override the two directories, so a scratch copy can be checked or authored in
-//! without touching the checkout.
+//! The tool's inputs (catalog, terminology cache, coda-gym ranges, story tables,
+//! authoring guide) live in this crate's `data/`. The patients themselves, their
+//! seeds and accepted ledgers, live apart from the tool in the workspace's
+//! `patients/`. Drafts, the bank and other derived output live under the ignored
+//! `target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
+//! `PATIENT_BANK_ROOT` override the three directories, so a scratch copy can be
+//! checked or authored in without touching the checkout.
 
 use std::env;
 use std::path::{Path, PathBuf};
@@ -27,7 +29,13 @@ pub fn data_dir() -> PathBuf {
     )
 }
 
-/// Drafts, accepted ledgers, the bank and the vocabulary.
+/// The patient set: seeds and accepted ledgers.
+pub fn patients_dir() -> PathBuf {
+    env::var_os("PATIENT_BANK_PATIENTS")
+        .map_or_else(|| workspace_root().join("patients"), PathBuf::from)
+}
+
+/// Drafts, the bank and the vocabulary.
 pub fn root() -> PathBuf {
     env::var_os("PATIENT_BANK_ROOT").map_or_else(
         || workspace_root().join("target/patient-bank"),
@@ -51,7 +59,12 @@ pub fn gym_lab_ranges() -> PathBuf {
 
 /// Who every patient is, designed once and authored against.
 pub fn seeds() -> PathBuf {
-    data_dir().join("seeds.json")
+    patients_dir().join("seeds.json")
+}
+
+/// Accepted ledgers, `<unit>.json`, written only by `check`.
+pub fn ledgers() -> PathBuf {
+    patients_dir().join("ledgers")
 }
 
 /// The tables `stories` draws unwritten patients' clinical stories from.

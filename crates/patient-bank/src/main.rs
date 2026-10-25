@@ -10,7 +10,7 @@
 //! ```
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
-//! drafts, ledgers and the bank under `target/patient-bank/`.
+//! seeds and ledgers in `patients/`, drafts and the bank under `target/patient-bank/`.
 
 use std::collections::HashMap;
 use std::env;
@@ -48,8 +48,7 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             let o = Opts::parse(rest, &["--seeds", "--ledgers"], &[])?;
             stories::run(
                 &o.path("--seeds").unwrap_or_else(paths::seeds),
-                &o.path("--ledgers")
-                    .unwrap_or_else(|| paths::root().join("ledgers")),
+                &o.path("--ledgers").unwrap_or_else(paths::ledgers),
             )?
         }
         "brief" | "check" | "preview" => {
@@ -65,7 +64,7 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             let root = paths::root();
             bank::run(
                 &o.path("--seeds").unwrap_or_else(paths::seeds),
-                &o.path("--ledgers").unwrap_or_else(|| root.join("ledgers")),
+                &o.path("--ledgers").unwrap_or_else(paths::ledgers),
                 &o.path("--out").unwrap_or_else(|| root.join("bank")),
                 o.path("--roger").as_deref(),
             )?;

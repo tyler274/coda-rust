@@ -1,6 +1,6 @@
 //! The panel's seeds: who each patient is before anyone writes their chart.
 //!
-//! `data/seeds.json` was designed once (seed 20261024) for all 995 patients and is
+//! `patients/seeds.json` was designed once (seed 20261024) for all 995 patients and is
 //! kept as data: a chart is authored against its seed, so a seed never changes
 //! under an accepted ledger. `stories` redraws the clinical story (anchors,
 //! episodes, life, occupation) only for units that have no accepted ledger yet.

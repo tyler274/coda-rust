@@ -26,6 +26,31 @@ fn seed() -> Seed {
     .expect("seed")
 }
 
+/// A two-unit seeds file in `dir`, so no test reads the real patient set.
+fn seeds_file(dir: &std::path::Path) -> std::path::PathBuf {
+    let member = |mrn: &str| Seed {
+        mrn: mrn.into(),
+        ..seed()
+    };
+    let units = ["unit-0001", "unit-0002"]
+        .iter()
+        .zip(["MRN99999998", "MRN99999999"])
+        .map(|(unit, mrn)| Unit {
+            unit: (*unit).into(),
+            kind: "individual".into(),
+            members: vec![member(mrn)],
+        })
+        .collect();
+    let seeds = Seeds {
+        seed: 1,
+        as_of: "2026-08-27".into(),
+        units,
+    };
+    let path = dir.join("seeds.json");
+    std::fs::write(&path, seeds.to_text().expect("text")).expect("write seeds");
+    path
+}
+
 fn patient(events: serde_json::Value) -> Patient {
     serde_json::from_value(json!({
         "mrn": "MRN99999999", "given": "Ada", "family": "Example", "birth_date": "1976-03-02",
@@ -333,13 +358,12 @@ fn stories_redraw_only_unwritten_units_and_repeat_exactly() {
     let ledgers = dir.join("ledgers");
     std::fs::create_dir_all(&ledgers).expect("dirs");
     std::fs::write(ledgers.join("unit-0001.json"), "{}").expect("ledger marker");
-    let path = dir.join("seeds.json");
-    std::fs::copy(paths::seeds(), &path).expect("copy seeds");
+    let path = seeds_file(&dir);
     let before = Seeds::read(&path).expect("seeds");
 
     stories::run(&path, &ledgers).expect("first draw");
     let first = std::fs::read(&path).expect("read");
-    std::fs::copy(paths::seeds(), &path).expect("copy seeds");
+    seeds_file(&dir);
     stories::run(&path, &ledgers).expect("second draw");
     assert_eq!(
         first,
@@ -426,8 +450,9 @@ fn an_accepted_ledger_round_trips() {
 #[test]
 fn the_build_refuses_a_missing_ledger_directory() {
     let dir = std::env::temp_dir().join(format!("patient-bank-missing-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).expect("dir");
     let err = bank::run(
-        &paths::seeds(),
+        &seeds_file(&dir),
         &dir.join("ledgres"),
         &dir.join("bank"),
         None,
@@ -435,6 +460,7 @@ fn the_build_refuses_a_missing_ledger_directory() {
     .expect_err("missing ledgers");
     assert!(err.to_string().contains("not a directory of ledgers"));
     assert!(!dir.join("bank").exists(), "nothing written");
+    std::fs::remove_dir_all(&dir).expect("cleanup");
 }
 
 #[test]

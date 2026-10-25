@@ -473,10 +473,7 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
                     ),
                     (
                         "seed",
-                        format!(
-                            "crates/patient-bank/data/seeds.json (designed with seed {})",
-                            seeds.seed
-                        ),
+                        format!("patients/seeds.json (designed with seed {})", seeds.seed),
                     ),
                     ("author_model", ledger.model.clone()),
                     (
