@@ -54,6 +54,11 @@ pub fn seeds() -> PathBuf {
     data_dir().join("seeds.json")
 }
 
+/// The tables `stories` draws unwritten patients' clinical stories from.
+pub fn stories() -> PathBuf {
+    data_dir().join("stories.json")
+}
+
 pub fn authoring_guide() -> PathBuf {
     data_dir().join("authoring-guide.md")
 }

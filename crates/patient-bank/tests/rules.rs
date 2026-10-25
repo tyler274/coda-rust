@@ -4,9 +4,9 @@ use patient_bank::catalog::Catalog;
 use patient_bank::fhir::Chart;
 use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
-use patient_bank::seeds::{Seed, Unit};
+use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, check, paths};
+use patient_bank::{bank, check, paths, stories};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -230,6 +230,147 @@ fn a_test_stated_twice_in_one_draw_is_rejected() {
         errors.iter().any(|e| e.contains("stated twice")),
         "{errors:?}"
     );
+}
+
+fn errors_for(seed: Seed, p: Patient) -> Vec<String> {
+    let unit = Unit {
+        unit: "unit-9999".into(),
+        kind: "individual".into(),
+        members: vec![seed],
+    };
+    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
+    check::check(&unit, &[p], &catalog).0
+}
+
+fn note(body: &str) -> serde_json::Value {
+    json!({"documents": [{"type": "Progress Notes", "body": body}]})
+}
+
+#[test]
+fn notes_refer_to_clinicians_by_role() {
+    let filler =
+        "Follow-up visit; blood pressure reviewed and the plan was discussed with the patient.";
+    for named in [
+        "Seen with Dr. Okafor today.",
+        "Signed: M. Lindqvist, MD.",
+        "Colleen Fitzgerald, NP covered.",
+        "Roomed by J. Ortiz, MA.",
+        "Faxed back.\n-- B. Kowal, front desk",
+    ] {
+        let p = patient(json!([visit(
+            "e1",
+            "2024-01-01T09:00",
+            note(&format!("{filler} {named}"))
+        )]));
+        let errors = errors_for(seed(), p);
+        assert!(
+            errors.iter().any(|e| e.contains("names a clinician")),
+            "{named}: {errors:?}"
+        );
+    }
+    let places = format!(
+        "{filler} Moved here from West Springfield, MA; parents live in State College, PA. Seen by the PCP."
+    );
+    let p = patient(json!([visit("e1", "2024-01-01T09:00", note(&places))]));
+    let errors = errors_for(seed(), p);
+    assert!(
+        !errors.iter().any(|e| e.contains("names a clinician")),
+        "{errors:?}"
+    );
+}
+
+#[test]
+fn a_coded_seed_fixes_the_problem_list() {
+    let mut coded = seed();
+    coded.coded_anchors = true;
+    coded.anchors = vec!["Essential hypertension".into()];
+    let cond = |labels: &[(&str, &str)]| json!({"conditions": labels.iter().map(|(l, a)| json!({"label": l, "action": a})).collect::<Vec<_>>()});
+    let has = |errors: &[String], what: &str| errors.iter().any(|e| e.contains(what));
+
+    let missing = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        cond(&[("Gout", "diagnosed")])
+    )]));
+    assert!(has(&errors_for(coded.clone(), missing), "never recorded"));
+
+    let three_extra = cond(&[
+        ("Essential hypertension", "diagnosed"),
+        ("Gout", "diagnosed"),
+        ("Insomnia", "diagnosed"),
+        ("Rosacea", "diagnosed"),
+    ]);
+    let p = patient(json!([visit("e1", "2024-01-01T09:00", three_extra)]));
+    assert!(has(&errors_for(coded.clone(), p), "did not plan"));
+
+    let p = patient(json!([
+        visit(
+            "e1",
+            "2024-01-01T09:00",
+            cond(&[
+                ("Essential hypertension", "diagnosed"),
+                ("Ankle sprain", "diagnosed"),
+                ("COVID-19", "diagnosed"),
+                ("Gout", "diagnosed")
+            ])
+        ),
+        visit(
+            "e2",
+            "2024-02-01T09:00",
+            cond(&[("Ankle sprain", "resolved"), ("COVID-19", "resolved")])
+        ),
+    ]));
+    let errors = errors_for(coded, p);
+    assert!(
+        !has(&errors, "did not plan") && !has(&errors, "never recorded"),
+        "{errors:?}"
+    );
+}
+
+#[test]
+fn stories_redraw_only_unwritten_units_and_repeat_exactly() {
+    let dir = std::env::temp_dir().join(format!("patient-bank-stories-{}", std::process::id()));
+    let ledgers = dir.join("ledgers");
+    std::fs::create_dir_all(&ledgers).expect("dirs");
+    std::fs::write(ledgers.join("unit-0001.json"), "{}").expect("ledger marker");
+    let path = dir.join("seeds.json");
+    std::fs::copy(paths::seeds(), &path).expect("copy seeds");
+    let before = Seeds::read(&path).expect("seeds");
+
+    stories::run(&path, &ledgers).expect("first draw");
+    let first = std::fs::read(&path).expect("read");
+    std::fs::copy(paths::seeds(), &path).expect("copy seeds");
+    stories::run(&path, &ledgers).expect("second draw");
+    assert_eq!(
+        first,
+        std::fs::read(&path).expect("read"),
+        "the same seeds and ledgers give the same draw"
+    );
+
+    let after = Seeds::read(&path).expect("seeds");
+    let kept = |s: &Seeds| serde_json::to_string(s.unit("unit-0001").expect("unit")).expect("json");
+    assert_eq!(
+        kept(&before),
+        kept(&after),
+        "a unit with an accepted ledger keeps its seed"
+    );
+    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
+    let redrawn = &after.unit("unit-0002").expect("unit").members[0];
+    assert!(redrawn.coded_anchors);
+    assert!(
+        redrawn
+            .anchors
+            .iter()
+            .all(|a| catalog.conditions.contains_key(a)),
+        "{:?}",
+        redrawn.anchors
+    );
+    assert_eq!(
+        redrawn.mrn,
+        before.unit("unit-0002").expect("unit").members[0].mrn,
+        "identity stays"
+    );
+    std::fs::remove_dir_all(&dir).expect("cleanup");
 }
 
 #[test]

@@ -15,7 +15,7 @@ const RULES = `Ground rules:
 - Work only inside ${REPO}. Run every command from there: ${RUN} brief|check|preview <unit>
 - Write only inside ${DRAFTS}/<unit>/. Never edit code, the guide, the catalog or seeds; never run git.
 - Read only the authoring guide, the vocabulary file, and your unit's draft folder. Do not open other repositories, other units' drafts, or any eval folder.
-- All people, places and records are fictional; never name real clinicians, practices, hospitals, labs, pharmacies, stores or EHR/portal products (drug, vaccine and assay product names are fine).`
+- All people, places and records are fictional; refer to clinicians and staff by role only, and never name real practices, hospitals, labs, pharmacies, stores or EHR/portal products (drug, vaccine and assay product names are fine).`
 
 const AUTHOR_SCHEMA = {
   type: 'object',

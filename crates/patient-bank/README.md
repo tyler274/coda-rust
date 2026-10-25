@@ -10,7 +10,9 @@ patient data, and nothing is physician reviewed.
 
 ```text
 data/seeds.json      who each patient is: identity, demographics, complexity, targets,
-      |              anchors, episodes, texture (designed once; authored against, so fixed)
+      |              anchors, episodes, texture, life context
+stories              draws a concrete clinical story from data/stories.json into every
+      |              seed without an accepted ledger; authored seeds never change
 data/author-workflow.js
       |              one agent per unit (a patient, or a family authored together):
       |              story.md first, then the ledger in parts, `check` until ACCEPTED,
@@ -28,6 +30,7 @@ materialize          one panel as a multi-patient NDJSON directory, optionally a
 ```
 
 ```bash
+cargo run -q -p patient-bank -- stories
 cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- build [--roger submodules/coda-agents/docs/local-product-fixtures/internal_resources]
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
@@ -62,6 +65,18 @@ the finished directory into place.
   equivalent to the RxNorm drug's (`3 mg/0.5 mL` is 6 mg/mL, never a 3 mg/mL pen);
   text with no strength stays text-only. Each unit's new lookups go to its own
   `drafts/<unit>/lookups.json`; only `catalog` writes the shared cache.
+- **A varied practice.** `stories` gives each unwritten patient common conditions
+  at primary-care rates, minor problems and smoking history at their own rates, a
+  distinctive long-tail condition shared by at most five patients, for some a
+  hospital-grade event (shared by at most three), concrete episodes (which injury,
+  what the colonoscopy found) and a life context. Labels that exclude one another
+  share a group in `data/stories.json`, and every label is a verified catalog
+  condition. Those seeds carry `coded_anchors`: `check` requires every anchor on
+  the problem list and allows at most two other problems still active at the bank
+  time. `validate` reports how varied the active problem lists are across the
+  panel (`problem_list` in validation.json).
+- **Roles, not names.** `check` rejects a note or title that names a clinician or
+  staff member ("Dr. Okafor", "M. Lindqvist, MD", "-- B. Kowal").
 
 ## Density
 
@@ -115,7 +130,7 @@ realism bar.
   record is strictly before 2026-08-27T12:00 Eastern.
 - Western Massachusetts towns, 413-555-01xx-style phones and `@example.test` emails.
   Other area codes appear for people who moved in.
-- Clinicians appear by role only. No real care organization, lab, pharmacy, store or
+- Clinicians and staff appear by role only. No real care organization, lab, pharmacy, store or
   EHR or portal product is named. Drug, vaccine and assay product names stay, as in
   real charts.
 - Unstated panel members are filled with per-patient normal baselines that vary from

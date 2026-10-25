@@ -56,10 +56,20 @@ repository root.
 You receive one seed per patient. It fixes sex, birth year, town, preferred
 language, insurance, an occupation hint, complexity, years with the practice,
 target document and observation counts, clinical anchors (the main threads of the history),
-episodes, and sometimes a chart-texture item. Honor every field. Anchors are the
-backbone; you may add a few other problems a person like this plausibly has, but
-do not pile on diagnoses. Episodes and texture are things that happened somewhere
-in the history; place them where they make sense. Family members in one request
+episodes, sometimes a chart-texture item, and often a life context. Honor every
+field. Anchors are the backbone. Episodes and texture are things that happened
+somewhere in the history; place them where they make sense.
+
+Most seeds carry `"coded_anchors": true`. Their anchors are exact catalog labels
+and are the patient's problem list: record every one, and do not add chronic
+diagnoses the seed did not plan. A real list picks up a stray entry, so at most two
+other problems may still be active at the end; resolve acute ones (a sprain, a
+bladder infection, COVID-19) when they resolve. The episodes are concrete: write
+the injury, finding or result the seed names, not the most typical one. The life
+context (a veteran, a Deaf patient who uses an interpreter, a caregiver) shapes
+the visits, the social history and how the patient talks; do not make it the
+subject of every note. Patients differ from one another; the seed is what makes
+this one who they are. Family members in one request
 share a household or family and their charts must agree with each other (shared
 address when living together, consistent family history, a spouse may be
 mentioned in social history, nothing contradictory).
@@ -194,8 +204,9 @@ clinical shorthand where clinicians would. Do not reuse paragraphs between notes
 no two documents may share a body. Copy-forward is allowed in moderation (a
 history paragraph carried with small edits), as real EHRs do.
 
-Never name real clinicians, practices, hospitals, labs, pharmacies, stores or
-EHR and portal products (say "the portal"). Drug, vaccine and assay product names
+Never name clinicians or staff, real or invented ("Dr. Okafor", "M. Lindqvist,
+MD"), and never name real practices, hospitals, labs, pharmacies, stores or EHR
+and portal products (say "the portal"). The check rejects a note that names one. Drug, vaccine and assay product names
 are fine, as in real charts. Refer
 to people by role ("PCP", "cardiology", "the covering NP", "the ED physician")
 and to places generically ("the regional hospital", "an urgent care in

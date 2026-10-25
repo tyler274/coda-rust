@@ -290,6 +290,9 @@ struct PatientReport {
     stats: BTreeMap<String, usize>,
     #[serde(skip)]
     notes: Vec<String>,
+    /// Problems active or recurring at the bank time, by label.
+    #[serde(skip)]
+    problems: Vec<String>,
 }
 
 struct Shared {
@@ -339,6 +342,16 @@ fn check_patient(
         mrn: mrn.into(),
         ..PatientReport::default()
     };
+    rep.problems = chart["Condition"]
+        .iter()
+        .filter(|c| {
+            matches!(
+                str_of(&c["clinicalStatus"]["coding"][0], "code"),
+                "active" | "recurrence"
+            )
+        })
+        .filter_map(|c| c["code"]["text"].as_str().map(String::from))
+        .collect();
     let mut ids: HashMap<String, &str> = HashMap::new();
     for (slot, fam) in FAMILIES.iter().enumerate() {
         for r in &chart[fam] {
@@ -669,8 +682,43 @@ struct Report {
     warnings: BTreeMap<&'static str, usize>,
     stats: BTreeMap<String, usize>,
     terminology_extras: Extras,
+    problem_list: ProblemList,
     failures: Vec<PatientReport>,
     review_notes: BTreeMap<String, Vec<String>>,
+}
+
+/// How varied the panel is: problems active at the bank time across all patients.
+#[derive(Serialize)]
+struct ProblemList {
+    distinct: usize,
+    /// Labels carried by only one patient.
+    unique: usize,
+    /// The most common labels, as a percent of patients.
+    top: Vec<(String, f64)>,
+}
+
+impl ProblemList {
+    fn of(results: &[PatientReport]) -> ProblemList {
+        let mut carriers: BTreeMap<&str, usize> = BTreeMap::new();
+        for r in results {
+            let mine: HashSet<&str> = r.problems.iter().map(String::as_str).collect();
+            for label in mine {
+                *carriers.entry(label).or_default() += 1;
+            }
+        }
+        let mut top: Vec<(&str, usize)> = carriers.iter().map(|(l, n)| (*l, *n)).collect();
+        top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));
+        let percent = |n: usize| (1000.0 * n as f64 / results.len().max(1) as f64).round() / 10.0;
+        ProblemList {
+            distinct: carriers.len(),
+            unique: carriers.values().filter(|n| **n == 1).count(),
+            top: top
+                .iter()
+                .take(25)
+                .map(|(l, n)| (l.to_string(), percent(*n)))
+                .collect(),
+        }
+    }
 }
 
 #[derive(Serialize)]
@@ -869,6 +917,7 @@ pub fn run(
         warnings,
         stats,
         terminology_extras: extras,
+        problem_list: ProblemList::of(&results),
         failures: results
             .into_iter()
             .filter(|r| !r.errors.is_empty())
@@ -885,6 +934,7 @@ pub fn run(
         "warnings": report.warnings,
         "stats": report.stats,
         "panel_errors": report.panel_errors,
+        "problem_list": report.problem_list,
     });
     println!("{}", serde_json::to_string_pretty(&summary)?);
     println!("report: {}", out.display());

@@ -2,6 +2,7 @@
 //!
 //! ```text
 //! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
+//! cargo run -p patient-bank -- stories [--seeds PATH] [--ledgers DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT [--seeds PATH]
 //! cargo run -p patient-bank -- build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
 //! cargo run -p patient-bank -- validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]
@@ -16,7 +17,7 @@ use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use patient_bank::{bank, catalog, materialize, paths, time, unit, validate};
+use patient_bank::{bank, catalog, materialize, paths, stories, time, unit, validate};
 
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -42,6 +43,14 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
                 .path("--roger-fixture")
                 .unwrap_or_else(paths::roger_fixture);
             catalog::build(&roger, o.on("--offline"))?
+        }
+        "stories" => {
+            let o = Opts::parse(rest, &["--seeds", "--ledgers"], &[])?;
+            stories::run(
+                &o.path("--seeds").unwrap_or_else(paths::seeds),
+                &o.path("--ledgers")
+                    .unwrap_or_else(|| paths::root().join("ledgers")),
+            )?
         }
         "brief" | "check" | "preview" => {
             let o = Opts::parse(rest, &["--seeds"], &[])?;
@@ -159,6 +168,7 @@ fn usage() -> Failure {
 patient-bank runs the synthetic patient bank pipeline.
 
   patient-bank catalog [--offline] [--roger-fixture DIR]
+  patient-bank stories [--seeds PATH] [--ledgers DIR]
   patient-bank brief|check|preview UNIT [--seeds PATH]
   patient-bank build [--seeds PATH] [--ledgers DIR] [--out DIR] [--roger DIR]
   patient-bank validate [--bank DIR] [--seeds PATH] [--schema PATH] [--jobs 8] [--report PATH]

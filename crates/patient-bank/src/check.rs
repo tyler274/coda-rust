@@ -15,12 +15,31 @@ use crate::labs::DIFFERENTIAL;
 use crate::ledger::{ConditionAction, Event, MedicationAction, Patient, Stamp, num};
 use crate::seeds::Unit;
 use crate::time;
-use crate::timeline::Timeline;
+use crate::timeline::{ProblemStatus, Timeline};
 
 static FORBIDDEN: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)\b(synthetic|fictional|generated|template|simulation|simulated|test patient|answer key|placeholder|lorem)\b")
         .expect("regex")
 });
+
+/// A clinician or staff member named in a note: "Dr. Okafor", "Dr. C", "M. Lindqvist, MD",
+/// "Colleen Fitzgerald, NP", "J. Ortiz, MA", or a signature line "-- B. Kowal".
+/// A surname has a lowercase second letter, so "Per GI MD" is not a name. MA and PA
+/// count only after an initial, so "Springfield, MA" and "State College, PA" stay
+/// places.
+static CLINICIAN: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(concat!(
+        r"\b(?:Dr\.?|Doctor) (?:[A-Z][a-z][a-zA-Z'-]*|[A-Z]\b)",
+        r"|\b[A-Z]\. [A-Z][a-z][a-zA-Z'-]*,? (?:MD|DO|NP|PA-C|PA|RN|APRN|FNP|DNP|LPN|LICSW|LCSW|PharmD|CNM|MA)\b",
+        r"|\b[A-Z][a-z]+ [A-Z][a-z][a-zA-Z'-]*,? (?:MD|DO|NP|PA-C|RN|APRN|FNP|DNP|LPN|LICSW|LCSW|PharmD|CNM)\b",
+        r"|(?m)(?:--|—) ?[A-Z]\. [A-Z][a-z][a-zA-Z'-]*(?:, [a-z][a-z ]+)?[ \t]*$",
+    ))
+    .expect("regex")
+});
+
+/// Unseeded problems a chart may still carry as active at the bank time: real
+/// lists pick up a stray entry or two beyond what the story planned.
+const UNSEEDED_ACTIVE: usize = 2;
 
 /// Real care organizations and record systems a chart must not name (the guide
 /// asks for roles and generic places). Drug, vaccine and assay product names stay.
@@ -160,6 +179,15 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                         m.as_str()
                     ));
                 }
+                if let Some(m) = CLINICIAN
+                    .find(body)
+                    .or_else(|| d.title.as_deref().and_then(|t| CLINICIAN.find(t)))
+                {
+                    errors.push(format!(
+                        "{eid}: document {title:?} names a clinician ({}); refer to clinicians and staff by role",
+                        m.as_str()
+                    ));
+                }
                 if let Some(m) = FORBIDDEN.find(body) {
                     errors.push(format!(
                         "{eid}: document {title:?} uses a forbidden word ({})",
@@ -220,8 +248,47 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 ));
             }
         }
+        if seed.coded_anchors {
+            problem_list(mrn, &seed.anchors, &tl, catalog, &mut errors);
+        }
     }
     (errors, warnings)
+}
+
+/// A seed with coded anchors fixes the problem list: every anchor is recorded, and
+/// at most a couple of other problems are still active at the bank time.
+fn problem_list(
+    mrn: &str,
+    anchors: &[String],
+    tl: &Timeline,
+    catalog: &Catalog,
+    errors: &mut Vec<String>,
+) {
+    for a in anchors {
+        if !catalog.conditions.contains_key(a) {
+            errors.push(format!(
+                "{mrn}: seed anchor {a:?} is not a catalog condition"
+            ));
+        } else if !tl.problems.iter().any(|p| p.label == a) {
+            errors.push(format!(
+                "{mrn}: seed anchor {a:?} is never recorded on the problem list"
+            ));
+        }
+    }
+    let extra: Vec<&str> = tl
+        .problems
+        .iter()
+        .filter(|p| !anchors.iter().any(|a| a == p.label))
+        .filter(|p| !matches!(p.status(time::as_of()), ProblemStatus::Resolved(_)))
+        .map(|p| p.label)
+        .collect();
+    if extra.len() > UNSEEDED_ACTIVE {
+        errors.push(format!(
+            "{mrn}: {} problems the seed did not plan are still active at the bank time ({}); resolve the acute ones and keep at most {UNSEEDED_ACTIVE} others",
+            extra.len(),
+            extra.join(", ")
+        ));
+    }
 }
 
 /// Every time an event's records state, by what they are.
