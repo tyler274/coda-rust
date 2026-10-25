@@ -104,6 +104,15 @@ pub fn read_view<T>(previous: Option<T>, current: Option<Result<T, ()>>) -> Read
     }
 }
 
+/// A read's answer, kept with the question it answered. A rerun leaves the last
+/// answer in place until the new one lands, so a page asking a new question (a
+/// query, a patient, a conversation) has no answer yet.
+pub fn answer_to<'a, Q: PartialEq, T>(asking: &Q, answer: Option<&'a (Q, T)>) -> Option<&'a T> {
+    answer
+        .filter(|(asked, _)| asked == asking)
+        .map(|(_, answer)| answer)
+}
+
 pub type TodayView = ReadView<Vec<TodayLine>>;
 
 pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
@@ -1266,6 +1275,20 @@ mod tests {
         assert_eq!(
             today_view(Some(&lines), Some(Err(()))),
             ReadView::Stale(lines)
+        );
+    }
+
+    #[test]
+    fn an_answer_counts_only_for_the_question_it_answered() {
+        let answered = ("Mary".to_owned(), Ok::<_, ()>(vec!["Mary Louis"]));
+        assert_eq!(
+            answer_to(&"Mary".to_owned(), Some(&answered)),
+            Some(&Ok(vec!["Mary Louis"]))
+        );
+        assert_eq!(answer_to(&"Tanvir".to_owned(), Some(&answered)), None);
+        assert_eq!(
+            answer_to::<String, Result<Vec<&str>, ()>>(&"Mary".to_owned(), None),
+            None
         );
     }
 

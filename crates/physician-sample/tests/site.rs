@@ -726,6 +726,125 @@ async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_int
     );
 }
 
+#[tokio::test]
+async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let address = server.address;
+
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, "about:blank").await;
+    // Requests whose URL matches `__hold` wait in the page until `__release()`,
+    // so the test sees what shows while an answer is still on its way.
+    browser
+        .call(
+            "Page.addScriptToEvaluateOnNewDocument",
+            serde_json::json!({ "source": r#"(() => {
+                const fetch = window.fetch.bind(window);
+                window.__hold = '/practice-day';
+                window.__held = [];
+                window.fetch = (input, init) => {
+                    const answer = fetch(input, init);
+                    const url = typeof input === 'string' ? input : input.url;
+                    if (window.__hold && new RegExp(window.__hold).test(url)) {
+                        return new Promise(resolve => window.__held.push(() => resolve(answer)));
+                    }
+                    return answer;
+                };
+                window.__release = () => {
+                    window.__hold = null;
+                    window.__held.splice(0).forEach(release => release());
+                };
+            })()"# }),
+        )
+        .await;
+    browser.navigate(&format!("http://{address}/")).await;
+
+    // The schedule rail shows its own loading line; it never waits hidden.
+    browser
+        .wait_for_text("Loading the schedule…", Duration::from_secs(15))
+        .await;
+    browser.eval("window.__release()").await;
+    browser
+        .wait_for_text("3:30 PM", Duration::from_secs(10))
+        .await;
+
+    browser
+        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
+        .await;
+    browser.search_for("Mary").await;
+    browser.wait_for_text("DOB", Duration::from_secs(10)).await;
+    browser
+        .eval("document.querySelector('.dialog-results button').click()")
+        .await;
+    browser
+        .wait_for_text("MRN 00000005", Duration::from_secs(10))
+        .await;
+
+    // A new query never shows the last query's rows or a false "No patients match."
+    browser
+        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
+        .await;
+    browser.eval("window.__hold = '/patient-roster'").await;
+    browser.search_for("Tanvir").await;
+    browser
+        .wait_for_text("Searching…", Duration::from_secs(10))
+        .await;
+    let searching = browser.dialog_text().await;
+    assert!(
+        !searching.contains("Mary Louis") && !searching.contains("No patients match."),
+        "a search still on its way showed another answer:\n{searching}"
+    );
+    browser.eval("window.__release()").await;
+    browser
+        .wait_for_text("Tanvir Chowdhury", Duration::from_secs(10))
+        .await;
+
+    // Switching patients never shows the last patient while the next one opens.
+    browser
+        .eval("window.__hold = 'pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee'")
+        .await;
+    browser
+        .eval("document.querySelector('.dialog-results button').click()")
+        .await;
+    let opening = browser
+        .wait_for_text("Opening the patient…", Duration::from_secs(10))
+        .await;
+    assert!(
+        !opening.contains("MRN 00000005"),
+        "the next patient's page still showed the last patient:\n{opening}"
+    );
+    browser.eval("window.__release()").await;
+    browser
+        .wait_for_text("MRN 00000003", Duration::from_secs(10))
+        .await;
+
+    // A patient link opened directly shows the patient's rail loading too.
+    browser
+        .navigate(&format!(
+            "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"
+        ))
+        .await;
+    browser
+        .wait_for_text("Loading the schedule…", Duration::from_secs(15))
+        .await;
+    browser.eval("window.__release()").await;
+    browser
+        .wait_for_text("Follow-up visit", Duration::from_secs(10))
+        .await;
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")
@@ -1107,6 +1226,23 @@ impl CdpBrowser {
             input.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => {{ document.querySelector('button.sign-in-primary').click(); resolve(true); }}, 50);
         }})"#, serde_json::to_string(email).unwrap())).await;
+    }
+
+    async fn search_for(&mut self, query: &str) {
+        self.eval(&format!(r#"(() => {{
+            const input = document.querySelector('input.dialog-search');
+            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
+            input.dispatchEvent(new Event('input', {{bubbles: true}}));
+        }})()"#, serde_json::to_string(query).unwrap())).await;
+    }
+
+    async fn dialog_text(&mut self) -> String {
+        self.eval("document.querySelector('section.dialog')?.innerText ?? ''")
+            .await
+            .pointer("/result/result/value")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default()
+            .to_owned()
     }
 
     async fn sign_in_again(&mut self) {

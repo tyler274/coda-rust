@@ -27,7 +27,7 @@ use shell::{
     REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_TELL_CODA, ReadView,
     ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL,
     TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
-    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, chat_view, chip_name, citation_inspection,
+    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to, chat_view, chip_name, citation_inspection,
     connection_lines, demographic_card_view, format_calendar_date, format_clock, format_message,
     format_waited, keyboard_command, need_you_words, opens_reader, past_work_copy,
     patient_upcoming_visits, read_view, reply_channel_label, reply_review_actions,
@@ -786,14 +786,16 @@ fn PhysicianShell(
         let query = query();
         let client = client.read().clone();
         async move {
-            if query.trim().is_empty() {
-                return Ok(Vec::new());
-            }
-            client
-                .search(&query)
-                .await
-                .map(|page| page.patients)
-                .map_err(|_| ())
+            let answer = if query.trim().is_empty() {
+                Ok(Vec::new())
+            } else {
+                client
+                    .search(&query)
+                    .await
+                    .map(|page| page.patients)
+                    .map_err(|_| ())
+            };
+            (query, answer)
         }
     });
     let patient_today = use_resource(move || {
@@ -802,10 +804,11 @@ fn PhysicianShell(
         let client = client.read().clone();
         let open_id = selected();
         async move {
-            match open_id {
-                Some(id) => client.today_for(&id).await.map(Some).map_err(|_| ()),
+            let answer = match &open_id {
+                Some(id) => client.today_for(id).await.map(Some).map_err(|_| ()),
                 None => Ok(None),
-            }
+            };
+            (open_id, answer)
         }
     });
     let workspace = use_resource(move || {
@@ -813,7 +816,7 @@ fn PhysicianShell(
         let client = client.read().clone();
         let open_id = selected();
         async move {
-            match open_id {
+            let answer = match open_id.clone() {
                 Some(id) => match client.workspace(&id).await {
                     Ok(open) => {
                         shown.set(true);
@@ -836,7 +839,8 @@ fn PhysicianShell(
                     }
                 },
                 None => Ok(None),
-            }
+            };
+            (open_id, answer)
         }
     });
     use_effect(move || {
@@ -845,9 +849,7 @@ fn PhysicianShell(
         }
     });
     use_effect(move || {
-        if let Some(Ok(Some(open))) = workspace.read().as_ref()
-            && selected.read().as_deref() == Some(open.patient_workspace_id.as_str())
-        {
+        if let Some(Ok(Some(open))) = answer_to(&*selected.read(), workspace.read().as_ref()) {
             workspace_cache.set(Some(open.clone()));
         }
     });
@@ -900,13 +902,13 @@ fn PhysicianShell(
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
     let visits = day.map(upcoming_visits).unwrap_or_default();
-    let show_schedule =
-        schedule == ui::ReadStage::Unavailable || day.is_some_and(shows_today_schedule);
+    let show_schedule = schedule_unanswered(schedule) || day.is_some_and(shows_today_schedule);
     let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
     let need_you = today_state.content().map_or(0, Vec::len);
     let cached_workspace = workspace_cache.read().clone();
     let workspace_read = workspace.read();
-    let workspace_current = match workspace_read.as_ref() {
+    let workspace_answer = answer_to(&*selected.read(), workspace_read.as_ref());
+    let workspace_current = match workspace_answer {
         Some(Ok(Some(open))) => Some(Ok(open)),
         Some(Ok(None)) => None,
         Some(Err(())) => cached_workspace
@@ -920,7 +922,7 @@ fn PhysicianShell(
             .map(Ok),
     };
     let patient_gone = selected.read().is_some() && *gone.read() == *selected.read();
-    let patient_read = match (workspace_read.as_ref(), &workspace_current) {
+    let patient_read = match (workspace_answer, &workspace_current) {
         (Some(Err(())), Some(Ok(_))) => ui::ReadStage::Stale,
         (_, Some(Ok(_))) => ui::ReadStage::Showing,
         (_, Some(Err(()))) => ui::ReadStage::Unavailable,
@@ -955,9 +957,7 @@ fn PhysicianShell(
         .as_ref()
         .filter(|open| selected.read().as_deref() == Some(open.patient_workspace_id.as_str()))
         .cloned();
-    let patient_rows = patient_today
-        .read()
-        .as_ref()
+    let patient_rows = answer_to(&*selected.read(), patient_today.read().as_ref())
         .and_then(|result| result.as_ref().ok())
         .and_then(|list| list.as_ref())
         .map(today_lines)
@@ -972,20 +972,19 @@ fn PhysicianShell(
         .unwrap_or_default();
     let recent_read = recent.read();
     // A search answers one query, so an earlier query's rows never stand in for it.
-    let search_state = read_view(None, found.read().clone());
+    let search_state = read_view(None, answer_to(&query(), found.read().as_ref()).cloned());
     let search_rows = search_state.content().cloned().unwrap_or_default();
     let modal =
         shortcuts_open() || connections_open() || past_work_open() || reading.read().is_some();
     let shown_focus = if moved() { Some(focus()) } else { None };
     let snapshot = use_resource(move || {
         let _attempt = snapshot_attempt();
-        let workspace_id = selected();
-        let chat_id = open_chat();
+        let asked = (selected(), open_chat());
         let client = client.read().clone();
         async move {
-            match (workspace_id, chat_id) {
+            let answer = match &asked {
                 (Some(workspace_id), Some(chat_id)) => client
-                    .chat_snapshot(&workspace_id, &chat_id)
+                    .chat_snapshot(workspace_id, chat_id)
                     .await
                     .map(|page| {
                         page.snapshot
@@ -996,11 +995,15 @@ fn PhysicianShell(
                     })
                     .map_err(|_| ()),
                 _ => Ok(Vec::new()),
-            }
+            };
+            (asked, answer)
         }
     });
     // One conversation's lines never stand in for another's.
-    let conversation = read_view(None, snapshot.read().clone());
+    let conversation = read_view(
+        None,
+        answer_to(&(selected(), open_chat()), snapshot.read().as_ref()).cloned(),
+    );
     let shell_class = format!(
         "glass-app{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
@@ -1720,6 +1723,15 @@ struct CommandSlot {
     stage: Signal<CommandStage>,
     /// The unconfirmed command and what runs once it is taken.
     last: Signal<Option<(Command, Callback)>>,
+}
+
+/// A schedule rail shows while its day is loading or failed: only an answered day
+/// can say there is no calendar or no visit to show.
+fn schedule_unanswered(schedule: ui::ReadStage) -> bool {
+    matches!(
+        schedule,
+        ui::ReadStage::Loading | ui::ReadStage::Unavailable
+    )
 }
 
 /// One read as the page shows it. A failed refresh keeps the last answer.
@@ -3098,7 +3110,7 @@ fn PatientSurface(
             }
             }
             }
-            if !visits.is_empty() || schedule == ui::ReadStage::Unavailable {
+            if !visits.is_empty() || schedule_unanswered(schedule) {
                 ScheduleRail {
                     visits: visits.clone(),
                     title: "Upcoming visits",
