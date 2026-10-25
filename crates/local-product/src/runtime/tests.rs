@@ -595,3 +595,75 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     let successor = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
     assert_ne!(successor.attempt, claim.attempt);
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chats_list_one_physicians_workspace_by_latest_activity() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = |physician: &str, workspace: &str, chat: &str| Scope {
+        practice: practice.clone(),
+        physician: physician.into(),
+        workspace: workspace.into(),
+        chat: chat.into(),
+    };
+    let input = |key: &str, text: &str| Input {
+        key: key.into(),
+        text: text.into(),
+        timezone: "UTC".into(),
+    };
+    for (key, s, text) in [
+        ("a1", scope("me", "ws", "chat-a"), "About labs"),
+        ("b1", scope("me", "ws", "chat-b"), "About meds"),
+        ("a2", scope("me", "ws", "chat-a"), "And the follow-up"),
+        ("x1", scope("other", "ws", "chat-x"), "Not mine"),
+        ("y1", scope("me", "elsewhere", "chat-y"), "Other patient"),
+    ] {
+        assert_eq!(
+            store.accept(&s, &input(key, text)).await.unwrap(),
+            Accepted::New
+        );
+    }
+    // Same-second accepts tie on the clock; move chat-a's activity forward so
+    // the order is decided by activity, not the id tie-break.
+    let (tx, mut state, now) = store.locked(&scope("me", "ws", "chat-a")).await.unwrap();
+    assert!(state.opened_at > 0 && state.opened_at <= now);
+    state.last_activity_at = now + 100;
+    Store::save(tx, &scope("me", "ws", "chat-a"), &state)
+        .await
+        .unwrap();
+
+    let chats = store.chats(&practice, "me", "ws").await.unwrap();
+    let listed: Vec<_> = chats
+        .iter()
+        .map(|c| (c.chat.as_str(), c.first_message.as_str()))
+        .collect();
+    assert_eq!(listed, [("chat-a", "About labs"), ("chat-b", "About meds")]);
+    assert!(chats.iter().all(|c| c.opened_at > 0));
+
+    // Equal activity falls back to chat id descending.
+    let (tx, mut state, _) = store.locked(&scope("me", "ws", "chat-b")).await.unwrap();
+    state.last_activity_at = chats[0].last_activity_at;
+    Store::save(tx, &scope("me", "ws", "chat-b"), &state)
+        .await
+        .unwrap();
+    let ids: Vec<_> = store
+        .chats(&practice, "me", "ws")
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|c| c.chat)
+        .collect();
+    assert_eq!(ids, ["chat-b", "chat-a"]);
+
+    assert!(
+        store
+            .chats(&practice, "nobody", "ws")
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    assert!(store.chats(&practice, "", "ws").await.is_err());
+}
