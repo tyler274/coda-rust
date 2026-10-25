@@ -528,29 +528,32 @@ fn check_lab(eid: &str, lab: &Json, catalog: &Json, errors: &mut Vec<String>) {
         && hct.truthy()
         && rbc.truthy()
         && mcv.truthy()
-        && (hct.f() / rbc.f() * 10.0 - mcv.f()).abs() > 3.0
+        && (py_div(hct, rbc) * 10.0 - mcv.f()).abs() > 3.0
     {
         errors.push(format!(
             "{eid}: MCV {} disagrees with Hct/RBC ({})",
             mcv.str(),
-            fmt_f(hct.f() / rbc.f() * 10.0, 0)
+            fmt_f(py_div(hct, rbc) * 10.0, 0)
         ));
     }
+    // `hct or (rbc * mcv / 10 if rbc and mcv else None)`: hct keeps its type.
     let implied_hct = match (hct, rbc, mcv) {
-        (Some(h), _, _) if h.truthy() => Some(h.f()),
-        (_, Some(r), Some(m)) if r.truthy() && m.truthy() => Some(r.f() * m.f() / 10.0),
+        (Some(h), _, _) if h.truthy() => Some(h),
+        (_, Some(r), Some(m)) if r.truthy() && m.truthy() => {
+            Some(Num::Float(py_div(py_mul(r, m), Num::Int(10))))
+        }
         _ => None,
     };
     if let (Some(hgb), Some(implied)) = (hgb, implied_hct)
         && hgb.truthy()
-        && implied != 0.0
-        && !(30.0..=37.0).contains(&(hgb.f() / implied * 100.0))
+        && implied.truthy()
+        && !(30.0..=37.0).contains(&(py_div(hgb, implied) * 100.0))
     {
         errors.push(format!(
             "{eid}: Hgb {} with Hct {} gives MCHC {}, outside what an analyzer reports (30-37)",
             hgb.str(),
-            fmt_f(implied, 1),
-            fmt_f(hgb.f() / implied * 100.0, 1)
+            fmt_f(implied.f(), 1),
+            fmt_f(py_div(hgb, implied) * 100.0, 1)
         ));
     }
 }
@@ -827,8 +830,7 @@ fn py_eq(a: &Json, b: &Json) -> bool {
                     .all(|(k, v)| y.iter().any(|(k2, v2)| k == k2 && py_eq(v, v2)))
         }
         _ => match (Num::of(a), Num::of(b)) {
-            (Some(Num::Int(x)), Some(Num::Int(y))) => x == y,
-            (Some(x), Some(y)) => x.f() == y.f(),
+            (Some(x), Some(y)) => num_cmp(x, y) == Some(std::cmp::Ordering::Equal),
             _ => false,
         },
     }
@@ -864,9 +866,12 @@ impl<'a> KeySet<'a> {
         }
     }
 
+    /// Python membership is identity, then `==`. `json.loads` hands out one shared NaN
+    /// object, so a NaN finds a NaN although `nan == nan` is false.
     fn contains(&self, v: &Json) -> bool {
         hash(v);
-        self.0.iter().any(|x| py_eq(x, v))
+        let nan = |j: &Json| matches!(j, Json::Float(f) if f.is_nan());
+        self.0.iter().any(|x| py_eq(x, v) || nan(x) && nan(v))
     }
 
     fn len(&self) -> usize {
@@ -885,8 +890,7 @@ fn sorted_truthy(s: &KeySet) -> Vec<Json> {
         items.sort_by(|a, b| a.as_str().cmp(&b.as_str()));
     } else if items.iter().all(|x| Num::of(x).is_some()) {
         items.sort_by(|a, b| {
-            let (a, b) = (Num::of(a).unwrap().f(), Num::of(b).unwrap().f());
-            a.partial_cmp(&b).unwrap_or(std::cmp::Ordering::Equal)
+            num_cmp(Num::of(a).unwrap(), Num::of(b).unwrap()).unwrap_or(std::cmp::Ordering::Equal)
         });
     } else {
         panic!("TypeError: '<' not supported between str and a number");
@@ -926,9 +930,10 @@ fn dicts<'a>(obj: &'a Json, key: &str) -> Vec<&'a Json> {
 }
 
 /// A Python number as `json.loads` built it; `isinstance(x, (int, float))` includes bool.
+/// Ints are exact (a sum of JSON ints can pass `i64`).
 #[derive(Clone, Copy)]
 enum Num {
-    Int(i64),
+    Int(i128),
     Float(f64),
     Bool(bool),
 }
@@ -936,18 +941,27 @@ enum Num {
 impl Num {
     fn of(v: &Json) -> Option<Num> {
         match v {
-            Json::Int(i) => Some(Num::Int(*i)),
+            Json::Int(i) => Some(Num::Int(i128::from(*i))),
             Json::Float(f) => Some(Num::Float(*f)),
             Json::Bool(b) => Some(Num::Bool(*b)),
             _ => None,
         }
     }
 
+    /// The exact integer of an int or bool.
+    fn int(self) -> Option<i128> {
+        match self {
+            Num::Int(i) => Some(i),
+            Num::Bool(b) => Some(i128::from(b)),
+            Num::Float(_) => None,
+        }
+    }
+
+    /// Python `float(x)`: an int rounds to the nearest double, ties to even.
     fn f(self) -> f64 {
         match self {
-            Num::Int(i) => i as f64,
             Num::Float(f) => f,
-            Num::Bool(b) => f64::from(u8::from(b)),
+            n => n.int().expect("int") as f64,
         }
     }
 
@@ -965,16 +979,108 @@ impl Num {
     }
 }
 
-/// Python's `sum()`: integers add exactly until the first float, then the rest add with
-/// Neumaier compensation (CPython 3.12+).
+/// Python's exact comparison of two numbers (an int against a float compares the true
+/// values); None when a NaN is involved.
+fn num_cmp(a: Num, b: Num) -> Option<std::cmp::Ordering> {
+    use std::cmp::Ordering;
+    let int_vs_float = |i: i128, f: f64| -> Option<Ordering> {
+        if f.is_nan() {
+            return None;
+        }
+        if f.abs() >= 2f64.powi(127) {
+            return Some(if f > 0.0 {
+                Ordering::Less
+            } else {
+                Ordering::Greater
+            });
+        }
+        let floor = f.floor();
+        Some(match i.cmp(&(floor as i128)) {
+            Ordering::Equal if f > floor => Ordering::Less,
+            o => o,
+        })
+    };
+    match (a.int(), b.int()) {
+        (Some(x), Some(y)) => Some(x.cmp(&y)),
+        (Some(x), None) => int_vs_float(x, b.f()),
+        (None, Some(y)) => int_vs_float(y, a.f()).map(Ordering::reverse),
+        (None, None) => a.f().partial_cmp(&b.f()),
+    }
+}
+
+/// Python `a * b`: exact for two ints.
+fn py_mul(a: Num, b: Num) -> Num {
+    match (a.int(), b.int()) {
+        (Some(x), Some(y)) => Num::Int(x * y),
+        _ => Num::Float(a.f() * b.f()),
+    }
+}
+
+/// Python `a / b` for a nonzero `b`: two ints divide exactly and round once, as
+/// `long_true_divide` does; otherwise both sides convert to float.
+fn py_div(a: Num, b: Num) -> f64 {
+    match (a.int(), b.int()) {
+        (Some(x), Some(y)) => int_div(x, i64::try_from(y).expect("a JSON int divisor")),
+        _ => a.f() / b.f(),
+    }
+}
+
+/// `x / y` for ints, correctly rounded (ties to even) to a double. `|x| < 2**127` and
+/// `y != 0`, so the quotient is a normal double.
+fn int_div(x: i128, y: i64) -> f64 {
+    let neg = (x < 0) != (y < 0);
+    let (a, b) = (x.unsigned_abs(), u128::from(y.unsigned_abs()));
+    if a == 0 {
+        return if neg { -0.0 } else { 0.0 };
+    }
+    let bits = |v: u128| 128 - v.leading_zeros() as i32;
+    // Scale by 2**k so the integer quotient has 55 or 56 bits: two guard bits and more.
+    let k = bits(b) - bits(a) + 55;
+    let (q, r) = if k >= 0 {
+        let n = a << k;
+        (n / b, n % b)
+    } else {
+        let d = b << -k;
+        (a / d, a % d)
+    };
+    let extra = bits(q) - 53;
+    let mut m = q >> extra;
+    let low = q & ((1 << extra) - 1);
+    let half = 1 << (extra - 1);
+    if low > half || low == half && (r != 0 || m & 1 == 1) {
+        m += 1;
+    }
+    let scale = f64::from_bits(((extra - k + 1023) as u64) << 52);
+    let v = m as f64 * scale;
+    if neg { -v } else { v }
+}
+
+/// Python's `sum()` (CPython 3.12+). Ints and bools add exactly as a C long; the first
+/// float switches to Neumaier-compensated float addition for every later item. If the
+/// C long overflows first, the rest add as plain Python objects, with no compensation.
 fn py_sum(items: &[Num]) -> Num {
-    let mut int_total: i64 = 0;
+    let mut small: i64 = 0;
     let mut rest = items.iter();
     let (mut hi, mut lo) = loop {
         match rest.next() {
-            None => return Num::Int(int_total),
-            Some(Num::Float(x)) => break (int_total as f64 + x, 0.0),
-            Some(n) => int_total += n.f() as i64,
+            None => return Num::Int(i128::from(small)),
+            Some(Num::Float(x)) => break (small as f64 + x, 0.0),
+            Some(n) => {
+                let i = i64::try_from(n.int().expect("int")).expect("a JSON int");
+                match small.checked_add(i) {
+                    Some(s) => small = s,
+                    None => {
+                        let mut total = Num::Int(i128::from(small) + i128::from(i));
+                        for n in rest {
+                            total = match (total.int(), n.int()) {
+                                (Some(x), Some(y)) => Num::Int(x + y),
+                                _ => Num::Float(total.f() + n.f()),
+                            };
+                        }
+                        return total;
+                    }
+                }
+            }
         }
     };
     for n in rest {
@@ -1144,5 +1250,90 @@ mod tests {
             digest(|c| digit_value(c) == Some(7)),
             "486c1061d4f47c55131b4e3f4a97245b35647dc789c54b3dbc6385e0ab4d87d7"
         );
+    }
+
+    /// `check` on a one-patient unit and a catalog of the CBC labs; the expected output is
+    /// CPython 3.14's `ledger.check` on the same JSON.
+    fn check_events(events: &str) -> (Vec<String>, Vec<String>) {
+        let labs = DIFFERENTIAL
+            .iter()
+            .chain(&[
+                "Hematocrit",
+                "Red Blood Cells",
+                "Mean Corpuscular Volume",
+                "Hemoglobin",
+            ])
+            .map(|t| format!("\"{t}\":{{}}"))
+            .collect::<Vec<_>>()
+            .join(",");
+        let catalog = crate::json::parse(&format!(
+            r#"{{"conditions":{{}},"medications":{{}},"panels":{{}},"labs":{{{labs}}}}}"#
+        ))
+        .unwrap();
+        let unit = crate::json::parse(
+            r#"{"members":[{"mrn":"M1","birth_date":"1980-01-01","target_documents":0,"years_with_practice":1}]}"#,
+        )
+        .unwrap();
+        let ledger = crate::json::parse(&format!(
+            r#"{{"patients":[{{"mrn":"M1","events":{events}}}]}}"#
+        ))
+        .unwrap();
+        check(&unit, &ledger, &catalog)
+    }
+
+    #[test]
+    fn json_nan_is_one_object_in_sets_and_dicts() {
+        // json.loads returns its one NaN constant, so `nan in {nan}` holds by identity.
+        let (errors, warnings) = check_events(
+            r#"[{"id":NaN,"kind":"telephone","start":"2025-01-02T10:00",
+                 "medications":[{"drug_text":NaN,"action":"start"},{"drug_text":NaN,"action":"stop"}],
+                 "conditions":[{"label":NaN,"icd10":"X","action":"history"},
+                               {"label":NaN,"icd10":"X","action":"resolved"}]},
+                {"id":NaN,"kind":"telephone","start":"2025-01-02T10:00"}]"#,
+        );
+        assert_eq!(errors, ["M1: duplicate event ids"]);
+        assert!(warnings.is_empty());
+    }
+
+    #[test]
+    fn ints_stay_exact_past_two_to_the_53() {
+        let (errors, _) = check_events(
+            r#"[{"id":"a","kind":"lab_only","start":"2025-01-02T10:00","labs":[
+                {"results":[{"test":"Neutrophils %","value":9223372036854775807},
+                            {"test":"Lymphocytes %","value":1},
+                            {"test":"Monocytes %","value":-9223372036854775807},
+                            {"test":"Eosinophils %","value":9007199254740993},
+                            {"test":"Basophils %","value":-9007199254740992.5}]},
+                {"results":[{"test":"Hematocrit","value":9007199254740993},
+                            {"test":"Red Blood Cells","value":3},
+                            {"test":"Mean Corpuscular Volume","value":90},
+                            {"test":"Hemoglobin","value":9007199254740993}]},
+                {"results":[{"test":"Red Blood Cells","value":9007199254740993},
+                            {"test":"Mean Corpuscular Volume","value":7},
+                            {"test":"Hemoglobin","value":9007199254740993}]}]}]"#,
+        );
+        assert_eq!(
+            errors,
+            [
+                "M1/a: differential totals 2%, must total 100",
+                "M1/a: MCV 90 disagrees with Hct/RBC (30023997515803312)",
+                "M1/a: Hgb 9007199254740993 with Hct 9007199254740992.0 gives MCHC 100.0, outside what an analyzer reports (30-37)",
+                "M1/a: Hgb 9007199254740993 with Hct 6305039478318695.0 gives MCHC 142.9, outside what an analyzer reports (30-37)",
+            ]
+        );
+    }
+
+    #[test]
+    fn int_division_rounds_once_like_cpython() {
+        // repr(a / b) in CPython 3.14.
+        for (a, b, want) in [
+            (9007199254740993, 3, "3002399751580331.0"),
+            ((1 << 62) * 3, 7, "1.976436865040309e+18"),
+            (-((1i128 << 100) + 1), i64::MAX, "-137438953472.0"),
+            (1, 3, "0.3333333333333333"),
+            (7, i64::MIN, "-7.589415207398531e-19"),
+        ] {
+            assert_eq!(float_repr(int_div(a, b)), want, "{a} / {b}");
+        }
     }
 }
