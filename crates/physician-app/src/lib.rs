@@ -28,8 +28,8 @@ use shell::{
     connection_lines, demographic_card_view, format_calendar_date, format_clock, format_message,
     format_waited, keyboard_command, need_you_words, opens_reader, past_work_copy,
     patient_upcoming_visits, read_view, reply_channel_label, reply_review_actions,
-    reply_urgency_words, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    reply_urgency_words, schedule_empty_copy, shows_today_schedule, snapshot_for, summary_times,
+    synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -1010,18 +1010,22 @@ fn PhysicianShell(
         let chat_id = open_chat();
         let client = client.read().clone();
         async move {
-            match (workspace_id, chat_id) {
+            let lines = match (&workspace_id, &chat_id) {
                 (Some(workspace_id), Some(chat_id)) => client
-                    .chat_snapshot(&workspace_id, &chat_id)
+                    .chat_snapshot(workspace_id, chat_id)
                     .await
                     .map(|page| conversation_lines(&page.snapshot))
                     .map_err(|_| ()),
                 _ => Ok(Vec::new()),
-            }
+            };
+            ((workspace_id, chat_id), lines)
         }
     });
-    // One conversation's lines never stand in for another's.
-    let conversation = read_view(None, snapshot.read().clone());
+    // One conversation's lines never stand in for another's. A resource keeps
+    // its last value while it re-reads, so after a switch the previous chat's
+    // read is loading, not this chat's lines. A refetch of the same chat keeps
+    // showing what it had.
+    let conversation = snapshot_for(snapshot.read().clone(), &(selected(), open_chat()));
     // New conversation: a fresh id the server keeps once a message is sent.
     // The address names it, so a reload before the reply still reopens it.
     let mut start_chat = move || {

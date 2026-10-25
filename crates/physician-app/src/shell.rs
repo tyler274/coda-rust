@@ -104,6 +104,15 @@ pub fn read_view<T>(previous: Option<T>, current: Option<Result<T, ()>>) -> Read
     }
 }
 
+/// A read tagged with the key it answered. While a read for another key is
+/// pending, the previous key's answer is loading, never this key's content.
+pub fn snapshot_for<K: PartialEq, T>(read: Option<(K, Result<T, ()>)>, key: &K) -> ReadView<T> {
+    match read {
+        Some((answered, value)) if answered == *key => read_view(None, Some(value)),
+        _ => ReadView::Loading,
+    }
+}
+
 pub type TodayView = ReadView<Vec<TodayLine>>;
 
 pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
@@ -1306,6 +1315,25 @@ mod tests {
         assert_eq!(
             today_view(Some(&lines), Some(Err(()))),
             ReadView::Stale(lines)
+        );
+    }
+
+    #[test]
+    fn a_chat_read_never_shows_under_another_chat() {
+        let a = (Some("pw".to_owned()), Some("chat-a".to_owned()));
+        let b = (Some("pw".to_owned()), Some("chat-b".to_owned()));
+        assert_eq!(snapshot_for::<_, Vec<u8>>(None, &a), ReadView::Loading);
+        assert_eq!(
+            snapshot_for(Some((a.clone(), Ok(vec![1]))), &a),
+            ReadView::Showing(vec![1])
+        );
+        assert_eq!(
+            snapshot_for(Some((a.clone(), Ok(vec![1]))), &b),
+            ReadView::Loading
+        );
+        assert_eq!(
+            snapshot_for::<_, Vec<u8>>(Some((a.clone(), Err(()))), &a),
+            ReadView::Unavailable
         );
     }
 
