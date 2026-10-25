@@ -94,6 +94,18 @@ Return the structured result. Report accepted=true only if your final check prin
 const units = args.units
 log(`${units.length} units`)
 
+// args.revise: a review that applies to every unit (a rule added after they were
+// accepted). Accepted units get only the fix pass.
+if (args.revise) {
+  const fixed = await pipeline(units, (u) =>
+    agent(fixPrompt(u, args.revise), { label: `revise:${u}`, phase: 'Fix', schema: AUTHOR_SCHEMA }))
+  const out = fixed.map((r, i) => r
+    ? { unit: units[i], accepted: r.accepted, unfixed: r.open_warnings }
+    : { unit: units[i], failed: true })
+  log(`${out.filter((s) => s.accepted).length}/${units.length} units revised and accepted`)
+  return out
+}
+
 const results = await pipeline(
   units,
   (u) => agent(authorPrompt(u), { label: `author:${u}`, phase: 'Author', schema: AUTHOR_SCHEMA }),
