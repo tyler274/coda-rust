@@ -104,13 +104,13 @@ pub fn read_view<T>(previous: Option<T>, current: Option<Result<T, ()>>) -> Read
     }
 }
 
-/// A read tagged with the key it answered. While a read for another key is
-/// pending, the previous key's answer is loading, never this key's content.
-pub fn snapshot_for<K: PartialEq, T>(read: Option<(K, Result<T, ()>)>, key: &K) -> ReadView<T> {
-    match read {
-        Some((answered, value)) if answered == *key => read_view(None, Some(value)),
-        _ => ReadView::Loading,
-    }
+/// A read's answer, kept with the question it answered. A rerun leaves the last
+/// answer in place until the new one lands, so a page asking a new question (a
+/// query, a patient, a conversation) has no answer yet.
+pub fn answer_to<'a, Q: PartialEq, T>(asking: &Q, answer: Option<&'a (Q, T)>) -> Option<&'a T> {
+    answer
+        .filter(|(asked, _)| asked == asking)
+        .map(|(_, answer)| answer)
 }
 
 pub type TodayView = ReadView<Vec<TodayLine>>;
@@ -1319,21 +1319,16 @@ mod tests {
     }
 
     #[test]
-    fn a_chat_read_never_shows_under_another_chat() {
-        let a = (Some("pw".to_owned()), Some("chat-a".to_owned()));
-        let b = (Some("pw".to_owned()), Some("chat-b".to_owned()));
-        assert_eq!(snapshot_for::<_, Vec<u8>>(None, &a), ReadView::Loading);
+    fn an_answer_counts_only_for_the_question_it_answered() {
+        let answered = ("Mary".to_owned(), Ok::<_, ()>(vec!["Mary Louis"]));
         assert_eq!(
-            snapshot_for(Some((a.clone(), Ok(vec![1]))), &a),
-            ReadView::Showing(vec![1])
+            answer_to(&"Mary".to_owned(), Some(&answered)),
+            Some(&Ok(vec!["Mary Louis"]))
         );
+        assert_eq!(answer_to(&"Tanvir".to_owned(), Some(&answered)), None);
         assert_eq!(
-            snapshot_for(Some((a.clone(), Ok(vec![1]))), &b),
-            ReadView::Loading
-        );
-        assert_eq!(
-            snapshot_for::<_, Vec<u8>>(Some((a.clone(), Err(()))), &a),
-            ReadView::Unavailable
+            answer_to::<String, Result<Vec<&str>, ()>>(&"Mary".to_owned(), None),
+            None
         );
     }
 
