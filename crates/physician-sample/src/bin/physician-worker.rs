@@ -5,6 +5,7 @@
 //! A duplicate or settled delivery is acknowledged without calling the model.
 
 use std::sync::Arc;
+use std::sync::atomic::Ordering;
 use std::time::Duration;
 
 use axum::Json;
@@ -576,6 +577,20 @@ impl FailMarker {
     }
 }
 
+/// Takes one from `count` unless it is zero; true when it took one. An
+/// explicit compare-exchange loop: `fetch_update` is deprecated on newer
+/// stable (renamed `try_update`), which the dev shell's toolchain predates.
+fn take_one(count: &std::sync::atomic::AtomicU32) -> bool {
+    let mut left = count.load(Ordering::SeqCst);
+    while let Some(next) = left.checked_sub(1) {
+        match count.compare_exchange_weak(left, next, Ordering::SeqCst, Ordering::SeqCst) {
+            Ok(_) => return true,
+            Err(actual) => left = actual,
+        }
+    }
+    false
+}
+
 /// K from the first `[fail:K]` in `input`, if K is a whole number.
 fn marked_failures(input: &str) -> Option<u32> {
     let (_, rest) = input.split_once("[fail:")?;
@@ -603,7 +618,6 @@ impl Provider for Model {
     }
 
     async fn complete(&mut self, request: ModelRequest<'_>) -> Result<Turn, String> {
-        use std::sync::atomic::Ordering;
         if let Self::Fixed { delay, .. } = self
             && !delay.is_zero()
         {
@@ -617,14 +631,7 @@ impl Provider for Model {
             } => Err("fixed physician reply failed by marker".into()),
             Self::Fixed {
                 failures_remaining, ..
-            } if failures_remaining
-                .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |left| {
-                    left.checked_sub(1)
-                })
-                .is_ok() =>
-            {
-                Err("fixed physician reply failed".into())
-            }
+            } if take_one(failures_remaining) => Err("fixed physician reply failed".into()),
             Self::Fixed { text, .. } => Ok(Turn {
                 items: vec![Item::Message {
                     role: "assistant".into(),
@@ -742,6 +749,16 @@ mod tests {
             Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
             Ok(_) => panic!("a fail marker without fixed text must refuse to start"),
         }
+    }
+
+    #[test]
+    fn fixed_failures_count_down_to_zero_and_stop() {
+        let count = std::sync::atomic::AtomicU32::new(2);
+        assert!(take_one(&count));
+        assert!(take_one(&count));
+        assert!(!take_one(&count));
+        assert!(!take_one(&count));
+        assert_eq!(count.load(Ordering::SeqCst), 0);
     }
 
     #[test]
