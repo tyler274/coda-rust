@@ -1,8 +1,10 @@
 //! The authoring agent's tool for one unit (a patient, or a family authored together).
 //!
-//!   brief   <unit>   seed, targets, paths
-//!   check   <unit>   merge parts, check, count; ACCEPTED writes the ledger
-//!   preview <unit>   render and write chart.txt for reading
+//! ```text
+//! brief   <unit>   seed, targets, paths
+//! check   <unit>   merge parts, check, count; ACCEPTED writes the ledger
+//! preview <unit>   render and write chart.txt for reading
+//! ```
 //!
 //! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
 //! ledger is written to `<root>/ledgers/<unit>.json`, the only input the bank

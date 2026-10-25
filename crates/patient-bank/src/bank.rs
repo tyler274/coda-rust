@@ -1,10 +1,13 @@
 //! Render authored ledgers into the patient bank, its panels and manifest.
 //!
 //! Output:
-//!   bank/patients/<MRN>/<Family>.ndjson   one chart per patient, as of 2026-08-27
-//!   bank/panels/panel-<N>.json            nested panels (100 ⊂ 300 ⊂ 500 ⊂ 1000)
-//!   bank/manifest.json                    every patient with lineage, counts and hashes
-//!   bank/ledgers/<unit>.json              the authored source each chart was rendered from
+//!
+//! ```text
+//! bank/patients/<MRN>/<Family>.ndjson   one chart per patient, as of 2026-08-27
+//! bank/panels/panel-<N>.json            nested panels (100 ⊂ 300 ⊂ 500 ⊂ 1000)
+//! bank/manifest.json                    every patient with lineage, counts and hashes
+//! bank/ledgers/<unit>.json              the authored source each chart was rendered from
+//! ```
 //!
 //! `materialize` turns a panel (optionally as of an earlier instant) into one
 //! multi-patient NDJSON directory in the Roger fixture layout.
