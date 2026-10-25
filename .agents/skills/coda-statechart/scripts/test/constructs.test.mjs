@@ -1217,3 +1217,32 @@ test("against checks a detailed chart against the chart it details, in both dire
   const unknown = check({ ...map, omits: { "ship faster": "x" } });
   assert.match(unknown.stderr, /the map omits "ship faster", which no step of the agreed chart has/);
 });
+
+test("coverage checks a table that accounts for every state of a chart, region by region", () => {
+  const chart = fixture(here("door.mmd")).input;
+  const table = (body) => {
+    const file = path.join(fs.mkdtempSync(path.join(run, "coverage-")), "coverage.md");
+    fs.writeFileSync(file, body);
+    return cmd("coverage", chart, file);
+  };
+  const section = (region, rows) => `## ${region}\n\n| State | Status | Where |\n| --- | --- | --- |\n${rows.map(([s, st]) => `| ${s} | ${st} | x |`).join("\n")}\n\n`;
+  const full = "# Door app\n\nProse with | a pipe is ignored.\n\n"
+    + section("Door", [["Open", "built"], ["Locked", "built"]])
+    + section("Door/Locked/Alarm", [["Disarmed", "partial"], ["Armed", "missing"], ["Ringing", "missing"]])
+    + section("Door/Locked/Keypad", [["Idle", "not shown"], ["Typing", "built"]])
+    + section("Siren", [["Quiet", "not shown"], ["Loud", "built"]]);
+  const ok = table(full);
+  assert.equal(ok.status, 0, ok.text);
+  assert.match(ok.stdout, /9 states: 4 built, 1 partial, 2 missing, 2 not shown\./);
+  // A state the chart gains, a state it no longer has, an unknown status, a missing region.
+  const drift = table(full.replace("| Ringing | missing | x |\n", "").replace("| Typing | built |", "| Typing | done |")
+    .replace("| Loud | built | x |", "| Loud | built | x |\n| Muted | missing | x |").replace(/## Door\/Locked\/Keypad[\s\S]*?(?=## Siren)/, ""));
+  assert.equal(drift.status, 1);
+  assert.match(drift.stdout, /"Door\/Locked\/Alarm" does not list the state "Ringing"/);
+  assert.match(drift.stdout, /"Siren" has no state "Muted"/);
+  assert.match(drift.stdout, /the region "Door\/Locked\/Keypad" has no "## Door\/Locked\/Keypad" section/);
+  const status = table(full.replace("| Typing | built |", "| Typing | done |"));
+  assert.match(status.stdout, /"Typing" has the status "done"; use built, partial, missing, not shown/);
+  const extra = table(`${full}## Garage\n\n| State | Status |\n| --- | --- |\n| Shut | built |\n`);
+  assert.match(extra.stdout, /the chart has no region "Garage"/);
+});
