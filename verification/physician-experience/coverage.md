@@ -28,7 +28,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs coverage verification
 
 When the app or the graph changes a state, update its row in the same PR.
 
-As of main 910df41: 475 states, 96 built, 94 partial, 264 missing and 21 not shown.
+As of main 910df41 with #100: 475 states, 100 built, 93 partial, 261 missing and 21 not shown.
 
 # States by region
 
@@ -59,7 +59,7 @@ As of main 910df41: 475 states, 96 built, 94 partial, 264 missing and 21 not sho
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Today | built | TodaySurface, TodayRows (physician-app lib.rs) | yes | Heading with need-you count, rows with a Needs you now mark for urgency now, and the quiet copy when empty. |
-| Patient page | built | PatientSurface, ReadNotice (physician-app lib.rs) | yes | Opening the patient… shows only on a first open: switching patients keeps the previous read, so the old patient's conversation list shows until the new one answers. |
+| Patient page | built | PatientSurface, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the patient… shows whenever the patient being opened hasn't answered yet; the last patient's page never stands in for the next. |
 | Conversation.Source pane in the conversation.No source open in the conversation | partial | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs) | no | The conversation is a section of the patient page, not its own screen, and its answers carry no citations, so no source can open. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Citation preview in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
 | Conversation.Source pane in the conversation.Source open in the conversation.Loading the source in the conversation | missing |  | no | Conversation turns render through FormattedMessage with no citation chips; wire ChatTurn carries only text/authored_text. |
@@ -189,8 +189,8 @@ As of main 910df41: 475 states, 96 built, 94 partial, 264 missing and 21 not sho
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Loading the conversation | missing |  | yes | CONVERSATION_LOADING is wired in ReadNotice but never shows: the snapshot resource keeps its previous answer while rerunning, so opening a chat shows the empty prompt or the prior chat's lines until it answers. |
-| Showing the conversation | partial | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs) | yes | Turns with the composer below; switching chats shows the previous chat's lines until the new one answers. |
+| Loading the conversation | built | PatientSurface Conversation section, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Opening the conversation… shows until the chat being opened answers. Not exercised in the browser: the sample's workspaces list no chats. |
+| Showing the conversation | built | PatientSurface Conversation section, FormattedMessage (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Turns with the composer below; another chat's lines never stand in for the one opened. |
 | Showing the conversation, with one quiet line and Retry | missing |  | yes | A failed refresh drops the shown turns to Couldn't open this conversation instead of keeping them under a quiet line. |
 | Couldn't load the conversation, with Retry | built | PatientSurface Conversation section, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t open this conversation. with Try again. |
 | No conversation to read | built | PatientSurface Conversation section, PhysicianShell sidebar (physician-app lib.rs) | yes | Nothing to read until a chat opens; with no chats the copy says This workspace has no chats. and there is no way to start one. |
@@ -199,7 +199,7 @@ As of main 910df41: 475 states, 96 built, 94 partial, 264 missing and 21 not sho
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Loading the schedule | missing |  | yes | SCHEDULE_LOADING is wired in ScheduleRail, but the rail is hidden until the practice day answers, the same look as no calendar. |
+| Loading the schedule | built | TodaySurface ScheduleRail, ReadNotice (physician-app lib.rs) | yes | The rail shows Loading the schedule… until the day answers; only an answered day can say there is no calendar. |
 | Showing the schedule | built | ScheduleRail (physician-app lib.rs); upcoming_visits, schedule_empty_copy (physician-app shell.rs) | yes | Rail with visits and a left count, or the no-visits copy. |
 | Showing the schedule, with one quiet line and Retry | partial | ScheduleRail, use_read_view, ReadNotice (physician-app lib.rs) | yes | A failed refresh keeps the last schedule under a quiet line with Try again, but a part-loaded day (source state not usable) still reads as No visits scheduled today. |
 | Couldn't load the schedule, with Retry | built | TodaySurface and PatientSurface ScheduleRail, ReadNotice (physician-app lib.rs) | yes | A failed first read shows the rail with Coda couldn’t load the schedule. and Try again. |
@@ -219,7 +219,7 @@ As of main 910df41: 475 states, 96 built, 94 partial, 264 missing and 21 not sho
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Search closed | built | PhysicianShell sidebar Find patient item (physician-app lib.rs) | yes | With the ⌘ K hint. |
-| Search open.Search read.Loading the search | missing |  | yes | SEARCH_LOADING is wired in SearchDialog but never shows: the search resource keeps the previous query's answer while the new one runs, so it can say No patients match. while searching. |
+| Search open.Search read.Loading the search | built | SearchDialog, ReadNotice (physician-app lib.rs); answer_to (physician-app shell.rs) | yes | Searching… shows until the query being asked answers; an earlier query's rows or No patients match. never stand in. |
 | Search open.Search read.Showing the search | partial | SearchDialog (physician-app lib.rs) | no | Results with name and DOB, and No patients match. when empty, but no 50-at-a-time paging; PatientSearchResponse has no cursor. |
 | Search open.Search read.Showing the search, with one quiet line and Retry | missing |  | yes | A failed search drops to the couldn't-search error instead of keeping the results under a quiet line. |
 | Search open.Search read.Couldn't load the search, with Retry | built | SearchDialog, ReadNotice (physician-app lib.rs) | yes | Coda couldn’t search patients. with Try again. |
