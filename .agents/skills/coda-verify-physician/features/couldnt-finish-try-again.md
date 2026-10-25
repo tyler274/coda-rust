@@ -30,23 +30,26 @@ pressing it again cannot reopen finished work. Owners: `durable_snapshot_body` a
 
 Preconditions:
 
-- Baseline from [README](./README.md), on a **fresh** stack started with
-  `--worker-failures 5`. `jq .worker.fixed_failures "$RUN/stack.json"` prints `5`.
-- `C=chat-$(uuidgen | tr -d -)`; `OUT="$RUN/couldnt-finish-try-again"`.
+- Baseline from [README](./README.md), on the shared stack started with
+  `--worker-fail-marker`. `jq .worker.fail_marker "$RUN/stack.json"` prints `true`.
+- `C=chat-$(uuidgen | tr -d -)`; `OUT="$RUN/couldnt-finish-try-again"`; `T='Hello [fail:5]'`.
+  `[fail:5]` fails the message's first five attempts, so all five Pub/Sub deliveries fail
+  and the sixth, from Try again with the same `input_id`, answers.
 
-- **Send.** Run `$D --out "$OUT" send --site a --session "$S" --chat "$C" --text Hello`. `send-a.json` `.body.outcome` is `accepted`.
-- **Couldn't finish (cross-instance).** Run `$D --out "$OUT" snapshot --site b --session "$S" --chat "$C" --wait-failed --timeout 120`. Exit `0` after the Pub/Sub backoff (about 10–25 s). `.body.snapshot.conversation` is `[{kind: physician, text: Hello}, {kind: mechanical, text: "Coda couldn’t finish this response. Your message is saved.", resume_target: {...}}]`, and `.runs` is `[{run_id, state: failed}]` whose `run_id` equals `expected_run_id`.
+- **Send.** Run `$D --out "$OUT" send --site a --session "$S" --chat "$C" --text "$T"`. `send-a.json` `.body.outcome` is `accepted`.
+- **Couldn't finish (cross-instance).** Run `$D --out "$OUT" snapshot --site b --session "$S" --chat "$C" --wait-failed --timeout 120`. Exit `0` after the Pub/Sub backoff (about 10–25 s). `.body.snapshot.conversation` is `[{kind: physician, text: "Hello [fail:5]"}, {kind: mechanical, text: "Coda couldn’t finish this response. Your message is saved.", resume_target: {...}}]`, and `.runs` is `[{run_id, state: failed}]` whose `run_id` equals `expected_run_id`.
 - **Dead letter.** Run `$D --out "$OUT" dead-letters` until `.messages` has one entry whose `.scope.chat` is `$C`. Each pull acknowledges nothing, but the emulator can return an empty batch before the forward lands.
 - **Durable state.** Run `psql "$(jq -r .postgres.url "$RUN/stack.json")" -At -c "select state->>'status', state->>'failures', jsonb_array_length(state->'attempts') from physician_runtime_conversations where chat='$C'"`. Output: `failed|5|5`.
 - **Wrong run.** Run `$D --out "$OUT/wrong" resume --site a --session "$S" --chat "$C" --run not-the-run`. Exit `1`; `.body.outcome` is `rejected`, and a re-read snapshot still shows the mechanical line.
 - **Try again.** Run `$D --out "$OUT" resume --site a --session "$S" --chat "$C"`. Exit `0`; `.body.outcome` is `accepted` and `.body.run_id` is the failed run.
-- **Reply.** Run `$D --out "$OUT/after" snapshot --site b --session "$S" --chat "$C" --wait-text Noted.`. The conversation is `[Hello, Noted.]` with no `mechanical` item, and `.runs` is `[]`.
+- **Reply.** Run `$D --out "$OUT/after" snapshot --site b --session "$S" --chat "$C" --wait-text Noted.`. The conversation is `[Hello [fail:5], Noted.]` with no `mechanical` item, and `.runs` is `[]`.
 - **Pressed twice.** Repeat the **Try again** command: `.body.outcome` is `accepted` again because it reuses the key `resume-<work>-<run>`. A new key after completion, `$D resume ... --run <same run>` with a different key, is not exposed by the helper. Prove it with `cargo test -p physician-sample --test try_again` (it asserts `rejected`).
-- **Button, from the page (preferred order on a fresh `--worker-failures 5` stack).** Run this instead of the HTTP **Send**/**Try again** steps when proving `retry-button`. Open `$($D page-url --site a --chat "$C")`, sign in, write `Hello`, and choose `Send`. Without reloading, wait (up to 120 s) for `Coda couldn’t finish this response. Your message is saved.` and the `Try again` button in `.conversation-mechanical`. Save `$OUT/site-a-failed.png` and the `Conversation` accessibility snapshot. Choose `Try again`, wait for `Noted.`, and confirm the line and button are gone. Save `$OUT/site-a-after.png`. Then run the **Dead letter**, **Durable state** and **Reply** checks above for the same `$C`. `--worker-failures 5` fails only the first turn, so one stack proves either the page path or the HTTP path, not both.
+- **Button, from the page.** Use a new chat `P=chat-$(uuidgen | tr -d -)` on the same stack. Open `$($D page-url --site a --chat "$P")`, sign in, write `Hello [fail:5]`, and choose `Send`. Without reloading, wait (up to 120 s) for `Coda couldn’t finish this response. Your message is saved.` and the `Try again` button in `.conversation-mechanical`. Save `$OUT/site-a-failed.png` and the `Conversation` accessibility snapshot. Choose `Try again`, wait for `Noted.`, and confirm the line and button are gone. Save `$OUT/site-a-after.png`. Then run the **Dead letter**, **Durable state** and **Reply** checks above for `$P`. The count is per message, so the HTTP path and the page path each prove themselves on one stack.
 
 ## Gotchas
 
-- `--worker-failures 5` counts provider calls per worker process. After the first dead-letter, every later turn on that stack succeeds. Restart the stack for a second failure drive, and do not use it for happy-path features.
+- `[fail:K]` counts attempts per `input_id` in the worker's memory. A worker restart between the dead letter and Try again forgets the count, so Try again then fails five more times. Do not restart the worker mid-drive.
+- `--worker-failures 5` still exists. It fails the process's first five provider calls, whatever the message, so do not combine it with the marker on a stack that serves other features.
 - `--wait-failed` keys on the `mechanical` item. Before Stream A's snapshot change, a failed turn shows only `[{text: Hello}]`, so a stale `physician-sample` binary times out here even though Postgres says `failed`. Rebuild first.
 - The snapshot can briefly show neither a reply nor the line while redeliveries back off. That is the expected in-between state, not a failure.
 - A `rejected` resume answers HTTP 200. Check `.body.outcome`, not the status.

@@ -6,14 +6,15 @@ still succeed. Owners: command idempotency in `crates/local-product/src/runtime.
 (`physician_runtime_commands`, `input_id`), the worker's claim in
 `crates/physician-sample/src/bin/physician-worker.rs`, and `tests/worker.rs`
 (`duplicate_delivery_runs_the_fixed_provider_once`,
-`failed_delivery_is_redelivered_and_can_succeed`).
+`failed_delivery_is_redelivered_and_can_succeed`,
+`fail_marker_fails_only_the_marked_message`).
 
 ## Sub-features
 
 - `dup-command` — the same `message.submit` idempotency key on site A and then site B is `accepted` both times and saves one message.
 - `dup-conflict` — the same key with different text is `rejected` with `Coda couldn’t accept that message.`.
 - `dup-delivery` — a duplicate push of a completed turn to `/pubsub/chat-turn` answers `204` and makes no new attempt and no second reply.
-- `retry-delivery` — with one failure, the first delivery fails, Pub/Sub redelivers, and the turn completes with one `Noted.`.
+- `retry-delivery` — a message marked `[fail:1]` fails its first delivery, Pub/Sub redelivers, and the turn completes with one `Noted.` and no dead letter.
 
 ## How to get to it (user POV)
 
@@ -27,7 +28,7 @@ still succeed. Owners: command idempotency in `crates/local-product/src/runtime.
 
 Preconditions:
 
-- Baseline from [README](./README.md). For `dup-*`, use a stack started with `--worker-failures 0`. For `retry-delivery`, use a fresh stack started with `--worker-failures 1`.
+- Baseline from [README](./README.md), on a stack started with `--worker-fail-marker` and `--worker-failures 0`. `jq .worker.fail_marker "$RUN/stack.json"` prints `true`. Unmarked messages never fail, so `dup-*` and `retry-delivery` share the stack with every other feature.
 - `C=chat-$(uuidgen | tr -d -)`; `K=dup-$C`; `OUT="$RUN/duplicate-and-retry"`;
   `PG=$(jq -r .postgres.url "$RUN/stack.json")`; `WK=$(jq -r .worker.url "$RUN/stack.json")`.
 
@@ -44,12 +45,13 @@ Preconditions:
   ```
 
   It prints `204`. Re-running the **Durable count** query still prints `completed|1|2`, and the snapshot is still `[Once, Noted.]`.
-- **Retried delivery.** On the `--worker-failures 1` stack, send a new chat on A and wait with `snapshot --site b --wait-text Noted. --timeout 60`. Exit `0` after about one backoff (1–10 s). The `psql` query of `state->'attempts'` shows one `failed` or `interrupted` attempt and then one `completed` attempt, and the conversation has one `Noted.`.
+- **Retried delivery.** Set `R=chat-$(uuidgen | tr -d -)`. Run `$D --out "$OUT/retry" send --site a --session "$S" --chat "$R" --text 'Retry [fail:1]'`, then `$D --out "$OUT/retry" snapshot --site b --session "$S" --chat "$R" --wait-text Noted. --timeout 60`. Exit `0` after about one backoff (1–10 s), and the conversation is `[Retry [fail:1], Noted.]`. Run `psql "$PG" -At -c "select state->>'status', jsonb_array_length(jsonb_path_query_array(state, '\$.messages[*] ? (@.role == \"assistant\")')), jsonb_path_query_array(state, '\$.attempts[*].status') from physician_runtime_conversations where chat='$R'"`. Output: `completed|1|["failed", "completed"]` (one reply; the first attempt failed, the redelivery completed). `$D --out "$OUT/retry" dead-letters` has no entry whose `.scope.chat` is `$R`.
 
 ## Gotchas
 
 - The idempotency key is scoped to the signed-in physician, not to the site. Use one session on both sites to prove the cross-site duplicate.
 - A rejected conflicting key answers HTTP 200. Assert `.body.outcome`, not the status code.
 - The worker accepts unauthenticated pushes only because the stack sets `PUBSUB_EMULATOR_HOST`. Hosted push-token checks are not exercised here.
-- `--worker-failures 1` fails exactly one provider call per worker process. Use a fresh stack for each retry drive.
+- `[fail:K]` counts attempts per `input_id` in the worker's memory. Each retry drive needs a new chat and key; resending the same key reuses the count. A worker restart forgets every count.
+- `--worker-failures N` still exists and still fails the first N provider calls of the process, whatever the message. Leave it at `0` when the stack also serves happy paths.
 - `input_id` must equal the key of the accepted command. A push with another `input_id` acknowledges as stale, which proves nothing about duplicates.
