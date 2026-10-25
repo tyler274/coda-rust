@@ -13,7 +13,7 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-images=(physician-sample-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image)
+images=(physician-sample-image physician-worker-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image)
 nix build --no-link --print-out-paths "${images[@]/#/.#}" > image-paths
 mapfile -t archives < image-paths
 python3 scripts/check-images.py "${archives[@]}"

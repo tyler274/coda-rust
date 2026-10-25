@@ -82,7 +82,13 @@
           unzip
           zip
           doppler
-          google-cloud-sdk
+          # The Pub/Sub emulator backs the physician chat-turn queue tests
+          # (crates/physician-sample/tests/worker.rs). It is a Java server.
+          (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.pubsub-emulator ])
+          jre_headless
+          # Redis-compatible server for the physician event bus tests
+          # (crates/physician-bus/tests, physician-sample/tests/fanout.rs).
+          valkey
           act
           actionlint
           oha

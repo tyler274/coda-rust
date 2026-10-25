@@ -147,6 +147,7 @@ let
     };
 
   physician = native "physician-sample";
+  physicianWorker = native "physician-worker";
   duet = native "duet-api";
   # Product entrypoints compose their owned chains; future conversation owners
   # extend these binaries, not the image wrapper or runtime startup.
@@ -161,6 +162,7 @@ in
   coda-web = webBuild;
   doppler-cli = doppler;
   physician-sample = physician;
+  physician-worker = physicianWorker;
   duet-api = duet;
   physician-web = physicianWeb;
   duet-web = duetWeb;
@@ -185,6 +187,13 @@ in
       "PHYSICIAN_AUTH=required"
       "CODA_LOCAL_MODEL_EXECUTION=api"
     ];
+  };
+  physician-worker-image = image {
+    name = "coda-physician-worker";
+    role = "runtime";
+    binary = physicianWorker;
+    executable = "physician-worker";
+    environment = [ "CODA_LOCAL_MODEL_EXECUTION=api" ];
   };
   duet-api-image = image {
     name = "coda-duet-api";
