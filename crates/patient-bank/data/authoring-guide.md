@@ -21,8 +21,8 @@ The charts are used to watch a physician's assistant work over a practice:
 prepare visits, review what is new, carry follow-through. So a chart does not end
 tidied up. At the bank's "now" some things are still in motion (a result not yet
 back, a referral not yet scheduled, a message from two days ago, an abnormal value
-nobody commented on), and the weeks after "now" are written too, so they can
-arrive on schedule. Most patients, most weeks, need nothing.
+nobody commented on, a visit already booked). What happens next is decided later,
+not written here. Most patients, most weeks, need nothing.
 
 Real charts are **dense**. Years of care leave hundreds of records: visit notes,
 and around them a steady stream of short ones (nursing and MA notes, phone calls,
@@ -56,9 +56,9 @@ repository root.
 4. `cargo run -q -p patient-bank -- check <unit>` merges the parts and reports
    errors and counts against the targets. Fix every error by editing the
    parts and re-run until it prints `ACCEPTED`.
-5. `cargo run -q -p patient-bank -- preview <unit>` renders the chart to the
-   horizon and writes a chronological reading copy, `chart.txt`; a line marks the
-   bank time, and everything below it reaches the practice later. Read it start
+5. `cargo run -q -p patient-bank -- preview <unit>` renders the chart as of
+   today and writes a chronological reading copy, `chart.txt`, ending with the
+   visits already booked. Read it start
    to end the way a physician reviewing the chart would, against "Before you
    finish" at the end of this guide. Fix what you find; then check again.
 
@@ -92,13 +92,18 @@ share a household or family and their charts must agree with each other (shared
 address when living together, consistent family history, a spouse may be
 mentioned in social history, nothing contradictory).
 
-The bank's "now" is **2026-08-27T12:00** Eastern. The ledger runs on to the
-**horizon, 2026-10-08T12:00**: every event and record is strictly before it. What
-is dated after "now" is hidden from the bank chart and arrives at its own time:
-the pending result's value, the consult letter, the reply to Tuesday's message,
-the visit already booked for September and its note. Write the next six weeks the
-way they would really go for this patient; for most that is one booked visit, a
-refill or nothing at all. The patient joined the practice about
+The practice "today" is **2026-08-27T12:00** Eastern, and the chart ends there:
+every event and record is strictly before it. Write nothing that happens after
+today. Two things reach past it, as they do in a real chart on any day:
+
+- **A result not back yet.** A draw from the last few days whose results are not
+  in: mark the draw `"pending": true` and name the tests with no values. The check
+  tells you when a draw you gave values for would not be back by today.
+- **A visit already booked.** A primary-care visit on the calendar after today is
+  an event with `"appointment": "booked"`, its time, its kind and a `reason`, and
+  nothing else.
+
+The patient joined the practice about
 `years_with_practice` years before that (establish-care visit). Earlier history
 reaches the chart through outside records, the establish-care history, or
 patient report, never as notes that predate when the practice could have held them,
@@ -370,14 +375,15 @@ patient fields (`given` through `summary`); later parts carry only `mrn` and
           "end": "YYYY-MM-DDTHH:MM (admissions only)",
           "service": "Internal Medicine — Primary Care",
           "reason": "short reason for visit",
-          "appointment": "cancelled|no-show (only for a booked visit that did not happen)",
+          "appointment": "booked (after today, nothing else on the event) | cancelled | no-show",
           "conditions": [{"label": "Essential hypertension", "action": "diagnosed|history|resolved", "onset": "YYYY-MM-DD", "note": "optional qualifier"}],
           "medications": [{"drug": "lisinopril 10 MG Oral Tablet", "action": "start|stop|historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic|short", "reason": "optional"}],
           "allergies": [{"substance": "Penicillin", "reaction": "Hives", "severity": "mild|moderate|severe", "criticality": "low|high", "type": "allergy|intolerance"}],
           "vitals": {"bp": [128, 82], "hr": 74, "rr": 14, "temp_c": 36.8, "spo2": 98, "weight_kg": 81.4, "height_cm": 172.0, "peak_flow": 420},
           "vitals (ED or admission)": [{"time": "YYYY-MM-DDTHH:MM", "bp": [148, 90], "hr": 104, "rr": 20, "temp_c": 38.4, "spo2": 93}, {"time": "…"}],
           "labs": [{"panel": "Lipid Panel", "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Low Density Lipoprotein", "value": 162}, {"test": "Total Cholesterol", "value": 241}]},
-                   {"panel": null, "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Hemoglobin A1c", "value": 7.4}]}],
+                   {"panel": null, "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Hemoglobin A1c", "value": 7.4}]},
+                   {"panel": null, "collected": "YYYY-MM-DDTHH:MM (last few days)", "pending": true, "results": [{"test": "High-risk HPV DNA"}]}],
           "surveys": [{"survey": "PHQ-9 total score", "value": 11}],
           "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}, {"item": "History of alcohol use", "value": "2-3 drinks per week"}],
           "reports": [{"study": "Chest X-ray, 2 views", "performed": "YYYY-MM-DDTHH:MM", "text": "…", "conclusion": "…"}],
@@ -416,9 +422,9 @@ and generation, and no two patients share a full name.
 Read `chart.txt` as the physician who will inherit this patient, and fix what a
 physician would notice:
 
-- **Now.** At the bank time the chart is mid-life: something is plausibly open for
-  this patient (or, for a quiet patient, nothing is, and that is fine), and the
-  weeks after it go on the way they would.
+- **Today.** The chart ends mid-life: something is plausibly open for this
+  patient (or, for a quiet patient, nothing is, and that is fine), and nothing is
+  written after today but pending results and booked visits.
 - **Truth.** No note knows something before its date; notes and structured data
   agree; every result, drug and diagnosis in a note exists in the data.
 - **Voice.** Each document sounds like its author. Notes are short unless it is a

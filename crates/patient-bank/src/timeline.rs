@@ -227,47 +227,6 @@ impl<'a> Timeline<'a> {
         }
     }
 
-    /// Every moment a record of this chart comes into being or changes: the moments
-    /// at which the chart as of a later time can differ from the chart just before.
-    pub fn instants(&self) -> Vec<Stamp> {
-        let mut out = Vec::new();
-        for ev in &self.events {
-            out.push(ev.start);
-            out.extend(ev.end);
-            for set in ev.vitals.sets() {
-                out.push(self.vitals_time(ev, set));
-            }
-            for (i, lab) in ev.labs.iter().enumerate() {
-                out.push(Self::collected(ev, lab));
-                out.push(self.lab_released(ev, i, lab));
-                out.extend(lab.results.iter().filter_map(|r| r.resulted));
-            }
-            for (i, r) in ev.reports.iter().enumerate() {
-                out.push(Self::performed(ev, r));
-                out.push(self.report_issued(ev, i, r));
-            }
-            out.extend(ev.surveys.iter().map(|x| x.date.unwrap_or(ev.start)));
-            out.extend(
-                ev.procedures
-                    .iter()
-                    .map(|x| x.performed.unwrap_or(ev.start)),
-            );
-            out.extend(ev.immunizations.iter().map(|x| x.date.unwrap_or(ev.start)));
-            out.extend(ev.documents.iter().map(|x| x.date.unwrap_or(ev.start)));
-            out.extend(ev.orders.iter().map(|x| x.date.unwrap_or(ev.start)));
-        }
-        for o in &self.orders {
-            out.push(o.authored);
-            out.extend(o.stopped);
-            if o.item.course == Some(Course::Short) {
-                out.push(time::plus(o.authored, (21 * 24 * 60 + 1).minutes()));
-            }
-        }
-        out.sort();
-        out.dedup();
-        out
-    }
-
     /// When an untimed rooming set was taken: a few minutes after the visit started.
     pub fn rooming(&self, ev: &Event) -> Stamp {
         time::plus(ev.start, (4 + (self.base % 9) as i64).minutes())
@@ -303,6 +262,9 @@ impl<'a> Timeline<'a> {
             Self::collected(ev, lab),
             Self::lab_turnaround(&mut self.lab_draws(ev, i), lab),
         );
+        if lab.pending {
+            return time::never();
+        }
         lab.resulted.unwrap_or(usual)
     }
 

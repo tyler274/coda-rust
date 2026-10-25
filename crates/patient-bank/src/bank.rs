@@ -2,9 +2,8 @@
 //!
 //! ```text
 //! bank/patients/<MRN>/<Family>.ndjson   one chart per patient, as of 2026-08-27
-//! bank/arrivals/<MRN>.ndjson            what reaches the practice after that, to the
-//!                                       horizon: resource versions by meta.lastUpdated
-//! bank/calendar/Appointment.ndjson      the practice's visits from the bank day on
+//! bank/calendar/Appointment.ndjson      the practice's visits from the bank day on:
+//!                                       today's, and those booked after it
 //! bank/panels/panel-<N>.json            nested panels (100 ⊂ 300 ⊂ 500 ⊂ 1000)
 //! bank/manifest.json                    every patient with lineage, counts and hashes
 //! bank/ledgers/<unit>.json              the authored source each chart was rendered from
@@ -29,7 +28,7 @@ use crate::ledger::Ledger;
 use crate::render::{Receipt, Renderer};
 use crate::rng::Rng;
 use crate::seeds::{Complexity, Seeds};
-use crate::{Result, paths, time, upcoming};
+use crate::{Result, calendar, paths, time};
 
 pub const PANEL_SIZES: [usize; 4] = [100, 300, 500, 1000];
 pub const PANEL_SEED: u128 = 20261024;
@@ -108,7 +107,6 @@ pub fn write_lines(path: &Path, lines: &[String]) -> Result<()> {
 #[derive(Serialize)]
 struct Manifest {
     as_of: &'static str,
-    horizon: &'static str,
     format: &'static str,
     families: [&'static str; 11],
     patients: Vec<ManifestPatient>,
@@ -117,7 +115,6 @@ struct Manifest {
     coding: BTreeMap<String, usize>,
     patient_count: usize,
     panels: BTreeMap<String, usize>,
-    arrivals: usize,
     appointments: BTreeMap<&'static str, usize>,
 }
 
@@ -316,7 +313,6 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
 
     let mut manifest = Manifest {
         as_of: time::AS_OF,
-        horizon: time::HORIZON,
         format: "FHIR R4 4.0.1 NDJSON, one directory per patient",
         families: FAMILIES,
         patients: Vec::new(),
@@ -325,12 +321,10 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
         coding: BTreeMap::new(),
         patient_count: 0,
         panels: BTreeMap::new(),
-        arrivals: 0,
         appointments: BTreeMap::new(),
     };
     let mut groups: Vec<Group> = Vec::new();
     let mut charts: Vec<(String, Lines)> = Vec::new();
-    let mut arrivals: Vec<(String, Vec<String>)> = Vec::new();
     let mut appointments = Vec::new();
 
     for (mrn, lines) in roger.into_iter().flatten() {
@@ -405,15 +399,7 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
         for seed in &unit.members {
             let patient = ledger.patient(&seed.mrn).expect("checked above");
             let (chart, receipt) = r.render(seed, patient, time::as_of());
-            let later: Vec<String> = upcoming::arrivals(&r, seed, patient)
-                .iter()
-                .map(|(_, v)| v.to_string())
-                .collect();
-            manifest.arrivals += later.len();
-            if !later.is_empty() {
-                arrivals.push((seed.mrn.clone(), later));
-            }
-            for a in upcoming::calendar(seed, patient) {
+            for a in calendar::visits(seed, patient) {
                 *manifest.appointments.entry(a.status).or_default() += 1;
                 appointments.push(a);
             }
@@ -538,11 +524,7 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
         fs::create_dir(dir.join("patients"))?;
         fs::create_dir(dir.join("ledgers"))?;
         fs::create_dir(dir.join("panels"))?;
-        fs::create_dir(dir.join("arrivals"))?;
         fs::create_dir(dir.join("calendar"))?;
-        for (mrn, rows) in &arrivals {
-            write_lines(&dir.join("arrivals").join(format!("{mrn}.ndjson")), rows)?;
-        }
         write_lines(&dir.join("calendar").join("Appointment.ndjson"), &calendar)?;
         for (mrn, lines) in &charts {
             let d = dir.join("patients").join(mrn);
@@ -580,7 +562,6 @@ pub fn run(seeds_path: &Path, ledgers: &Path, out: &Path, roger: Option<&Path>) 
         "totals": manifest.totals,
         "panels": manifest.panels,
         "coding": manifest.coding,
-        "arrivals": manifest.arrivals,
         "appointments": manifest.appointments,
     });
     println!("{}", serde_json::to_string_pretty(&summary)?);

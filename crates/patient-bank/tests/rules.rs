@@ -6,7 +6,7 @@ use patient_bank::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use patient_bank::render::Renderer;
 use patient_bank::seeds::{Seed, Seeds, Unit};
 use patient_bank::timeline::{OrderStatus, ProblemStatus, Timeline};
-use patient_bank::{bank, check, paths, stories, upcoming};
+use patient_bank::{bank, calendar, check, paths, stories};
 use serde_json::json;
 
 fn at(s: &str) -> Stamp {
@@ -554,15 +554,14 @@ fn an_order_stays_open_until_it_is_done_or_cancelled() {
 }
 
 #[test]
-fn what_reaches_the_practice_after_the_bank_time_arrives_as_new_versions() {
+fn a_chart_ends_at_today_with_pending_results_and_booked_visits() {
     let p = patient(json!([
         visit(
             "e1",
             "2026-08-25T09:30",
             json!({
-                "labs": [{"panel": null, "collected": "2026-08-25T09:30", "results": [
-                    {"test": "High-risk HPV DNA", "text": "Negative", "resulted": "2026-09-01T14:00"}
-                ]}],
+                "labs": [{"panel": null, "collected": "2026-08-25T09:30", "pending": true,
+                    "results": [{"test": "High-risk HPV DNA"}]}],
                 "documents": [{"type": "Progress Notes", "author": "PCP",
                     "body": "Pap and HPV co-test sent today. Will call with results."}]
             })
@@ -570,56 +569,80 @@ fn what_reaches_the_practice_after_the_bank_time_arrives_as_new_versions() {
         visit(
             "e2",
             "2026-09-15T08:40",
-            json!({"documents": [{"type": "Progress Notes",
-            "author": "PCP", "body": "Recheck BP. Doing fine on the new dose, no changes."}]})
-        ),
-        visit(
-            "e3",
-            "2026-09-29T10:00",
-            json!({"appointment": "cancelled"})
+            json!({"appointment": "booked", "reason": "BP recheck"})
         )
     ]));
-    let catalog = Catalog::load(&paths::catalog()).expect("catalog");
-    let terms = Terms::default();
-    let r = Renderer {
-        catalog: &catalog,
-        terms: &terms,
-    };
-    let (now, _) = r.render(&seed(), &p, patient_bank::time::as_of());
-    let hpv = |c: &Chart| {
-        c.observations
-            .iter()
-            .find(|o| o.code.text.as_deref() == Some("High-risk HPV DNA"))
-            .map(|o| (o.id.clone(), o.status))
-            .expect("hpv")
-    };
-    let (id, status) = hpv(&now);
-    assert_eq!(status, "registered");
-    assert!(now.documents.len() == 1 && now.encounters.len() == 1);
-
-    let later = upcoming::arrivals(&r, &seed(), &p);
-    let final_hpv = later
+    let now = render(&p, "2026-08-27T12:00");
+    let hpv = now
+        .observations
         .iter()
-        .find(|(_, v)| v["id"] == id.as_str())
-        .expect("the HPV result arrives");
-    assert_eq!(final_hpv.1["status"], "final");
-    assert_eq!(final_hpv.1["meta"]["versionId"], "2");
+        .find(|o| o.code.text.as_deref() == Some("High-risk HPV DNA"))
+        .expect("hpv");
+    assert_eq!((hpv.status, hpv.issued.as_deref()), ("registered", None));
+    // still pending however late the chart is rendered: what comes back is decided later
+    let later = render(&p, "2027-01-01T09:00");
+    assert!(later.observations.iter().all(|o| o.status == "registered"));
     assert_eq!(
-        final_hpv.1["meta"]["lastUpdated"],
-        "2026-09-01T18:00:00+00:00"
-    );
-    assert!(later.iter().any(|(f, _)| *f == "DocumentReference"));
-    assert!(
-        later
-            .iter()
-            .all(|(_, v)| v["meta"]["lastUpdated"].as_str() > Some("2026-08-27"))
+        later.encounters.len(),
+        1,
+        "a booked visit is not an encounter"
     );
 
-    let cal = upcoming::calendar(&seed(), &p);
-    let statuses: Vec<(&str, &str)> = cal.iter().map(|a| (&a.start[..10], a.status)).collect();
-    assert_eq!(
-        statuses,
-        [("2026-09-15", "booked"), ("2026-09-29", "cancelled")]
+    let cal = calendar::visits(&seed(), &p);
+    let slots: Vec<(&str, &str)> = cal.iter().map(|a| (&a.start[..10], a.status)).collect();
+    assert_eq!(slots, [("2026-09-15", "booked")]);
+    assert!(errors_for(seed(), p).is_empty());
+}
+
+#[test]
+fn check_keeps_everything_before_today_but_booked_visits() {
+    let body = "Doing well. BP fine today. Continue current plan, labs before next visit.";
+    let has = |events: serde_json::Value, what: &str| {
+        let e = errors_for(seed(), patient(events));
+        assert!(e.iter().any(|x| x.contains(what)), "{what}: {e:?}");
+    };
+    has(
+        json!([visit("e1", "2026-09-02T09:00", note(body))]),
+        "is not before today",
+    );
+    has(
+        json!([visit(
+            "e1",
+            "2026-09-02T09:00",
+            json!({"appointment": "booked", "documents": [
+            {"type": "Progress Notes", "author": "PCP", "body": body}]})
+        )]),
+        "holds nothing yet",
+    );
+    has(
+        json!([visit(
+            "e1",
+            "2026-08-02T09:00",
+            json!({"appointment": "booked"})
+        )]),
+        "booked before today",
+    );
+    has(
+        json!([visit(
+            "e1",
+            "2026-08-27T10:40",
+            json!({
+            "labs": [{"panel": null, "collected": "2026-08-27T10:40",
+                "results": [{"test": "Hemoglobin A1c", "value": 6.1}]}],
+            "documents": [{"type": "Progress Notes", "author": "PCP", "body": body}]})
+        )]),
+        "is not back by today",
+    );
+    has(
+        json!([visit(
+            "e1",
+            "2026-08-25T09:00",
+            json!({
+            "labs": [{"panel": null, "collected": "2026-08-25T09:00", "pending": true,
+                "results": [{"test": "Hemoglobin A1c", "value": 6.1}]}],
+            "documents": [{"type": "Progress Notes", "author": "PCP", "body": body}]})
+        )]),
+        "has no value until it comes back",
     );
 }
 

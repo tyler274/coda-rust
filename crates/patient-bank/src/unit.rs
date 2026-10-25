@@ -3,7 +3,7 @@
 //! ```text
 //! brief   <unit>   seed, targets, paths
 //! check   <unit>   merge parts, check, verify extra codes, count; ACCEPTED writes the ledger
-//! preview <unit>   render to the horizon and write chart.txt for reading
+//! preview <unit>   render at the bank time and write chart.txt for reading
 //! ```
 //!
 //! Drafts live in `<root>/drafts/<unit>/` (story.md, part-NN.json). An accepted
@@ -21,7 +21,7 @@ use crate::fhir::{Chart, Observation};
 use crate::ledger::{Ledger, Part, Patient, Stamp, Terms};
 use crate::render::Renderer;
 use crate::seeds::{Seeds, Unit};
-use crate::{Result, check, paths, terms, time};
+use crate::{Result, calendar, check, paths, terms, time};
 
 pub const MODEL: &str = "claude-opus-5-5 (Claude Code workflow subagent)";
 /// The share of each density target a chart must reach.
@@ -278,9 +278,27 @@ fn preview(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
         return Ok(1);
     }
     let terms = verify(drafts, &merged.patients, catalog)?;
-    let text: Vec<String> = render(unit, &merged.patients, catalog, &terms, time::horizon())
+    let text: Vec<String> = render(unit, &merged.patients, catalog, &terms, time::as_of())
         .iter()
-        .map(|(_, c)| chart_text(c))
+        .map(|(mrn, c)| {
+            let seed = unit.members.iter().find(|m| &m.mrn == mrn).expect("member");
+            let patient = merged
+                .patients
+                .iter()
+                .find(|p| &p.mrn == mrn)
+                .expect("chart");
+            let booked: Vec<String> = calendar::visits(seed, patient)
+                .iter()
+                .filter(|a| a.status == "booked")
+                .map(|a| format!("  {} {}", local(&a.start), a.description))
+                .collect();
+            let booked = if booked.is_empty() {
+                "  none".to_string()
+            } else {
+                booked.join("\n")
+            };
+            format!("{}\n## Booked visits\n{booked}\n", chart_text(c))
+        })
         .collect();
     let path = drafts.join("chart.txt");
     fs::write(&path, text.join("\n\n"))?;
@@ -524,17 +542,8 @@ pub fn chart_text(chart: &Chart) -> String {
         "\n## Chart, oldest first (Eastern time; results show when they were released)".into(),
     );
     timeline.sort_by(|a, b| a.0.cmp(&b.0));
-    let bank_time = time::AS_OF.replace('T', " ");
     let mut day = String::new();
-    let mut later = false;
     for (when, line) in timeline {
-        if !later && when >= bank_time {
-            later = true;
-            out.push(format!(
-                "\n----- bank time {bank_time}: everything below reaches the practice later"
-            ));
-            day.clear();
-        }
         if when[..10] != day {
             day = when[..10].to_string();
             out.push(format!("\n=== {day}"));

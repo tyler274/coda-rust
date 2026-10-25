@@ -18,12 +18,10 @@
 //!             and nothing is stopped or resolved before it was
 //! future      note text naming a diagnosis or drug the chart only records later
 //!             (lexical; review notes, read by a person)
-//! arrivals    every later version is valid FHIR for the same patient, released
-//!             after the bank time and before the horizon
 //! ```
 //!
 //! The calendar is checked as a whole: valid Appointments for known patients from
-//! the bank day to the horizon. The report also measures the panel: what is open
+//! the bank day on. The report also measures the panel: what is open
 //! at the bank time, vital-sign digits, the most common problems and drugs, and
 //! sentences that recur across patients.
 
@@ -630,18 +628,15 @@ fn check_patient(
         .iter()
         .filter(|x| str_of(x, "status") == "active")
         .count();
-    let arrivals = check_arrivals(sh, bank, mrn, &mut errors)?;
     for (key, n) in [
         ("now:pending_results", pending),
         ("now:open_orders", orders),
-        ("arrivals", arrivals),
     ] {
         *rep.stats.entry(key.into()).or_default() += n;
     }
     for (key, open) in [
         ("now:patients_with_pending_results", pending > 0),
         ("now:patients_with_open_orders", orders > 0),
-        ("now:patients_with_arrivals", arrivals > 0),
     ] {
         *rep.stats.entry(key.into()).or_default() += usize::from(open);
     }
@@ -727,47 +722,6 @@ fn check_patient(
     Ok(rep)
 }
 
-/// Check a patient's later versions and return how many there are.
-fn check_arrivals(sh: &Shared, bank: &Path, mrn: &str, errors: &mut Vec<String>) -> Result<usize> {
-    let path = bank.join("arrivals").join(format!("{mrn}.ndjson"));
-    let Ok(text) = fs::read_to_string(&path) else {
-        return Ok(0);
-    };
-    let (as_of, horizon) = (time::utc(time::as_of()), time::utc(time::horizon()));
-    let mut n = 0;
-    for line in text.lines() {
-        n += 1;
-        let r: Value = serde_json::from_str(line)?;
-        let fam = str_of(&r, "resourceType");
-        let id = str_of(&r, "id");
-        let Some(slot) = FAMILIES.iter().position(|f| *f == fam) else {
-            errors.push(format!("arrival {fam}/{id}: not a bank family"));
-            continue;
-        };
-        if let Some(e) = sh.validators[slot].iter_errors(&r).next() {
-            let message: String = e.to_string().chars().take(160).collect();
-            errors.push(format!("arrival schema {fam}/{id}: {message}"));
-        }
-        let at = str_of(&r["meta"], "lastUpdated");
-        if at < as_of.as_str() || at >= horizon.as_str() {
-            errors.push(format!(
-                "arrival {fam}/{id}: lastUpdated {at} outside the bank time to the horizon"
-            ));
-        }
-        let owner = if fam == "Patient" {
-            format!("Patient/{id}")
-        } else if r["subject"].is_object() {
-            str_of(&r["subject"], "reference").to_string()
-        } else {
-            str_of(&r["patient"], "reference").to_string()
-        };
-        if owner != format!("Patient/{mrn}") {
-            errors.push(format!("arrival {fam}/{id}: belongs to {owner}"));
-        }
-    }
-    Ok(n)
-}
-
 /// Check the practice calendar and count its visits by status.
 fn check_calendar(
     bank: &Path,
@@ -777,7 +731,6 @@ fn check_calendar(
 ) -> Result<BTreeMap<String, usize>> {
     let text = fs::read_to_string(bank.join("calendar").join("Appointment.ndjson"))?;
     let day = time::utc(time::as_of())[..10].to_string();
-    let horizon = time::utc(time::horizon());
     let mut ids = HashSet::new();
     let mut counts = BTreeMap::new();
     for line in text.lines() {
@@ -791,8 +744,7 @@ fn check_calendar(
             errors.push(format!("calendar schema Appointment/{id}: {message}"));
         }
         let (start, end) = (str_of(&r, "start"), str_of(&r, "end"));
-        if !UTC.is_match(start) || start < day.as_str() || start >= horizon.as_str() || end <= start
-        {
+        if !UTC.is_match(start) || start < day.as_str() || end <= start {
             errors.push(format!("calendar Appointment/{id}: {start} to {end}"));
         }
         let who = str_of(&r["participant"][0]["actor"], "reference");

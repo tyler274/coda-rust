@@ -274,14 +274,16 @@ pub struct Event {
     pub orders: Vec<OrderItem>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub documents: Vec<Document>,
-    /// A booked visit that did not happen as booked.
+    /// A visit on the practice calendar that has not happened: booked after today,
+    /// or cancelled or missed before it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub appointment: Option<Missed>,
+    pub appointment: Option<Appointment>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
-pub enum Missed {
+pub enum Appointment {
+    Booked,
     Cancelled,
     NoShow,
 }
@@ -472,6 +474,9 @@ pub struct Lab {
     /// When the whole draw was released, if not the usual turnaround.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resulted: Option<Stamp>,
+    /// Not back at the bank time: the results name what was sent, with no values.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub pending: bool,
     pub results: Vec<LabResult>,
 }
 

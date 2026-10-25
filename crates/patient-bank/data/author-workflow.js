@@ -55,7 +55,7 @@ Then read the authoring guide it names, end to end, and the vocabulary file. The
 
 What matters most:
 - Chronology: every record knows only what was known on its date.
-- The chart ends mid-life at the bank time, and the weeks after it to the horizon are written too.
+- The chart ends mid-life at today: nothing after it is written except pending results and booked visits.
 - Density with substance: reach the document and observation targets through the contacts, short notes, vitals and monitoring this person would really have. No filler, no near-duplicate notes.
 - Many voices, each document with its author's role: physicians, NPs, nurses, MAs, front desk, pharmacists, specialists, the patient's own messages.
 - Use your clinical world knowledge: human care by busy clinicians, real drug doses, plausible lab trajectories, realistic gaps, friction and imperfections.
@@ -66,7 +66,7 @@ Return the structured result. Report accepted=true only if your final check prin
 
 const reviewPrompt = (u) => `You are an experienced primary-care physician reviewing a chart someone else wrote for authoring unit ${u} of a fictional patient bank. You did not write it; find what a physician inheriting this patient would not believe.
 
-Run ${RUN} brief ${u} for the seed and the guide's path. Read the authoring guide end to end (its "Before you finish" section is your checklist), then ${DRAFTS}/${u}/story.md, then ${DRAFTS}/${u}/chart.txt start to end. A line in chart.txt marks the bank time; what is below it reaches the practice later.
+Run ${RUN} brief ${u} for the seed and the guide's path. Read the authoring guide end to end (its "Before you finish" section is your checklist), then ${DRAFTS}/${u}/story.md, then ${DRAFTS}/${u}/chart.txt start to end. chart.txt ends with the visits already booked; nothing after today is written.
 
 Report each problem with where it is and the fix. Major: a chronology leak, a note and data that disagree, clinically wrong care, a device-impossible number, teaching voice, a generic or repeated story element, a chart with nothing realistic going on at the bank time, rewrite damage such as a role used as a name. Minor: voice, length, texture. Do not report taste. Do not edit any file.
 

@@ -23,8 +23,7 @@ patients/ledgers/<unit>.json
       |              the clinical source of truth, written only by `check`, with the
       |              unit's verified extra codes (`terms`)
 build                renders every ledger as FHIR R4 as of 2026-08-27T12:00 Eastern;
-      |              arrivals/<MRN>.ndjson, what reaches the practice after that up to
-      |              the horizon (2026-10-08T12:00); calendar/Appointment.ndjson;
+      |              calendar/Appointment.ndjson, the visits from that day on;
       |              panels/panel-{100,300,500,1000}.json (nested, families kept whole);
       |              manifest.json
       v
@@ -66,13 +65,11 @@ the finished directory into place.
   the same ledger rendered as of that moment, so later records are absent, later
   stops and resolutions have not happened, and results not yet released are
   `registered`.
-- **What comes next.** Ledgers run past the bank time to the horizon. The bank
-  chart holds what the practice knew at the bank time; `upcoming.rs` renders the
-  chart again at every later record's instant and writes each changed or new
-  resource as an arrival, a new `meta.versionId` with `lastUpdated` at the moment it
-  became available (a result released, a letter received, an order closed). The
-  calendar is the practice's own booked visits from the bank day to the horizon as
-  FHIR Appointments: fulfilled, booked, cancelled or no-show.
+- **Charts end at today.** Every record is before the bank time. A draw not back
+  yet is `pending` (no values, `registered` however late the chart is rendered),
+  and a visit already booked is an empty `booked` event on the practice calendar
+  (`calendar.rs`, FHIR Appointments from the bank day on). What happens after
+  today is not authored; it is decided later, when the patients are run.
 - **Encounters, immunizations and orders.** Every visit that happened is an
   Encounter (v3 ActCode class) that its vitals, results, notes and shots point to.
   Immunizations carry verified CVX codes; a dose reported from elsewhere is not a
@@ -102,7 +99,7 @@ the finished directory into place.
   systolics or heart rates, BP pairs that keep repeating, one temperature), an
   order closed before it was placed, and clinical records on a cancelled or missed
   visit. `validate` reports what is open at the bank time (pending results, open
-  orders), arrivals and the calendar, vital-sign digit counts, the most common
+  orders) and the calendar, vital-sign digit counts, the most common
   active drugs (`medication_list`), and sentences of eight or more words found in
   five or more patients' notes (`shared_sentences`).
 
@@ -158,7 +155,7 @@ realism bar.
 - Adults only, in one membership-based internal medicine practice. Patients keep
   their insurance for labs, imaging, specialists and drugs, and bring years of
   care from elsewhere as outside history. The bank time is 2026-08-27T12:00
-  Eastern; ledgers run to the horizon, 2026-10-08T12:00.
+  Eastern, and nothing after it is authored but pending results and booked visits.
 - Western Massachusetts towns, 413-555-01xx-style phones and `@example.test` emails.
   Other area codes appear for people who moved in.
 - Clinicians and staff appear by role only. No real care organization, lab, pharmacy, store or

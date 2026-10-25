@@ -225,7 +225,11 @@ pub fn render(
     let panel = panel_name.and_then(|p| cx.catalog.panels.get(p));
     let mut rng = cx.timeline.lab_draws(ev, i);
     let usual = time::plus(collected, Timeline::lab_turnaround(&mut rng, lab));
-    let released = lab.resulted.unwrap_or(usual);
+    let released = if lab.pending {
+        time::never()
+    } else {
+        lab.resulted.unwrap_or(usual)
+    };
 
     let mut values: HashMap<&str, Value> = HashMap::new();
     let mut stated_order: Vec<&str> = Vec::new();
@@ -242,7 +246,7 @@ pub fn render(
             number: r.value.clone(),
             text: r.text.as_deref(),
             origin: Origin::Stated,
-            released: r.resulted.unwrap_or(released),
+            released: r.resulted.filter(|_| !lab.pending).unwrap_or(released),
         };
         values.insert(&r.test, v);
     }

@@ -1,8 +1,8 @@
 //! The authoring rules a unit's ledger must meet before it is accepted.
 //!
 //! Shape is the ledger types' job; these are the rules about content: seed
-//! agreement, the catalog vocabulary, chronology up to the horizon, orders and
-//! missed visits, lab arithmetic, vitals a device would produce, and note hygiene
+//! agreement, the catalog vocabulary, chronology (everything before today
+//! except booked visits), pending results, orders and missed visits, lab arithmetic, vitals a device would produce, and note hygiene
 //! (authors, roles not names, no em dashes).
 //! Errors send the author back to the part files; warnings are kept with the
 //! accepted ledger for review. None of this judges clinical reasoning.
@@ -10,12 +10,14 @@
 use std::collections::{HashMap, HashSet};
 use std::sync::LazyLock;
 
+use jiff::ToSpan;
 use regex::Regex;
 
 use crate::catalog::Catalog;
 use crate::labs::DIFFERENTIAL;
 use crate::ledger::{
-    ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, VitalSet, num,
+    Appointment, ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, VitalSet,
+    num,
 };
 use crate::seeds::Unit;
 use crate::time;
@@ -119,7 +121,7 @@ fn fmt_num(x: f64) -> String {
 pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<String>, Vec<String>) {
     let mut errors = Vec::new();
     let mut warnings = Vec::new();
-    let horizon = time::horizon();
+    let as_of = time::as_of();
     let wanted: Vec<&str> = unit.members.iter().map(|m| m.mrn.as_str()).collect();
     let mut got: Vec<&str> = patients.iter().map(|p| p.mrn.as_str()).collect();
     got.sort_unstable();
@@ -166,11 +168,14 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         let mut started: HashSet<&str> = HashSet::new();
         for ev in &tl.events {
             let eid = format!("{mrn}/{}", ev.id);
+            let booked = ev.appointment == Some(Appointment::Booked);
             for (what, stamp) in stamps(ev) {
-                if stamp >= horizon && what != "end" {
+                // an admission still under way ends after today
+                if stamp >= as_of && what != "end" && !booked {
                     errors.push(format!(
-                        "{eid}: {what} {stamp} is not before the horizon {}",
-                        time::HORIZON
+                        "{eid}: {what} {stamp} is not before today {}; nothing after today is \
+                         written except a booked visit",
+                        time::AS_OF
                     ));
                 }
                 if stamp.date() < birth {
@@ -251,8 +256,24 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
             if ev.appointment.is_some() {
                 if !ev.booked() {
                     errors.push(format!(
-                        "{eid}: only a visit on the practice calendar can be cancelled or missed"
+                        "{eid}: only a visit on the practice calendar can be booked, cancelled \
+                         or missed"
                     ));
+                }
+                let written = !ev.documents.is_empty()
+                    || !ev.conditions.is_empty()
+                    || !ev.medications.is_empty()
+                    || !ev.allergies.is_empty()
+                    || !ev.social.is_empty()
+                    || !ev.orders.is_empty();
+                if booked && ev.start < as_of {
+                    errors.push(format!(
+                        "{eid}: a visit booked before today either happened, or was cancelled \
+                         or missed"
+                    ));
+                }
+                if booked && written {
+                    errors.push(format!("{eid}: a booked visit holds nothing yet"));
                 }
                 let happened = !ev.vitals.is_empty()
                     || !ev.labs.is_empty()
@@ -263,6 +284,38 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 if happened {
                     errors.push(format!(
                         "{eid}: a cancelled or missed visit records nothing clinical"
+                    ));
+                }
+            }
+        }
+        // What comes back after today is decided later: results drawn before today
+        // and not back are `pending`, with no values.
+        for ev in &tl.events {
+            let eid = format!("{mrn}/{}", ev.id);
+            for (i, lab) in ev.labs.iter().enumerate() {
+                let collected = Timeline::collected(ev, lab);
+                if lab.pending && collected < time::plus(as_of, (-14).days()) {
+                    errors.push(format!(
+                        "{eid}: a draw from {collected} would be back by today; give its results"
+                    ));
+                }
+                let late = lab.results.iter().filter_map(|r| r.resulted);
+                if !lab.pending
+                    && (tl.lab_released(ev, i, lab) >= as_of
+                        || late.into_iter().any(|t| t >= as_of))
+                {
+                    errors.push(format!(
+                        "{eid}: a draw on {collected} is not back by today; mark it \
+                         `\"pending\": true` and leave its values out"
+                    ));
+                }
+            }
+            for (i, r) in ev.reports.iter().enumerate() {
+                if ev.start < as_of && tl.report_issued(ev, i, r) >= as_of {
+                    errors.push(format!(
+                        "{eid}: {:?} would be read after today; date it earlier, or leave the \
+                         study out and keep an open order for it",
+                        r.study
                     ));
                 }
             }
@@ -588,7 +641,11 @@ fn check_event<'a>(
             }
             if !catalog.labs.contains_key(test) {
                 errors.push(format!("{eid}: unknown lab test {test:?}"));
-            } else if r.value.is_none() && r.text.is_none() {
+            } else if lab.pending && (r.value.is_some() || r.text.is_some()) {
+                errors.push(format!(
+                    "{eid}: lab {test:?} is pending; it has no value until it comes back"
+                ));
+            } else if !lab.pending && r.value.is_none() && r.text.is_none() {
                 errors.push(format!("{eid}: lab {test:?} needs value or text"));
             }
             if let (Some(members), Some(p)) = (members, panel)
