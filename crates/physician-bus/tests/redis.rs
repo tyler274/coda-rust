@@ -185,6 +185,17 @@ impl Server {
         }
     }
 
+    /// `STOP` freezes Valkey with its sockets open; `CONT` resumes it.
+    fn signal(&self, signal: &str) {
+        let pid = self.child.as_ref().expect("Valkey running").id();
+        let status = Command::new("kill")
+            .arg(format!("-{signal}"))
+            .arg(pid.to_string())
+            .status()
+            .expect("kill in Nix shell");
+        assert!(status.success(), "kill -{signal}");
+    }
+
     fn url(&self) -> String {
         format!(
             "{}://default:{PASSWORD}@127.0.0.1:{}",
@@ -302,6 +313,129 @@ async fn independent_instances_auth_fanout_restart_resync_and_invalid_payload() 
     );
     raw.quit().await.unwrap();
     connection.await.unwrap().unwrap();
+}
+
+async fn drain_after_connect(events: &mut Subscription, connected: Instant) {
+    // fred also reports the initial connection on its reconnect channel, so
+    // the listener may resync just after connect. Discard that first.
+    tokio::time::sleep_until((connected + Duration::from_millis(500)).into()).await;
+    while events.try_recv().is_ok() {}
+}
+
+fn assert_quiet(events: &mut Subscription, why: &str) {
+    let event = events.try_recv();
+    assert!(
+        matches!(
+            event,
+            Err(tokio::sync::broadcast::error::TryRecvError::Empty)
+        ),
+        "{why}: {event:?}"
+    );
+}
+
+/// A restart shorter than one heartbeat: only the reconnect path can cover it.
+/// The heartbeat ticks at connect and every 2 s after. Valkey goes down after
+/// the healthy 2 s tick and comes back before fred's third retry (backoff
+/// 100, 200, 400 ms, each plus up to 100 ms jitter). An event published in
+/// that gap is lost by the bus. The bus must resync after resubscribing,
+/// before the 4 s tick could notice anything.
+#[tokio::test]
+async fn fast_restart_within_heartbeat_resyncs_from_reconnect_path() {
+    let Some(mut server) = Server::start(false).await else {
+        return;
+    };
+    let bus = RedisBus::connect(&server.url(), None).await.unwrap();
+    // The listener task and its heartbeat interval start as connect returns.
+    let connected = Instant::now();
+    let at = |ms: u64| tokio::time::Instant::from(connected + Duration::from_millis(ms));
+    let mut events = bus.subscribe();
+    let changed = Event::WorkspaceChanged {
+        workspace_id: "synthetic-fast-restart-workspace".into(),
+    };
+    bus.publish(changed.clone()).await.unwrap();
+    receive(&mut events, &changed).await;
+    drain_after_connect(&mut events, connected).await;
+    tokio::time::sleep_until(at(2300)).await;
+    assert_quiet(&mut events, "a healthy heartbeat must not resync");
+
+    server.stop();
+    tokio::time::sleep_until(at(2300 + 550)).await;
+    server.restart().await;
+    // Only the drop and the refused retries are behind us. Drop their
+    // resyncs: the consumer refetched for them while still unsubscribed.
+    while events.try_recv().is_ok() {}
+    let raw = Builder::from_config(Config::from_url(&server.url()).unwrap())
+        .build()
+        .unwrap();
+    let connection = raw.init().await.unwrap();
+    let missed = r#"{"version":1,"event":{"type":"workspace_changed","workspace_id":"missed"}}"#;
+    let receivers: i64 = raw.publish(CHANNEL, missed).await.unwrap();
+    assert_eq!(
+        receivers,
+        0,
+        "the bus resubscribed before the probe ({:?} after connect)",
+        connected.elapsed()
+    );
+    raw.quit().await.unwrap();
+    connection.await.unwrap().unwrap();
+
+    // The reconnect path resyncs when it sees the reconnect, then again once
+    // SUBSCRIBE is acknowledged: a refetch for the first can still miss
+    // events published before the ACK. Nothing else runs before the 4 s tick.
+    let first = tokio::time::timeout_at(at(3900), events.recv())
+        .await
+        .expect("the reconnect path must resync before the next heartbeat tick")
+        .unwrap();
+    assert_eq!(first, Event::Resync);
+    let mut resyncs = 1;
+    while let Ok(event) = tokio::time::timeout_at(at(3900), events.recv()).await {
+        assert_eq!(
+            event.unwrap(),
+            Event::Resync,
+            "unexpected event across restart"
+        );
+        resyncs += 1;
+    }
+    assert!(
+        resyncs >= 2,
+        "the reconnect path must resync again after resubscribing, saw {resyncs}"
+    );
+    wait_live(&bus, true).await;
+    bus.publish(changed.clone()).await.unwrap();
+    receive(&mut events, &changed).await;
+}
+
+/// A server that stops answering but keeps its sockets open (frozen process,
+/// half-open link) produces no fred error or reconnect. Only the heartbeat's
+/// failing ping can report it.
+#[tokio::test]
+async fn frozen_server_resyncs_from_heartbeat_path() {
+    let Some(server) = Server::start(false).await else {
+        return;
+    };
+    let bus = RedisBus::connect(&server.url(), None).await.unwrap();
+    let connected = Instant::now();
+    let mut events = bus.subscribe();
+    drain_after_connect(&mut events, connected).await;
+    assert_quiet(&mut events, "a healthy bus must not resync");
+
+    server.signal("STOP");
+    // Next tick within 2 s, then the ping's 3 s command timeout.
+    let event = tokio::time::timeout(Duration::from_secs(8), events.recv())
+        .await
+        .expect("the heartbeat must resync when Valkey stops answering")
+        .unwrap();
+    assert_eq!(event, Event::Resync);
+    assert!(!bus.live(), "a bus whose ping failed must not report live");
+
+    server.signal("CONT");
+    wait_live(&bus, true).await;
+    receive(&mut events, &Event::Resync).await;
+    let changed = Event::WorkspaceChanged {
+        workspace_id: "synthetic-frozen-workspace".into(),
+    };
+    bus.publish(changed.clone()).await.unwrap();
+    receive(&mut events, &changed).await;
 }
 
 #[tokio::test]
