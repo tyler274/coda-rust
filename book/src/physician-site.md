@@ -55,11 +55,17 @@ The site queues turns only when `PHYSICIAN_CHAT_TOPIC` is set. Without it, hoste
 
 With the topic set, `reply.revise` answers 503 "Hosted reply revision is unavailable." Reply revision runs the model in the site process, and with the topic set the site no longer runs the model. It works again once revision moves to the worker.
 
+`GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Inline chats come from `PhysicianSession::chats`. Each conversation records `opened_at` and `last_activity_at` in its JSONB state, so no migration is needed. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id and writes it to `?chat=`. A chat is listed after a reload once its first message is accepted.
+
 The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
 
 Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budget alert. Raise that alert before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
 
 `nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
+
+The bus proofs in [`tests/redis.rs`](/crates/physician-bus/tests/redis.rs) do not race production timing. `RedisBus::connect_with` takes a test `Timing` (heartbeat, command timeout, reconnect backoff and jitter); `connect` keeps the production values. The fast-restart proof routes the bus through a TCP proxy that the test closes and reopens, with a 60 s heartbeat and no jitter, so only the reconnect path can resync. Each test waits for the bus to be live and quiet instead of sleeping a fixed time.
+
+The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` set, `PHYSICIAN_WORKER_FIXED_FAIL_MARKER=1` makes a message containing `[fail:K]` fail its first K attempts, counted per `input_id` in worker memory. Try again keeps the `input_id`, so `[fail:5]` dead-letters and its Try again answers. Hosted execution refuses the variable, like the other fixed-provider variables.
 
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#system-boundary">Architecture: the system boundary and model roles</a>
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#external-clinical-evidence">Architecture: external clinical evidence</a>
@@ -73,4 +79,4 @@ Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budge
 
 ## Remaining gaps
 
-- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Follow-up: accept the revision in Postgres, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs).
+- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Hosted drafts don't exist yet either: drafts live only in the inline session, and there is no Postgres draft owner. Follow-up: add a Postgres draft store, accept the revision there, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs). [ENG-199](https://linear.app/coda-health/issue/ENG-199) owns it.
