@@ -200,6 +200,35 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         Some(&serde_json::Value::Null),
         "the reload must not carry ?chat=: {reopened}"
     );
+
+    // A second new conversation never shows the listed chat's lines, not even
+    // for the frame before its own (empty) read answers. Every render after the
+    // click is checked until the empty state; the click itself changes no DOM,
+    // so the page before it (still showing the old chat) is not counted.
+    let stale = browser
+        .eval(&format!(
+            r#"new Promise(resolve => {{
+            const old = {};
+            const region = () => document.querySelector('[aria-label="Conversation"]');
+            const lines = () => [...(region()?.querySelectorAll('.formatted-message') ?? [])].map(m => m.textContent);
+            let seen = false;
+            const check = () => {{
+                if (lines().some(t => t.includes(old))) seen = true;
+                if (region()?.querySelector('.conversation-empty')) {{ observer.disconnect(); resolve({{seen, done: true}}); }}
+            }};
+            const observer = new MutationObserver(check);
+            observer.observe(document.body, {{subtree: true, childList: true, characterData: true}});
+            document.querySelector('button.sidebar-new-conversation').click();
+            setTimeout(() => {{ observer.disconnect(); resolve({{seen, done: false}}); }}, 10000);
+        }})"#,
+            serde_json::to_string(message).unwrap()
+        ))
+        .await;
+    assert_eq!(
+        stale.pointer("/result/result/value"),
+        Some(&serde_json::json!({"seen": false, "done": true})),
+        "a new conversation showed the previous chat's lines: {stale}"
+    );
 }
 
 #[tokio::test]
