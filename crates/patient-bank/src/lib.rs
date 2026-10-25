@@ -4,8 +4,10 @@
 
 pub mod catalog;
 pub mod catalog_seed;
+pub mod design;
 pub mod json;
 pub mod ledger;
+pub mod names;
 pub mod render;
 pub mod rng;
 pub mod terms;
