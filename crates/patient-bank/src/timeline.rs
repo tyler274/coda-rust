@@ -71,7 +71,7 @@ impl Order<'_> {
     }
 }
 
-/// One problem-list concept and every action on it.
+/// One episode of a problem-list concept and every action on it.
 pub struct Problem<'a> {
     pub label: &'a str,
     /// The event and item that first put it on the problem list.
@@ -85,21 +85,17 @@ pub struct Problem<'a> {
 pub enum ProblemStatus {
     Active,
     Resolved(Stamp),
-    /// Recorded again after it had resolved.
-    Recurrence,
 }
 
 impl Problem<'_> {
     pub fn status(&self, at: Stamp) -> ProblemStatus {
-        let mut status = ProblemStatus::Active;
-        for &(when, action) in self.actions.iter().take_while(|(when, _)| *when < at) {
-            status = match (action, status) {
-                (ConditionAction::Resolved, _) => ProblemStatus::Resolved(when),
-                (_, ProblemStatus::Resolved(_)) => ProblemStatus::Recurrence,
-                (_, s) => s,
-            };
-        }
-        status
+        self.actions
+            .iter()
+            .take_while(|(when, _)| *when < at)
+            .find(|(_, action)| *action == ConditionAction::Resolved)
+            .map_or(ProblemStatus::Active, |&(when, _)| {
+                ProblemStatus::Resolved(when)
+            })
     }
 }
 
@@ -172,12 +168,22 @@ impl<'a> Timeline<'a> {
         orders.sort_by_key(|(pos, o)| (*pos, o.index));
         let orders = orders.into_iter().map(|(_, o)| o).collect();
 
+        // A diagnosis after the concept resolved opens a new episode with its own onset.
         let mut problems: Vec<Problem> = Vec::new();
         for ev in &events {
             for item in &ev.conditions {
-                let found = problems.iter_mut().find(|p| p.label == item.label);
-                match (found, item.action) {
-                    (Some(p), action) => p.actions.push((ev.start, action)),
+                let open = problems
+                    .iter()
+                    .rposition(|p| p.label == item.label)
+                    .filter(|&i| {
+                        item.action == ConditionAction::Resolved
+                            || !matches!(
+                                problems[i].actions.last(),
+                                Some((_, ConditionAction::Resolved))
+                            )
+                    });
+                match (open, item.action) {
+                    (Some(i), action) => problems[i].actions.push((ev.start, action)),
                     (None, ConditionAction::Diagnosed | ConditionAction::History) => {
                         problems.push(Problem {
                             label: &item.label,
@@ -188,7 +194,7 @@ impl<'a> Timeline<'a> {
                         })
                     }
                     // resolved before it was ever recorded: nothing to resolve
-                    (None, ConditionAction::Resolved) => {}
+                    (None, _) => {}
                 }
             }
         }

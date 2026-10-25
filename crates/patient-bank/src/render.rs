@@ -383,7 +383,7 @@ impl Renderer<'_> {
                 .then(|| Reference::to("Encounter", &opaque("enc", &[mrn, &ev.id])))
         };
 
-        // Problem list: one row per concept, its status from its whole history.
+        // Problem list: one row per episode, its status from that episode's history.
         for prob in tl.problems.iter().filter(|p| p.recorded < at) {
             let recorded = time::utc(prob.recorded);
             let onset = match prob.item.onset {
@@ -392,7 +392,6 @@ impl Renderer<'_> {
             };
             let (clinical, abatement) = match prob.status(at) {
                 ProblemStatus::Active => (status(CLINICAL, "active", "Active"), None),
-                ProblemStatus::Recurrence => (status(CLINICAL, "recurrence", "Recurrence"), None),
                 ProblemStatus::Resolved(when) => (
                     status(CLINICAL, "resolved", "Resolved"),
                     Some(time::utc(when)),

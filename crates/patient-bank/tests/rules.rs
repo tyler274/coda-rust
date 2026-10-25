@@ -110,7 +110,7 @@ fn a_restarted_drug_stops_again_at_its_own_stop() {
 }
 
 #[test]
-fn a_resolved_problem_can_recur() {
+fn a_problem_diagnosed_again_after_it_resolved_is_a_new_episode() {
     let cond = |action: &str| json!({"conditions": [{"label": "Iron deficiency anemia", "action": action}]});
     let p = patient(json!([
         visit("e1", "2018-09-17T10:00", cond("diagnosed")),
@@ -118,30 +118,29 @@ fn a_resolved_problem_can_recur() {
         visit("e3", "2026-07-21T10:00", cond("diagnosed")),
     ]));
     let tl = Timeline::new(&p);
-    assert_eq!(tl.problems.len(), 1, "one problem-list row per concept");
-    let prob = &tl.problems[0];
-    assert_eq!(prob.status(at("2019-01-01T00:00")), ProblemStatus::Active);
+    assert_eq!(tl.problems.len(), 2, "one problem-list row per episode");
+    let (first, second) = (&tl.problems[0], &tl.problems[1]);
+    assert_eq!(first.status(at("2019-01-01T00:00")), ProblemStatus::Active);
     assert_eq!(
-        prob.status(at("2020-01-01T00:00")),
+        first.status(at("2026-08-01T00:00")),
         ProblemStatus::Resolved(at("2019-09-27T10:00"))
     );
-    assert_eq!(
-        prob.status(at("2026-08-01T00:00")),
-        ProblemStatus::Recurrence
-    );
+    assert_eq!(second.status(at("2026-08-01T00:00")), ProblemStatus::Active);
 
     let then = render(&p, "2020-01-01T00:00");
+    assert_eq!(then.conditions.len(), 1, "the second episode has not begun");
     assert_eq!(
         then.conditions[0].clinical_status.coding[0].code,
         "resolved"
     );
-    assert!(then.conditions[0].abatement_date_time.is_some());
     let now = render(&p, "2026-08-27T12:00");
-    assert_eq!(
-        now.conditions[0].clinical_status.coding[0].code,
-        "recurrence"
-    );
-    assert!(now.conditions[0].abatement_date_time.is_none());
+    let codes: Vec<&str> = now
+        .conditions
+        .iter()
+        .map(|c| c.clinical_status.coding[0].code.as_str())
+        .collect();
+    assert_eq!(codes, ["resolved", "active"]);
+    assert!(now.conditions[1].abatement_date_time.is_none());
 }
 
 #[test]
@@ -657,4 +656,27 @@ fn code_measures_from_the_state_the_author_records() {
         json!({"measure": ["weight_kg"]})
     )]));
     assert!(!measure::apply(&seed(), &unset).1.is_empty());
+}
+
+#[test]
+fn a_patients_own_normal_stays_in_range() {
+    let visits: Vec<serde_json::Value> = (0..40)
+        .map(|i| {
+            visit(
+                &format!("e{i:02}"),
+                &format!("20{:02}-03-03T09:00", 10 + i / 2),
+                json!({"labs": [{"panel": null, "collected": format!("20{:02}-03-03T09:00", 10 + i / 2),
+                    "results": [{"test": "Sodium"}, {"test": "Chloride"}, {"test": "Glucose"}]}]}),
+            )
+        })
+        .collect();
+    let (p, errors) = measure::apply(&seed(), &patient(json!(visits)));
+    assert!(errors.is_empty(), "{errors:?}");
+    for e in &p.events {
+        for r in &e.labs[0].results {
+            let ((lo, hi), _) = patient_bank::labs::normal(&r.test, false).expect("range");
+            let v = patient_bank::ledger::num(r.value.as_ref().expect("value"));
+            assert!((lo..=hi).contains(&v), "{} {v} outside {lo}-{hi}", r.test);
+        }
+    }
 }

@@ -158,7 +158,7 @@ pub fn apply(seed: &Seed, p: &Patient) -> (Patient, Vec<String>) {
                     // the patient's own normal, the same every draw
                     let ((lo, hi), dec) = range?;
                     let mut rng = Rng::from_text(&format!("normal:{}:{}", p.mrn, r.test));
-                    Some((rng.uniform(lo + (hi - lo) * 0.2, hi - (hi - lo) * 0.2), dec))
+                    Some((rng.uniform(lo + (hi - lo) * 0.3, hi - (hi - lo) * 0.3), dec))
                 });
                 let Some((level, given)) = level else {
                     errors.push(format!(
@@ -167,7 +167,10 @@ pub fn apply(seed: &Seed, p: &Patient) -> (Patient, Vec<String>) {
                     ));
                     continue;
                 };
+                // a normal level strays a tenth of its range; an abnormal one
+                // also strays in proportion to itself
                 let (sd, dec) = match range {
+                    Some(((lo, hi), dec)) if (lo..=hi).contains(&level) => ((hi - lo) * 0.1, dec),
                     Some(((lo, hi), dec)) => (((hi - lo) * 0.1).max(level.abs() * 0.03), dec),
                     None => (level.abs() * 0.04, given),
                 };
