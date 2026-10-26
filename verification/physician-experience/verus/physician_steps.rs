@@ -1723,11 +1723,11 @@ pub proof fn preserves_event_another_physician_marks_the_concern_done(s: State, 
 pub proof fn preserves_event_a_visit_is_scheduled(s: State, t: State)
     requires inductive(s), ensures event_a_visit_is_scheduled(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_the_draft_saves(s: State, t: State)
-    requires inductive(s), ensures event_the_draft_saves(s, t) ==> inductive(t),
-{}
 pub proof fn preserves_event_the_draft_fails_to_save(s: State, t: State)
     requires inductive(s), ensures event_the_draft_fails_to_save(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_the_draft_saves(s: State, t: State)
+    requires inductive(s), ensures event_the_draft_saves(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_retry_saving_the_draft(s: State, t: State)
     requires inductive(s), ensures event_retry_saving_the_draft(s, t) ==> inductive(t),
@@ -2368,8 +2368,8 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_another_physician_opens_the_concern(s, t);
     preserves_event_another_physician_marks_the_concern_done(s, t);
     preserves_event_a_visit_is_scheduled(s, t);
-    preserves_event_the_draft_saves(s, t);
     preserves_event_the_draft_fails_to_save(s, t);
+    preserves_event_the_draft_saves(s, t);
     preserves_event_retry_saving_the_draft(s, t);
     preserves_event_type_in_the_composer(s, t);
     preserves_event_discard_the_draft(s, t);

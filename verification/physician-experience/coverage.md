@@ -844,8 +844,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Composer empty | partial | PatientWorkspace composer textarea (physician-app lib.rs) | yes | An empty composer shows, but an accepted Send doesn't clear the draft and a saved draft is never read back. |
-| Draft written.Saving quietly | missing |  | yes | There is no autosave; drafts save only through the Save button, with no saving mark. |
-| Draft written.Saved | partial | on_save, PhysicianClient::save_draft (physician-app lib.rs) | no | A successful manual Save only clears the notice, and the sample's draft save always answers 409. |
+| Draft written.Draft kept quietly | partial | on_save, PhysicianClient::save_draft (physician-app lib.rs) | no | There is no autosave; drafts save only through the Save button, and the sample's draft save always answers 409. |
 | Draft written.Not saved, with Retry | partial | on_save, NOT_SAVED composer-notice (physician-app lib.rs) | yes | "Not saved" shows beside the composer, but there is no Retry, only the Save button. |
 
 ## Queued messages

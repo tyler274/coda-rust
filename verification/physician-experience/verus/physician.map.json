@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "b34bf920b298838d7dd532bd127e289f2e99a46a616b7f3fb16a71aa53b2c820",
-  "generated_sha256": "8caade65ef9ce23fb9689f972cdbfeb887eae65832d423c5c75f5663dbb3ea13",
-  "steps_sha256": "4dfdf98870c5909940c110107efbd77845ed99ba538294a36939431dacd9fbd1",
+  "chart_sha256": "49b0d017523e4f19e06f127ec8d1388f009e0d94ab44ac52c9607181a0008782",
+  "generated_sha256": "7a1f0f5b4cc645fb7096fe9b216bcfea3fcd6f3d683df4bb98258fcfa0437820",
+  "steps_sha256": "a835526ff569843d76e55f65a091f2ed1c72f70886a610430760c0f738e51777",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -3152,13 +3152,8 @@
           "initial": true
         },
         {
-          "caption": "Draft written.Saving quietly",
-          "variant": "RegionYourDraft::StateDraftWrittenSavingQuietly",
-          "initial": false
-        },
-        {
-          "caption": "Draft written.Saved",
-          "variant": "RegionYourDraft::StateDraftWrittenSaved",
+          "caption": "Draft written.Draft kept quietly",
+          "variant": "RegionYourDraft::StateDraftWrittenDraftKeptQuietly",
           "initial": false
         },
         {
@@ -3752,7 +3747,7 @@
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -3765,22 +3760,8 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Draft written.Saving quietly",
-          "guard": {
-            "not": false,
-            "states": {
-              "Queued messages": [
-                "Messages queued for the next answer, each editable"
-              ]
-            },
-            "reason": "losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)"
-          }
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
+          "from": "Draft written.Draft kept quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -3794,7 +3775,7 @@
         {
           "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -7818,13 +7799,7 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Composer empty",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
+          "from": "Draft written.Draft kept quietly",
           "to": "Composer empty",
           "guard": null
         },
@@ -8346,7 +8321,7 @@
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -8359,22 +8334,8 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Draft written.Saving quietly",
-          "guard": {
-            "not": false,
-            "states": {
-              "Queued messages": [
-                "Messages queued for the next answer, each editable"
-              ]
-            },
-            "reason": "losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)"
-          }
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
+          "from": "Draft written.Draft kept quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -8388,7 +8349,7 @@
         {
           "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -8762,7 +8723,7 @@
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -8775,22 +8736,8 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Draft written.Saving quietly",
-          "guard": {
-            "not": false,
-            "states": {
-              "Queued messages": [
-                "Messages queued for the next answer, each editable"
-              ]
-            },
-            "reason": "losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)"
-          }
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
+          "from": "Draft written.Draft kept quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -8804,7 +8751,7 @@
         {
           "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": {
             "not": false,
             "states": {
@@ -18465,20 +18412,14 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         }
       ]
@@ -18526,20 +18467,14 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         }
       ]
@@ -18744,9 +18679,8 @@
                 "Signed in to the practice"
               ],
               "Your draft": [
-                "Draft written.Not saved, with Retry",
-                "Draft written.Saved",
-                "Draft written.Saving quietly"
+                "Draft written.Draft kept quietly",
+                "Draft written.Not saved, with Retry"
               ],
               "Physician session/Signed in/Conversation read": [
                 "No conversation to read",
@@ -18874,9 +18808,8 @@
                 "Signed in to the practice"
               ],
               "Your draft": [
-                "Draft written.Not saved, with Retry",
-                "Draft written.Saved",
-                "Draft written.Saving quietly"
+                "Draft written.Draft kept quietly",
+                "Draft written.Not saved, with Retry"
               ],
               "Physician session/Signed in/Conversation read": [
                 "No conversation to read",
@@ -19003,13 +18936,7 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Composer empty",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
+          "from": "Draft written.Draft kept quietly",
           "to": "Composer empty",
           "guard": null
         },
@@ -19129,9 +19056,8 @@
                 "Signed in to the practice"
               ],
               "Your draft": [
-                "Draft written.Not saved, with Retry",
-                "Draft written.Saved",
-                "Draft written.Saving quietly"
+                "Draft written.Draft kept quietly",
+                "Draft written.Not saved, with Retry"
               ],
               "Physician session/Signed in/Conversation read": [
                 "No conversation to read",
@@ -19259,13 +19185,7 @@
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Composer empty",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
+          "from": "Draft written.Draft kept quietly",
           "to": "Composer empty",
           "guard": null
         },
@@ -20744,25 +20664,19 @@
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Draft written.Saving quietly",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
+          "from": "Draft written.Draft kept quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
           "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
@@ -33962,21 +33876,6 @@
       ]
     },
     {
-      "label": "the draft saves",
-      "function": "event_the_draft_saves",
-      "cause": "the practice system",
-      "intent": "The draft is saved for you alone.",
-      "needs": null,
-      "transitions": [
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Draft written.Saved",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "the draft fails to save",
       "function": "event_the_draft_fails_to_save",
       "cause": "the practice system",
@@ -33985,8 +33884,23 @@
       "transitions": [
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
+          "from": "Draft written.Draft kept quietly",
           "to": "Draft written.Not saved, with Retry",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "the draft saves",
+      "function": "event_the_draft_saves",
+      "cause": "the practice system",
+      "intent": "A draft that showed Not saved is kept again, for you alone; quiet saving shows nothing.",
+      "needs": null,
+      "transitions": [
+        {
+          "region": "Your draft",
+          "from": "Draft written.Not saved, with Retry",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         }
       ]
@@ -34009,7 +33923,7 @@
         {
           "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         }
       ]
@@ -34036,20 +33950,14 @@
       "transitions": [
         {
           "region": "Your draft",
-          "from": "Draft written.Saved",
-          "to": "Draft written.Saving quietly",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
           "from": "Draft written.Not saved, with Retry",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         },
         {
           "region": "Your draft",
           "from": "Composer empty",
-          "to": "Draft written.Saving quietly",
+          "to": "Draft written.Draft kept quietly",
           "guard": null
         }
       ]
@@ -34076,13 +33984,7 @@
       "transitions": [
         {
           "region": "Your draft",
-          "from": "Draft written.Saving quietly",
-          "to": "Composer empty",
-          "guard": null
-        },
-        {
-          "region": "Your draft",
-          "from": "Draft written.Saved",
+          "from": "Draft written.Draft kept quietly",
           "to": "Composer empty",
           "guard": null
         },

@@ -141,7 +141,7 @@ stateDiagram-v2
 %% events you leave the conversation = go to Today | open the patient | start a new conversation | follow a link | clinical access reduced | patient access removed
 %% events you leave the composer = go to Today | open the patient | open a conversation | start a new conversation | follow a link | discuss what you're reading | clinical access reduced | patient access removed | the session expires
 %% event type in the composer | by you | needs SIn, CrNone@conversation, RdShown@conversation, RdKept@conversation | reason: a composer opens only once its conversation and saved draft are shown, so nothing typed hides the saved text | Your draft saves quietly as you write.
-%% event the draft saves | by the practice system | The draft is saved for you alone.
+%% event the draft saves | by the practice system | A draft that showed Not saved is kept again, for you alone; quiet saving shows nothing.
 %% event the draft fails to save | by the practice system | The draft shows Not saved with Retry; nothing else stops.
 %% event retry saving the draft | by you | needs SIn | reason: commands need an active session | You retry the save.
 %% event discard the draft | by you | needs SIn, CrNone@conversation, RdShown@conversation, RdKept@conversation | reason: a composer opens only once its conversation and saved draft are shown, so nothing typed hides the saved text | You clear the draft on purpose.
@@ -1328,47 +1328,43 @@ stateDiagram-v2
       %% never NoPrepForCancelledVisit: visit preparation in hand & Visit cancelled -- Cancelling a visit ends its preparation at once.
     }
     --
-    %% PX persistence: one private draft per physician and conversation, saved quietly; Not saved
-    %% stays visible with Retry; Discard is explicit. Text a queue gives back comes
+    %% PX persistence: one private draft per physician and conversation, kept quietly (how it saves
+    %% is the app's); Not saved stays visible with Retry; Discard is explicit (Dev 2026-10-26). Text a queue gives back comes
     %% here, including when access is lost (ENG-19) or the session ends; nothing typed is lost (N3).
     state "Your draft" as Draft {
       [*] --> DEmpty
       state "Composer empty" as DEmpty
       state "Draft written" as DText {
-        [*] --> DSaving
-        state "Saving quietly" as DSaving
-        state "Saved" as DSaved
+        [*] --> DKept
+        state "Draft kept quietly" as DKept
         state "Not saved, with Retry" as DNotSaved
-        DSaving --> DSaved : the draft saves
-        DSaving --> DNotSaved : the draft fails to save
-        DNotSaved --> DSaving : retry saving the draft
-        DSaved --> DSaving : type in the composer
-        DNotSaved --> DSaving : type in the composer
-        DSaved --> DSaving : the transcript is inserted
-        DNotSaved --> DSaving : the transcript is inserted
-        DSaved --> DSaving : insert the transcript
-        DNotSaved --> DSaving : insert the transcript
+        DKept --> DNotSaved : the draft fails to save
+        DNotSaved --> DKept : the draft saves
+        DNotSaved --> DKept : retry saving the draft
+        DNotSaved --> DKept : type in the composer
+        DNotSaved --> DKept : the transcript is inserted
+        DNotSaved --> DKept : insert the transcript
       }
-      DEmpty --> DSaving : type in the composer
-      DEmpty --> DSaving : the transcript is inserted
-      DEmpty --> DSaving : insert the transcript
+      DEmpty --> DKept : type in the composer
+      DEmpty --> DKept : the transcript is inserted
+      DEmpty --> DKept : insert the transcript
       DText --> DEmpty : send
       DText --> DEmpty : send to steer the answer
       DText --> DEmpty : send next
       DText --> DEmpty : discard the draft
-      DEmpty --> DSaving : remove a queued message
-      DText --> DSaving : remove a queued message
-      DEmpty --> DSaving : clinical access reduced [a message waits]
+      DEmpty --> DKept : remove a queued message
+      DText --> DKept : remove a queued message
+      DEmpty --> DKept : clinical access reduced [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DText --> DSaving : clinical access reduced [a message waits]
+      DText --> DKept : clinical access reduced [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DEmpty --> DSaving : patient access removed [a message waits]
+      DEmpty --> DKept : patient access removed [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DText --> DSaving : patient access removed [a message waits]
+      DText --> DKept : patient access removed [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DEmpty --> DSaving : practice access removed [a message waits]
+      DEmpty --> DKept : practice access removed [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
-      DText --> DSaving : practice access removed [a message waits]
+      DText --> DKept : practice access removed [a message waits]
       %% when QQueued | reason: losing access returns waiting messages to the draft, so nothing typed is lost (ENG-19, N3)
     }
     --

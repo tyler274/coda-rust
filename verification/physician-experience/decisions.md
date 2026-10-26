@@ -35,6 +35,8 @@ Linear, then the settled docs, then mockups.
     is running.
   - Find patient searches the whole roster on the server, and every roster
     patient stays reachable; page size is the surface's.
+  - A draft is kept quietly; how it saves is the app's. When it can't be kept,
+    it says Not saved with Retry, and nothing typed is lost (N3).
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
   behavior of the full product for any user: what they see and how things act and
   work for them. It leaves out runtime capacity, retries, timeouts, interruptions,
