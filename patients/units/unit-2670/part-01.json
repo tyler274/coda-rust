@@ -1,0 +1,209 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002670",
+      "given": "Lucas",
+      "family": "Becker",
+      "birth_date": "1989-10-25",
+      "address_line": "41 Cabot Street, Apt 2",
+      "phone": "+1-347-555-0195",
+      "email": "lucas.becker@example.test",
+      "marital_status": "single",
+      "summary": "Healthy office administrator who joined in 2024, then had his first recognized convulsive seizure at work in May 2025; epilepsy diagnosed in the ED with temporal sharp waves on EEG and valproic acid started. A second generalized seizure in January 2026 brought an ICU admission for postictal hypoventilation, complicated by a transient saline-related hyperchloremic acidosis.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Inquiry", "author": "front desk", "date": "2024-08-27T10:12",
+             "body": "Caller is looking for a new primary care doctor; says he hasn't had one since moving to the area a few years back. 34 y/o male, commercial plan, verified in system. Membership info emailed. Booked new patient physical 9/10 at 8:40. Asked him to come fasting and bring any vaccine records he can find."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "end": "2024-09-10T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 82.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Office administrator"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-10T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-09-10T09:30"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-10T08:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-10T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2024-09-10T09:35",
+             "body": "NEW PATIENT, PREVENTIVE\n\nLucas is a 34-year-old man here to set up primary care. Last regular doctor was in his early twenties; no visits since apart from a walk-in for a sinus thing years ago he can't date. Feels well. No complaints today.\n\nPMH: none he knows of. PSH: none.\nMeds: none. No supplements.\nAllergies: NKDA.\nFH: father has a seizure disorder (generalized, on medication for years per pt). Mother healthy. No early heart disease or cancer that he knows of.\nSH: office administrator at a property management company. Shares an apartment with a roommate. Never smoked, does not drink, no recreational drugs. Walks a fair amount, no formal exercise.\n\nROS: negative across systems on the intake form; reviewed.\n\nExam: well appearing. Vitals as charted, BMI about 25. HEENT unremarkable, dentition fine. Neck supple, no thyroid enlargement or nodes. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no masses. Skin without concerning lesions. Neuro: alert, fluent, CN grossly intact, strength and gait normal.\n\nPHQ-2: 0.\n\nAssessment / plan\n1. Adult wellness exam, healthy 34M. Baseline CBC, CMP, lipids today.\n2. One-time HIV and hep C screening offered and accepted.\n3. No tetanus record; Tdap given in clinic.\n4. Flu and COVID shots once the fall supply is in; nurse visit.\n5. Return yearly, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2024-09-12T16:05",
+             "body": "Hi Lucas, everything from Tuesday came back fine: blood counts, kidney and liver tests, sugar fine, and cholesterol in a reasonable place for someone your age with no other risk factors, and the HIV and hepatitis C screens were negative. Nothing to follow up on. The nurse will reach out to set up flu and COVID shots next month."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T12:20",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T12:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T12:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T12:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2024-10-08T12:45",
+             "body": "On his lunch break for vaccines. No fever or illness today, no prior vaccine reactions. Flu vaccine 0.5 mL IM left deltoid. COVID updated formula 0.3 mL IM right deltoid. VIS sheets given. Observed 15 min, no reaction. Pt left ambulatory."}
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "ed_visit",
+          "start": "2025-05-10T10:42",
+          "end": "2025-05-11T09:10",
+          "service": "Emergency Medicine",
+          "reason": "seizure at work",
+          "conditions": [{"label": "Epilepsy", "action": "diagnosed", "onset": "2025-05-10"}],
+          "medications": [{"drug_text": "valproic acid 250 MG Oral Capsule", "action": "start", "sig": "Take 2 capsules (500 mg) by mouth twice daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Epilepsy"}],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-10T11:05", "results": [{"test": "Glucose", "value": 98}, {"test": "Sodium", "value": 140}, {"test": "Calcium", "value": 9.2}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2025-05-10T11:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-05-10T11:05", "results": [{"test": "Prolactin", "value": 44}]}
+          ],
+          "reports": [
+            {"study": "Electroencephalogram, routine", "loinc": "11523-9", "performed": "2025-05-11T07:20",
+             "text": "Routine EEG, awake and drowsy, approximately 30 minutes, standard 10-20 placement. Posterior dominant rhythm 10 Hz, symmetric and reactive to eye opening. Intermittent sharp-wave discharges arise over the temporal region during drowsiness. No electrographic seizures captured. Photic stimulation without a photoparoxysmal response. Hyperventilation not performed.",
+             "conclusion": "Abnormal EEG: intermittent temporal sharp-wave discharges, indicating a potentially epileptogenic focus. No seizures recorded."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-05-10T10:42"}],
+          "orders": [{"id": "ed-neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "new-onset epilepsy"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record (outside)", "author": "emergency medicine", "date": "2025-05-12T08:30",
+             "body": "OUTSIDE ED RECORD, received by fax 5/12/2025. Date of service 5/10/2025 to 5/11/2025.\n\nCC: witnessed seizure at workplace.\n\nHPI: 35 yo M arriving by EMS from his office. Coworkers describe him slumping at his desk and then shaking all four limbs for roughly two minutes. Afterward he was confused and very sleepy for a while; mental status improving on arrival. On questioning he admits to a few earlier spells over the years that he brushed off and never had evaluated. Has not been sick recently. Denies drug or alcohol use. No headache, no recent head injury.\n\nPMH: none. Meds: none. Allergies: NKDA.\nFH: father with epilepsy. SH: office administrator, never smoker, no ETOH.\n\nExam: sleepy but wakes to voice, follows commands, oriented by the second hour. Lateral tongue bruised/bitten. Small superficial laceration inner lower lip, edges well apposed, cleaned, no repair needed. VS stable throughout. Neuro: PERRL, no facial asymmetry, moves all extremities symmetrically, no drift, reflexes symmetric, no focal deficit.\n\nResults: glucose 98, Na 140, Ca 9.2, rest of CMP unremarkable. CBC normal. Prolactin drawn about 20 minutes post-event: 44 ng/mL (high).\nEEG (obtained in observation the next morning): intermittent temporal sharp waves, no seizures captured.\n\nCourse: placed in ED observation for EEG. No recurrent events overnight. Discussed with on-call neurology by phone: recurrent unprovoked spells plus epileptiform EEG meet criteria for epilepsy; agreed with starting valproic acid.\n\nDx: Epilepsy, new diagnosis. Tongue bite and minor lip laceration.\n\nDisposition: discharged home with roommate 5/11. Valproic acid 500 mg PO BID, Rx sent. State law reviewed: no driving until six months seizure-free; seizure precautions (no swimming alone, no heights, showers rather than baths). Outpatient neurology referral; PCP follow-up this week. Return for any further seizure, a seizure longer than 5 minutes, or not waking up between seizures."}
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "telephone",
+          "start": "2025-05-12T09:40",
+          "reason": "ED follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-ED Call", "author": "RN", "date": "2025-05-12T09:40",
+             "body": "ED record from Saturday received and in chart. Called pt. Home, groggy for most of Sunday but feels like himself today. Picked up valproic acid, took doses last night and this morning, mild nausea only. No further spells. Roommate is driving him. Booked with PCP Wednesday. Reminded not to drive."}
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for seizure",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-14T15:20"}],
+          "orders": [{"id": "neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "new epilepsy on valproic acid, temporal sharp waves on EEG"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED Follow-up", "author": "PCP", "date": "2025-05-14T16:00",
+             "body": "S: Here after the ED visit Saturday for a convulsive seizure at his desk. Read through the outside record. He tells me now that he has had maybe three or four similar spells over the past several years, always alone or asleep, woke up sore and with a bitten tongue and assumed he'd fainted. Didn't bring it up when he joined last fall. Since discharge no events. Taking valproic acid 500 mg twice a day; a bit queasy the first two days, better taking it with food. Lip sore but healing. Has been out of work since Friday; going back Monday.\n\nO: Vitals as charted. Alert, conversant, normal affect. Small healing mucosal laceration lower lip, no infection. Tongue with resolving bruise laterally. Neuro nonfocal: CN intact, strength 5/5 throughout, gait steady.\n\nA/P:\n1. Epilepsy, newly diagnosed in the ED: temporal sharp waves on EEG, recurrent unprovoked events, father with a seizure disorder. Continue valproic acid 500 mg BID. Neurology referral placed here so it goes to the group we use (ED referral not confirmed). Reviewed what to do if a seizure happens and when to call 911; roommate knows.\n2. Driving: no driving until 6 months without a seizure, so not before mid-November at the earliest. He takes the bus to work. Letter for employer offered.\n3. Lip laceration healing well, no care needed.\nRTC after neurology, or sooner with any event."}
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "specialist_visit",
+          "start": "2025-06-18T13:30",
+          "service": "Neurology",
+          "reason": "new-onset epilepsy",
+          "labs": [
+            {"panel": null, "collected": "2025-06-18T14:20", "results": [{"test": "Valproate", "loinc": "4086-6", "unit": "ug/mL", "value": 74}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-06-18T14:20", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-18T14:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "neuro-referral", "action": "done", "date": "2025-06-18T13:30"},
+            {"id": "ed-neuro-referral", "action": "cancelled", "date": "2025-06-18T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation (outside)", "author": "neurology", "date": "2025-06-20T11:10",
+             "body": "Outpatient neurology, consultation. Date of visit 6/18/2025.\n\nThank you for sending Mr. Becker, a 35-year-old right-handed office administrator, after a generalized convulsion at work on 5/10/2025.\n\nHistory: Several prior unwitnessed nocturnal or solitary episodes over a number of years with post-event soreness and tongue biting, never evaluated. The May event was witnessed by coworkers, about two minutes of bilateral shaking with postictal confusion. No aura he can recall. No febrile seizures, head injury or CNS infection in childhood that he knows of. Father has a generalized seizure disorder.\n\nMedications: valproic acid 500 mg twice daily since 5/11/2025. Mild early nausea, resolved. No tremor, weight change or hair thinning.\nAllergies: no known drug allergies.\nSocial: never smoker, no alcohol, lives with a roommate.\n\nExamination: BP and pulse normal. Alert, attentive, fluent speech. Cranial nerves II-XII intact. Normal bulk and tone, full strength, reflexes 2+ and symmetric, toes downgoing. Finger-nose and gait normal. No tremor.\n\nData reviewed: ED EEG with intermittent temporal sharp waves; prolactin 44 post-event; ED chemistry and counts normal.\nToday: valproate level 74 mcg/mL (trough), hepatic panel and CBC within normal limits.\n\nImpression: epilepsy with recurrent unprovoked seizures and temporal epileptiform discharges.\n\nPlan:\n- Continue valproic acid 500 mg twice daily; level is therapeutic.\n- Seizure precautions and driving restriction per state rules, reviewed again.\n- Keep a seizure diary.\n- Return in 6 months, sooner for any event.\n\nAllergies reviewed: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "pharmacy",
+          "start": "2025-06-30T10:02",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: valproic acid", "author": "MA", "date": "2025-06-30T10:02",
+             "body": "Pharmacy request for valproic acid 250 mg caps, 2 caps BID, #120. Last level 74 at neurology 6/18. Approved per PCP, 3 refills."}
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:00",
+          "end": "2025-09-23T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-23T08:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-23T08:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-23T08:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-23T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-09-23T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2025-09-23T09:10",
+             "body": "Annual exam. 35M.\n\nInterval: Epilepsy diagnosed in May after a convulsion at work; seen by neurology in June, valproate level therapeutic, no changes. No seizures since May 10th. Taking valproic acid 500 mg BID, rarely misses; uses a pill box and phone alarm. No tremor, weight gain or GI upset now. Mood fine. Still taking the bus, eligible to drive again in November if nothing happens.\n\nMeds: valproic acid 250 mg caps, 2 BID. Allergies: NKDA.\nSH unchanged: never smoker, no alcohol.\n\nExam: vitals as charted, weight stable. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen benign. No tremor on outstretched hands. Gait normal. Skin clear.\n\nPHQ-2 0.\n\nPlan:\n- Epilepsy, controlled on valproic acid. CBC and CMP today for drug monitoring.\n- Flu and COVID vaccines today, tolerated.\n- Lipids were normal last year; not repeating.\n- See neurology in December as planned. Physical again next year."}
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2025-09-25T12:30",
+             "body": "Lucas, your blood count, liver tests and kidney tests from the physical are all normal, so the valproic acid isn't causing any trouble there. Keep doing what you're doing."}
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T19:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Driving", "author": "patient", "date": "2025-11-12T19:48",
+             "body": "Hi, it's been six months since the seizure in May and nothing since. Am I OK to start driving again? Do I need a form from you?"},
+            {"type": "Patient Message", "title": "RE: Driving", "author": "PCP", "date": "2025-11-13T08:15",
+             "body": "Yes, with six months event-free and steady on your medication you meet the state standard to drive. No form needed from us unless the registry sends you one; if they do, drop it off and I'll fill it out. Keep taking the valproic acid without gaps and stay off the road if you ever miss doses or feel off."}
+          ]
+        }
+      ]
+    }
+  ]
+}

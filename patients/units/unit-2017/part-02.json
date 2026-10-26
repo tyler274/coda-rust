@@ -1,0 +1,1039 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002017",
+   "events": [
+    {
+     "id": "2023-01-23a",
+     "kind": "office_visit",
+     "start": "2023-01-23T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COPD and blood pressure follow-up",
+     "state": {
+      "bp": [
+       184,
+       96
+      ],
+      "spo2": 94
+     },
+     "vitals": {
+      "bp": [
+       184,
+       96
+      ]
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-01-23T16:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-01-23T15:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-01-23T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-01-23T16:15",
+       "body": "S: First visit since the pulmonary consult. Still not smoking, 3.5 months now, proud of it. Uses tiotropium every morning, albuterol maybe twice a week. Breathing a little better than in the fall. Brought a wrist cuff his wife bought: home numbers have been 180s over 90s for a while, he thinks since around Thanksgiving. No headache, no chest pain, no vision change. Taking HCTZ every day.\n\nO: BP 184/96 repeated after 10 min, similar. Lungs diminished bilaterally, hyperresonant, no wheeze. Heart regular, P2 loud. Trace ankle edema.\n\nA/P\n- BP well above goal, new since the fall. Could be the quit (weight, stress) or the cuff; asked him to check his cuff against ours and keep a twice-daily log for a month. BMP today. Return in 4-5 weeks; if it's still this high we'll add a second medicine.\n- Emphysema stable on tiotropium. Pulmonary letter reviewed.\n- Tobacco: abstinent, reinforced."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-27a",
+     "kind": "office_visit",
+     "start": "2023-02-27T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hypertension",
+     "state": {
+      "bp": [
+       186,
+       98
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "note": "worsening since late 2022"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-27T09:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-2023-03",
+       "action": "placed",
+       "order": "Basic metabolic panel in 2 weeks",
+       "category": "lab",
+       "reason": "new ACE inhibitor"
+      },
+      {
+       "id": "cards-referral-2023",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "progressively worsening hypertension after years of control"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hypertension",
+       "author": "PCP",
+       "date": "2023-02-27T10:25",
+       "body": "Home log reviewed (cuff checked against ours, within 4 points): systolics nearly all 180-190, diastolics mid-90s to 100, both morning and evening. Today 186/98. Asymptomatic.\n\nHe had years of good control on HCTZ alone and this is a clear change over the last few months. Differential includes post-quit weight gain (none on the scale, actually), NSAIDs (denies), and a secondary cause given his vascular disease.\n\nPlan:\n- Add lisinopril 20 mg daily, keep HCTZ 25.\n- BMP in 2 weeks for potassium and creatinine, order in.\n- Referral to cardiology given the abrupt worsening and his PAD; would value their take on renovascular causes.\n- Call with home readings in 2 weeks."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       186,
+       98
+      ]
+     }
+    },
+    {
+     "id": "2023-03-20a",
+     "kind": "telephone",
+     "start": "2023-03-20T11:05",
+     "reason": "missed lab",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab reminder",
+       "author": "MA",
+       "date": "2023-03-20T11:05",
+       "body": "BMP ordered 2/27 still not drawn. LVM for pt to come in any weekday morning, no appointment needed."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Lab reminder",
+       "author": "MA",
+       "date": "2023-04-10T14:20",
+       "body": "Second message left re: overdue BMP. Cardiology appointment confirmed for 5/11."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-11a",
+     "kind": "specialist_visit",
+     "start": "2023-05-11T10:30",
+     "service": "Cardiology",
+     "reason": "progressively worsening hypertension",
+     "conditions": [
+      {
+       "label": "Renal artery stenosis",
+       "action": "diagnosed",
+       "onset": "2023-05-11",
+       "icd10": "I70.1"
+      }
+     ],
+     "state": {
+      "bp": [
+       152,
+       90
+      ],
+      "labs": {
+       "Creatinine": 1.7
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-05-11T11:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.7
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-05-11T11:10",
+       "results": [
+        {
+         "test": "Plasma Renin Activity",
+         "text": "Markedly elevated"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2023",
+       "action": "done",
+       "date": "2023-05-11T10:30"
+      },
+      {
+       "id": "bmp-2023-03",
+       "action": "cancelled",
+       "date": "2023-05-11T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2023-05-22T08:30",
+       "body": "CARDIOVASCULAR CONSULTATION\nVisit date: May 11, 2023\n\nThank you for asking us to see Mr. Hennessey, 56, for blood pressure that has been climbing.\n\nHe has carried a diagnosis of hypertension for 12 years and for most of that time hydrochlorothiazide alone kept it in range. Over roughly the last six months his systolic readings have run 180 to 190, enough that a second agent was recently added by his primary physician. He reports no headaches, no palpitations and no muscle weakness.\n\nOther history: hyperlipidemia; peripheral arterial disease with a femoral artery stent placed two years ago; severe upper lobe predominant emphysema, diagnosed last fall. He is a former smoker of 80 pack-years who quit in October. Alcohol 1 to 2 drinks a month. Off work on medical leave from construction.\n\nMedications per our intake: hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, inhalers.\nAllergies: NKDA.\nFamily history: father lung cancer (died 60), mother hypertension, paternal uncle colon cancer.\n\nLaboratory: serum creatinine 1.7 mg/dL against a prior baseline of 1.0. Plasma renin activity is markedly elevated.\n\nAssessment: abrupt loss of control of long-standing hypertension in a patient with diffuse atherosclerosis, a rise in creatinine and high renin. This is renal artery stenosis until shown otherwise.\n\nPlan:\n- Renal artery duplex ultrasound.\n- Continue the current regimen for now; we will review after the duplex.\n- Repeat basic metabolic panel after imaging.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2023-05-22a",
+     "kind": "outside_records",
+     "start": "2023-05-22T08:30",
+     "reason": "cardiology consult received",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cardiology letter reviewed",
+       "author": "PCP",
+       "date": "2023-05-22T12:40",
+       "body": "Cardiology note reviewed. Creatinine 1.7 from 1.0, renin markedly high, suspected renal artery stenosis, duplex pending. Their med list leaves off the lisinopril I started in Feb; he is taking it per his wife. Called pt, explained, keep both BP meds for now and stay off ibuprofen. Will do labs after the duplex."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-25a",
+     "kind": "imaging",
+     "start": "2023-05-25T09:00",
+     "service": "Vascular Lab",
+     "reason": "renal artery duplex",
+     "reports": [
+      {
+       "study": "Renal artery duplex ultrasound",
+       "loinc": "39435-3",
+       "performed": "2023-05-25T09:00",
+       "issued": "2023-05-25T15:30",
+       "text": "RENAL ARTERY DUPLEX ULTRASOUND\nIndication: worsening hypertension, rising creatinine.\nTechnique: grayscale, color and spectral Doppler of the abdominal aorta, both main renal arteries and both kidneys.\nFindings: The abdominal aorta is normal in caliber. Right main renal artery: elevated velocities with post-stenotic turbulence, consistent with stenosis of 60% or greater. Left main renal artery: normal velocities without significant stenosis. Right kidney and left kidney are normal in size with normal cortical thickness. No hydronephrosis. Intrarenal waveforms are present on both sides.",
+       "conclusion": "Right renal artery stenosis of 60% or greater. Left renal artery without significant stenosis. Kidneys normal in size."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Note",
+       "author": "cardiology",
+       "date": "2023-06-05T10:00",
+       "body": "Addendum to May consultation.\n\nRenal artery duplex 5/25: right renal artery stenosis of at least 60%; left renal artery without significant narrowing; normal kidney sizes.\n\nImpression: atherosclerotic right renal artery stenosis. Our recommendation is medical management: continue lisinopril and hydrochlorothiazide, continue aspirin and statin, and follow creatinine and potassium closely. If blood pressure cannot be controlled or kidney function declines further we will reconsider. Please send us his next metabolic panel.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-12a",
+     "kind": "lab_only",
+     "start": "2023-06-12T08:10",
+     "reason": "creatinine recheck",
+     "state": {
+      "labs": {
+       "Creatinine": 1.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-12T08:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.4
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-06-12T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP result",
+       "author": "PCP",
+       "date": "2023-06-13T07:50",
+       "body": "Creatinine 1.4, down from 1.7 at cardiology. Potassium normal. Faxed to cardiology. Recheck at August visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-21a",
+     "kind": "office_visit",
+     "start": "2023-08-21T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and kidney follow-up",
+     "state": {
+      "bp": [
+       146,
+       88
+      ],
+      "weight_kg": 90.5,
+      "labs": {
+       "Creatinine": 1.2
+      }
+     },
+     "vitals": {
+      "bp": [
+       146,
+       88
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-08-21T14:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-08-21T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-08-21T14:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-08-21T14:30",
+       "body": "Here for BP and kidney follow-up after cardiology's renal artery workup.\n\nSince May he's joined a free program at the senior center: mostly plant-based eating, group walks three mornings a week. Down a few pounds. Home BPs now 140s/80s. Taking lisinopril 20 and HCTZ 25 daily, no cough, no dizziness. Breathing about the same; albuterol a couple of times a week. Not smoking.\n\nBP 146/88. Lungs diminished, no wheeze. RRR. No edema.\n\nA/P\n- Right renal artery stenosis, medical management per cardiology. BMP today.\n- HTN improving, not at goal. Program is helping; no med change today, recheck in 3 months.\n- Emphysema stable.\n- Flu/COVID/pneumonia vaccines this fall, nurse visit in October."
+      },
+      {
+       "type": "Result Note",
+       "title": "BMP result",
+       "author": "PCP",
+       "date": "2023-08-22T08:05",
+       "body": "Creatinine 1.2, continuing to settle. K normal. Copy to cardiology. Portal note sent to patient."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-16a",
+     "kind": "nurse_visit",
+     "start": "2023-10-16T10:30",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-16T10:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2023-10-16T10:37"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-16T10:39"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-16T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Immunizations",
+       "author": "RN",
+       "date": "2023-10-16T10:55",
+       "body": "Flu (L deltoid), PCV20 (R deltoid) and updated COVID (R deltoid, 1 inch below PCV20) per PCP standing order for COPD. No prior pneumococcal vaccine in records. Screening negative. Watched 15 min, felt fine, went home."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-17a",
+     "kind": "office_visit",
+     "start": "2023-11-17T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine check-up",
+     "state": {
+      "bp": [
+       138,
+       86
+      ],
+      "weight_kg": 87.5,
+      "labs": {
+       "Creatinine": 1.1,
+       "Total Cholesterol": 190,
+       "High Density Lipoprotein": 40,
+       "Low Density Lipoprotein": 120,
+       "Triglycerides": 150,
+       "Fasting Glucose": 98
+      }
+     },
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "weight_kg": 87.5
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-11-17T08:05",
+       "resulted": "2023-11-17T09:20",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 120
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-17T08:05",
+       "resulted": "2023-11-17T09:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose",
+         "value": 98
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-17T08:05",
+       "resulted": "2023-11-17T09:20",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 98
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-11-17T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-11-17T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-11-17T10:45",
+       "body": "Routine follow-up, six months out from cardiology's renal artery evaluation. Feels well, nothing new to report.\n\nStill doing the senior-center program: plant-forward meals at home and group exercise. Down 10 lb since May and pleased about it. He brought a newspaper clipping about a study that followed people in a lifestyle program like his and found fewer strokes among them; he's skeptical and wanted my opinion. We talked through it: that kind of study watches people who chose the program, and people who choose it tend to differ in lots of ways (they may smoke less, see doctors more), so it can show an association but can't prove the program caused the difference; a randomized trial is what answers that. Told him the habits are worth keeping regardless, for his BP, his legs and his lungs.\n\nMeds: HCTZ 25, lisinopril 20, atorvastatin 40, aspirin 81, tiotropium daily, albuterol PRN.\nNo smoking since October 2022.\n\nExam: BP 138/86. BMI 27. Lungs diminished bilaterally, no wheeze. Heart regular. Extremities without edema, pulses palpable.\n\nLabs this morning (fasting): TC 190, HDL 40, LDL 120, TG 150, glucose 98, creatinine 1.1.\n\nA/P\n- HTN: much better, near goal. Same regimen.\n- R renal artery stenosis: creatinine back to 1.1. BMP in 6 months.\n- Hyperlipidemia: continue atorvastatin 40.\n- PAD: walking well.\n- Emphysema: stable.\n- RTC 4-6 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-20a",
+     "kind": "portal_message",
+     "start": "2023-11-20T09:12",
+     "reason": "question about labs",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "cholesterol",
+       "author": "patient",
+       "date": "2023-11-20T09:12",
+       "body": "Doc, my wife wants to know if the cholesterol went down with all the vegetables. I forgot to ask friday."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: cholesterol",
+       "author": "PCP",
+       "date": "2023-11-20T12:30",
+       "body": "Hi Sean, total 190 and LDL 120, which is about where it was when you joined, and your fasting sugar was 98, normal. The weight and the blood pressure are where we're really seeing the payoff. Kidney number is also back to 1.1. Keep at it."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-27a",
+     "kind": "telephone",
+     "start": "2023-11-27T10:15",
+     "reason": "prior authorization renewal",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization renewal",
+       "author": "RN",
+       "date": "2023-11-27T10:15",
+       "body": "Tiotropium PA expiring this month. Renewal submitted with the pulmonary letter and PFT. Approved 11/29 for 12 months; pharmacy aware."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-08a",
+     "kind": "office_visit",
+     "start": "2024-01-08T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Appointment cancelled",
+       "author": "front desk",
+       "date": "2024-01-08T08:05",
+       "body": "Pt cancelled this afternoon's appt, driveway iced in. Offered next week, he'd rather wait till spring since he's feeling ok. Recall set for April."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-01a",
+     "kind": "office_visit",
+     "start": "2024-04-01T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hoarseness and cough",
+     "state": {
+      "spo2": 93,
+      "bp": [
+       132,
+       80
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2024-04-01T11:50",
+       "issued": "2024-04-01T15:10",
+       "text": "PA and lateral chest. Lungs are hyperexpanded with flattened hemidiaphragms and increased retrosternal air space, consistent with emphysema. No focal consolidation, mass or pleural effusion. Heart size normal. Mediastinal contours unremarkable. No acute osseous abnormality.",
+       "conclusion": "Hyperinflation consistent with emphysema. No mass, infiltrate or effusion."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-01T11:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral-2024",
+       "action": "placed",
+       "order": "Pulmonology referral, expedited",
+       "category": "referral",
+       "to": "Pulmonary & Critical Care",
+       "reason": "progressive dyspnea, hoarseness and cough"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Hoarseness",
+       "author": "PCP",
+       "date": "2024-04-01T12:10",
+       "body": "CC: voice gone gravelly, coughing.\n\nHPI: About 7 weeks of a rough voice, a dry cough, and breathing that has gotten noticeably harder, more than his usual. No fever, no weight loss, no night sweats, no sputum, no blood. Not smoking. Using albuterol most days now; it doesn't help much.\n\nExam: voice hoarse. No neck masses or adenopathy. Lungs: diminished throughout as before, no wheeze, no crackles. Heart regular. No edema.\n\nCXR today: hyperinflation, no mass.\n\nA/P\nProgressive dyspnea with hoarseness and cough in a man with severe emphysema and 80 pack-years. Not typical of a COPD flare; hoarseness this long needs a look at the airway. Expedited pulmonology referral, they can arrange laryngoscopy/CT as they see fit. Call me if worse before then.\nFlagged for front desk to push the pulmonary appointment."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Your chest x-ray",
+       "author": "PCP",
+       "date": "2024-04-01T16:00",
+       "body": "Sean, the chest x-ray shows the emphysema we already know about and nothing new, no mass or pneumonia. I still want the lung specialists to look at your airway because of the voice. Their office should call you this week."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-10a",
+     "kind": "specialist_visit",
+     "start": "2024-05-10T09:15",
+     "service": "Pulmonary & Critical Care",
+     "reason": "progressive dyspnea, hoarseness and cough",
+     "conditions": [
+      {
+       "label": "Tracheal neoplasm",
+       "action": "diagnosed",
+       "onset": "2024-02-10",
+       "icd10": "D38.1"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2024-05-10T08:30",
+       "text": "Spirometry with flow-volume loop. Effort adequate. The flow-volume loop shows flattening of both the inspiratory and the expiratory limbs, a pattern of fixed central airway obstruction, superimposed on the known obstructive defect.",
+       "conclusion": "Flattened inspiratory and expiratory limbs: fixed upper airway obstruction."
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral-2024",
+       "action": "done",
+       "date": "2024-05-10T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonary Follow-up Consultation",
+       "author": "pulmonology",
+       "date": "2024-05-20T13:00",
+       "body": "PULMONARY & CRITICAL CARE\nVisit: 05/10/2024\n\nMr. Hennessey returns, known to us for severe upper lobe predominant emphysema. For three months his breathing has steadily worsened, his voice has become hoarse and he has developed a cough. He has had no fever, no weight loss and no night sweats.\n\nMedications: hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium, albuterol as needed. NKDA. Former smoker, quit 10/2022.\n\nExamination: audible stridor on both inhalation and exhalation. The voice is coarse and raspy. No cervical or supraclavicular lymph nodes are palpable.\n\nFlow-volume loop today: both the inspiratory and expiratory limbs are flattened.\n\nImpression: fixed central (tracheal) airway obstruction. In this setting a tracheal neoplasm is the leading concern.\n\nPlan: CT of the chest this week, then bronchoscopic evaluation and treatment with our interventional team depending on the CT. He was told to go to the emergency department for any worsening of his breathing.\n\nPulmonary & Critical Care"
+      }
+     ]
+    },
+    {
+     "id": "2024-05-14a",
+     "kind": "imaging",
+     "start": "2024-05-14T07:45",
+     "service": "Radiology",
+     "reason": "tracheal obstruction",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2024-05-14T07:45",
+       "issued": "2024-05-14T12:20",
+       "text": "CT CHEST WITH CONTRAST\nIndication: stridor, fixed airway obstruction on flow-volume loop.\nFindings: Polypoid intraluminal soft tissue mass arising from the wall of the mid trachea, measuring about 1.8 cm, narrowing the tracheal lumen by about 50%. No extension outside the tracheal wall. Main bronchi patent. Upper lobe predominant centrilobular and paraseptal emphysema. No pulmonary mass or nodule. No consolidation or effusion. No enlarged mediastinal, hilar or axillary lymph nodes. Heart normal in size; no pericardial effusion. Visualized upper abdomen unremarkable.",
+       "conclusion": "1.8 cm polypoid mid-tracheal mass with about 50% luminal narrowing. Upper lobe predominant emphysema. No lung mass or adenopathy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "CT result",
+       "author": "patient",
+       "date": "2024-05-16T20:10",
+       "body": "they found a growth in my windpipe. they are going to take it out with a scope june 3. does that mean cancer?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: CT result",
+       "author": "PCP",
+       "date": "2024-05-17T07:45",
+       "body": "Sean, I saw the CT too. There is a growth inside the windpipe that explains the voice and the noisy breathing. We don't know yet what kind it is; some of these are benign. Removing it with the scope both treats the narrowing and tells us exactly what it is. I'm glad they're moving quickly. Call me anytime before then, and go to the ER if your breathing gets worse."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-03a",
+     "kind": "procedure_visit",
+     "start": "2024-06-03T07:30",
+     "end": "2024-06-03T16:00",
+     "service": "Interventional Pulmonology",
+     "reason": "rigid bronchoscopy, tracheal mass excision",
+     "conditions": [
+      {
+       "label": "Tracheal neoplasm",
+       "action": "resolved",
+       "icd10": "D38.1"
+      },
+      {
+       "label": "Benign neoplasm of trachea (squamous papilloma), excised",
+       "action": "history",
+       "onset": "2024-06-03",
+       "icd10": "D14.2"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-06-03T09:10",
+       "issued": "2024-06-10T11:00",
+       "text": "SURGICAL PATHOLOGY\nSpecimen: trachea, mid, mass, excision via rigid bronchoscopy.\nGross: multiple tan-pink fragments of soft tissue, aggregate 1.9 x 1.2 x 0.6 cm.\nMicroscopic: papillary fronds lined by mature squamous epithelium over fibrovascular cores. No dysplasia. No invasive carcinoma.",
+       "conclusion": "Squamous papilloma of the trachea. Negative for dysplasia and malignancy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pathology received",
+       "author": "PCP",
+       "date": "2024-06-10T15:20",
+       "body": "Path from 6/3 rigid bronch: tracheal squamous papilloma, benign, no dysplasia. Called Sean with the result; he and his wife very relieved. Voice already better. Op note not received; requested."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-17a",
+     "kind": "office_visit",
+     "start": "2024-06-17T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after bronchoscopy",
+     "state": {
+      "spo2": 94
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-17T09:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-17T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-06-17T09:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-06-17T10:00",
+       "body": "Two weeks after rigid bronchoscopy with removal of the tracheal growth (benign squamous papilloma on path). Went home the same evening. Sore throat for 3 days, now fine. Voice close to normal; wife says he sounds like himself. The noisy breathing is gone and his walking tolerance is back to where it was last year. Cough nearly gone. Still on tiotropium, albuterol rarely.\n\nExam: voice mildly husky. No stridor at rest or with deep breaths. Lungs diminished, no wheeze. Heart regular.\n\nA/P\n- Tracheal papilloma, excised. Pulmonary to arrange airway follow-up; we never got their procedure note, re-requested.\n- Emphysema at baseline.\n- HTN/renal artery stenosis: BMP today (due).\n- Next visit in the fall with the flu shot."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-09a",
+     "kind": "portal_message",
+     "start": "2024-09-09T07:40",
+     "reason": "refill",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "refills",
+       "author": "patient",
+       "date": "2024-09-09T07:40",
+       "body": "need refills on the blood pressure pills and the cholesterol one. same pharmacy"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: refills",
+       "author": "RN",
+       "date": "2024-09-09T12:05",
+       "body": "Sent: lisinopril 20, hydrochlorothiazide 25 and atorvastatin 40, 90 days with refills. You're due for a visit this fall, the front desk will reach out to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-21a",
+     "kind": "office_visit",
+     "start": "2024-10-21T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "fatigue and weight loss",
+     "state": {
+      "weight_kg": 83.0,
+      "labs": {
+       "Hemoglobin": 9.2,
+       "Mean Corpuscular Volume": 72,
+       "Ferritin": 15,
+       "Iron": 30,
+       "Total Iron-Binding Capacity": 450
+      }
+     },
+     "vitals": {
+      "weight_kg": 83.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-10-21T13:40",
+       "resulted": "2024-10-22T07:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.2
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 72
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2024-10-21T13:40",
+       "resulted": "2024-10-22T10:15",
+       "results": [
+        {
+         "test": "Ferritin",
+         "value": 15
+        },
+        {
+         "test": "Iron",
+         "value": 30
+        },
+        {
+         "test": "Total Iron-Binding Capacity",
+         "value": 450
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-10-21T13:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2024-10-21T13:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-10-21T13:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-10-21T13:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-21T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Fatigue",
+       "author": "PCP",
+       "date": "2024-10-21T13:55",
+       "body": "S: For about three months he's been more and more tired, and gets winded on exertion sooner than he did in the summer. He's lost 10 lb without trying (not on the program anymore, eating normally). No fever, no night sweats. Bowels unchanged, no black or bloody stools he's noticed. Voice fine, no stridor, no cough. Not smoking.\n\nO: Wt 83 kg (87.5 last year). Pale. Lungs diminished as before. Heart regular, no murmur. Abdomen soft, nontender, no masses. No adenopathy.\n\nA/P\nFatigue, exertional dyspnea and unintentional weight loss, looks pale. CBC, iron studies, BMP today. Low threshold for a hematology/oncology consult depending on results. Flu shot given."
+      },
+      {
+       "type": "Result Note",
+       "title": "Anemia results",
+       "author": "PCP",
+       "date": "2024-10-22T11:30",
+       "body": "Hgb 9.2, MCV 72, ferritin 15, iron 30, TIBC 450. Microcytic iron deficiency anemia, new (normal on prior counts). With the weight loss this needs a source. Placed hematology/oncology referral, urgent. Called pt; told him we need to find where he's losing blood and that he'll likely need a colonoscopy."
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2024",
+       "action": "placed",
+       "order": "Hematology/oncology referral, urgent",
+       "category": "referral",
+       "to": "Hematology & Oncology",
+       "reason": "iron deficiency anemia with unintentional weight loss"
+      }
+     ]
+    },
+    {
+     "id": "2024-11-11a",
+     "kind": "specialist_visit",
+     "start": "2024-11-11T10:00",
+     "service": "Hematology & Oncology",
+     "reason": "fatigue and exertional dyspnea, anemia",
+     "conditions": [
+      {
+       "label": "Iron deficiency anemia",
+       "action": "diagnosed",
+       "onset": "2024-08-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ferrous sulfate 325 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 325,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "iron deficiency anemia"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2024",
+       "action": "done",
+       "date": "2024-11-11T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology/Oncology Consultation",
+       "author": "hematology/oncology",
+       "date": "2024-11-18T09:00",
+       "body": "HEMATOLOGY & ONCOLOGY CONSULTATION\nDate of visit: November 11, 2024\n\nReason for referral: anemia.\n\nHPI: Mr. Hennessey is 57 and has severe upper lobe predominant emphysema; earlier this year he was evaluated for a tracheal lesion, removed in June. Over the past three months he has become progressively fatigued and short of breath with exertion, and he has lost about 10 pounds without intending to. He denies fevers, sweats at night, or any change in his bowel pattern.\n\nPMH: hypertension, hyperlipidemia, peripheral arterial disease, renal artery stenosis, emphysema, tracheal papilloma (resected).\nMedications: hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium, albuterol.\nAllergies: none known.\nFamily: father lung cancer; paternal uncle colon cancer; mother hypertension.\nSocial: former smoker.\n\nExam: pale with conjunctival pallor. Stool guaiac positive on rectal examination.\n\nLabs (10/21/2024): hemoglobin 9.2 g/dL (13.8-17.2), MCV 72 fL (80-96), ferritin 15 ng/mL (24-336), serum iron 30 mcg/dL (65-176), TIBC 450 mcg/dL (250-450).\n\nAssessment: microcytic anemia from iron deficiency with occult GI blood loss. A colorectal neoplasm must be excluded.\n\nPlan:\n1. Ferrous sulfate 325 mg by mouth daily.\n2. Referral to gastroenterology for colonoscopy, ideally within the next few weeks.\n3. Follow-up in our clinic in about six months with CBC.\n\nHematology & Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2024-12-02a",
+     "kind": "procedure_visit",
+     "start": "2024-12-02T08:00",
+     "end": "2024-12-02T11:30",
+     "service": "Gastroenterology",
+     "reason": "colonoscopy for iron deficiency anemia",
+     "conditions": [
+      {
+       "label": "Colorectal neoplasia",
+       "action": "diagnosed",
+       "onset": "2024-12-02",
+       "icd10": "D12.2",
+       "note": "30 mm ascending colon tubulovillous adenoma with high-grade dysplasia, resected by EMR"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Colonoscopy with snare polypectomy",
+       "performed": "2024-12-02T08:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-12-02T08:55",
+       "issued": "2024-12-09T14:00",
+       "text": "SURGICAL PATHOLOGY\nSpecimen: ascending colon polyp, endoscopic mucosal resection, piecemeal; resection base margins submitted separately.\nGross: multiple tan polypoid fragments, aggregate 3.1 x 2.4 x 0.8 cm.\nMicroscopic: tubulovillous adenoma with areas of high-grade dysplasia. No invasive adenocarcinoma identified. Margin fragments free of adenoma.",
+       "conclusion": "Tubulovillous adenoma with high-grade dysplasia, ascending colon. No invasive carcinoma. Margins clear."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Colonoscopy Report",
+       "author": "gastroenterology",
+       "date": "2024-12-03T09:00",
+       "body": "COLONOSCOPY\nDate: 12/2/2024\nIndication: iron deficiency anemia, guaiac-positive stool.\nSedation: monitored anesthesia care.\nPreparation: good.\n\nFindings:\n- Cecum reached, appendiceal orifice and ileocecal valve identified.\n- Ascending colon: 30 mm sessile polyp with a granular surface. Lifted with injection and removed by endoscopic mucosal resection in several pieces. Base inspected, no residual tissue. Clips placed to close the defect.\n- No other polyps or masses. No diverticula. Rectum normal on retroflexion.\n\nImpression: large ascending colon polyp, resected; likely source of chronic blood loss.\nRecommendations: await pathology. Continue iron. Surveillance colonoscopy in 6 months to check the resection site.\n\nGastroenterology"
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Colon pathology",
+       "author": "PCP",
+       "date": "2024-12-10T08:40",
+       "body": "Colon polyp path: tubulovillous adenoma with high-grade dysplasia, no cancer, margins clear. Called Sean. Explained it was precancerous and is out, and the 6-month scope matters. Added to problem list."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

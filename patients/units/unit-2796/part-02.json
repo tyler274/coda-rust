@@ -1,0 +1,321 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002796",
+      "events": [
+        {
+          "id": "2024-04-11a",
+          "kind": "ed_visit",
+          "start": "2024-04-11T16:40",
+          "end": "2024-04-11T22:05",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain",
+          "conditions": [
+            {"label": "Calculus of kidney", "icd10": "N20.0", "action": "diagnosed", "onset": "2024-01-01", "note": "14 mm left renal pelvic stone; renal colic"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2024-04-11T17:05", "results": [
+              {"test": "Urine pH", "value": 8.5},
+              {"test": "Urine White Blood Cells", "text": ">50"},
+              {"test": "Urine Clarity", "text": "Cloudy"},
+              {"test": "Urine Leukocyte Esterase", "text": "2+"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine Blood", "text": "Negative"},
+              {"test": "Urine Red Blood Cells", "text": "0-2"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-11T17:05", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-04-11T17:05", "resulted": "2024-04-13T09:10", "results": [{"test": "Urine Culture", "text": "Klebsiella pneumoniae >100,000 CFU/mL. Susceptible: ciprofloxacin, ceftriaxone, trimethoprim-sulfamethoxazole. Resistant: ampicillin."}]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis without contrast", "loinc": "36952-0", "performed": "2024-04-11T18:20", "text": "Noncontrast CT of the abdomen and pelvis, renal stone protocol. Left kidney: a 14 mm calculus in the renal pelvis, measured in greatest axial dimension. No hydronephrosis. No ureteral calculus. No perinephric stranding. Right kidney normal in size without calculus or hydronephrosis. Bladder is unremarkable. Liver, spleen, pancreas and adrenals unremarkable on this noncontrast study. Appendix normal. No free fluid.", "conclusion": "14 mm left renal pelvic calculus without hydronephrosis. No ureteral stone."},
+            {"study": "Abdominal radiograph, 1 view", "loinc": "24799-9", "performed": "2024-04-11T18:45", "text": "Single supine view of the abdomen. A radiopaque calculus projects over the left renal shadow, corresponding to the stone seen on same-day CT. No other urinary tract calcification. Nonobstructive bowel gas pattern. Bones unremarkable.", "conclusion": "Radiopaque left renal calculus, matching CT; usable for follow-up films."}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-04-12T09:30",
+              "body": "Regional hospital emergency department. Date of service 04/11/2024.\n\nCC: L flank pain.\n\nHPI: 43 y/o F, hx recurrent kidney stones and recurrent UTIs, here because L flank discomfort has come and gone for a few months, along with feeling run down. Has had a few low-grade temps at home, feels unwell, and notes her urine has been cloudy with a bad smell. No burning with urination, no blood in the urine. UTIs in the past treated at urgent care with short antibiotic courses.\n\nPMH: recurrent nephrolithiasis, recurrent UTI. Meds: none. Allergies: NKDA.\nFH: father - kidney stones; mother - HTN.\nSH: never smoker, no EtOH, schoolteacher.\n\nExam: afebrile, vitals within normal limits. Uncomfortable but nontoxic. Mild L CVA tenderness. Abdomen soft, no peritoneal signs. Lungs clear, heart regular.\n\nData: UA pH 8.5, cloudy, LE 2+, nitrite positive, >50 WBC/hpf, blood negative. Urine culture sent. Creatinine 1.0.\nGiven how long this has been going on, noncontrast CT A/P obtained along with a KUB: 14 mm stone in the L renal pelvis, no hydronephrosis, nothing in the ureter.\n\nED course: 1 L NS IV, ketorolac 15 mg IV with good relief.\n\nImpression: L renal calculus with renal colic; alkaline pyuric urine.\nDispo: home. Culture pending - PCP to follow. Follow up with PCP this week and with urology. Return for fever, vomiting, or uncontrolled pain."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-12a",
+          "kind": "portal_message",
+          "start": "2024-04-12T07:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the ER last night",
+              "author": "patient",
+              "date": "2024-04-12T07:15",
+              "body": "Hi - I ended up in the ER last night with my left side. They found a kidney stone, a big one apparently, still in the kidney. They said to see you this week and a urologist. Feeling ok this morning. I can do any day after 3."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the ER last night",
+              "author": "front desk",
+              "date": "2024-04-12T08:40",
+              "body": "Sorry to hear it, Robin. We have the ER record. You're booked Thursday 4/18 at 3:30. The doctor will also call you once your urine culture is back."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-13a",
+          "kind": "telephone",
+          "start": "2024-04-13T10:05",
+          "reason": "urine culture result",
+          "medications": [
+            {"drug": "ciprofloxacin 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Klebsiella urinary infection"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Culture result call",
+              "author": "PCP",
+              "date": "2024-04-13T10:20",
+              "body": "Covering for the weekend. ED urine culture: Klebsiella pneumoniae >100K, sensitive to cipro, ceftriaxone, TMP-SMX; resistant to ampicillin. Called pt - still a dull ache L side, one temp of 99.8 last night, no vomiting. Starting ciprofloxacin 500 mg BID x 7 days, sent to her pharmacy. Reviewed tendon and sun precautions. Keep Thursday's appointment; ED if fever climbs or she can't keep fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "office_visit",
+          "start": "2024-04-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, kidney stone",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-18T16:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-18T15:30"}
+          ],
+          "orders": [
+            {"id": "uro-2024", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "14 mm left renal pelvic stone with Klebsiella UTI"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2024-04-18T16:30",
+              "body": "S: Seen in the ED 4/11 for L flank pain of a few months' duration. CT there showed a 14 mm L renal pelvic stone, no obstruction. Culture grew Klebsiella, on cipro since Saturday, day 6 of 7. No fevers since Sunday. Urine looks clearer. Flank is down to an occasional twinge. Taking water more seriously.\n\nO: Afebrile, vitals reviewed. Comfortable. Minimal L CVA tenderness, none on R. Abdomen soft.\n\nA/P:\n1. L renal calculus, 14 mm, in the pelvis - too large to expect it to pass. Alkaline urine plus a urease-type organism makes an infection stone likely. Urology referral placed; she'd like someone in the valley so she doesn't miss school.\n2. Klebsiella UTI - finishing cipro. No test of cure unless symptoms.\n3. BMP today to recheck kidney function.\nFluids 2.5-3 L/day."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-19a",
+          "kind": "portal_message",
+          "start": "2024-04-19T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney function",
+              "author": "PCP",
+              "date": "2024-04-19T12:30",
+              "body": "Kidney function and potassium from yesterday are normal. Urology should be calling you within the week; let us know if you don't hear."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "specialist_visit",
+          "start": "2024-05-21T14:00",
+          "service": "Urology",
+          "reason": "left renal calculus",
+          "orders": [
+            {"id": "uro-2024", "action": "done", "date": "2024-05-21T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Consultation",
+              "author": "urology",
+              "date": "2024-05-23T10:00",
+              "body": "Outside urology group. Consult date 05/21/2024.\nReason: L renal stone, referred by PCP.\n\n43-year-old teacher with a long history of stones (all passed spontaneously, none analyzed) and recurrent UTIs. ED visit 4/11 for months of intermittent L flank pain with low-grade fevers; noncontrast CT showed a 14 mm L renal pelvic calculus without hydronephrosis. Urine pH 8.5 with pyuria; culture grew Klebsiella pneumoniae, treated with ciprofloxacin. Currently asymptomatic.\nMeds: none. Allergies: NKDA. FH: father with stones.\n\nExam: well appearing, no CVA tenderness. Abdomen benign.\n\nImpression: 14 mm L renal pelvic stone. The alkaline urine and urease-producing organism point toward a struvite component; these stones harbor bacteria and should be cleared completely.\n\nPlan: L ureteroscopy with holmium laser lithotripsy and stent, scheduled 6/11 once school is nearly out. Stone will be sent for analysis. Will update PCP.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "procedure_visit",
+          "start": "2024-06-11T07:30",
+          "end": "2024-06-11T12:40",
+          "service": "Urology",
+          "reason": "left ureteroscopy",
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Left Ureteroscopy",
+              "author": "urology",
+              "date": "2024-06-12T09:00",
+              "body": "Outpatient surgery center, date of surgery 06/11/2024.\nPreop/Postop dx: L renal pelvic calculus, 14 mm.\nProcedure: cystoscopy, L ureteroscopy with holmium laser lithotripsy and basket extraction, L ureteral stent placement (on a string).\nAnesthesia: general.\nFindings: normal urethra and bladder. L ureter accepted the scope without dilation. Stone in the renal pelvis, fragmented to dust and small pieces; fragments basketed and sent for analysis. Final pyeloscopy without residual fragment over 1 mm. Stent left with string.\nEBL minimal. No complications. Discharged home the same day.\nPlan: stent removal in the office in 1 week; renal ultrasound in 6-8 weeks.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "outside_records",
+          "start": "2024-06-25T13:00",
+          "labs": [
+            {"panel": null, "collected": "2024-06-11T10:30", "resulted": "2024-06-24T16:00", "results": [{"test": "Calculus analysis", "loinc": "9795-6", "text": "Magnesium ammonium phosphate (struvite) 70%, carbonate apatite 30%."}]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Stone analysis and urology update",
+              "author": "MA",
+              "date": "2024-06-25T13:00",
+              "body": "Faxed from urology: stone analysis from 6/11 procedure - struvite 70%, carbonate apatite 30%. Cover note says stent was pulled in clinic 6/18 without trouble. Scanned to chart, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "portal_message",
+          "start": "2024-06-26T19:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your stone analysis",
+              "author": "PCP",
+              "date": "2024-06-26T19:10",
+              "body": "Hi Robin - urology sent your stone results. It was mostly struvite, the kind that forms around urinary infections, which fits with the cloudy urine and the Klebsiella in April. Glad the stent is out. The best thing you can do is keep the water up and let us culture early if bladder symptoms come back. Urology will see you this summer with an ultrasound."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your stone analysis",
+              "author": "patient",
+              "date": "2024-06-26T21:02",
+              "body": "Thanks! Makes sense. First week of summer and I'm already drinking more water than in the whole school year."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "specialist_visit",
+          "start": "2024-08-06T10:15",
+          "service": "Urology",
+          "reason": "post-ureteroscopy follow-up",
+          "conditions": [
+            {"label": "Calculus of kidney", "icd10": "N20.0", "action": "resolved", "note": "cleared by ureteroscopy 6/2024"}
+          ],
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2024-08-06T09:50", "text": "Both kidneys normal in size, with normal cortical thickness and echogenicity. No calculus. No hydronephrosis. Bladder partially distended and unremarkable.", "conclusion": "No residual calculus. No hydronephrosis."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "author": "urology",
+              "date": "2024-08-07T11:00",
+              "body": "Follow-up 08/06/2024 after L ureteroscopy 6/11. Stent out 6/18. No flank pain, no urinary symptoms since. Stone: struvite 70% / carbonate apatite 30%.\nRenal US today: no stones, no hydronephrosis either side.\nImpression: stone free.\nPlan: hydration; prompt treatment of UTIs with culture; renal ultrasound yearly. Return sooner for flank pain or fever.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:45",
+          "appointment": "cancelled",
+          "reason": "annual physical"
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "telephone",
+          "start": "2024-09-09T18:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "author": "front desk",
+              "date": "2024-09-09T18:50",
+              "body": "Voicemail from pt: open house at school tomorrow, needs to move her physical. Rebooked 9/24 3:45."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T16:30", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T16:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Urinalysis", "collected": "2024-09-24T16:30", "results": [{"test": "Urine pH"}, {"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-09-24T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-24T15:45"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T16:35"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T16:30"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T17:15",
+              "body": "Yearly exam. Back at school three weeks; says the water bottle habit has stuck so far.\n\nInterval: L ED visit in April for a 14 mm renal pelvic stone with Klebsiella UTI; treated with cipro, then L ureteroscopy/laser 6/11 at urology. Struvite/carbonate apatite on analysis. Stone free on ultrasound in August. No UTIs since spring.\n\nMeds none. NKDA. Never smoker, no alcohol.\nROS negative.\n\nExam: well. HEENT normal, neck supple. Heart RRR. Lungs clear. Abdomen soft, nontender, no CVA tenderness. Breast exam deferred to imaging per her preference. No edema. Skin normal.\nPHQ-2: 0.\n\nA/P\n- Hx renal stones, stone free - urology yearly US.\n- Recurrent UTI - call early for culture.\n- Prevention: flu vaccine today. Mammogram ordered. Pap/HPV next due 2025. Colon screening starts at 45, next year. CMP, CBC, UA today.\nSee her in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2024-09-26T07:50",
+              "body": "Robin, everything from your physical is in range, including kidney function and calcium. The urine showed no sign of infection. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T17:30",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T17:30"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "author": "MA",
+              "date": "2024-10-10T09:15",
+              "body": "Community pharmacy notification: COVID-19 vaccine (Moderna 2024-25 formula) given 10/08/2024, left arm. Entered in immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T16:00",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-10-22T16:00", "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 10/2023. Scattered areas of fibroglandular density. No new mass, distortion or suspicious calcification. Stable.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-10-22T16:00"}
+          ]
+        }
+      ]
+    }
+  ]
+}

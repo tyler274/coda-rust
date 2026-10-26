@@ -1,0 +1,290 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002288",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T10:40",
+          "reason": "Cardiology annual letter received",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Annual Follow-up (01/16/2024)", "author": "cardiology", "date": "2024-01-23T10:40", "body": "Amyloid clinic, 01/16/2024\n\nTwo years on tafamidis. Symptoms unchanged from last year: winded on inclines, flat ground fine. Ankles stay down on furosemide 20 mg. No chest discomfort, presyncope or palpitations.\nExam: vitals normal. Regular rhythm, no murmur. JVP not raised. No edema.\nImpression: stable wild-type ATTR cardiomyopathy.\nPlan: same regimen. One year.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "telephone",
+          "start": "2024-02-13T14:20",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Tafamidis PA", "author": "MA", "date": "2024-02-13T14:20", "body": "Supplemental plan sent a letter asking for the 2024 tafamidis renewal. Cardiology's office confirms they filed it 2/9 and it was approved. Scanned approval letter to chart."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T14:30",
+          "reason": "Chronic care follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2024-03-19T08:10", "body": "Wife called to cancel this afternoon; their road wasn't plowed after the overnight storm. Will call back to rebook."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest pressure with exertion",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "rr"],
+          "medications": [
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "start", "sig": "Dissolve 1 tablet under the tongue for chest pressure; may repeat every 5 minutes up to 3; call 911 if not relieved", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "Exertional chest pressure"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-16T14:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-16T14:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2024-04-16T14:15", "text": "Sinus rhythm. Low QRS voltage. Diffuse nonspecific ST-T abnormalities. No acute ST elevation or new Q waves. Compared with the 11/2021 cardiology tracing, no significant change.", "conclusion": "Low voltage with nonspecific ST-T changes, unchanged from prior."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2024-04-16T14:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2024-04-16T14:15"}
+          ],
+          "orders": [{"id": "cards-urgent-2024", "action": "placed", "order": "Cardiology referral, urgent", "category": "referral", "to": "Cardiology", "reason": "New exertional chest pressure, known CAD"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Exertional Chest Pressure", "author": "PCP", "date": "2024-04-16T14:50", "body": "Visit rebooked from March. About three weeks of a pressure across the chest when he walks up the hill to the mailbox or carries grocery bags in from the car. Stops, it fades within a few minutes. None at rest, none at night. Not like the swallowing problem. No palpitations, no fainting. Breathing at baseline for him.\nExam: comfortable. Vitals as recorded. Heart regular, no murmur. Lungs clear. No edema.\nECG in office: low voltage and nonspecific ST-T changes, same as the 2021 cardiology tracing.\nA/P: New exertional angina in a man with CAD known since 2016 and ATTR-wt amyloid. Called cardiology directly; they will see him within 2-3 weeks and likely proceed to angiography. Sublingual nitroglycerin for episodes, reviewed use and when to call 911. Continue aspirin and atorvastatin. CBC and BMP today. Avoid strenuous exertion until seen."}
+          ]
+        },
+        {
+          "id": "2024-05-10a",
+          "kind": "outside_records",
+          "start": "2024-05-10T16:00",
+          "reason": "Cardiology and angiography report received",
+          "orders": [{"id": "cards-urgent-2024", "action": "done", "date": "2024-05-10T16:00"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Coronary Angiography (05/07/2024)", "author": "cardiology", "date": "2024-05-10T16:00", "body": "CARDIAC CATHETERIZATION REPORT\nDate: 05/07/2024\nIndication: exertional angina, known coronary artery disease, ATTR cardiac amyloidosis.\nAccess: right radial artery, 6 Fr. Hemostasis with band.\nFindings: severe multivessel coronary artery disease. Left main without significant stenosis.\nConclusion: severe multivessel CAD. Anatomy best served by surgical revascularization; heart team review held, cardiac surgery consult this week.\nNo complications. Continue aspirin 81 mg, atorvastatin, sublingual nitroglycerin as needed. Tafamidis and furosemide unchanged.\n\nInterventional cardiology"}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T12:30",
+          "reason": "Surgery scheduling update",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from wife", "author": "RN", "date": "2024-05-14T12:30", "body": "Wife called: cardiac surgeon saw him yesterday, bypass surgery booked for 5/29. Surgery team doing all pre-op testing and told him to keep taking aspirin. Used the nitro once last week, worked in a minute. Asked her to let us know when he's home so we can do a follow-up visit. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP note", "author": "PCP", "date": "2024-05-14T13:40", "body": "Reviewed. Agree. Sent the surgical team a summary of his PD regimen with a note to keep carbidopa/levodopa on schedule perioperatively."}
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "outside_records",
+          "start": "2024-06-05T09:30",
+          "reason": "Hospital discharge summary received (CABG)",
+          "conditions": [
+            {"label": "Presence of aortocoronary bypass graft", "icd10": "Z95.1", "action": "diagnosed", "onset": "2024-05-29"},
+            {"label": "Hemorrhagic disorder due to extrinsic circulating anticoagulants", "icd10": "D68.32", "action": "diagnosed", "onset": "2024-05-29", "note": "Postoperative bleeding from residual heparin effect after CABG, reversed with protamine"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary: Cardiac Surgery (05/29/2024 to 06/03/2024)", "author": "cardiac surgery", "date": "2024-06-05T09:30", "body": "CARDIAC SURGERY DISCHARGE SUMMARY\nAdmitted: 05/29/2024. Discharged: 06/03/2024.\nPrincipal procedure: coronary artery bypass grafting with left internal mammary artery harvest, via median sternotomy, on cardiopulmonary bypass (05/29/2024).\nIndication: severe multivessel coronary artery disease with exertional angina.\nHistory: 70-year-old man with Parkinson disease, wild-type transthyretin cardiac amyloidosis on tafamidis, and achalasia treated with dilation.\nAllergies: NKDA.\n\nHospital course: The operation itself went without incident, and he was taken to the cardiac ICU intubated. Roughly two hours after arrival the team was called for steady chest-tube output and oozing around the internal jugular line, ongoing despite several liters of crystalloid and transfusion of blood products. He had received unfractionated heparin during the case for bypass. Coagulation studies showed a prolonged aPTT with a normal PT, normal platelet count and normal fibrinogen; nothing to suggest thrombocytopenia or DIC. Bleeding was attributed to persistent heparin effect. Urgent reversal with protamine was given, and chest-tube output fell off over the following hour without return to the operating room. Extubated postoperative day 1. Chest tubes out day 3. Carbidopa/levodopa kept on schedule. Ambulating with PT by day 2. Discharged home with his wife.\n\nDischarge diagnoses: severe multivessel CAD s/p CABG; postoperative hemorrhage due to anticoagulant (heparin), reversed; Parkinson disease; ATTR-wt cardiac amyloidosis; achalasia; hyperlipidemia.\n\nDischarge medications: aspirin 81 mg daily; atorvastatin 20 mg daily; carbidopa/levodopa 25/100 TID; pramipexole 1.5 mg daily; tafamidis 61 mg daily; furosemide 20 mg daily. Nitroglycerin as needed.\nInstructions: sternal precautions, no lifting over 10 lb, no driving 4-6 weeks. Cardiac surgery clinic in 2 weeks; primary care in 1-2 weeks; cardiac rehab referral after clearance.\n\nCardiac surgery"}
+          ]
+        },
+        {
+          "id": "2024-06-05b",
+          "kind": "telephone",
+          "start": "2024-06-05T11:10",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Transitional care call", "author": "RN", "date": "2024-06-05T11:10", "body": "TCM call within 2 business days of discharge. Spoke with wife. Home since Monday. Yesterday he went to the ED because his chest was 'clicking and popping' when he moved and sore for a couple of days; they x-rayed and told him a sternal wire had moved, no infection, sent him home with instructions to protect the chest. No fever. Taking all meds; reviewed list against discharge summary, matches. Using a pillow to brace when he coughs. Visit booked 6/25 (first with PCP; surgeon visit is 6/12). Requested ED record."}
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "telephone",
+          "start": "2024-06-10T09:05",
+          "reason": "Wife reports readmission",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from wife", "author": "RN", "date": "2024-06-10T09:05", "body": "Wife called: he ran a fever over the weekend and the incision got red and started draining, so she took him to the ED Saturday. He was admitted; surgeon took him back to the OR Sunday to clean out the infection and rewire the breastbone. On IV antibiotics. She'll call when discharge is planned. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "outside_records",
+          "start": "2024-06-12T15:45",
+          "reason": "ED record received (06/04/2024)",
+          "conditions": [{"label": "Superficial surgical wound dehiscence", "icd10": "T81.31XA", "action": "diagnosed", "onset": "2024-06-02", "note": "Sternal instability with displaced sternal wire after CABG"}],
+          "vitals": [{"time": "2024-06-04T12:50", "temp_c": 37.2, "bp": [130, 85], "hr": 88, "rr": 16}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-04T13:20", "results": [{"test": "White Blood Cells", "value": 7.5}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2024-06-04T13:20", "results": [{"test": "C Reactive Protein", "value": 8}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-06-04T13:45", "text": "Postoperative changes of median sternotomy and CABG. One of the sternal wires is displaced compared with the immediate postoperative film. No pneumothorax. Lungs clear. No significant effusion. Heart size within normal limits for postoperative state.", "conclusion": "Displaced sternal wire."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2024-06-04T13:00"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record (06/04/2024)", "author": "emergency medicine", "date": "2024-06-12T15:45", "body": "EMERGENCY DEPARTMENT\nDate: 06/04/2024\nCC: chest wall popping with movement, mild chest pain x 2 days\n\nHPI: 70M, CABG on 5/29, discharged yesterday. For two days has felt the front of his chest pop or click when he moves or turns in bed, with mild soreness. Denies fever, cough, shortness of breath.\nPMH: Parkinson disease, ATTR cardiac amyloidosis, achalasia, CAD s/p CABG, hyperlipidemia.\nMeds: per discharge list. NKDA.\n\nExam: T 37.2 C (99 F), BP 130/85, P 88, RR 16. Comfortable. Sternotomy incision closed and intact, no erythema, no drainage. Palpable clicking over the sternum with discomfort on palpation. Lungs clear.\n\nLabs: WBC 7,500, Hgb 13.2, platelets 250,000, CRP 8 mg/L.\nCXR: displaced sternal wire.\n\nMDM: sternal instability with wire displacement, early postoperative; no clinical sign of infection. Discussed by phone with cardiac surgery on call: sternal precautions, chest support, keep surgical clinic follow-up, return for fever, redness or drainage.\nDx: superficial surgical wound dehiscence (sternal).\nDisposition: home with wife.\n\nEmergency medicine"}
+          ]
+        },
+        {
+          "id": "2024-06-21a",
+          "kind": "outside_records",
+          "start": "2024-06-21T10:15",
+          "reason": "ED record and discharge summary received (06/08/2024 to 06/20/2024)",
+          "conditions": [{"label": "Postoperative mediastinitis", "icd10": "J98.51", "action": "diagnosed", "onset": "2024-06-05"}],
+          "state": {"labs": {"Hemoglobin": 12.6}},
+          "vitals": [{"time": "2024-06-08T18:20", "temp_c": 38.9, "hr": 110, "bp": [130, 85]}],
+          "medications": [
+            {"drug_text": "cefazolin 2000 MG Injection", "action": "historical", "sig": "2 g IV every 8 hours via PICC through 7/21/2024", "dose": {"value": 2000, "unit": "mg"}, "frequency": "Q8H", "route": "Intravenous", "course": "short", "reason": "Postoperative mediastinitis, MSSA"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-08T19:10", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin", "value": 12.5}]},
+            {"panel": null, "collected": "2024-06-08T19:10", "results": [{"test": "C Reactive Protein", "value": 24}, {"test": "Blood Culture", "text": "No growth at 5 days (2 sets)"}]},
+            {"panel": null, "collected": "2024-06-09T11:30", "results": [{"test": "Wound culture", "loinc": "6462-6", "text": "Staphylococcus aureus, methicillin-susceptible (oxacillin susceptible; cefazolin susceptible)"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-06-08T19:40", "text": "Median sternotomy wires again noted. Small fluid collection anterior to the sternum. Lungs clear without consolidation. No pneumothorax.", "conclusion": "Small presternal fluid collection."},
+            {"study": "CT chest", "performed": "2024-06-08T22:15", "text": "Postoperative sternotomy. Fluid collection anterior to the sternum, corresponding to the radiograph finding. Lungs without consolidation. No pleural effusion of significance. Mediastinal structures otherwise as expected after recent cardiac surgery.", "conclusion": "Fluid collection anterior to the sternum after recent sternotomy."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2024-06-08T18:30"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record (06/08/2024)", "author": "emergency medicine", "date": "2024-06-21T10:15", "body": "EMERGENCY DEPARTMENT\nDate: 06/08/2024\nCC: fever, malaise, red painful sternal wound\n\nHPI: 70M, postoperative day 10 from CABG, seen here on 6/4 for sternal wire displacement. Low-grade fevers began three days ago and have climbed. Feels unwell. Increasing redness and pain at the incision.\nMeds per list. NKDA.\n\nExam: T 38.9 C (102 F), HR 110, BP 130/85. Ill-appearing. Sternal incision erythematous with purulent drainage; swelling and tenderness over the sternum.\n\nLabs: WBC 15,000, Hgb 12.5, CRP 24 mg/L. Blood cultures x2 drawn.\nCXR: small fluid collection in front of the sternum. CT chest: corresponding anterior collection.\n\nAssessment: postoperative mediastinitis. Cardiac surgery at bedside; admitted to their service. Empiric IV antibiotics started after cultures.\n\nEmergency medicine"},
+            {"type": "Discharge Summary", "title": "Discharge Summary: Cardiac Surgery (06/08/2024 to 06/20/2024)", "author": "cardiac surgery", "date": "2024-06-21T10:20", "body": "CARDIAC SURGERY DISCHARGE SUMMARY\nAdmitted: 06/08/2024. Discharged: 06/20/2024.\nDiagnosis: postoperative mediastinitis after CABG (5/29/2024), with preceding sternal wound dehiscence.\nProcedure: 06/09/2024 sternal debridement, mediastinal washout and sternal rewiring.\n\nCourse: Taken to the OR the morning after admission. Infected tissue at the sternal wound was debrided and the mediastinum irrigated; sternum rewired and closed. Operative culture grew methicillin-susceptible Staphylococcus aureus. Blood cultures no growth. Empiric IV antibiotics narrowed to cefazolin on culture data. Fever resolved by day 3. PICC placed 6/14. Wound clean at discharge. Parkinson medications given on time throughout.\n\nDischarge medications: cefazolin 2 g IV every 8 hours via PICC through 7/21/2024 (6 weeks from debridement), home infusion arranged; aspirin 81 mg; atorvastatin 20 mg; carbidopa/levodopa 25/100 TID; pramipexole 1.5 mg daily; tafamidis 61 mg; furosemide 20 mg.\nFollow-up: weekly CBC and BMP drawn by home infusion nursing, results to cardiac surgery and primary care. Cardiac surgery clinic 7/22. PCP within a week.\n\nCardiac surgery"}
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "office_visit",
+          "start": "2024-06-25T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [{"label": "Hemorrhagic disorder due to extrinsic circulating anticoagulants", "icd10": "D68.32", "action": "resolved"}],
+          "medications": [{"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "stop", "reason": "No angina since CABG; per cardiac surgery not needed"}],
+          "state": {"labs": {"Hemoglobin": 12.8}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2024-06-25T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2024-06-25T14:20", "body": "Seen with wife after two hospital stays: CABG 5/29 (bleeding from residual heparin in the ICU, reversed with protamine), ED 6/4 for a displaced sternal wire, then readmitted 6/8 to 6/20 for mediastinitis, debrided and rewired 6/9, MSSA, on IV cefazolin through 7/21.\nNow: tired but better each day. No fevers at home. Home infusion nurse comes weekly. Eating fine, swallowing OK. No chest pressure at all since surgery; hasn't needed nitroglycerin. Walking the hallway and driveway.\nMeds reconciled with both discharge lists: cefazolin IV q8h, aspirin, atorvastatin 20, carbidopa/levodopa TID, pramipexole ER 1.5, tafamidis, furosemide. Stopping SL nitroglycerin per surgery.\nExam: afebrile. Vitals as recorded. Sternal incision clean and dry, no drainage, edges together. R arm PICC site clean, no redness. Heart regular. Lungs clear. Trace ankle edema.\nA/P\n1. Mediastinitis s/p debridement, on cefazolin: improving; weekly infusion labs to us.\n2. CABG: postoperative bleeding episode resolved.\n3. Anemia from surgery: recovering per infusion labs.\n4. PD, ATTR-wt amyloid: continue regimen.\nCardiac surgery 7/22. Return here in 3 months, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "lab_only",
+          "start": "2024-06-27T09:00",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-27T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-27T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Home infusion labs", "author": "RN", "date": "2024-06-27T16:10", "body": "Weekly home infusion labs faxed. Counts and kidney function OK; hemoglobin still a bit low after surgery, trending up. Reviewed by PCP, no action."}
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "lab_only",
+          "start": "2024-07-03T09:00",
+          "state": {"labs": {"Hemoglobin": 13.0}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-03T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-03T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Home infusion labs", "author": "RN", "date": "2024-07-03T15:30", "body": "Week 4 of cefazolin. CBC and BMP fine. Filed."}
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "lab_only",
+          "start": "2024-07-10T09:00",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-10T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-10T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Home infusion labs", "author": "RN", "date": "2024-07-10T14:45", "body": "Labs reviewed, stable. Filed."}
+          ]
+        },
+        {
+          "id": "2024-07-17a",
+          "kind": "lab_only",
+          "start": "2024-07-17T09:00",
+          "state": {"labs": {"Hemoglobin": 13.3}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-17T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-17T09:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Home infusion labs", "author": "RN", "date": "2024-07-17T15:05", "body": "Last weekly draw before antibiotics end 7/21. Normal white count, hemoglobin up again, creatinine at his usual. Filed."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "outside_records",
+          "start": "2024-08-06T11:30",
+          "reason": "Cardiac surgery clinic letter received",
+          "conditions": [
+            {"label": "Postoperative mediastinitis", "icd10": "J98.51", "action": "resolved"},
+            {"label": "Superficial surgical wound dehiscence", "icd10": "T81.31XA", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiac Surgery Clinic (07/22/2024)", "author": "cardiac surgery", "date": "2024-08-06T11:30", "body": "Cardiac surgery postoperative clinic, 07/22/2024\n\nCompleted six weeks of IV cefazolin yesterday. PICC removed today, tip intact. Afebrile, energy improving.\nExam: sternotomy healed; no erythema or drainage. Sternum stable on cough and palpation, no click.\nImpression: mediastinitis treated; sternal dehiscence repaired and healed.\nPlan: lifting restrictions relaxed gradually over the next month. Cardiac rehab referral placed. Back to cardiology and primary care for ongoing care; surgical follow-up as needed.\n\nCardiac surgery"}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "nurse_visit",
+          "start": "2024-09-24T14:00",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-09-24T14:05"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-09-24T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-24T14:07"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2024-09-24T14:20", "body": "High-dose flu L deltoid, updated COVID R deltoid. Tolerated. He finished cardiac rehab sessions twice weekly. Wife mentioned he props himself up on extra pillows to sleep now; suggested raising it with PCP, follow-up already booked 10/22."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "office_visit",
+          "start": "2024-10-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Breathless lying flat",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "rr"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-22T14:00"}],
+          "orders": [{"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "Orthopnea and paradoxical abdominal motion after CABG"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Orthopnea", "author": "PCP", "date": "2024-10-22T14:45", "body": "Since the surgery he hasn't been able to lie flat without feeling short of breath; sleeps propped on pillows. Tires with exertion more than he'd expect after finishing rehab. His own observation: when he takes a big breath, his belly pulls in instead of out. No ankle swelling beyond his usual trace, weight steady, no chest pressure, no fever, no cough.\nExam: vitals as recorded. Lying back to 30 degrees, visible inward movement of the upper abdomen on inspiration. Breath sounds reduced at the L base. Heart regular. Sternotomy healed. Trace edema.\nPHQ-9 7: tired, less interest; no safety concerns. Still prefers no counseling.\nA/P: Orthopnea with paradoxical abdominal motion after cardiac surgery: concern for diaphragm weakness rather than worsening amyloid heart disease (weight and edema unchanged). Referred to pulmonology. Wife to send weights if they climb."}
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "outside_records",
+          "start": "2024-12-17T13:10",
+          "reason": "Pulmonology consult and sniff test received",
+          "conditions": [{"label": "Phrenic nerve injury", "icd10": "J98.6", "action": "diagnosed", "onset": "2024-05-29", "note": "Left; paralysis of left hemidiaphragm after CABG"}],
+          "state": {"labs": {"Hemoglobin": 13.8}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-02T10:40", "results": [{"test": "Hemoglobin", "value": 13.8}, {"test": "White Blood Cells", "value": 7.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-02T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Chloride"}, {"test": "Bicarbonate"}]},
+            {"panel": null, "collected": "2024-12-02T10:20", "results": [
+              {"test": "pH of arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.42},
+              {"test": "Arterial pCO2", "loinc": "2019-8", "unit": "mm[Hg]", "value": 44},
+              {"test": "Arterial pO2", "loinc": "2703-7", "unit": "mm[Hg]", "value": 72},
+              {"test": "Arterial bicarbonate", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-12-02T10:00", "text": "Median sternotomy wires intact. The left hemidiaphragm is elevated. Lungs otherwise clear. No pleural effusion. Heart size within normal limits.", "conclusion": "Elevated left hemidiaphragm."}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2024-12-17T13:10"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation (12/02/2024) and Sniff Test (12/10/2024)", "author": "pulmonology", "date": "2024-12-17T13:10", "body": "PULMONARY CONSULTATION, 12/02/2024\n\nMr. Hickey is 71, with Parkinson disease, wild-type ATTR cardiac amyloidosis, and CABG in May complicated by mediastinitis. Since his surgery he has trouble breathing when lying flat and fatigue with exertion, worse over the last two months. He notices his abdomen moving in when he breathes deeply.\nNever smoker. NKDA. Medications per your list.\n\nExam: abdomen moves inward on inspiration, supine. Breath sounds decreased at the left base. Heart regular. Sternum healed.\n\nData: Hgb 13.8, WBC 7,200, platelets 250,000; electrolytes normal. Room-air arterial gas: pH 7.42, PaCO2 44, PaO2 72, HCO3 24. Chest x-ray: elevated left hemidiaphragm.\n\nAssessment: left phrenic nerve injury after cardiac surgery, with left hemidiaphragm dysfunction explaining the orthopnea.\n\nPlan: fluoroscopic sniff test. Sleep with the head of the bed raised. Phrenic injuries after cardiac surgery often recover over months; recheck in six months before discussing anything further.\n\nAddendum, 12/10/2024, fluoroscopic sniff test: paradoxical upward motion of the left hemidiaphragm with sniffing; right hemidiaphragm moves normally. Consistent with left hemidiaphragm paralysis. Plan unchanged.\n\nPulmonology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

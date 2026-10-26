@@ -1,0 +1,388 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002270",
+      "events": [
+        {
+          "id": "2023-01-04a",
+          "kind": "specialist_visit",
+          "start": "2023-01-04T10:15",
+          "service": "Urology (outside)",
+          "reason": "Obstructive voiding symptoms, elevated PSA",
+          "orders": [{"id": "urology-referral", "action": "done", "date": "2023-01-04T10:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation", "author": "urology", "date": "2023-01-17T13:00", "body": "UROLOGY NEW PATIENT CONSULTATION\nVisit date: 01/04/2023\n\nMr. Fleming is a 76-year-old man with hypertension, type 2 diabetes, prior stroke and multi-infarct dementia, accompanied by his daughter, referred for urinary symptoms and an elevated PSA. He has to strain to begin voiding, the stream is intermittent, and he gets up several times a night. He notes a dull lower abdominal discomfort. No flank pain, gross hematuria or fevers. Appetite is preserved but he has lost weight over the last few months without trying.\n\nPMH: as above, plus aortic stenosis and presbycusis. No previous urologic procedures or surgery.\nMeds: hydrochlorothiazide 25 mg, metformin 500 mg twice daily, atorvastatin 20 mg, loratadine as needed.\nAllergies: NKDA.\nFamily history: older brother with prostate cancer.\nSocial: never smoker.\n\nExam: abdomen soft, no masses, bladder not palpable. DRE: prostate hard and irregular with nodularity.\n\nData: PSA 48.6 (11/2022, primary care), markedly elevated.\n\nAssessment: findings highly suspicious for prostate cancer.\n\nPlan: multiparametric prostate MRI, then transrectal biopsy. Discussed with patient and daughter, who agree. Will see them after biopsy.\n\nUrology"},
+            {"type": "Result Note", "title": "Urology letter", "author": "PCP", "date": "2023-01-18T08:45", "body": "Urology consult received. Suspicious exam; MRI and biopsy being arranged."}
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "imaging",
+          "start": "2023-01-19T15:00",
+          "service": "Radiology (outside)",
+          "reason": "Prostate MRI",
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI prostate with and without contrast", "author": "radiology", "date": "2023-01-31T09:30", "body": "MRI PROSTATE, MULTIPARAMETRIC (performed 01/19/2023)\nIndication: PSA 48.6, abnormal DRE.\n\nFindings: enlarged prostate. A large lesion in the peripheral zone with marked restricted diffusion and early enhancement. Tumor extends through the prostatic capsule and into the adjacent seminal vesicles. Bladder wall and rectum are preserved. No enlarged pelvic lymph nodes. No suspicious marrow lesions in the imaged pelvis.\n\nImpression: findings of prostate cancer with extracapsular extension into the seminal vesicles."}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "procedure_visit",
+          "start": "2023-01-24T08:30",
+          "service": "Urology (outside)",
+          "reason": "Prostate biopsy",
+          "conditions": [
+            {"label": "Malignant neoplasm of prostate", "action": "diagnosed", "onset": "2023-01-24"},
+            {"label": "Elevated prostate specific antigen", "action": "resolved", "note": "explained by prostate adenocarcinoma"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-01-24T08:30", "issued": "2023-01-27T14:00", "text": "Specimen: prostate, transrectal ultrasound-guided needle biopsies, 12 cores (sextant bilateral, medial and lateral).\nMicroscopic: prostatic adenocarcinoma, acinar type, present in 8 of 12 cores. Gleason score 4+4=8 (Grade Group 4).", "conclusion": "Prostatic adenocarcinoma, Gleason 4+4=8 (Grade Group 4), 8 of 12 cores."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Prostate biopsy", "author": "urology", "date": "2023-01-31T09:35", "body": "PROCEDURE: transrectal ultrasound-guided prostate biopsy, 12 cores, 01/24/2023, under local block with prophylactic antibiotic. Daughter present for consent; patient assented and understood the procedure. Tolerated well, no immediate complications. Discharged home.\n\nPathology: adenocarcinoma, Gleason 4+4=8, Grade Group 4, 8 of 12 cores. Staging CT abdomen/pelvis and bone scan ordered; return visit to discuss treatment.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "telephone",
+          "start": "2023-01-31T16:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Biopsy results", "author": "PCP", "date": "2023-01-31T16:45", "body": "MRI and pathology reports in today. Called daughter; urology had already told them it is cancer. Reviewed in plain terms: high-grade prostate cancer that has grown just outside the gland; staging scans next; treatment is usually hormone therapy with or without radiation and urology will go through it. She asked whether his dementia changes anything; told her it is part of choosing the gentlest effective plan and that we will support whatever they decide. Problem list updated."}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "imaging",
+          "start": "2023-02-07T11:00",
+          "service": "Radiology (outside)",
+          "reason": "Prostate cancer staging",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-02-07T11:00", "text": "Liver, spleen, pancreas, adrenal glands and kidneys normal. No hydronephrosis. No enlarged retroperitoneal or pelvic lymph nodes. Prostate enlarged. Bladder normally distended. No ascites. No lytic or blastic bone lesions. Mild degenerative change of the lumbar spine.", "conclusion": "No lymphadenopathy or osseous metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Bone scan", "author": "radiology", "date": "2023-02-09T10:00", "body": "WHOLE-BODY BONE SCAN (02/07/2023)\nIndication: newly diagnosed prostate adenocarcinoma.\nFindings: physiologic tracer distribution. Mild uptake at the lower cervical spine and knees consistent with degenerative change. No pattern of metastatic disease.\nImpression: no scintigraphic evidence of osseous metastases."}
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "specialist_visit",
+          "start": "2023-02-14T13:30",
+          "service": "Urology (outside)",
+          "reason": "Prostate cancer treatment planning",
+          "medications": [
+            {"drug_text": "bicalutamide 50 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily for 4 weeks", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "flare protection before leuprolide"},
+            {"drug_text": "leuprolide acetate 22.5 MG Injection", "action": "start", "sig": "22.5 mg intramuscularly every 3 months, given in urology office; first dose 2/28/2023", "dose": {"value": 22.5, "unit": "mg"}, "frequency": "EVERY 3 MONTHS", "route": "Intramuscular", "course": "chronic", "reason": "locally advanced prostate cancer"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology follow-up: treatment plan", "author": "urology", "date": "2023-03-28T10:20", "body": "UROLOGY FOLLOW-UP\nVisit date: 02/14/2023\n\nSeen with daughter (health care proxy) to review results.\nPathology: adenocarcinoma, Gleason 4+4=8 (Grade Group 4), 8/12 cores. MRI: extracapsular extension into seminal vesicles. CT abdomen/pelvis: no adenopathy, no bone lesions. Bone scan negative.\n\nAssessment: locally advanced, nonmetastatic high-risk prostate cancer.\n\nDiscussion: options of androgen deprivation with radiation versus androgen deprivation alone. Given his age, vascular dementia and wish to avoid daily treatment trips, patient and daughter prefer androgen deprivation alone with close PSA follow-up. Side effects reviewed: hot flashes, fatigue, weight and muscle change, glucose effects, bone thinning.\n\nPlan:\n- Bicalutamide 50 mg daily for 4 weeks, starting today.\n- Leuprolide 22.5 mg IM every 3 months, first injection 2/28.\n- PSA in 3 months.\n\nUrology"},
+            {"type": "Result Note", "title": "Urology letter (late)", "author": "PCP", "date": "2023-03-29T08:15", "body": "Letter from the 2/14 urology visit finally received. ADT alone: bicalutamide x4 weeks (finished), leuprolide q3 months. Medication list updated."}
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "portal_message",
+          "start": "2023-03-07T20:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Hormone shot", "author": "patient", "date": "2023-03-07T20:10", "body": "This is George's daughter. He got his first hormone shot at urology last week and is taking a pill from them for a month. They decided against radiation. Do you have their notes? He has been a bit warm at night but otherwise ok."},
+            {"type": "Patient Message", "title": "RE: Hormone shot", "author": "PCP", "date": "2023-03-08T12:00", "body": "Thanks for the update. We have not received the urology note yet and have asked for it. Night sweats and warmth are common with this treatment. We will update his medication list once the note arrives; keep a list of what he is taking handy. See you both in April."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-03-08T12:30", "body": "Requested urology note from 2/14/23 and treatment plan."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, yearly labs",
+          "state": {"weight_kg": 77.5, "labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-11T10:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-04-11T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "CBC with Differential", "collected": "2023-04-11T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2023-04-11T10:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-04-11T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up, new prostate cancer", "author": "PCP", "date": "2023-04-11T10:50", "body": "With daughter. Second leuprolide due late May. Hot flashes at night, sleeping with a fan. Urinating somewhat easier, still up twice at night. Weight steady since winter. Memory unchanged. No falls.\n\nExam: vitals per flowsheet. Mild left weakness, gait steady. Basal systolic murmur. Lungs clear. Abdomen soft, nontender. Feet intact.\n\nA/P:\n1. Prostate adenocarcinoma, locally advanced, on androgen deprivation via urology. Reviewed the plan with them.\n2. T2DM: yearly labs; ADT can raise sugars a little.\n3. HTN, HLD, aortic stenosis, dementia: unchanged.\nRTC May for wellness visit."},
+            {"type": "Result Note", "title": "Yearly labs", "author": "PCP", "date": "2023-04-13T09:30", "body": "A1c slightly higher than last year, still acceptable for him. Kidney and liver tests, counts and lipids fine. No change."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-05-16T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-05-16T10:50", "body": "WELLNESS VISIT with daughter.\n\nADLs independent; IADLs by daughter. Not driving. Uses microwave, stove disabled. No falls. Hearing aids daily.\nCognition: Mini-Cog 1/3; daughter sees no big change this year.\nPHQ-9 5, more tired since hormone shots.\nAdvance directive and proxy on file; MOLST reviewed and deferred again at his request.\nVaccines: due for RSV this fall; COVID and flu in fall. Tdap due next year.\n\nExam: mild left weakness, systolic murmur, lungs clear.\n\nPlan: diabetes check July."}
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "specialist_visit",
+          "start": "2023-05-23T09:00",
+          "service": "Urology (outside)",
+          "reason": "ADT follow-up",
+          "labs": [
+            {"panel": null, "collected": "2023-05-23T08:40", "results": [{"test": "Prostate Specific Antigen", "value": 6.2}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Urology follow-up", "author": "urology", "date": "2023-06-06T11:00", "body": "Dear colleague,\n\nMr. Fleming returned for his 3-month review on androgen deprivation. PSA has fallen from 48.6 to 6.2. Voiding is improved. Hot flashes tolerable. Second leuprolide 22.5 mg given today. Next PSA and injection in about 6 months with an injection visit between.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-18T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-07-18T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-07-18T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-07-18T09:50", "body": "Daughter with him. PSA dropping per urology. Hot flashes less. Allergies ok. Walks the block with her in the evenings. Exam unchanged from spring. A1c and BMP. Continue."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2023-07-19T15:00", "body": "No change. Proxy note to daughter."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "outside_records",
+          "start": "2023-09-19T14:30",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2023-09-19T14:30", "body": "Dilated exam for diabetes: no retinopathy in either eye. Cataracts unchanged; patient and daughter decline surgical referral at present. Return 1 year.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T10:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T10:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2023-10-03T10:20", "body": "Flu high-dose IM right deltoid; 2023-24 COVID vaccine IM left deltoid. Daughter will take him to the pharmacy for RSV later this month (not yet stocked here)."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "pharmacy",
+          "start": "2023-10-24T15:00",
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-24T15:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "MA", "date": "2023-10-27T09:00", "body": "Notification from his community pharmacy via the state registry: RSV vaccine (adjuvanted) given 10/24/2023. Entered in immunization history."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "specialist_visit",
+          "start": "2023-11-14T09:30",
+          "service": "Urology (outside)",
+          "reason": "ADT follow-up",
+          "labs": [
+            {"panel": null, "collected": "2023-11-14T09:10", "results": [{"test": "Prostate Specific Antigen", "value": 1.4}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Urology follow-up", "author": "urology", "date": "2023-11-28T10:00", "body": "Mr. Fleming continues leuprolide every 3 months. PSA today 1.4, down from 6.2 in May. Mild nocturia, stream acceptable. Injection given. Return in 6 months with PSA.\n\nUrology"}
+          ]
+        },
+        {
+          "id": "2024-01-03a",
+          "kind": "ed_visit",
+          "start": "2024-01-03T21:40",
+          "end": "2024-01-04T01:30",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Unable to urinate, lower abdominal pain",
+          "conditions": [{"label": "Urinary retention", "icd10": "R33.9", "action": "diagnosed", "onset": "2024-01-02"}],
+          "vitals": {"bp": [145, 90], "hr": 78},
+          "measure": ["spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T22:05", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Blood Urea Nitrogen", "value": 19}, {"test": "Potassium", "value": 4.5}, {"test": "Sodium", "value": 140}]}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2024-01-24T14:10", "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of service: 01/03/2024\n\nCC: cannot pass urine.\n\nHPI: 77-year-old man brought by his daughter. Lower abdominal pain and no urine output for the last 24 hours. Followed by urology for suspected prostate cancer; a year of gradually weaker stream and nighttime voiding. Two days ago he began a nonprescription allergy tablet that he had heard might help his symptoms; daughter did not bring the box.\n\nPMH: hypertension on hydrochlorothiazide, seasonal allergic rhinitis, diabetes, dementia, prior stroke, aortic stenosis.\nMeds (per daughter): metformin 500 mg twice daily, atorvastatin 20 mg nightly, loratadine 10 mg as needed, hydrochlorothiazide, the OTC allergy product.\nAllergies: NKDA.\n\nExam: BP 145/90, HR 78. Uncomfortable. Lower abdomen distended with a palpable, tender bladder. DRE: prostate enlarged, smooth and firm. Mucous membranes dry. No new focal neurological deficit.\n\nLabs: creatinine 1.2, BUN 19, potassium 4.5, sodium 140.\n\nCourse: urethral catheter placed with prompt relief and a large volume drained. Comfortable afterward.\n\nImpression: acute urinary retention, likely the OTC allergy medication on top of prostatic obstruction.\n\nDisposition: home with indwelling catheter and leg bag. Stop the OTC allergy product. Urology for voiding trial within a week. Return for fever, catheter blockage or bleeding.\n\nEmergency Medicine"},
+            {"type": "Result Note", "title": "ED record (late)", "author": "PCP", "date": "2024-01-25T08:20", "body": "ED record from 1/3 finally received. Matches what the daughter reported. Retention added to problem list."}
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "telephone",
+          "start": "2024-01-04T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Daughter: ED last night", "author": "RN", "date": "2024-01-04T09:10", "body": "Daughter called. Took him to the ED last night, he could not pee all day and was in pain. They put in a catheter and sent him home; urology Tuesday to take it out. He had started some allergy-sinus pills from the drugstore 2 days ago; she does not know which ones and has thrown them out. Catheter draining clear yellow, no fever. Reviewed catheter care and reasons to call. Told her no OTC cold or allergy products without asking us; loratadine alone is fine. Asked her to have ED send records."}
+          ]
+        },
+        {
+          "id": "2024-01-10a",
+          "kind": "telephone",
+          "start": "2024-01-10T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Voiding trial", "author": "RN", "date": "2024-01-10T11:30", "body": "Daughter: catheter removed at urology yesterday and he passed the voiding trial, urinating on his own since. Stream weak but steady. Keeping 1/16 follow-up here."}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED follow-up, yearly labs",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-01-16T10:30", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-01-16T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-16T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Urinalysis", "collected": "2024-01-16T10:25", "results": [{"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}]},
+            {"panel": null, "collected": "2024-01-16T10:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-16T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit", "author": "PCP", "date": "2024-01-16T10:45", "body": "With daughter. ED 1/3 for urinary retention after an OTC allergy-sinus product; catheter, then voiding trial passed 1/9 at urology. Voiding since, weak stream, up twice at night. No fever, no burning. Only loratadine for allergies now.\n\nExam: vitals per flowsheet. Abdomen soft, bladder not palpable. Mild left weakness. Systolic murmur. Lungs clear.\n\nA/P:\n1. Urinary retention, resolved after catheter; precipitant stopped. UA today. Medication list reviewed with daughter: avoid antihistamine-decongestant combinations and sleep aids.\n2. Yearly labs. ED creatinine 1.2 when dry; recheck today.\n3. Prostate cancer on ADT; next urology in May.\nWe still do not have the ED record."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2024-01-18T12:00", "body": "Creatinine back to his usual. A1c, lipids, counts fine. UA clean. Portal note to daughter."}
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "pharmacy",
+          "start": "2024-03-11T10:00",
+          "medications": [
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 875, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "prescribed at outside urgent care"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy notice", "author": "MA", "date": "2024-03-11T10:00", "body": "Pharmacy called to ask whether to add a new antibiotic to his blister pack: amoxicillin-clavulanate 875 mg twice daily x 7 days, filled 3/9 from an urgent care prescriber. We had no notice of the visit. Told them to dispense as written, separate card. Will call daughter."}
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "telephone",
+          "start": "2024-03-13T13:20",
+          "conditions": [{"label": "Community-acquired pneumonia", "action": "diagnosed", "onset": "2024-03-07"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Urgent care visit", "author": "RN", "date": "2024-03-13T13:20", "body": "Reached daughter. Saturday she took him to an urgent care for cough and fever; they told her it was pneumonia and gave the antibiotic. She does not have paperwork. Today: cough looser, no fever since Sunday, eating and drinking. No shortness of breath at rest. Advised to finish the course. Follow-up visit booked April. Asked her to request the urgent care note."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pneumonia; diabetes",
+          "conditions": [{"label": "Community-acquired pneumonia", "action": "resolved"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-04-16T10:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-16T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-04-16T10:10", "body": "With daughter. Treated for pneumonia at an urgent care in March (no record received). Finished antibiotics, cough gone, energy back. No fever.\n\nExam: vitals per flowsheet, saturation normal. Lungs clear to auscultation throughout. Systolic murmur. Mild left weakness.\n\nA/P: pneumonia resolved clinically. A1c today. Wellness visit next month with Tdap."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "annual_physical",
+          "start": "2024-05-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-05-14T10:40"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-05-14T10:00"},
+            {"procedure": "Immunization administration", "performed": "2024-05-14T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-05-14T10:55", "body": "WELLNESS VISIT with daughter.\n\nYear: urinary retention in January, pneumonia in March, both recovered. ADT continuing.\nFunction: self-care independent; daughter handles the rest, daily visits. No falls.\nCognition: Mini-Cog 1/3; gradual change per daughter.\nPHQ-9 4.\nHearing aids, glasses. Abstinent from alcohol.\nTdap given today (last 2014).\nAdvance directive current.\n\nExam: mild left weakness; systolic murmur; lungs clear.\n\nPlan: follow-up July."}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "portal_message",
+          "start": "2024-06-04T18:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Urology update", "author": "patient", "date": "2024-06-04T18:40", "body": "Daughter here. Urology last week said his PSA is 0.8, the lowest yet, and gave his shot. They said all is going as hoped. I don't think they send you letters every time."},
+            {"type": "Patient Message", "title": "RE: Urology update", "author": "PCP", "date": "2024-06-05T08:30", "body": "Good news, thank you. I've noted it in his chart."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-16T09:25", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-07-16T09:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-07-16T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-07-16T09:30", "body": "Daughter: eating more slowly lately and sometimes coughs at the table; she cuts his food smaller. He has no complaints. Weight about the same. Exam: lungs clear, systolic murmur, mild left weakness. Labs today. Will keep an eye on weight and swallowing."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2024-07-17T13:30", "body": "BMP and A1c fine. Portal to daughter."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "outside_records",
+          "start": "2024-08-20T10:30",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2024-08-20T10:30", "body": "Annual diabetic eye check for George Fleming: retinas clear of diabetic retinopathy both sides. Cataracts stable. Return 12 months.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and fever",
+          "conditions": [{"label": "Community-acquired pneumonia", "action": "diagnosed", "onset": "2024-09-14"}],
+          "medications": [
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 875, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "pneumonia"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-09-17T11:55", "results": [{"test": "White Blood Cells", "value": 13.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-17T11:55", "results": [{"test": "Creatinine"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-09-17T12:10", "text": "PA and lateral chest. Patchy airspace opacity in the right lower lobe. No pleural effusion. No pneumothorax. Heart size normal.", "conclusion": "Right lower lobe pneumonia."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-17T11:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day visit: cough, fever", "author": "PCP", "date": "2024-09-17T12:40", "body": "Daughter texted this morning; seen same day.\n\nHPI: three days of wet cough and fever at home, more tired, eating less. Second chest infection this year (March, urgent care). Daughter again mentions coughing during meals and some bringing up of food at night.\n\nEXAM: vitals per flowsheet. Not in distress, speaking full sentences. Crackles at the right base. Basal systolic murmur. Mild left weakness.\n\nCXR in office: right lower lobe opacity. WBC 13.2.\n\nA/P: right lower lobe pneumonia, outpatient treatment reasonable (alert, oral intake ok, saturation normal, daughter with him daily). Amoxicillin-clavulanate 875 mg twice daily for 7 days. Fluids. Return precautions: breathing harder, confusion, unable to take pills. Recheck in 2 weeks; we will look at the swallowing then."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "office_visit",
+          "start": "2024-10-01T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumonia follow-up; swallowing",
+          "conditions": [{"label": "Community-acquired pneumonia", "action": "resolved"}],
+          "state": {"weight_kg": 75.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-01T10:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-01T10:37"}
+          ],
+          "orders": [{"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "solid dysphagia, regurgitation, recurrent pneumonia"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-01T10:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-01T10:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-10-01T10:50", "body": "With daughter. Finished antibiotic; cough gone, no fever.\n\nSwallowing: since early summer solids seem to stick, comes and goes. At night he sometimes brings up food that looks undigested. Bad breath despite brushing. Says there is a lump feeling in his throat. Liquids mostly fine.\n\nExam: vitals per flowsheet, weight down a couple of kg. Lungs clear now. Neck without obvious mass on my exam today. Mild left weakness. Systolic murmur.\n\nA/P:\n1. Pneumonia resolved.\n2. Intermittent solid dysphagia with regurgitation and two pneumonias this year: GI referral.\n3. Weight loss, likely from eating less; soft, moist foods and small bites meanwhile.\n4. Flu and COVID vaccines today."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002740",
+      "given": "Jennifer",
+      "family": "Michaud",
+      "birth_date": "1969-11-26",
+      "address_line": "41 Ridgewood Terrace",
+      "phone": "+1-518-555-0199",
+      "email": "jennifer.michaud@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant who joins in 2021 with hypothyroidism, then develops erosive rheumatoid arthritis treated with methotrexate and prednisone, restless legs, vulvar lichen sclerosus, iron deficiency from an advanced ascending-colon adenoma, and in late 2025 a stage I diffuse large B-cell lymphoma treated with R-CHOP. Sparse outside records.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Hypothyroidism", "action": "history", "note": "on levothyroxine for years, managed by prior PCP"},
+            {"label": "Family history of colon cancer", "action": "diagnosed", "note": "father, diagnosed at 65"}
+          ],
+          "medications": [
+            {"drug": "levothyroxine sodium 0.1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning on an empty stomach", "dose": {"value": 100, "unit": "mcg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypothyroidism"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0, "labs": {"Hemoglobin": 13.1, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T10:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T10:05", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T10:05", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-14T09:20"}],
+          "orders": [
+            {"id": "records-prior", "action": "placed", "order": "Request records from prior primary care practice", "category": "procedure", "reason": "establishing care"},
+            {"id": "mammo-2021", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine breast cancer screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-14T09:20", "body": "51F here to establish. Her last PCP retired over the summer and she wanted an office she could actually reach by phone.\n\nPMH: hypothyroidism, on levothyroxine for a long time, dose stable at 100 mcg for several years per her report. No other ongoing problems.\nPSH: R carpal tunnel release 2018, tonsils out as a child.\nMeds: levothyroxine 100 mcg qAM.\nAllergies: NKDA.\nFH: mother with autoimmune (Hashimoto) thyroid disease. Father had colon cancer at 65, doing ok. One sister with rheumatoid arthritis.\nSH: administrative assistant, full time. Married. Quit cigarettes about 10 years ago, roughly 10 pack-years total. Doesn't drink.\n\nROS: energy fine, no palpitations, weight steady, bowels regular. Joints fine.\n\nExam: well appearing. Thyroid not enlarged, no nodules felt. Heart RRR, no murmur. Lungs clear. Abdomen benign. No edema. Skin unremarkable.\n\nA/P\n1. Hypothyroidism - stable on 100 mcg, TSH today.\n2. Health maintenance - she thinks her last colonoscopy was around 2016 and was clean, done early because of her dad. Pap a couple of years ago. Mammogram last fall. Requesting old records to confirm. Baseline CBC, CMP, lipids. One-time hep C and HIV screen, she agreed.\n3. Former smoker, 10 pk-yr - below threshold for lung screening.\n4. Mammogram ordered.\n\nRTC 6 months, sooner prn."}
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent labs", "author": "PCP", "date": "2021-09-16T16:40", "body": "Hi Jennifer, your blood work came back fine. Thyroid level is on target with the current levothyroxine, so no dose change. Blood count, kidney and liver numbers and cholesterol are all normal, and the hepatitis C and HIV screens were negative. Glad to have you with us."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "outside_records",
+          "start": "2021-10-05T11:15",
+          "reason": "Prior practice records received",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-05-22T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T14:00"}
+          ],
+          "orders": [{"id": "records-prior", "action": "done", "date": "2021-10-05T11:15"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care", "author": "front desk", "date": "2021-10-05T11:15", "body": "38 pages received by fax from the patient's previous primary care office, covering 2014 to 2021.\n\nAbstracted for the chart:\n- Colonoscopy 2016 (age 46, early for father's colon cancer): normal to the cecum, no polyps. Repeat advised in 10 years.\n- Pap with HPV co-testing 2019: negative/negative.\n- Screening mammogram 2020: BI-RADS 1.\n- Tdap 05/2017.\n- COVID-19 Pfizer doses 04/09/2021 and 04/30/2021 (pharmacy record).\n- Levothyroxine 100 mcg with TSH values in range at each annual check.\n\nScanned to media, abstracted to health maintenance. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T08:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T08:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2021-10-19T08:15", "body": "Seasonal influenza vaccine 0.5 mL IM given in the left deltoid. Screening negative, VIS reviewed. Stayed 15 minutes, no reaction. On her way to work."}
+          ]
+        },
+        {
+          "id": "2021-10-28a",
+          "kind": "imaging",
+          "start": "2021-10-28T07:45",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2021-10-28T07:45", "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison with prior outside study. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, calcification or architectural distortion in either breast. Skin and nipples unremarkable.", "conclusion": "BI-RADS 1, negative. Routine annual screening."}
+          ],
+          "orders": [{"id": "mammo-2021", "action": "done", "date": "2021-10-28T07:45"}]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T07:52",
+          "reason": "Refill request",
+          "medications": [
+            {"drug": "levothyroxine sodium 0.1 MG Oral Tablet", "action": "stop", "reason": "converted to practice prescription"},
+            {"drug": "levothyroxine sodium 0.1 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning on an empty stomach", "dose": {"value": 100, "unit": "mcg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypothyroidism"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Levothyroxine refill", "author": "patient", "date": "2022-01-11T07:52", "body": "Good morning, my levothyroxine bottle says no refills left - the old office wrote that one. Could you send a new script to my usual pharmacy? 90 days if possible. Thanks!"},
+            {"type": "Patient Message", "title": "RE: Levothyroxine refill", "author": "RN", "date": "2022-01-11T11:30", "body": "Done - 90-day supply with 3 refills went to your pharmacy. We'll recheck your thyroid level at your March visit."}
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-03-08T16:05", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-03-08T16:00"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-08T15:40"},
+            {"procedure": "Immunization administration", "performed": "2022-03-08T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-03-08T15:40", "body": "S: 6-month check. Feels about the same as always, a bit tired by Friday but that's work. Takes the levothyroxine first thing with water, coffee 45 min later. No heat or cold intolerance, no palpitations.\n\nO: vitals reviewed. Thyroid normal size. Heart and lungs normal. No tremor, reflexes normal.\n\nA/P: Hypothyroidism, clinically euthyroid. TSH today, continue 100 mcg.\nShingles vaccine #1 given today (she's 52), second dose in 2-6 months - nurse visit booked for May.\nPhysical in September."},
+            {"type": "Result Note", "title": "TSH result", "author": "PCP", "date": "2022-03-09T12:10", "body": "TSH normal. No change. Released to portal."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "nurse_visit",
+          "start": "2022-05-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-05-10T08:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-05-10T08:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "MA", "date": "2022-05-10T08:35", "body": "Shingrix #2 IM right deltoid. Had a sore arm and felt achy for a day after the first one; reminded her that's expected and acetaminophen is fine. Series complete."}
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "annual_physical",
+          "start": "2022-09-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; hand stiffness",
+          "state": {"labs": {"Hemoglobin": 12.9, "Thyroid Stimulating Hormone": 2.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-08T09:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-08T09:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-08T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-08T09:20", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-09-08T08:40"},
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-09-08T08:40"}
+          ],
+          "orders": [
+            {"id": "rheum-referral", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "symmetric hand and wrist synovitis with morning stiffness"},
+            {"id": "mammo-2022", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-08T08:40", "body": "Annual exam, 52F.\n\nInterval: hands. Since around April her fingers and both wrists are stiff and achy when she gets up, takes well over an hour at her desk before she can type comfortably. Gets better as she moves around, worse again after sitting through a long meeting. Some puffiness across the knuckles of the middle fingers and both wrists. No rash, no fevers, no recent illness. Sister has RA and she is worried about the same thing.\n\nOtherwise well. Thyroid stable. Mood good.\n\nExam: BP and vitals as recorded. HEENT ok. Thyroid normal. Heart RRR. Lungs clear. Abdomen soft. Breast exam deferred to mammogram per her preference. Hands: soft swelling over both wrists and several PIPs, tender to squeeze across the MCPs, no nodules, no deformity. Knees, ankles, feet normal.\n\nA/P\n1. Symmetric small-joint inflammatory arthritis picture with prolonged AM stiffness and a sister with RA. Referring to rheumatology for evaluation; they will want their own serologies and films so not duplicating here.\n2. Hypothyroidism - TSH, continue 100 mcg.\n3. Labs: CBC, CMP, lipids.\n4. Mammogram ordered. Colonoscopy due 2026. Pap due 2024.\n5. PHQ-2 negative.\n6. Flu and updated COVID shot next month at a nurse visit."},
+            {"type": "Result Note", "title": "Annual labs", "author": "PCP", "date": "2022-09-09T13:20", "body": "CBC, CMP, lipids and TSH within normal limits. Portal note sent. Rheum referral faxed, they have a wait into October."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T07:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T07:55"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2022-10-04T07:58", "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Tolerated both. Mentions her rheumatology appointment is on the 20th."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "specialist_visit",
+          "start": "2022-10-20T10:00",
+          "service": "Rheumatology",
+          "reason": "Inflammatory arthritis evaluation",
+          "conditions": [
+            {"label": "Rheumatoid arthritis", "action": "diagnosed", "onset": "2022-04-01"}
+          ],
+          "medications": [
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 6 tablets (15 mg) by mouth once weekly on the same day each week", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "Rheumatoid arthritis"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "methotrexate supplementation"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with breakfast", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Rheumatoid arthritis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-10-20T10:40", "results": [
+              {"test": "Rheumatoid Factor", "text": "Positive"},
+              {"test": "Cyclic Citrullinated Peptide Antibody", "text": "Positive"},
+              {"test": "Erythrocyte Sedimentation Rate", "value": 50}
+            ]}
+          ],
+          "orders": [{"id": "rheum-referral", "action": "done", "date": "2022-10-20T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology Consultation", "author": "rheumatology", "date": "2022-11-01T09:00", "body": "Outpatient rheumatology consultation, seen 10/20/2022. Thank you for the referral.\n\nMs. Michaud is 52 and describes half a year of pain in the same joints on both sides, mainly the wrists and the PIPs, with swelling and morning stiffness that lasts more than an hour and loosens with use. No infection preceding it. Hypothyroid on levothyroxine. Sister with RA. NKDA. Former smoker.\n\nOn examination the involved wrists and PIPs are warm, mildly erythematous and tender, with slightly limited motion.\n\nRF positive, anti-CCP positive. ESR 50 mm/hr. CRP 3.0 mg/dL. CBC, renal function and hepatic panel normal.\n\nImpression: seropositive rheumatoid arthritis.\n\nPlan: methotrexate 15 mg once weekly with folic acid 1 mg daily; prednisone 5 mg daily as a bridge. Labs every 8 to 12 weeks for methotrexate monitoring through our office. Avoid alcohol. Follow up in about two months.\n\nOutpatient Rheumatology"}
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "telephone",
+          "start": "2022-11-03T10:25",
+          "reason": "Outside consult review",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Rheumatology letter reviewed", "author": "RN", "date": "2022-11-03T10:25", "body": "Rheumatology consult letter from 10/20 scanned in. Called pt to reconcile meds. She started methotrexate 6 tabs every Saturday, folic acid daily and prednisone 5 mg each morning, filled at her pharmacy. Med list updated. Reminded her no live vaccines while on methotrexate - her shingles series was the non-live one and is complete. PCP aware."},
+            {"type": "Telephone Encounter", "title": "Addendum", "author": "PCP", "date": "2022-11-03T14:50", "body": "Reviewed. Seropositive RA, on MTX/folate/low-dose pred. Give pneumococcal vaccine at her next visit given immunosuppression."}
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "imaging",
+          "start": "2022-11-17T12:15",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-11-17T12:15", "text": "Digital bilateral screening mammogram with tomosynthesis compared with 10/2021. Heterogeneously dense breast tissue. No new mass, suspicious calcifications or distortion. Stable appearance.", "conclusion": "BI-RADS 1. Negative. Annual screening recommended."}
+          ],
+          "orders": [{"id": "mammo-2022", "action": "done", "date": "2022-11-17T12:15"}]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002696",
+      "events": [
+        {
+          "id": "2021-01-12a",
+          "kind": "outside_records",
+          "start": "2021-01-12T14:20",
+          "reason": "endocrinology letter received",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Endocrinology letter reviewed", "author": "PCP", "date": "2021-01-12T17:00", "body": "Endo consult from 11/19 finally came in (see scanned letter). Cushing syndrome confirmed on labs, on chronic prednisone for lupus; endo deferring steroid dosing to rheum. Called pt and went over it. She sees rheum next month and will bring it up there. Problem list updated."}
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "specialist_visit",
+          "start": "2021-02-22T09:30",
+          "service": "Rheumatology",
+          "reason": "lupus follow-up",
+          "conditions": [{"label": "Long term (current) use of systemic steroids", "action": "diagnosed", "onset": "2021-02-22", "note": "long-term immunosuppressant (prednisone) use"}],
+          "vitals": {"bp": [152, 96]},
+          "reports": [{"study": "Transthoracic echocardiogram", "performed": "2021-02-10T13:00", "text": "Baseline study. Left ventricle normal in size and wall thickness. Systolic function preserved, no regional wall motion abnormality. Right ventricle normal size and function. Valves structurally normal without significant regurgitation or stenosis. No pericardial effusion. IVC normal with normal respiratory collapse.", "conclusion": "Preserved left ventricular systolic function without wall motion abnormalities. No pericardial effusion."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology follow-up letter", "author": "rheumatology", "date": "2021-02-24T11:05", "body": "Outside rheumatology group, visit 02/22/2021.\n\nDear colleague,\nMs. Pagan returns for her lupus and for monitoring of long-term immunosuppressive therapy with prednisone. We note endocrinology's diagnosis of Cushing syndrome three months ago.\n\nShe describes brief dizziness now and then when she stands up quickly. No chest pain, breathlessness or palpitations. Her glucose log looks moderately controlled on metformin.\n\nBlood pressure in clinic was 152/96 and her pulse ran mildly fast. No jugular venous distension, lungs clear without crackles, no peripheral edema. Joints quiet, no rash.\n\nRenal function on our monitoring labs is stable. The baseline transthoracic echocardiogram done 02/10 showed preserved systolic function with no wall motion abnormalities (report enclosed).\n\nAssessment: SLE, clinically quiet. Long-term current use of an immunosuppressant (prednisone 15 mg daily), continued. Blood pressure above goal; we would be grateful if you would address antihypertensive therapy.\n\nMedications: prednisone 15 mg daily, metformin 1000 mg twice daily, insulin glargine 24 units at bedtime. NKDA."}
+          ]
+        },
+        {
+          "id": "2021-02-26a",
+          "kind": "office_visit",
+          "start": "2021-02-26T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure",
+          "state": {"bp": [150, 94]},
+          "measure": ["bp", "hr", "weight_kg"],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension with diabetes"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-02-26T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Blood Pressure Visit", "author": "PCP", "date": "2021-02-26T15:10", "body": "Seen after rheum's letter flagged BP 152/96. Home cuff 140s-150s/90s most days for a month.\nExam: BP still up today, recorded. Heart regular, lungs clear, no edema.\n\nA/P: Hypertension, now persistently above goal with diabetes and on steroids. Time to treat. Starting lisinopril 10 mg daily. Explained how it works in plain terms: it blocks a hormone that squeezes the blood vessels down, and in people with diabetes it also helps protect the kidneys. Possible dry cough, dizziness; stand up slowly. BMP and BP check in two weeks."}
+          ]
+        },
+        {
+          "id": "2021-03-12a",
+          "kind": "office_visit",
+          "start": "2021-03-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "two-week blood pressure recheck",
+          "state": {"bp": [132, 84]},
+          "measure": ["bp", "hr"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-12T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-03-12T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "BP Recheck", "author": "PCP", "date": "2021-03-12T09:30", "body": "Two weeks on lisinopril. Home numbers better, mostly low 130s/80s. Gets a little lightheaded if she jumps up from her desk fast; passes within a few seconds. No falls, no swelling, no chest pain, energy no worse. No cough.\nExam: BP improved today. Heart regular. No edema.\nPlan: continue lisinopril 10. Rise slowly. BMP today to check potassium and kidney function. Next diabetes visit in the fall unless home readings change."}
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T10:10",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-23T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-13T15:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "COVID-19 vaccination record", "author": "MA", "date": "2021-04-20T10:10", "body": "Pt uploaded a photo of her vaccination card through the portal. Pfizer dose 1 on 3/23/21 and dose 2 on 4/13/21 at a community vaccine site. Entered in immunization history."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "annual_physical",
+          "start": "2021-06-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 7.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-08T08:40", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-08T08:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2021-06-08T08:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "reports": [{"study": "Cervical cytology (Pap) with HPV", "performed": "2021-06-08T08:30", "text": "ThinPrep liquid-based cytology. Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative. Repeat co-testing in 5 years."}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "orders": [{"id": "colonoscopy-2021", "action": "placed", "order": "Screening colonoscopy referral", "category": "referral", "to": "Gastroenterology", "reason": "average-risk colorectal cancer screening, age 46"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-06-08T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-06-08T12:00", "body": "Annual. Back in the office part-time. Energy still lower than she'd like, stairs still a chore. Lupus quiet. Rheum continued prednisone 15. Lightheadedness on standing is rare now. Periods still irregular.\nMeds: metformin 1000 BID, glargine 24 qHS, lisinopril 10, prednisone 15.\nPHQ-2 1.\nExam: vitals as charted. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix without lesion, Pap/HPV collected. Feet: sensation intact to monofilament, pulses 2+.\nPlan: labs today. Colon screening now recommended from 45; referral to GI for screening colonoscopy. Mammogram this winter. Eye exam due. Diabetes visit in the fall with lipids."}
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "procedure_visit",
+          "start": "2021-07-20T07:30",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "orders": [{"id": "colonoscopy-2021", "action": "done", "date": "2021-07-20T07:30"}],
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2021-07-20T08:10"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2021-07-23T09:00", "body": "Outside endoscopy center, procedure 07/20/2021.\nIndication: average-risk screening. Moderate sedation. Prep excellent. Cecum reached and identified by appendiceal orifice and ileocecal valve; withdrawal time 9 minutes. Normal mucosa throughout the colon and rectum. No polyps. Retroflexion normal.\nImpression: normal screening colonoscopy. Repeat in 10 years.\nInsulin instructions for prep were reviewed with the patient in advance. NKDA."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "outside_records",
+          "start": "2021-09-14T15:30",
+          "reason": "eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "optometry", "date": "2021-09-14T15:30", "body": "Comprehensive dilated exam 09/09/2021. Best corrected acuity 20/20 right, 20/25 left. Pressures normal. Lenses clear. Retina: no hemorrhages, exudates or neovascularization in either eye; macula normal both eyes. Assessment: type 2 diabetes, no retinopathy. Recall 12 months."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T16:40",
+          "reason": "flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-05T16:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T16:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2021-10-05T16:55", "body": "Seasonal flu vaccine, left deltoid. No contraindications. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "office_visit",
+          "start": "2021-11-18T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine diabetes follow-up",
+          "state": {"weight_kg": 74.2},
+          "vitals": {"bp": [132, 86]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2021-11-18T15:30", "results": [{"test": "Total Cholesterol", "value": 190}, {"test": "Low Density Lipoprotein", "value": 100}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Triglycerides", "value": 150}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-11-18T15:30", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2021-11-18T15:30", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-11-18T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2021-11-18T17:20", "body": "Routine diabetes visit. Lupus and the Cushing diagnosis are both being followed outside.\nS: She describes her diabetes care as \"metformin and watching what I eat\"; confirms she still takes glargine 24 every night. Mostly sitting all day at work and at home, not much exercise right now. Denies chest pain, shortness of breath, or leg pain with walking.\nO: BP 132/86. BMI 29. Heart regular, lungs clear, no edema. Feet: monofilament intact, DP pulses palpable.\nA/P:\n1. T2DM: labs today.\n2. HTN on lisinopril 10, near goal.\n3. Lipids today.\n4. Activity: talked about short walks after dinner, she'll try.\nFollow up in about 4 months."}
+          ]
+        },
+        {
+          "id": "2021-11-22a",
+          "kind": "portal_message",
+          "start": "2021-11-22T12:10",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your visit", "author": "PCP", "date": "2021-11-22T12:10", "body": "Hi Adriana, A1c came down to 7.2, nice progress. Cholesterol panel: total 190, LDL 100, HDL 40, triglycerides 150. Kidney function and potassium are normal on the lisinopril. Keep up the after-dinner walks if you can. See you in the spring."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "imaging",
+          "start": "2021-12-14T08:45",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2021-12-14T08:45", "text": "Bilateral screening mammogram with tomosynthesis, compared with 12/2019. Scattered areas of fibroglandular density. No suspicious findings.", "conclusion": "BI-RADS 1: negative."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2021-12-14T13:20", "body": "Bilateral screening mammogram negative, BI-RADS 1. Annual screening recommended."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "nurse_visit",
+          "start": "2022-01-11T12:00",
+          "reason": "COVID booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2022-01-11T12:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-01-11T12:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID-19 booster", "author": "RN", "date": "2022-01-11T12:25", "body": "Pfizer booster, 0.3 mL IM right deltoid. Prior two doses 3/2021 and 4/2021 on file. Observed 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 6.8}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-22T09:45", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-03-22T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-22T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-03-22T11:00", "body": "S: Walking after dinner most nights since January, joined a coworker for lunchtime walks too. Fasting sugars 110s-130s. No lows. Saw rheum in February, says nothing changed, still prednisone 15. BP at home 120s-130s/80s.\nO: vitals as recorded. Heart regular. Lungs clear. No edema.\nA/P: T2DM improving with activity, A1c today. HTN controlled on lisinopril. Will ask rheum for their February note, none received. Physical in July."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2022-03-22T13:15", "body": "Faxed request to rheumatology for February 2022 visit note."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "portal_message",
+          "start": "2022-05-17T07:55",
+          "reason": "prednisone refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Prednisone", "author": "patient", "date": "2022-05-17T07:55", "body": "Good morning, I'm down to 4 days of prednisone and rheumatology hasn't sent the refill, they told me it could take a week. Is there any way you can send it? I don't want to run out."},
+            {"type": "Patient Message", "title": "RE: Prednisone", "author": "PCP", "date": "2022-05-17T10:20", "body": "Sent a 30-day bridge of your prednisone, same dose (three 5 mg tablets every morning), to your pharmacy. Please let rheum handle refills after this. Good call not letting it run out."}
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "office_visit",
+          "start": "2022-06-28T08:00",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "annual_physical",
+          "start": "2022-07-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 6.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-12T08:35", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-12T08:35", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-07-12T08:35", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-07-12T08:35", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-07-12T09:00"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-07-12T08:00"},
+            {"procedure": "Immunization administration", "performed": "2022-07-12T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-07-12T11:40", "body": "Rescheduled physical (missed 6/28, she had the date wrong). Feeling decent, walking regularly.\nMeds unchanged. NKDA. No tobacco; wine socially.\nPHQ-2 0.\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Abdomen benign. Skin no rash. Joints no synovitis. Feet normal sensation and pulses.\nHealth maintenance: Pap/HPV 2021 negative. Colonoscopy 2021 normal. Mammogram due December. PCV20 today given diabetes and chronic steroid use. Eye exam overdue this year, reminded.\nLabs today. Diabetes visit in December."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T17:00",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T17:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-11T17:25", "body": "Flu vaccine left arm, bivalent COVID booster right arm. Screening negative. Tolerated both without issue."}
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 6.5}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-06T16:45", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-12-06T16:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-06T16:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2022-12-06T18:00", "body": "S: Fasting sugars 100-125 lately. Denies lows, no shaky or sweaty spells. Endo follow-up is being scheduled for spring. Rheum's February note never came despite our request; she says they made no changes.\nO: vitals as charted. Exam unchanged, no edema.\nA/P: T2DM trending well. A1c today. Same regimen. If A1c keeps falling we may need to trim the glargine; she knows to call with any reading under 70. Mammogram later this month."}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "imaging",
+          "start": "2022-12-20T10:15",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2022-12-20T10:15", "text": "Bilateral screening mammogram, comparison 12/2021. Scattered fibroglandular densities. No mass, suspicious calcifications or distortion.", "conclusion": "BI-RADS 1: negative."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2022-12-20T15:10", "body": "Negative screening mammogram, BI-RADS 1."}
+          ]
+        }
+      ]
+    }
+  ]
+}

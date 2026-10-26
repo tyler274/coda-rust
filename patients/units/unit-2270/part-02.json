@@ -1,0 +1,247 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002270",
+      "events": [
+        {
+          "id": "2018-12-31a",
+          "kind": "specialist_visit",
+          "start": "2018-12-31T13:30",
+          "service": "Otolaryngology (outside)",
+          "reason": "Gradual hearing loss",
+          "conditions": [{"label": "Presbycusis, bilateral", "icd10": "H91.13", "action": "diagnosed", "onset": "2015-01-01"}],
+          "orders": [{"id": "ent-referral", "action": "done", "date": "2018-12-31T13:30"}],
+          "reports": [
+            {"study": "Audiogram", "performed": "2018-12-31T13:00", "text": "Pure-tone audiometry, both ears. Thresholds normal to mildly reduced through 1000 Hz, sloping to a moderate-to-severe loss at 3000 to 8000 Hz bilaterally, symmetric. Air-bone gaps absent. Speech reception thresholds agree with pure-tone averages; word recognition reduced in quiet, worse with competing noise. Tympanometry type A both ears.", "conclusion": "Bilateral symmetric high-frequency sensorineural hearing loss."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Otolaryngology consultation", "author": "otolaryngology", "date": "2019-02-12T09:40", "body": "OTOLARYNGOLOGY CONSULTATION\nDate of visit: 12/31/2018\nReferred by: primary care\n\nThank you for sending Mr. Fleming, 72, for hearing loss. He describes a slow decline over several years; noisy rooms are the hardest. He has had no otalgia, otorrhea or vertigo. He reports no occupational or recreational noise exposure and has taken no ototoxic medications.\n\nPMH: hypertension, type 2 diabetes, hyperlipidemia, cervical spondylosis, seasonal allergic rhinitis, prior stroke, alcohol use disorder.\nMEDICATIONS: hydrochlorothiazide 25 mg daily, metformin 500 mg twice daily, atorvastatin 20 mg at bedtime, loratadine 10 mg as needed.\nALLERGIES: NKDA.\nFAMILY: father CAD and aortic stenosis; mother Alzheimer disease; brother prostate cancer.\nSOCIAL: never smoker. Alcohol use disorder, sober about two years. Retired accountant.\n\nEXAM: auricles and canals normal; tympanic membranes intact and mobile. He could not repeat whispered words at 2 feet. Tuning fork: Weber midline, Rinne positive (air conduction greater than bone) on both sides. Nose and oral cavity unremarkable.\n\nAUDIOGRAM: bilateral high-frequency sensorineural loss, symmetric (report attached).\n\nIMPRESSION: Presbycusis, bilateral.\n\nPLAN: no imaging needed for a symmetric pattern. Referred to our audiologists for a hearing aid evaluation. Communication strategies reviewed. Repeat audiogram in 1 to 2 years or with any sudden change.\n\nOtolaryngology"},
+            {"type": "Result Note", "title": "ENT letter received", "author": "PCP", "date": "2019-02-13T08:10", "body": "ENT letter finally in (visit was 12/31). Presbycusis as he told me. Added to problem list. Audiology for aids."}
+          ]
+        },
+        {
+          "id": "2019-01-22a",
+          "kind": "office_visit",
+          "start": "2019-01-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, yearly labs",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-01-22T10:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2019-01-22T10:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-01-22T10:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2019-01-22T10:05", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-01-22T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / HTN visit", "author": "PCP", "date": "2019-01-22T10:20", "body": "S: Saw ENT on New Year's Eve. Per him: hearing test showed age-related nerve loss in both ears, high pitches worst, and they want him fitted for hearing aids. We do not have their note yet; front desk to request. Otherwise feels well. Two years sober next month. Sugars fine.\n\nO: Vitals per flowsheet. Speaking a little loudly. Heart regular. Lungs clear. Feet: normal monofilament, no lesions.\n\nA/P:\n1. Hearing loss, bilateral: awaiting ENT letter; supports aids.\n2. T2DM / HTN / HLD: yearly labs drawn. No changes.\n3. AUD in sustained remission: continues meetings.\nRTC 6 months; wellness visit in May."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2019-01-22T11:00", "body": "Faxed request to the outside ENT office for the 12/31/18 consult note and audiogram."}
+          ]
+        },
+        {
+          "id": "2019-01-24a",
+          "kind": "portal_message",
+          "start": "2019-01-24T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2019-01-24T12:30", "body": "George, your labs are all in good shape. A1c a touch lower than last year, cholesterol and kidneys normal, urine clear of protein. No changes."}
+          ]
+        },
+        {
+          "id": "2019-04-16a",
+          "kind": "portal_message",
+          "start": "2019-04-16T19:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Hearing aids", "author": "patient", "date": "2019-04-16T19:20", "body": "Wanted you to know I got my hearing aids last week, both ears. Takes some getting used to but I can hear the coffee maker again. Does anything need to be filled out for my supplemental insurance?"},
+            {"type": "Patient Message", "title": "RE: Hearing aids", "author": "RN", "date": "2019-04-17T09:05", "body": "That's great news. Coverage for hearing aids goes through the audiology office directly; they can send the claim paperwork. Bring them to your May visit and the doctor will note it."}
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "annual_physical",
+          "start": "2019-05-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2019-05-14T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2019-05-14T10:45", "body": "WELLNESS VISIT\n\nWearing new bilateral hearing aids, conversation much easier. Busy: volunteers with tax preparation for seniors through April. No falls. Remains abstinent.\n\nScreening: PHQ-2 0. Mini-Cog 3/3, normal clock. ADLs and finances independent. Driving without problems. Home: one floor, grab bar in tub.\nVaccines: complete for pneumococcal, shingles, Tdap 2014. Flu in fall.\nColon: 2012 normal, no further.\nAdvance care planning: still has not completed a proxy; daughter is the person he would choose. Form given again.\n\nExam: well, heart regular, lungs clear, feet intact.\n\nPlan: diabetes check in July. Prevention plan updated."}
+          ]
+        },
+        {
+          "id": "2019-07-23a",
+          "kind": "office_visit",
+          "start": "2019-07-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-07-23T08:45", "results": [{"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2019-07-23T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-07-23T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2019-07-23T08:55", "body": "Routine. No complaints except the hay fever. Walking 2 miles most mornings before it gets hot. Heart regular, lungs clear, no edema. Feet normal. Labs today. Continue all. Eye exam due next month."},
+            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2019-07-24T16:40", "body": "BMP normal, A1c stable. Mailed letter."}
+          ]
+        },
+        {
+          "id": "2019-08-27a",
+          "kind": "outside_records",
+          "start": "2019-08-27T15:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2019-08-27T15:00", "body": "Dilated retinal exam for Mr. Fleming today. Both retinas without diabetic change. Mild cataracts, stable, not yet affecting function. Next exam in a year.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2019-10-03a",
+          "kind": "nurse_visit",
+          "start": "2019-10-03T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2019-10-03T09:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-03T09:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2019-10-03T09:45", "body": "Fluzone High-Dose given IM left deltoid. Denies fever today. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Short of breath with exertion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-10T14:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-12-10T14:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2019-12-10T14:25", "text": "Sinus rhythm. Normal axis. Normal intervals. No acute ST or T wave changes. No prior tracing for comparison.", "conclusion": "Sinus rhythm without acute changes."}
+          ],
+          "orders": [{"id": "cardiology-referral", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "exertional dyspnea and systolic murmur"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-10T14:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2019-12-10T14:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Dyspnea on exertion", "author": "PCP", "date": "2019-12-10T15:00", "body": "CC: getting winded.\n\nHPI: Since around Labor Day he has been more short of breath with exertion. Climbing the stairs to his daughter's apartment leaves him tired and he has to stop halfway. Walking up the hill on his usual route he sometimes feels lightheaded and stops until it passes. Has had a mild pressure-type discomfort in the chest on a couple of those walks, gone with rest. Has cut his walks short. No symptoms at rest, no fainting, no orthopnea, no leg swelling, no cough.\n\nEXAM: vitals per flowsheet; comfortable at rest.\nHeart: regular. Harsh systolic murmur at the right upper sternal border.\nLungs: clear. Ext: no edema.\n\nECG: sinus rhythm, no acute changes.\n\nA/P: Exertional dyspnea, presyncope and chest discomfort with a new-to-me harsh basal systolic murmur. Concern for a valve lesion, given his father's history too. CBC and BMP today. Cardiology referral, asked for a prompt appointment, with echocardiogram. Told him to avoid strenuous exertion until seen and to call 911 for chest pain that does not settle or for fainting."}
+          ]
+        },
+        {
+          "id": "2020-01-10a",
+          "kind": "specialist_visit",
+          "start": "2020-01-10T10:30",
+          "service": "Cardiology (outside)",
+          "reason": "Exertional dyspnea, murmur",
+          "conditions": [{"label": "Aortic valve stenosis", "action": "diagnosed", "onset": "2019-09-01"}],
+          "orders": [{"id": "cardiology-referral", "action": "done", "date": "2020-01-10T10:30"}],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2020-01-10T09:30", "text": "Left ventricle normal in size with normal wall thickness pattern and normal regional wall motion. Visually estimated LVEF 60%. Aortic valve heavily calcified with reduced excursion of the leaflets. Mitral valve structurally normal. Right ventricle normal in size and function. Atria normal size. No pericardial effusion. Aortic root normal.", "conclusion": "Heavily calcified aortic valve with reduced leaflet excursion consistent with aortic stenosis. Normal LV systolic function, LVEF 60%."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation", "author": "cardiology", "date": "2020-01-21T10:00", "body": "CARDIOLOGY CONSULTATION\nVisit: 01/10/2020\n\nDear Doctor,\n\nI saw Mr. Fleming, 73, at your request. For about three months he has noticed breathlessness and fatigue going up stairs and occasional lightheadedness walking uphill. He also describes mild chest discomfort and says he has to rest more during his day. This comes about a year after his ENT evaluation for hearing loss.\n\nHistory: hypertension, well controlled on a thiazide; type 2 diabetes; hyperlipidemia; prior stroke; presbycusis.\nMedications: hydrochlorothiazide 25 mg daily, metformin 500 mg twice daily, atorvastatin 20 mg at bedtime, loratadine 10 mg as needed.\nAllergies: none known.\nFamily history: father with coronary disease and aortic stenosis.\nSocial: never smoked; sober about two years from alcohol; retired accountant.\n\nExam: pulse slow and regular. Second heart sound soft. Harsh, late-peaking systolic murmur loudest at the upper right sternal border with him sitting up. Carotid upstrokes are slow and reduced in volume. Lungs clear. No edema.\n\nEcho today: heavily calcified aortic valve with restricted leaflet motion; LV ejection fraction 60%.\n\nImpression: calcific aortic valve stenosis with exertional symptoms; preserved LV function.\n\nPlan: return to see me in 6 months with a repeat echocardiogram, sooner if symptoms change. Avoid heavy exertion. Continue current medications. Call with any syncope or rest symptoms.\n\nCardiology"},
+            {"type": "Result Note", "title": "Cardiology letter reviewed", "author": "PCP", "date": "2020-01-22T08:30", "body": "Cardiology letter and echo reviewed: calcific aortic stenosis, EF 60%. Added to problem list. Cardiology following with repeat echo in 6 months."}
+          ]
+        },
+        {
+          "id": "2020-01-28a",
+          "kind": "office_visit",
+          "start": "2020-01-28T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, yearly labs",
+          "state": {"labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-01-28T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2020-01-28T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-01-28T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-01-28T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / HTN, cardiology follow-through", "author": "PCP", "date": "2020-01-28T10:15", "body": "S: Saw cardiology; we have the letter. He understands it as 'a stiff valve' and that they will repeat the echo in summer. Less walking since, sugars a bit higher. Still some breathlessness on stairs, no rest symptoms, no fainting.\n\nO: Vitals per flowsheet. Harsh systolic murmur at the base as before. Lungs clear. No edema. Feet intact.\n\nA/P:\n1. Aortic stenosis: cardiology following. Reviewed warning symptoms.\n2. T2DM: A1c and yearly labs today; encouraged level walking.\n3. HTN, HLD: continue.\nRTC 3 months."},
+            {"type": "Result Note", "title": "Yearly labs", "author": "PCP", "date": "2020-01-30T11:20", "body": "A1c a little higher than last year with less activity. Lipids, kidney and liver tests fine, urine albumin normal. Discussed by phone; no medication change for now."}
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes check (video)",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit", "author": "PCP", "date": "2020-04-21T11:30", "body": "Video from his kitchen; hearing aids in, audio fine. Staying home through the shutdown, daughter drops off groceries. Fasting sugars 118 to 150 by his log. No chest symptoms at home; stairs still tire him. No alcohol, joined his meetings online. Home BP 128 to 136 systolic.\n\nPlan: continue meds; 90-day refills sent. Labs deferred to summer. Wellness visit by video in June."}
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit (video)",
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2020-06-16T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit (video)", "author": "PCP", "date": "2020-06-16T10:40", "body": "WELLNESS VISIT BY VIDEO\n\nLonely with the meetings online but coping; PHQ-2 1. Still manages his own bills, cooks simple meals. No falls. Cognition: recalled 3 of 3 words; clock drawn and held up to the camera, normal.\nHearing aids working. Optometry due later this summer.\nVaccines: flu this fall.\nAdvance directive: still not done.\n\nPlan: in-person diabetes visit and labs late July; cardiology follow-up in July as they planned."}
+          ]
+        },
+        {
+          "id": "2020-07-28a",
+          "kind": "lab_only",
+          "start": "2020-07-28T08:10",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-07-28T08:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2020-07-28T08:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2020-07-28T08:10"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Lab draw", "author": "MA", "date": "2020-07-28T08:20", "body": "Fasting draw, right antecubital, one attempt. Masked; screening questions negative."}
+          ]
+        },
+        {
+          "id": "2020-08-04a",
+          "kind": "office_visit",
+          "start": "2020-08-04T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-08-04T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2020-08-04T10:10", "body": "S: Saw cardiology in July and had the echo; says the cardiologist told him the valve is 'about the same' and to come back in a year. We have no letter; requested. Breathing on stairs about the same as winter, pacing himself. No fainting, no rest chest pain.\n\nO: Vitals per flowsheet. Systolic murmur at the base, unchanged to my ear. Lungs clear. No edema.\n\nLabs from 7/28: A1c about where it was in January, BMP normal.\n\nA/P: T2DM stable. HTN fine. Aortic stenosis followed by cardiology; awaiting their note. Flu shot in October. RTC 5 to 6 months."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2020-08-04T11:30", "body": "Requested July 2020 cardiology office note and echo from the cardiology group. Faxed."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "outside_records",
+          "start": "2020-09-22T13:20",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2020-09-22T13:20", "body": "Annual exam completed for George Fleming. No diabetic retinopathy either eye. Cataracts slowly progressing, best corrected vision 20/30 right and left. Recheck in one year.\n\nOptometry"}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-06T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T10:15", "body": "High-dose quadrivalent influenza vaccine IM right deltoid. Masked visit, curbside check-in. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2020-12-17a",
+          "kind": "portal_message",
+          "start": "2020-12-17T08:30",
+          "documents": [
+            {"type": "Patient Message", "title": "COVID vaccine", "author": "patient", "date": "2020-12-17T08:30", "body": "With my heart valve and diabetes, should I get the new COVID vaccine when my turn comes? Will you be giving it?"},
+            {"type": "Patient Message", "title": "RE: COVID vaccine", "author": "PCP", "date": "2020-12-17T12:45", "body": "Yes, I recommend it, and your conditions are not a reason to skip it. We expect to have doses for patients over 75 first and then your age group early next year. We will reach out to schedule you."}
+          ]
+        }
+      ]
+    }
+  ]
+}

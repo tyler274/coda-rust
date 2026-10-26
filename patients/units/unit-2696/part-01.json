@@ -1,0 +1,314 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002696",
+      "given": "Adriana",
+      "family": "Pagan",
+      "birth_date": "1975-02-11",
+      "address_line": "57 Cabot Street, Apt 2",
+      "phone": "+1-802-555-0163",
+      "email": "adriana.pagan@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant with long-standing lupus on prednisone 15 mg, type 2 diabetes on metformin and glargine, and diet-managed hypertension who joins in 2018. Endocrinology diagnoses Cushing syndrome in 2020, lisinopril starts in 2021, insulin is cut for early-morning lows in 2023, and she has a left frontal ischemic stroke in November 2025 treated with tenecteplase, leaving mild word-finding trouble.",
+      "events": [
+        {
+          "id": "2018-05-29a",
+          "kind": "telephone",
+          "start": "2018-05-29T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2018-05-29T10:20", "body": "Caller is looking to move her primary care here; her old office has changed doctors twice in two years. Membership explained, she has PPO coverage for labs and specialists. Booked new patient visit 6/12 at 8:40. Asked her to bring all medication bottles and her glucose meter, and to sign the records release so we can get her prior office notes and her rheumatology letters."}
+          ]
+        },
+        {
+          "id": "2018-06-12a",
+          "kind": "establish_care",
+          "start": "2018-06-12T08:40",
+          "end": "2018-06-12T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Systemic lupus erythematosus", "action": "history", "note": "followed by outside rheumatology for years"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history"},
+            {"label": "Essential hypertension", "action": "history", "note": "diet and activity, no medication"},
+            {"label": "Long-term current use of insulin", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[iU]"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (15 mg) by mouth every morning", "dose": {"value": 15, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "systemic lupus erythematosus; prescribed by rheumatology"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [138, 88], "weight_kg": 66.0, "height_cm": 160.0, "labs": {"Hemoglobin A1c": 7.5, "Glucose": 148, "Creatinine": 0.95, "Low Density Lipoprotein": 100, "Total Cholesterol": 190, "High Density Lipoprotein": 40, "Triglycerides": 150, "Microalbumin/Creatinine Ratio": 16}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-06-12T09:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-06-12T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2018-06-12T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-06-12T09:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2018-06-12T09:40"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2018-06-12T08:40"},
+            {"procedure": "Immunization administration", "performed": "2018-06-12T09:40"},
+            {"procedure": "Venipuncture", "performed": "2018-06-12T09:30"}
+          ],
+          "documents": [
+            {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2018-06-12T10:30", "body": "43 y/o woman establishing care. Left her prior primary office after repeated turnover; wants one doctor who knows her.\n\nHISTORY\n- Lupus (SLE) for years, managed by an outside rheumatology group. Has been on prednisone 15 mg every morning long term; rheum writes it. Joints and skin quiet lately per pt.\n- Type 2 diabetes for years. Metformin 1000 twice a day and a glargine pen 24 units at night. Checks sugars most mornings, usually 130s-150s, no lows she can recall.\n- Blood pressure has run a little high at prior visits; told to cut salt and walk, never put on a pill.\nNo surgeries.\n\nMEDS: metformin 1000 mg BID; insulin glargine 24 units qHS; prednisone 15 mg qAM.\nALLERGIES: none to medications.\nFAMILY: mother has type 2 diabetes. Father has high blood pressure. Maternal grandmother had cerebrovascular disease.\nSOCIAL: married. Works as an administrative assistant. Never a smoker. A glass or two of wine in a week, socially. \n\nROS: no chest pain, dyspnea, edema, rash, joint swelling, polyuria, vision change.\n\nEXAM: BP slightly above goal today, other vitals as recorded. Well appearing. Skin without rash. Oropharynx clear. Heart regular, no murmur. Lungs clear. Abdomen soft. Joints without synovitis. Feet: intact monofilament bilaterally, pulses 2+, skin intact.\n\nA/P\n1. T2DM on metformin + basal insulin, long-term prednisone likely contributing. A1c, CMP, urine albumin/creatinine today. Eye exam is due, she will book with her optometrist.\n2. Elevated BP, no meds. Recheck at each visit; home cuff suggested.\n3. SLE on chronic prednisone, rheum managing. Will request their notes.\n4. Health maintenance: Tdap given. One-time hep C and HIV screen sent. Lipids today. Will review the prior office's Pap and mammogram once records come.\nFollow up 4-5 months."}
+          ]
+        },
+        {
+          "id": "2018-06-15a",
+          "kind": "portal_message",
+          "start": "2018-06-15T16:05",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2018-06-15T16:05", "body": "Hi Adriana, your labs from Tuesday are back. The A1c is 7.9, which is above where we'd like it (under 7 is the usual target), not unexpected on daily prednisone. Kidney and liver tests are fine, the urine protein screen is normal, and blood counts are normal. Cholesterol: LDL is about 100. The hepatitis C and HIV screens were both negative. We'll recheck the A1c in the fall. Nice to finally have you here."}
+          ]
+        },
+        {
+          "id": "2018-07-10a",
+          "kind": "outside_records",
+          "start": "2018-07-10T11:00",
+          "reason": "prior practice records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2018-07-10T11:00", "body": "Received 38 pages from her previous primary care office, scanned to media. Abstracted for the PCP:\n- Pap with HPV co-test 2016: negative for intraepithelial lesion, HPV negative.\n- Screening mammogram 2017: BI-RADS 1, negative.\n- Problem list there: diabetes type 2, lupus (rheum), elevated BP.\n- Meds there match what pt brought. No drug allergies.\n- Last eye exam noted 2016, no retinopathy.\nRheumatology letters not included; separate request faxed to the rheum group."}
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "nurse_visit",
+          "start": "2018-10-02T17:10",
+          "reason": "flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-02T17:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-02T17:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2018-10-02T17:25", "body": "Came after work for her flu vaccine. Screening questions negative, no egg issues, no prior reactions. 0.5 mL IM left deltoid. Tolerated well, waited 15 minutes, left feeling fine. VIS given."}
+          ]
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "office_visit",
+          "start": "2018-11-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-11-13T08:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2018-11-13T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-11-13T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2018-11-13T12:10", "body": "S: Doing OK. Mornings 140s on her meter, a few higher after holiday parties at work. No lows. Bought a home cuff, readings 130s-140s over upper 80s. Still on prednisone 15 per rheum.\nO: vitals as recorded. Heart regular, lungs clear, no edema.\nA/P: T2DM on metformin and glargine 24, steroid effect. A1c and BMP today. BP borderline-high, still lifestyle; she'd rather not add a pill yet and I'm OK with that for now. Recheck in spring."}
+          ]
+        },
+        {
+          "id": "2018-12-04a",
+          "kind": "imaging",
+          "start": "2018-12-04T09:00",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2018-12-04T09:00", "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2017 outside study. Breasts are scattered fibroglandular density. No suspicious mass, calcification or architectural distortion. Skin and nipples normal.", "conclusion": "BI-RADS 1: negative. Routine annual screening."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2018-12-04T14:30", "body": "Bilateral screening mammogram: negative, BI-RADS 1. Return to annual screening."}
+          ]
+        },
+        {
+          "id": "2019-02-20a",
+          "kind": "outside_records",
+          "start": "2019-02-20T13:40",
+          "reason": "rheumatology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology follow-up letter", "author": "rheumatology", "date": "2019-02-20T13:40", "body": "Outside rheumatology group, visit date 02/06/2019.\n\nDear colleague, Ms. Pagan was seen in follow-up for systemic lupus erythematosus. She reports no joint swelling, rash, oral ulcers or pleuritic pain since her last visit. Exam showed no synovitis and no active skin disease. Recent blood counts and urinalysis in our office were unremarkable. Her disease remains quiet on prednisone 15 mg daily, which we will continue. Return in about one year.\nMedications: prednisone 15 mg daily, metformin 1000 mg twice daily, insulin glargine 24 units nightly. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "office_visit",
+          "start": "2019-03-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-03-19T16:30", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2019-03-19T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-03-19T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2019-03-19T17:40", "body": "Quick check. Feels well. Rheum letter received, SLE quiet, they're keeping prednisone at 15. Fasting sugars 120s-140s. Walking at lunch twice a week.\nExam: vitals as charted, heart regular, lungs clear, ankles without swelling.\nPlan: A1c/BMP. Same meds. BP borderline, recheck. 4 months."}
+          ]
+        },
+        {
+          "id": "2019-05-07a",
+          "kind": "pharmacy",
+          "start": "2019-05-07T11:15",
+          "reason": "prior authorization",
+          "documents": [
+            {"type": "Prior Authorization", "title": "Insulin glargine pen PA", "author": "MA", "date": "2019-05-07T11:15", "body": "Pharmacy faxed a PA request; her plan changed its preferred basal insulin brand for the year. Submitted with diagnosis T2DM on long-term insulin, A1c 7.3 in March, current dose 24 units nightly. Approved same day for 12 months. Pharmacy notified, pt texted that the pens are ready."}
+          ]
+        },
+        {
+          "id": "2019-07-23a",
+          "kind": "annual_physical",
+          "start": "2019-07-23T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-07-23T08:30", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-07-23T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2019-07-23T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-07-23T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-07-23T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-07-23T11:50", "body": "Annual exam. No new concerns. Periods regular. Mood fine, PHQ-2 negative. Sleeps OK.\nMeds unchanged: metformin 1000 BID, glargine 24 qHS, prednisone 15 daily.\nExam: well, BP a touch high, rest of vitals as charted. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen benign. Breasts deferred to mammogram. Skin no rash or bruising. Feet: monofilament intact, pulses palpable.\nPlan: fasting labs today. Mammogram in December. Eye exam this summer. Pap due 2021. Colon screening not due until 45. Flu shot in the fall."}
+          ]
+        },
+        {
+          "id": "2019-08-27a",
+          "kind": "outside_records",
+          "start": "2019-08-27T10:00",
+          "reason": "eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "optometry", "date": "2019-08-27T10:00", "body": "Dilated eye examination 08/20/2019. Visual acuity 20/20 OD, 20/25 OS with correction. Lenses clear. Fundus exam both eyes: no diabetic retinopathy, maculae flat and dry. Impression: diabetes without ocular findings. Recall one year."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T12:15",
+          "reason": "flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T12:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T12:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2019-10-08T12:30", "body": "Flu vaccine on her lunch break. No contraindications. Right deltoid IM. Observed, no reaction."}
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "office_visit",
+          "start": "2019-11-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"weight_kg": 67.0, "bp": [140, 88], "labs": {"Hemoglobin A1c": 7.6}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-11-19T09:05", "results": [{"test": "Glucose"}]},
+            {"panel": null, "collected": "2019-11-19T09:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-11-19T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2019-11-19T12:30", "body": "S: busier at work, less walking since the time change. Fasting 140-160. No hypoglycemia.\nO: BP 140s/80s again, vitals otherwise as recorded. Heart and lungs normal. Feet fine.\nA/P: T2DM, A1c drifting up a little. Discussed adding a second agent vs tightening diet; she wants to work on diet over the holidays first. Recheck in spring. BP still borderline on home log; we'll keep watching."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "imaging",
+          "start": "2019-12-10T10:30",
+          "reason": "screening mammogram",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2019-12-10T10:30", "text": "Bilateral digital screening mammogram compared with 12/2018. Scattered fibroglandular tissue. No new mass, suspicious calcifications or distortion.", "conclusion": "BI-RADS 1: negative."}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening mammogram", "author": "radiology", "date": "2019-12-10T15:00", "body": "Negative bilateral screening mammogram, BI-RADS 1. Annual follow-up."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T09:00",
+          "reason": "diabetes follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes check by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-21T11:35", "body": "Video, she is at home, working remotely now. In-person visit last month cancelled with the office closures. Fasting readings she read off her meter: 130s-150s, one 171. No lows. Taking all meds. Home BP 136/86 average. Lupus quiet; rheum did a phone visit too.\nPlan: continue. Labs deferred until in-person visits reopen. Refills sent. Call if sugars run over 200."}
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "portal_message",
+          "start": "2020-07-14T19:42",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Metformin refill", "author": "patient", "date": "2020-07-14T19:42", "body": "Hi, my metformin says no refills left. Can you send a 90 day supply? Thanks, Adriana"},
+            {"type": "Patient Message", "title": "RE: Metformin refill", "author": "MA", "date": "2020-07-15T09:10", "body": "Sent 90 days with one refill to your usual pharmacy. Let's get you in for labs in the fall."}
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "office_visit",
+          "start": "2020-10-07T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and weight gain",
+          "state": {"weight_kg": 75.5, "bp": [144, 90], "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-10-07T16:00", "results": [{"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-10-07T16:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2020-10-07T16:00", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [{"id": "endo-referral-2020", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "weight gain, proximal weakness, bruising: evaluate for Cushing syndrome"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-07T16:05"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-10-07T15:20"},
+            {"procedure": "Immunization administration", "performed": "2020-10-07T16:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: fatigue, weight gain", "author": "PCP", "date": "2020-10-07T18:15", "body": "First in-person visit since winter.\n\nS: Over roughly the last six months she has felt more and more worn out, and stairs have gotten hard; she pulls on the railing to get up to the second floor. Up about 20 lb since spring though she says she is eating the same and moving about the same. Bruises from bumping into things she doesn't remember. Periods have become irregular this year. No fever, chest pain or dyspnea. Prednisone still 15 mg daily, no dose bursts this year per her.\n\nO: weight up about 9 kg from last November. BP above goal. Face rounder than at her prior visits. Heart regular, lungs clear, no edema.\n\nA/P:\n1. Weight gain, proximal weakness, bruising, menstrual change on long-term prednisone. Concern for Cushing syndrome. CBC, CMP, TSH today. Referring to endocrinology for evaluation.\n2. T2DM, A1c will come with the endocrine workup, sugars higher at home lately.\n3. BP higher, will revisit once endocrine has weighed in.\nFlu vaccine given today."}
+          ]
+        },
+        {
+          "id": "2020-10-09a",
+          "kind": "portal_message",
+          "start": "2020-10-09T12:30",
+          "reason": "lab results and referral",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs and endocrinology referral", "author": "PCP", "date": "2020-10-09T12:30", "body": "Hi Adriana, the blood count, kidney and liver tests, potassium and thyroid test from Wednesday are all normal, so thyroid isn't the explanation for the weight and tiredness. The endocrinology referral is in; their office should call you within a couple of weeks. Let me know if you don't hear."}
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "specialist_visit",
+          "start": "2020-11-19T10:00",
+          "service": "Endocrinology",
+          "reason": "evaluation for Cushing syndrome",
+          "conditions": [{"label": "Cushing syndrome", "action": "diagnosed", "onset": "2020-11-19"}],
+          "labs": [
+            {"panel": null, "collected": "2020-11-19T08:05", "results": [{"test": "Cortisol, AM", "value": 28, "unit": "ug/dL"}, {"test": "Fasting Glucose", "value": 160}, {"test": "Hemoglobin A1c", "value": 7.8}, {"test": "Corticotropin", "loinc": "2141-0", "value": 22, "unit": "pg/mL"}]},
+            {"panel": null, "collected": "2020-11-18T08:00", "results": [{"test": "Cortisol free 24 hour urine", "loinc": "2147-7", "value": 350, "unit": "ug/(24.h)"}]}
+          ],
+          "orders": [{"id": "endo-referral-2020", "action": "done", "date": "2020-11-19T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2021-01-12T14:20", "body": "Outside endocrinology, consultation of 11/19/2020 (received by fax 01/12/2021 after records request).\n\nReason for referral: possible hypercortisolism.\n\nHistory: 45-year-old woman with SLE on long-term prednisone, type 2 diabetes and hypertension. For about half a year she has been progressively tired and has struggled with stairs. She has put on roughly 20 lb without a change in eating or activity, bruises easily, and her cycles have become irregular.\n\nMedications: metformin 1000 mg twice daily; insulin glargine 24 units at bedtime; prednisone 15 mg daily. Allergies: NKDA.\nFamily history: mother with type 2 diabetes; father hypertensive; maternal grandmother with cerebrovascular disease.\nSocial: administrative assistant, never smoker, 1-2 glasses of wine weekly.\n\nExamination: round, full face. Fat pads above both clavicles. Skin thin and fragile. Proximal muscle strength 3/5 in shoulders and hips bilaterally; distal strength preserved.\n\nResults: 8 AM serum cortisol 28 mcg/dL (ref 6-23). 24-hour urine free cortisol 350 mcg/24 h (ref 20-90). ACTH 22 pg/mL (ref 9-52). Fasting glucose 160 mg/dL. Hemoglobin A1c 7.8%.\n\nAssessment: Cushing syndrome, clinically and biochemically, in a patient receiving chronic glucocorticoid therapy for lupus. Diabetes above target.\n\nRecommendations: glucocorticoid dosing to be reviewed with her rheumatologist, who manages her lupus. Continue current diabetes regimen for now. Return to endocrinology clinic for follow-up.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2020-12-03a",
+          "kind": "portal_message",
+          "start": "2020-12-03T20:15",
+          "reason": "endocrinology visit",
+          "documents": [
+            {"type": "Patient Message", "title": "Endocrinology appointment", "author": "patient", "date": "2020-12-03T20:15", "body": "Hi Doctor, I saw the endocrinologist a couple of weeks ago. She said my tests show Cushing syndrome and that it's from the cortisol being too high. She said she'd talk to my rheumatologist about the prednisone. Did you get her letter? I didn't really understand everything."},
+            {"type": "Patient Message", "title": "RE: Endocrinology appointment", "author": "PCP", "date": "2020-12-04T08:05", "body": "Thanks for telling me, Adriana. We don't have their letter yet. Our office will request it today, and once I've read it I'll go over it with you. In the meantime keep taking your prednisone exactly as prescribed; it should never be stopped suddenly."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2020-12-04T09:30", "body": "Faxed request to outside endocrinology for 11/19 consult note and labs. Will follow up if not received in 2 weeks."}
+          ]
+        }
+      ]
+    }
+  ]
+}

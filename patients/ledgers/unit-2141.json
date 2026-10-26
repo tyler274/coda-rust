@@ -1,0 +1,984 @@
+{
+  "unit": "unit-2141",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002141",
+      "given": "Christopher",
+      "family": "Chandler",
+      "birth_date": "1984-11-18",
+      "address_line": "212 Glendale Street",
+      "phone": "+1-617-555-0103",
+      "email": "christopher.chandler@example.test",
+      "marital_status": "married",
+      "summary": "Healthy 40-year-old crop farmer and pesticide applicator who joins the practice after an ICU stay for organophosphate poisoning in May 2025, then has a second exposure and ED/ICU stay in May 2026. Both episodes recover on cholinesterase rechecks; otherwise routine prevention.",
+      "events": [
+        {
+          "id": "2025-05-07a",
+          "kind": "hospital_admission",
+          "start": "2025-05-07T16:40",
+          "end": "2025-05-10T11:30",
+          "service": "Emergency Medicine / Medical ICU (outside)",
+          "reason": "difficulty breathing, salivation and abdominal cramping after spraying pesticide",
+          "conditions": [
+            {
+              "label": "Organophosphate poisoning",
+              "action": "diagnosed",
+              "onset": "2025-05-07",
+              "note": "accidental exposure while spraying crops",
+              "icd10": "T60.0X1A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-07T16:45",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 28,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-07T16:55",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.3
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T17:00",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 1050
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-07T17:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-07T17:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T21:30",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.39
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 41
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 88
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Record (received)",
+              "date": "2025-05-20T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital Emergency Department. Date of service 05/07/2025.\n\nCC: trouble breathing, drooling, belly cramps.\n\nHPI: 40M farmer who applies pesticide for his own crops. Was out spraying a field earlier today and started feeling sick while working. Wife drove him in; she says he has been drenched in sweat and not making sense. Arrives with difficulty breathing, excessive salivation and cramping abdominal pain.\n\nPMH: none. PSH: tonsillectomy as a child (age 8). Meds: none. Allergies: NKDA.\nFH: father HTN dx at 65, mother hypothyroid. No neuro or psych illness in the family.\nSH: never smoker, 2-3 drinks/month, crop farmer / ag pesticide applicator.\n\nTriage VS: RR 28, HR 110, BP 135/85, T 37.2 C.\n\nExam: Tachypneic, wet. Pupils miotic. Fasciculations diffusely over trunk and limbs. Expiratory wheeze throughout. Skin moist. Distinct garlic odor on him and his clothes. Abdomen soft.\n\nABG on arrival: pH 7.30 / pCO2 50 / pO2 60.\n\nMDM: Cholinergic toxidrome after organophosphate exposure, with bronchorrhea, bronchospasm and hypoventilation. Staff in gowns and gloves; clothes bagged, skin washed down. Non-rebreather on. Atropine IV in doubling boluses until secretions dried and wheeze cleared, then started on drip. Pralidoxime 2 g IV load, then infusion. Repeat gas after atropinization pH 7.39 / pCO2 41 / pO2 88 on 2 L. Did not need airway. Plasma cholinesterase sent.\n\nDx: Organophosphate poisoning, accidental.\nDispo: admit MICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Discharge Summary (received)",
+              "date": "2025-05-20T10:16",
+              "author": "critical care",
+              "body": "Regional hospital, Medical Intensive Care Unit\nAdmitted 05/07/2025  Discharged 05/10/2025\n\nDiagnosis: Organophosphate poisoning (accidental occupational exposure while spraying crops).\n\nHospital course: Admitted from the ED after decontamination, atropine boluses and a pralidoxime load. Plasma cholinesterase on arrival 1,050 U/L (ref 5,320-12,920). Continued on atropine infusion with titration to dry lungs and secretions, and pralidoxime infusion. Oxygen weaned from non-rebreather to nasal cannula to room air over the first day. No intubation. Atropine off hospital day 2 without return of secretions; pralidoxime stopped day 3. Mental status back to baseline by the morning after admission. No arrhythmia on telemetry. Tolerating diet, walking the unit without difficulty at discharge.\n\nDischarge medications: none.\nAllergies: NKDA.\n\nInstructions: no handling of pesticides until a repeat cholinesterase has recovered. Wash and set aside any contaminated clothing; do not launder with household laundry. Patient does not have a primary care physician; advised to establish care and be seen within 2 weeks for a repeat cholinesterase level.\n\nCopy to: patient's new primary care office on request."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside Records Received",
+              "date": "2025-05-20T10:20",
+              "author": "front desk",
+              "body": "Hospital records for 5/7-5/10 admission came in by fax this morning (ED record + discharge summary, labs). Scanned and sent to PCP ahead of his new patient visit tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "telephone",
+          "start": "2025-05-13T09:05",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2025-05-13T09:05",
+              "author": "front desk",
+              "body": "Christopher called, wants to become a patient here. Just home from the hospital Saturday after a pesticide exposure, discharge paperwork says to see a PCP within 2 weeks. Hasn't had a regular doctor since he was a kid. Booked new patient visit 5/21 at 8:30. Emailed records release for the hospital, he signed and returned it before we hung up. Request faxed to their medical records dept."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "establish_care",
+          "start": "2025-05-21T08:30",
+          "end": "2025-05-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, follow-up after hospitalization for pesticide poisoning",
+          "conditions": [
+            {
+              "label": "Organophosphate poisoning",
+              "action": "history",
+              "onset": "2025-05-07",
+              "note": "ICU 5/7-5/10/2025, recovering",
+              "icd10": "T60.0X1A"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              66
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 100,
+            "weight_kg": 82.0,
+            "height_cm": 180.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-21T09:35",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 4400
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-21T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.87
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-21T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-21T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-21T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 2-3 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Crop farmer and agricultural pesticide applicator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-05-21T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-05-21T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT / HOSPITAL FOLLOW-UP\n\n40 y/o man establishing care, 11 days out from a 3-night ICU stay for organophosphate poisoning. Hospital records reviewed (received yesterday).\n\nHe was spraying his own field on 5/7 and got sick partway through: short of breath, drooling, cramping. Wife took him in. Treated with decontamination, atropine and pralidoxime, never intubated, home on 5/10 on nothing. Since then he says he feels essentially back to himself. Tired the first few days, now gone. No cough, no wheeze, no shortness of breath on the farm chores he's been doing. No twitching, no weakness in his arms or legs, no trouble swallowing, no blurry vision, no diarrhea or cramps. Sleeping fine. Has not touched the sprayer since.\n\nMixes and applies for his own acreage and holds an applicator license. Not sure exactly how he got the exposure that day.\n\nPMH: nothing chronic. No regular doctor since childhood.\nPSH: tonsillectomy at 8.\nMeds: none. Allergies: NKDA.\nFH: father with hypertension, diagnosed at 65. Mother hypothyroid. No neurologic or psychiatric illness in the family.\nSH: married, lives in Easthampton. Never smoker. Alcohol 2-3 drinks a month. Works the farm with his brother.\nPHQ-2: 0.\n\nExam: well-appearing, comfortable. Pupils equal, normal size, reactive. Oropharynx moist, not excessively so. Lungs clear, no wheeze, good air movement. Heart regular, no murmur. Abdomen soft, nontender, normal bowel sounds. No fasciculations at rest. Strength 5/5 proximally and distally including neck flexion. Reflexes 2+ and symmetric. Gait normal. Skin intact, no rash.\n\nA/P:\n1. Organophosphate poisoning, recovering. Clinically back to baseline. Cholinesterase today to see how far it has come back from 1,050 in the hospital. No mixing or spraying until it's in the normal range; brother can cover. When he does go back: chemical-resistant coveralls, gloves and boots, a properly fitted respirator per the product label, change and wash immediately after any splash, and keep work clothes out of the family wash. Reviewed what early symptoms to stop work for (sweating, drooling, cramping, blurred vision, twitching) and to get to an ED rather than waiting it out.\n2. Health maintenance: CBC, CMP, lipids, A1c today; one-time HIV and hep C screen, he agrees. Tdap status unknown, will plan with fall vaccines. Colon screening at 45.\n\nFollow up by portal with results; recheck cholinesterase in about a month."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.6,
+            "height_cm": 180.3,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-05-23a",
+          "kind": "portal_message",
+          "start": "2025-05-23T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-05-23T13:40",
+              "author": "PCP",
+              "body": "Hi Christopher,\n\nYour routine labs from Wednesday are all normal: blood count, kidney and liver tests, sugar (A1c). Cholesterol is fine for your age and risk, nothing to treat. HIV and hepatitis C screens were negative.\n\nThe cholinesterase level has come up a long way, from 1,050 in the hospital to 4,400, but it isn't in the normal range yet (normal starts a little above 5,300). That fits with how the body recovers after this kind of exposure, which takes weeks. So for now, please keep off the sprayer and away from mixing. I've put in an order to recheck it in about a month; you can stop by the lab any morning after 6/23.\n\nGlad you're feeling well."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2025-05-23T19:02",
+              "author": "patient",
+              "body": "Ok thanks. My brother is doing the spraying for now. Will come in end of June."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "lab_only",
+          "start": "2025-06-25T07:20",
+          "conditions": [
+            {
+              "label": "Organophosphate poisoning",
+              "action": "resolved",
+              "icd10": "T60.0X1A"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-25T07:20",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 7600
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-25T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholinesterase Recheck",
+              "date": "2025-06-25T16:10",
+              "author": "PCP",
+              "body": "Christopher, your cholinesterase is now 7,600, back in the normal range. You're cleared to go back to mixing and spraying, with the full protective gear we talked about every time: coveralls, chemical gloves and boots, and the respirator the label calls for. Change right away if anything splashes on you. If you ever start sweating, drooling, cramping or twitching while working, stop and get to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "nurse_visit",
+          "start": "2025-10-22T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-22T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-22T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-22T16:36"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2025-10-22T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2025-10-22T16:55",
+              "author": "RN",
+              "body": "In after harvest work for vaccines. No record of a tetanus booster he can remember; Tdap given per PCP plan. Flu (trivalent) L deltoid, Moderna 2025-26 R deltoid, Tdap R deltoid. No prior vaccine reactions. Waited 15 min, felt fine, left."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "telephone",
+          "start": "2026-04-07T07:50",
+          "reason": "cancel physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancellation",
+              "date": "2026-04-07T07:50",
+              "author": "front desk",
+              "body": "Pt left vm at 7:10, needs to cancel his physical for tomorrow 4/8, getting fields ready and can't get away. Called back, he'll call to rebook once planting is done. Visit cancelled."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "annual_physical",
+          "start": "2026-04-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-05-07a",
+          "kind": "hospital_admission",
+          "start": "2026-05-07T14:15",
+          "end": "2026-05-09T12:00",
+          "service": "Emergency Medicine / Medical ICU (outside)",
+          "reason": "collapse after pesticide spraying",
+          "conditions": [
+            {
+              "label": "Organophosphate poisoning",
+              "action": "diagnosed",
+              "onset": "2026-05-07",
+              "note": "second accidental exposure, no protective equipment",
+              "icd10": "T60.0X1A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-07T14:20",
+              "bp": [
+                104,
+                62
+              ],
+              "hr": 56,
+              "rr": 24,
+              "temp_c": 36.6,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-07T14:30",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 820
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-07T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-07T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Record (received)",
+              "date": "2026-05-12T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital Emergency Department. DOS 05/07/2026.\n\nCC: collapse.\n\nHPI: 41M, known to us from an ICU stay a year ago for organophosphate poisoning with breathing trouble, salivation and cramps. Brother brought him in from the farm after he went down suddenly while working. Per brother he had been spraying crops all day with no protective gear, and slopped some of the concentrate on his shirt but kept going. Product had a strong, bitter smell. First complained of feeling dizzy and sick to his stomach and said his vision was off. Over a few minutes he was pouring sweat, cramping and vomiting, then got confused, stumbled more than once, and had a short generalized seizure that stopped by itself before EMS was needed. Brother reports nobody else working there today is sick.\n\nMeds: none. NKDA.\n\nArrival VS: HR 56, BP 104/62, RR 24, SpO2 89% RA, T 36.6 C.\n\nExam: On the stretcher drooling, mumbling and not making sense. Shirt and pants soaked with sweat. Tremulous. Shallow respirations, intermittent cough bringing up small amounts of clear sputum. Pupils pinpoint, sluggish to light. Skin cool and clammy. Fasciculations in both arms and both legs. Abdomen not distended, nontender, bowel sounds hyperactive.\n\nMDM: Recurrent cholinergic crisis from organophosphate exposure. Clothes removed and bagged, washed down. Oxygen by NRB. Atropine IV boluses titrated to dry secretions, then infusion. Pralidoxime 2 g IV load and infusion. No further seizure activity. Airway protected on his own, no intubation. Plasma cholinesterase sent.\n\nDx: Organophosphate poisoning, accidental, recurrent. Seizure attributed to the poisoning.\nDispo: MICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Discharge Summary (received)",
+              "date": "2026-05-12T09:31",
+              "author": "critical care",
+              "body": "Regional hospital, Medical Intensive Care Unit\nAdmitted 05/07/2026  Discharged 05/09/2026\n\nPrincipal diagnosis: Organophosphate poisoning, accidental occupational exposure (second episode; prior ICU admission 05/2025).\n\nCourse: Arrived after collapse with a single self-limited generalized convulsion in the field. Cholinesterase on arrival 820 U/L (ref 5,320-12,920). Decontaminated in the ED and treated with atropine boluses and infusion plus pralidoxime load and infusion. Observed two nights in the unit. Off oxygen within the first day. No recurrent convulsion. Atropine and pralidoxime weaned off without return of cholinergic signs. Alert and oriented, eating, ambulating independently at discharge.\n\nDischarge meds: none. Allergies: NKDA.\n\nFollow-up: PCP within 1 week with repeat cholinesterase. No pesticide handling until cleared. Discussed protective equipment at length with patient and brother.\n\ncc: PCP of record."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "telephone",
+          "start": "2026-05-11T10:20",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-05-11T10:20",
+              "author": "RN",
+              "body": "Called pt after Saturday discharge (ICU 5/7-5/9, pesticide exposure again). Says he's tired and a little sore but otherwise ok. No more seizures, no drooling or sweating spells, breathing fine, eating normally. Wife is with him; he is not driving yet. Not on any meds. Hospital paperwork says PCP within a week + cholinesterase. Booked Thu 5/14 at 9:00. Asked him to stay away from the sprayer and the chemical shed until then. Records requested from hospital."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "office_visit",
+          "start": "2026-05-14T09:00",
+          "end": "2026-05-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, organophosphate poisoning",
+          "vitals": {
+            "bp": [
+              139,
+              79
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 82.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-14T09:45",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 3900
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-05-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-14T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-05-14T10:20",
+              "author": "PCP",
+              "body": "HOSPITAL FOLLOW-UP\n\nSeen 5 days after discharge from a 2-night ICU stay for a second organophosphate poisoning, a year after the first. Hospital ED record and discharge summary reviewed.\n\nHe was spraying without any protective gear on 5/7 and spilled some on his shirt. Collapsed in the field, one brief generalized seizure that stopped on its own, brother drove him in. Treated with atropine and pralidoxime, no intubation, cholinesterase 820 on arrival. Home 5/9 on nothing.\n\nToday: energy coming back, still naps in the afternoon. No further seizure or spells, no twitching, no drooling or sweats, no cramping, vision normal, breathing normal. Hasn't driven. Has not been near the chemicals since.\n\nWe talked about how this happened. He knows he skipped the gear that day and was in a hurry to get the field done. Wife and brother have both been on him about it.\n\nMeds: none. NKDA.\n\nExam: alert, conversant, looks well. Pupils 4 mm, equal and briskly reactive. Mouth not wet. Lungs clear. Heart regular. Abdomen soft, nontender, normal bowel sounds. No fasciculations. Strength full throughout including neck flexors and hip flexors. Reflexes symmetric. Gait and tandem normal. Speech and thinking normal.\n\nA/P:\nOrganophosphate poisoning, second episode, recovering. Cholinesterase today. No mixing, loading or spraying until it is back to normal. The convulsion happened with the poisoning and has not recurred. Went over the protective equipment again in detail: coveralls, chemical-resistant gloves and boots, eye protection and the respirator the label requires, every load, every time; change and wash at once after a splash; contaminated clothing bagged and kept out of the house laundry. Brother will run the sprayer for now. He knows the early symptoms and to stop work and go to the ED if they start.\n\nResult by portal. Recheck cholinesterase in about a month. Physical to be rebooked."
+            }
+          ],
+          "state": {
+            "bp": [
+              118,
+              74
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "lab_only",
+          "start": "2026-06-17T07:05",
+          "conditions": [
+            {
+              "label": "Organophosphate poisoning",
+              "action": "resolved",
+              "icd10": "T60.0X1A"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-17T07:05",
+              "results": [
+                {
+                  "test": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+                  "loinc": "2098-2",
+                  "unit": "U/L",
+                  "value": 7400
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-17T07:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholinesterase Result",
+              "date": "2026-06-17T15:45",
+              "author": "PCP",
+              "body": "Christopher, today's cholinesterase is 7,400, normal again (it was 3,900 at your visit in May). Your body has recovered from the exposure."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T06:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back to work?",
+              "date": "2026-06-18T06:12",
+              "author": "patient",
+              "body": "Saw the result. Does that mean I can go back to spraying? Bought a new respirator and suit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back to work?",
+              "date": "2026-06-18T12:30",
+              "author": "PCP",
+              "body": "Yes, from a medical standpoint you can go back to it, with the new suit and respirator on for every load, plus gloves, boots and eye protection. Change right away after any splash. Two episodes is a pattern I don't want to see a third time, so please don't skip the gear even for a quick job. Stop and go to the ED at the first sign of sweating, drooling, cramps, blurry vision or twitching."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-12T20:41",
+              "author": "patient",
+              "body": "Need to reschedule the physical I cancelled back in April. Mornings are best, anytime after Labor Day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-08-13T09:10",
+              "author": "front desk",
+              "body": "Hi Christopher, you're booked for Wednesday 9/16 at 8:00 am with the doctor. Reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Organophosphate poisoning|T60.0X1A": {
+        "code": "T60.0X1A",
+        "display": "Toxic effect of organophosphate and carbamate insecticides, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Carbon dioxide [Partial pressure] in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma": {
+        "code": "2098-2",
+        "display": "Cholinesterase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen [Partial pressure] in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

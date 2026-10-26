@@ -1,0 +1,264 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002051",
+      "given": "Joel",
+      "family": "Murphy",
+      "birth_date": "1975-08-09",
+      "address_line": "41 Woodbridge Street",
+      "phone": "+1-617-555-0196",
+      "email": "joel.murphy@example.test",
+      "marital_status": "single",
+      "summary": "Math teacher with ADPKD who joins on hemodialysis in 2018, receives a deceased donor kidney in December 2020, and then works through acute and chronic rejection, CMV colitis, Pneumocystis pneumonia, DKA and, in 2026, EBV-positive polymorphic PTLD treated with reduced immunosuppression and rituximab. Insulin-treated type 2 diabetes and hypertension run through the whole chart.",
+      "events": [
+        {
+          "id": "2018-08-28a",
+          "kind": "telephone",
+          "start": "2018-08-28T15:10",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2018-08-28T15:10", "body": "Caller wants to establish with the practice. 43 yo M, teaches math at the high school, dialysis three days a week (M/W/F mornings before school, he says) and listed for a kidney transplant. Prior PCP retired. Membership explained, Medicare primary + BCBS secondary for outside services. New patient visit booked for after school on a non-dialysis day. Records release mailed to his nephrology group and dialysis unit."}
+          ]
+        },
+        {
+          "id": "2018-09-18a",
+          "kind": "establish_care",
+          "start": "2018-09-18T15:40",
+          "end": "2018-09-18T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Polycystic kidney, adult type", "action": "history", "onset": "2004-06-01", "note": "familial; ESRD from ADPKD"},
+            {"label": "End stage renal disease", "action": "history", "onset": "2017-03-01"},
+            {"label": "Dependence on renal dialysis", "icd10": "Z99.2", "action": "history", "onset": "2017-03-01", "note": "in-center hemodialysis three times weekly"},
+            {"label": "Acquired absence of kidney", "action": "history", "onset": "2011-05-01", "note": "left native nephrectomy for infected cyst"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history", "onset": "2012-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2006-01-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed"}
+          ],
+          "medications": [
+            {"drug": "amlodipine 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[iU]"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin with meals, 1 unit per 12 g carbohydrate", "frequency": "TID with meals", "route": "Subcutaneous", "course": "chronic", "reason": "type 2 diabetes"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [142, 88], "weight_kg": 84.2, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 7.2, "Creatinine": 8.4, "Blood Urea Nitrogen": 52, "Potassium": 5.0, "Hemoglobin": 11.6, "Low Density Lipoprotein": 112}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-09-18T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-09-18T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2018-09-18T16:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-09-18T16:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antibody", "text": "Negative"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2018-09-18T16:35"}],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2018-09-18T15:40"}],
+          "documents": [
+            {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2018-09-18T17:30", "body": "NEW PATIENT\n\n43 yo man joining us; last PCP retired this summer. Polycystic kidney disease is the headline: kidneys failed and he started in-center hemodialysis about a year and a half ago, three mornings a week. Listed at the regional transplant center for a deceased donor kidney. Left native kidney was removed in 2011 for an infected cyst; right native kidney still in. Teaching full time (HS math) and determined to keep doing it.\n\nDM2 on basal/bolus insulin, glargine 24 u qhs and lispro by a 1:12 carb ratio. Checks fingersticks before meals. Denies lows. HTN on amlodipine 10. Aspirin 81.\n\nPMH: ADPKD, ESRD on HD, DM2, HTN\nPSH: L native nephrectomy 2011 (infected cyst)\nMeds: amlodipine 10 daily, ASA 81, glargine 24 u qhs, lispro 1 u/12 g carb with meals\nAllergies: NKDA\nFH: father with PKD, on dialysis in his 50s, died at 58 of a ruptured brain aneurysm. Mother HTN and DM2. Sister has PKD and is on hemodialysis now.\nSH: smokes cigarettes daily, has tried to stop before. Alcohol 1-2 drinks a month. Lives in South Hadley.\n\nROS: tired on dialysis days, otherwise negative.\n\nExam: well-appearing. BP as recorded. HEENT nl. Neck supple, no LAD. Lungs clear. Heart RRR, no murmur. Abd soft, fullness R flank, nontender. Ext no edema. Feet: intact skin, pulses 2+, monofilament sensation intact. Skin no rashes.\n\nA/P\n1. ADPKD / ESRD on HD, transplant listed - nephrology and dialysis unit drive this. Requested their records and the transplant center's listing letter.\n2. DM2 on insulin - A1c today (knowing it reads a bit unreliable with dialysis anemia). Eye exam due.\n3. HTN - on amlodipine 10, BP okay for a dialysis day off.\n4. Tobacco - smoking affects his transplant candidacy, he knows. Talked through quitting, counseling offered; he wants to set his own date. Will revisit each visit.\n5. HM: Tdap today. HCV, HIV, HBsAg/Ab today. Flu and pneumococcal next month; hep B series if not immune. PHQ-2 0.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "outside_records",
+          "start": "2018-10-02T10:20",
+          "reason": "records received from nephrology and transplant center",
+          "documents": [
+            {"type": "Outside Records", "title": "Nephrology records and transplant listing letter", "author": "nephrology", "date": "2018-10-02T10:20", "body": "Received from outside nephrology group, dialysis unit and regional transplant center:\n\nNephrology summary: autosomal dominant polycystic kidney disease with progressive loss of function, strong family history (father, sister). Left native nephrectomy in 2011 for an infected cyst. Hemodialysis initiated March 2017; in-center three times weekly, tolerating well.\n\nTransplant center letter: evaluation complete, patient active on the deceased donor kidney waitlist. Ongoing requirements: age-appropriate cancer screening, vaccinations current, and complete abstinence from tobacco before transplant.\n\nMeds per their list: amlodipine 10 mg daily, aspirin 81 mg daily, insulin glargine 24 units nightly, insulin lispro with meals. Allergies: NKDA.\n\nScanned to chart, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-16T15:35"},
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2018-10-16T15:37"},
+            {"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2018-10-16T15:39"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-16T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccine visit", "author": "RN", "date": "2018-10-16T15:50", "body": "Here for vaccines per PCP plan. Hep B surface antibody negative from September labs, starting 2-dose Heplisav series. Flu R deltoid, PCV13 L deltoid, Heplisav-B L deltoid lower site. Waited 15 min, no reaction. Dose 2 of hep B in 1 month, PPSV23 in 8 weeks or more."}
+          ]
+        },
+        {
+          "id": "2018-11-13a",
+          "kind": "nurse_visit",
+          "start": "2018-11-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)", "date": "2018-11-13T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-11-13T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Heplisav-B dose 2", "author": "RN", "date": "2018-11-13T16:00", "body": "Second Heplisav-B given IM R deltoid. Tolerated. Titer to be drawn in 1-2 months; will add to January visit."}
+          ]
+        },
+        {
+          "id": "2018-12-11a",
+          "kind": "office_visit",
+          "start": "2018-12-11T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2018-12-11T16:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2018-12-11T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2018-12-11T17:05", "body": "S: f/u DM/HTN. Sept A1c reasonable. Fingersticks mostly 120s-170s, a few 200s after pizza nights. No lows. Dialysis going fine. Still smoking, has cut down some. School busy with exams.\nO: vitals as charted. Lungs clear. Heart regular. No edema. Feet intact.\nA/P: DM2 - A1c repeated, no change to glargine 24 / lispro ratio. HTN - fine on amlodipine. Tobacco - pushing toward a quit date before the holidays end; he'll think about it. Eye exam: gave him the optometrist list. RTC 3 mo."}
+          ]
+        },
+        {
+          "id": "2019-01-22a",
+          "kind": "nurse_visit",
+          "start": "2019-01-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "PPSV23, hepatitis B titer",
+          "labs": [
+            {"panel": null, "collected": "2019-01-22T15:45", "results": [{"test": "Hepatitis B Surface Antibody", "text": "Positive (immune)"}]}
+          ],
+          "immunizations": [{"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2019-01-22T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-01-22T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "PPSV23 and titer", "author": "RN", "date": "2019-01-22T16:00", "body": "PPSV23 IM L deltoid, tolerated. Hep B surface Ab drawn post-series."},
+            {"type": "Result Note", "title": "Hep B titer", "author": "PCP", "date": "2019-01-24T07:50", "body": "HBsAb positive after Heplisav series - immune. Copy sent to dialysis unit."}
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "office_visit",
+          "start": "2019-03-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-03-19T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-03-19T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-03-19T17:10", "body": "Routine DM/HTN visit. Feeling okay, gets wiped out on dialysis days but teaching through it. No hypoglycemia. Down to under half a pack, he estimates, but not quit. Transplant coordinator reminded him again that smoking has to stop.\n\nExam: NAD, lungs clear, RRR, no edema, feet without lesions.\n\nPlan: A1c today. Same insulin. Amlodipine 10. Tobacco: >3 min counseling, offered pharmacotherapy and quitline, he prefers to taper on his own for now. 3 months."}
+          ]
+        },
+        {
+          "id": "2019-06-25a",
+          "kind": "office_visit",
+          "start": "2019-06-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-06-25T11:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Lipid Panel", "collected": "2019-06-25T11:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-06-25T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-06-25T11:40", "body": "Summer break, so a morning appt for once. Glucoses steady. No complaints. Still smoking a few a day.\nBP okay. Exam unchanged, no edema, feet fine.\nA1c and lipids today. Continue current regimen. Urine studies not useful while essentially anuric on dialysis - skipping. Tobacco again discussed. RTC Sept for physical."}
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "annual_physical",
+          "start": "2019-09-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-24T16:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-24T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2019-09-24T16:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-09-24T16:25"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-09-24T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-09-24T17:20", "body": "ANNUAL\n44 yo M. ESRD from ADPKD on HD, still waitlisted. DM2, HTN.\nInterval: nothing new. Optometry visit done in the spring, no retinopathy per pt (letter not yet received - requested).\nHabits: smoking down to a few cigarettes, he says he'll be done by the holidays. Alcohol rare.\nROS negative.\nExam: Gen well. HEENT nl, TMs clear. Neck no LAD, no thyromegaly. Lungs clear. CV RRR no m. Abd soft, R flank fullness, NT. GU deferred. Ext no edema. Skin no suspicious lesions. Neuro grossly intact. Feet intact, monofilament nl.\nPlan: labs, flu today. Colon screening not yet due (age 45 next year). PHQ-2 0. Continue meds. Tobacco: quit date set for early December."}
+          ]
+        },
+        {
+          "id": "2019-12-17a",
+          "kind": "office_visit",
+          "start": "2019-12-17T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up, smoking",
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2019-12-01"}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2019-12-17T16:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-17T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-12-17T16:55", "body": "Good news first - he quit. Last cigarette the first weekend of December, cold turkey, and no slips so far. Some irritability, eating more crackers. Very proud, and the transplant team is happy.\n\nDM: sugars a little higher with the snacking but no change needed. BP fine.\nExam: lungs clear, heart regular, no edema.\n\nA/P: tobacco dependence now in early remission - congratulated, relapse plan reviewed (call if cravings spike, NRT available). A1c today. Same insulin and amlodipine. RTC March."}
+          ]
+        },
+        {
+          "id": "2020-03-10a",
+          "kind": "office_visit",
+          "start": "2020-03-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2020-03-10T16:15", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2020-03-10T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-03-10T16:40", "body": "Quick f/u. Still not smoking, 3 months now. Sugars okay. Dialysis unit tightening visitor rules with the new virus going around; we talked about masking, handwashing, and that he should call before coming in if sick. Exam unremarkable. A1c today. No changes. Next visit may be by video."}
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-06-09T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-06-09T10:30", "body": "Video, pt at home, identity verified, consented. Finished the school year teaching remotely. Dialysis continuing in person. Home BPs on dialysis days per their sheets around 140s/80s. Fingersticks 110-180, no lows. Not smoking. No symptoms.\nA/P: stable. Continue amlodipine, glargine 24, lispro ratio, ASA. Labs with the fall physical. Remains active on the transplant list."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-22T16:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-22T16:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-22T16:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-09-22T16:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T16:15"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2020-09-22T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-09-22T17:00", "body": "Annual exam, masked visit.\n45 yo, ADPKD/ESRD on HD, waiting on a kidney. DM2 on insulin, HTN.\nSmoke-free since Dec 2019. Hybrid teaching this fall, tiring. Mood fine; PHQ-2 1 (a little low energy).\nExam: well. Lungs clear. Heart regular. Abd soft, R flank fullness. No edema. Skin clear. Feet intact.\nHM: flu today. He turned 45 - discussed colon screening; with the transplant center's cancer screening requirement he'd like the stool test - FIT kit given. Labs drawn.\nRTC 3 months or sooner when he gets the call."},
+            {"type": "Telephone Encounter", "title": "FIT not returned", "author": "MA", "date": "2020-11-10T09:15", "body": "Called re: FIT kit from Sept physical, not returned. Pt says it's in his bathroom drawer, will mail this week."}
+          ]
+        },
+        {
+          "id": "2020-12-24a",
+          "kind": "portal_message",
+          "start": "2020-12-24T06:12",
+          "reason": "patient message, transplant",
+          "documents": [
+            {"type": "Patient Message", "title": "Got the call", "author": "patient", "date": "2020-12-24T06:12", "body": "Just wanted you to know I got the call at 2am - there's a kidney. Heading to the transplant center now. Fingers crossed."},
+            {"type": "Patient Message", "title": "Re: Got the call", "author": "PCP", "date": "2020-12-24T07:40", "body": "Joel, wonderful news. Thinking of you today. Have the transplant team send us your discharge papers and let us know once you're home so we can set up a check-in."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002700",
+      "events": [
+        {
+          "id": "2023-02-13a",
+          "kind": "office_visit",
+          "start": "2023-02-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-13T09:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-02-13T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-02-13T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-02-13T09:30", "body": "Routine. Using the treadmill at the senior center in winter. No new symptoms. Eye exam in Dec normal.\nBP, weight as charted. Heart, lungs normal. Foot check fine.\nNo changes. A1c/BMP. Next visit with the physical in Sept, call sooner as needed."}
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "painful urination",
+          "conditions": [{"label": "Acute cystitis without hematuria", "action": "diagnosed", "onset": "2023-04-16"}],
+          "medications": [{"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily with food for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute cystitis"}],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-04-18T11:30", "results": [{"test": "Urine Leukocyte Esterase", "text": "Moderate"}, {"test": "Urine Nitrite", "text": "Positive"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}]},
+            {"panel": null, "collected": "2023-04-18T11:30", "resulted": "2023-04-20T10:00", "results": [{"test": "Urine Culture", "text": "Escherichia coli >100,000 CFU/mL. Susceptible to nitrofurantoin, cefazolin, ciprofloxacin, trimethoprim-sulfamethoxazole; resistant to ampicillin."}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-04-18T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day Visit", "author": "PCP", "date": "2023-04-18T11:45", "body": "Texted this morning, seen same day. Two days of burning when she pees and going every hour. No fever, chills, flank pain or blood. No vaginal discharge.\nT afebrile. Abd soft, mild suprapubic tenderness, no CVA tenderness.\nDip: LE moderate, nitrite positive.\nA: uncomplicated cystitis. Nitrofurantoin 100 BID x5 days; culture sent. Fluids. Call if fever or back pain."}
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "portal_message",
+          "start": "2023-04-20T13:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Urine culture", "author": "PCP", "date": "2023-04-20T13:30", "body": "Your urine culture grew the usual bladder bacteria, and the antibiotic you are on covers it. Finish all five days. Let me know if you are not better by the weekend."}
+          ]
+        },
+        {
+          "id": "2023-04-26a",
+          "kind": "portal_message",
+          "start": "2023-04-26T08:05",
+          "conditions": [{"label": "Acute cystitis without hematuria", "action": "resolved"}],
+          "documents": [
+            {"type": "Patient Message", "title": "RE: Urine culture", "author": "patient", "date": "2023-04-26T08:05", "body": "All better, finished the pills Sunday. Thank you for squeezing me in."}
+          ]
+        },
+        {
+          "id": "2023-07-24a",
+          "kind": "urgent_care",
+          "start": "2023-07-24T18:40",
+          "service": "Urgent Care",
+          "reason": "urinary burning",
+          "conditions": [{"label": "Acute cystitis without hematuria", "action": "diagnosed", "onset": "2023-07-23"}],
+          "medications": [{"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute cystitis"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-07-24T18:50", "results": [{"test": "Urine Leukocyte Esterase", "text": "Large"}, {"test": "Urine Nitrite", "text": "Positive"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Urgent care visit note", "author": "urgent care", "date": "2023-07-26T09:00", "body": "Walk-in urgent care, visit 7/24/2023, evening.\nCC: dysuria and urgency since yesterday. Similar infection in April treated by her PCP. Denies fever, back pain, hematuria.\nPMH diabetes, hypertension. Meds metformin, lisinopril, hydrochlorothiazide, atorvastatin. NKDA.\nAfebrile, vitals stable. No CVA tenderness.\nUA dip: large leukocytes, nitrite positive.\nDx: acute cystitis.\nRx: nitrofurantoin 100 mg BID x 5 days. Culture not sent. Follow up with PCP.\nFaxed to PCP office."},
+            {"type": "Telephone Encounter", "title": "Urgent care follow-up call", "author": "RN", "date": "2023-07-27T10:30", "body": "Called after urgent care fax arrived. Symptoms nearly gone on day 3 of nitrofurantoin. Second UTI this year; she will mention it at her physical. Advised to call if symptoms return."}
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "annual_physical",
+          "start": "2023-09-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [{"label": "Acute cystitis without hematuria", "action": "resolved"}],
+          "state": {"labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-09-18T09:20"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-18T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-18T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-18T09:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-18T08:30"},
+            {"procedure": "Immunization administration", "performed": "2023-09-18T09:20"}
+          ],
+          "orders": [{"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-18T09:40", "body": "57F annual.\nTwo bladder infections this year (April here, July at urgent care), both cleared with nitrofurantoin. Says she still feels she has to go more often than she used to and wants to come back to talk about it properly rather than tack it on today. OK, booked.\nOtherwise well. Meds x4 unchanged, NKDA.\nExam: normal general exam, heart and lungs clear, abdomen benign, feet normal sensation and pulses.\nPHQ-2 0.\nA/P\n- T2DM, HTN: stable. Labs.\n- PCV20 today given diabetes.\n- Mammogram ordered. Pap 2027, colonoscopy 2027.\n- Separate visit for urinary symptoms next month."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T14:30",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T14:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T14:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T14:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2023-10-10T14:50", "body": "Influenza IM L arm and 2023-24 COVID vaccine IM R arm. No contraindications. Waited 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2023-10-27a",
+          "kind": "office_visit",
+          "start": "2023-10-27T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "urinary frequency, urgency and burning",
+          "conditions": [{"label": "Postmenopausal atrophic vaginitis", "icd10": "N95.2", "action": "diagnosed", "onset": "2023-04-01", "note": "genitourinary syndrome of menopause"}],
+          "medications": [{"drug": "estradiol 0.1 MG/ML Vaginal Cream", "action": "start", "sig": "Insert 1 gram vaginally at bedtime for 2 weeks, then 1 gram twice weekly", "dose": {"value": 1, "unit": "g"}, "frequency": "TWICE WEEKLY", "route": "Vaginal", "course": "chronic", "reason": "genitourinary syndrome of menopause"}],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2023-10-27T13:40", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-27T13:30"}],
+          "orders": [{"id": "uro-referral", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "urgency with leakage"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Urinary Symptoms", "author": "PCP", "date": "2023-10-27T14:20", "body": "57F. Visit set up at the physical to go over bladder symptoms.\nHPI: For roughly half a year she has been going far more often, with a strong need to get there fast, and a stinging feeling when she voids even between infections. Two documented UTIs this year. Some small leaks when she can't make it, slowly getting worse. Tried cranberry capsules from the drugstore and pushing water; no difference, if anything more trips. No fever, no hematuria, no flank pain. No vaginal bleeding. Menopause at 52, never on hormones.\nMeds: metformin, lisinopril, HCTZ, atorvastatin. NKDA.\nExam: chaperoned pelvic. Vulvar skin thin and pale, external genitalia atrophic. Vaginal walls dry with loss of the normal folds. No discharge, no bleeding. Bimanual nontender, no masses.\nUA today clean: no LE, nitrite, blood, protein or glucose.\nA/P\n1. Genitourinary syndrome of menopause: fits the dryness, burning and likely the recurrent infections. Start vaginal estradiol cream, 1 g nightly x2 wk then twice weekly. Low dose, local; explained it is not the same as systemic hormone therapy. She is willing.\n2. Urgency with leakage: urgency-predominant by history. Referral to urology for evaluation. Meanwhile cut back on caffeine, timed voiding.\n3. Recurrent cystitis: as #1; return for dip/culture with any symptoms.\nF/u after urology."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T09:15",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2023-11-14T09:15", "text": "Bilateral screening mammography with tomosynthesis. Compared with 2022 and 2021. Scattered areas of fibroglandular density. No suspicious findings.", "conclusion": "BI-RADS 1, negative."}],
+          "orders": [{"id": "mammo-2023", "action": "done", "date": "2023-11-14T09:15"}],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram", "author": "PCP", "date": "2023-11-15T07:50", "body": "Negative screening mammogram. Released to portal with note."}
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "portal_message",
+          "start": "2023-11-20T19:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Cream question", "author": "patient", "date": "2023-11-20T19:45", "body": "Finished the two weeks of every night with the cream, now twice a week. Burning is less. Is it OK to keep using it long term? Also urology can't see me until February, is that alright?"},
+            {"type": "Patient Message", "title": "RE: Cream question", "author": "PCP", "date": "2023-11-21T08:20", "body": "Glad it's helping. Yes, twice weekly is meant to be ongoing; the dose is small and stays local. February is fine since nothing about this is urgent. Keep the caffeine down and keep to the bathroom schedule in the meantime."}
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "outside_records",
+          "start": "2023-12-06T11:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam report", "author": "optometry", "date": "2023-12-06T11:00", "body": "Annual dilated diabetic exam, DOS 11/29/2023. VA 20/25 OD, 20/20 OS. Fundus OU: no diabetic retinopathy, no macular edema. Continue yearly."}
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "office_visit",
+          "start": "2024-01-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-22T10:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-01-22T10:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-01-22T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / BP Follow-up", "author": "PCP", "date": "2024-01-22T10:30", "body": "Diabetes and BP check. Using the estradiol cream twice a week, burning mostly gone, no infections since summer. Urgency itself unchanged; urology 2/5.\nVitals as charted. Exam normal.\nT2DM/HTN: no change. A1c, BMP."}
+          ]
+        },
+        {
+          "id": "2024-02-05a",
+          "kind": "specialist_visit",
+          "start": "2024-02-05T14:00",
+          "service": "Urology",
+          "reason": "urinary urgency with leakage",
+          "conditions": [{"label": "Urge incontinence", "icd10": "N39.41", "action": "diagnosed", "onset": "2023-08-01", "note": "urgency predominant"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2024-02-05T14:05", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "uro-referral", "action": "done", "date": "2024-02-05T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation", "author": "urology", "date": "2024-02-09T12:00", "body": "UROLOGY CONSULTATION, date of visit 02/05/2024\nReferred by primary care for urgency with leakage.\n\nMs. Ellis is a 57-year-old woman whose bladder complaints were first worked up by her PCP in October. Over about half a year she has had abrupt, very strong urges to void, and on some occasions does not get to the toilet in time. This has started to change how she lives; she now thinks twice before being away from home for long. On her own she cut down on coffee and tea and began emptying her bladder on a two-hour clock, without much benefit. On vaginal estrogen since November for atrophy.\n\nPMH: type 2 diabetes on metformin, hypertension on lisinopril and hydrochlorothiazide, also takes atorvastatin. Postmenopausal. Partial edentulism after dental extractions.\nAllergies: none known.\nFamily: mother diabetes, father hypertension.\nSocial: never smoker, no alcohol, retired.\n\nExam: abdomen soft, nontender, no masses or suprapubic fullness. Pelvic exam: no prolapse of anterior, apical or posterior compartments; no other abnormality.\nUrinalysis: negative for infection, glucose and protein.\nBladder scan post-void residual: 20 mL, normal.\n\nImpression: urge urinary incontinence, urgency predominant, with normal emptying.\n\nPlan:\n- 3-day bladder diary.\n- Bladder training with gradual lengthening of intervals; urge suppression techniques reviewed.\n- Referral to pelvic floor physical therapy.\n- Revisit in several months; medication if behavioral measures fail.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "office_visit",
+          "start": "2024-03-18T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lump on roof of mouth",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-18T15:00"}],
+          "orders": [{"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Ear Nose & Throat", "reason": "hard palatal mass before dentures"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-03-18T15:25", "body": "Her dentist is planning dentures after more extractions last fall and pointed out a hard bump on the roof of her mouth, asked that a physician look at it before they go further. She says it has been sore off and on and makes chewing and some words awkward, more so over the past year.\nExam: firm midline swelling of the hard palate, covered by intact pink mucosa. Nontender today. No neck nodes.\nUrology update: started bladder training, PT eval next week.\nA/P: palatal swelling, likely bony but would like ENT to confirm before denture work. ENT referral placed. BP fine."}
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "portal_message",
+          "start": "2024-04-22T10:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Update", "author": "patient", "date": "2024-04-22T10:10", "body": "FYI I finished my 4 sessions of pelvic floor therapy. I do the exercises at home but honestly not much has changed with the urgency. ENT appointment is May 3."},
+            {"type": "Patient Message", "title": "RE: Update", "author": "PCP", "date": "2024-04-22T16:40", "body": "Thanks for the update. Keep going with the bladder training for now and let urology know at the next visit; they have other options if this isn't enough."}
+          ]
+        },
+        {
+          "id": "2024-05-03a",
+          "kind": "specialist_visit",
+          "start": "2024-05-03T09:30",
+          "service": "Ear Nose & Throat",
+          "reason": "palatal mass",
+          "conditions": [{"label": "Torus palatinus", "icd10": "M27.0", "action": "diagnosed", "onset": "2023-05-01"}],
+          "orders": [{"id": "ent-referral", "action": "done", "date": "2024-05-03T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Otolaryngology consultation", "author": "otolaryngology", "date": "2024-05-08T15:30", "body": "Otolaryngology — Consultation\nDOS: 05/03/2024\nReason: palatal mass, referred by PCP at the request of her dentist.\n\nHistory: 57-year-old woman with a year of gradually increasing discomfort in the mouth, with some difficulty eating and, at times, trouble getting words out clearly. She has lost several teeth recently and wants dentures, but is worried a denture will not sit properly over this lump. Diabetes and hypertension, both reported as well controlled on her current medicines.\nMeds: metformin, lisinopril, hydrochlorothiazide, atorvastatin.\nAllergies: NKDA.\nNon-smoker, no alcohol.\n\nExamination: In the midline of the hard palate there is a bony-hard, nontender swelling. It does not blanch on pressure. Overlying mucosa is intact with no ulceration. Remainder of the oral cavity and oropharynx unremarkable. No cervical lymphadenopathy.\n\nImpression: torus palatinus, a benign bony overgrowth.\n\nPlan: reassured; no biopsy or imaging needed. Recommend she work with her dentist or a prosthodontist on a denture design that accommodates the torus. If a usable denture cannot be made, surgical reduction can be considered at that point. Return as needed.\nCopy to PCP."}
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "office_visit",
+          "start": "2024-06-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-24T09:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-06-24T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-06-24T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-06-24T09:30", "body": "ENT letter reviewed: torus palatinus, benign, denture planning with her dentist. She is relieved. Denture fitting set for the fall.\nBladder: still urgent, a few leaks a week, timed voiding continues. Urology recheck in Nov.\nDM/HTN unchanged. Exam benign. Labs drawn. F/u at physical."}
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "annual_physical",
+          "start": "2024-09-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-23T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-23T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-23T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-23T09:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-23T08:30"}],
+          "orders": [{"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-23T09:35", "body": "58F preventive.\nProblems: T2DM, HTN, GSM on vaginal estradiol, urge incontinence (urology), torus palatinus (ENT, benign).\nMeds: metformin 1000 BID, lisinopril 20, HCTZ 12.5, atorvastatin 20, estradiol vaginal cream 2x/wk. NKDA.\nInterval: urgency persistent, she has been staying home more than she'd like. Urology 11/6. Partial denture being made.\nROS otherwise negative; no cough, no chest pain.\nExam: normal. Feet: sensation intact, pulses 2+.\nPHQ-2 1, mostly frustration with bladder; no depressed mood.\nA/P: labs, mammogram ordered, flu/COVID with RN in Oct. Pap and colonoscopy 2027."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:00",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T13:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T13:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T13:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2024-10-08T13:20", "body": "2024-25 trivalent flu L deltoid, 2024-25 COVID R deltoid. No acute illness. Observed, no reaction."}
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "specialist_visit",
+          "start": "2024-11-06T10:30",
+          "service": "Urology",
+          "reason": "worsening urge incontinence",
+          "medications": [{"drug": "24 HR mirabegron 25 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "urge incontinence"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2024-11-06T10:35", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology follow-up", "author": "urology", "date": "2024-11-11T09:45", "body": "UROLOGY FOLLOW-UP — 11/06/2024\n\n58-year-old postmenopausal woman returning for urge incontinence, seen here in February after her PCP's evaluation last October. Despite bladder training, a diary and four pelvic floor PT sessions, things have steadily worsened over roughly eight months. The urge comes on abruptly and without warning, in her words \"out of nowhere,\" and she often leaks a moderate amount before reaching the toilet. This happens several times a day and some nights. Restricting fluids has not changed the urgency. She does not leak with coughing, laughing or exercise. No sense of incomplete emptying, no post-void dribbling. No dysuria, blood in the urine or pelvic pain. She lives on her own and stays active locally, but has started skipping outings for fear of an accident.\n\nPMH: mild hypertension, on a low-dose thiazide plus lisinopril; type 2 diabetes; postmenopausal. No prior pelvic surgery.\nMeds: metformin, lisinopril, hydrochlorothiazide, atorvastatin, vaginal estradiol.\nAllergies: NKDA.\n\nExam: pelvic floor tone normal, no prolapse. Neurologic screen normal (perineal sensation, lower extremity strength and reflexes).\nUA: negative for leukocyte esterase, nitrite, blood and glucose.\n\nAssessment: refractory urge urinary incontinence after behavioral therapy.\nPlan: start mirabegron 25 mg daily (chosen over an anticholinergic at her age). Have PCP watch BP. Continue timed voiding and vaginal estrogen. Follow up in 3 to 4 months, sooner if no benefit.\n\nThank you."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "pharmacy",
+          "start": "2024-11-12T11:15",
+          "documents": [
+            {"type": "Prior Authorization", "title": "Mirabegron prior authorization", "author": "MA", "date": "2024-11-12T11:15", "body": "Pharmacy notified that mirabegron (prescribed by urology) needs prior auth under her BCBS plan. Urology office says they submitted it; insurer approved 11/12 for 12 months. Pt informed she can pick up today. Added to med list."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "imaging",
+          "start": "2024-11-19T08:45",
+          "reports": [{"study": "Screening mammogram, bilateral", "performed": "2024-11-19T08:45", "text": "Bilateral screening mammogram with tomosynthesis. Comparison 2023 and 2022. Scattered fibroglandular tissue. No suspicious mass, calcification or distortion.", "conclusion": "BI-RADS 1, negative."}],
+          "orders": [{"id": "mammo-2024", "action": "done", "date": "2024-11-19T08:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram", "author": "PCP", "date": "2024-11-20T08:10", "body": "Normal. Annual screening next fall."}
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dry cough",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-09T10:15"}],
+          "orders": [
+            {"id": "cxr-2024", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "cough for 2 months"},
+            {"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "persistent dry cough"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Cough", "author": "PCP", "date": "2024-12-09T10:45", "body": "Dry tickly cough since about early October, no phlegm. Not short of breath, no wheeze, no chest pain, no fever. No heartburn she notices, no postnasal drip. Never smoked. Started mirabegron last month, after the cough had already begun. Hasn't tried anything for it.\nVitals as charted, afebrile, sat normal.\nExam: oropharynx clear, no cobblestoning. Lungs clear throughout, no wheeze on forced expiration. Heart regular.\nA/P: subacute to chronic dry cough in a never-smoker, normal exam. CXR ordered. Given duration, referral to pulmonology. Mirabegron continues; urgency maybe a little better."}
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "imaging",
+          "start": "2024-12-11T12:30",
+          "reports": [{"study": "Chest X-ray, 2 views", "performed": "2024-12-11T12:30", "text": "PA and lateral chest. Lungs are clear. No consolidation, effusion or pneumothorax. Heart size normal. Mediastinal contours normal. Bones unremarkable.", "conclusion": "No acute cardiopulmonary abnormality."}],
+          "orders": [{"id": "cxr-2024", "action": "done", "date": "2024-12-11T12:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "Chest x-ray", "author": "PCP", "date": "2024-12-11T17:05", "body": "CXR normal. Portal message sent; pulmonology appointment pending (scheduled 1/20)."}
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "outside_records",
+          "start": "2024-12-18T10:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam report", "author": "optometry", "date": "2024-12-18T10:20", "body": "Dilated eye exam DOS 12/12/2024. VA 20/25 OU. Retina: no diabetic retinopathy, maculae normal. Recall 1 year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3069 @@
+{
+  "unit": "unit-2576",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002576",
+      "given": "Rowan",
+      "family": "Morrow",
+      "birth_date": "1999-05-10",
+      "address_line": "41 Gilbert Lane",
+      "phone": "+1-413-555-0195",
+      "email": "rowan.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Young construction laborer with ADHD on mixed amphetamine salts, half-pack smoking and heavy episodic drinking, who joins in 2020 and then has a serious car crash nearly every year from 2021 to 2026: hip dislocation with later femoral head AVN, C6 fracture, pelvic fracture with bladder rupture, diffuse axonal injury, and a femur fracture complicated by fat embolism. Sparse outside records.",
+      "events": [
+        {
+          "id": "2020-08-24a",
+          "kind": "establish_care",
+          "start": "2020-08-24T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, wants a local doctor for his ADHD prescription",
+          "conditions": [
+            {
+              "label": "Attention-deficit hyperactivity disorder, combined type",
+              "action": "history",
+              "onset": "2009-03-01",
+              "note": "diagnosed in childhood per patient; on stimulant since"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "tobacco use disorder, moderate"
+            },
+            {
+              "label": "Alcohol use disorder, mild",
+              "action": "history",
+              "onset": "2018-01-01"
+            },
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "2012-04-01",
+              "note": "seasonal"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amphetamine aspartate 5 MG / amphetamine sulfate 5 MG / dextroamphetamine saccharate 5 MG / dextroamphetamine sulfate 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (20 mg) by mouth twice daily, morning and early afternoon",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ADHD, combined type; continued from prior PCP"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "seasonal allergic rhinitis"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 68,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 79.1,
+            "height_cm": 180.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-24T10:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-24T10:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-24T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-24T10:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Gamma Glutamyl Transferase",
+                  "value": 27
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Heavy episodic drinking, weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-08-24T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care practice",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-08-24T10:30",
+              "author": "PCP",
+              "body": "21M here to set up primary care. Moved into an apartment in Amherst this summer and his old pediatric/family doctor is two hours away; mostly he needs someone to keep writing his ADHD med.\n\nADHD, combined type: diagnosed around age 10, on Adderall IR 20 mg twice a day for years. Takes the second dose around 1 pm, says if he takes it later he doesn't sleep. Works construction (framing crew), says the med keeps him from making mistakes on the job. No palpitations, no chest pain, appetite fine, sleeping 6-7 hrs.\n\nAllergies: seasonal hay fever in spring, uses cetirizine 10 mg when it's bad. Has an albuterol inhaler from his old doctor, uses it 'once in a while' when he has a cold, can't say why it was first given. No ED visits for breathing.\n\nPMH: as above. PSH: T&A at age 8. Broke left forearm at 16 skateboarding, had plates put in (ORIF), no problems since.\nMeds: Adderall 20 mg BID, cetirizine 10 mg prn, albuterol HFA prn.\nAllergies: PCN (rash as a kid), sulfa (hives).\nFH: dad - drinking problem, high BP. Mom - anxiety, thyroid (on replacement). Paternal grandfather had a heart attack at 54. No bleeding problems in the family, nobody with early osteoporosis that he knows of.\nSH: single, lives with a roommate. Framing/construction laborer. Smokes about half a pack a day, started at 18. Drinks mostly on weekends, often 6-8 beers or more in a night; denies morning drinking, has never tried to cut down. No other drugs. On his mother's insurance through her job.\n\nExam: well-appearing, fidgety but pleasant. HEENT: TMs clear, mild boggy nasal mucosa. Neck supple. Heart regular rate, no murmur. Lungs clear, no wheeze. Abd benign. Ext: healed scar volar L forearm. Skin no rash. Neuro grossly normal. Mood good, affect bright.\n\nA/P\n1. ADHD, combined - stable on current dose. Reviewed MA PMP, fills monthly from one pharmacy, consistent. Controlled substance agreement signed today. Will continue Adderall 20 mg BID, 30-day supply, visits q3-4 mo.\n2. Tobacco use disorder - advised quitting, he's not interested right now. Will keep asking.\n3. Alcohol use disorder, mild - AUDIT-C 6. Talked about binge pattern and the combination with stimulant. Not ready to change. Revisit.\n4. Seasonal allergic rhinitis - cetirizine prn.\n5. Albuterol prn - rarely used, will refill as needed.\n6. Health maintenance: CMP, CBC, lipids, GGT, HIV and hep C once today. Flu shot in October. Records requested from prior practice.\n\nRTC 3 months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.2,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:12",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Your recent labs",
+              "date": "2020-08-26T16:12",
+              "author": "PCP",
+              "body": "Hi Rowan - your bloodwork from Monday came back fine. Liver tests and GGT are normal, blood counts normal, kidney function normal, cholesterol fine for now. HIV and hepatitis C screens negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-08a",
+          "kind": "outside_records",
+          "start": "2020-09-08T11:05",
+          "reason": "Records from prior primary care practice",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2010-07-12T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2010-07-12T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2010-07-12T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2010-09-20T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2011-01-24T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2015-06-01T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2020-09-08T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Practice Records (summary)",
+              "date": "2020-09-08T11:05",
+              "author": "MA",
+              "body": "38 pages received by fax from the prior family practice, covering 2008-2019. Abstracted:\n- ADHD, combined type, diagnosed age 10 with teacher and parent rating scales; stimulant since. Last dose on record Adderall 20 mg BID.\n- Allergic rhinitis, seasonal.\n- 2007 tonsillectomy and adenoidectomy.\n- 2015 left distal radius fracture, ORIF at a regional hospital, healed.\n- Well visits through 2019, normal growth, normal exams.\n- Immunizations: childhood series complete; Tdap, MenACWY and HPV #1 7/2010, HPV #2 9/2010, HPV #3 1/2011; MenACWY booster 6/2015.\n- Allergies: penicillin (rash, age 4), sulfa (hives).\nEntered into chart. Original filed to media."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "portal_message",
+          "start": "2020-09-21T07:48",
+          "reason": "Medication refill",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill request",
+              "date": "2020-09-21T07:48",
+              "author": "patient",
+              "body": "hey can I get my adderall sent in, I have like 3 days left. same pharmacy. thanks"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Refill request",
+              "date": "2020-09-21T12:30",
+              "author": "PCP",
+              "body": "Sent. PMP checked. You should be able to pick it up this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T16:20",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2020-10-13T16:35",
+              "author": "RN",
+              "body": "Came after work for flu vaccine. No fever, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM right deltoid. Tolerated well, waited 15 minutes, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-11-23T17:10",
+          "reason": "ADHD medication follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-11-23T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - ADHD",
+              "date": "2020-11-23T17:30",
+              "author": "PCP",
+              "body": "Video, pt in his truck after work, identity verified, consents to video.\n\nADHD: doing well on Adderall 20 BID. Work slowing down for winter but still full-time. No palpitations, sleeping ok, eating ok. Weight at home 'about the same.'\nStill smoking ~10/day. Drinking: 'weekends, same as always.' Doesn't want to talk about cutting back today.\n\nPMP reviewed, appropriate.\nA/P: ADHD stable - continue, 30-day Rx monthly. Encouraged smoking cessation, declined. In-person visit in Feb for vitals."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-21a",
+          "kind": "pharmacy",
+          "start": "2020-12-21T09:15",
+          "reason": "Refill request from pharmacy",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2020-12-21T09:15",
+              "author": "MA",
+              "body": "Pharmacy faxed refill request for amphetamine-dextroamphetamine 20 mg #60. Last fill 11/22. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2020-12-21T13:02",
+              "author": "PCP",
+              "body": "E-prescribed, 30 days. PMP ok."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "office_visit",
+          "start": "2021-02-22T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 75,
+            "weight_kg": 77.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-02-22T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ADHD",
+              "date": "2021-02-22T17:05",
+              "author": "PCP",
+              "body": "S: ADHD f/u. Doing fine. Laid off two weeks in January for weather, back now. Takes Adderall 20 in the morning and around noon. Denies chest pain, palpitations, insomnia. Smoking same, no interest in quitting. Says he's 'trying to drink less on weeknights.'\nO: Vitals reviewed, BP and HR fine on stimulant. Weight stable. Alert, calm. Heart RRR. Lungs clear.\nA/P: ADHD, stable, continue current dose. PMP reviewed. Smoking - counseled 3 min, not ready. Alcohol - he did not want to go into it today. COVID vaccine: eligible for his age group in April; he'll get it at a pharmacy.\nf/u 3 mo, video ok."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "portal_message",
+          "start": "2021-04-20T20:41",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Covid shot",
+              "date": "2021-04-20T20:41",
+              "author": "patient",
+              "body": "got the first pfizer shot saturday at the pharmacy. arm sore that's it. second one is may 8"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Covid shot",
+              "date": "2021-04-21T08:50",
+              "author": "MA",
+              "body": "Thanks Rowan, dose 1 is added to your record. Send us a photo of the card after dose 2."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "telehealth_visit",
+          "start": "2021-05-25T12:20",
+          "reason": "ADHD follow-up; allergies",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-05-25T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth - ADHD, allergies",
+              "date": "2021-05-25T12:40",
+              "author": "PCP",
+              "body": "Video on his lunch break, at a job site, identity confirmed.\nADHD - stable on Adderall 20 BID, no side effects. PMP fine.\nAllergies - pollen bad this month, sneezing, itchy eyes, working outside all day. Cetirizine daily is helping. Hasn't needed the albuterol.\nTobacco/alcohol - unchanged; again declined help.\nPlan: continue Adderall; cetirizine daily through the season then back to prn. Physical in late summer, fasting not needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "portal_message",
+          "start": "2021-06-14T19:03",
+          "reason": "COVID vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "vaccine card",
+              "date": "2021-06-14T19:03",
+              "author": "patient",
+              "body": "photo of card attached, 2nd dose was 5/8"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: vaccine card",
+              "date": "2021-06-15T09:12",
+              "author": "MA",
+              "body": "Got it, dose 2 on 5/8 is in your chart now. You're all set."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-30a",
+          "kind": "annual_physical",
+          "start": "2021-08-30T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              77
+            ],
+            "hr": 62,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-30T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-08-30T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 7
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-08-30T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2021-08-30T08:40",
+              "author": "PCP",
+              "body": "22yo M, annual exam.\nInterval: no illnesses or injuries this year. Vaccinated for COVID in spring. ADHD controlled.\nMeds: Adderall 20 mg BID, cetirizine prn, albuterol prn (hasn't used this year). Allergies PCN, sulfa.\nHabits: ~half pack a day, 4 yrs now. Alcohol: AUDIT-C 7, up from last year - says summer cookouts, often 8+ drinks on a Saturday. Denies driving after drinking when asked directly. No drugs. Wears seatbelt 'usually.' Uses ear protection on site 'when the boss is around.'\nROS negative.\nExam: Gen well. HEENT normal, dentition fine. Neck no LAD, thyroid normal. Heart RRR, no murmur. Lungs clear. Abd soft, no HSM. GU deferred. MSK full ROM, healed L forearm scar. Skin no concerning lesions. Neuro normal. Psych normal mood.\n\nA/P:\n- Health maintenance: CMP and CBC today. Tdap from 2010 - due in 2020, he'll get it next visit (declined two shots today with flu coming up). Flu in October. HPV done. HIV/HCV done 2020.\n- Alcohol: brief intervention - talked about binge risk, injuries, mixing with stimulant, and the seatbelt. Offered counseling referral; he declined. Goal he set: no more than 4 on any night. Will follow.\n- Tobacco: advised to quit; not ready.\n- ADHD: continue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "nurse_visit",
+          "start": "2021-10-18T16:05",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-18T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-18T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-18T16:20",
+              "author": "RN",
+              "body": "Flu shot only today; asked about Tdap, pt wants to wait. Screening negative. 0.5 mL IM L deltoid, no reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "telehealth_visit",
+          "start": "2021-11-29T17:30",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-11-29T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video - ADHD",
+              "date": "2021-11-29T17:45",
+              "author": "PCP",
+              "body": "Video from home. ADHD stable, no changes wanted. Denies cardiac sx. PMP reviewed, monthly fills on time. Still at 'about four' drinks most Saturdays by his account, sometimes more. Smoking unchanged.\nContinue Adderall 20 BID. Next in-person in Feb."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "ed_visit",
+          "start": "2021-12-20T01:55",
+          "end": "2021-12-21T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Right hip injury in motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Posterior dislocation of right hip",
+              "action": "diagnosed",
+              "onset": "2021-12-20",
+              "icd10": "S73.014A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 8 hours with food as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "TID PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "hip pain after reduction"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2021-12-20T01:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note (outside)",
+              "date": "2021-12-22T14:10",
+              "author": "emergency medicine",
+              "body": "Outside ED record, date of service 12/20/2021, received by fax.\n\n22M, restrained driver, head-on collision. Knees struck dash. Severe R hip pain, unable to move R leg. Per EMS report, intoxicated. Hx ADHD, tobacco and alcohol use. Allergies PCN, sulfa.\nVS stable. R leg shortened, internally rotated. Unable to dorsiflex R foot. Pelvis XR: posterior dislocation R hip.\nClosed reduction under procedural sedation, successful. Post-reduction CT pelvis: concentric reduction, no acetabular or femoral head fracture. R foot dorsiflexion weakness persists post-reduction. Kept overnight for observation and pain control.\nDx: posterior dislocation R hip, reduced. R foot dorsiflexion weakness.\nDispo 12/21: home, crutches, toe-touch weight bearing R, ibuprofen 600 q8h prn. Ortho clinic 1 week. Return for worsening weakness or pain."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-12-21b",
+          "kind": "telephone",
+          "start": "2021-12-21T15:20",
+          "reason": "Patient calling after ED visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone note",
+              "date": "2021-12-21T15:30",
+              "author": "RN",
+              "body": "Pt called. Was in a car accident early Monday, hip popped out, they put it back at the ED and kept him overnight. Home now on crutches, says he can't pull the right foot up. Pain 6/10 with ibuprofen. Ortho appt 12/29. Asked if he can still take Adderall with what they gave him - yes, nothing new besides ibuprofen. Booked with PCP 12/28. Asked ED to fax notes."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-28a",
+          "kind": "office_visit",
+          "start": "2021-12-28T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for hip dislocation",
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 61,
+            "spo2": 97
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-28T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2021",
+              "action": "placed",
+              "order": "Orthopedic surgery referral",
+              "category": "referral",
+              "to": "Orthopedic Surgery",
+              "reason": "posterior hip dislocation after reduction, foot dorsiflexion weakness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2021-12-28T10:55",
+              "author": "PCP",
+              "body": "Here after ED stay 12/20-21. Head-on crash, he was driving, belted. R hip dislocated, reduced in ED, CT afterward showed no fracture. Was told he'd been drinking that night; he doesn't dispute it. ED note received and reviewed.\nNow: hip pain 4/10, better. On crutches, toe-touch. Can't lift the front of his R foot. No back pain, no bladder or bowel change.\nExam: on crutches, uncomfortable getting onto table. R hip - not ranged today given recent reduction. R ankle dorsiflexion weak, plantarflexion 5/5. Pulses DP/PT 2+. L leg normal.\nA/P: R posterior hip dislocation, s/p closed reduction, with R foot dorsiflexion weakness. Referral to ortho placed so it's in the system (appt tomorrow). PT per ortho. Ibuprofen as needed with food.\nAlcohol: we talked about this one directly. He says it was a 'one-off.' Offered referral for counseling again - he'll think about it.\nOut of work note through ortho visit. Continue Adderall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "portal_message",
+          "start": "2022-01-10T06:58",
+          "reason": "Work note",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "note for work",
+              "date": "2022-01-10T06:58",
+              "author": "patient",
+              "body": "ortho says no ladders or carrying for at least 6 more weeks. my foreman wants something from you too that says light duty. can you do that"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: note for work",
+              "date": "2022-01-10T11:40",
+              "author": "PCP",
+              "body": "Letter is in your portal documents: light duty, no ladders, no carrying loads, crutches as directed, through 2/21 or until orthopedics updates it. Glad the PT is underway."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-28a",
+          "kind": "office_visit",
+          "start": "2022-02-28T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              70
+            ],
+            "hr": 58,
+            "weight_kg": 76.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-28T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-28T16:15",
+              "author": "PCP",
+              "body": "ADHD check and hip follow-up.\nWalking without crutches since early Feb per ortho. Hip feels 'pretty much normal.' Foot is much stronger, going to PT twice a week. Back to full duty next week.\nADHD steady on 20 mg BID.\nSays he hasn't had more than a few beers at a time since the crash. Smoking same, maybe a little more while off work.\nExam: BP/HR fine. Gait normal, no limp. R ankle dorsiflexion now strong against resistance, can heel-walk.\nA/P: ADHD stable, continue, PMP ok. Hip dislocation recovering, ortho following. Alcohol - encouraged him on the cutback. Smoking - not ready. RTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "outside_records",
+          "start": "2022-03-22T10:30",
+          "reason": "Orthopedic follow-up note",
+          "conditions": [
+            {
+              "label": "Posterior dislocation of right hip",
+              "action": "resolved",
+              "onset": "2021-12-20",
+              "icd10": "S73.014A"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral-2021",
+              "action": "done",
+              "date": "2022-03-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Clinic Note (outside)",
+              "date": "2022-03-22T10:30",
+              "author": "orthopedic surgery",
+              "body": "Orthopedic clinic, visit 3/18/2022. Copy to PCP.\n22M seen 12 weeks after closed reduction of a R posterior hip dislocation. Full weight bearing without assistive device. Completed PT. Pain minimal.\nExam: R hip ROM full and painless. Ankle dorsiflexion 5/5, EHL 5/5. Gait normal.\nAssessment: R hip dislocation, healed. Ankle dorsiflexion fully recovered.\nPlan: Given the dislocation, will obtain MRI R hip next month to look for avascular necrosis. Activity as tolerated otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "outside_records",
+          "start": "2022-04-26T14:15",
+          "reason": "Orthopedic letter with MRI result",
+          "conditions": [
+            {
+              "label": "Avascular necrosis of right femoral head",
+              "action": "diagnosed",
+              "onset": "2022-04-19",
+              "note": "post-traumatic, after 12/2021 dislocation; no collapse",
+              "icd10": "M87.251"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Letter - MRI Hip (outside)",
+              "date": "2022-04-26T14:15",
+              "author": "orthopedic surgery",
+              "body": "Dear colleague,\nYour patient Rowan Morrow had his surveillance MRI of the right hip on 4/19/2022. It shows avascular necrosis of the right femoral head, without subchondral collapse. There is no fracture. The left hip is normal.\nWe reviewed this with him. He has no hip pain at present. Plan is observation: avoid high-impact loading where he can (jumping down from height, running), and repeat radiographs in about a year, sooner if he develops groin pain.\nAllergies: penicillin, sulfa. Medications: amphetamine-dextroamphetamine 20 mg twice daily, cetirizine as needed, albuterol as needed.\nThank you for allowing us to see him.\nOrthopedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-02a",
+          "kind": "portal_message",
+          "start": "2022-05-02T21:10",
+          "reason": "Question about MRI",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "hip mri",
+              "date": "2022-05-02T21:10",
+              "author": "patient",
+              "body": "ortho said my hip bone has avascular necrosis. what does that actually mean. will i need a new hip. hip doesn't even hurt"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: hip mri",
+              "date": "2022-05-03T12:05",
+              "author": "PCP",
+              "body": "Hi Rowan - it means part of the ball of the hip joint lost some of its blood supply after the dislocation. Right now the shape of the bone is intact, which is the important part. Many people stay stable for a long time. The plan of watching it with x-rays and going easy on the hard pounding makes sense. Smoking and heavy drinking both make this kind of bone problem worse, so that's one more real reason to cut down - I'm glad to help any time you want. Let us know if you start getting groin or hip pain."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "telehealth_visit",
+          "start": "2022-06-08T12:10",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-06-08T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2022-06-08T12:25",
+              "author": "PCP",
+              "body": "Video, pt on break outside, ID verified.\nADHD stable on Adderall 20 BID. No side effects.\nHip: no pain. Back on full duty since March.\nAllergies this spring ok on cetirizine.\nSmoking about 10/day, alcohol 'back to weekends.' Declines cessation help.\nPMP reviewed. Continue meds. Physical end of August."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "annual_physical",
+          "start": "2022-08-29T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-29T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-08-29T08:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-29T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Exam",
+              "date": "2022-08-29T09:00",
+              "author": "PCP",
+              "body": "23M annual.\nInterval hx: R hip posterior dislocation 12/2021 after a crash, reduced; foot weakness recovered with PT. MRI 4/2022 showed R femoral head AVN without collapse; ortho watching, next films spring.\nCurrent: no hip pain. Working full-time.\nMeds: Adderall 20 BID, cetirizine prn, albuterol prn (no use).\nSmoking: half pack/day, ~5 yrs. Alcohol: AUDIT-C 6. Mostly weekends, says 5-6 at a time now.\nPHQ-9 2.\nExam: Well. Heart RRR. Lungs clear. Abd soft. R hip: full ROM, no pain with log roll or FABER. Gait normal. Skin normal. Neuro intact, R foot strength normal.\nA/P:\n- Health maintenance: lipids and liver panel today. Tdap still due - declined again, 'next time.' Flu shot in fall; he may skip this year. COVID booster offered, declined.\n- AVN R femoral head: ortho following. Reinforced smoking and alcohol as modifiable risks for the hip.\n- Tobacco, alcohol: counseled; declined referral and medication.\n- ADHD: stable."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "pharmacy",
+          "start": "2022-10-03T10:40",
+          "reason": "Stimulant out of stock",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2022-10-03T10:40",
+              "author": "MA",
+              "body": "Pharmacy called: amphetamine-dextroamphetamine 20 mg tabs on back order, no date. Pt called around and found it at another pharmacy in Hadley. Needs Rx cancelled at original pharmacy and resent. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Rx resent",
+              "date": "2022-10-03T13:15",
+              "author": "PCP",
+              "body": "Cancelled at original pharmacy (confirmed not filled). New Rx to the Hadley pharmacy, 30 days, same dose. PMP updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "telehealth_visit",
+          "start": "2022-11-22T17:20",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-11-22T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Video Follow-up",
+              "date": "2022-11-22T17:35",
+              "author": "PCP",
+              "body": "Video. Stimulant supply has been spotty this fall, missed 4 days in October, otherwise fine. No cardiac sx. Skipped flu shot this year by choice. Hip fine. Smoking/alcohol unchanged.\nContinue Adderall 20 BID; told him to call early if his pharmacy is short again. Office visit Feb."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "office_visit",
+          "start": "2023-02-27T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              106,
+              80
+            ],
+            "hr": 60,
+            "weight_kg": 78.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-02-27T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2023-02-27T16:50",
+              "author": "PCP",
+              "body": "S: Routine ADHD visit. Doing ok, winter slow at work. Med working. No chest pain/palpitations. Sleeping ok. Hip no pain. Ortho x-ray due in April.\nO: Vitals reviewed - fine. Calm, focused. RRR, lungs clear. Gait normal.\nA/P: ADHD - continue 20 mg BID, PMP ok. Smoking - not ready. Alcohol - says weekends only. RTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "outside_records",
+          "start": "2023-04-24T09:50",
+          "reason": "Orthopedic x-ray follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Clinic Note (outside)",
+              "date": "2023-04-24T09:50",
+              "author": "orthopedic surgery",
+              "body": "Ortho clinic 4/20/2023. AVN R femoral head, one-year check. No groin pain. AP pelvis and frog-leg lateral R hip: femoral head contour preserved, no collapse, joint space maintained. Continue observation, repeat films in about 2 years or sooner for pain."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-22T12:00",
+          "reason": "ADHD follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-30T12:30",
+          "reason": "ADHD follow-up (rescheduled)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-05-30T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - ADHD",
+              "date": "2023-05-30T12:45",
+              "author": "PCP",
+              "body": "Rescheduled from last week (pt cancelled, work). Video, pt at home.\nADHD stable. Busy season, long days. Takes second dose by 1 pm. No side effects. PMP reviewed.\nOrtho films in April were stable per letter.\nTobacco/alcohol same; doesn't want to discuss today.\nContinue. Physical in Sept."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-09a",
+          "kind": "ed_visit",
+          "start": "2023-06-09T23:35",
+          "end": "2023-06-10T07:40",
+          "service": "Emergency Medicine",
+          "reason": "Neck pain and forehead laceration after motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Cervical vertebral fracture",
+              "action": "diagnosed",
+              "onset": "2023-06-09",
+              "note": "nondisplaced C6 vertebral body fracture",
+              "icd10": "S12.501A"
+            },
+            {
+              "label": "Laceration of forehead",
+              "action": "diagnosed",
+              "onset": "2023-06-09",
+              "icd10": "S01.81XA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-06-09T23:40",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 98,
+              "rr": 16,
+              "spo2": 97
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-06-09T23:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-06-10T02:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "ED Provider Note (outside)",
+              "date": "2023-06-12T09:20",
+              "author": "emergency medicine",
+              "body": "Outside emergency department, DOS 6/9/2023. Faxed to PCP.\n24yo M, unrestrained driver, high-speed MVC, airbags deployed. Arrives alert but agitated, odor of alcohol. GCS 14 (E3 V5 M6). C/o neck pain. Forehead laceration. Denies LOC; cannot recall events before the crash. Hx limited/unreliable due to agitation and presumed intoxication.\nHx: ADHD, tobacco, alcohol use, AVN R femoral head. NKDA per pt initially - chart shows PCN, sulfa allergy.\nVS: BP 130/85, HR 98, RR 16, SpO2 97% RA.\nExam: midline C-spine tenderness, no step-off, no crepitus. Neuro nonfocal. Forehead laceration.\nCT head w/o contrast: no acute intracranial abnormality.\nCT C-spine: nondisplaced fracture of the C6 vertebral body. No canal compromise. Alignment maintained.\nSpine service consulted by phone: rigid cervical collar, outpatient spine follow-up 6-8 wks.\nLaceration irrigated, repaired with simple interrupted sutures. Tdap given (last 2010).\nDx: C6 vertebral body fracture, nondisplaced. Forehead laceration, repaired.\nDispo: home with family member once sober, collar at all times, suture removal 7 days, spine clinic."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "office_visit",
+          "start": "2023-06-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up; suture removal",
+          "conditions": [
+            {
+              "label": "Laceration of forehead",
+              "action": "resolved",
+              "onset": "2023-06-09",
+              "icd10": "S01.81XA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              67
+            ],
+            "hr": 62,
+            "spo2": 98,
+            "weight_kg": 78.0
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-14T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "spine-referral-2023",
+              "action": "placed",
+              "order": "Spine surgery referral",
+              "category": "referral",
+              "to": "Spine Surgery",
+              "reason": "C6 vertebral body fracture, collar management"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2023-06-14T11:40",
+              "author": "PCP",
+              "body": "Seen after ED visit Friday night 6/9. Second crash in 18 months. He was driving, not belted, airbags went off. ED note received: C6 body fracture, nondisplaced, collar; forehead laceration sutured; Tdap given. He was drinking beforehand - he says 'a lot.'\nToday: neck sore but better, in hard collar. No arm numbness or weakness. Remembers the evening but not the drive.\nExam: in collar, not removed. Forehead wound healing well, no erythema or drainage - sutures removed today, edges well apposed. Grip and arm strength 5/5 both sides, sensation intact. Gait steady.\nA/P:\n1. C6 vertebral body fracture - collar at all times. Referral placed to spine clinic per ED plan. Out of work; no driving in collar.\n2. Forehead laceration - healed, sutures out.\n3. Alcohol use disorder - AUDIT-C 7. Two crashes, both after drinking. Told him plainly I'm worried he will be killed or kill someone. Offered outpatient addiction treatment referral and discussed medication options; he declined both, though he listened. Will keep raising it.\n4. ADHD - continue; he asked to keep it the same.\n5. Tobacco - not ready."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "portal_message",
+          "start": "2023-06-19T08:05",
+          "reason": "Work note",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "work",
+              "date": "2023-06-19T08:05",
+              "author": "patient",
+              "body": "can you write that i can't work until the spine doctor clears me. they want it in writing"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: work",
+              "date": "2023-06-19T14:22",
+              "author": "front desk",
+              "body": "Your note is ready in the portal under Letters. Signed by your doctor - off work until cleared by spine clinic."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "outside_records",
+          "start": "2023-08-14T13:30",
+          "reason": "Spine clinic note",
+          "orders": [
+            {
+              "id": "spine-referral-2023",
+              "action": "done",
+              "date": "2023-08-14T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Spine Clinic Note (outside)",
+              "date": "2023-08-14T13:30",
+              "author": "spine surgery",
+              "body": "Spine clinic, 8/10/2023. 24M, 8 weeks after nondisplaced C6 vertebral body fracture treated in a rigid collar. Neck pain resolved. Neuro intact upper and lower extremities.\nFlexion-extension cervical radiographs: no abnormal motion, fracture alignment maintained.\nPlan: discontinue collar. Gradual return to full activity over 2-4 weeks. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "annual_physical",
+          "start": "2023-09-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              78
+            ],
+            "hr": 67,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 99,
+            "weight_kg": 78.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-14T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-14T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-14T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "date": "2023-09-14T08:55",
+              "author": "PCP",
+              "body": "24M physical.\nInterval: MVC 6/2023 with C6 body fracture (collar off 8/10, spine cleared) and forehead lac. Back to work two weeks ago.\nNeck: no pain, no radicular sx.\nMeds unchanged. Tdap 6/2023 at ED.\nAlcohol: AUDIT-C 5, says he has cut back since June, no drinking during the week. Smoking ~half pack, 6 yrs.\nPHQ-9 4.\nExam: well. Healed forehead scar. Neck full ROM, nontender. Heart RRR, lungs clear, abd soft. R hip full ROM. Neuro normal.\nA/P:\n- Labs: CMP, CBC.\n- Alcohol: progress noted, positive reinforcement. Reminded him counseling referral is open anytime.\n- Tobacco: advised; not ready.\n- AVN: ortho films 2025 or sooner.\n- Flu shot next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-23a",
+          "kind": "nurse_visit",
+          "start": "2023-10-23T15:45",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-23T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-23T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine given",
+              "date": "2023-10-23T16:00",
+              "author": "RN",
+              "body": "Influenza vaccine 0.5 mL IM R deltoid. Screening questions negative, prior vaccines tolerated. Observed 15 min, no reaction. Declined COVID updated dose."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "telehealth_visit",
+          "start": "2023-12-04T17:15",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-12-04T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video - ADHD",
+              "date": "2023-12-04T17:30",
+              "author": "PCP",
+              "body": "Video, ID confirmed. ADHD stable, no new issues. Neck fine. PMP consistent. Says drinking is 'way down.' Still smoking.\nContinue Adderall 20 mg BID. In-person in March."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "office_visit",
+          "start": "2024-03-04T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 67,
+            "weight_kg": 78.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-04T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ADHD",
+              "date": "2024-03-04T16:30",
+              "author": "PCP",
+              "body": "Routine check. Adderall 20 BID working, no side effects, no chest sx. Neck and hip without complaints. Allergy season coming, has cetirizine at home.\nSmoking: same half pack. Alcohol: 'mostly behaving,' weekends.\nVitals ok. Heart regular, lungs clear.\nPlan: continue. PMP ok. Albuterol refill not needed. RTC summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-22a",
+          "kind": "hospital_admission",
+          "start": "2024-06-22T02:10",
+          "end": "2024-06-24T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Suprapubic pain and gross hematuria after motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Fracture of right pubic rami",
+              "action": "diagnosed",
+              "onset": "2024-06-22",
+              "icd10": "S32.501A"
+            },
+            {
+              "label": "Extraperitoneal bladder rupture",
+              "action": "diagnosed",
+              "onset": "2024-06-22",
+              "icd10": "S37.29XA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              74
+            ],
+            "hr": 82,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-06-22T02:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ED and Brief Hospital Summary (outside)",
+              "date": "2024-06-26T15:40",
+              "author": "trauma surgery",
+              "body": "Outside hospital. Admit 6/22/2024, discharge 6/24/2024.\n25M, high-speed MVC. Third crash-related visit in 2.5 years per records. Severe suprapubic pain, gross hematuria.\nPMH: ADHD, tobacco use, alcohol use disorder, R femoral head AVN, prior C6 fracture. Allergies: penicillin, sulfa.\nED: hemodynamically stable, in distress from pain. Abdomen soft, suprapubic tenderness, no rebound or guarding. Pelvic XR: R pubic rami fracture. FAST negative for free fluid. Foley placed - gross hematuria.\nCT cystogram: extraperitoneal bladder rupture. No intraperitoneal extravasation.\nUrology: nonoperative, catheter drainage ~2 weeks, cystogram before removal.\nOrtho: pelvic fracture nonoperative, WBAT.\nCourse uneventful. Discharged home with indwelling Foley and leg bag. Urology f/u for cystogram in 2 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "portal_message",
+          "start": "2024-06-25T10:15",
+          "reason": "Home from hospital",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "hospital again",
+              "date": "2024-06-25T10:15",
+              "author": "patient",
+              "body": "another accident saturday. broke my pelvis on the right and tore my bladder. home yesterday with a catheter for 2 weeks. do i need to see you"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: hospital again",
+              "date": "2024-06-25T11:02",
+              "author": "RN",
+              "body": "Sorry to hear this, Rowan. Yes - we booked you Monday 7/1 at 10:40. If you get fever, the catheter stops draining, or belly pain gets worse, go to the ED. We've asked the hospital for records."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "office_visit",
+          "start": "2024-07-01T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up: pelvic fracture, bladder injury",
+          "vitals": {
+            "bp": [
+              110,
+              75
+            ],
+            "hr": 73,
+            "temp_c": 36.4,
+            "spo2": 97
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-01T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-07-01T11:20",
+              "author": "PCP",
+              "body": "25M seen after 6/22-6/24 stay. Records received: R pubic rami fracture (nonop), extraperitoneal bladder rupture on CT cystogram, Foley for ~2 wks.\nHe says he'd had 'some beers' earlier that evening; won't say more.\nNow: walking with a cane, pelvic pain improving. Foley draining clear yellow urine. No fever.\nExam: afebrile. Abd soft, mild suprapubic tenderness. Foley in place, urine clear. Walks with cane.\nA/P:\n1. Extraperitoneal bladder rupture - catheter care reviewed. Urology cystogram 7/8.\n2. R pubic rami fracture - WBAT per ortho.\n3. Alcohol use disorder / recurrent crashes - third serious crash. Long talk. Offered addiction medicine referral again; declined. He's open to 'thinking about it' - will raise at next visit.\n4. ADHD - continue Adderall 20 BID.\nOff work until urology and ortho clear."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "outside_records",
+          "start": "2024-07-10T14:05",
+          "reason": "Urology note",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Clinic Note (outside)",
+              "date": "2024-07-10T14:05",
+              "author": "urology",
+              "body": "Urology, 7/8/2024. Two weeks after extraperitoneal bladder rupture managed with catheter drainage. Cystogram today: no contrast extravasation, bladder healed. Foley removed in clinic; voided without difficulty before leaving. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "annual_physical",
+          "start": "2024-08-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T09:20",
+          "reason": "Missed physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up",
+              "date": "2024-08-27T09:20",
+              "author": "front desk",
+              "body": "Called pt re: missed physical 8/26. Says he forgot, first week back at work. Rebooked 9/16 8:20 am."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              69
+            ],
+            "hr": 60,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 77.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-09-16T09:00",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-16T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-16T09:10",
+              "author": "PCP",
+              "body": "25M annual (rescheduled from no-show).\nInterval: MVC 6/22 - R pubic rami fracture and extraperitoneal bladder rupture; catheter out 7/8 after healed cystogram. Back to full duty late August.\nVoiding normally, no blood in urine. No pelvic pain now.\nMeds: Adderall 20 BID, cetirizine prn, albuterol prn.\nAlcohol: AUDIT-C 6. Tobacco ~half ppd, 7 yrs.\nExam: well. Heart RRR. Lungs clear. Abd soft, nontender. R hip and pelvis nontender, full ROM, normal gait. Neuro normal.\nUA today to check after bladder injury.\nA/P:\n- CMP, UA.\n- Alcohol: addiction medicine referral offered a fourth time; he declines but says he isn't drinking before driving 'anymore.' Documented.\n- Tobacco: declines help.\n- Flu shot next month. COVID updated dose offered, declined.\n- ADHD: continue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "portal_message",
+          "start": "2024-09-17T15:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "date": "2024-09-17T15:30",
+              "author": "PCP",
+              "body": "Rowan, your urine test is clean - no blood, so the bladder looks fully healed. Kidney and liver tests normal too."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "nurse_visit",
+          "start": "2024-10-21T16:15",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-21T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-21T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2024-10-21T16:30",
+              "author": "RN",
+              "body": "Trivalent flu 0.5 mL IM L deltoid. No contraindications. 15 min wait, fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-11T17:40",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-11T17:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth ADHD",
+              "date": "2024-12-11T17:55",
+              "author": "PCP",
+              "body": "Video, at home. ADHD controlled. No palpitations or insomnia. PMP: fills monthly, one prescriber. Voiding fine. Smoking unchanged. Drinking 'weekends.' Continue Adderall 20 mg BID. See in March."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "office_visit",
+          "start": "2025-03-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              67
+            ],
+            "hr": 69,
+            "weight_kg": 77.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-10T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-10T15:50",
+              "author": "PCP",
+              "body": "S: ADHD f/u. Stable. Hip films with ortho later this month. No hip or groin pain. Smoking half pack. Alcohol weekends, 'not as bad.'\nO: VS fine. Heart RRR, lungs clear. Gait normal.\nA/P: ADHD - continue 20 BID, PMP ok. Tobacco - advised quit, declined. Alcohol - reviewed, he again declines referral. RTC 3-4 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-31a",
+          "kind": "outside_records",
+          "start": "2025-03-31T10:10",
+          "reason": "Orthopedic x-ray follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Note (outside)",
+              "date": "2025-03-31T10:10",
+              "author": "orthopedic surgery",
+              "body": "Ortho, 3/27/2025. R femoral head AVN, surveillance. Asymptomatic. Radiographs R hip: no collapse, sphericity preserved, no arthritic change. Continue observation. Return for groin pain or in 2 years."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-22a",
+          "kind": "hospital_admission",
+          "start": "2025-06-22T00:40",
+          "end": "2025-07-02T11:00",
+          "service": "Neurology",
+          "reason": "Severe head trauma in motor vehicle collision",
+          "conditions": [
+            {
+              "label": "Diffuse axonal injury",
+              "action": "diagnosed",
+              "onset": "2025-06-22",
+              "icd10": "S06.2X9A"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-06-22T03:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside)",
+              "date": "2025-08-12T11:30",
+              "author": "neurology",
+              "body": "Admission 6/22/2025 - 7/2/2025, neurocritical care. Received by fax 8/12/2025.\n26M, unrestrained driver, car versus tree. Found unresponsive; intubated for airway protection.\nPMH: ADHD, tobacco and alcohol use disorders, R femoral head AVN, prior C6 fracture, prior extraperitoneal bladder rupture. Allergies: penicillin, sulfa.\nExam on arrival: pupils equal and reactive; no purposeful response to painful stimulus.\nCT head without contrast: no skull fracture, no large focal hematoma; multiple small punctate hemorrhages at the gray-white matter junction and in deep brain structures.\nHospital course: remained comatose for more than 48 hours despite normalized vital signs; repeat CT without new findings. Findings consistent with diffuse axonal injury. Began following commands on hospital day 6, extubated day 7. Stimulant held during the stay.\nDischarge diagnosis: diffuse axonal injury.\nDisposition: to acute inpatient rehabilitation."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T13:45",
+          "reason": "Family calling about hospitalization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from mother",
+              "date": "2025-06-24T13:55",
+              "author": "RN",
+              "body": "Pt's mother called (pt listed her as contact). Rowan was in another car accident Saturday night, in ICU, on a breathing machine, has a brain injury. She wanted us to know. Offered support; asked that the hospital send records when he's discharged. Message to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP note",
+              "date": "2025-06-24T17:10",
+              "author": "PCP",
+              "body": "Aware. Will follow up with family after discharge. Hold stimulant refills until we see him."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "hospital_admission",
+          "start": "2025-07-02T14:00",
+          "end": "2025-07-23T10:30",
+          "service": "Physical Medicine and Rehabilitation",
+          "reason": "Inpatient rehabilitation after diffuse axonal injury",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary (outside)",
+              "date": "2025-08-12T11:35",
+              "author": "physical medicine and rehabilitation",
+              "body": "Acute rehab 7/2/2025 - 7/23/2025, after diffuse axonal injury from MVC 6/22.\nProgram: daily PT, OT and speech therapy.\nAt discharge: ambulating independently, independent in self-care, oriented, following multistep commands. Neurologic exam without focal deficit.\nMedications at discharge: amphetamine-dextroamphetamine 20 mg twice daily resumed, cetirizine as needed, albuterol as needed.\nDischarged home with mother. Outpatient therapy and neurology follow-up arranged."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "telephone",
+          "start": "2025-07-24T10:05",
+          "reason": "Scheduling after rehab discharge",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone note",
+              "date": "2025-07-24T10:05",
+              "author": "front desk",
+              "body": "Mother called, Rowan home from rehab yesterday, staying with her. Booked hospital follow-up 7/29 2:00 pm. Discharge papers to be brought in; summaries not yet received - request re-sent to both facilities."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "office_visit",
+          "start": "2025-07-29T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hospitalization and rehabilitation for brain injury",
+          "vitals": {
+            "bp": [
+              112,
+              78
+            ],
+            "hr": 68,
+            "rr": 15,
+            "spo2": 98,
+            "weight_kg": 78.4
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-07-29T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-07-29T14:50",
+              "author": "PCP",
+              "body": "26M with his mother. Car vs tree 6/22, ICU then rehab, home 7/23. Hospital summaries not yet received; history from pt, mother and the discharge papers they brought: diffuse axonal injury, coma for a couple of days, off the ventilator after about a week, three weeks rehab.\nHe doesn't remember the crash or most of the ICU. Walking on his own. Staying at his mother's.\nMeds per discharge papers: Adderall 20 BID (rehab restarted it), cetirizine prn, albuterol prn. Reconciled.\nExam: alert, oriented x3, conversant. Pupils equal, reactive. EOM full. Face symmetric. Strength 5/5 all four limbs. Sensation intact. Finger-nose normal. Gait normal, tandem ok.\nA/P:\n1. Diffuse axonal injury - neuro exam nonfocal today. Outpatient therapy and neurology follow-up already set by rehab.\n2. ADHD - continue Adderall 20 BID as restarted.\n3. Alcohol use disorder - four crashes now. Discussed with him and his mother present, with his OK. He says he hasn't had a drink since the accident. Addiction medicine referral offered; he wants to wait.\n4. Tobacco - not ready.\nNo work for now; follow neurology guidance. RTC after neurology visit or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              75
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Exam",
+              "date": "2025-09-23T09:20",
+              "author": "PCP",
+              "body": "26M annual.\nInterval: DAI 6/2025 after MVC; ICU 6/22-7/2, rehab to 7/23. Summaries now received (8/12) and reviewed. Outpatient therapy ongoing. Neurology visit October.\nBack living in his apartment. Hasn't returned to work yet.\nAlcohol: AUDIT-C 5; started having beer again on weekends 'a few.' Smoking half pack.\nPHQ-9 4.\nMeds: Adderall 20 BID, cetirizine prn, albuterol prn.\nExam: well. Oriented, fluent. CN intact. Strength and gait normal. Heart RRR, lungs clear, abd soft. Hip full ROM.\nA/P:\n- CMP, CBC, lipids.\n- Alcohol after brain injury: told him alcohol is especially risky now. Declines referral.\n- Tobacco: declines.\n- Flu shot October. COVID updated dose - declined.\n- ADHD: continue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T12:20",
+          "reason": "Neurology follow-up note",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Clinic Note (outside)",
+              "date": "2025-10-20T12:20",
+              "author": "neurology",
+              "body": "Neurology clinic 10/16/2025. Follow-up of diffuse axonal injury (6/2025). Completing outpatient therapy. Exam: alert, oriented, language normal, cranial nerves intact, strength, sensation, coordination and gait normal. No focal deficits. Plan: finish outpatient therapy as arranged; avoid alcohol; return in 6 months or as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "nurse_visit",
+          "start": "2025-10-27T16:30",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-27T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-27T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu shot",
+              "date": "2025-10-27T16:45",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM R deltoid. Questionnaire reviewed, no contraindications. No reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-12-10T17:00",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-12-10T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-12-10T17:15",
+              "author": "PCP",
+              "body": "Video, at home, ID verified. Back to work part-time since November, lighter crew role. ADHD med working. No cardiac sx. PMP ok. Neurology note from October reviewed - no focal deficits.\nAlcohol weekends, smoking unchanged.\nContinue Adderall 20 BID. Office visit March."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T11:25",
+          "reason": "Prior authorization for stimulant",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization",
+              "date": "2026-01-13T11:25",
+              "author": "MA",
+              "body": "Pharmacy says new plan year, insurer now requires PA for amphetamine-dextroamphetamine IR 20 mg BID. PA form completed with dx ADHD combined type, years on therapy, PMP reviewed. Submitted electronically."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2026-01-14T15:40",
+              "author": "MA",
+              "body": "PA approved for 12 months. Pharmacy notified, pt picking up today."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "office_visit",
+          "start": "2026-03-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 71,
+            "weight_kg": 79.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ADHD",
+              "date": "2026-03-12T16:45",
+              "author": "PCP",
+              "body": "26M. ADHD f/u. Back at work full-time since January. Med effective, no palpitations, sleeping. Neuro: no complaints, neurology follow-up in April.\nAlcohol AUDIT-C 6, weekends. Smoking half pack - says he has been at it 'almost 9 years now.'\nVitals ok. Alert, oriented, organized. Heart regular. Lungs clear. Gait normal.\nA/P: ADHD stable - continue. PMP reviewed. Alcohol - counseled again, with the brain injury and crash history in mind; declines referral. Tobacco - declines. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "portal_message",
+          "start": "2026-05-11T06:42",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "refill",
+              "date": "2026-05-11T06:42",
+              "author": "patient",
+              "body": "adderall refill please. also the albuterol, mine expired"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: refill",
+              "date": "2026-05-11T12:18",
+              "author": "PCP",
+              "body": "Both sent. Let me know if you're using the inhaler more than once in a while."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "hospital_admission",
+          "start": "2026-06-23T21:50",
+          "end": "2026-07-02T12:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Right femur fracture after motor vehicle collision; acute hypoxemia and confusion",
+          "conditions": [
+            {
+              "label": "Closed displaced fracture of right femur",
+              "action": "diagnosed",
+              "onset": "2026-06-23",
+              "note": "shaft",
+              "icd10": "S72.301A"
+            },
+            {
+              "label": "Fat embolism syndrome",
+              "action": "diagnosed",
+              "note": "began 6/25/2026, about 36 hours after injury",
+              "icd10": "T79.1XXA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "pain after femoral nailing"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-25T09:50",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "rr": 30,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-25T10:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.45
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-24T01:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (outside)",
+              "date": "2026-07-06T09:45",
+              "author": "pulmonary and critical care",
+              "body": "Admitted 6/23/2026, discharged 7/2/2026. Services: orthopedic surgery, pulmonary/critical care.\n\n27M brought in after a high-speed MVC with a closed displaced fracture of the R femoral shaft. Background of yearly crashes since 2021: R hip dislocation with later R femoral head AVN, C6 fracture, extraperitoneal bladder rupture, diffuse axonal injury (2025). Also ADHD, tobacco and alcohol use disorders, seasonal allergic rhinitis. Allergies: penicillin (rash), sulfa (hives). Home meds: amphetamine-dextroamphetamine 20 mg BID, cetirizine 10 mg daily prn, albuterol HFA prn.\n\nCourse: splinted, IV fluids and analgesia while awaiting fixation. Around 36 hours after injury (morning of 6/25) he became acutely short of breath and confused. SpO2 88% on room air, RR 30, HR 110, BP 130/85. Bilateral crackles. Disoriented to time and place at intervals, no focal neurologic deficit. Petechiae across the neck, anterior chest and axillae.\nABG on room air: pH 7.45, PaCO2 32, PaO2 60, HCO3 24.\nCXR: bilateral diffuse infiltrates.\nDiagnosis: fat embolism syndrome. Transferred to ICU, high-flow nasal oxygen; not intubated. Oxygenation and mental status improved over the next three days.\nIntramedullary nailing of the R femur 6/28, uncomplicated. Weaned to room air.\n\nDischarge: home, crutches, WBAT R leg. Oxycodone-acetaminophen 5/325 1-2 tabs q6h prn, short supply. Resume home meds. Ortho clinic 6 weeks with x-rays. PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "telephone",
+          "start": "2026-06-26T08:35",
+          "reason": "Family calling about hospitalization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from mother",
+              "date": "2026-06-26T08:45",
+              "author": "RN",
+              "body": "Mother called. Rowan crashed again Tuesday night, broke his right thigh bone, then yesterday had trouble breathing and was confused - moved to ICU, told her it was fat in the lungs from the fracture. On oxygen, not on a ventilator. Surgery planned once he's stable. Routed to PCP. Will need TCM visit after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up: femur fracture, fat embolism syndrome",
+          "conditions": [
+            {
+              "label": "Fat embolism syndrome",
+              "action": "resolved",
+              "icd10": "T79.1XXA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.4,
+            "spo2": 98
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-07-08T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2026-07-08T14:05",
+              "author": "PCP",
+              "body": "27M, home 7/2 after 6/23-7/2 admission. Discharge summary received 7/6 and reviewed: closed displaced R femoral shaft fracture, fat embolism syndrome on 6/25 (hypoxemic, confused, petechiae, diffuse infiltrates; high-flow O2, no intubation), IM nail 6/28.\nToday: on crutches, weight bearing as tolerated. Thigh pain 5/10, using oxycodone-APAP 1 tab at night, ibuprofen not used. Breathing back to normal. Thinking clear per pt and mother.\nMeds reconciled: Adderall 20 BID, oxycodone-APAP prn (short course, ortho prescribing), cetirizine prn, albuterol prn.\nExam: comfortable at rest. Lungs clear bilaterally. Heart regular. No petechiae. R thigh incisions clean, dry, intact; calf soft, nontender. Alert, oriented x3, nonfocal.\nA/P:\n1. Fat embolism syndrome - resolved clinically, room air SpO2 normal today.\n2. R femur fracture s/p IM nail - ortho f/u 6 weeks. Opioid: ortho to manage; reviewed not to combine with alcohol and to lock it up.\n3. Alcohol use disorder - fifth serious crash. He agreed today to take the addiction medicine phone number; he'll call himself. Not ready for a referral to be placed.\n4. Tobacco - smoking slows bone healing; he'll 'try to cut down.' Declined NRT.\n5. ADHD - continue.\nOff work until ortho clears."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T09:30",
+          "reason": "Medication refills",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "meds",
+              "date": "2026-07-20T09:30",
+              "author": "patient",
+              "body": "need my adderall. also can you refill the pain pills, i have 4 left"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: meds",
+              "date": "2026-07-20T13:10",
+              "author": "PCP",
+              "body": "Adderall sent - PMP checked. For the oxycodone, orthopedics is prescribing it, so please ask them; I'd rather one office handle it. Acetaminophen in between is fine. If the pain is getting worse instead of better, call ortho today."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "outside_records",
+          "start": "2026-08-13T10:50",
+          "reason": "Orthopedic post-operative note",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Post-op Note (outside)",
+              "date": "2026-08-13T10:50",
+              "author": "orthopedic surgery",
+              "body": "Ortho clinic 8/11/2026, 6 weeks s/p IM nailing R femoral shaft fracture. Off opioids. Ambulating with one crutch. Incisions healed. Knee and hip ROM functional. XR R femur: early callus, alignment maintained, nail and screws intact. Advance weight bearing, wean crutch, PT. Return 6 weeks with x-rays. Off work until next visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T18:20",
+          "reason": "Disability paperwork",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "disability form",
+              "date": "2026-08-19T18:20",
+              "author": "patient",
+              "body": "my job's short term disability company sent a form for the doctor. uploading it. ortho filled their part, they want you to do the medical history part"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: disability form",
+              "date": "2026-08-20T09:05",
+              "author": "front desk",
+              "body": "Received the form, Rowan. It's with your doctor now. Forms usually take 5-7 business days; we'll message you when it's done."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up; femur fracture recovery",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Avascular necrosis of right femoral head|M87.251": {
+        "code": "M87.251",
+        "display": "Osteonecrosis due to previous trauma, right femur",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cervical vertebral fracture|S12.501A": {
+        "code": "S12.501A",
+        "display": "Unspecified nondisplaced fracture of sixth cervical vertebra, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Closed displaced fracture of right femur|S72.301A": {
+        "code": "S72.301A",
+        "display": "Unspecified fracture of shaft of right femur, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Diffuse axonal injury|S06.2X9A": {
+        "code": "S06.2X9A",
+        "display": "Diffuse traumatic brain injury with loss of consciousness of unspecified duration, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Extraperitoneal bladder rupture|S37.29XA": {
+        "code": "S37.29XA",
+        "display": "Other injury of bladder, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fat embolism syndrome|T79.1XXA": {
+        "code": "T79.1XXA",
+        "display": "Fat embolism (traumatic), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Fracture of right pubic rami|S32.501A": {
+        "code": "S32.501A",
+        "display": "Unspecified fracture of right pubis, initial encounter for closed fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Laceration of forehead|S01.81XA": {
+        "code": "S01.81XA",
+        "display": "Laceration without foreign body of other part of head, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Posterior dislocation of right hip|S73.014A": {
+        "code": "S73.014A",
+        "display": "Posterior dislocation of right hip, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

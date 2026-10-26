@@ -1,0 +1,829 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001969",
+   "given": "Darren",
+   "family": "Upton",
+   "birth_date": "1971-07-10",
+   "address_line": "57 Alvord Lane, South Hadley, MA 01075",
+   "phone": "+1-413-555-0130",
+   "email": "darren.upton@example.test",
+   "marital_status": "married",
+   "summary": "55-year-old warehouse supervisor with type 2 diabetes, hypertension, obesity, achalasia treated with pneumatic dilation, alcohol use disorder, a resolved folate deficiency anemia, a passed uric acid ureteral stone, and gout now on allopurinol through rheumatology. Joined the practice in 2019.",
+   "events": [
+    {
+     "id": "2019-08-26a",
+     "kind": "telephone",
+     "start": "2019-08-26T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2019-08-26T10:20",
+       "body": "Caller: Darren Upton, DOB 07/10/1971. Asking about becoming a patient here. Says his old office keeps rotating him between whoever is free and he can never get a call back about refills. Coworker at the distribution center recommended us.\nExplained membership, that insurance still covers labs/specialists/meds. He is fine with that.\nScheduled new patient visit 9/12 at 8:00. Records release form emailed to darren.upton@example.test for his prior primary care office. Asked him to bring his pill bottles."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "establish_care",
+     "start": "2019-09-12T08:00",
+     "end": "2019-09-12T09:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2015-06-01",
+       "note": "Diagnosed at prior practice"
+      },
+      {
+       "label": "Gout",
+       "action": "history",
+       "onset": "2016-05-01",
+       "note": "Single right great toe flare treated at prior practice; no daily gout medication"
+      },
+      {
+       "label": "History of nephrolithiasis",
+       "icd10": "Z87.442",
+       "action": "history",
+       "onset": "2013-01-01",
+       "note": "One stone, passed spontaneously"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "atorvastatin 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Diabetes, cardiovascular risk reduction"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 103.8,
+      "height_cm": 180.0,
+      "labs": {
+       "Hemoglobin A1c": 6.4,
+       "Microalbumin/Creatinine Ratio": 11,
+       "Low Density Lipoprotein": 118,
+       "Triglycerides": 165,
+       "High Density Lipoprotein": 41
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social drinker, per patient"
+      },
+      {
+       "item": "Occupation",
+       "value": "Warehouse supervisor"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-12T09:10",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-09-12T08:55"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2019-09-12T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-09-12T08:55"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-09-12T09:10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "placed",
+       "order": "Outside records request, prior primary care",
+       "category": "procedure",
+       "reason": "Establishing care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-12T09:05",
+       "body": "NEW PATIENT VISIT\n\n48 y/o man joining the practice. Supervises a shift at a distribution warehouse; no regular exercise. Wanted a doctor who answers the phone.\n\nDiabetes: type 2, found about four years ago at his previous office on routine labs. Metformin 1000 mg BID since then, tolerating it, occasional loose stool in the first year that settled. Last A1c he remembers was \"in the sixes.\" No eye exam in over a year. No numbness in the feet, no polyuria.\nStatin: atorvastatin 20 mg daily, started by the old office for the diabetes. No muscle aches.\nGout: one attack in the right big toe a few years back, treated short-term at the prior office, no recurrence that he can recall, never on a daily gout pill.\nKidney stone: one, roughly six years ago, passed it at home after a rough couple of days. No procedure.\n\nMeds: metformin 1000 mg twice daily, atorvastatin 20 mg daily.\nAllergies: none to medications.\nSurgeries: none.\nFH: father with type 2 DM and gout. Mother with high blood pressure. Paternal uncle drank heavily.\nSH: never smoked. Alcohol \"socially, a few on weekends.\" No drug use. Married. Day shift, sometimes stays late.\n\nROS: negative in detail, including no chest pain, dyspnea, dysuria, flank pain, joint swelling.\n\nExam: vitals per flowsheet, BP normal today. Ht 180 cm, wt 103.8 kg, BMI about 32. Well-appearing, heavyset. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen protuberant, soft, nontender, no organomegaly. Feet: pulses 2+, monofilament intact bilaterally, no calluses or ulcers. No joint swelling or tophi. Skin clear.\n\nAssessment/plan\n1. Type 2 diabetes, on metformin. A1c, CMP, urine albumin/creatinine today. Eye exam referral to an optometrist. Continue metformin.\n2. Lipids on atorvastatin 20. Lipid panel today.\n3. Gout, remote single flare. No treatment needed now. Will check uric acid if he has symptoms.\n4. History of kidney stone. Hydration discussed.\n5. Weight: BMI 32. Talked briefly about activity; he'd rather tackle it later.\n6. Prevention: Tdap given today. HCV and HIV screening today, he agreed. Colon cancer screening due at 45 under the newer guidance once he's eligible, will plan with him in the next year or two. Flu shot when it arrives.\n7. Records requested from the prior office.\n\nRTC 6 months for diabetes, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-16a",
+     "kind": "portal_message",
+     "start": "2019-09-16T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2019-09-16T16:40",
+       "body": "Hi Darren, your labs from Thursday are back. A1c is in the low 6 range, which is good control for diabetes. Kidney and liver tests normal, no protein in the urine. Cholesterol is reasonable on the atorvastatin. Hepatitis C and HIV screens negative. No changes; keep doing what you're doing. We'll send a reminder when flu vaccine is in."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-03a",
+     "kind": "nurse_visit",
+     "start": "2019-10-03T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-03T07:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-03T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2019-10-03T07:45",
+       "body": "Flu vaccine 0.5 mL IM, left deltoid. Screening questions negative, no prior reactions. VIS given. Waited 15 minutes, no issues. Pt on his way to the 8 o'clock shift."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-05a",
+     "kind": "outside_records",
+     "start": "2019-11-05T13:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior practice records",
+     "orders": [
+      {
+       "id": "prior-records",
+       "action": "done",
+       "date": "2019-11-05T13:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "MA",
+       "date": "2019-11-05T13:15",
+       "body": "Records received by fax after second request (first request 9/12, re-sent 10/15). 46 pages scanned to chart.\n\nSummary for PCP review:\n- Type 2 diabetes diagnosed 2015 on routine fasting labs; metformin started then and titrated to 1000 mg BID. A1c values 6.1 to 6.6 over 2016 to 2019.\n- Atorvastatin 20 mg daily since 2016.\n- Office note 2016: acute pain and swelling of the right great toe, treated as gout with a short course of anti-inflammatory medicine, resolved. No uric acid-lowering therapy.\n- ED discharge paperwork 2013: kidney stone, passed. No procedure.\n- No known drug allergies.\n- Vaccines: flu yearly through 2018.\nNo other diagnoses."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside records reviewed",
+       "author": "PCP",
+       "date": "2019-11-05T17:30",
+       "body": "Reviewed prior records. Consistent with what he told me at intake. Problem list confirmed. Nothing to act on."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-09a",
+     "kind": "pharmacy",
+     "start": "2019-12-09T11:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pharmacy refill request",
+       "author": "MA",
+       "date": "2019-12-09T11:05",
+       "body": "Pharmacy fax: request 90-day supplies of metformin 1000 mg BID and atorvastatin 20 mg daily, 3 refills. Pt seen 9/12. Sent per PCP protocol."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-03a",
+     "kind": "annual_physical",
+     "start": "2020-03-03T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-03-03T09:15",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-03-03T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-03-03T09:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2020-03-03T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-03-03T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2020-03-03T09:10",
+       "body": "Annual exam. Feels well. Work busy, lots of overtime with new contracts. No complaints.\nDiabetes: metformin BID, no missed doses he admits to. Saw the optometrist? Not yet, keeps forgetting. Gave him the number again.\nMeds: metformin 1000 BID, atorvastatin 20.\nSocial: still a few beers on the weekend by his account. Never smoker.\n\nExam: vitals as recorded. Weight stable from fall. Heart and lungs normal. Abdomen soft. Feet with intact sensation and pulses. No joint findings.\nPHQ-2 0.\n\nA/P: Diabetes well controlled at last check, A1c and CMP today. Lipids today. Continue current meds. Encouraged walking at lunch. Eye exam, again. RTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-11a",
+     "kind": "portal_message",
+     "start": "2020-05-11T19:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Question about work and refill",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Work question",
+       "author": "patient",
+       "date": "2020-05-11T19:12",
+       "body": "Hi, the warehouse is staying open and they want everyone in. Is diabetes a reason I should be home? Also I'm almost out of the atorvastatin, pharmacy says no refills left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Work question",
+       "author": "PCP",
+       "date": "2020-05-12T08:05",
+       "body": "Hi Darren. Well-controlled diabetes like yours does raise risk a bit but isn't by itself a reason to stop working. Masks, distance on the floor, hand hygiene, and stay home if you have any symptoms. Happy to write something for your employer if you want to request extra precautions. Atorvastatin refill sent, 90 days with refills."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "office_visit",
+     "start": "2020-09-22T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 6.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-09-22T16:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-09-22T16:35",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-22T16:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2020-09-22T16:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-09-22T16:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2020-09-22T16:30",
+       "body": "S: Diabetes check. Doing OK, working long days, eating on the go. Takes metformin with breakfast and dinner. No hypoglycemia (not on anything that would cause it). No foot symptoms. Masks at work all day now.\nO: Vitals reviewed, BP fine. Wt about the same. Lungs clear, heart regular. Monofilament intact both feet, pulses good.\nA/P: T2DM, stable. A1c, BMP, urine albumin today. Continue metformin and atorvastatin. He finally booked the eye appointment for November. Flu shot next month at a nurse visit, he'll come before shift."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T07:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-06T07:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-06T07:40",
+       "body": "Seasonal flu vaccine IM R deltoid, tolerated. Masked, screened at door, no symptoms. Observed briefly, left for work."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "outside_records",
+     "start": "2020-11-17T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2020-11-17T14:00",
+       "body": "Re: Darren Upton, DOB 07/10/1971. Exam date 11/12/2020.\nDilated fundus examination for diabetes. Visual acuity 20/20 OD, 20/25 OS with current glasses. Pupils normal. Intraocular pressures normal. Lens clear. Fundus: no diabetic retinopathy either eye, maculae flat.\nImpression: diabetes without retinopathy. Recommend repeat dilated exam in 12 months.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-23a",
+     "kind": "annual_physical",
+     "start": "2021-03-23T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 6.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-03-23T09:00",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-03-23T09:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-03-23T09:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-03-23T08:15"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-03-23T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "colo-2021",
+       "action": "placed",
+       "order": "Screening colonoscopy referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "Colorectal cancer screening, average risk"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-03-23T09:00",
+       "body": "Physical. Pt well, says the past year was \"work, work, work.\" No new symptoms. Has his first COVID vaccine scheduled at a pharmacy next month.\nMeds unchanged: metformin 1000 BID, atorvastatin 20 daily. NKDA.\nAlcohol: weekends, social, per pt. No tobacco.\nExam: BP normal. Weight steady around 104 kg. Normal cardiopulmonary exam. Abdomen benign. Feet intact. No tophi. PHQ-2 1 (tired some days, attributes to hours).\nPlan: labs today. Colon cancer screening: he is 49, average risk, prefers colonoscopy and getting it over with. Referral placed. Continue meds. Follow up in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-29a",
+     "kind": "pharmacy",
+     "start": "2021-04-29T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-06T15:30"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-27T15:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "COVID-19 vaccines given at a pharmacy",
+       "author": "MA",
+       "date": "2021-04-29T12:00",
+       "body": "Pt sent photo of vaccination card through the portal. Entered two doses Pfizer COVID-19 vaccine, 4/6/2021 and 4/27/2021, given at a retail pharmacy. Lot numbers on card."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-19a",
+     "kind": "outside_records",
+     "start": "2021-08-19T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Colonoscopy report",
+     "orders": [
+      {
+       "id": "colo-2021",
+       "action": "done",
+       "date": "2021-08-19T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Screening colonoscopy report",
+       "author": "gastroenterology",
+       "date": "2021-08-19T15:20",
+       "body": "Outpatient endoscopy center. Procedure date 08/13/2021.\nIndication: average-risk colorectal cancer screening.\nSedation: monitored anesthesia care. Prep: good; mucosa well seen throughout.\nFindings: cecum reached and photographed, appendiceal orifice and ileocecal valve identified. Normal mucosa through the colon. No polyps. Small internal hemorrhoids on retroflexion.\nImpression: normal screening colonoscopy.\nRecommendation: repeat in 10 years.\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "office_visit",
+     "start": "2021-10-19T16:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "vitals": {
+      "bp": [
+       142,
+       92
+      ]
+     },
+     "state": {
+      "bp": [
+       140,
+       90
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-10-19T16:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-10-19T16:50",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-10-19T16:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T16:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-10-19T16:15"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T16:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-10-19T16:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2021-10-19T16:45",
+       "body": "S: Routine diabetes follow-up. Colonoscopy done in August, normal. Feels fine. Got both COVID shots in the spring.\nO: BP 142/92 on arrival, first time above goal here. HR normal. Weight 104. Exam otherwise unremarkable, feet normal.\nA/P:\n- T2DM: A1c, BMP, urine albumin. Continue metformin.\n- Elevated BP reading without a diagnosis. Will repeat at the physical in the spring before calling it anything; he had rushed in from work. Cut back on salty takeout.\n- Flu vaccine today.\n- Eye exam due, reminder given."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "outside_records",
+     "start": "2021-12-07T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2021-12-07T10:30",
+       "body": "Patient: Darren Upton. Seen 12/02/2021 for annual diabetic eye evaluation.\nDilated exam: no retinopathy in either eye. No macular edema. Optic nerves healthy, cup-to-disc 0.3 OU. Mild presbyopia, new reading add prescribed.\nReturn 1 year.\nOptometry"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

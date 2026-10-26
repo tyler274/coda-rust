@@ -1,0 +1,167 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002555",
+      "given": "Dylan",
+      "family": "Mazur",
+      "birth_date": "1996-03-26",
+      "address_line": "27 Lathrop Street, Apt 2, South Hadley, MA 01075",
+      "phone": "+1-774-555-0142",
+      "email": "dylan.mazur@example.test",
+      "marital_status": "single",
+      "summary": "Healthy MPH graduate student who joined in 2021. Three emergency episodes at one regional hospital: Bacillus cereus food poisoning (Dec 2024), an occult splenic laceration after a car crash managed nonoperatively (Jul 2025), and cholera with hypovolemic shock after a humanitarian trip to Bangladesh (Feb 2026). Outside records arrive late.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T14:05",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2021-08-30T14:05", "body": "Caller is starting a public health master's program this fall and wants a regular doctor nearby; was seen at his college's student health service before. Insurance: university student plan, verified. Explained membership and how texting the doctor works. New-patient physical booked 9/14 at 8:40. Release sent for the student health records."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 76.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Graduate student, master of public health program"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-21T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-12T10:00"},
+            {"vaccine": "Tdap", "date": "2021-09-14T09:30"}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2021-09-14T09:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T09:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-09-14T09:25", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-09-14T08:40"},
+            {"procedure": "Immunization administration", "performed": "2021-09-14T09:30"},
+            {"procedure": "Venipuncture", "performed": "2021-09-14T09:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2021-09-14T11:10", "body": "25M establishing care. Just moved to South Hadley for a part-time MPH program. Previously followed at his college's student health service; no ongoing issues there.\n\nPMH: none. No surgeries, no hospitalizations.\nMeds: none. Allergies: no known drug allergies.\nFH: father with hypertension, diagnosed at 54. Mother with hypothyroidism. He is an only child.\nSH: lives alone in an apartment. Never used tobacco. Alcohol socially, 1-2 drinks in a typical week. No other substances. Runs a few times a week.\nVaccines: two Pfizer doses this spring (card reviewed: 4/21 and 5/12). Cannot recall a tetanus booster since high school.\n\nROS: negative across systems.\n\nExam: well-appearing young man. HEENT normal, TMs clear. Neck supple, no thyroid enlargement or nodes. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender, no hepatosplenomegaly. Skin without concerning lesions. Neuro grossly normal. Mood bright; PHQ-2 is 0.\n\nA/P\n1. Adult preventive care. BMI about 24. BP fine. One-time HIV and hep C screens plus a baseline lipid panel today given the paternal hypertension history. Tdap given in clinic.\n2. Influenza vaccine once the fall supply comes in; nurse visit in October.\n3. Will get his student health records.\n\nReturn yearly; message any time."}
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs from Tuesday", "author": "PCP", "date": "2021-09-16T16:20", "body": "Hi Dylan, everything from your visit came back fine. HIV and hepatitis C screens were both negative, and your cholesterol is fine — LDL a touch above the ideal range, which at 25 with your activity level just means keep doing what you're doing. No need to repeat it for several years. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2021-10-06a",
+          "kind": "outside_records",
+          "start": "2021-10-06T10:00",
+          "reason": "prior records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Student Health Service Summary", "author": "outside primary care", "date": "2021-10-06T10:00", "body": "Records from a university student health service, covering 2014 through 2018.\n\nVisits: entry physical as a freshman and yearly routine physicals, all normal.\nProblem list: none.\nMedications: none long-term.\nAllergies: none known.\nImmunizations on file: childhood series complete per school entry record, meningococcal conjugate at entry.\n\nNo outstanding issues at last contact."},
+            {"type": "Telephone Encounter", "title": "Records Received", "author": "MA", "date": "2021-10-06T10:20", "body": "Student health records in. Scanned and routed to the PCP. Nothing requiring action per PCP review."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza Vaccine", "author": "RN", "date": "2021-10-19T15:45", "body": "Here for seasonal flu shot. No fever today, no prior vaccine reactions, no egg concern. Quadrivalent flu vaccine 0.5 mL IM into the left deltoid. VIS provided. Waited in the lobby 15 minutes, felt fine, left."}
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T12:00",
+          "reason": "outside immunization",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2022-01-15T11:30"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy Immunization Report", "author": "pharmacy", "date": "2022-01-18T12:00", "body": "Community pharmacy reports a Pfizer-BioNTech COVID-19 booster dose given 01/15/2022, 0.3 mL IM. Patient tolerated without incident. Added to the state registry."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T09:55"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-10-04T09:20"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-10-04T12:40", "body": "Yearly visit. Second year of the MPH, part-time. Feels well. Sleep decent, still running. No new meds, no urgent care or ER trips this year.\n\nROS negative.\n\nExam: comfortable, vitals reviewed and normal. Heart regular, no murmurs. Lungs clear. Abdomen benign. No edema. Skin clear.\nPHQ-2: 0.\n\nAssessment/plan: healthy 26M.\n- Flu vaccine today.\n- Updated COVID booster is out; he plans to get it at his pharmacy.\n- Screening labs from last year were normal; nothing to draw today.\n- Sunscreen, seatbelt, helmet on the bike reviewed briefly.\nNext physical in a year."}
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "pharmacy",
+          "start": "2022-10-21T12:00",
+          "reason": "outside immunization",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-19T17:10"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy Immunization Report", "author": "pharmacy", "date": "2022-10-21T12:00", "body": "Bivalent Pfizer-BioNTech COVID-19 booster administered 10/19/2022 at a community pharmacy, right deltoid. No adverse event reported."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "annual_physical",
+          "start": "2023-10-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2023-10-10T09:05", "body": "Did not arrive for 8:20 physical. Left a voicemail and sent a portal note to rebook."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "portal_message",
+          "start": "2023-10-11T07:48",
+          "reason": "reschedule",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed yesterday", "author": "patient", "date": "2023-10-11T07:48", "body": "So sorry about yesterday morning, I had it in my calendar for the 17th. Can I get back in sometime in early November? Mornings before 10 are easiest."},
+            {"type": "Patient Message", "title": "RE: Missed yesterday", "author": "front desk", "date": "2023-10-11T09:30", "body": "No problem. You're set for Tuesday 11/7 at 8:40. We'll do your flu shot then too."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "annual_physical",
+          "start": "2023-11-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-11-07T09:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-11-07T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-11-07T09:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Preventive Visit", "author": "PCP", "date": "2023-11-07T11:55", "body": "27M, rebooked after missing last month. No health complaints. Busy semester. Exercising less than he'd like but walking a lot. No tobacco. Alcohol unchanged, a couple of drinks in a week.\n\nROS: no chest pain, breathing trouble, GI or urinary symptoms. Mood good.\n\nPE: well. BP and pulse normal. HEENT unremarkable. Cardiac exam normal, lungs clear. Abdomen soft without tenderness or masses. Extremities warm, no edema. PHQ-2 negative.\n\nPlan:\n- Flu vaccine given.\n- He'll decide on this season's COVID dose on his own.\n- No labs indicated this year.\nYearly follow-up."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,739 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002630",
+   "events": [
+    {
+     "id": "2025-01-07a",
+     "kind": "office_visit",
+     "start": "2025-01-07T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Mononucleosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Infectious mononucleosis",
+       "icd10": "B27.90",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-01-07T11:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-01-07T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-01-07T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-01-07T11:00",
+       "body": "Missed the December slot during finals week, rescheduled for winter break.\n\nFeeling normal again for about two weeks, energy back. No sore throat, no fevers. Has only done light cardio as told.\n\nAfebrile, vitals fine. Throat clear, tonsils small, no exudate. Only a few small shotty cervical nodes. Abdomen soft, no splenomegaly palpable even on deep inspiration, liver normal.\n\nA/P: Mononucleosis, recovered. CBC today to make sure counts have settled. Cleared to go back to the gym and normal activity, ramp up over a week or two."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-08a",
+     "kind": "portal_message",
+     "start": "2025-01-08T14:22",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "CBC result",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Blood count",
+       "author": "PCP",
+       "date": "2025-01-08T14:22",
+       "body": "Your blood count from yesterday is completely normal now. Enjoy the rest of break."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-17a",
+     "kind": "pharmacy",
+     "start": "2025-05-17T16:48",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Outside prescription fill",
+     "medications": [
+      {
+       "drug": "amoxicillin 500 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth three times daily for 10 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "sore throat (urgent care)"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Fill history notice",
+       "author": "MA",
+       "date": "2025-05-17T16:48",
+       "body": "External fill feed: amoxicillin 500 mg capsules #30, 1 cap TID x 10 days, prescribed by an urgent care clinician, filled 5/17/2025. No record from the urgent care in the chart. Added to med list as an outside short course."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-18a",
+     "kind": "portal_message",
+     "start": "2025-05-18T08:57",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Rash after amoxicillin",
+     "medications": [
+      {
+       "drug": "amoxicillin 500 MG Oral Capsule",
+       "action": "stop",
+       "reason": "rash"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Amoxicillin",
+       "reaction": "Rash",
+       "severity": "moderate",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-referral",
+       "action": "placed",
+       "order": "Otolaryngology referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "second exudative tonsillitis in six months"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "rash",
+       "author": "patient",
+       "date": "2025-05-18T08:57",
+       "body": "Sore throat and feeling crappy for about a week, so I went to urgent care near school yesterday and they gave me amoxicillin. This morning I have a red blotchy rash all over my chest, back, arms and legs. Doesn't really itch. Throat still hurts and I'm exhausted. Should I keep taking it? I'm home now, semester ended Friday."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: rash",
+       "author": "PCP",
+       "date": "2025-05-18T09:40",
+       "body": "Stop the amoxicillin now and don't take any more. I'm marking amoxicillin as an allergy (rash) in your chart. If your lips, tongue or throat swell or you have any trouble breathing, call 911.\n\nThis is the second bad tonsil illness since November, so I'd like an ENT to look at your throat. They have an opening tomorrow morning and I've sent the referral; their office will call you. Tylenol or ibuprofen for the throat and fever, and plenty of fluids. Send me a message after you're seen."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-21a",
+     "kind": "telephone",
+     "start": "2025-05-21T12:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-ENT check-in",
+     "conditions": [
+      {
+       "label": "Infectious mononucleosis",
+       "icd10": "B27.90",
+       "action": "diagnosed",
+       "onset": "2025-05-12",
+       "note": "per ENT, by patient report"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Check-in after ENT",
+       "author": "RN",
+       "date": "2025-05-21T12:10",
+       "body": "Called pt to follow up. Saw ENT Monday. Per pt, ENT told him this is mono again and said the rash was from the amoxicillin. No new prescriptions. Rash fading, throat a bit better, still low-grade temps and very tired. Swallowing OK. Reminded no contact sports or lifting until cleared. ENT note not received yet; will request."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "telephone",
+     "start": "2025-06-10T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2025-06-10T09:30",
+       "body": "Second request faxed to the ENT office for the 5/19 consult note. First request 5/22, nothing received. Spoke with their records line, they will send this week."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-23a",
+     "kind": "outside_records",
+     "start": "2025-06-23T14:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ENT consult letter",
+     "orders": [
+      {
+       "id": "ent-referral",
+       "action": "done",
+       "date": "2025-06-23T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology consultation, 05/19/2025",
+       "author": "otolaryngology",
+       "date": "2025-06-23T14:05",
+       "body": "OTOLARYNGOLOGY — NEW CONSULTATION\nDate of service: 05/19/2025\nReferred by: primary care\nReason: sore throat, fatigue, rash after amoxicillin\n\nHPI: 20-year-old male college student seen at the request of his primary care physician. One week of throat pain, fatigue and low-grade fever with poor appetite and general malaise. Started amoxicillin from an urgent care two days ago and since then has a diffuse red maculopapular eruption across the trunk and extremities. Of note he presented in November 2024 with malaise, sore throat, fever and neck swelling. He denies dyspnea and arthralgia.\n\nMeds: amoxicillin (stopped by PCP 5/18).\nAllergies: amoxicillin — maculopapular rash.\nPMH: infectious mononucleosis 11/2024.\nFH: mother hypothyroid, father hypertensive. No autoimmune disease or hematologic cancer.\nSH: never smoker, no alcohol, college student living in residence hall.\n\nExam: Temp 38.4 C. Bilateral cervical lymphadenopathy. Tonsils enlarged with white exudates bilaterally, airway patent, no trismus, no peritonsillar fullness. Oral cavity otherwise normal. Ears and nose unremarkable. Lungs clear to auscultation; no cough, no wheeze. Maculopapular rash trunk and limbs.\n\nImpression: Infectious mononucleosis, again, with the characteristic aminopenicillin rash.\n\nRecommendations: supportive care with fluids, analgesics and rest. Avoid amoxicillin. No surgical intervention needed now. Return as needed.\n\n— Otolaryngology"
+      }
+     ]
+    },
+    {
+     "id": "2025-08-12a",
+     "kind": "annual_physical",
+     "start": "2025-08-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Infectious mononucleosis",
+       "icd10": "B27.90",
+       "action": "resolved"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-08-12T09:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-08-12T09:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-08-12T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-08-12T09:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-08-12T09:00",
+       "body": "20 y/o here for yearly exam before heading back to school. Fully recovered from the May illness by early June. No throat trouble since. Working out normally. No meds.\n\nAllergies: amoxicillin (rash, May 2025).\nPMH: infectious mononucleosis 11/2024; ENT diagnosed mono again 5/2025 (letter in chart).\nSocial: college student, back in the dorm in a few weeks. No tobacco, vaping or alcohol.\nFH unchanged.\n\nExam: vitals normal. Throat normal, tonsils not enlarged. No adenopathy. Heart and lungs normal. Abdomen soft, spleen and liver not palpable. Skin clear.\n\nPHQ-9 2.\n\nPlan:\n- Mono resolved, off the active list. CBC and CMP today since he has had two of these illnesses.\n- Immunizations current; flu and COVID in October.\n- See him next summer, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-14a",
+     "kind": "portal_message",
+     "start": "2025-08-14T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs from your physical",
+       "author": "PCP",
+       "date": "2025-08-14T12:30",
+       "body": "Hi Eli, blood count and chemistry panel, including liver tests, are all normal. Have a good semester."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-14T16:27"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2025-10-14T16:20",
+       "body": "Home for fall break. Allergy to amoxicillin noted, no vaccine reactions. Trivalent flu 0.5 mL IM L deltoid, Moderna 2025-26 COVID 0.5 mL IM R deltoid. Observed 15 min, fine."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-01a",
+     "kind": "portal_message",
+     "start": "2025-12-01T10:02",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED visit",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "ER yesterday",
+       "author": "patient",
+       "date": "2025-12-01T10:02",
+       "body": "I ended up in the ER yesterday. Throat has been killing me for like 10 days with fevers up to 102 and I could barely swallow. They did blood work and said it's mono AGAIN and my liver numbers are up a little. Sent me home. They said follow up with my doctor this week. I'm home until next week."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: ER yesterday",
+       "author": "RN",
+       "date": "2025-12-01T10:40",
+       "body": "Sorry you're dealing with this again, Eli. The doctor can see you tomorrow, Tuesday, at 1:40. Please bring any paperwork the ER gave you. Until then fluids, rest, Tylenol or ibuprofen, and no sports or lifting."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-02a",
+     "kind": "office_visit",
+     "start": "2025-12-02T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, mononucleosis",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Infectious mononucleosis",
+       "icd10": "B27.90",
+       "action": "diagnosed",
+       "onset": "2025-11-20",
+       "note": "per ED 11/30/2025"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-12-02T14:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2025-12-02T14:15",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 61
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 47
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-12-02T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-12-02T14:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED Follow-up",
+       "author": "PCP",
+       "date": "2025-12-02T13:40",
+       "body": "Seen in an outside ED Sunday 11/30 after about 10 days of fevers to 102, bad sore throat and painful swallowing, very fatigued. Brought the discharge sheet: diagnosis mononucleosis, mildly elevated liver enzymes, supportive care, follow up with PCP. Full ED record requested. Since Sunday throat a little better, eating soft foods, still tired. No rash this time, no cough or runny nose. No meds except ibuprofen.\n\nPMH: mono 11/2024; mono per ENT 5/2025.\nAllergies: amoxicillin (rash).\n\nExam: afebrile today, vitals as charted. Tonsils still enlarged with some residual exudate, oropharynx red. Anterior and posterior cervical nodes enlarged on both sides. Abdomen soft, spleen palpable just below the left costal margin, nontender; liver edge not felt.\n\nA/P: Infectious mononucleosis per the ED, improving.\n- Repeat CBC and liver panel today.\n- Spleen enlarged again: no contact sports or lifting until rechecked, about a month.\n- Supportive care. Avoid alcohol (doesn't drink anyway) while liver tests are up.\n- Recheck after the holidays with labs."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-03a",
+     "kind": "portal_message",
+     "start": "2025-12-03T17:18",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Yesterday's blood work",
+       "author": "PCP",
+       "date": "2025-12-03T17:18",
+       "body": "Eli, your liver enzymes are already coming down (ALT 61, AST 47) and your blood count looks normal. That's the direction we want. We'll repeat them in early January when I see you."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-10a",
+     "kind": "telephone",
+     "start": "2025-12-10T11:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED records request",
+       "author": "front desk",
+       "date": "2025-12-10T11:45",
+       "body": "Request faxed to the hospital HIM department for the 11/30/2025 ED visit, notes and labs. Signed release on file."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-19a",
+     "kind": "outside_records",
+     "start": "2025-12-19T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED record",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-11-30T15:10",
+       "resulted": "2025-11-30T16:05",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 12.0
+        },
+        {
+         "test": "Atypical Lymphocytes %",
+         "loinc": "13046-8",
+         "unit": "%",
+         "value": 20
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 70
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 65
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record, 11/30/2025",
+       "author": "emergency medicine",
+       "date": "2025-12-19T10:20",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nArrival 11/30/2025 14:22\n\nCC: fever, sore throat, odynophagia x 10 days.\n\nHPI: 20M with prior episodes of infectious mononucleosis in November 2024 and May 2025 presents with recurrent upper respiratory illness. Began as mild throat discomfort and has progressed; now difficulty swallowing and profound fatigue. Tmax 38.9 C (102 F) at home. No cough, no rhinorrhea, no rash.\n\nMeds: none. Allergies: amoxicillin (maculopapular rash).\nFH: mother hypothyroidism; father HTN; no autoimmune or hematologic malignancy.\nSH: college student in dormitory. Never smoker. No EtOH.\n\nExam: Bilateral anterior and posterior cervical lymphadenopathy. Oropharynx erythematous, tonsils enlarged with exudate, uvula midline, tolerating secretions. Spleen palpable 2 cm below the left costal margin. No hepatomegaly. Remainder of exam unremarkable.\n\nLabs: WBC 12.0 K/uL (ref 4.5-11.0); atypical lymphocytes 20%; ALT 70 U/L (ref 7-56); AST 65 U/L (ref 8-48).\n\nMDM/Impression: Infectious mononucleosis, third episode by history, with mild transaminase elevation and splenomegaly. Airway not threatened, tolerating PO.\n\nDisposition: discharged home. Supportive care, hydration, acetaminophen or ibuprofen. No contact sports. Follow up with PCP this week.\n\n— Emergency Medicine"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-06a",
+     "kind": "office_visit",
+     "start": "2026-01-06T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Mononucleosis follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Infectious mononucleosis",
+       "icd10": "B27.90",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-01-06T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2026-01-06T10:50",
+       "results": [
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 29
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 24
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-01-06T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-01-06T10:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-01-06T10:20",
+       "body": "Back to baseline since mid-December. Eating normally, no fevers, energy good. ED record from 11/30 now in the chart and reviewed (WBC 12.0, atypicals 20%, ALT 70, AST 65).\n\nVitals normal. Pharynx clear, tonsils no longer enlarged. No significant adenopathy. Abdomen soft, no splenomegaly. Liver not enlarged.\n\nA/P: Mononucleosis episode resolved. CBC and liver panel today; if normal he is cleared for all activity including sports when he returns to campus."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-07a",
+     "kind": "portal_message",
+     "start": "2026-01-07T15:03",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "All clear",
+       "author": "PCP",
+       "date": "2026-01-07T15:03",
+       "body": "Liver tests are normal now (ALT 29, AST 24) and so is your blood count. You're cleared for everything, sports included."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-17a",
+     "kind": "portal_message",
+     "start": "2026-03-17T20:31",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunization record",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "shot record",
+       "author": "patient",
+       "date": "2026-03-17T20:31",
+       "body": "School wants an updated copy of my immunizations with the newer flu and covid ones on it. Can you post it on here?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: shot record",
+       "author": "MA",
+       "date": "2026-03-18T09:14",
+       "body": "Hi Eli, your full immunization record is attached as a PDF, current through the 10/14/2025 flu and COVID doses."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-02a",
+     "kind": "telephone",
+     "start": "2026-06-02T14:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Insurance update",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Insurance card",
+       "author": "front desk",
+       "date": "2026-06-02T14:50",
+       "body": "Mother called, new member ID card from her employer plan as of 6/1, same carrier. Pt emailed a photo of the card; updated in registration."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "annual_physical",
+     "start": "2026-08-11T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "Electronic cigarette status",
+       "value": "Never used"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2026-08-11T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-08-11T09:40",
+       "body": "21 y/o, yearly visit, school form for the fall. No illnesses since the January visit, no throat infections. Running and lifting without problems. No meds.\n\nAllergies: amoxicillin (rash).\nHx: mononucleosis episodes 11/2024, 5/2025 (ENT) and 11/2025 (ED), each resolved.\nSocial: college student, living in the dorm again this fall. No nicotine, no alcohol.\nFH: mother hypothyroidism, father HTN.\n\nExam: vitals normal. HEENT normal, tonsils small. No lymphadenopathy. Cardiopulmonary normal. Abdomen without organomegaly. Skin normal.\n\nPHQ-2 0.\n\nPlan: healthy. No labs this year. School form completed. Flu vaccine in October; booked. Return next summer."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-12a",
+     "kind": "portal_message",
+     "start": "2026-08-12T11:06",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Form completed",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "School form",
+       "author": "MA",
+       "date": "2026-08-12T11:06",
+       "body": "Eli, your school health form is signed and attached. Your flu shot nurse visit is set for Tuesday 10/6 at 3:30."
+      }
+     ]
+    },
+    {
+     "id": "2026-10-06a",
+     "kind": "nurse_visit",
+     "start": "2026-10-06T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

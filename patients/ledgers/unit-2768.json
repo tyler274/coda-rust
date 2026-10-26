@@ -1,0 +1,4660 @@
+{
+  "unit": "unit-2768",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002768/2021-09-14a: reaction \"Gastropathy\" not in catalog (text only)",
+    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002768",
+      "given": "Patricia",
+      "family": "Kelleher",
+      "birth_date": "1968-04-18",
+      "address_line": "18 Crescent Street",
+      "phone": "+1-646-555-0180",
+      "email": "patricia.kelleher@example.test",
+      "marital_status": "single",
+      "summary": "58-year-old library assistant on disability with seropositive RA complicated by Felty syndrome (chronic neutropenia, splenomegaly), steroid-induced osteoporosis and chronic fatigue, joined 2021. Two cellulitis episodes and a pneumonia in 2026 led to a June 2026 admission and scheduled twice-weekly filgrastim; a follow-up CBC is pending today.",
+      "events": [
+        {
+          "id": "2021-08-26a",
+          "kind": "telephone",
+          "start": "2021-08-26T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2021-08-26T10:20",
+              "author": "front desk",
+              "body": "Caller is Patricia Kelleher, 53, asking to become a patient. Her previous doctor retired this summer and the office closed. Says she has rheumatoid arthritis and a blood count problem that two specialists follow, and she wanted a primary doctor who would actually pick up the phone between those visits. Membership explained, she wants to go ahead. Insurance verified (disability coverage). New patient visit booked 9/14 at 9:00. Records release signed electronically for the prior practice and for her hematology office. Asked her to bring all pill bottles and the injection she keeps in the fridge."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement",
+              "action": "history",
+              "onset": "2014-09-01",
+              "note": "seropositive (RF and anti-CCP); followed by outside rheumatology",
+              "icd10": "M05.79"
+            },
+            {
+              "label": "Felty syndrome",
+              "action": "history",
+              "onset": "2021-05-01",
+              "note": "chronic neutropenia and splenomegaly; outside hematology",
+              "icd10": "M05.00"
+            },
+            {
+              "label": "Drug-induced osteoporosis",
+              "action": "history",
+              "onset": "2019-06-01",
+              "note": "chronic corticosteroid use; DXA 2019",
+              "icd10": "M81.8"
+            },
+            {
+              "label": "Chronic fatigue syndrome",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "attributed to the autoimmune process",
+              "icd10": "G93.32"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 8 tablets (20 mg) by mouth once weekly on Sunday",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis (rheumatology prescribes)"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis (rheumatology prescribes)"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily except on methotrexate day",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "methotrexate supplementation"
+            },
+            {
+              "drug_text": "risedronate sodium 35 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once weekly in the morning with a full glass of water, 30 minutes before food, stay upright",
+              "dose": {
+                "value": 35,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoporosis"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (600 mg calcium / 400 IU vitamin D3) by mouth twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoporosis"
+            },
+            {
+              "drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 300 mcg under the skin as needed when ANC is below 1000, as directed by hematology",
+              "dose": {
+                "value": 300,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Felty syndrome neutropenia (hematology prescribes)"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Ibuprofen",
+              "reaction": "Gastropathy",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "intolerance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              71
+            ],
+            "hr": 62,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 61.0,
+            "height_cm": 161.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-14T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 124
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 45
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 44
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 41
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None; abstains because of methotrexate"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time library assistant, reduced hours due to disability"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T11:30",
+              "author": "PCP",
+              "body": "53F establishing care. Prior PCP retired; records requested.\n\nRA: seropositive, diagnosed 2014 by an outside rheumatology group, who still see her about every 4-6 months. Methotrexate 20 mg every Sunday plus prednisone 5 mg each morning and folic acid on the other six days. Says the joints are \"mostly behaving\" - stiff for a while on waking, hands worst. Had both carpal tunnels released in 2016.\n\nBlood counts: this spring hematology worked up her low white count and enlarged spleen - marrow biopsy in April, a needle sample of the spleen in May, both reportedly without anything malignant. Told it is Felty syndrome. Keeps filgrastim syringes at home and injects only when hematology calls with an ANC under 1000; has used it maybe twice. No infections this year.\n\nBones: DXA in 2019 showed osteoporosis, blamed on years of prednisone. Risedronate weekly since, calcium/D twice a day. No fractures.\n\nFatigue: carries a chronic fatigue diagnosis from her old office going back to roughly 2017. Cut her library hours because of it, now on disability. Sleeps 8 hours and still wakes tired. Mood ok.\n\nAllergies: Bactrim - throat closed, ambulance (anaphylaxis). Ibuprofen - gastritis, told never to take NSAIDs.\nFHx: mother RA. Maternal aunt lupus. Father T2DM and HTN.\nSHx: never smoked, no alcohol since starting methotrexate. Lives alone. Part-time at a public library.\n\nExam: well-appearing, thin. Vitals as recorded. HEENT unremarkable, no oral ulcers. No cervical or axillary nodes. Lungs clear. RRR, no murmur. Abdomen soft, spleen tip palpable below the left costal margin, nontender. Hands: MCP prominence and mild ulnar drift bilaterally, well-healed carpal tunnel scars, no warm or boggy joints today. No edema. Skin without rash or bruising.\n\nA/P:\n1. Seropositive RA - per rheumatology; will draw monitoring labs here when it helps her.\n2. Felty syndrome - per hematology. CBC today for our own baseline.\n3. Glucocorticoid-induced osteoporosis - continue risedronate and calcium/D; vitamin D level today. We will refill these.\n4. Chronic fatigue syndrome - longstanding, pacing her activity.\n5. Health maintenance - HCV and HIV screens today. Colonoscopy 2018 per her report, will confirm in records. Flu shot and pneumococcal vaccine next month. No live vaccines on her regimen.\n\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 162.0,
+            "labs": {
+              "Absolute Neutrophil Count": 1.3,
+              "Hemoglobin": 11.2,
+              "Platelets": 158,
+              "White Blood Cells": 2.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2021-09-17T14:05",
+              "author": "PCP",
+              "body": "Hi Patricia - your labs from Tuesday are back. White count and neutrophils are low, about where your hematology notes say they usually run, and your hemoglobin is mildly low as before. Kidney and liver tests, which matter on methotrexate, are normal. Vitamin D is fine. Hepatitis C and HIV screens were negative. Nothing to change. I'll keep an eye on the trend along with your hematologist."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T13:40",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-04-20T09:00",
+              "text": "Outside report, received 9/28/2021. Specimen: bone marrow core biopsy and aspirate, right posterior iliac crest. Core biopsy adequate. Cellularity is reduced for age. Myeloid series present with paucity of mature forms beyond the myelocyte stage, consistent with maturation arrest. Erythroid and megakaryocytic lineages present without dysplasia. No increase in blasts. No lymphoid aggregates or infiltrating process. Iron stores present.",
+              "conclusion": "Hypocellular marrow with myeloid maturation arrest. No evidence of malignancy."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-05-11T10:30",
+              "text": "Outside report, received 9/28/2021. Specimen: fine-needle aspiration, spleen, ultrasound guided. Smears show a mixed population of small lymphocytes, scattered histiocytes and blood elements. No monoclonal population on flow cytometry. No granulomas. No malignant cells.",
+              "conclusion": "Benign splenic aspirate."
+            },
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2019-06-04T08:30",
+              "text": "Outside report, received 9/28/2021. Indication: long-term glucocorticoid therapy. L1-L4 lumbar spine T-score -2.7. Left femoral neck T-score -2.4. Left total hip within the low bone mass range.",
+              "conclusion": "Osteoporosis by lumbar spine T-score."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care and Hematology",
+              "date": "2021-09-28T13:40",
+              "author": "front desk",
+              "body": "Received 41 pages from the prior primary care office and 18 pages from hematology. Scanned to chart.\n\nAbstract (prior PCP): RA since 2014 per rheumatology. Chronic fatigue syndrome listed since 2017. Bilateral carpal tunnel release 2016. DXA 06/2019 osteoporosis, risedronate started 06/2019. Colonoscopy 03/2018 normal, repeat 10 years. Mammogram 08/2020 negative. Allergies: sulfamethoxazole-trimethoprim (anaphylaxis), ibuprofen (gastropathy).\n\nAbstract (hematology): referred spring 2021 for neutropenia with splenomegaly. Marrow biopsy 04/2021 and splenic FNA 05/2021, benign. Assessment Felty syndrome. Filgrastim 300 mcg as needed for ANC <1000. Follow-up every 6 months.\n\nRheumatology notes not included - separate request faxed today."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T15:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-12T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2021-10-12T15:50",
+              "author": "RN",
+              "body": "Here for flu and pneumococcal vaccines per PCP. Afebrile, feels well. Allergies reviewed (sulfa antibiotics - anaphylaxis; ibuprofen). Flu vaccine 0.5 mL IM left deltoid. PCV20 0.5 mL IM right deltoid. VIS given. Waited 15 minutes, no reaction. Told her PCV20 covers her for pneumococcus, no further pneumococcal doses planned."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "outside_records",
+          "start": "2021-11-18T11:15",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up Letter",
+              "date": "2021-11-18T11:15",
+              "author": "rheumatology",
+              "body": "Visit date: 11/04/2021\n\nDear Doctor,\n\nThank you for taking over primary care for Ms. Kelleher, whom we follow for seropositive rheumatoid arthritis, diagnosed here in 2014 with strongly positive RF and anti-CCP and a synovial biopsy at the time showing pannus with plasma cell and lymphocyte infiltrates. Her course has been complicated by Felty syndrome, which hematology is managing.\n\nToday she has about 45 minutes of morning stiffness. Exam shows fixed MCP changes in both hands without active synovitis; wrists and knees quiet.\n\nMedications: methotrexate 20 mg weekly, prednisone 5 mg daily, folic acid 1 mg daily except methotrexate day, risedronate 35 mg weekly, calcium carbonate/vitamin D3 twice daily, filgrastim 300 mcg as needed.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\n\nPlan: continue current regimen. CBC and CMP every 3 months; happy for these to be drawn at your office and copied to us. Return in 6 months.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "pharmacy",
+          "start": "2021-12-06T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy Refill Request - Risedronate",
+              "date": "2021-12-06T09:10",
+              "author": "MA",
+              "body": "Pharmacy fax: risedronate 35 mg weekly, prescriber listed is the retired PCP. Routed to PCP. Approved by PCP as a new prescription from our office, #12 with 3 refills. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "nurse_visit",
+          "start": "2022-01-11T11:00",
+          "reason": "COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-01-11T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2022-01-11T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID-19 Booster",
+              "date": "2022-01-11T11:25",
+              "author": "RN",
+              "body": "Booster dose given IM left deltoid. Primary series completed spring 2021 at a pharmacy per her card. Observed 15 min, no issues. Card updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "lab_only",
+          "start": "2022-03-09T08:15",
+          "reason": "methotrexate monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-03-09T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 180
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 42
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-09T08:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-09T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "date": "2022-03-10T12:40",
+              "author": "PCP",
+              "body": "Quarterly methotrexate labs. Counts low at her baseline, LFTs and creatinine normal. Copy faxed to rheumatology and hematology. No action."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-21a",
+          "kind": "office_visit",
+          "start": "2022-04-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              65
+            ],
+            "hr": 63,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-21T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-04-21T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-04-21T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-04-21T15:10",
+              "author": "PCP",
+              "body": "6-month follow-up.\n\nS: Feeling about the same. Energy is the usual limit - works three short shifts a week and rests after. Joint stiffness on waking, eases by mid-morning. No infections over the winter. Has not needed filgrastim since joining. Takes risedronate Saturday mornings without heartburn.\n\nO: Vitals as charted. Lungs clear. Heart regular. Spleen tip still palpable, nontender. Hands with chronic MCP changes, no synovitis. No bruising.\n\nA/P:\n- RA and Felty syndrome: stable, specialists following; March labs at her baseline.\n- Osteoporosis: continue risedronate and calcium/D. DXA due 2023.\n- Chronic fatigue: unchanged.\n- Recombinant zoster vaccine dose 1 today (non-live, fine with methotrexate). Dose 2 in 2 months.\n\nSee me in the fall for her annual wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "nurse_visit",
+          "start": "2022-06-24T10:30",
+          "reason": "zoster vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-24T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-06-24T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-06-24T10:50",
+              "author": "RN",
+              "body": "Second recombinant zoster dose IM left deltoid. First dose in April gave her a tired, achy day afterward; warned it may repeat. Series now complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "outside_records",
+          "start": "2022-07-26T16:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2022-07-26T16:00",
+              "author": "hematology",
+              "body": "Visit date: 07/12/2022\n\nRe: Patricia Kelleher\n\nMs. Kelleher returns for routine follow-up of Felty syndrome. She reports no fevers, mouth sores or infections since her last visit and has not needed growth factor. Spleen palpable one fingerbreadth below the costal margin. Counts remain low but steady: WBC in the high 2s, ANC around 1.2-1.4, hemoglobin about 11, platelets in the 150s.\n\nCurrent medicines: methotrexate 20 mg weekly, prednisone 5 mg daily, folic acid, risedronate, calcium/vitamin D, filgrastim 300 mcg SC as needed.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), ibuprofen (gastropathy).\n\nImpression: Felty syndrome, stable neutropenia without infectious complications.\nPlan: continue as-needed filgrastim for ANC <1000. Fever precautions reviewed. Return in 6 months with CBC.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              104,
+              66
+            ],
+            "hr": 58,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 61.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-13T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 183
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 42
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T10:00",
+              "resulted": "2022-09-19T15:00",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-13T10:00",
+              "text": "Liquid-based cervical cytology. Specimen adequate; transformation zone component present. No intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy; HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-09-13T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-09-13T11:20",
+              "author": "PCP",
+              "body": "Initial annual wellness visit.\n\nFunctional: independent at home, drives, still working part-time. No falls in the past year. Hearing and vision adequate with readers. Home safety reviewed; grab bar in shower already.\nCognition: normal recall and clock draw.\nMood: PHQ-2 negative.\n\nInterval: no infections, no filgrastim use. Hematology in July unchanged. Rheumatology letter on file from November; she saw them again in May, says nothing changed.\n\nExam: as before. Spleen tip palpable. Hands with old RA changes, no active synovitis. Breast exam normal. Pelvic exam with speculum, Pap/HPV collected.\n\nPlan / prevention:\n- Pap with HPV today.\n- Screening mammogram ordered (last 2020).\n- Colonoscopy 2018 normal, next 2028.\n- Flu and updated COVID shot next month.\n- Labs: CBC, CMP for methotrexate, lipids.\n- Continue current medicines. Advance directive discussed; she will think about a health care proxy and bring the form back."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "portal_message",
+          "start": "2022-09-20T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work",
+              "date": "2022-09-20T08:45",
+              "author": "PCP",
+              "body": "Your Pap and HPV test are both negative, so no repeat for 5 years. Cholesterol numbers are good. Blood counts are steady at your usual level and the liver and kidney tests are normal."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "imaging",
+          "start": "2022-09-29T13:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-09-29T13:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 08/2020. Breasts are heterogeneously dense. No suspicious mass, calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 1, negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-09-29T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram Result",
+              "date": "2022-09-30T09:20",
+              "author": "PCP",
+              "body": "Screening mammogram negative. Letter sent by imaging center. Next screening in 1-2 years."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "nurse_visit",
+          "start": "2022-10-05T16:10",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-05T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-05T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-05T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-05T16:30",
+              "author": "MA",
+              "body": "Flu vaccine R deltoid, bivalent COVID booster L deltoid. Tolerated. 15 minute wait done. Next flu shot due next autumn."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill and a question",
+              "date": "2022-11-29T19:40",
+              "author": "patient",
+              "body": "Hi, I need the calcium with D sent again, the pharmacy says no refills left. Also is it normal to be extra wiped out in the early dark months? I'm not sick, just more tired than summer. Thank you - Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill and a question",
+              "date": "2022-11-30T12:10",
+              "author": "PCP",
+              "body": "Calcium/D sent with a year of refills. A dip in energy over the winter is common with chronic fatigue, and nothing in your September labs suggests a new cause. If you get fevers, sore throat, or anything that feels like an infection, call us that day - with your counts we want to see you quickly. Otherwise we'll talk more in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "telephone",
+          "start": "2022-12-13T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology Records Request",
+              "date": "2022-12-13T10:00",
+              "author": "front desk",
+              "body": "Second request faxed to rheumatology for notes since 05/2022. Their office says letters go out when the physician signs; no ETA."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "lab_only",
+          "start": "2023-01-24T07:50",
+          "reason": "methotrexate monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-01-24T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 162
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 45
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 44
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-01-24T07:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 81
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-24T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "date": "2023-01-25T13:15",
+              "author": "PCP",
+              "body": "Methotrexate labs ok. ANC above 1000, no filgrastim needed. Faxed to rheum/heme."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "office_visit",
+          "start": "2023-03-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 61.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-20T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-03-20T11:25",
+              "author": "PCP",
+              "body": "Routine recheck.\n\nWinter went fine - one cold in February that her coworkers all had, got over it in a week without antibiotics. Energy back to her own normal now that the days are longer. Morning stiffness under an hour. Taking everything as listed; brought the pill organizer, matches our list.\n\nExam: vitals fine. Throat clear, no nodes. Lungs clear. Spleen tip palpable as before. Hands unchanged, no warm joints. Skin intact.\n\nPlan: no changes. DXA at the fall wellness visit (4 years on risedronate). Usual labs with rheumatology's schedule. Reviewed when to call for fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "pharmacy",
+          "start": "2023-05-10T14:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Filgrastim Coverage Renewal",
+              "date": "2023-05-10T14:20",
+              "author": "MA",
+              "body": "Specialty pharmacy called: filgrastim authorization expiring. Prescriber is hematology - called their office, they will submit the renewal. Patient informed she has two syringes at home, enough for now."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-28a",
+          "kind": "outside_records",
+          "start": "2023-06-28T15:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up Letter",
+              "date": "2023-06-28T15:30",
+              "author": "rheumatology",
+              "body": "Date of visit: 06/13/2023\n\nPatricia Kelleher, 55, seropositive RA since 2014, Felty syndrome.\n\nInterval: stable. Stiffness 30-45 min daily. No flares requiring extra steroid. No infections requiring antibiotics.\nExam: chronic deformity at MCPs bilaterally with mild ulnar deviation; no tender or swollen joints on 28-joint count. Spleen not examined.\nMedications: methotrexate 20 mg weekly; prednisone 5 mg daily; folic acid 1 mg; risedronate 35 mg weekly; calcium + D3; filgrastim prn.\nAllergies: sulfamethoxazole-trimethoprim - anaphylaxis; ibuprofen - gastropathy.\n\nAssessment: low disease activity on current regimen.\nPlan: continue. Labs every 3 months via PCP. Return 6 months.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              119,
+              69
+            ],
+            "hr": 57,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 143
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 50
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 40
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:35",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 37
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-12T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-12T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2023",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "glucocorticoid-induced osteoporosis on risedronate"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-09-12T10:05",
+              "author": "PCP",
+              "body": "Subsequent AWV.\n\nNo falls. Independent. Still at the library 12-15 hrs/week. PHQ-2 1. Cognition screen normal. Brought a health care proxy form, filed.\n\nHealth since last year: no infections needing treatment; filgrastim not used. Rheumatology June letter - low activity, no change. Hematology seen in winter per patient, no change (no letter received).\n\nExam: BP fine. Spleen tip palpable. Joints quiet with fixed hand changes. No kyphosis, no spinal tenderness.\n\nPlan:\n- DXA ordered, last 2019.\n- Mammogram ordered.\n- Tdap today (last >10 yrs per records).\n- Flu/COVID at nurse visit next month when updated vaccine is out.\n- CBC, CMP, vitamin D.\n- Medicines unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "imaging",
+          "start": "2023-10-03T09:15",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-10-03T09:15",
+              "text": "Indication: long-term glucocorticoid use, on bisphosphonate since 2019. L1-L4 lumbar spine T-score -2.6. Left femoral neck T-score -2.3. Comparison 06/2019 outside study: lumbar spine -2.7, femoral neck -2.4. No significant interval change at either site.",
+              "conclusion": "Osteoporosis, lumbar spine. Stable compared with 2019."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2023",
+              "action": "done",
+              "date": "2023-10-03T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "DXA Result",
+              "date": "2023-10-04T16:45",
+              "author": "PCP",
+              "body": "Patricia - your bone density is essentially the same as 2019 (spine -2.6, hip -2.3). That means the risedronate is holding things steady while you stay on prednisone. Keep taking it and the calcium/vitamin D."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T13:20",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T13:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T13:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T13:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-19T13:40",
+              "author": "MA",
+              "body": "Influenza IM L arm, 2023-24 COVID vaccine IM R arm. Allergies verified. No immediate reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T11:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-14T11:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 09/2022. Heterogeneously dense tissue. No new mass, suspicious calcification or distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-14T11:30"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2023-12-05T15:40",
+              "author": "front desk",
+              "body": "No-show for 3:00 follow-up. Called, she apologized - snowed in, forgot to call. Rebooked for February."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-02-22a",
+          "kind": "office_visit",
+          "start": "2024-02-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 67,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 61.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-02-22T09:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 139
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-22T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-22T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-22T10:10",
+              "author": "PCP",
+              "body": "Rebooked from December.\n\nDoing ok. Fatigue at her usual. Joints fine, stiffness about half an hour. No infections. Saw hematology in January, she says counts \"the same as always\".\n\nExam: well. Lungs clear. Spleen tip palpable. No synovitis. No bruises or petechiae.\n\nA/P: stable on current regimen. Labs today for rheum. Recheck at fall AWV, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "lab_only",
+          "start": "2024-04-23T08:05",
+          "reason": "methotrexate monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-23T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 154
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-04-23T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-23T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "date": "2024-04-24T11:00",
+              "author": "RN",
+              "body": "Reviewed with PCP: stable. Results faxed to rheumatology. Patient notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "outside_records",
+          "start": "2024-06-26T10:50",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2024-06-26T10:50",
+              "author": "hematology",
+              "body": "Visit: 06/18/2024\n\nDiagnosis: Felty syndrome (seropositive RA, neutropenia, splenomegaly). Marrow 04/2021 hypocellular with maturation arrest; splenic FNA 05/2021 benign.\n\nSince last visit no fevers or infections. Has not used filgrastim in over a year. Exam: spleen 1-2 cm below the costal margin. No lymphadenopathy.\nCBC: WBC 2.8, ANC 1.3, Hgb 11.0, platelets 152 - stable.\nMeds: methotrexate 20 mg weekly, prednisone 5 mg, folic acid, risedronate, calcium/D3, filgrastim 300 mcg prn ANC <1000.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), ibuprofen (gastropathy).\n\nPlan: continue observation. Return in 6 months, sooner for infection.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              118,
+              68
+            ],
+            "hr": 65,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-10T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 186
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 45
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 44
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T10:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T10:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-09-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-09-10T11:15",
+              "author": "PCP",
+              "body": "AWV, 56 y/o.\n\nFunction intact. No falls. Lives alone, manages her own meds. PHQ-2 1. Cognition normal.\nHematology June: stable, letter reviewed.\nRheumatology: last seen spring per patient, regimen unchanged; letter not received.\n\nExam: unremarkable apart from palpable spleen tip and old RA hand changes.\n\nPrevention: mammogram 11/2023 negative, next this winter. Pap 2022 negative with HPV, next 2027. Colonoscopy due 2028. Vaccines: flu and COVID next month. PCV20, zoster series, Tdap done.\n\nLabs today. Medicines unchanged. Follow-up in about 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T14:45",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T14:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T14:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T14:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T15:05",
+              "author": "RN",
+              "body": "Trivalent flu vaccine L deltoid; 2024-25 COVID vaccine R deltoid. Observed, fine. Reminded to call for fever over 100.4 given her neutropenia."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "more fatigue, hand stiffness",
+          "vitals": {
+            "bp": [
+              115,
+              74
+            ],
+            "hr": 69,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 61.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-19T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 50
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 40
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-19T14:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-19T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-11-19T14:40",
+              "author": "PCP",
+              "body": "Here for worse tiredness over the last couple of months and hands that are stiffer and puffier in the mornings, now well over an hour before she can work buttons. Wrists ache. No fever, no infections, no bleeding. Taking methotrexate every Sunday, has not missed doses.\n\nExam: afebrile. Mild fullness over several MCPs and both wrists, a little tender, not hot. Spleen tip palpable. No bruising.\n\nA/P:\n1. Increased RA symptoms - sounds like more disease activity. She has a hematology appointment at the end of December already; rheumatology next opening is February. Message sent to rheumatology asking if they can see her sooner. Avoid NSAIDs (gastropathy).\n2. Fatigue with Hgb 10.3, down from her usual 11ish - will let hematology look at it at the December visit; CBC copied to them.\n3. Labs otherwise ok.\nCall if fever."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "specialist_visit",
+          "start": "2024-12-30T10:30",
+          "service": "Hematology & Oncology",
+          "reason": "fatigue, morning stiffness, hand and wrist swelling",
+          "conditions": [
+            {
+              "label": "Anemia in chronic disease",
+              "action": "diagnosed",
+              "onset": "2024-11-19",
+              "note": "anemia of chronic inflammation from active rheumatoid arthritis, per hematology",
+              "icd10": "D63.8"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-12-30T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 175
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-12-30T10:00",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 38
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 140
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 297
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-30T10:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 46
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 34
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation Letter",
+              "date": "2025-01-21T09:30",
+              "author": "hematology",
+              "body": "Date of service: 12/30/2024\n\nRe: Patricia Kelleher, DOB 04/18/1968\n\nMs. Kelleher, 56, is seen for scheduled Felty syndrome follow-up, with your November note and CBC in hand. For the last two to three months she has felt more worn down than usual. Her mornings have changed: stiffness now lasts beyond an hour, and the small joints of both hands and the wrists swell. No fevers, infections, bleeding or weight change.\n\nHistory: seropositive RA since 2014; the rheumatology synovial biopsy at diagnosis showed pannus with plasma cells and lymphocytes. Felty syndrome since 2021 (marrow hypocellular with maturation arrest; splenic aspirate benign). Glucocorticoid-related osteoporosis. Chronic fatigue syndrome. Bilateral carpal tunnel release 2016.\nMedications: methotrexate 20 mg weekly; prednisone 5 mg each morning; folic acid 1 mg except methotrexate day; risedronate 35 mg weekly; calcium carbonate/vitamin D3 600 mg/400 IU twice daily; filgrastim 300 mcg SC as needed for ANC <1000.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\nFamily history: mother RA; maternal aunt SLE; father type 2 diabetes and hypertension.\nSocial: never smoker, no alcohol, part-time library work.\n\nExam: soft tissue swelling over MCPs and wrists bilaterally. Spleen palpable below the costal margin.\n\nData: hemoglobin 10.0 g/dL. Serum iron 38 mcg/dL (low), ferritin 140 ng/mL (normal). ESR 46 mm/h, CRP 34 mg/L. RF and anti-CCP positive. White count and ANC at her baseline.\n\nImpression: the fall in hemoglobin fits anemia of chronic inflammation - low circulating iron with preserved stores, in the setting of increased RA activity. Inflammatory signaling sequesters iron; iron supplementation would not be expected to help. Neutropenia stable.\n\nRecommendations: the anemia should follow control of the arthritis; I have asked her to see rheumatology promptly about the joint symptoms. No iron. Continue filgrastim as needed. CBC in 6 months.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "portal_message",
+          "start": "2025-01-06T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood doctor visit",
+              "date": "2025-01-06T18:25",
+              "author": "patient",
+              "body": "Saw hematology last Monday. She said the lower hemoglobin is from inflammation and not low iron, and that I need to get the arthritis calmed down. Rheumatology finally gave me Feb 4. Just letting you know since I don't think they send you things very fast. Happy new year. Pat"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood doctor visit",
+              "date": "2025-01-07T08:50",
+              "author": "PCP",
+              "body": "Thanks Pat, this helps. I'll watch for her letter. Glad rheumatology is in early February - if the swelling gets worse before then, or you get a fever, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "outside_records",
+          "start": "2025-01-21T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology Letter Received",
+              "date": "2025-01-21T09:35",
+              "author": "MA",
+              "body": "Hematology consultation from 12/30/2024 received by fax and scanned. Routed to PCP. PCP reviewed: anemia of chronic inflammation added to problem list; no iron per hematology."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              74
+            ],
+            "hr": 61,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-18T11:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 155
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 42
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T11:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T11:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-18T12:05",
+              "author": "PCP",
+              "body": "F/u fatigue, joints, anemia.\n\nSaw rheumatology in February. Per patient they examined her hands, kept methotrexate and prednisone the same, and will see her in the summer. No letter yet. Mornings a bit easier than in the fall, still stiff close to an hour some days. Energy poor but she is getting to her shifts.\n\nHematology letter (12/30) reviewed: anemia of chronic inflammation, ESR/CRP up, iron low with normal ferritin. No iron.\n\nExam: mild residual puffiness at MCPs, wrists not warm. Spleen tip palpable. No bruising. Lungs clear.\n\nA/P:\n- RA: per rheumatology, no change.\n- Anemia of chronic disease: recheck CBC today.\n- Felty/neutropenia: stable.\n- Osteoporosis: risedronate, calcium/D.\nScreening mammogram this spring; order placed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 1.2,
+              "Hemoglobin": 10.6,
+              "Platelets": 150,
+              "White Blood Cells": 2.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "imaging",
+          "start": "2025-05-14T08:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-05-14T08:20",
+              "text": "Digital breast tomosynthesis, both breasts. Compared with 11/2023 and 09/2022. Heterogeneously dense parenchyma. No mass, grouped calcifications or distortion.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-05-14T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "ed_visit",
+          "start": "2025-06-23T16:10",
+          "end": "2025-06-23T21:30",
+          "service": "Emergency Medicine",
+          "reason": "fatigue and new bruising",
+          "vitals": [
+            {
+              "time": "2025-06-23T16:20",
+              "bp": [
+                122,
+                76
+              ],
+              "hr": 74,
+              "rr": 14,
+              "temp_c": 37.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-23T16:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 140
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 44
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 46
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-23T16:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-23T16:45",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-07-14T10:15",
+              "author": "emergency medicine",
+              "body": "Date of visit: 06/23/2025. Copy sent to PCP on request.\n\nCC: tired, bruises on arms.\n\nHPI: 57 yo F with seropositive RA and known Felty syndrome on methotrexate and prednisone. Weeks of persistent fatigue. Over the past several days she noticed bruises on both forearms without injury she can recall. Several colds since spring. Joint pain and morning stiffness about an hour, mainly hands and knees, longstanding. No bleeding gums, nosebleeds, melena or hematuria. No fever.\n\nMeds: methotrexate 20 mg weekly, prednisone 5 mg daily, folic acid, risedronate, calcium/vit D, filgrastim prn.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis), ibuprofen (GI).\n\nExam: T 37.0 C, BP 122/76, P 74, RR 14. Comfortable. Scattered small ecchymoses on both forearms, no petechiae. Spleen mildly enlarged to palpation. Synovial thickening of both wrists; no erythema or warmth of any joint. Lungs clear. Heart regular.\n\nResults: WBC 2.4, Hgb 11.1, plt 140. INR normal. RF positive, anti-CCP positive.\n\nMDM: bruising and fatigue with mild cytopenias in known Felty syndrome; counts near her reported baseline, no active bleeding, afebrile. Safe for discharge.\n\nDisposition: home. Follow up with hematology and PCP this week or next. Return for bleeding, fever, or worsening bruising."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.1,
+              "Platelets": 140,
+              "White Blood Cells": 2.4
+            }
+          }
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "portal_message",
+          "start": "2025-06-24T07:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2025-06-24T07:15",
+              "author": "patient",
+              "body": "I went to the emergency room yesterday afternoon because I'm so tired and I had bruises up both arms. They did blood work and said my counts were low but not dangerous and sent me home. They told me to see you and hematology. Can I get in this week or next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2025-06-24T09:05",
+              "author": "RN",
+              "body": "Glad you're home. You're booked Monday 6/30 at 2:30 with the doctor. We've requested the ER record. Please call hematology to let them know as well. Any bleeding or fever before Monday, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "office_visit",
+          "start": "2025-06-30T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ED follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 65,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-30T15:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 148
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-30T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2025-06-30T15:30",
+              "author": "PCP",
+              "body": "Seen after ED visit 6/23 for fatigue and arm bruising. ED record not yet received; patient reports counts were low and she was sent home.\n\nToday: bruises fading, no new ones. No bleeding. Still tired. Had a run of colds this spring, each self-limited. No fevers. Morning stiffness about an hour.\n\nExam: afebrile. Few yellowing ecchymoses on forearms. No petechiae, no gum bleeding. Spleen palpable a little below the costal margin. Wrists thickened, not warm. Lungs clear.\n\nA/P: Felty syndrome with low counts, likely accounting for the easy bruising. Repeat CBC today. Hematology appointment moved up to mid-July per patient. Rheumatology visit in August. Continue current medicines. Infection precautions reviewed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "outside_records",
+          "start": "2025-07-14T10:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED Record Received",
+              "date": "2025-07-14T10:20",
+              "author": "front desk",
+              "body": "ED record 06/23/2025 received after second request. Scanned, routed to PCP. PCP reviewed - no change in plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 60.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-09T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 42
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-09T09:50",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 39
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-09-09T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-09-09T10:20",
+              "author": "PCP",
+              "body": "AWV, age 57.\n\nSummer: hematology in July per patient - counts stable, filgrastim still as needed (letter not received). Rheumatology August, no medication change per patient. Bruising has not recurred. Joints calmer than last winter.\n\nScreens: PHQ-2 1. No falls. Functional status unchanged. Proxy on file.\n\nExam: well. Spleen tip palpable. Hands with chronic changes, no active synovitis.\n\nPrevention: mammogram 5/2025 negative. Pap 2027. Colonoscopy 2028. DXA 2023 stable; next one could be considered next year. Flu and COVID in October.\n\nLabs today: CBC, CMP, vitamin D. Follow-up in winter."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 1.2,
+              "Hemoglobin": 11.5,
+              "Platelets": 150,
+              "White Blood Cells": 2.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:20",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-07T15:40",
+              "author": "MA",
+              "body": "Flu (trivalent) R deltoid and 2025-26 COVID L deltoid. Allergies reviewed. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "lab_only",
+          "start": "2025-12-03T08:30",
+          "reason": "methotrexate monitoring",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-03T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-03T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-03T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Result Note",
+              "date": "2025-12-04T12:30",
+              "author": "PCP",
+              "body": "Hemoglobin better than last winter. ANC just above 1000. Liver and kidney fine. Copied to rheum/heme."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.7
+            }
+          }
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "red painful right lower leg",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-01-11",
+              "note": "right lower leg"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cellulitis right lower leg"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              73
+            ],
+            "hr": 59,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-13T12:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 139
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 40
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 48
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-13T12:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "date": "2026-01-13T12:40",
+              "author": "PCP",
+              "body": "Texted this morning about a red sore patch on her right shin since Sunday; seen same day.\n\nNo injury she remembers, dry skin from the cold. Area warm and tender, spreading a little since yesterday. No chills. Not using filgrastim lately.\n\nExam: vitals as charted. Right anterior lower leg with a blanching, warm, tender area of erythema about 8 x 6 cm, margins marked with pen. No fluctuance, no drainage, no streaking. No inguinal nodes. Calf soft. Left leg normal.\n\nCBC today: WBC 2.3, ANC 0.9.\n\nA/P: nonpurulent cellulitis, right lower leg, in a neutropenic patient on methotrexate and prednisone.\n- Cephalexin 500 mg four times daily x 7 days. Sulfa antibiotics excluded (anaphylaxis).\n- ANC under 1000: called hematology - they advise she use her filgrastim per her standing instructions; she has syringes at home.\n- Elevate, moisturize the skin.\n- If the redness passes the pen line, or fever, call immediately - low threshold for ED.\nPhone check in 48 hours."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 0.9,
+              "White Blood Cells": 2.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "telephone",
+          "start": "2026-01-15T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cellulitis Check",
+              "date": "2026-01-15T16:30",
+              "author": "RN",
+              "body": "Called pt. Redness inside the pen marks and less warm. No fever. Taking cephalexin, used filgrastim Tuesday night per hematology. Will finish course."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T12:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "date": "2026-01-23T12:00",
+              "author": "patient",
+              "body": "Finished the antibiotic Tuesday. Leg is just a little pink now and not sore. Thank you for seeing me so fast."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "telephone",
+          "start": "2026-02-03T10:45",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved",
+              "note": "right lower leg resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up Call",
+              "date": "2026-02-03T10:45",
+              "author": "RN",
+              "body": "Follow-up after right leg cellulitis. Skin back to normal color, no tenderness. No fevers. Resolved per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "pharmacy",
+          "start": "2026-03-09T09:25",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside Fill Notification",
+              "date": "2026-03-09T09:25",
+              "author": "MA",
+              "body": "Medication history feed shows cephalexin 500 mg capsules #28 filled 03/07/2026, prescriber from an urgent care. Not on our list. Routed to PCP; RN to call patient."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telephone",
+          "start": "2026-03-10T11:05",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-03-06",
+              "note": "left lower leg, treated at urgent care 3/7"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cellulitis left lower leg (urgent care)"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: Urgent Care Visit",
+              "date": "2026-03-10T11:05",
+              "author": "RN",
+              "body": "Called about the cephalexin fill. Pt says the left shin got red and sore Friday evening; on Saturday our line went to the on-call message and she didn't want to bother anyone, so she went to an urgent care near the shopping plaza. Diagnosed with cellulitis, given cephalexin 4x/day for a week. No paperwork other than the discharge sheet, which she will photograph and upload. Today: redness fading, no fever. Reminded she can always reach the on-call doctor, weekends included. PCP aware; we'll request the urgent care note."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and fever",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved",
+              "note": "left lower leg healed"
+            },
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2026-04-11",
+              "note": "right lower lobe"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "levofloxacin 750 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily for 5 days",
+              "dose": {
+                "value": 750,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "community-acquired pneumonia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              81
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 61.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-14T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 143
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 47
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 43
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-14T10:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-04-14T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2026-04",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "cough, fever, crackles"
+            },
+            {
+              "id": "heme-referral-2026",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "recurrent infections with chronic neutropenia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "date": "2026-04-14T12:15",
+              "author": "PCP",
+              "body": "Called at 8 with three days of cough and feeling feverish; seen this morning.\n\nCough productive, tired, some right-sided chest discomfort with deep breaths. Felt hot overnight. No hemoptysis. Third infection this year after the two leg cellulitis episodes (January here, March at an urgent care).\n\nExam: vitals as charted, not in distress, speaking full sentences. Crackles at the right base, no wheeze. Heart regular. Leg skin healed bilaterally.\n\nCXR done in house: right lower lobe consolidation (see report). CBC: WBC 2.5, ANC 1.1.\n\nA/P:\n1. Community-acquired pneumonia, RLL, outpatient-treatable today (oxygenating well, eating and drinking, has support by phone). Levofloxacin 750 mg daily x 5 days - she is sulfa-anaphylactic; reviewed tendon precautions with the prednisone. Call or go to the ED for breathlessness, confusion, or not improving in 48-72 hours.\n2. Recurrent infections with Felty neutropenia - three in four months. Referral to hematology for an earlier visit than the routine summer one; note sent.\n3. Left leg cellulitis from March resolved.\nRN check-in Monday. Recheck visit in about 6 weeks."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 1.1,
+              "White Blood Cells": 2.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-14b",
+          "kind": "imaging",
+          "start": "2026-04-14T10:35",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-04-14T10:35",
+              "text": "PA and lateral chest. Airspace consolidation in the right lower lobe. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal. Left lung clear.",
+              "conclusion": "Right lower lobe consolidation consistent with pneumonia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2026-04",
+              "action": "done",
+              "date": "2026-04-14T10:35"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "telephone",
+          "start": "2026-04-20T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pneumonia Check",
+              "date": "2026-04-20T14:10",
+              "author": "RN",
+              "body": "Finished levofloxacin Saturday. Cough much less, no fever since Thursday, energy coming back slowly. No ankle or calf pain. Hematology has her on the list for 7/20 - earliest they had; she will call if a cancellation opens."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "office_visit",
+          "start": "2026-05-26T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pneumonia follow-up",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              66
+            ],
+            "hr": 61,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 61.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-26T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-26T15:55",
+              "author": "PCP",
+              "body": "Six weeks after RLL pneumonia. Feels back to baseline - cough gone, no fevers. Working her regular shifts.\n\nExam: afebrile, sat normal on room air. Lungs clear throughout, including the right base. Spleen tip palpable.\n\nA/P: pneumonia resolved clinically; no repeat film needed at this point. Hematology 7/20 for recurrent infections. Low threshold to be seen for any fever. Next routine visit late summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-14a",
+          "kind": "hospital_admission",
+          "start": "2026-06-14T15:40",
+          "end": "2026-06-16T13:00",
+          "service": "Internal Medicine",
+          "reason": "evaluation of recurrent infections with neutropenia",
+          "medications": [
+            {
+              "drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "changed to scheduled dosing"
+            },
+            {
+              "drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 300 mcg under the skin twice weekly (Monday and Thursday)",
+              "dose": {
+                "value": 300,
+                "unit": "mcg"
+              },
+              "frequency": "TWICE_WEEKLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Felty syndrome neutropenia with recurrent infections (hematology)"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-14T15:50",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-15T08:00",
+              "bp": [
+                126,
+                78
+              ],
+              "hr": 74,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-16T08:00",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 72,
+              "rr": 14,
+              "temp_c": 36.6,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 180
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.05
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 41
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 48
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:10",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:20",
+              "resulted": "2026-06-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-14T16:25",
+              "resulted": "2026-06-19T08:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-16T06:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 159
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 35
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-06-14T17:30",
+              "text": "PA and lateral views. Lungs clear; the previously described right lower lobe opacity is no longer seen. No effusion or pneumothorax. Normal cardiomediastinal silhouette.",
+              "conclusion": "No acute cardiopulmonary process."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-07-02T14:20",
+              "author": "hospitalist",
+              "body": "Admission 06/14/2026 - Discharge 06/16/2026\nService: Internal Medicine\n\nReason for admission: evaluation of repeated infections in a neutropenic patient.\n\nHistory: 58-year-old woman with seropositive rheumatoid arthritis and Felty syndrome (chronic neutropenia, splenomegaly). Over the past half year she has had two episodes of lower-leg cellulitis (January, March) and a right lower lobe pneumonia in April, each treated as an outpatient. She presented through the emergency department for evaluation of this pattern. Her arthritis is currently quiet on methotrexate and low-dose prednisone.\n\nPMH: as above; glucocorticoid-induced osteoporosis; chronic fatigue syndrome. PSH: bilateral carpal tunnel release; bone marrow biopsy and splenic aspiration 2021.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\n\nExam on admission: afebrile, BP 130/80, HR 78, RR 16. No cervical, axillary or inguinal lymphadenopathy. Joints without synovitis; chronic deformities of longstanding RA in the hands. Palpable spleen tip. Skin intact, no cellulitis.\n\nData: Hgb 12.5, WBC 2.1, ANC 0.8, platelets 180. RF positive, ACPA positive. CMP unremarkable. Blood cultures x2: no growth. CXR: clear, prior RLL opacity resolved.\n\nHospital course: no active infection identified. Hematology consulted; filgrastim 300 mcg given on 6/14 and 6/15 with ANC 1.9 (WBC 3.4) on 6/16. Given the frequency of infections on as-needed dosing, hematology recommended scheduled filgrastim twice weekly. Rheumatology aware; no change to methotrexate or prednisone.\n\nDischarge medications:\n- Filgrastim 300 mcg SC twice weekly (Mon/Thu) - CHANGED from as needed\n- Methotrexate 20 mg weekly\n- Prednisone 5 mg daily\n- Folic acid 1 mg daily except methotrexate day\n- Risedronate 35 mg weekly\n- Calcium carbonate/vitamin D3 600 mg/400 IU twice daily\n\nFollow-up: PCP within one week; hematology 7/20 as scheduled. Return for temperature 38.0 C or higher.\n\nHospital Medicine"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 0.8,
+              "Hemoglobin": 12.5,
+              "Platelets": 180,
+              "White Blood Cells": 2.1
+            }
+          }
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "telephone",
+          "start": "2026-06-17T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "date": "2026-06-17T09:30",
+              "author": "RN",
+              "body": "Pt called to let us know she was in the hospital Sunday to Tuesday. Went in through the ED Sunday afternoon because she was worried about all the infections. Told no infection right now; they gave her filgrastim shots and her count came up, and she is to take it twice a week now instead of only when called. No discharge papers sent to us yet - requested. Feels fine, afebrile. Has syringes; specialty pharmacy shipping more. Post-hospital visit booked Monday 6/22."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "office_visit",
+          "start": "2026-06-22T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              78
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 62.0
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-06-22T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2026-06-22T13:50",
+              "author": "PCP",
+              "body": "Hospital 6/14-6/16 for evaluation of recurrent infections; summary not received yet, history from patient and her discharge med sheet.\n\nPer patient: no infection found, cultures negative so far, chest film clear. Got filgrastim two days and her neutrophils rose. Discharged on filgrastim twice weekly (Mon/Thu). Gave herself this morning's dose without trouble. No fevers.\n\nMed reconciliation: filgrastim changed from as-needed to 300 mcg twice weekly - list updated. Methotrexate 20 mg weekly, prednisone 5 mg, folic acid, risedronate, calcium/D unchanged.\n\nExam: afebrile, well. Lungs clear. Spleen tip palpable. Skin intact on both legs.\n\nA/P: Felty syndrome with recurrent infections, now on scheduled growth factor. Hematology 7/20. No NSAIDs. Fever 100.4 or higher: call us any hour. Follow-up late summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "outside_records",
+          "start": "2026-07-02T14:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Discharge Summary Received",
+              "date": "2026-07-02T14:25",
+              "author": "front desk",
+              "body": "Discharge summary for 06/14-06/16/2026 admission received after two requests. Scanned and routed. PCP reviewed: matches our reconciled list."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "specialist_visit",
+          "start": "2026-07-20T10:00",
+          "service": "Hematology & Oncology",
+          "reason": "Felty syndrome, recurrent infections",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-20T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 175
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 50
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 40
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2026",
+              "action": "done",
+              "date": "2026-07-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2026-07-29T11:10",
+              "author": "hematology",
+              "body": "Seen 07/20/2026.\n\nDear colleague,\n\nI saw Ms. Kelleher after her June admission. Since discharge she has had no fevers or infections. She is injecting filgrastim 300 mcg Mondays and Thursdays without difficulty.\n\nExam: well-appearing. Spleen tip palpable. No adenopathy. Skin intact.\nCBC: WBC 2.9, ANC 1.4, hemoglobin 12.3, platelets 175.\nMedications: filgrastim 300 mcg SC twice weekly; methotrexate 20 mg weekly; prednisone 5 mg daily; folic acid; risedronate 35 mg weekly; calcium/vitamin D3.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis); ibuprofen (gastropathy).\n\nAssessment: Felty syndrome with improved neutrophil count on scheduled filgrastim.\nPlan: continue twice-weekly filgrastim. CBC with differential in one month - fine to draw at your office and send to us. I will see her again in three months.\n\nHematology & Oncology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 1.4,
+              "Hemoglobin": 12.3,
+              "Platelets": 175,
+              "White Blood Cells": 2.9
+            }
+          }
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill please",
+              "date": "2026-08-03T20:15",
+              "author": "patient",
+              "body": "Could you send the calcium + D and the risedronate? Both say zero refills. Also hematology wants a blood count around the 20th - can I just come in for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill please",
+              "date": "2026-08-04T09:30",
+              "author": "MA",
+              "body": "Both refills sent per the doctor. Lab visit booked Monday 8/24 at 8:15 for the CBC; results will go to hematology too."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "lab_only",
+          "start": "2026-08-24T08:15",
+          "reason": "CBC for hematology",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-24T08:15",
+              "pending": true,
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-24T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab Draw",
+              "date": "2026-08-24T08:25",
+              "author": "MA",
+              "body": "CBC with differential drawn L antecubital, one attempt. Sent out; copy to hematology requested on the requisition."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-21a",
+          "kind": "office_visit",
+          "start": "2026-09-21T10:20",
+          "reason": "chronic care follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anemia in chronic disease|D63.8": {
+        "code": "D63.8",
+        "display": "Anemia in other chronic diseases classified elsewhere",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chronic fatigue syndrome|G93.32": {
+        "code": "G93.32",
+        "display": "Myalgic encephalomyelitis/chronic fatigue syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Drug-induced osteoporosis|M81.8": {
+        "code": "M81.8",
+        "display": "Other osteoporosis without current pathological fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Felty syndrome|M05.00": {
+        "code": "M05.00",
+        "display": "Felty's syndrome, unspecified site",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement|M05.79": {
+        "code": "M05.79",
+        "display": "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe": {
+        "code": "727535",
+        "display": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "levofloxacin 750 MG Oral Tablet": {
+        "code": "311296",
+        "display": "levofloxacin 750 MG Oral Tablet",
+        "ingredient": "levofloxacin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "risedronate sodium 35 MG Oral Tablet": {
+        "code": "1020065",
+        "display": "{4 (risedronate sodium 35 MG Delayed Release Oral Tablet) } Pack",
+        "ingredient": "risedronate",
+        "receipt": "NLM RxNav drugs"
+      }
+    },
+    "rejected": [
+      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
+    ]
+  }
+}

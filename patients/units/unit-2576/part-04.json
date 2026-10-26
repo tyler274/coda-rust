@@ -1,0 +1,130 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002576",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T11:25",
+          "reason": "Prior authorization for stimulant",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization", "author": "MA", "date": "2026-01-13T11:25", "body": "Pharmacy says new plan year, insurer now requires PA for amphetamine-dextroamphetamine IR 20 mg BID. PA form completed with dx ADHD combined type, years on therapy, PMP reviewed. Submitted electronically."},
+            {"type": "Telephone Encounter", "title": "PA approved", "author": "MA", "date": "2026-01-14T15:40", "body": "PA approved for 12 months. Pharmacy notified, pt picking up today."}
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "office_visit",
+          "start": "2026-03-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-03-12T16:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ADHD", "author": "PCP", "date": "2026-03-12T16:45", "body": "26M. ADHD f/u. Back at work full-time since January. Med effective, no palpitations, sleeping. Neuro: no complaints, neurology follow-up in April.\nAlcohol AUDIT-C 6, weekends. Smoking half pack - says he has been at it 'almost 9 years now.'\nVitals ok. Alert, oriented, organized. Heart regular. Lungs clear. Gait normal.\nA/P: ADHD stable - continue. PMP reviewed. Alcohol - counseled again, with the brain injury and crash history in mind; declines referral. Tobacco - declines. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "portal_message",
+          "start": "2026-05-11T06:42",
+          "reason": "Refill",
+          "documents": [
+            {"type": "Patient Communication", "title": "refill", "author": "patient", "date": "2026-05-11T06:42", "body": "adderall refill please. also the albuterol, mine expired"},
+            {"type": "Patient Communication", "title": "RE: refill", "author": "PCP", "date": "2026-05-11T12:18", "body": "Both sent. Let me know if you're using the inhaler more than once in a while."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "hospital_admission",
+          "start": "2026-06-23T21:50",
+          "end": "2026-07-02T12:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Right femur fracture after motor vehicle collision; acute hypoxemia and confusion",
+          "conditions": [
+            {"label": "Closed displaced fracture of right femur", "icd10": "S72.301A", "action": "diagnosed", "onset": "2026-06-23", "note": "shaft"},
+            {"label": "Fat embolism syndrome", "icd10": "T79.1XXA", "action": "diagnosed", "note": "began 6/25/2026, about 36 hours after injury"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for severe pain", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "pain after femoral nailing"}
+          ],
+          "vitals": [{"time": "2026-06-25T09:50", "bp": [130, 85], "hr": 110, "rr": 30, "spo2": 88}],
+          "labs": [
+            {"panel": null, "collected": "2026-06-25T10:05", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "procedures": [{"procedure": "Initial hospital inpatient care", "performed": "2026-06-24T01:30"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary (outside)", "author": "pulmonary and critical care", "date": "2026-07-06T09:45", "body": "Admitted 6/23/2026, discharged 7/2/2026. Services: orthopedic surgery, pulmonary/critical care.\n\n27M brought in after a high-speed MVC with a closed displaced fracture of the R femoral shaft. Background of yearly crashes since 2021: R hip dislocation with later R femoral head AVN, C6 fracture, extraperitoneal bladder rupture, diffuse axonal injury (2025). Also ADHD, tobacco and alcohol use disorders, seasonal allergic rhinitis. Allergies: penicillin (rash), sulfa (hives). Home meds: amphetamine-dextroamphetamine 20 mg BID, cetirizine 10 mg daily prn, albuterol HFA prn.\n\nCourse: splinted, IV fluids and analgesia while awaiting fixation. Around 36 hours after injury (morning of 6/25) he became acutely short of breath and confused. SpO2 88% on room air, RR 30, HR 110, BP 130/85. Bilateral crackles. Disoriented to time and place at intervals, no focal neurologic deficit. Petechiae across the neck, anterior chest and axillae.\nABG on room air: pH 7.45, PaCO2 32, PaO2 60, HCO3 24.\nCXR: bilateral diffuse infiltrates.\nDiagnosis: fat embolism syndrome. Transferred to ICU, high-flow nasal oxygen; not intubated. Oxygenation and mental status improved over the next three days.\nIntramedullary nailing of the R femur 6/28, uncomplicated. Weaned to room air.\n\nDischarge: home, crutches, WBAT R leg. Oxycodone-acetaminophen 5/325 1-2 tabs q6h prn, short supply. Resume home meds. Ortho clinic 6 weeks with x-rays. PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "telephone",
+          "start": "2026-06-26T08:35",
+          "reason": "Family calling about hospitalization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from mother", "author": "RN", "date": "2026-06-26T08:45", "body": "Mother called. Rowan crashed again Tuesday night, broke his right thigh bone, then yesterday had trouble breathing and was confused - moved to ICU, told her it was fat in the lungs from the fracture. On oxygen, not on a ventilator. Surgery planned once he's stable. Routed to PCP. Will need TCM visit after discharge."}
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "office_visit",
+          "start": "2026-07-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up: femur fracture, fat embolism syndrome",
+          "conditions": [{"label": "Fat embolism syndrome", "icd10": "T79.1XXA", "action": "resolved"}],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-07-08T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2026-07-08T14:05", "body": "27M, home 7/2 after 6/23-7/2 admission. Discharge summary received 7/6 and reviewed: closed displaced R femoral shaft fracture, fat embolism syndrome on 6/25 (hypoxemic, confused, petechiae, diffuse infiltrates; high-flow O2, no intubation), IM nail 6/28.\nToday: on crutches, weight bearing as tolerated. Thigh pain 5/10, using oxycodone-APAP 1 tab at night, ibuprofen not used. Breathing back to normal. Thinking clear per pt and mother.\nMeds reconciled: Adderall 20 BID, oxycodone-APAP prn (short course, ortho prescribing), cetirizine prn, albuterol prn.\nExam: comfortable at rest. Lungs clear bilaterally. Heart regular. No petechiae. R thigh incisions clean, dry, intact; calf soft, nontender. Alert, oriented x3, nonfocal.\nA/P:\n1. Fat embolism syndrome - resolved clinically, room air SpO2 normal today.\n2. R femur fracture s/p IM nail - ortho f/u 6 weeks. Opioid: ortho to manage; reviewed not to combine with alcohol and to lock it up.\n3. Alcohol use disorder - fifth serious crash. He agreed today to take the addiction medicine phone number; he'll call himself. Not ready for a referral to be placed.\n4. Tobacco - smoking slows bone healing; he'll 'try to cut down.' Declined NRT.\n5. ADHD - continue.\nOff work until ortho clears."}
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T09:30",
+          "reason": "Medication refills",
+          "documents": [
+            {"type": "Patient Communication", "title": "meds", "author": "patient", "date": "2026-07-20T09:30", "body": "need my adderall. also can you refill the pain pills, i have 4 left"},
+            {"type": "Patient Communication", "title": "RE: meds", "author": "PCP", "date": "2026-07-20T13:10", "body": "Adderall sent - PMP checked. For the oxycodone, orthopedics is prescribing it, so please ask them; I'd rather one office handle it. Acetaminophen in between is fine. If the pain is getting worse instead of better, call ortho today."}
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "outside_records",
+          "start": "2026-08-13T10:50",
+          "reason": "Orthopedic post-operative note",
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic Post-op Note (outside)", "author": "orthopedic surgery", "date": "2026-08-13T10:50", "body": "Ortho clinic 8/11/2026, 6 weeks s/p IM nailing R femoral shaft fracture. Off opioids. Ambulating with one crutch. Incisions healed. Knee and hip ROM functional. XR R femur: early callus, alignment maintained, nail and screws intact. Advance weight bearing, wean crutch, PT. Return 6 weeks with x-rays. Off work until next visit."}
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T18:20",
+          "reason": "Disability paperwork",
+          "documents": [
+            {"type": "Patient Communication", "title": "disability form", "author": "patient", "date": "2026-08-19T18:20", "body": "my job's short term disability company sent a form for the doctor. uploading it. ortho filled their part, they want you to do the medical history part"},
+            {"type": "Patient Communication", "title": "RE: disability form", "author": "front desk", "date": "2026-08-20T09:05", "body": "Received the form, Rowan. It's with your doctor now. Forms usually take 5-7 business days; we'll message you when it's done."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up; femur fracture recovery",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

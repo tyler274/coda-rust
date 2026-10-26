@@ -1,0 +1,165 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002288",
+      "given": "Ronald",
+      "family": "Hickey",
+      "birth_date": "1953-06-30",
+      "address_line": "118 Bardwell Hollow Road",
+      "phone": "+1-201-555-0179",
+      "email": "ronald.hickey@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with Parkinson disease and medically managed CAD who joins in 2019; achalasia (2021) and wild-type ATTR cardiac amyloidosis (2021-22) follow, then a 2024 CABG complicated by heparin-related bleeding, sternal wound dehiscence, mediastinitis and left phrenic nerve injury, and in 2026 Parkinson disease psychosis managed by tapering pramipexole.",
+      "events": [
+        {
+          "id": "2019-09-05a",
+          "kind": "telephone",
+          "start": "2019-09-05T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2019-09-05T10:20", "body": "Mr. Hickey phoned about transferring his primary care here; wife on the line as well. Membership explained, agreement sent by email. Booked new patient visit 9/17 at 9:00, 60 min slot. Release of records signed by e-form for his previous primary care office; request faxed today. Asked him to bring his pill bottles and his neurologist's contact info."}
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T09:00",
+          "end": "2019-09-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, transfer of care",
+          "conditions": [
+            {"label": "Parkinson disease", "action": "history", "onset": "2016-02-01", "note": "Diagnosed at 62; followed by outside neurology"},
+            {"label": "Coronary artery disease", "action": "history", "onset": "2016-05-01", "note": "Abnormal nuclear stress test 2016 at prior practice; medical management, never catheterized"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2012-01-01"},
+            {"label": "Carpal tunnel syndrome", "action": "history", "onset": "2016-09-01", "note": "Bilateral; both wrists released early 2018"},
+            {"label": "Carpal tunnel syndrome", "action": "resolved", "note": "Released bilaterally 2018, asymptomatic"}
+          ],
+          "medications": [
+            {"drug": "carbidopa 25 MG / levodopa 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Parkinson disease"},
+            {"drug_text": "pramipexole dihydrochloride 1.5 MG 24HR Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily", "dose": {"value": 1.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Parkinson disease"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 76.2, "height_cm": 174.0, "bp": [124, 76], "labs": {"Creatinine": 1.0, "Hemoglobin": 14.2, "Total Cholesterol": 206, "Low Density Lipoprotein": 124, "High Density Lipoprotein": 47, "Triglycerides": 162, "Thyroid Stimulating Hormone": 2.1}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-09-17T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-17T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-17T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-09-17T10:10", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Retired high school mathematics teacher"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-17T09:00"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-09-17T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-17T10:05", "body": "66M here to establish care, transferring from his prior primary care office. Wife with him and fills in dates.\n\nPD: diagnosed early 2016 at age 62 after his wife noticed a tremor in his right hand and that he'd gone quiet-faced. Seen by an outside neurology group, about twice a year. On carbidopa/levodopa 25/100 TID and pramipexole ER 1.5 mg daily. Says the tremor is mostly a nuisance; buttons are slow. No falls, no freezing, no lightheadedness on standing that he notices.\n\nCAD: had a nuclear stress test in 2016 at his old practice, ordered for vague exertional fatigue; told it was abnormal, cardiology recommended medical therapy, never had a cath. No chest pain since. Aspirin 81 and atorvastatin 20.\n\nLipids: on atorvastatin for years.\n\nHands: numb fingers both sides for a couple of years, both wrists released in early 2018; numbness gone.\n\nMeds reconciled from bottles: carbidopa/levodopa 25/100 TID, pramipexole ER 1.5 mg daily, atorvastatin 20 mg daily, aspirin 81 mg daily. NKDA.\nFHx: father MI at 63. Mother had Alzheimer's. One older brother, hypertension.\nSHx: retired after decades teaching high school math. Married. Never smoked, doesn't drink.\n\nExam: well appearing. BP and HR as recorded. Mild resting tremor R hand, reduced facial expression, slightly soft voice. Gait a bit slow, steady, turns in three steps. Heart regular, no murmur. Lungs clear. No edema. Healed volar wrist scars bilaterally.\n\nA/P\n1. Parkinson disease: stable on current regimen; continue with outside neurology. Will request their last note.\n2. CAD, medically managed: asymptomatic. Continue aspirin, statin.\n3. Hyperlipidemia: lipid panel today.\n4. Health maintenance: prior records requested for colonoscopy and vaccine dates. High-dose flu today. HCV and HIV screening today, he agreed.\nCBC, CMP, lipids, TSH drawn. Return 3 months."}
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T14:10",
+          "reason": "Prior primary care records received",
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2016-10-04T10:00"},
+            {"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2017-10-10T10:00"},
+            {"vaccine": "Tdap", "date": "2014-05-20T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "outside primary care", "date": "2019-09-26T14:10", "body": "82 pages received by fax from previous primary care office, scanned. Pertinent items abstracted by RN:\n- 05/2016 pharmacologic nuclear stress test: reported abnormal, read as consistent with coronary artery disease; cardiology letter recommends aspirin and statin, no catheterization at this time.\n- 03/2016 neurology letter: Parkinson disease, carbidopa/levodopa started; pramipexole added later that year.\n- 01/2018 and 03/2018 hand surgery op notes: right then left carpal tunnel release, uncomplicated.\n- 06/2017 colonoscopy: normal to cecum, no polyps; repeat in 10 years.\n- Vaccines: Tdap 5/2014, PCV13 10/2016, PPSV23 10/2017; yearly flu.\n- No allergies listed."}
+          ]
+        },
+        {
+          "id": "2019-09-27a",
+          "kind": "portal_message",
+          "start": "2019-09-27T08:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-27T08:40", "body": "Ronald, your blood work from the 17th came back fine. Blood counts, kidney and liver tests, and thyroid are normal. Hepatitis C and HIV screens negative. Cholesterol about where I'd expect on atorvastatin 20; we'll keep the same dose and recheck yearly. I also got your old office's records, including the 2017 colonoscopy, so you're set there for a while."}
+          ]
+        },
+        {
+          "id": "2019-12-17a",
+          "kind": "office_visit",
+          "start": "2019-12-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-12-17T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2019-12-17T10:55", "body": "Follow-up after establishing. Saw neurology in November, no changes; they'll send a note. Walks the dog most mornings, about 20 min. No chest pain or pressure with walking or shoveling. Bowels a little slow, managing with prunes.\nExam: rest tremor R hand unchanged, mild hypomimia. Heart RRR. Lungs clear. No edema.\nA/P: PD stable, CAD without angina, lipids on statin. No changes. Medicare wellness visit in the spring."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "annual_physical",
+          "start": "2020-03-24T09:00",
+          "reason": "Annual wellness visit",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Visit cancelled", "author": "front desk", "date": "2020-03-20T11:05", "body": "In-person wellness visits paused this month. Called pt, offered video visit instead. Rebooked 4/21 by video."}
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Wellness check by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-21T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-21T10:25", "body": "Video from home, wife beside him, both doing fine and staying in. He's doing a math puzzle a day and walking the loop of their road. No chest symptoms. Tremor the same. Neurology appointment moved to video too.\nMeds unchanged, 90-day supplies at mail order.\nPlan: full wellness visit and labs in the fall when we can see him in person."}
+          ]
+        },
+        {
+          "id": "2020-07-07a",
+          "kind": "pharmacy",
+          "start": "2020-07-07T13:15",
+          "documents": [
+            {"type": "Refill Request", "title": "Atorvastatin refill", "author": "MA", "date": "2020-07-07T13:15", "body": "Mail-order pharmacy request for atorvastatin 20 mg #90 with 3 refills. Last lipids 9/2019. Approved per protocol."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2020-09-22T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-22T09:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-22T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2020-09-22T09:00"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-09-22T09:40"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-09-22T09:42"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2020-09-22T09:55", "body": "AWV, masked visit. Wife present.\nFunction: independent in dressing, bathing, meals, finances; still drives locally in daylight. No falls in the past year. Timed up and go 11 s. Hearing and vision fine with readers.\nCognition: Mini-Cog 5/5.\nMood: PHQ-2 0.\nAdvance directive: wife is health care proxy, form on file now.\nExam: hypomimia, R hand rest tremor, mild cogwheeling R wrist. Heart regular. Lungs clear. No edema.\nPrevention: colonoscopy 2017 normal. Flu high-dose and first Shingrix today; second dose in 2 months. Pneumococcal complete.\nPlan: labs today. Continue meds. See in 6 months."}
+          ]
+        },
+        {
+          "id": "2020-11-24a",
+          "kind": "nurse_visit",
+          "start": "2020-11-24T14:00",
+          "reason": "Shingrix dose 2",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-11-24T14:05"}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-11-24T14:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "RN", "date": "2020-11-24T14:15", "body": "Second recombinant zoster dose given IM left deltoid. Said the first one made him tired for a day. Observed 15 min, fine. Series complete."}
+          ]
+        }
+      ]
+    }
+  ]
+}

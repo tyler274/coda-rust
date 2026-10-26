@@ -1,0 +1,952 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002742",
+   "events": [
+    {
+     "id": "2025-01-22a",
+     "kind": "outside_records",
+     "start": "2025-01-27T13:10",
+     "reason": "Gynecology letter",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Gynecology annual visit",
+       "author": "gynecology",
+       "date": "2025-01-27T13:10",
+       "body": "Annual visit 1/22/2025. Vasomotor symptoms remain well controlled on conjugated estrogens 0.625 mg / medroxyprogesterone 2.5 mg daily. No postmenopausal bleeding. Pelvic exam normal. She wishes to continue. Return in one year."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-06a",
+     "kind": "ed_visit",
+     "start": "2025-02-06T10:40",
+     "end": "2025-02-06T16:30",
+     "service": "Emergency Medicine",
+     "reason": "Fever and productive cough",
+     "conditions": [
+      {
+       "label": "Unspecified bacterial pneumonia",
+       "icd10": "J15.9",
+       "action": "diagnosed",
+       "onset": "2025-02-04",
+       "note": "Right lower lobe"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-02-06T10:45",
+       "temp_c": 38.7,
+       "hr": 106,
+       "rr": 24,
+       "bp": [
+        118,
+        70
+       ],
+       "spo2": 88
+      },
+      {
+       "time": "2025-02-06T11:30",
+       "temp_c": 38.2,
+       "hr": 98,
+       "rr": 20,
+       "bp": [
+        116,
+        68
+       ],
+       "spo2": 94
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-02-06T11:00",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 13.6
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-06T11:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-06T11:00",
+       "results": [
+        {
+         "test": "Rapid Influenza A+B Antigen",
+         "text": "Negative"
+        },
+        {
+         "test": "SARS-CoV-2 (COVID-19) PCR",
+         "text": "Not detected"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-06T11:05",
+       "resulted": "2025-02-11T09:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days (2 sets)"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-02-06T11:20",
+       "text": "PA and lateral chest compared with 8/2024. New right lower lobe airspace consolidation superimposed on chronic diffuse interstitial opacities. No pleural effusion or pneumothorax. Heart size normal.",
+       "conclusion": "Right lower lobe consolidation over chronic interstitial changes, consistent with pneumonia."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-02-06T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-02-06T16:30",
+       "body": "59F with severe seropositive RA, RA-ILD, prior amiodarone lung toxicity, on rituximab (last 10/2024) and prednisone 5 mg, presents with 2 days of fever and cough now productive of yellow-green sputum, more short of breath than her baseline. No chest pain. Treated with methotrexate, infliximab, prednisone and diclofenac in the past; on rituximab since the fall. Takes esomeprazole for stomach protection.\n\nHome meds per pharmacy history: amiodarone 200 mg daily, conjugated estrogens/medroxyprogesterone daily, alendronate weekly, calcium carbonate bid, cholecalciferol daily, ibuprofen prn. NKDA.\nFH: father with male breast cancer and a recent disabling illness; mother with autoimmune disease. Never smoker, no alcohol. Caregiver for her father.\n\nTriage: T 38.7, HR 106, RR 24, BP 118/70, SpO2 88% RA -> 94% on 2 L NC.\nExam: ill appearing, mild accessory muscle use. Coarse crackles R base over diffuse fine crackles. Heart tachycardic, regular.\n\nCXR: new RLL consolidation over chronic interstitial changes.\nWBC 13.6. BMP unremarkable. Flu and COVID negative. Blood cultures x2 sent.\n\nA/P: bacterial pneumonia, RLL, in an immunosuppressed host with fibrotic ILD and new oxygen requirement. Ceftriaxone 1 g IV and azithromycin 500 mg IV given. Admit to medicine."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-06b",
+     "kind": "hospital_admission",
+     "start": "2025-02-06T16:30",
+     "end": "2025-02-09T11:45",
+     "service": "Hospital Medicine",
+     "reason": "Bacterial pneumonia",
+     "medications": [
+      {
+       "drug_text": "cefpodoxime proxetil 200 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily to complete 7 days of antibiotics (last dose 2/12)",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Bacterial pneumonia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-02-08T05:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-08T05:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-02-06T18:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-02-09T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospital medicine",
+       "date": "2025-02-09T11:45",
+       "body": "Admitted 2/6/2025, discharged 2/9/2025.\n\nDiagnosis: right lower lobe bacterial pneumonia in an immunosuppressed patient (rituximab, prednisone) with RA-associated ILD and prior amiodarone pulmonary toxicity.\n\nCourse: treated with IV ceftriaxone and azithromycin. Fever resolved within 36 hours. Oxygen weaned to room air on 2/8; ambulatory saturation at discharge back to her stated baseline in the low 90s. Blood cultures no growth to date. Influenza and COVID testing negative. Repeat WBC normal on 2/8. Prednisone 5 mg continued.\n\nDischarge medications: cefpodoxime 200 mg twice daily through 2/12 to complete 7 days. Continue home medications: prednisone 5 mg daily, esomeprazole 20 mg daily, amiodarone 200 mg daily, conjugated estrogens/medroxyprogesterone daily, alendronate 70 mg weekly, calcium carbonate 600 mg twice daily, cholecalciferol 2000 units daily, ibuprofen as needed, acetaminophen as needed. Rituximab per rheumatology.\n\nFollow-up: PCP within 1 week. Repeat chest X-ray in 6-8 weeks. Rheumatology informed of admission."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-13a",
+     "kind": "office_visit",
+     "start": "2025-02-13T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, pneumonia",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "rr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging",
+       "reason": "Follow-up of right lower lobe pneumonia"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-02-13T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-02-13T11:40",
+       "body": "Seen 4 days after discharge for RLL pneumonia (adm 2/6-2/9). Last cefpodoxime dose was last night. No fever since the hospital. Cough looser and less frequent. Breathing nearly back to her usual.\n\nMed reconciliation: hospital discharge list still shows amiodarone - she has NOT taken it since Aug 2024 and knows not to restart. Hospital notified of the list error. Otherwise lists match.\n\nExam: afebrile. Lungs: few coarse crackles R base on top of her usual dry crackles at both bases. Heart regular. No edema.\n\nA/P: Pneumonia, improving, antibiotics complete. Repeat CXR end of March. Blood cultures final no growth. Rheum aware - infusion due in April; she'll discuss timing with them. Return sooner for fever or worsening breath."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-19a",
+     "kind": "outside_records",
+     "start": "2025-03-24T09:30",
+     "reason": "Cardiology letter",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2025-03-19T10:00",
+       "text": "Sinus rhythm, rate 74. PR 176 ms, QRS 90 ms, QTc 436 ms. No ST-T change.",
+       "conclusion": "Sinus rhythm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Cardiology follow-up",
+       "author": "cardiology",
+       "date": "2025-03-19T16:00",
+       "body": "Seen 3/19/2025. Off amiodarone for seven months with no recurrent atrial fibrillation symptoms, including through her February pneumonia admission. ECG sinus rhythm. No antiarrhythmic needed for now. No anticoagulation at CHA2DS2-VASc 1. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-31a",
+     "kind": "imaging",
+     "start": "2025-03-31T09:15",
+     "reason": "Follow-up chest X-ray",
+     "conditions": [
+      {
+       "label": "Unspecified bacterial pneumonia",
+       "icd10": "J15.9",
+       "action": "resolved"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-03-31T09:15",
+       "text": "PA and lateral chest compared with 2/6/2025. Right lower lobe consolidation has cleared. Chronic diffuse interstitial opacities unchanged. No effusion. Heart size normal.",
+       "conclusion": "Resolved right lower lobe pneumonia. Stable chronic interstitial lung disease."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "done",
+       "date": "2025-03-31T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Chest X-ray result",
+       "author": "PCP",
+       "date": "2025-03-31T15:20",
+       "body": "Pneumonia cleared, chronic ILD unchanged. Pt messaged. Pneumonia resolved on problem list."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-23a",
+     "kind": "annual_physical",
+     "start": "2025-04-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-04-23T09:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-04-23T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-04-23T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-04-23T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-04-23T09:55",
+       "body": "Annual, delayed from winter by the pneumonia. Fully recovered from that. Breathing at her new baseline, gets through the greenhouse with a rest. Father now lives across the state; she drives over every few weeks and handles his pills and appointments by phone. Joints better since rituximab started. Hip ache stable. HT continues per gyn.\n\nExam: Heart regular. Lungs: bibasilar crackles. Clubbing. Mild MCP deformity, no synovitis. Antalgic gait R, mild. Neuro: grip a bit weak both hands, unchanged; no new deficits.\n\nA/P\n- RA on rituximab + pred 5: infusion next week. CBC/CMP today for rheum.\n- RA-ILD / amiodarone toxicity: pulm in Sept.\n- PAF: off amiodarone, sinus per cardiology in March.\n- Osteoporosis: alendronate nearly 4 years; plan to review a drug holiday at 5 years. Ca/D.\n- AVN R hip: conservative.\n- Hx breast ca: mammogram 11/2025.\n- HM: colonoscopy 2032, Pap 2027. Fall vaccines including RSV this year.\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-28a",
+     "kind": "outside_records",
+     "start": "2025-04-30T10:00",
+     "reason": "Rituximab infusion",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Rheumatology infusion note",
+       "author": "rheumatology",
+       "date": "2025-04-30T10:00",
+       "body": "Rituximab 1000 mg IV given 4/28/2025, second six-month course. Afebrile, chest clear of new findings, recovered from February pneumonia. Joint symptoms improved since the first infusion. Tolerated without infusion reaction. Next course in about 6 months. Continue prednisone 5 mg."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-16a",
+     "kind": "lab_only",
+     "start": "2025-07-16T08:30",
+     "reason": "Routine labs",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-07-16T08:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-07-16T08:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-16T08:30",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-07-16T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2025-07-17T12:00",
+       "body": "Your blood counts, kidney and liver tests and vitamin D all look good. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-10a",
+     "kind": "outside_records",
+     "start": "2025-09-15T09:40",
+     "reason": "Pulmonology follow-up",
+     "vitals": {
+      "spo2": 92
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "bp"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology follow-up",
+       "author": "pulmonology",
+       "date": "2025-09-15T09:40",
+       "body": "Seen 9/10/2025. RA-ILD with prior amiodarone toxicity. Pneumonia in February, fully recovered. Breathing stable since last winter; still rests partway through greenhouse chores. Dry cough unchanged.\n\nSpO2 92% on room air at rest. Bibasilar crackles, unchanged. Clubbing.\n\nImpression: stable.\nPlan: continue rituximab per rheumatology and prednisone. Influenza, COVID and RSV vaccines this fall. Return in 6 to 9 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-15a",
+     "kind": "nurse_visit",
+     "start": "2025-10-15T09:00",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-15T09:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-15T09:05"
+      },
+      {
+       "vaccine": "RSV, bivalent (Abrysvo)",
+       "date": "2025-10-15T09:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-15T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2025-10-15T09:30",
+       "body": "Flu and COVID in L arm (separate sites), RSV in R arm. Timed ahead of her rituximab infusion later this month. Observed 15 min. No issues."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-27a",
+     "kind": "outside_records",
+     "start": "2025-10-29T11:00",
+     "reason": "Rituximab infusion",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Rheumatology infusion note",
+       "author": "rheumatology",
+       "date": "2025-10-29T11:00",
+       "body": "Rituximab 1000 mg IV 10/27/2025, third course. Arthritis well controlled; mild morning stiffness only. No infections since February. Tolerated without reaction. Next course in about 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-19a",
+     "kind": "imaging",
+     "start": "2025-11-19T08:30",
+     "reason": "Annual diagnostic mammogram",
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2025-11-19T08:30",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 2023 and 2024. Scattered fibroglandular density. Right post-lumpectomy change stable. No suspicious mass, calcification or distortion.",
+       "conclusion": "BI-RADS 2, benign."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram result",
+       "author": "PCP",
+       "date": "2025-11-20T08:05",
+       "body": "Benign. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-21a",
+     "kind": "portal_message",
+     "start": "2026-01-21T20:30",
+     "reason": "Clumsy hands",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Hands",
+       "author": "patient",
+       "date": "2026-01-21T20:30",
+       "body": "Since around the holidays my hands feel clumsy. Buttons on my cardigan are a struggle and I dropped a pot repotting last week. My legs feel a little wobbly too. Not sure if it's the RA. Can I get in to see you? No rush, the next few weeks are fine."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Hands",
+       "author": "PCP",
+       "date": "2026-01-22T07:45",
+       "body": "Barbara, given your neck history I want to see you soon. Booked you for Tuesday 2/17 at 10. If the weakness gets worse quickly, you have trouble walking, or any trouble with bladder or bowels, go to the emergency department and tell them about the C1-C2 problem."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-14a",
+     "kind": "ed_visit",
+     "start": "2026-02-14T13:10",
+     "end": "2026-02-14T20:40",
+     "service": "Emergency Medicine",
+     "reason": "Progressive weakness of arms and legs",
+     "vitals": [
+      {
+       "time": "2026-02-14T13:15",
+       "temp_c": 36.7,
+       "hr": 82,
+       "rr": 18,
+       "bp": [
+        132,
+        78
+       ],
+       "spo2": 93
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-02-14T13:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-14T13:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical spine X-ray",
+       "loinc": "24946-6",
+       "performed": "2026-02-14T14:20",
+       "text": "Cervical spine radiographs including flexion and extension views. Atlantoaxial subluxation with widening of the atlantodental interval. Lower cervical alignment maintained. No fracture.",
+       "conclusion": "Atlantoaxial subluxation."
+      },
+      {
+       "study": "MRI cervical spine without contrast",
+       "loinc": "30667-0",
+       "performed": "2026-02-14T17:30",
+       "text": "MRI of the cervical spine without contrast. Atlantoaxial subluxation with narrowing of the canal at C1-C2 and compression of the cervical cord at that level. Remaining levels without significant canal stenosis.",
+       "conclusion": "Atlantoaxial subluxation with cord compression at C1-C2."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-02-14T13:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2026-02-14T20:40",
+       "body": "60F with long-standing RA and known atlantoaxial subluxation with cervical myelopathy, here because her arm and leg weakness has been creeping up for two months. Can no longer reliably button a shirt, walking feels unsteady. No fall, trauma or neck injury. No bowel or bladder change. Had a PCP appointment next week but her husband brought her in today because walking has become harder.\n\nMeds per pharmacy history list amiodarone 200 mg daily, rituximab q6mo, prednisone 5 mg, esomeprazole, HT tablet, alendronate, calcium, D3, ibuprofen prn. NKDA. FH: father - male breast cancer, recent debilitating illness; mother - autoimmune disease. Never smoker, no alcohol. Caregiver for father.\n\nExam: Strength 4/5 throughout upper and lower extremities. Tone increased. Reflexes brisk throughout. Upgoing toes bilaterally. Hoffmann sign present on the right. Light touch and pinprick reduced over both shoulders in a cape pattern. Gait wide-based and unsteady.\n\nC-spine films: atlantoaxial subluxation. MRI: C1-C2 subluxation with cord compression.\n\nA/P: progressive cervical myelopathy from RA atlantoaxial subluxation. Rigid collar placed. Spine surgery consulted, recommend admission for decompression and fusion. Admitted."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-14b",
+     "kind": "hospital_admission",
+     "start": "2026-02-14T20:40",
+     "end": "2026-02-21T12:30",
+     "service": "Neurosurgery",
+     "reason": "Cervical myelopathy, atlantoaxial subluxation",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-02-18T05:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-18T05:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-02-14T21:30"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-02-21T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Operative report",
+       "author": "spine surgery",
+       "date": "2026-02-17T15:20",
+       "body": "Date of surgery: 2/17/2026.\nPreoperative and postoperative diagnosis: atlantoaxial subluxation with cervical myelopathy, rheumatoid arthritis.\nProcedure: posterior C1-C2 decompression and instrumented fusion with autograft.\nAnesthesia: general, fiberoptic intubation in neutral alignment. Neuromonitoring stable throughout.\nProne in pins. Posterior midline exposure of C1-C2. Decompression of the C1 posterior arch. C1 lateral mass and C2 pars screws placed under fluoroscopy, reduction achieved, rods secured. Decortication and autograft. Layered closure.\nEstimated blood loss 250 mL. No complications. To recovery extubated, moving all four limbs."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "spine surgery",
+       "date": "2026-02-21T12:30",
+       "body": "Admitted 2/14/2026 from the ED, discharged 2/21/2026.\n\nDiagnosis: progressive cervical myelopathy due to rheumatoid atlantoaxial subluxation.\nProcedure: posterior C1-C2 decompression and fusion 2/17/2026.\n\nCourse: uncomplicated surgery. Hand function and leg strength already slightly better by discharge. Wound clean and dry. Walking with a rolling walker and PT supervision; cleared for home with home physical therapy. Prednisone 5 mg continued through the stay.\n\nDischarge instructions: rigid cervical collar at all times for 12 weeks except for hygiene; no lifting over 10 lb; no driving while in the collar. Avoid NSAIDs including ibuprofen until cleared by spine surgery; acetaminophen for pain. Home PT referral placed.\n\nMedications at discharge (from admission reconciliation): prednisone 5 mg daily, esomeprazole 20 mg daily, amiodarone 200 mg daily, conjugated estrogens/medroxyprogesterone daily, alendronate 70 mg weekly, calcium carbonate, cholecalciferol, acetaminophen as needed. Rituximab per rheumatology - next course to be timed with surgical team.\n\nFollow-up: spine surgery clinic in 6 weeks with X-rays; PCP within 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "office_visit",
+     "start": "2026-02-17T10:00",
+     "reason": "Hand clumsiness",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2026-02-26a",
+     "kind": "office_visit",
+     "start": "2026-02-26T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital visit after cervical fusion",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-02-26T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-02-26T13:50",
+       "body": "In with husband, 5 days home after C1-C2 decompression/fusion (2/17) for progressive myelopathy. Collar on. Pain controlled with acetaminophen; not using ibuprofen per surgeon. Home PT started Tuesday. Buttons still hard but she can hold a cup steadily again. Walker in the house.\n\nMed rec: discharge list again carried amiodarone - not taking since 8/2024, pharmacy profile corrected with her pharmacy by phone today. Ibuprofen on hold per spine surgery.\n\nExam: collar in place, posterior incision clean, dry, staples out per surgical team plan at 2 wks. Grip weak bilaterally, slightly better than she describes from before surgery. Lungs: baseline basilar crackles. Heart regular. Calves soft.\n\nA/P\n- s/p C1-C2 fusion for myelopathy: recovering, collar 12 wks, PT at home. Spine f/u 4/1.\n- RA on rituximab: next infusion due late April; rheum and surgery to coordinate.\n- Fall risk: walker, PT; bathroom grab bar recommended.\n- Ibuprofen held; acetaminophen as needed.\n- Other chronic issues stable.\nRTC 6-8 weeks, sooner prn."
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ibuprofen 400 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held after cervical fusion per spine surgery"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-04a",
+     "kind": "outside_records",
+     "start": "2026-03-06T15:00",
+     "reason": "Home physical therapy evaluation",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Home physical therapy evaluation",
+       "author": "physical therapy",
+       "date": "2026-03-06T15:00",
+       "body": "Home PT evaluation 2/24/2026 (received 3/6). Diagnosis: s/p posterior C1-C2 fusion for cervical myelopathy. Collar precautions reviewed. Ambulates household distances with rolling walker, contact guard on stairs. Fine motor: difficulty with buttons and coins. Plan: 2x/week for 6 weeks - gait and balance training, hand dexterity, home safety. Recommended shower chair and grab bar."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-01a",
+     "kind": "outside_records",
+     "start": "2026-04-03T10:20",
+     "reason": "Spine surgery follow-up",
+     "reports": [
+      {
+       "study": "Cervical spine X-ray",
+       "loinc": "24946-6",
+       "performed": "2026-04-01T09:30",
+       "text": "AP, lateral and open-mouth views. Posterior C1-C2 instrumentation intact in expected position. Alignment maintained. Early graft incorporation.",
+       "conclusion": "Stable C1-C2 fusion construct."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Spine surgery follow-up",
+       "author": "spine surgery",
+       "date": "2026-04-03T10:20",
+       "body": "Six-week postoperative visit 4/1/2026 after posterior C1-C2 decompression and fusion. Hand function and walking are improving; she is now walking in the house without the walker and outdoors with it. Incision healed. X-rays show hardware in good position. Continue collar to 12 weeks, home PT, no lifting over 10 lb. Rituximab may proceed as planned from our standpoint. Ibuprofen still on hold until fusion is further along. Return in 3 months with X-rays."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-27a",
+     "kind": "outside_records",
+     "start": "2026-04-29T09:30",
+     "reason": "Rituximab infusion",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-04-27T08:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Rheumatology infusion note",
+       "author": "rheumatology",
+       "date": "2026-04-29T09:30",
+       "body": "Rituximab 1000 mg IV 4/27/2026, fourth course, cleared by spine surgery. Joints quiet. Recovering well after C1-C2 fusion in February. CBC today normal. Tolerated without reaction. Next course in about 6 months, around late October."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-13a",
+     "kind": "annual_physical",
+     "start": "2026-05-13T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-13T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2026-05-13T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-05-13T10:00",
+       "body": "Annual. Collar came off last week at 12 weeks. Hands steadier - can do buttons slowly, writing better. Walking without the walker indoors and out on level ground; PT finished. Breathing at her baseline. RA quiet after the April infusion. Hip aches about the same. HT per gyn. Mood fine.\n\nExam: Heart regular. Lungs: basilar crackles, baseline. Clubbing. Neck: healed posterior incision. Grip mildly weak both hands, improved from February. Reflexes still brisk. Gait steadier, slightly wide-based. No edema.\n\nA/P\n- s/p C1-C2 fusion: improving. Spine f/u July.\n- RA on rituximab q6mo + pred 5.\n- ILD / amiodarone toxicity: pulm visit due this summer, she will book.\n- PAF: no symptoms off amiodarone; cardiology yearly.\n- Osteoporosis: alendronate 5 years in August - discuss holiday vs continuing at next visit.\n- AVN R hip: conservative per ortho.\n- Hx breast ca: mammogram 11/2026.\n- HM current.\nRTC September."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-08a",
+     "kind": "outside_records",
+     "start": "2026-07-10T11:30",
+     "reason": "Spine surgery follow-up",
+     "reports": [
+      {
+       "study": "Cervical spine X-ray",
+       "loinc": "24946-6",
+       "performed": "2026-07-08T09:45",
+       "text": "AP, lateral and open-mouth views. C1-C2 instrumentation intact without loosening. Progressing bony fusion posteriorly. Alignment unchanged.",
+       "conclusion": "Progressing C1-C2 fusion, hardware in good position."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Spine surgery follow-up",
+       "author": "spine surgery",
+       "date": "2026-07-10T11:30",
+       "body": "Visit 7/8/2026, about five months after posterior C1-C2 decompression and fusion. Collar discontinued at 12 weeks. She continues to improve: buttons and writing easier, gait steadier. X-rays show progressing fusion with hardware in good position. Gradual return to activity; avoid heavy lifting and repetitive overhead work in the greenhouse for now. Occasional ibuprofen is acceptable from our standpoint. Return in 6 months with X-rays."
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ibuprofen 400 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain",
+       "dose": {
+        "value": 400,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Joint pain; resumed with spine surgery clearance"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-24a",
+     "kind": "lab_only",
+     "start": "2026-08-24T08:15",
+     "reason": "Labs for rheumatology",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-08-24T08:15",
+       "pending": true,
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-08-24T08:15",
+       "pending": true,
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-24T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2026-08-24T08:25",
+       "body": "CBC w/ diff and CMP drawn per standing rheum order. Sent to reference lab; results to PCP and rheum when back."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-16a",
+     "kind": "office_visit",
+     "start": "2026-09-16T10:30",
+     "appointment": "booked",
+     "reason": "Routine follow-up; osteoporosis treatment review"
+    }
+   ]
+  }
+ ]
+}

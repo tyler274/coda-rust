@@ -1,0 +1,298 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001834",
+      "given": "Tamika",
+      "family": "Washington",
+      "birth_date": "1987-02-18",
+      "address_line": "212 Federal Street, Apt 3",
+      "phone": "+1-802-555-0166",
+      "email": "tamika.washington@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with ulcerative colitis on mesalamine who joins in 2019. Hypercalcemia in 2021 leads to parathyroidectomy for an adenoma, then persistent calcitriol-mediated hypercalcemia reveals sarcoidosis, later with a facial palsy and, in 2025, enteropathic arthritis.",
+      "events": [
+        {
+          "id": "2019-08-06a",
+          "kind": "telephone",
+          "start": "2019-08-06T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2019-08-06T10:12", "body": "Caller is a 32 y/o teacher in Greenfield looking for a new PCP; her old office closed its internal medicine side. Membership explained, she wants to sign up. Release signed over email for her prior PCP and her GI office. New patient slot given for 8/20 at 3:30, after her summer program ends."}
+          ]
+        },
+        {
+          "id": "2019-08-15a",
+          "kind": "outside_records",
+          "start": "2019-08-15T14:40",
+          "reason": "prior practice records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "front desk", "date": "2019-08-15T14:40", "body": "Records received by fax, 38 pages, scanned.\n\nSummary pulled for chart prep (MA): ulcerative colitis since about 2015, followed by outside GI, on mesalamine 1.2 g twice daily, last GI note says remission. No surgeries. NKDA. Pap with HPV co-test 06/2018 negative/negative. Tetanus last given 2008. Last BMP and CBC 06/2018 unremarkable."}
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T15:30",
+          "end": "2019-08-20T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Ulcerative colitis", "action": "history", "onset": "2015-05-01", "note": "followed by outside GI; in remission on mesalamine"}
+          ],
+          "medications": [
+            {"drug": "mesalamine 1200 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet (1.2 g) by mouth twice daily", "dose": {"value": 1200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "ulcerative colitis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "state": {"weight_kg": 72.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.6}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-08-20T16:35", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-08-20T16:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-08-20T16:35", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-08-20T16:35", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2019-08-20T16:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-08-20T16:25"}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-08-20T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-08-20T17:10", "body": "Establishing care. 32 y/o woman, teaches second grade in town, here to set up primary care after her prior office stopped seeing adults.\n\nHPI: Feels well. UC dx around 2015 after months of bloody stools; scoped then by her GI, who she still sees about once a year. On mesalamine 1.2 g BID since, no flare she can recall in the last 2-3 years. BMs 1-2/day formed, no blood. No steroids in years.\n\nPMH: ulcerative colitis. PSH: none. Meds: mesalamine 1.2 g BID. Allergies: NKDA.\nFH: mother with lupus. Father with type 2 DM. Maternal aunt with sarcoidosis. A paternal cousin with UC.\nSH: Lives alone in an apartment near downtown. Never smoker. Alcohol a drink or so a month at most. No drugs. Walks most evenings.\nGYN: regular cycles. Pap/HPV 06/2018 negative per old records.\n\nROS: negative in detail.\n\nExam: well-appearing. HEENT normal. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender, no masses. Skin clear. Extremities no edema. Neuro grossly nonfocal. Mood and affect normal.\n\nA/P:\n1. UC in remission on mesalamine. Continue. GI follow-up as scheduled with her own GI. CMP/CBC today.\n2. Health maintenance: Tdap today (last tetanus 2008). One-time HIV and hep C screen today, she agrees. Lipids and TSH with the draw. Pap not due until 2023. Flu shot in the fall.\n3. RTC 1 year for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2019-08-22a",
+          "kind": "portal_message",
+          "start": "2019-08-22T12:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-08-22T12:05", "body": "Hi Tamika, everything from Tuesday came back normal: kidney and liver tests, calcium, blood counts, thyroid and cholesterol. The HIV and hepatitis C screens were negative. Good to meet you. See you next summer for a physical."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T15:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2019-10-08T15:58", "body": "Came after school for flu vaccine. No egg allergy, no prior reaction. 0.5 mL IM left deltoid. Waited 15 min, no reaction. VIS reviewed."}
+          ]
+        },
+        {
+          "id": "2020-03-30a",
+          "kind": "outside_records",
+          "start": "2020-03-30T11:20",
+          "reason": "GI follow-up letter",
+          "documents": [
+            {"type": "Outside Records", "title": "Gastroenterology follow-up letter", "author": "gastroenterology", "date": "2020-03-30T11:20", "body": "Gastroenterology clinic, follow-up letter to primary care.\n\nSeen by video for her annual ulcerative colitis visit. She reports one to two formed stools daily without bleeding, urgency or nocturnal stools. No extraintestinal symptoms. Weight stable by her report.\n\nMedications: mesalamine 1.2 g twice daily. Allergies: none known.\n\nImpression: ulcerative colitis in clinical remission on mesalamine monotherapy.\nPlan: continue mesalamine at current dose. Labs with her primary care draws are fine. Return in one year, sooner for any bleeding or change in stool pattern. Surveillance colonoscopy will be timed from her diagnosis date and discussed at a future visit."}
+          ]
+        },
+        {
+          "id": "2020-08-25a",
+          "kind": "annual_physical",
+          "start": "2020-08-25T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-25T09:10", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-25T09:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-08-25T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-08-25T09:30", "body": "Annual. Masked visit. Getting ready for a hybrid fall at school and not thrilled about it, but sleeping OK and mood fine. PHQ-2 0.\n\nUC: quiet, saw GI by video in March, no changes. Taking mesalamine twice a day, misses an evening dose maybe once a week.\n\nROS otherwise negative. No cough, no bowel change, no joint pain.\n\nExam: NAD. HEENT clear. Neck no adenopathy or thyromegaly. Heart regular, no murmur. Lungs clear. Abd soft, NT. Skin without lesions. Ext no edema.\n\nPlan: CMP, CBC today. Flu shot in October. Pap due 2023. Continue mesalamine; reminded her that steady twice-daily dosing matters more than timing. Next physical in a year."}
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-08-26T16:40", "body": "Labs from yesterday are all normal: blood counts, kidney and liver function, electrolytes and calcium. Nothing to change. Have a good start to the year."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T15:34"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T15:34"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T15:40", "body": "Influenza vaccine 0.5 mL IM right deltoid. Screening negative. Tolerated well, observed in the parking lot per current protocol, left without issue."}
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "pharmacy",
+          "start": "2021-01-12T09:50",
+          "reason": "prior authorization renewal",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Mesalamine prior authorization", "author": "MA", "date": "2021-01-12T09:50", "body": "Pharmacy faxed: new plan year, insurer requires PA renewal for mesalamine DR 1.2 g tabs. Her GI usually writes it but she asked us to help since GI office is slow. Completed PA online with dx UC and duration of therapy; approved for 12 months, ref number in media tab. Pharmacy notified, pt notified by portal."}
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T16:00",
+          "reason": "check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "portal_message",
+          "start": "2021-05-04T19:22",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-10T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-01T10:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine card", "author": "patient", "date": "2021-05-04T19:22", "body": "Hi, I got both Pfizer shots through the teacher clinic at the high school, April 10 and May 1. Attaching a photo of my card for your records. Second one knocked me out for a day but I'm fine now."},
+            {"type": "Patient Message", "title": "RE: Vaccine card", "author": "MA", "date": "2021-05-05T08:30", "body": "Thanks! Both doses entered in your chart from the card."}
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "office_visit",
+          "start": "2021-09-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, constipation",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 9}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-08T16:20", "resulted": "2021-09-09T07:40", "results": [{"test": "Calcium", "value": 11.1}, {"test": "Albumin", "value": 4.3}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-08T16:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2021-09-08T16:20", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2021-09-08T16:20", "resulted": "2021-09-10T08:15", "results": [{"test": "Parathyroid Hormone, Intact", "value": 86}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-08T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-09-08T16:45", "body": "CC: tired, constipated, down.\n\nSince about April she has been running on empty. Sleeps 8 hours and wakes unrefreshed. Getting through the school day and then on the couch by 5. Bowels slower than her baseline: every 2-3 days, hard, no blood, which is unusual for her given the UC. Mood lower over the same stretch, less interest in seeing friends, no hopelessness, no thoughts of self-harm. Blames the year of hybrid teaching at first but says summer didn't fix it. No weight change she has noticed, no fevers, no cough, no abdominal pain. Thirstier than usual maybe. Periods regular.\n\nMeds: mesalamine 1.2 g BID. NKDA.\n\nPHQ-9 9, item 9 zero.\n\nExam: tired-appearing but in no distress. Thyroid normal size, no nodules. Neck no masses. Heart RRR. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Skin normal. No edema.\n\nA/P: fatigue, constipation and low mood together for ~5 months. Differential includes thyroid, anemia, a metabolic cause such as calcium, and depression. CMP, CBC, TSH today. If calcium is up will add PTH to the same specimen. Talked about mood; she would rather sort out the physical side first, and agrees to a follow-up PHQ in a few weeks. Fiber and fluids for the constipation in the meantime."}
+          ]
+        },
+        {
+          "id": "2021-09-10a",
+          "kind": "telephone",
+          "start": "2021-09-10T12:30",
+          "reason": "abnormal labs",
+          "conditions": [{"label": "Hypercalcemia", "icd10": "E83.52", "action": "diagnosed", "onset": "2021-09-08"}],
+          "orders": [{"id": "endo-referral", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "hypercalcemia with elevated PTH"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Lab follow-up call", "author": "PCP", "date": "2021-09-10T12:30", "body": "Called pt at lunch. Calcium 11.1 with albumin 4.3, so true hypercalcemia. PTH added on came back 86, high. TSH and CBC normal, creatinine normal. Explained that a high calcium with a high PTH usually points to an overactive parathyroid gland, which could explain the fatigue, constipation and mood. Referral to endocrinology placed. Asked her to keep up fluids, avoid calcium supplements or antacids, and to call for confusion, vomiting or abdominal pain. She was relieved there might be a reason."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-05T15:33"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T15:33"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2021-10-05T15:40", "body": "Flu vaccine IM left deltoid, no issues. Pt asked when her endo appointment is; confirmed 10/18 with the outside endocrinology office, info given."}
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "specialist_visit",
+          "start": "2021-10-18T10:00",
+          "service": "Endocrinology",
+          "reason": "hypercalcemia",
+          "state": {"labs": {"Calcium": 11.2}},
+          "conditions": [
+            {"label": "Hyperparathyroidism, primary", "action": "diagnosed", "onset": "2021-09-08"},
+            {"label": "Osteopenia", "action": "diagnosed", "onset": "2021-10-18"}
+          ],
+          "vitals": {"bp": [130, 85], "hr": 78},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-10-18T10:45", "results": [{"test": "Calcium", "value": 11.2}, {"test": "Creatinine", "value": 0.9}]},
+            {"panel": null, "collected": "2021-10-18T10:45", "results": [{"test": "Phosphorus", "value": 2.4}, {"test": "Parathyroid Hormone, Intact", "text": "Elevated"}]},
+            {"panel": null, "collected": "2021-10-20T08:00", "results": [{"test": "Calcium 24 hour urine", "loinc": "6874-2", "unit": "mg/(24.h)", "value": 340}]}
+          ],
+          "reports": [
+            {"study": "DXA bone density, hip and spine", "performed": "2021-10-18T11:30", "text": "Lumbar spine and bilateral hip DXA. Bone mineral density is decreased at the measured sites compared with young adult reference, in the osteopenic range. No prior study for comparison.", "conclusion": "Low bone mass consistent with osteopenia."}
+          ],
+          "orders": [{"id": "endo-referral", "action": "done", "date": "2021-10-18T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2021-10-29T09:15", "body": "Outside endocrinology clinic. Consultation, date of service 10/18/2021.\n\nThank you for asking us to see Ms. Washington, 34, for hypercalcemia.\n\nShe describes six months of tiredness, slower bowels and lower mood. No kidney stones, no fractures. Not on calcium, vitamin D, thiazides or lithium. She mentions her mother had surgery on a gland in her neck years ago; details unknown.\n\nMeds: mesalamine 1.2 g twice daily. Allergies: none known.\nSocial: teacher, never smoker, rare alcohol.\n\nBP 130/85, HR 78. Well-appearing, no neck mass, examination otherwise unremarkable.\n\nData: calcium 11.2 mg/dL, phosphate 2.4 mg/dL (low), creatinine 0.9 mg/dL, PTH elevated. Your PTH of 86 noted. 24-hour urine calcium 340 mg/24 h, hypercalciuric. DXA today: osteopenia at spine and hips.\n\nAssessment: PTH-dependent hypercalcemia with low phosphate, consistent with primary hyperparathyroidism. Young age, hypercalciuria and low bone density all meet criteria for surgery.\nPlan: parathyroid sestamibi imaging, then referral to endocrine surgery. Avoid dehydration. We will see her after surgery.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "office_visit",
+          "start": "2021-11-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-operative evaluation",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-11-16T16:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-11-16T16:00", "results": [{"test": "Calcium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": null, "collected": "2021-11-16T16:00", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-11-16T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Pre-operative Evaluation", "author": "PCP", "date": "2021-11-16T16:20", "body": "Pre-op H&P requested by the endocrine surgery group for a focused parathyroidectomy planned 11/30. Sestamibi done 11/3 per the patient, \"lit up one spot on the left\"; we do not have the report yet.\n\nNo prior anesthesia. No bleeding history, no family history of anesthesia problems. Climbs two flights of stairs with her class without stopping. No chest pain or palpitations. Fatigue unchanged.\n\nMeds: mesalamine. NKDA.\n\nExam: airway unremarkable, neck supple without palpable mass. Heart regular, no murmur. Lungs clear. Abdomen benign.\n\nA/P: low-risk patient for low-risk surgery. No further testing needed beyond CBC, BMP and urine hCG requested by surgery. OK to continue mesalamine through surgery unless anesthesia says otherwise. Form faxed back to surgery."}
+          ]
+        },
+        {
+          "id": "2021-12-03a",
+          "kind": "portal_message",
+          "start": "2021-12-03T18:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Had my surgery", "author": "patient", "date": "2021-12-03T18:10", "body": "Just letting you know the parathyroid surgery was Tuesday and I went home the same day. Throat is sore and the incision is a little puffy but OK. They said one gland was taken out. Do I need labs with you or with them?"},
+            {"type": "Patient Message", "title": "RE: Had my surgery", "author": "PCP", "date": "2021-12-04T09:20", "body": "Glad it went smoothly. The surgeons and endocrinology usually check your calcium afterward, so follow their plan. Some puffiness at the incision is common in the first week; call them if it gets red, hot or swells quickly. Can you ask them to send us the operative report and pathology? We have not received anything yet."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "office_visit",
+          "start": "2021-12-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath, cough, leg bumps",
+          "conditions": [
+            {"label": "Sarcoidosis of lung with sarcoidosis of lymph nodes", "icd10": "D86.2", "action": "diagnosed", "onset": "2021-10-20", "note": "clinical diagnosis: hilar adenopathy, erythema nodosum, high ACE and calcitriol"},
+            {"label": "Erythema nodosum", "icd10": "L52", "action": "diagnosed", "onset": "2021-12-01"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-12-20T16:05", "results": [{"test": "Calcium", "value": 11.8}, {"test": "Creatinine", "value": 0.9}, {"test": "Albumin", "value": 4.2}]},
+            {"panel": null, "collected": "2021-12-20T16:05", "resulted": "2021-12-23T10:00", "results": [
+              {"test": "Parathyroid Hormone, Intact", "value": 8},
+              {"test": "25-hydroxy Vitamin D", "value": 34},
+              {"test": "1,25-dihydroxyvitamin D", "loinc": "62290-2", "unit": "pg/mL", "value": 96},
+              {"test": "Angiotensin converting enzyme", "loinc": "2742-5", "unit": "U/L", "value": 104}
+            ]},
+            {"panel": null, "collected": "2021-12-22T08:00", "resulted": "2021-12-27T14:00", "results": [{"test": "Calcium 24 hour urine", "loinc": "6874-2", "unit": "mg/(24.h)", "value": 360}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2021-12-20T16:30", "text": "PA and lateral views. Bilateral hilar lymphadenopathy. Lungs are otherwise clear without consolidation. No pleural effusion or pneumothorax. Heart size normal.", "conclusion": "Bilateral hilar lymphadenopathy."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2021-12-20T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-20T17:50", "body": "S: Three weeks out from parathyroid surgery (outside surgery group; op note still not here). Since about late October she has been getting more winded climbing to her classroom, with a dry hacking cough, and she is still worn out. A few weeks ago painful red lumps came up on both shins. No joint pain or swelling, no red or painful eyes, no travel, no sick contacts beyond the usual classroom colds, no fever she has measured. Neck incision healing. She says the surgeons told her the calcium \"didn't come down as much as they hoped.\"\n\nMeds: mesalamine 1.2 g BID. NKDA.\nFH notable for a maternal aunt with sarcoidosis.\n\nO: vitals normal, sat normal on room air. Neck: healing low transverse incision, no hematoma. Lungs: fine crackles at both bases. Heart regular. Shins: several tender, warm, raised red-violet nodules over both anterior shins, 1 to 3 cm, no ulceration. No joint effusions. Eyes white and quiet.\n\nA/P:\n1. Cough, exertional dyspnea, bibasilar crackles and erythema nodosum in a young Black woman with an aunt with sarcoid: sarcoidosis is the leading concern. CXR today.\n2. Hypercalcemia persisting after parathyroidectomy. Repeat CMP plus PTH, 25-OH and 1,25-OH vitamin D, and ACE. 24-hour urine calcium again; jug given.\n3. UC quiet. Continue mesalamine.\nWill call with results.\n\nAddendum 18:40: CXR read: bilateral hilar lymphadenopathy, lungs otherwise clear. With the erythema nodosum this is very likely sarcoidosis; added to problem list as a clinical diagnosis pending labs. Called pt and explained."}
+          ]
+        },
+        {
+          "id": "2021-12-28a",
+          "kind": "telephone",
+          "start": "2021-12-28T11:15",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results and plan", "author": "PCP", "date": "2021-12-28T11:15", "body": "Spoke with pt (school vacation, home). Results: calcium 11.8, creatinine 0.9, albumin 4.2. PTH 8, now low, as it should be with the adenoma out. 25-OH vit D 34 normal but 1,25-OH vit D 96, high. ACE 104, high. 24-hr urine calcium 360.\n\nInterpretation: the calcium is now coming from the sarcoidosis, which makes active vitamin D. Fits with the hilar nodes and the shin nodules. Advised: no calcium or vitamin D supplements, limit high-calcium antacids, drink plenty of water, avoid long sun exposure. Discussed that sarcoid with this picture can settle on its own; plan to recheck in about 3 months and refer on if not improving. She will forward these to her endocrinologist. Call for vomiting, confusion, chest pain or worsening breathing."}
+          ]
+        }
+      ]
+    }
+  ]
+}
