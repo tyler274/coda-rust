@@ -137,9 +137,9 @@ variable "langfuse_iap_enabled" {
 
   validation {
     condition = !var.langfuse_iap_enabled || (
-      var.langfuse_hostname != null && var.langfuse_iap_client_id != null && var.langfuse_iap_certificate != null && length(var.langfuse_iap_members) > 0
+      var.langfuse_hostname != null && var.langfuse_iap_client_id != null && var.langfuse_iap_certificate != null
     )
-    error_message = "langfuse_iap_enabled requires langfuse_hostname, langfuse_iap_client_id, langfuse_iap_certificate, and at least one langfuse_iap_members entry."
+    error_message = "langfuse_iap_enabled requires langfuse_hostname, langfuse_iap_client_id, and langfuse_iap_certificate."
   }
 }
 
@@ -168,6 +168,22 @@ variable "langfuse_iap_members" {
   description = "IAM principals (user:, group:) allowed through IAP to the Langfuse UI."
   type        = list(string)
   default     = []
+
+  validation {
+    condition     = !var.langfuse_iap_enabled || length(var.langfuse_iap_members) == 0 || var.langfuse_iap_backend_service != null
+    error_message = "Granting Langfuse access requires its operator-verified regional backend service name. Bootstrap the gateway with no members until that name is known."
+  }
+}
+
+variable "langfuse_iap_backend_service" {
+  description = "GKE-created regional backend service name, verified by the operator for the Langfuse HTTPRoute. Null bootstraps the gateway without granting access; never inferred from the Kubernetes Service name."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.langfuse_iap_backend_service == null || try(trimspace(var.langfuse_iap_backend_service) != "", false)
+    error_message = "The Langfuse regional backend service name must be nonempty when supplied."
+  }
 }
 
 variable "proxy_only_subnet_cidr" {
