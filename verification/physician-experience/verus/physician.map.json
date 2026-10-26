@@ -1,9 +1,9 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "fa0ca349dac5f14a133841ceb5b98908ad53d0b5f166e675fa7be8e0578edd3d",
-  "generated_sha256": "b2f8dd88066481f2473e83a6d6c5a3d847b443ffb19195120a221df82d20f3ef",
-  "steps_sha256": "ab072033908e088ef89fda1fbf57751b7542bc82c39a2f22a79430d5e733a885",
+  "chart_sha256": "f04afd35eab056ce34d6b993918f759fb199eaa2cdc0611c2ea836483aba1cb1",
+  "generated_sha256": "2b375b651f7efa2284828a175f195e8ea1c7ed640f5e6c89b051ca6ed9af817d",
+  "steps_sha256": "7467ad596a8aeba8102347d3a525092dadaed2a56f51ba9ab587ff17acd49183",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
     {
@@ -2146,13 +2146,8 @@
           "initial": false
         },
         {
-          "caption": "Records kept.Checking for new records",
-          "variant": "RegionRecordsSource::StateRecordsKeptCheckingForNewRecords",
-          "initial": false
-        },
-        {
-          "caption": "Records kept.Records couldn't be updated, retrying",
-          "variant": "RegionRecordsSource::StateRecordsKeptRecordsCouldnTBeUpdatedRetrying",
+          "caption": "Records kept.Records couldn't be updated",
+          "variant": "RegionRecordsSource::StateRecordsKeptRecordsCouldnTBeUpdated",
           "initial": false
         },
         {
@@ -24882,10 +24877,10 @@
       ]
     },
     {
-      "label": "the daily records check starts",
-      "function": "event_the_daily_records_check_starts",
+      "label": "the records source can't update",
+      "function": "event_the_records_source_can_t_update",
       "cause": "the records source",
-      "intent": "Each source is checked at least daily, with no model calls (CT).",
+      "intent": "\"Records couldn't be updated\"; Coda keeps working from the last good records. How often the runtime checks and retries is not the graph's (Dev 2026-10-24; infrastructure-gaps.md).",
       "needs": {
         "not": false,
         "states": {
@@ -24893,13 +24888,36 @@
             "Records kept.Records current"
           ]
         },
-        "reason": "only a source with current records is checked"
+        "reason": "only a source with current records can fall behind"
       },
       "transitions": [
         {
           "region": "Records source",
           "from": "Records kept.Records current",
-          "to": "Records kept.Checking for new records",
+          "to": "Records kept.Records couldn't be updated",
+          "guard": null
+        }
+      ]
+    },
+    {
+      "label": "the records source updates again",
+      "function": "event_the_records_source_updates_again",
+      "cause": "the records source",
+      "intent": "Records are current again; with nothing new, no review follows.",
+      "needs": {
+        "not": false,
+        "states": {
+          "Records source": [
+            "Records kept.Records couldn't be updated"
+          ]
+        },
+        "reason": "only a source that couldn't update recovers"
+      },
+      "transitions": [
+        {
+          "region": "Records source",
+          "from": "Records kept.Records couldn't be updated",
+          "to": "Records kept.Records current",
           "guard": null
         }
       ]
@@ -24908,21 +24926,22 @@
       "label": "new records arrive",
       "function": "event_new_records_arrive",
       "cause": "the records source",
-      "intent": "New records for the patient are available to read.",
+      "intent": "New records for the patient are available to read; a source that couldn't update is current again.",
       "needs": {
         "not": false,
         "states": {
           "Records source": [
             "Connecting the source",
-            "Records kept.Checking for new records"
+            "Records kept.Records couldn't be updated",
+            "Records kept.Records current"
           ]
         },
-        "reason": "records arrive from a connecting or checking source"
+        "reason": "records arrive only from a connected source"
       },
       "transitions": [
         {
           "region": "Records source",
-          "from": "Records kept.Checking for new records",
+          "from": "Records kept.Records couldn't be updated",
           "to": "Records kept.Records current",
           "guard": null
         },
@@ -25100,75 +25119,6 @@
       ]
     },
     {
-      "label": "the check finds nothing new",
-      "function": "event_the_check_finds_nothing_new",
-      "cause": "the records source",
-      "intent": "Nothing new; no review follows.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Records source": [
-            "Records kept.Checking for new records"
-          ]
-        },
-        "reason": "only a running check finishes"
-      },
-      "transitions": [
-        {
-          "region": "Records source",
-          "from": "Records kept.Checking for new records",
-          "to": "Records kept.Records current",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "the records check fails",
-      "function": "event_the_records_check_fails",
-      "cause": "the records source",
-      "intent": "\"Records couldn't be updated\"; Coda keeps working from the last good records.",
-      "needs": {
-        "not": false,
-        "states": {
-          "Records source": [
-            "Records kept.Checking for new records"
-          ]
-        },
-        "reason": "only a running check fails"
-      },
-      "transitions": [
-        {
-          "region": "Records source",
-          "from": "Records kept.Checking for new records",
-          "to": "Records kept.Records couldn't be updated, retrying",
-          "guard": null
-        }
-      ]
-    },
-    {
-      "label": "the records check retries",
-      "function": "event_the_records_check_retries",
-      "cause": "the records source",
-      "intent": "The check retries on its own; a small failure never waits a day (N11).",
-      "needs": {
-        "not": false,
-        "states": {
-          "Records source": [
-            "Records kept.Records couldn't be updated, retrying"
-          ]
-        },
-        "reason": "only a failed check retries"
-      },
-      "transitions": [
-        {
-          "region": "Records source",
-          "from": "Records kept.Records couldn't be updated, retrying",
-          "to": "Records kept.Checking for new records",
-          "guard": null
-        }
-      ]
-    },
-    {
       "label": "the source becomes unavailable",
       "function": "event_the_source_becomes_unavailable",
       "cause": "the records source",
@@ -25189,13 +25139,7 @@
         },
         {
           "region": "Records source",
-          "from": "Records kept.Checking for new records",
-          "to": "Source unavailable, last good records kept",
-          "guard": null
-        },
-        {
-          "region": "Records source",
-          "from": "Records kept.Records couldn't be updated, retrying",
+          "from": "Records kept.Records couldn't be updated",
           "to": "Source unavailable, last good records kept",
           "guard": null
         }
@@ -25229,7 +25173,7 @@
         {
           "region": "Records source",
           "from": "Source unavailable, last good records kept",
-          "to": "Records kept.Checking for new records",
+          "to": "Records kept.Records current",
           "guard": null
         }
       ]
@@ -25255,13 +25199,7 @@
         },
         {
           "region": "Records source",
-          "from": "Records kept.Checking for new records",
-          "to": "Source unavailable, last good records kept",
-          "guard": null
-        },
-        {
-          "region": "Records source",
-          "from": "Records kept.Records couldn't be updated, retrying",
+          "from": "Records kept.Records couldn't be updated",
           "to": "Source unavailable, last good records kept",
           "guard": null
         },
@@ -25289,7 +25227,7 @@
         {
           "region": "Records source",
           "from": "Source unavailable, last good records kept",
-          "to": "Records kept.Checking for new records",
+          "to": "Records kept.Records current",
           "guard": null
         },
         {
@@ -26626,8 +26564,7 @@
             "not": false,
             "states": {
               "Records source": [
-                "Records kept.Checking for new records",
-                "Records kept.Records couldn't be updated, retrying",
+                "Records kept.Records couldn't be updated",
                 "Records kept.Records current",
                 "Source unavailable, last good records kept"
               ]

@@ -1498,20 +1498,14 @@ pub proof fn preserves_event_check_your_ask_coda_to_revise_on_the_reply_again(s:
 pub proof fn preserves_event_identity_access_granted(s: State, t: State)
     requires inductive(s), ensures event_identity_access_granted(s, t) ==> inductive(t),
 {}
-pub proof fn preserves_event_the_daily_records_check_starts(s: State, t: State)
-    requires inductive(s), ensures event_the_daily_records_check_starts(s, t) ==> inductive(t),
+pub proof fn preserves_event_the_records_source_can_t_update(s: State, t: State)
+    requires inductive(s), ensures event_the_records_source_can_t_update(s, t) ==> inductive(t),
+{}
+pub proof fn preserves_event_the_records_source_updates_again(s: State, t: State)
+    requires inductive(s), ensures event_the_records_source_updates_again(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_new_records_arrive(s: State, t: State)
     requires inductive(s), ensures event_new_records_arrive(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_the_check_finds_nothing_new(s: State, t: State)
-    requires inductive(s), ensures event_the_check_finds_nothing_new(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_the_records_check_fails(s: State, t: State)
-    requires inductive(s), ensures event_the_records_check_fails(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_the_records_check_retries(s: State, t: State)
-    requires inductive(s), ensures event_the_records_check_retries(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_the_source_becomes_unavailable(s: State, t: State)
     requires inductive(s), ensures event_the_source_becomes_unavailable(s, t) ==> inductive(t),
@@ -2392,11 +2386,9 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
     preserves_event_your_ask_coda_to_revise_on_the_reply_can_t_be_confirmed(s, t);
     preserves_event_check_your_ask_coda_to_revise_on_the_reply_again(s, t);
     preserves_event_identity_access_granted(s, t);
-    preserves_event_the_daily_records_check_starts(s, t);
+    preserves_event_the_records_source_can_t_update(s, t);
+    preserves_event_the_records_source_updates_again(s, t);
     preserves_event_new_records_arrive(s, t);
-    preserves_event_the_check_finds_nothing_new(s, t);
-    preserves_event_the_records_check_fails(s, t);
-    preserves_event_the_records_check_retries(s, t);
     preserves_event_the_source_becomes_unavailable(s, t);
     preserves_event_the_source_is_reconnected(s, t);
     preserves_event_the_practice_s_records_source_goes_down(s, t);

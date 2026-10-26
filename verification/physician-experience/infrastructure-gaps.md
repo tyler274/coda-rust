@@ -50,8 +50,9 @@ that finish on older records say so and offer Update (decision 7).
 
 ## Records currency
 
-**Assumed away.** Records stay current while the source is up. The graph shows a
-failed check and a source that is down, but no "overdue" state.
+**Assumed away.** How often sources are checked and how a failed check retries.
+The graph shows records current, records that couldn't be updated, and a source
+that is down, but no checking or "overdue" state.
 
 **Must guarantee.** Each source is checked at least daily, with no model calls,
 and a review follows only when something is new (CT). A failed check retries
