@@ -228,7 +228,20 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     Store::save(tx, &scope, &state).await.unwrap();
     drop(s);
     let s = Store::connect(&url).await.unwrap();
-    assert!(s.pending().await.unwrap().contains(&scope));
+    // Read from this test's practice onward: other tests leave pending chats
+    // in the shared database, and the first page in key order may be theirs.
+    let from = Scope {
+        practice: scope.practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    assert!(
+        s.pending_batch(100, Some(&from))
+            .await
+            .unwrap()
+            .contains(&scope)
+    );
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(first.attempt, next.attempt);
     assert!(s.assert_current(&first).await.is_err());
@@ -619,4 +632,181 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     assert!(store.heartbeat(&claim, 60).await.is_err());
     let successor = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
     assert_ne!(successor.attempt, claim.attempt);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chats_list_one_physicians_workspace_by_latest_activity() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = |physician: &str, workspace: &str, chat: &str| Scope {
+        practice: practice.clone(),
+        physician: physician.into(),
+        workspace: workspace.into(),
+        chat: chat.into(),
+    };
+    let input = |key: &str, text: &str| Input {
+        key: key.into(),
+        text: text.into(),
+        timezone: "UTC".into(),
+    };
+    for (key, s, text) in [
+        ("a1", scope("me", "ws", "chat-a"), "About labs"),
+        ("b1", scope("me", "ws", "chat-b"), "About meds"),
+        ("a2", scope("me", "ws", "chat-a"), "And the follow-up"),
+        ("x1", scope("other", "ws", "chat-x"), "Not mine"),
+        ("y1", scope("me", "elsewhere", "chat-y"), "Other patient"),
+    ] {
+        assert_eq!(
+            store.accept(&s, &input(key, text)).await.unwrap(),
+            Accepted::New
+        );
+    }
+    // Same-second accepts tie on the clock; move chat-a's activity forward so
+    // the order is decided by activity, not the id tie-break.
+    let (tx, mut state, now) = store.locked(&scope("me", "ws", "chat-a")).await.unwrap();
+    assert!(state.opened_at > 0 && state.opened_at <= now);
+    state.last_activity_at = now + 100;
+    Store::save(tx, &scope("me", "ws", "chat-a"), &state)
+        .await
+        .unwrap();
+
+    let chats = store.chats(&practice, "me", "ws").await.unwrap();
+    let listed: Vec<_> = chats
+        .iter()
+        .map(|c| (c.chat.as_str(), c.first_message.as_str()))
+        .collect();
+    assert_eq!(listed, [("chat-a", "About labs"), ("chat-b", "About meds")]);
+    assert!(chats.iter().all(|c| c.opened_at > 0));
+
+    // Equal activity falls back to chat id descending.
+    let (tx, mut state, _) = store.locked(&scope("me", "ws", "chat-b")).await.unwrap();
+    state.last_activity_at = chats[0].last_activity_at;
+    Store::save(tx, &scope("me", "ws", "chat-b"), &state)
+        .await
+        .unwrap();
+    let ids: Vec<_> = store
+        .chats(&practice, "me", "ws")
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|c| c.chat)
+        .collect();
+    assert_eq!(ids, ["chat-b", "chat-a"]);
+
+    assert!(
+        store
+            .chats(&practice, "nobody", "ws")
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    assert!(store.chats(&practice, "", "ws").await.is_err());
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn chat_list_orders_by_activity_before_its_limit() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = |physician: &str, chat: String| Scope {
+        practice: practice.clone(),
+        physician: physician.into(),
+        workspace: "ws".into(),
+        chat,
+    };
+    let input = |key: String| Input {
+        key,
+        text: "Hello".into(),
+        timezone: "UTC".into(),
+    };
+    // More chats than the list holds. Chat-id order alone would list
+    // chat-005..chat-204 and leave chat-000 out.
+    let total = MAX_LISTED_CHATS as usize + 5;
+    for n in 0..total {
+        store
+            .accept(
+                &scope("me", format!("chat-{n:03}")),
+                &input(format!("me-{n}")),
+            )
+            .await
+            .unwrap();
+    }
+    // Another physician's newer chats in the same workspace never list.
+    for n in 0..3 {
+        let theirs = scope("other", format!("chat-zzz-{n}"));
+        store
+            .accept(&theirs, &input(format!("other-{n}")))
+            .await
+            .unwrap();
+        let (tx, mut state, now) = store.locked(&theirs).await.unwrap();
+        state.last_activity_at = now + 1000;
+        Store::save(tx, &theirs, &state).await.unwrap();
+    }
+    let before = store.chats(&practice, "me", "ws").await.unwrap();
+    assert_eq!(before.len(), MAX_LISTED_CHATS as usize);
+    assert!(
+        before
+            .iter()
+            .all(|c| str::starts_with(&c.chat, "chat-") && !str::contains(&c.chat, "zzz"))
+    );
+
+    // A new message in a later database second makes chat-000 the newest.
+    let oldest = scope("me", "chat-000".into());
+    let newest_before = before[0].last_activity_at;
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+    loop {
+        let (tx, _, now) = store.locked(&oldest).await.unwrap();
+        tx.commit().await.unwrap();
+        if now > newest_before {
+            break;
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "database clock stalled"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    }
+    assert_eq!(
+        store
+            .accept(&oldest, &input("me-again".into()))
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let after = store.chats(&practice, "me", "ws").await.unwrap();
+    assert_eq!(after.len(), MAX_LISTED_CHATS as usize);
+    assert_eq!(after[0].chat, "chat-000", "the active chat must list first");
+    assert!(after[0].last_activity_at > newest_before);
+    assert!(
+        after
+            .windows(2)
+            .all(|pair| (pair[0].last_activity_at, &pair[0].chat)
+                >= (pair[1].last_activity_at, &pair[1].chat)),
+        "newest activity first, chat id descending on ties"
+    );
+    assert!(after.iter().all(|c| !str::contains(&c.chat, "zzz")));
+
+    // Settle every chat: the restart sweeps in other tests share this
+    // database and read pending work from the start of the key order.
+    let chats = (0..total)
+        .map(|n| scope("me", format!("chat-{n:03}")))
+        .chain((0..3).map(|n| scope("other", format!("chat-zzz-{n}"))));
+    for chat in chats {
+        let (tx, mut state, _) = store.locked(&chat).await.unwrap();
+        state.status = "completed".into();
+        Store::save(tx, &chat, &state).await.unwrap();
+    }
+    assert!(
+        store
+            .pending_batch(100, Some(&scope("", String::new())))
+            .await
+            .unwrap()
+            .iter()
+            .all(|s| s.practice != practice)
+    );
 }
