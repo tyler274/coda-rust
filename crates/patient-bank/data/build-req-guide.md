@@ -53,8 +53,12 @@ you want one):
 - **Ages and years.** Ages the source states follow from the seed's birth date and
   the practice dates. A year stated in source text ("seen in 2022") follows the
   re-dated timeline.
-- **After the source ends.** The years between the last source encounter and today
-  hold only the primary-care layer, with each condition's ordinary course.
+- **After the source ends.** A condition the source sets up follows its usual next
+  steps to today: a localized tumor is treated, a suspected diagnosis is confirmed
+  or set aside, a started drug is monitored. Each step is an addition with its
+  findings given exactly. Nothing new is diagnosed; naming the specific form of a
+  source condition (the glucagonoma a pancreatic tumor workup finds) is part of its
+  course. Around that, the primary-care layer.
 
 ## Resolutions
 
@@ -87,7 +91,9 @@ coherent or when any physician would do it at a source event: a drug the source
 names later (it must start somewhere), potassium for a potassium of 2.9, a test
 that supports a diagnosis the source asserts with no evidence (one ABI for a listed
 PAD), the visit that made the referral. Give each addition's numbers or findings
-exactly. Never add a diagnosis, a new problem, a family member or a life event.
+exactly. Never add a diagnosis, a new problem, a family member or a life event;
+the next steps of a source condition after the source ends are the one place
+additions may run longer.
 
 ## The primary-care layer
 
