@@ -23,6 +23,7 @@ explain responsibilities, implemented behavior and operating procedures.
 | Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
 | Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
 | Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
+| Synthetic patients: the patient bank tool and the patient set | [Synthetic patients](book/src/patient-bank.md), then [the patient-bank README](crates/patient-bank/README.md) |
 | Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
 
 [Operating invariants](book/src/agent-contracts.md) keeps the common authority,

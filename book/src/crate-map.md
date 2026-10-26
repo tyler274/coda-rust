@@ -57,6 +57,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
+| `patient-bank` | [`src/lib.rs`](/crates/patient-bank/src/lib.rs), [`src/main.rs`](/crates/patient-bank/src/main.rs) | The synthetic patient bank: chart authoring checks, the verified code catalog, the FHIR build and its validation | [Synthetic patients](patient-bank.md) |
 | `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart and retain the reference shipping clients | This page |
 | `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, and `apply-migrations`; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
