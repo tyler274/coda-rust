@@ -305,6 +305,13 @@ Linear wins.
 - Phone readings arrive one by one with their time and time zone (A2, A3) and
   reach the next review rather than starting one (Dev 2026-10-06). Portal
   records start the new-records review.
+- On iPhone, Apple Health also brings in clinical records you already connected
+  and approved in the Health app, after their own Apple permission. They arrive
+  and change like portal records and start the new-records review. Duet never
+  claims it can add, refresh or disconnect those provider accounts (north-star.md,
+  Source access).
+- The phone reads and uploads only while you're signed in on it; what's queued
+  waits, and the connection and your history stay (behaviour-contract rule 12).
 - A source that stops working shows it on the source, "couldn't update since"
   its last import, with Reconnect. Duet's AI may mention it in conversation;
   nothing else alerts you (Dev 2026-10-26). Turning off access in the phone's
@@ -313,9 +320,9 @@ Linear wins.
   until you delete your account; reconnecting resumes the same history (F1;
   north-star.md, Source access). There is no separate control that deletes one
   source's history. Disconnecting is always yours, even before newer Terms, as
-  leaving your practice is.
-- While you're connected to a practice, phone readings and their deletions join
-  the live feed with your records (ENG-39).
+  leaving your practice is (Dev 2026-10-26).
+- While you're connected to a practice, phone readings, Apple Health clinical
+  records and their changes join the live feed with your records (ENG-39).
 
 ## Open, to add later
 
