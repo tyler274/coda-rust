@@ -236,6 +236,14 @@ impl Process {
         }));
     }
 
+    /// Stops the process and starts it again with the same arguments and
+    /// environment, appending to the same log.
+    #[allow(dead_code)]
+    pub fn restart(&mut self) {
+        self.kill_now();
+        self.start();
+    }
+
     pub fn exited(&mut self) -> Option<i32> {
         self.child.as_mut().and_then(|child| {
             child

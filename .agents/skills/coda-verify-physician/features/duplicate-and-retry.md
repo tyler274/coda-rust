@@ -52,6 +52,6 @@ Preconditions:
 - The idempotency key is scoped to the signed-in physician, not to the site. Use one session on both sites to prove the cross-site duplicate.
 - A rejected conflicting key answers HTTP 200. Assert `.body.outcome`, not the status code.
 - The worker accepts unauthenticated pushes only because the stack sets `PUBSUB_EMULATOR_HOST`. Hosted push-token checks are not exercised here.
-- `[fail:K]` counts attempts per `input_id` in the worker's memory. Each retry drive needs a new chat and key; resending the same key reuses the count. A worker restart forgets every count.
+- `[fail:K]` counts the attempts saved on the conversation's current message, so a worker restart or a second worker instance keeps the count. Each retry drive needs a new chat; a new message in the same chat starts at zero.
 - `--worker-failures N` still exists and still fails the first N provider calls of the process, whatever the message. Leave it at `0` when the stack also serves happy paths.
 - `input_id` must equal the key of the accepted command. A push with another `input_id` acknowledges as stale, which proves nothing about duplicates.

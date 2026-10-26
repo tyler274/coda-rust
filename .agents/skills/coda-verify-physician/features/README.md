@@ -29,7 +29,7 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
   The only exception is Pub/Sub backoff, which the recipe names.
 - Use `--out "$RUN/<feature-id>"` on every call whose result is proof.
 - One stack serves every feature. With `--worker-fail-marker`, a message containing
-  `[fail:K]` fails its first K attempts, counted per `input_id`; unmarked messages never
+  `[fail:K]` fails its first K attempts, counted from its saved attempts; unmarked messages never
   fail. Retry uses `[fail:1]`, Try again uses `[fail:5]`, and both leave `fixed_failures` 0.
 
 ## Proof and skip reporting

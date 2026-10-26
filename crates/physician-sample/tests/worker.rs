@@ -311,6 +311,52 @@ async fn fail_marker_fails_only_the_marked_message() {
     );
 }
 
+/// `[fail:K]` counts the conversation's saved attempts, not worker memory: a
+/// worker restarted after the first failure fails the second attempt only,
+/// and the third answers.
+#[tokio::test]
+async fn fail_marker_count_survives_a_worker_restart() {
+    let _guard = lock().lock().await;
+    let Some(mut running) = running_with("marker_restart", None, None, true).await else {
+        return;
+    };
+    let (scope, marked) =
+        accept_text(&running.database.url, &running.store, "Restart [fail:2]").await;
+    running.emulator.publish(&marked).await;
+    let deadline = Instant::now() + Duration::from_secs(30);
+    loop {
+        let state = running
+            .store
+            .read(&scope)
+            .await
+            .expect("read")
+            .expect("row");
+        if attempt_statuses(&state).contains(&"failed") {
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "the first marked attempt never failed\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    running.worker.restart();
+    let port = running
+        .worker_host
+        .rsplit_once(':')
+        .and_then(|(_, port)| port.parse().ok())
+        .expect("worker port");
+    support::wait_ready(&mut running.worker, port).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
+    assert_eq!(
+        attempt_statuses(&state),
+        ["failed", "failed", "completed"],
+        "a restarted worker must keep counting the saved attempts"
+    );
+}
+
 #[tokio::test]
 async fn fifth_failure_is_forwarded_to_the_dead_letter_topic() {
     let _guard = lock().lock().await;

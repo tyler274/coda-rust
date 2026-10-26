@@ -48,7 +48,7 @@ Preconditions:
 
 ## Gotchas
 
-- `[fail:K]` counts attempts per `input_id` in the worker's memory. A worker restart between the dead letter and Try again forgets the count, so Try again then fails five more times. Do not restart the worker mid-drive.
+- `[fail:K]` counts the attempts saved on the conversation's current message. Try again keeps that message, so its sixth attempt answers even if the worker restarted after the dead letter.
 - `--worker-failures 5` still exists. It fails the process's first five provider calls, whatever the message, so do not combine it with the marker on a stack that serves other features.
 - `--wait-failed` keys on the `mechanical` item. Before Stream A's snapshot change, a failed turn shows only `[{text: Hello}]`, so a stale `physician-sample` binary times out here even though Postgres says `failed`. Rebuild first.
 - The snapshot can briefly show neither a reply nor the line while redeliveries back off. That is the expected in-between state, not a failure.
