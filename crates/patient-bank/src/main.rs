@@ -1,7 +1,7 @@
 //! The patient bank pipeline: one command per step.
 //!
 //! ```text
-//! cargo run -p patient-bank -- catalog [--offline] [--roger-fixture DIR]
+//! cargo run -p patient-bank -- catalog [--roger-fixture DIR]
 //! cargo run -p patient-bank -- brief|check|preview UNIT
 //! cargo run -p patient-bank -- build [--out DIR]
 //! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
@@ -36,21 +36,21 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
     };
     let status = match command.as_str() {
         "catalog" => {
-            let o = Opts::parse(rest, &["--roger-fixture"], &["--offline"])?;
+            let o = Opts::parse(rest, &["--roger-fixture"])?;
             let roger = o
                 .path("--roger-fixture")
                 .unwrap_or_else(paths::roger_fixture);
-            catalog::build(&roger, o.on("--offline"))?
+            catalog::build(&roger)?
         }
         "brief" | "check" | "preview" => {
-            let o = Opts::parse(rest, &[], &[])?;
+            let o = Opts::parse(rest, &[])?;
             let [uid] = o.positional.as_slice() else {
                 return Err(format!("{command} takes one unit id").into());
             };
             unit::run(command, uid)?
         }
         "build" => {
-            let o = Opts::parse(rest, &["--out"], &[])?;
+            let o = Opts::parse(rest, &["--out"])?;
             bank::run(
                 &paths::patients_dir(),
                 &o.path("--out")
@@ -59,7 +59,7 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
             0
         }
         "validate" => {
-            let o = Opts::parse(rest, &["--bank", "--schema", "--jobs", "--report"], &[])?;
+            let o = Opts::parse(rest, &["--bank", "--schema", "--jobs", "--report"])?;
             validate::run(
                 &o.path("--bank")
                     .unwrap_or_else(|| paths::root().join("bank")),
@@ -74,18 +74,16 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
     Ok(u8::try_from(status).unwrap_or(1))
 }
 
-/// `--flag value`, `--flag=value`, on/off switches and positional arguments.
+/// `--flag value`, `--flag=value` and positional arguments.
 struct Opts {
     values: HashMap<String, String>,
-    switches: Vec<String>,
     positional: Vec<String>,
 }
 
 impl Opts {
-    fn parse(args: &[String], valued: &[&str], switches: &[&str]) -> Result<Opts, Failure> {
+    fn parse(args: &[String], valued: &[&str]) -> Result<Opts, Failure> {
         let mut o = Opts {
             values: HashMap::new(),
-            switches: Vec::new(),
             positional: Vec::new(),
         };
         let mut it = args.iter();
@@ -100,8 +98,6 @@ impl Opts {
                     None => it.next().ok_or(format!("{name} needs a value"))?.clone(),
                 };
                 o.values.insert(name.to_string(), value);
-            } else if switches.contains(&name) && inline.is_none() {
-                o.switches.push(name.to_string());
             } else if arg.starts_with("--") {
                 return Err(format!("unknown option {arg}\n\n{}", usage()).into());
             } else {
@@ -113,10 +109,6 @@ impl Opts {
 
     fn path(&self, name: &str) -> Option<PathBuf> {
         self.values.get(name).map(PathBuf::from)
-    }
-
-    fn on(&self, name: &str) -> bool {
-        self.switches.iter().any(|s| s == name)
     }
 
     fn number<T: std::str::FromStr>(&self, name: &str) -> Result<Option<T>, Failure> {
@@ -134,7 +126,7 @@ fn usage() -> Failure {
     "\
 patient-bank runs the synthetic patient bank pipeline.
 
-  patient-bank catalog [--offline] [--roger-fixture DIR]
+  patient-bank catalog [--roger-fixture DIR]
   patient-bank brief|check|preview UNIT
   patient-bank build [--out DIR]
   patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]

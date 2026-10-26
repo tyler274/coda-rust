@@ -1,9 +1,9 @@
 //! Every default location the pipeline reads or writes, in one place.
 //!
-//! The tool's inputs (catalog, terminology cache, coda-gym ranges, authoring
-//! guide) live in this crate's `data/`. The patients live apart from the tool in
-//! the workspace's `patients/units/<unit>/`, one folder per unit. Drafts, the bank and other derived output live under the ignored
-//! `target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
+//! The tool's inputs (catalog, coda-gym ranges, authoring guide) live in this
+//! crate's `data/`. The patients live apart from the tool in the workspace's
+//! `patients/units/<unit>/`, one folder per unit. Drafts, the terminology cache,
+//! the bank and other derived output live under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
 //! `PATIENT_BANK_ROOT` override the three directories, so a scratch copy can be
 //! checked or authored in without touching the checkout.
 
@@ -34,7 +34,7 @@ pub fn patients_dir() -> PathBuf {
         .map_or_else(|| workspace_root().join("patients"), PathBuf::from)
 }
 
-/// Drafts, the bank and the vocabulary.
+/// Drafts, the terminology cache, the bank and the vocabulary.
 pub fn root() -> PathBuf {
     env::var_os("PATIENT_BANK_ROOT").map_or_else(
         || workspace_root().join("target/patient-bank"),
@@ -46,9 +46,10 @@ pub fn catalog() -> PathBuf {
     data_dir().join("catalog.json")
 }
 
-/// Terminology service answers behind the catalog; the catalog build is its only writer.
+/// Terminology service answers kept locally so a lookup is asked once; the catalog
+/// build is its only writer.
 pub fn terminology_cache() -> PathBuf {
-    data_dir().join("terminology-cache.json")
+    root().join("terminology-cache.json")
 }
 
 /// coda-gym's lab labels and reference ranges.

@@ -183,7 +183,7 @@ fn render(
 }
 
 fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Terms> {
-    let mut look = Lookup::layered(&drafts.join("lookups.json"), false)?;
+    let mut look = Lookup::layered(&drafts.join("lookups.json"))?;
     terms::resolve(patients, catalog, &mut look)
 }
 

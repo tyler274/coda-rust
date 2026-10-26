@@ -27,15 +27,16 @@ patients/units/<unit>/
 cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
-cargo run -q -p patient-bank -- catalog [--offline]
+cargo run -q -p patient-bank -- catalog
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
 `{repo, units}` as args; each agent follows `data/authoring-guide.md`, which sends
 it to `data/build-req-guide.md` first. The patients live apart from the tool in the
-workspace's `patients/units/`, one folder per unit. Previews (chart.txt, taken.md), the bank and the schema live
-under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
-`PATIENT_BANK_PATIENTS` and `PATIENT_BANK_ROOT` move the three.
+workspace's `patients/units/`, one folder per unit. Previews (chart.txt, taken.md),
+the terminology cache, the bank and the schema live under the ignored
+`target/patient-bank/`. `PATIENT_BANK_DATA`, `PATIENT_BANK_PATIENTS` and
+`PATIENT_BANK_ROOT` move the three.
 
 ## What the code owns
 

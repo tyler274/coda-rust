@@ -5,8 +5,8 @@
 //! CPT and HCPCS procedures, SNOMED allergens, reactions and order categories, and
 //! CVX vaccines. `catalog` reads each candidate in `catalog_seed` back from its
 //! official service and records the canonical display and a receipt; nothing is
-//! guessed. Responses are kept in `data/terminology-cache.json`, so a rebuild is
-//! reproducible offline. The catalog build is the only writer of that shared cache.
+//! guessed. Responses are kept in a local cache under `target/patient-bank/`, so a
+//! service is asked each question once; the catalog build is that cache's only writer.
 
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Write as _;
@@ -190,32 +190,29 @@ pub struct Lookup {
     shared: BTreeMap<String, Value>,
     own: BTreeMap<String, Value>,
     save_to: PathBuf,
-    offline: bool,
     dirty: bool,
     client: Option<reqwest::blocking::Client>,
 }
 
 impl Lookup {
     /// The shared cache, which `save` writes back.
-    pub fn shared(offline: bool) -> Result<Lookup> {
+    pub fn shared() -> Result<Lookup> {
         let path = paths::terminology_cache();
         Ok(Lookup {
             shared: BTreeMap::new(),
             own: read_cache(&path)?,
             save_to: path,
-            offline,
             dirty: false,
             client: None,
         })
     }
 
     /// The shared cache read-only, with new answers kept in `own`.
-    pub fn layered(own: &Path, offline: bool) -> Result<Lookup> {
+    pub fn layered(own: &Path) -> Result<Lookup> {
         Ok(Lookup {
             shared: read_cache(&paths::terminology_cache())?,
             own: read_cache(own)?,
             save_to: own.to_path_buf(),
-            offline,
             dirty: false,
             client: None,
         })
@@ -224,9 +221,6 @@ impl Lookup {
     pub fn get(&mut self, url: &str, accept: &str) -> Result<Value> {
         if let Some(v) = self.own.get(url).or_else(|| self.shared.get(url)) {
             return Ok(v.clone());
-        }
-        if self.offline {
-            return Err(format!("offline and not cached: {url}").into());
         }
         let client = match &self.client {
             Some(c) => c,
@@ -323,7 +317,7 @@ impl Lookup {
             .collect()
     }
 
-    /// Any lookup failure, offline misses included, reads as "not found".
+    /// Any lookup failure reads as "not found".
     pub fn snomed(&mut self, code: &str) -> Option<String> {
         self.tx(SNOMED, code)
     }
@@ -459,8 +453,8 @@ fn entry(system: &str, code: &str, display: &str) -> Entry {
 
 /// Verify every candidate and write `data/catalog.json`. Prints the counts and every
 /// problem; returns 1 when any candidate was not confirmed.
-pub fn build(roger: &Path, offline: bool) -> Result<i32> {
-    let mut look = Lookup::shared(offline)?;
+pub fn build(roger: &Path) -> Result<i32> {
+    let mut look = Lookup::shared()?;
     let mut problems: Vec<String> = Vec::new();
     let mut c = Catalog {
         systems: [
