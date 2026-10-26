@@ -65,7 +65,7 @@ With the topic set, `reply.revise` answers 503 "Hosted reply revision is unavail
 
 The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
 
-Memorystore Basic 1 GB is about $35/month, against the $10 `coda-rust-stg` budget alert. Raise that alert before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
+Memorystore Basic 1 GB is about $35/month and the site's minimum instance about $48/month after the free tier. Dev raised the `coda-rust-stg` budget alert from $10 to $200/month before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
 
 `nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
 

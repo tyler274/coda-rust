@@ -302,7 +302,9 @@ queues turns for the worker. With the topic set, `reply.revise` answers 503
 "Hosted reply revision is unavailable." until reply revision also moves to the
 worker (see [Remaining gaps](physician-site.md#remaining-gaps)).
 
-Activation, in order, from an authorized engineering account:
+Activation, in order, from an authorized engineering account. Engineering
+cannot apply this plan alone; the exact commands Dev runs, including the IAM
+and budget steps, are in [Apply commands for Dev](#apply-commands-for-dev).
 
 1. **Publish the worker image.** The initial `coda-physician-worker` digest is
    already pinned as `images.physician.worker` in
@@ -375,10 +377,194 @@ The physician site goes back to a minimum of zero instances. It keeps
 listener still runs between requests. Then delete the two Doppler keys and
 redeploy.
 
+#### Apply commands for Dev
+
+**Status, October 25, 2026.** Dev applied the original plan as the project
+Owner. Redis, both topics and subscriptions, and `physician-worker` exist; the
+Redis URL and CA are in Doppler `stg_physician_runtime`; the worker is Ready;
+the budget alert is $200/month. That plan predates two fixes in this stack:
+
+- The physician site keeps one instance while scaling is on
+  (`min_instance_count` 0 to 1), so its recovery sweep always runs. After the
+  stack merges and `deploy-staging` is green, run steps 4 to 6 once more. The
+  saved plan should be exactly one in-place change, `google_cloud_run_v2_service.app["physician"]`
+  with `min_instance_count` 0 to 1, and nothing added or destroyed. The minimum
+  instance costs about $48/month after the free tier (see [Cost](#cost)).
+- The worker image now sets `PHYSICIAN_AUTH=required`. The same key in
+  `stg_physician_runtime` becomes redundant and harmless; it can stay.
+
+The first-time steps below are kept for a fresh project.
+
+The plan creates IAM bindings that `group:gcp-engineering@codahealth.ai`
+cannot write on `coda-rust-staging`. Checked with `testIamPermissions` on
+October 25, 2026, engineering lacks:
+
+| Permission | Needed for |
+| --- | --- |
+| `resourcemanager.projects.setIamPolicy` | `google_project_iam_member.physician_worker_sql`: `roles/cloudsql.client` and `roles/cloudsql.instanceUser` for `physician-worker-runtime`, each conditioned to the `rust-physician` instance |
+| `pubsub.topics.getIamPolicy`, `pubsub.topics.setIamPolicy` | the publisher bindings on `physician-chat-turns` (physician runtime) and `physician-chat-turns-dead-letter` (Pub/Sub service agent) |
+| `pubsub.subscriptions.getIamPolicy`, `pubsub.subscriptions.setIamPolicy` | the service agent's subscriber binding on `physician-chat-turns-worker`, which dead-lettering needs |
+
+Everything else in the plan (Memorystore, topics, subscriptions, service
+accounts, the worker service and its invoker binding, the Doppler token
+reader, the two APIs) is within engineering's roles. Do not apply part of it:
+the physician service would get `PHYSICIAN_CHAT_TOPIC` without permission to
+publish, and Memorystore would be billed. The budget alert also needs Cloud
+Billing access that engineering does not have.
+
+Run everything below in `nix develop` from an up-to-date `main` checkout. That
+shell has `gcloud`, `tofu`, `doppler` and `jq`.
+
+1. **Confirm the code is live.** The site that queues turns and
+   `physician-worker` must be on `main`, and the latest `deploy-staging` run on
+   `main` must be green. Applying before that sets the topic on a site that does
+   not read it.
+
+   ```bash
+   gh run list --workflow ci.yml --branch main --event push --limit 1 \
+     --json headSha,conclusion,url
+   ```
+
+2. **Raise the budget alert** (billing administrator). Expected fixed spend
+   after this plan is about $55/month, plus up to about $105/month if both
+   `physician` instances stay up (see [Cost](#cost)). Pick the new amount; 150 is
+   an example.
+
+   ```bash
+   billing=01691B-49BADA-F3D54D
+   gcloud billing budgets list --billing-account="$billing" \
+     --format='table(name.basename(),displayName,amount.specifiedAmount.units)'
+   gcloud billing budgets update BUDGET_ID --billing-account="$billing" \
+     --budget-amount=150.00
+   ```
+
+3. **Decide who applies.** Either Dev applies as `dev@codahealth.ai`, the
+   project Owner, which needs no new grants (skip to step 4), or Dev grants
+   engineering the missing permissions and engineering applies. The narrow grant
+   is Pub/Sub Admin plus Project IAM Admin that may only add or remove the two
+   Cloud SQL roles:
+
+   ```bash
+   project=coda-rust-staging
+   group=group:gcp-engineering@codahealth.ai
+   cat > /tmp/only-cloudsql-worker-grants.yaml <<'YAML'
+   title: only-cloudsql-worker-grants
+   description: May add or remove only the worker's Cloud SQL roles
+   expression: >-
+     api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', [])
+     .hasOnly(['roles/cloudsql.client', 'roles/cloudsql.instanceUser'])
+   YAML
+   gcloud projects add-iam-policy-binding "$project" --member="$group" \
+     --role=roles/pubsub.admin --condition=None
+   gcloud projects add-iam-policy-binding "$project" --member="$group" \
+     --role=roles/resourcemanager.projectIamAdmin \
+     --condition-from-file=/tmp/only-cloudsql-worker-grants.yaml
+   ```
+
+   Remove both after the apply (step 8) unless they should stay.
+
+4. **Plan.** Sign in as the account that applies. The database passwords are
+   write-only inputs read from Doppler. The saved plan goes stale once
+   `deploy-staging` or another apply touches state, so plan right before
+   applying.
+
+   ```bash
+   gcloud auth login   # dev@codahealth.ai, or the engineering account after step 3
+   root=infra/gcp/rust-environments
+   export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+   pw() { doppler secrets get DB_PASSWORD --project coda-rust --config "stg_$1" --plain; }
+   export TF_VAR_database_passwords=$(jq -nc \
+     --arg a "$(pw physician_runtime)" --arg b "$(pw physician_migration)" \
+     --arg c "$(pw duet_runtime)" --arg d "$(pw duet_migration)" \
+     '{"physician-runtime":$a,"physician-migration":$b,"duet-runtime":$c,"duet-migration":$d}')
+   tofu -chdir="$root" init -input=false -reconfigure \
+     -backend-config=backend/staging.gcs.tfbackend
+   tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars \
+     -out=staging.tfplan
+   ```
+
+5. **Review the saved plan.** On October 25, 2026 it was 20 to add, 2 to
+   change, 0 to destroy. The additions are the cache; the two topics, the two
+   subscriptions and their three bindings; the push and worker service accounts,
+   the push token grant and the worker's two Cloud SQL grants; the worker, its
+   invoker and its two release grants; the Pub/Sub service identity; and the
+   `redis` and `pubsub` APIs. The two in-place changes are the
+   `physician` service (`cpu_idle` true to false, `min_instance_count` 0 to 1,
+   adds `PHYSICIAN_CHAT_TOPIC`, image unchanged) and the `physician-runtime`
+   Doppler-token reader (adds
+   `physician-worker-runtime`). Nothing may name Duet and nothing may be
+   destroyed:
+
+   ```bash
+   tofu -chdir="$root" show -json staging.tfplan | jq -r '.resource_changes[]
+     | select(.change.actions != ["no-op"])
+     | "\(.change.actions | join(","))\t\(.address)"'
+   tofu -chdir="$root" show -json staging.tfplan | jq -e '[.resource_changes[]
+     | select(.change.actions != ["no-op"])
+     | select((.address | test("duet")) or (.change.actions | index("delete")))]
+     | length == 0'
+   ```
+
+6. **Apply exactly that file.** Memorystore takes several minutes. The access
+   token lasts an hour; if the apply outlives it, export a fresh one and
+   re-plan.
+
+   ```bash
+   tofu -chdir="$root" apply staging.tfplan
+   ```
+
+7. **Write Redis into Doppler and restart.** The AUTH string goes straight from
+   `tofu output` into Doppler and never reaches the screen, argv or a file.
+   Runtimes read Doppler only at process start, so start new revisions.
+   `--revision-suffix` changes only the revision name, which OpenTofu ignores
+   on both services.
+
+   ```bash
+   tf() { tofu -chdir="$root" "$@"; }
+   host=$(tf output -json physician_scale | jq -r .redis_host)
+   port=$(tf output -json physician_scale | jq -r .redis_port)
+   { printf 'rediss://:'; tf output -raw physician_redis_auth_string; printf '@%s:%s' "$host" "$port"; } |
+     doppler secrets set PHYSICIAN_REDIS_URL --project coda-rust --config stg_physician_runtime --silent
+   tf output -raw physician_redis_ca_pem |
+     doppler secrets set PHYSICIAN_REDIS_CA_PEM --project coda-rust --config stg_physician_runtime --silent
+   suffix=redis-$(date +%s)
+   for service in physician physician-worker; do
+     gcloud run services update "$service" --project coda-rust-staging \
+       --region us-east1 --revision-suffix="$suffix" --quiet
+   done
+   ```
+
+8. **Check, then remove any temporary grants.** Each describe must show a
+   Ready revision ending in the suffix from step 7; the subscription must push
+   to the worker with 5 delivery attempts; the cache must be `READY` with AUTH
+   and `SERVER_AUTHENTICATION`.
+
+   ```bash
+   p=(--project coda-rust-staging)
+   for service in physician physician-worker; do
+     gcloud run services describe "$service" "${p[@]}" --region us-east1 \
+       --format='value(metadata.name,status.latestReadyRevisionName)'
+   done
+   gcloud pubsub subscriptions describe physician-chat-turns-worker "${p[@]}" \
+     --format='value(pushConfig.pushEndpoint,deadLetterPolicy.maxDeliveryAttempts)'
+   gcloud redis instances describe rust-physician-cache "${p[@]}" --region us-east1 \
+     --format='value(state,authEnabled,transitEncryptionMode)'
+   # Only if step 3 granted engineering:
+   gcloud projects remove-iam-policy-binding coda-rust-staging \
+     --member=group:gcp-engineering@codahealth.ai --role=roles/pubsub.admin --condition=None
+   gcloud projects remove-iam-policy-binding coda-rust-staging \
+     --member=group:gcp-engineering@codahealth.ai --role=roles/resourcemanager.projectIamAdmin \
+     --condition-from-file=/tmp/only-cloudsql-worker-grants.yaml
+   ```
+
+   Then run the two-tab and Cloud Monitoring checks in step 5 of the activation
+   list above.
+
 #### Cost
 
 These are list prices for `us-east1` in October 2026. The `coda-rust-stg` budget
-is a **$10/month alert**, not a spending cap, and this gate exceeds it. Raise
+is an alert, not a spending cap. Dev raised it from $10 to $200/month on
+October 25, 2026, which covers this gate. Raise
 that alert before applying. Nothing is applied without a reviewed saved plan.
 
 | Item | Billing | Estimate |
