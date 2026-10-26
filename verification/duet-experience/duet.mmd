@@ -54,6 +54,7 @@ stateDiagram-v2
 %% event the reply can't finish | by Duet's runtime | needs RWriting | reason: only a reply being written can fail | What was written stays, marked unfinished, with Try again; never silence (D1). Whatever the reply already saved stays saved.
 %% events Duet posts in the thread = Duet finishes the reply | the reply can't finish
 %% events Duet has something to tell you = Duet proposes a note | Duet finishes its own work with something to tell you | Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in keeps failing | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
+%% events Duet noticed something on its own = Duet proposes a note | Duet finishes its own work with something to tell you
 %% events Duet stops writing early = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | withdraw AI permission
 %% event you see the new messages | by you | needs ThUnseen, DIn, AppFront, TabDuet, CoNone, RdShown@conversation, RdKept@conversation, TCur | reason: only messages on screen in front of you are seen; newer Terms wait for your acceptance first | The conversation shows Duet's new messages on this device's screen, so they are seen everywhere: seen is one fact for your account (Dev 2026-10-26).
 %% event you see the new messages on another device | by you | needs ThUnseen, ODIn | reason: only a signed-in device shows the conversation | You read Duet's new messages on your other device; they are seen here too (Dev 2026-10-26).
@@ -494,8 +495,17 @@ stateDiagram-v2
         state "Duet's own message" as OwnMsg {
           [*] --> OmNone
           state "Nothing waiting to post" as OmNone
-          state "A message waiting for the reply to end" as OmWaiting
-          OmNone --> OmWaiting : Duet has something to tell you [while Duet is writing]
+          %% Whether anything you asked for or your practice's news is among what waits decides whether
+          %% it alerts without your switch for Duet's own work (north-star.md, Notifications; Dev 2026-10-26).
+          state "A message waiting for the reply to end" as OmWaiting {
+            [*] --> OmOwn
+            state "Only Duet's own message waiting" as OmOwn
+            state "What you asked for or your practice's news waiting" as OmAsked
+            OmOwn --> OmAsked : Duet tells you what you asked for or your practice's news
+          }
+          OmNone --> OmOwn : Duet noticed something on its own [while Duet is writing]
+          %% when RWriting | reason: Duet's own messages never cut into a reply (Dev 2026-10-26)
+          OmNone --> OmAsked : Duet tells you what you asked for or your practice's news [while Duet is writing]
           %% when RWriting | reason: Duet's own messages never cut into a reply (Dev 2026-10-26)
           OmWaiting --> OmNone : Duet posts in the thread
           OmWaiting --> OmNone : Duet stops writing early
@@ -1418,8 +1428,10 @@ stateDiagram-v2
       %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
       NoNone --> NoWaiting : Duet proposes a note [you're away, alerts allowed, your switch on, not mid-reply]
       %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet offers on its own alerts only once you turn it on (Dev 2026-10-26)
-      NoNone --> NoWaiting : Duet stops writing early [with a message waiting, you're away, alerts allowed]
-      %% when OmWaiting, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and it alerts
+      NoNone --> NoWaiting : Duet stops writing early [with what you asked for or your practice's news waiting, you're away, alerts allowed]
+      %% when OmAsked, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and what you asked for and your practice's news alert wherever alerts are allowed (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet stops writing early [with only Duet's own message waiting, you're away, alerts allowed, your switch on]
+      %% when OmOwn, AppBack, NtOn, DIn, IaOn | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
       NoWaiting --> NoNone : open the notification
       NoWaiting --> NoNone : you see the new messages
       NoWaiting --> NoNone : you see the new messages on another device
