@@ -17,10 +17,9 @@ unit has a folder, `units/unit-<id>/`, holding everything about it:
 - `build-req.md`: what the chart may hold, every clinical fact traced to the source,
   a listed resolution or addition, or the primary-care layer. A unit whose source
   cannot be a living primary-care patient says `UNFIT` and has no chart.
-- `story.md` and `part-*.json`: what the author wrote; `lookups.json`: the code
-  verifications `check` made for it.
+- `story.md` and `part-*.json`: what the author wrote.
 - `ledger.json`: the accepted chart, written only by `check`, with every number the
-  chart shows.
+  chart shows and every out-of-catalog code it verified.
 
 All 1,020 adult sources are here with their seeds; a unit gains the rest as its chart
 is written and accepted. Units `unit-2013`, `unit-2188` and `unit-2797` were the
