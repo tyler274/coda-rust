@@ -13,6 +13,7 @@
 
 mod auth;
 mod care;
+pub mod durable;
 mod gmail;
 pub mod hosting;
 mod live;
@@ -21,6 +22,7 @@ mod live_tests;
 mod publication;
 #[cfg(test)]
 mod publication_tests;
+pub mod queue;
 mod reply;
 mod simulation;
 
@@ -168,6 +170,8 @@ fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
             get(live::snapshot),
         )
         .route("/patient-workspaces/events", get(live::events))
+        // The shared workspace route lists this server's chats through it.
+        .layer(axum::Extension(std::sync::Arc::clone(&live)))
         .with_state(live)
 }
 
@@ -459,19 +463,75 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 }
 
 /// Serves the router on `listener`.
+///
+/// One process-wide bus is shared by chat execution and auth. When both
+/// `PHYSICIAN_DATABASE_URL` and `PHYSICIAN_CHAT_TOPIC` are set, `message.submit`
+/// is accepted in Postgres and woken on Pub/Sub; this process does not run
+/// the model. Without the topic, chat runs inline, hosted or not. Recovery is
+/// aborted after graceful shutdown.
 pub async fn serve(listener: tokio::net::TcpListener) {
-    let base = match router_from_env() {
-        Ok(app) => app,
+    let (router, recovery) = match site_from_env(|key| env::var(key).ok()).await {
+        Ok(ready) => ready,
         Err(error) => {
             tracing::error!(%error, "physician site cannot start");
             std::process::exit(1);
         }
     };
-    let app = traced(route_readiness(auth::authed_router(base).await).await);
-    axum::serve(listener, app)
+    let app = traced(route_readiness(router).await);
+    let served = axum::serve(listener, app)
         .with_graceful_shutdown(shutdown())
-        .await
-        .expect("sample server");
+        .await;
+    if let Some(recovery) = recovery {
+        recovery.abort();
+    }
+    served.expect("sample server");
+}
+
+fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String> {
+    get(key)
+        .map(|value| value.trim().to_owned())
+        .filter(|value| !value.is_empty())
+}
+
+async fn site_from_env(
+    get: impl Fn(&str) -> Option<String>,
+) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
+    let hosted = hosting::is_hosted(&get);
+    let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
+    let database = configured(&get, "PHYSICIAN_DATABASE_URL");
+    if hosted && topic.is_none() {
+        // Merging ahead of the infrastructure plan is safe: until the plan sets
+        // the topic, the hosted site keeps running chat inline as before.
+        tracing::warn!(
+            "PHYSICIAN_CHAT_TOPIC is unset; hosted physician chat runs inline in this process"
+        );
+    }
+    if topic.is_some() && database.is_none() {
+        return Err("PHYSICIAN_CHAT_TOPIC requires PHYSICIAN_DATABASE_URL".into());
+    }
+    let bus = physician_bus::from_env(&get, hosted).await?;
+    let (base, chat) = if let (Some(topic), Some(database)) = (topic, database) {
+        let store = local_product::runtime::Store::connect(&database)
+            .await
+            .map_err(|_| "physician runtime store unavailable".to_string())?;
+        let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
+        let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
+        let chat =
+            std::sync::Arc::new(durable::DurableChat::new(store, std::sync::Arc::new(queue)));
+        let live = live::Live::durable(std::sync::Arc::clone(&bus), std::sync::Arc::clone(&chat))?;
+        tracing::info!(
+            "physician chat accepts turns onto the configured topic; this process does not run the model"
+        );
+        (
+            live_router_on(live).layer(middleware::from_fn(cors)),
+            Some(chat),
+        )
+    } else {
+        (router_from_env(std::sync::Arc::clone(&bus))?, None)
+    };
+    let router = auth::authed_router_with_bus(base, bus).await;
+    let recovery = chat.map(|chat| chat.start_recovery());
+    Ok((router, recovery))
 }
 
 /// Resolves on SIGTERM (Cloud Run's stop signal) or Ctrl-C, so in-flight
@@ -553,7 +613,7 @@ pub async fn serve_with_store(
     axum::serve(listener, app).await.expect("sample server");
 }
 
-fn router_from_env() -> Result<Router, String> {
+fn router_from_env(bus: std::sync::Arc<dyn physician_bus::Bus>) -> Result<Router, String> {
     let execution =
         local_product::model_execution(env::var("CODA_LOCAL_MODEL_EXECUTION").ok().as_deref())?;
     if execution != local_product::ModelExecution::Api
@@ -571,7 +631,7 @@ fn router_from_env() -> Result<Router, String> {
         .iter()
         .map(|(key, value)| (*key, value.as_str()))
         .collect();
-    model_router(
+    model_router_on(
         execution,
         allow.as_deref(),
         key.as_deref(),
@@ -581,15 +641,39 @@ fn router_from_env() -> Result<Router, String> {
             cassette_path: cassette.as_deref(),
         },
         &environment,
+        bus,
     )
 }
 
+#[cfg(test)]
 fn model_router(
     execution: local_product::ModelExecution,
     allow: Option<&str>,
     key: Option<&str>,
     settings: local_product::codex::CodexSettings<'_>,
     environment: &[(&str, &str)],
+) -> Result<Router, String> {
+    model_router_on(
+        execution,
+        allow,
+        key,
+        settings,
+        environment,
+        std::sync::Arc::new(physician_bus::LocalBus::new(64)),
+    )
+}
+
+fn mount_chat(model: live::ChatModel, bus: &std::sync::Arc<dyn physician_bus::Bus>) -> Router {
+    live_router_on(live::Live::with_bus(model, std::sync::Arc::clone(bus)))
+}
+
+fn model_router_on(
+    execution: local_product::ModelExecution,
+    allow: Option<&str>,
+    key: Option<&str>,
+    settings: local_product::codex::CodexSettings<'_>,
+    environment: &[(&str, &str)],
+    bus: std::sync::Arc<dyn physician_bus::Bus>,
 ) -> Result<Router, String> {
     if execution == local_product::ModelExecution::Api {
         let key = local_product::open_ai_api_key(allow, key)?;
@@ -605,10 +689,13 @@ fn model_router(
             roles.linking.model,
             roles.linking.effort,
         );
-        return Ok(live_router(live::ChatModel::OpenAi {
-            key,
-            binding: roles.chat,
-        })
+        return Ok(mount_chat(
+            live::ChatModel::OpenAi {
+                key,
+                binding: roles.chat,
+            },
+            &bus,
+        )
         .layer(middleware::from_fn(cors)));
     }
     if execution == local_product::ModelExecution::Replay
@@ -621,10 +708,13 @@ fn model_router(
                 serde_json::from_value(value).map_err(|_| "invalid structured cassette")?;
             let replay = harness::transport::Replay::new(cassette)?;
             let roles = local_product::model_roles("structured-replay", environment)?;
-            return Ok(live_router(live::ChatModel::StructuredReplay {
-                binding: roles.chat,
-                replay: tokio::sync::Mutex::new(replay),
-            }));
+            return Ok(mount_chat(
+                live::ChatModel::StructuredReplay {
+                    binding: roles.chat,
+                    replay: tokio::sync::Mutex::new(replay),
+                },
+                &bus,
+            ));
         }
     }
     let transport = local_product::codex::open_codex(execution, settings)?;
@@ -649,10 +739,13 @@ fn model_router(
         ),
         local_product::ModelExecution::Api => unreachable!("api is handled above"),
     }
-    Ok(live_router(live::ChatModel::Codex {
-        binding: roles.chat,
-        transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
-    })
+    Ok(mount_chat(
+        live::ChatModel::Codex {
+            binding: roles.chat,
+            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
+        },
+        &bus,
+    )
     .layer(middleware::from_fn(cors)))
 }
 
@@ -689,8 +782,29 @@ async fn workspace(
     let Some(body) = workspace_body(&id) else {
         return StatusCode::NOT_FOUND.into_response();
     };
-    let enriched = care::enrich_workspace(body, &id, request.extensions()).await;
+    let mut enriched = care::enrich_workspace(body, &id, request.extensions()).await;
+    // A live server lists the signed-in physician's chats ahead of the
+    // recording's (which are empty today). The recorded router has no `Live`.
+    if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {
+        let ctx = request.extensions().get::<auth::AuthContext>();
+        let Ok(chats) = live.chats(ctx, &id).await else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        merge_chats(&mut enriched, chats);
+    }
     Json(enriched).into_response()
+}
+
+/// Puts runtime chats first and keeps recorded chats the runtime doesn't have.
+fn merge_chats(workspace: &mut Value, runtime: Vec<Value>) {
+    let recorded = workspace["chats"].as_array().cloned().unwrap_or_default();
+    let mut chats = runtime;
+    for chat in recorded {
+        if !chats.iter().any(|c| c["chat_id"] == chat["chat_id"]) {
+            chats.push(chat);
+        }
+    }
+    workspace["chats"] = Value::Array(chats);
 }
 
 async fn roster(Query(query): Query<RosterQuery>, request: Request<Body>) -> Response {
@@ -915,6 +1029,25 @@ mod tests {
             .await
             .unwrap();
         (status, String::from_utf8(bytes.to_vec()).unwrap())
+    }
+
+    #[tokio::test]
+    async fn hosted_site_without_a_chat_topic_runs_chat_inline() {
+        let (_, recovery) = site_from_env(|name| (name == "K_SERVICE").then(|| "physician".into()))
+            .await
+            .expect("hosted without a topic starts");
+        assert!(recovery.is_none(), "no durable chat, so no recovery sweep");
+    }
+
+    #[tokio::test]
+    async fn a_chat_topic_requires_the_physician_database() {
+        let error = site_from_env(|name| {
+            (name == "PHYSICIAN_CHAT_TOPIC")
+                .then(|| "projects/p/topics/physician-chat-turns".into())
+        })
+        .await
+        .expect_err("topic without a database");
+        assert!(error.contains("PHYSICIAN_DATABASE_URL"), "{error}");
     }
 
     #[tokio::test]

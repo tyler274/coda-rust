@@ -7,9 +7,133 @@ use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
     SESSION_TTL_SECONDS, SessionError, SignInError,
 };
-use sea_orm::ConnectionTrait;
+use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
 const NOW: u64 = 1_760_000_000;
+
+/// Hold the contested row until both independent store calls reach it. The
+/// Postgres lock catalog makes the race deterministic without production hooks.
+async fn wait_for_two_lock_waiters(db: &sea_orm::DatabaseConnection) {
+    tokio::time::timeout(std::time::Duration::from_secs(10), async {
+        loop {
+            let row = db.query_one_raw(sea_orm::Statement::from_string(
+                sea_orm::DbBackend::Postgres,
+                "SELECT count(*) AS waiting FROM pg_stat_activity WHERE datname = current_database() AND wait_event_type = 'Lock'",
+            )).await.unwrap().unwrap();
+            if row.try_get::<i64>("", "waiting").unwrap() == 2 {
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+    }).await.expect("both redemptions must contend for the held row");
+}
+
+#[tokio::test]
+async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
+    let Some(url) = fresh_database("concurrent_sign_in").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let (email, initial_session) = invited_account(&store, "pg-proof").await;
+    let who = store.session(&initial_session, NOW).await.unwrap();
+    let token = store.begin_sign_in(&email, NOW).await.unwrap();
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    let held = db.begin().await.unwrap();
+    physician_auth::migration::sign_in_token::Entity::find()
+        .lock_exclusive()
+        .one(&held)
+        .await
+        .unwrap()
+        .unwrap();
+
+    let redeem = || {
+        let (store, email, token) = (store.clone(), email.clone(), token.clone());
+        tokio::spawn(async move { store.complete_sign_in(&email, &token, NOW).await })
+    };
+    let first = redeem();
+    let second = redeem();
+    wait_for_two_lock_waiters(&db).await;
+    held.commit().await.unwrap();
+    let outcomes = [first.await.unwrap(), second.await.unwrap()];
+    assert_eq!(
+        outcomes.iter().filter(|result| result.is_ok()).count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|result| **result == Err(SignInError::Invalid))
+            .count(),
+        1
+    );
+    let (identity, session) = outcomes.into_iter().find_map(Result::ok).unwrap();
+    assert_eq!(identity, who);
+    assert_eq!(store.session(&session, NOW).await.unwrap(), who);
+    assert_eq!(
+        physician_auth::migration::session::Entity::find()
+            .count(&db)
+            .await
+            .unwrap(),
+        2
+    );
+}
+
+#[tokio::test]
+async fn concurrent_patient_invitation_keeps_the_winning_account() {
+    let Some(url) = fresh_database("concurrent_patient_invite").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let token = store
+        .invite_patient("pg-proof", "pw-elena", NOW)
+        .await
+        .unwrap();
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    let held = db.begin().await.unwrap();
+    physician_auth::migration::patient_link::Entity::find()
+        .lock_exclusive()
+        .one(&held)
+        .await
+        .unwrap()
+        .unwrap();
+    let redeem = |account: &'static str| {
+        let (store, token) = (store.clone(), token.clone());
+        tokio::spawn(async move { store.accept_patient_invitation(&token, account, NOW).await })
+    };
+    let first = redeem("duet-first");
+    let second = redeem("duet-second");
+    wait_for_two_lock_waiters(&db).await;
+    held.commit().await.unwrap();
+    let outcomes = [first.await.unwrap(), second.await.unwrap()];
+    assert_eq!(
+        outcomes.iter().filter(|result| result.is_ok()).count(),
+        1,
+        "{outcomes:?}"
+    );
+    assert_eq!(
+        outcomes
+            .iter()
+            .filter(|result| **result == Err(SignInError::Invalid))
+            .count(),
+        1
+    );
+    let winner = outcomes.into_iter().find_map(Result::ok).unwrap();
+    let persisted = store.patient_link("pg-proof", "pw-elena").await.unwrap();
+    assert_eq!(persisted.duet_account_id, winner.duet_account_id);
+    assert!(persisted.linked);
+    assert!(!persisted.sharing_consented);
+    assert_eq!(
+        store
+            .accept_patient_invitation(&token, "duet-replay", NOW)
+            .await,
+        Err(SignInError::Invalid)
+    );
+}
 
 /// Connects when the gate is set; `None` skips the suite quietly.
 ///
@@ -458,6 +582,47 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
 }
 
 #[tokio::test]
+async fn expired_and_replaced_patient_invitations_cannot_link_an_account() {
+    let Some(store) = store("stale_patient_invite").await else {
+        return;
+    };
+    let expired = store
+        .invite_patient("pg-proof", "pw-elena", NOW)
+        .await
+        .unwrap();
+    let later = NOW + physician_auth::INVITATION_TTL_SECONDS;
+    assert_eq!(
+        store
+            .accept_patient_invitation(&expired, "duet-expired", later)
+            .await,
+        Err(SignInError::Invalid)
+    );
+    let replaced = store
+        .invite_patient("pg-proof", "pw-elena", later)
+        .await
+        .unwrap();
+    let current = store
+        .invite_patient("pg-proof", "pw-elena", later)
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .accept_patient_invitation(&replaced, "duet-replaced", later)
+            .await,
+        Err(SignInError::Invalid)
+    );
+    assert_eq!(
+        store
+            .accept_patient_invitation(&current, "  duet-current  ", later)
+            .await
+            .unwrap()
+            .duet_account_id
+            .as_deref(),
+        Some("duet-current")
+    );
+}
+
+#[tokio::test]
 async fn ensure_account_seeds_once_and_never_undoes_an_admin_change() {
     let Some(store) = store("ensure_account").await else {
         return;
@@ -675,4 +840,66 @@ async fn duplicate_physician_ids_keep_the_earliest_account_and_its_panel() {
         .expect("reassigned count");
     assert_eq!(surviving, 1);
     assert_eq!(reassigned, 0);
+}
+
+/// Two replicas share one database: a read cached on one must not survive a
+/// write the other makes. The authority trigger's notification moves the
+/// first replica's feed, and the next read goes back to Postgres.
+#[tokio::test]
+async fn a_cached_read_drops_when_another_replica_writes() {
+    let Some(url) = fresh_database("authority_feed").await else {
+        return;
+    };
+    let writer = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .expect("migrations");
+    let (email, session) = invited_account(&writer, "pg-feed").await;
+    let reader = physician_auth::CachedAuthStore::postgres(
+        PostgresAuthStore::connect_without_migrations(&url)
+            .await
+            .expect("runtime pool"),
+    );
+    let mut feed = reader.authority_changes().expect("feed");
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.live),
+    )
+    .await
+    .expect("listener connects")
+    .expect("feed open");
+    let who = reader
+        .session(&session, NOW)
+        .await
+        .expect("session resolves");
+    assert!(reader.membership(&who, "ws-feed").await == Membership::Denied);
+
+    let seen = feed.borrow_and_update().generation;
+    writer
+        .set_membership(&who, "ws-feed", Membership::Allowed)
+        .await;
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.generation > seen),
+    )
+    .await
+    .expect("trigger notifies")
+    .expect("feed open");
+    assert_eq!(
+        reader.membership(&who, "ws-feed").await,
+        Membership::Allowed
+    );
+
+    let seen = feed.borrow_and_update().generation;
+    assert!(writer.deactivate(&email).await);
+    tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        feed.wait_for(|feed| feed.generation > seen),
+    )
+    .await
+    .expect("trigger notifies")
+    .expect("feed open");
+    assert_eq!(
+        reader.session(&session, NOW).await,
+        Err(SessionError::Inactive)
+    );
 }

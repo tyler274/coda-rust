@@ -4,11 +4,13 @@
 import { readChart } from "./chart-parse.mjs";
 import { expand } from "./chart-expand.mjs";
 import { flatten } from "./chart-flat.mjs";
+import { COMPOSES, compose } from "./chart-compose.mjs";
 
 export { LEGEND_ID } from "./chart-parse.mjs";
 
 // parse → expand (templates, events) → flatten (hierarchy, parallel parts, guards).
+// A composition (%% compose lines) expands each chart and joins them before flattening.
 // options.lenient collects strict-event problems instead of throwing (used by lint).
 export function parseMermaid(text, options = {}) {
-  return flatten(expand(readChart(text), options));
+  return flatten(COMPOSES.test(text) ? compose(text, options) : expand(readChart(text), options));
 }

@@ -47,6 +47,11 @@ impl PostgresAuthStore {
         Ok(Self { db })
     }
 
+    /// The runtime pool, for the authority change listener.
+    pub fn pool(&self) -> &sea_orm::sqlx::PgPool {
+        self.db.get_postgres_connection_pool()
+    }
+
     /// Checks all owned tables without installing or updating a migration ledger.
     pub async fn check_schema(&self) -> Result<(), DbErr> {
         Accounts::find().one(&self.db).await?;
@@ -273,12 +278,15 @@ impl AuthStore for PostgresAuthStore {
         if !account.active {
             return Err(SignInError::Inactive);
         }
-        // The pending row is deleted inside the transaction: a raced second
-        // verify finds nothing, so a token mints one session.
-        SignInTokens::delete_by_id(pending.id)
+        // Only the transaction that consumes the token may mint a session.
+        // A concurrent verifier can have read the same pending row already.
+        let consumed = SignInTokens::delete_by_id(pending.id)
             .exec(&txn)
             .await
             .map_err(stale)?;
+        if consumed.rows_affected != 1 {
+            return Err(SignInError::Invalid);
+        }
         let session_token = mint_token();
         let session = crate::migration::SessionActiveModel {
             id: Default::default(),
@@ -849,6 +857,7 @@ impl AuthStore for PostgresAuthStore {
         let txn = self.db.begin().await.map_err(stale)?;
         let row = PatientLinks::find()
             .filter(crate::migration::patient_link::Column::PendingTokenHash.eq(hash))
+            .lock_exclusive()
             .one(&txn)
             .await
             .map_err(stale)?
@@ -1019,7 +1028,7 @@ fn patient_link_from_row(row: crate::migration::PatientLinkRow) -> PatientLink {
     }
 }
 
-/// The raced second verify finds no pending row.
+/// Reads the pending token and its account; the caller must atomically consume it.
 async fn pending_account(
     txn: &impl sea_orm::ConnectionTrait,
     email: &str,

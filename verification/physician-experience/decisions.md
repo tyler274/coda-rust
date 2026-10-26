@@ -150,6 +150,20 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
   while the source is up, is runtime scheduling; keeping records current is on
   the infrastructure-gaps list, and a source that is actually down is decision 9.
 
+## 2026-10-25
+
+- **Connected to Duet through shared events.** The practice connection meets
+  Duet's in [connected-care](../connected-care/connection.mmd): each graph owns
+  its side, and rules there hold both sides to one status (ENG-39, ENG-70).
+- **Any open invitation can be accepted** (Dev, 2026-10-25). A patient who taps
+  Share on the invitation they hold connects, even while the practice resends it
+  or a resend couldn't be delivered; both sides show Connected.
+- **Joining shares what the patient already has** (Dev, 2026-10-25). The join
+  is news for the patient: their connected records arrive with it, so Coda's
+  work is owed at once, on a first join and on joining again after the
+  connection ended. The patient's For my doctor arrives only when they send it,
+  like a message from them (Dev, 2026-10-26).
+
 ## Audit findings the graph cites
 
 The graph also cites findings from the 2026-10-23 audits that settled a behavior

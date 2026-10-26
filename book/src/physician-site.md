@@ -1,13 +1,15 @@
 # The physician site and the Coda Agents harness
 
-The shipping physician client is the React site in `submodules/coda-agents/web`. The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, speaking the same projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and a recorded projection of the synthetic practice, and forwards physician routes to the Node server through `PHYSICIAN_UPSTREAM`. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`harness`](/crates/harness/src/lib.rs) loads the clinical skill catalog in [`skills/`](/skills) once through [`agent-skills`](/crates/agent-skills/src/lib.rs), the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
+The shipping physician client is the React site in `submodules/coda-agents/web`. The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, speaking the same projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and the physician routes over the synthetic practice, with chat through the model execution described next; tests also use its recorded projection, and `PHYSICIAN_UPSTREAM` forwards physician routes to the Node server. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`agent-skills`](/crates/agent-skills/src/lib.rs) reads the clinical skill catalog in [`skills/`](/skills) for [`harness`](/crates/harness/src/lib.rs), though no product runtime loads it yet; the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
 
 ## Product direction and proof
 
 The [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
 owns current product intent. The
 <a href="/verification/physician-experience/README%2Emd">physician statechart</a>
-is the behavior spec, accompanied by its design decisions and Verus proof. <a href="/verification/README%2Emd">Verification</a>
+is the behavior spec, accompanied by its design decisions, its Verus proof and
+<a href="/verification/physician-experience/coverage%2Emd">coverage.md</a>, which says
+what the Rust app shows for each of its states. <a href="/verification/README%2Emd">Verification</a>
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
 specification or a claim of current Rust completeness.
@@ -34,6 +36,43 @@ The store is the [`AuthStore`](/crates/physician-auth/src/lib.rs) trait over Sea
 
 The retained GKE deployment reference is <a href="/infra/gcp/physician-runtime/README%2Emd"><code>infra/gcp/physician-runtime</code></a>: one private GKE Autopilot cluster, one private Cloud SQL Postgres 16 instance with IAM database authentication (no database password), separate keyless site and migration identities, and `PHYSICIAN_AUTH=required` riding the site's environment as configuration intent. The current isolated Rust staging path is Cloud Run under [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate); configuration is not hosted access proof.
 
+## Scaling across instances
+
+A turn that finishes on one `physician-sample` instance has to show up on a stream another instance is holding open. [`physician-bus`](/crates/physician-bus/src/lib.rs) is the physician product's fan-out. It carries `workspace_changed`, `workspace_settled`, and `resync`. `resync` is what a subscriber gets when it lags or the connection drops, and the Dioxus client refetches on that event. Sign-in and panel changes stay on the existing Postgres `NOTIFY` feed, which also fires for the migration job and for `psql`.
+
+`RedisBus` is the `fred` client: TLS plus AUTH, `PHYSICIAN_REDIS_URL` as a `rediss://` URL and `PHYSICIAN_REDIS_CA_PEM` as the Memorystore server CA. With `PHYSICIAN_REDIS_URL` unset, `LocalBus` keeps those events inside one process. That is the local and test path.
+
+Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, input_id}` on the Pub/Sub topic `physician-chat-turns`. The topic carries only that pair. `physician-worker` checks the push token's audience and the `physician-pubsub-push` email, claims the leased turn, runs the model, commits, and publishes `workspace_changed`. A non-2xx response is a redelivery. After 5 attempts the message goes to the dead-letter topic. The subscription's ack deadline is 600 seconds, and retries back off from 10 seconds to 600 seconds.
+
+When a push cannot claim its turn, the worker answers from the saved conversation. It acknowledges a turn that is committed, stopped, replaced by a newer message, or running under another live claim. It answers 500 for a turn that is still waiting and for one that recovery gave up on. The second case is what lets Pub/Sub dead-letter the message: it counts each message's own deliveries, so a message the sweep republished under a new ID still reaches the dead-letter topic.
+
+The worker publishes `workspace_changed` after each committed reply and each failed attempt, including a provider that cannot start and a push that finds the turn already failed. That last case covers a turn whose worker leases all ran out: the claim records the fifth failure and nothing is left to run. A held page then refetches and shows "Coda couldn't finish". The site's recovery sweep republishes accepted turns whose wakeup never reached the topic, so a turn accepted by an instance that died is finished by whichever instance is still up. [`tests/instance_loss.rs`](/crates/physician-sample/tests/instance_loss.rs) proves both against the emulator, Valkey and Postgres.
+
+Outside hosting, `PUBSUB_EMULATOR_HOST` turns off push-token checks, because the emulator sends no token. The worker then starts only on a loopback listener (`127.0.0.1` or `[::1]`). `PORT` alone binds `0.0.0.0`, so it, a wildcard, or any other address refuses to start. Hosted runs refuse the emulator setting altogether.
+
+The site queues turns only when `PHYSICIAN_CHAT_TOPIC` is set. Without it, hosted or not, chat runs inline in the site process as it did before the worker, and a hosted start logs a warning. `PHYSICIAN_CHAT_TOPIC` without `PHYSICIAN_DATABASE_URL` refuses to start, because the turn is accepted in Postgres.
+
+| `PHYSICIAN_CHAT_TOPIC` | `PHYSICIAN_DATABASE_URL` | Startup |
+| --- | --- | --- |
+| unset | unset | Chat runs inline. Hosted logs a warning. |
+| unset | set | Chat runs inline. Hosted logs a warning. |
+| set | unset | Refuses to start. |
+| set | set | Turns go to Postgres and the topic. The worker runs the model. |
+
+With the topic set, `reply.revise` answers 503 "Hosted reply revision is unavailable." Reply revision runs the model in the site process, and with the topic set the site no longer runs the model. It works again once revision moves to the worker.
+
+`GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Postgres orders them by latest activity, then chat id, before taking the newest 200, so a chat that just got a message lists however many older chats the workspace has. Inline chats come from `PhysicianSession::chats`. Each conversation records `opened_at` and `last_activity_at` in its JSONB state, so no migration is needed. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id and writes it to `?chat=`. A chat is listed after a reload once its first message is accepted.
+
+The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
+
+Memorystore Basic 1 GB is about $35/month and the site's minimum instance about $48/month after the free tier. Dev raised the `coda-rust-stg` budget alert from $10 to $200/month before applying. Nothing is applied without a reviewed saved plan. An operator writes `PHYSICIAN_REDIS_URL` into the Doppler config `stg_physician_runtime`. The activation steps, including the CA bundle and the cost table, are [Physician scaling](gcp.md#physician-scaling-redis-fan-out-and-pubsub-chat-turns).
+
+`nix develop` provides `valkey` and the Pub/Sub emulator (`google-cloud-sdk` with the `pubsub-emulator` component, and `jre_headless` to run it).
+
+The bus proofs in [`tests/redis.rs`](/crates/physician-bus/tests/redis.rs) do not race production timing. `RedisBus::connect_with` takes a test `Timing` (heartbeat, command timeout, reconnect backoff and jitter); `connect` keeps the production values. The fast-restart proof routes the bus through a TCP proxy that the test closes and reopens, with a 60 s heartbeat and no jitter, so only the reconnect path can resync. Each test waits for the bus to be live and quiet instead of sleeping a fixed time.
+
+The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` set, `PHYSICIAN_WORKER_FIXED_FAIL_MARKER=1` makes a message containing `[fail:K]` fail its first K attempts, counted from the attempts Postgres saved on that message, so a worker restart or a second instance keeps the count. Try again keeps the message, so `[fail:5]` dead-letters and its Try again answers. Hosted execution refuses the variable, like the other fixed-provider variables.
+
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#system-boundary">Architecture: the system boundary and model roles</a>
 - <a href="/submodules/coda-agents/docs/architecture%2Emd#external-clinical-evidence">Architecture: external clinical evidence</a>
 - <a href="/submodules/coda-agents/docs/runtime-protocol%2Emd">Runtime protocol</a>
@@ -43,3 +82,7 @@ The retained GKE deployment reference is <a href="/infra/gcp/physician-runtime/R
 - <a href="/submodules/coda-agents/docs/readiness%2Emd#current-local-product-work">Readiness: current work</a>
 - <a href="/submodules/coda-agents/docs/testing%2Emd#proof-by-boundary">Testing: proof by boundary</a>
 - <a href="/submodules/coda-agents/README%2Emd#run-and-verify">Run and verify</a>
+
+## Remaining gaps
+
+- **Hosted reply revision.** With `PHYSICIAN_CHAT_TOPIC` set, `reply.revise` answers 503. Hosted drafts don't exist yet either: drafts live only in the inline session, and there is no Postgres draft owner. Follow-up: add a Postgres draft store, accept the revision there, publish it on the chat-turn topic, and have `physician-worker` run it. Then remove the 503 in [`live.rs`](/crates/physician-sample/src/live.rs).

@@ -10,12 +10,8 @@ stateDiagram-v2
   %% Promise: the URL token is cleared before rendering; the server hashes, expires and
   %% consumes it once. These are data obligations, exercised in physician-auth and
   %% physician-sample/tests/site.rs, not represented as invented finite states here.
-  %% Implementation: physician-app/src/lib.rs SignInScreen, PhysicianRoot and SessionState;
-  %% tabs.rs carries sign-in news between this browser's tabs; main.rs sign_in_link.
-  %% Browser tests cover the real mailed HTML button, public mount, reload, sign-out, an
-  %% already-signed-in browser, reuse refusal, the expired prompt resuming in place (from the
-  %% prompt and from another tab), another physician's sign-in, and No access. No chart safety
-  %% rules: generation/check/trace establish transition correspondence, not data or runtime proof.
+  %% What the app builds for these states is in coverage.md. No chart safety rules:
+  %% generation/check/trace establish transition correspondence, not data or runtime proof.
   %% Decision: Dev 2026-10-24, the emailed link carries no patient. A Coda link opened while
   %% signed out is held by the tab that opened it (Patient link). Signing in in any tab of this
   %% browser signs in its signed-out tabs, as sign-out reaches every tab, so the holding tab

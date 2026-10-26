@@ -329,12 +329,15 @@ impl FrontDoorStore for PostgresFrontDoorStore {
         {
             return Err(SignInError::Invalid);
         }
-        // The pending row is deleted inside the transaction: a raced second
-        // verify finds nothing, so a token mints one session.
-        SignInTokens::delete_by_id(pending.id)
+        // Only the transaction that consumes the token may mint a session.
+        // A concurrent verifier can have read the same pending row already.
+        let consumed = SignInTokens::delete_by_id(pending.id)
             .exec(&txn)
             .await
             .map_err(|_| SignInError::Invalid)?;
+        if consumed.rows_affected != 1 {
+            return Err(SignInError::Invalid);
+        }
         let session_token = mint_token();
         let session = crate::migration::SessionActiveModel {
             id: Default::default(),

@@ -2,15 +2,32 @@
 from pathlib import Path
 import os
 import subprocess
+import re
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+SERVICE_IGNORE = "ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]"
+
+
+def config_text(*names):
+    """Executable HCL only: explanatory comments are dropped."""
+    paths = [ROOT / name for name in names] if names else sorted(ROOT.glob("*.tf"))
+    return "\n".join(line for path in paths for line in path.read_text().splitlines() if not line.lstrip().startswith("#"))
+
+
+def resource_blocks(text, kind):
+    """Map resource name -> body for every `resource "kind" "name" {` block."""
+    blocks = {}
+    for match in re.finditer(r'^resource "%s" "([^"]+)" \{\n(.*?)^\}' % re.escape(kind), text, re.M | re.S):
+        blocks[match.group(1)] = match.group(2)
+    return blocks
 
 
 class Contract(unittest.TestCase):
     def test_release_drift_scope(self):
         text = (ROOT / "workloads.tf").read_text()
-        self.assertIn("ignore_changes = [template[0].containers[0].image, template[0].revision, traffic, client, client_version]", text)
+        # Both the app services and the physician-worker: release owns the image only.
+        self.assertEqual(text.count(SERVICE_IGNORE), 2)
         self.assertIn("ignore_changes = [template[0].template[0].containers[0].image, client, client_version]", text)
         self.assertNotIn("ignore_changes = [template]", text)
         self.assertNotIn("ignore_changes = all", text)
@@ -75,6 +92,61 @@ class Contract(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("restricted to public-site-staging", result.stderr)
         self.assertEqual(result.stdout, "")
+
+    def test_physician_scale_is_physician_only(self):
+        # Every Redis, Pub/Sub and worker resource iterates physician_scale_apps
+        # (or the physician_scale flag), so Duet can never receive one.
+        text = config_text()
+        scale_kinds = ["google_redis_instance", "google_pubsub_topic", "google_pubsub_subscription",
+                       "google_pubsub_topic_iam_binding", "google_pubsub_subscription_iam_binding"]
+        for kind in scale_kinds:
+            blocks = resource_blocks(text, kind)
+            self.assertTrue(blocks, kind)
+            for name, body in blocks.items():
+                with self.subTest(kind=kind, name=name):
+                    self.assertIn("for_each = local.physician_scale_apps", re.sub(r"\s+", " ", body))
+        # No scaling resource body names Duet, its identities or its slots.
+        scale_kinds += ["google_service_account", "google_cloud_run_v2_service", "google_cloud_run_v2_service_iam_binding",
+                        "google_service_account_iam_member", "google_project_iam_member", "google_project_service_identity"]
+        for kind in scale_kinds:
+            for name, body in resource_blocks(text, kind).items():
+                if "physician_scale" not in body:
+                    continue
+                with self.subTest(kind=kind, scale_resource=name):
+                    # Descriptions are prose; only references are checked.
+                    references = "\n".join(line for line in body.splitlines() if "description" not in line)
+                    self.assertNotIn("duet", references.lower())
+        # Only physician is ever handed the chat topic; Duet has no PHYSICIAN_* env.
+        workloads = config_text("workloads.tf")
+        self.assertIn('for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}', workloads)
+        self.assertIn('cpu_idle          = each.key != "physician"', workloads)
+        # Only physician keeps a minimum instance, and only while its queue exists.
+        self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
+
+    def test_worker_is_internal_and_push_invoked_only(self):
+        workloads = config_text("workloads.tf")
+        worker = resource_blocks(workloads, "google_cloud_run_v2_service")["physician_worker"]
+        self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
+        self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
+        self.assertRegex(worker, r"iap_enabled\s+= false")
+        self.assertRegex(worker, r"cpu_idle\s+= true")
+        invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
+        self.assertIn('members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]', invoker)
+        # No additive run.invoker grant may widen the authoritative binding.
+        for kind in ["google_cloud_run_v2_service_iam_member", "google_cloud_run_service_iam_member", "google_project_iam_member"]:
+            for name, body in resource_blocks(config_text(), kind).items():
+                with self.subTest(kind=kind, name=name):
+                    self.assertNotIn("roles/run.invoker", body)
+
+    def test_redis_auth_never_leaves_sensitive_output(self):
+        text = config_text()
+        uses = [line for line in text.splitlines() if ".auth_string" in line]
+        self.assertEqual(len(uses), 1, uses)
+        output = re.search(r'output "physician_redis_auth_string" \{(.*?)^\}', text, re.M | re.S)
+        self.assertIsNotNone(output)
+        self.assertIn("sensitive   = true", output.group(1))
+        # The Redis URL (which embeds AUTH) is Doppler-owned, never an infra env value.
+        self.assertNotRegex(text, r'name\s*=\s*"PHYSICIAN_REDIS_(URL|CA_PEM)"')
 
     def test_single_isolated_root(self):
         versions = (ROOT / "versions.tf").read_text()

@@ -9,10 +9,14 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 - `skills/` is the clinical skill catalog, loaded by `harness`.
 - `verification/` holds product statecharts, their design decisions, Verus models and scoped runtime evidence. Start with [verification](verification/README.md) and the [physician experience](verification/physician-experience/README.md). `.agents/skills/` holds the engineering workflows used to maintain them; it is separate from the clinical catalog.
 - `crates/workspace-tools/` owns workspace commands. `scripts/` holds supporting checks and adapters; `scripts/duet-wire/` groups the OpenAPI composer, finalizer and templates behind `cargo run -p workspace-tools -- generate-duet-wire`. See [API generation](book/src/backend-architecture.md#api-and-clients) for inputs and drift checks.
-- `book/` documents Rust owners, setup, operational procedures and proof boundaries. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it.
+- `book/` documents Rust owners, setup, operational procedures and proof boundaries. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it without submodules, so links into them are checked only in a checkout that has them.
 - `submodules/` checks out the product repositories. Use their pinned READMEs as reference for the original implementation: [coda-app](submodules/coda-app/README.md), [coda-agents](submodules/coda-agents/README.md), [coda-gym](submodules/coda-gym/README.md), and [Coda-Computer-Use](submodules/Coda-Computer-Use/README.md).
 
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
+
+The [personal engineering workstation recipe](infra/engineering-workstation/README.md)
+captures the Ubuntu/GCP desktop setup, private access, native scheduled tasks and
+the boundary between host packages, the Nix toolchain and account sign-in.
 
 ## Start
 

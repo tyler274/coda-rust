@@ -5,6 +5,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseMermaid } from "./mermaid.mjs";
 import { sharedEffects } from "./chart-search.mjs";
+import { COMPOSES } from "./chart-compose.mjs";
 
 export const hash = (text) => createHash("sha256").update(text).digest("hex");
 // rustc parses a flat chain of N operators as a tree N deep; long chains are grouped into
@@ -100,8 +101,12 @@ export function compile(text, module, options = {}) {
   const rules = parsed.nevers.map((n) => {
     if (ruleNames.has(n.name)) throw new Error(`duplicate never name ${n.name}`);
     ruleNames.add(n.name);
-    const parts = n.states.map((caption) => {
+    const parts = n.states.map((caption, ci) => {
+      // A composed chart's rule names states of that chart only.
+      const scope = n.scopes?.[ci];
+      const within = (r) => !scope || r.caption === scope || r.caption.startsWith(`${scope}/`);
       const find = (words) => regions.flatMap((r, ri) => {
+        if (!within(r)) return [];
         const states = r.states.has(words) ? [words] : r.values.filter((s) => s.startsWith(`${words}.`));
         return states.length ? [{ ri, states }] : [];
       });
@@ -353,6 +358,8 @@ fn main() {}
 // Generate (or with check: true, compare without writing) NAME.rs, NAME_steps.rs, NAME.map.json and NAME_proof.rs.
 export function writeModel({ chart, module, dir, check }) {
   const text = fs.readFileSync(chart, "utf8");
+  // Drift is judged on the chart's own text, which a composition does not hold.
+  if (COMPOSES.test(text)) throw new Error("verus and check take one chart; check a composition with rules, trace, lint and query");
   const { source, steps, mapping } = compile(text, module);
   dir = dir ?? path.dirname(chart);
   const modelPath = path.join(dir, `${module}.rs`);

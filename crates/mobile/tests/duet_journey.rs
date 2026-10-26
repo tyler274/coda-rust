@@ -350,6 +350,62 @@ fn site_router(site_root: PathBuf, api: axum::Router) -> axum::Router {
     })
 }
 
+#[tokio::test]
+async fn static_site_serves_assets_without_escaping_its_root() {
+    use tower::ServiceExt;
+
+    let directory =
+        std::env::temp_dir().join(format!("coda-site-boundary-{}", uuid::Uuid::new_v4()));
+    let root = directory.join("site");
+    std::fs::create_dir_all(root.join("assets")).unwrap();
+    std::fs::write(root.join("index.html"), "test index").unwrap();
+    std::fs::write(root.join("assets/app.js"), "test script").unwrap();
+    std::fs::write(directory.join("outside.txt"), "outside the site root").unwrap();
+    #[cfg(unix)]
+    std::os::unix::fs::symlink(directory.join("outside.txt"), root.join("escaped.txt")).unwrap();
+    let app = site_router(root, axum::Router::new());
+    let mut observed = Vec::new();
+    for path in [
+        "/",
+        "/assets/app.js",
+        "/../outside.txt",
+        "/assets/../../outside.txt",
+        "/%2e%2e/outside.txt",
+        "/escaped.txt",
+    ] {
+        // Construct the raw URI: browsers and URL clients normalize dot segments.
+        let response = app
+            .clone()
+            .oneshot(
+                axum::http::Request::builder()
+                    .uri(path)
+                    .body(axum::body::Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        let status = response.status();
+        let body = axum::body::to_bytes(response.into_body(), 1024)
+            .await
+            .unwrap();
+        observed.push((path, status, body));
+    }
+    std::fs::remove_dir_all(directory).unwrap();
+    for (path, status, body) in observed {
+        match path {
+            "/" => {
+                assert_eq!(status, 200);
+                assert_eq!(&body[..], b"test index");
+            }
+            "/assets/app.js" => {
+                assert_eq!(status, 200);
+                assert_eq!(&body[..], b"test script");
+            }
+            _ => assert_eq!(status, 404, "{path} escaped the site root"),
+        }
+    }
+}
+
 async fn static_file(
     root: &std::path::Path,
     path: &str,
@@ -363,8 +419,11 @@ async fn static_file(
     } else {
         relative
     };
-    let file = root.join(relative);
-    if !file.starts_with(root) || !file.is_file() {
+    // Compare resolved paths so dot segments and symlinks cannot leave the
+    // compiled site tree. Both journey routers use this same boundary.
+    let root = root.canonicalize()?;
+    let file = root.join(relative).canonicalize()?;
+    if !file.starts_with(&root) || !file.is_file() {
         return Err(std::io::Error::new(
             std::io::ErrorKind::NotFound,
             "no such site file",

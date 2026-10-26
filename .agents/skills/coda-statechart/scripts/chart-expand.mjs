@@ -207,7 +207,7 @@ function expandCommands(root, names, catalog) {
         ({ not: false, ids: [at, ...(also?.ids ?? [])], reason: also?.reason ? `${also.reason}; and ${why}` : why });
       declare(through, { cause: "the system", accepts: click, needs: inFlight(sending, needs),
         intent: `Accepted while the command is still allowed, directly or after the same request is resent; only now does ${item} change.` });
-      declare(refused, { cause: "the system", needs: inFlight(sending),
+      declare(refused, { cause: "the system", needs: inFlight(sending), ...(needs ? { refuses: needs } : {}),
         intent: `${item[0].toUpperCase()}${item.slice(1)} no longer allows it when it arrives; nothing changes, and the view refreshes and says why.` });
       declare(lost, { cause: "the client", needs: inFlight(sending), intent: "The same request was resent and still has no answer; you are asked, with Check again." });
       declare(again, { cause: "you", needs: inFlight(stuck, null, "Check again shows only when an answer couldn't be confirmed"), intent: "The same request is resent; it can never be applied twice." });

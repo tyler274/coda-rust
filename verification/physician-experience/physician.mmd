@@ -2,10 +2,8 @@ stateDiagram-v2
 %% Coda physician web app: the one unified behavior graph (rewrite, 2026-10-23).
 %% The graph is the spec; Verus derives from it. It states ideal product behavior from Dev's
 %% intent and the settled sources, never from existing code.
-%% Charter: Coda is a broadly capable, proactive agent team. The graph limits only access,
-%% communication standards (Coda never sends on its own), data and consent, and owner
-%% consistency. Everything Coda judges is a "may". Every limit says what it protects.
-%% Written region by region; this file currently holds the shell.
+%% Its limits follow the Charter and the communication standard in decisions.md: every limit
+%% says what it protects, and everything Coda judges is a "may".
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
 %% what it is for. Physician commands need an active session (bug 15 becomes structural).
@@ -49,11 +47,12 @@ stateDiagram-v2
 %%
 %% Coda's work: one lifecycle for every kind (rewrite-worklist "Ideal behavior: Coda's work").
 %% Causes are other owners' events; they make work owed. Starting waits for what the work needs.
-%% events news for the patient = new records arrive | a shared Duet record arrives | a message arrives from a known sender | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel
+%% events news for the patient = new records arrive | a shared Duet record arrives | the patient sends For my doctor | the patient joins and consents | a message arrives from a known sender | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel
 %% events the concern is shown = open the concern | the link opens the concern
-%% events message news = a message arrives from a known sender | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel | the correction's Undo ends
+%% events message news = a message arrives from a known sender | the patient sends For my doctor | the patient writes again | confirm the match | link the message to the patient | the practice replies in the channel | the correction's Undo ends
 %% event new records arrive | by the records source | needs SrcConnecting, SrcChecking | reason: records arrive from a connecting or checking source | New records for the patient are available to read.
 %% event a shared Duet record arrives | by the patient through Duet | needs PcConnected | reason: connected means sharing; nothing arrives otherwise | The patient shares something new through Duet.
+%% event the patient sends For my doctor | by the patient through Duet | needs PcConnected | reason: a patient sends only to the practice they're connected to | The patient's own For my doctor arrives, linked to them like a message from a known sender; Coda's agents read it and judge whether a physician needs to see it (Dev 2026-10-26).
 %% event a patient message arrives | by the messaging channel | needs ChLive | reason: only a live channel delivers messages | A message from an unknown sender reaches the practice; Coda suggests a patient, and a person confirms before it becomes evidence (PM-500).
 %% event the follow-up comes due | by the follow-up's date | needs FWaiting | reason: only an active follow-up comes due | A follow-up's date arrives, so Coda reviews what it was for.
 %% event the weekly cycle comes round | by the practice calendar | The weekly look across the patient comes due.
@@ -94,6 +93,7 @@ stateDiagram-v2
 %% event the visit ends | by the clock | needs VAhead, VCancelled | reason: only a visit still ahead can pass | The visit's recorded time passes; a running preparation finishes, anything owed or failed ends.
 %% event the visit is cancelled | by the practice schedule | needs VAhead | reason: only a visit still ahead can be cancelled | Everything unfinished for that visit ends at once; a finished briefing stays as history.
 %% event the visit is moved | by the practice schedule | needs VAhead | reason: only a visit still ahead can move | Everything unfinished for the old time ends; the new time is prepared fresh.
+%% event the practice's visit reaches the patient's Duet | by the practice schedule | needs PcConnected, VAhead | reason: the schedule reaches only a connected patient's Duet, and only for a visit still ahead (ENG-169) | A visit already on the schedule when the patient joins shows in their Duet; nothing changes here.
 %% event the link opens the concern | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the concern, read in the reader over the patient page.
 %% event the link opens the briefing | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the briefing.
 %% event the link opens the follow-up | by the app | needs AClin | reason: clinical content needs clinical access | The link lands on the follow-up.
@@ -202,7 +202,7 @@ stateDiagram-v2
 %% event the invitation reminder goes out | by the practice system | needs PcFresh | reason: one reminder only | One reminder, then expiry.
 %% event the invitation expires | by the practice system | needs PcReminded | reason: an invitation expires after its reminder | The invitation lapses; the patient can be invited again.
 %% event cancel the invitation | by you | command on the patient's connection: Cancel the invitation, clicked while SIn | needs PcInvited | reason: only an open invitation is withdrawn | You withdraw the invitation.
-%% event the patient joins and consents | by the patient through Duet | needs PcSent | reason: only a delivered invitation can be accepted | Duet owns joining and consent; connected means sharing.
+%% event the patient joins and consents | by the patient through Duet | needs PcInvited | reason: any invitation the practice still holds open can be accepted, even while it is being resent (Dev 2026-10-25) | Duet owns joining and consent; connected means sharing, so everything the patient already shares arrives with the join, on a first join and on joining again.
 %% event the patient leaves the practice | by the patient through Duet | needs PcConnected | reason: only a live connection can end | The connection ends at once; the practice keeps what it already received, dated.
 %% event discharge the patient | by you | command on the patient's connection: Discharge, clicked while SIn | needs PcConnected | reason: only a live connection can end | Any practice member ends the connection; what was received stays, dated.
 %% event the patient's account is deleted | by the patient through Duet | The connection or invitation ends at once.
@@ -885,7 +885,7 @@ stateDiagram-v2
       }
       PcNone --> PcInvited : invite the patient
       PcEnded --> PcInvited : invite the patient
-      PcSent --> PcConnected : the patient joins and consents
+      PcInvited --> PcConnected : the patient joins and consents
       PcInvited --> PcNone : cancel the invitation
       PcReminded --> PcNone : the invitation expires
       PcInvited --> PcNone : the patient's account is deleted
@@ -893,6 +893,8 @@ stateDiagram-v2
       PcConnected --> PcDischarged : discharge the patient
       PcConnected --> PcDeleted : the patient's account is deleted
       PcConnected --> PcConnected : a shared Duet record arrives
+      PcConnected --> PcConnected : the patient sends For my doctor
+      PcConnected --> PcConnected : the practice's visit reaches the patient's Duet
     }
     --
     %% The patient summary is what initial understanding writes; later work builds on it.

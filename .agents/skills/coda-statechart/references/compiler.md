@@ -224,9 +224,39 @@ state "Your command on the item" as Rc {
 
 ```mermaid
 Idle --> Ringing : the bell is pressed / may ring the chime
-Today --> Now : the review finishes / may raise the urgency
-Opened --> New : the review finishes / may raise the urgency
+Dark --> Lit : the door opens / may turn on the lights
+Off --> On : the door opens / may turn on the lights
 ```
+
+**Compositions.** Separate charts compose through shared events, never copied states.
+A composition is a `stateDiagram-v2` file of `%%` lines that every command reads like a
+chart:
+
+```mermaid
+stateDiagram-v2
+%% compose app: compose-app.mmd
+%% compose practice: compose-practice.mmd
+%% shared app: you're invited = practice: invite the patient
+%% shared practice: a record arrives = app: save a note | app: new records arrive
+%% outside practice: by the patient through the app
+%% never SameStatus: app: Connected & practice: Not connected -- Both sides show one connection.
+```
+
+`%% compose KEY: PATH` names a chart, relative to the composition. Each chart expands on
+its own and becomes one parallel part, its regions named under its top caption; its state
+ids get its key, so no state is shared. `%% shared F: L = O: L1 | O: L2` makes the follower
+F's event L the owners' events: each edge F draws on L is drawn on each owner label instead,
+keeping F's own needs (`query` prints them as *needs here*) and waiting for the owner
+event's needs too, so F reacts only when the owner's event can happen; on a command's
+refusal that includes the command's needs failing. Two of F's
+events shared onto one owner label stay apart: a nested step wins over a shallower one
+on that label only while it can fire itself: its own event's needs hold, and a command's
+refusal only while that command's needs fail. The owner's
+declaration stands. An owner event cannot itself be a follower. The same words in two charts are two
+events unless shared: an unshared label another chart also uses gets ` (KEY)`.
+`%% outside F: by CAUSE` says events F declares with that cause happen in another chart, so
+each must be shared. Each chart's own `%% never` rules hold as `KEY.Name`, naming its states
+only; a composition's rules name a state as `KEY: caption`.
 
 **Reasons.** Any limit can say what it protects with free text after `| reason:`,
 on `%% when Ids | reason: ...`, after a declaration's `needs Ids | reason: ...`, or

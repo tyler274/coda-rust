@@ -41,10 +41,15 @@ function graph({ ir, parsed }) {
   return { regions, actions, index, children, edges, info, entries, unreachable, reads };
 }
 
-function describe(t, g) {
+// `event` is the declaration the step's needs are compared with, when the caller prints it.
+function describe(t, g, event) {
   const parts = [];
   if (t.guard) parts.push(`guard: ${limitWords(t.guard)}`);
-  for (const w of t.within ?? []) parts.push(`part condition: ${guardWords(w)}`);
+  // A composed chart's step can need more than its event does: it keeps its own chart's needs.
+  const declared = event === undefined ? (t.label ? g.info(t.label) : null) : event;
+  if (t.needs && JSON.stringify(t.needs) !== JSON.stringify(declared?.needs ?? null))
+    parts.push(`needs here: ${limitWords(t.needs)}`);
+  for (const w of t.within ?? []) parts.push(`${w.owner ? "the event's own needs" : "part condition"}: ${guardWords(w)}`);
   for (const c of t.unless ?? []) parts.push(`blocked while ${c.map(guardWords).join(" and ")}`);
   const e = t.label ? g.info(t.label) : null;
   if (e) {
@@ -154,7 +159,7 @@ export function queryEvent(compiled, text) {
     lines.push(`  reacting regions (${moves.length}):`);
     for (const [ri, ms] of moves) {
       lines.push(`    ${g.regions[ri].caption}`);
-      for (const m of ms) lines.push(`      ${m.from} --> ${m.to}${describe({ ...m, label: "" }, g)}`);
+      for (const m of ms) lines.push(`      ${m.from} --> ${m.to}${describe({ ...m, label: "" }, g, e ?? null)}`);
     }
     for (const [ri, r] of g.regions.entries())
       if (r.starts?.has(label)) lines.push(`  labeled start: ${r.caption} enters at ${r.starts.get(label).join(" or ")} when ${r.scope.region} enters ${r.scope.state}`);

@@ -36,6 +36,7 @@ Vercel retirement.
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -185,13 +186,18 @@ runs on pushes to `main`, after every check job, when the repository variable
 `staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
 `GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
 
-1. builds the four Nix images and pushes each to `apps/` tagged with the commit,
+1. builds the physician and Duet runtime and migration images and
+   `physician-worker-image`, and pushes each to `apps/` tagged with the commit,
    recording its digest;
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
    traffic;
-3. uploads a receipt (digests, executions, revisions) as the
+3. updates `physician-worker` to its digest, with the same Ready-revision check,
+   once that service exists. The first push, before the scaling plan creates the
+   service, still publishes the digest for `images.physician.worker` and leaves
+   the service alone;
+4. uploads a receipt (digests, executions, revisions) as the
    `release-receipt-*` artifact.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
@@ -233,6 +239,344 @@ the work below remains outstanding:
 These partial checks do not establish complete hosted acceptance. The
 preview services have IAP-gated `run.app` URLs only; no custom domain points at
 them.
+
+### Physician scaling (Redis fan-out and Pub/Sub chat turns)
+
+`enable_physician_scale` lets the physician site run on more than one instance. It takes effect only
+together with `enable_workloads`, and the committed staging inputs turn it on.
+Everything it creates belongs to physician; Duet gets no cache, topic, worker,
+grant or setting, and the root's tests check this.
+
+- [`cache.tf`](/infra/gcp/rust-environments/cache.tf) creates the Memorystore
+  instance `rust-physician-cache`: Basic tier, 1 GB, Redis 7.2, AUTH and TLS
+  (`SERVER_AUTHENTICATION`). It sits on the existing `rust-sql-private` peering,
+  so it has no public endpoint. It carries `workspace_changed` and
+  `workspace_settled` between instances. Clients use `fred` with TLS and AUTH
+  (`PHYSICIAN_REDIS_URL`, `PHYSICIAN_REDIS_CA_PEM`). Lag or a reconnect is a
+  `resync`, and the page refetches. Sign-in and panel notices stay on the
+  Postgres `physician_authority` triggers.
+- [`queue.tf`](/infra/gcp/rust-environments/queue.tf) creates the topics
+  `physician-chat-turns` and `physician-chat-turns-dead-letter`. Each message is
+  `{scope, input_id}`. A push subscription delivers each turn to the worker
+  with an OIDC token for the `physician-pubsub-push` service account. The ack
+  deadline is 600 s and retries back off from 10 s to 600 s. After 5 failed
+  deliveries a message goes to the
+  dead-letter topic, which has a pull subscription of the same name for
+  inspection. Only the physician runtime identity may publish turns. The
+  Pub/Sub service agent may dead-letter, and it may mint tokens for the push
+  account and no other.
+- [`workloads.tf`](/infra/gcp/rust-environments/workloads.tf) adds the
+  `physician-worker` Cloud Run service. It has internal ingress and no IAP, IAM
+  invoker checks stay on, and `physician-pubsub-push` is its only invoker.
+  Pub/Sub counts as internal traffic when it calls the default `run.app` URL from
+  the same project
+  ([Cloud Run ingress](https://cloud.google.com/run/docs/securing/ingress)).
+  The worker runs as `physician-worker-runtime`, which may reach only the
+  physician SQL instance. It reads the `physician-runtime-doppler-token` slot
+  and runs on `stg_physician_runtime`, because it needs exactly those secrets;
+  a second token on the same config would add a rotation step without narrowing
+  anything. It is told its OIDC audience (the deterministic
+  `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
+  as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It keeps
+  request-based CPU, because every turn runs inside the push request it
+  answers. On each push it checks the token's audience and the
+  `physician-pubsub-push` email, claims the leased turn in Postgres, runs the
+  model, commits, and publishes `workspace_changed`.
+- The physician site gets `PHYSICIAN_CHAT_TOPIC`, `cpu_idle = false` and one
+  minimum instance. CPU stays allocated because
+  its Postgres listener and Redis subscriber must keep running between requests.
+  The minimum instance keeps the recovery sweep running: it republishes, every
+  10 s, an accepted turn whose Pub/Sub publish failed. At zero instances that
+  turn would wait until unrelated traffic started the site again.
+  Duet keeps `cpu_idle = true`. `runtime_environment` may not set any of the
+  scaling keys, and Duet may not set any `PHYSICIAN_*` key.
+
+`PHYSICIAN_REDIS_URL` embeds the AUTH string, so it lives only in Doppler, as
+does `PHYSICIAN_REDIS_CA_PEM`. Neither value is committed.
+
+Merge the code before applying the plan. That order is safe: without
+`PHYSICIAN_CHAT_TOPIC` the site starts, logs a warning and runs chat inline, as
+it did before the worker. Without `PHYSICIAN_REDIS_URL` it keeps the in-process
+bus. Applying the plan sets the topic on the service, and from then on the site
+queues turns for the worker. With the topic set, `reply.revise` answers 503
+"Hosted reply revision is unavailable." until reply revision also moves to the
+worker (see [Remaining gaps](physician-site.md#remaining-gaps)).
+
+Activation, in order, from an authorized engineering account. Engineering
+cannot apply this plan alone; the exact commands Dev runs, including the IAM
+and budget steps, are in [Apply commands for Dev](#apply-commands-for-dev).
+
+1. **Publish the worker image.** The initial `coda-physician-worker` digest is
+   already pinned as `images.physician.worker` in
+   [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars). The
+   plan refuses to run without a digest in that field. Later `deploy-staging`
+   pushes replace the running image; OpenTofu ignores that field after the
+   service exists.
+2. **Plan, review, apply.** Run the saved plan from
+   [the bootstrap section](#rust-staging-bootstrap-and-deployment-gate) and
+   review it. It should create the cache, both topics, both subscriptions, the
+   push and worker identities with their grants, and the worker. It should also
+   update the physician service in place (`cpu_idle`, `min_instance_count = 1`,
+   `PHYSICIAN_CHAT_TOPIC`),
+   add the worker to the `physician-runtime` token reader and enable
+   `redis.googleapis.com` and `pubsub.googleapis.com`. It must not touch Duet.
+   Apply exactly that file:
+
+   ```bash
+   nix develop .#release --command tofu -chdir="$root" apply staging.tfplan
+   ```
+
+   Creating Memorystore takes several minutes. Until step 4, the site already
+   queues turns, but the worker's events reach other instances only through
+   Redis.
+3. **Write Redis into Doppler.** Read the AUTH string straight into Doppler; it
+   never appears on screen, in argv or in a file. The CA bundle is public.
+
+   ```bash
+   tf() { nix develop .#release --command tofu -chdir="$root" "$@"; }
+   host=$(tf output -json physician_scale | jq -r .redis_host)
+   port=$(tf output -json physician_scale | jq -r .redis_port)
+   { printf 'rediss://:'; tf output -raw physician_redis_auth_string; printf '@%s:%s' "$host" "$port"; } |
+     doppler secrets set PHYSICIAN_REDIS_URL --project coda-rust --config stg_physician_runtime --silent
+   tf output -raw physician_redis_ca_pem |
+     doppler secrets set PHYSICIAN_REDIS_CA_PEM --project coda-rust --config stg_physician_runtime --silent
+   ```
+
+   The worker runs on the same config and token, so it needs no new Doppler
+   token and `doppler_token_versions` does not change. Run step 3 again if the
+   instance is ever replaced, because its host, AUTH string and CA change.
+4. **Deploy.** The runtimes read Doppler only at process start. Re-run
+   `deploy-staging` on `main`, or push to `main`, so the site and the worker
+   start revisions with the new values. From then on, the release updates the
+   worker image the same way it updates the other services.
+5. **Verify.**
+   - Open the site in two tabs, and keep opening tabs until the
+     `labels.instanceId` of the stream requests in the `physician` logs shows two
+     instances. Each SSE stream holds one of an instance's 8 request slots.
+     Send a turn from one tab; the reply must appear in a tab on the other
+     instance.
+   - In Cloud Monitoring, check these metrics:
+     - `physician-chat-turns-worker`: `subscription/push_request_count` grouped
+       by `response_class` (successes),
+       `subscription/oldest_unacked_message_age` (near zero) and
+       `subscription/dead_letter_message_count` (zero).
+     - `rust-physician-cache`: `redis.googleapis.com/clients/connected`, one
+       subscriber per site instance plus the workers.
+     - `run.googleapis.com/container/instance_count` for `physician` and
+       `physician-worker`.
+   - To inspect dead letters without acknowledging them, run
+     `gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
+
+Workstations use `valkey` and the Pub/Sub emulator from `nix develop`. Unset
+`PHYSICIAN_REDIS_URL` keeps the in-process bus.
+
+To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
+saved plan. The plan removes the cache, topics, subscriptions, and worker.
+The physician site goes back to a minimum of zero instances. It keeps
+`cpu_idle = false`, because its Postgres authority
+listener still runs between requests. Then delete the two Doppler keys and
+redeploy.
+
+#### Apply commands for Dev
+
+**Status, October 25, 2026.** Dev applied the original plan as the project
+Owner. Redis, both topics and subscriptions, and `physician-worker` exist; the
+Redis URL and CA are in Doppler `stg_physician_runtime`; the worker is Ready;
+the budget alert is $200/month. That plan predates two fixes in this stack:
+
+- The physician site keeps one instance while scaling is on
+  (`min_instance_count` 0 to 1), so its recovery sweep always runs. After the
+  stack merges and `deploy-staging` is green, run steps 4 to 6 once more. The
+  saved plan should be exactly one in-place change, `google_cloud_run_v2_service.app["physician"]`
+  with `min_instance_count` 0 to 1, and nothing added or destroyed. The minimum
+  instance costs about $48/month after the free tier (see [Cost](#cost)).
+- The worker image now sets `PHYSICIAN_AUTH=required`. The same key in
+  `stg_physician_runtime` becomes redundant and harmless; it can stay.
+
+The first-time steps below are kept for a fresh project.
+
+The plan creates IAM bindings that `group:gcp-engineering@codahealth.ai`
+cannot write on `coda-rust-staging`. Checked with `testIamPermissions` on
+October 25, 2026, engineering lacks:
+
+| Permission | Needed for |
+| --- | --- |
+| `resourcemanager.projects.setIamPolicy` | `google_project_iam_member.physician_worker_sql`: `roles/cloudsql.client` and `roles/cloudsql.instanceUser` for `physician-worker-runtime`, each conditioned to the `rust-physician` instance |
+| `pubsub.topics.getIamPolicy`, `pubsub.topics.setIamPolicy` | the publisher bindings on `physician-chat-turns` (physician runtime) and `physician-chat-turns-dead-letter` (Pub/Sub service agent) |
+| `pubsub.subscriptions.getIamPolicy`, `pubsub.subscriptions.setIamPolicy` | the service agent's subscriber binding on `physician-chat-turns-worker`, which dead-lettering needs |
+
+Everything else in the plan (Memorystore, topics, subscriptions, service
+accounts, the worker service and its invoker binding, the Doppler token
+reader, the two APIs) is within engineering's roles. Do not apply part of it:
+the physician service would get `PHYSICIAN_CHAT_TOPIC` without permission to
+publish, and Memorystore would be billed. The budget alert also needs Cloud
+Billing access that engineering does not have.
+
+Run everything below in `nix develop` from an up-to-date `main` checkout. That
+shell has `gcloud`, `tofu`, `doppler` and `jq`.
+
+1. **Confirm the code is live.** The site that queues turns and
+   `physician-worker` must be on `main`, and the latest `deploy-staging` run on
+   `main` must be green. Applying before that sets the topic on a site that does
+   not read it.
+
+   ```bash
+   gh run list --workflow ci.yml --branch main --event push --limit 1 \
+     --json headSha,conclusion,url
+   ```
+
+2. **Raise the budget alert** (billing administrator). Expected fixed spend
+   after this plan is about $55/month, plus up to about $105/month if both
+   `physician` instances stay up (see [Cost](#cost)). Pick the new amount; 150 is
+   an example.
+
+   ```bash
+   billing=01691B-49BADA-F3D54D
+   gcloud billing budgets list --billing-account="$billing" \
+     --format='table(name.basename(),displayName,amount.specifiedAmount.units)'
+   gcloud billing budgets update BUDGET_ID --billing-account="$billing" \
+     --budget-amount=150.00
+   ```
+
+3. **Decide who applies.** Either Dev applies as `dev@codahealth.ai`, the
+   project Owner, which needs no new grants (skip to step 4), or Dev grants
+   engineering the missing permissions and engineering applies. The narrow grant
+   is Pub/Sub Admin plus Project IAM Admin that may only add or remove the two
+   Cloud SQL roles:
+
+   ```bash
+   project=coda-rust-staging
+   group=group:gcp-engineering@codahealth.ai
+   cat > /tmp/only-cloudsql-worker-grants.yaml <<'YAML'
+   title: only-cloudsql-worker-grants
+   description: May add or remove only the worker's Cloud SQL roles
+   expression: >-
+     api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', [])
+     .hasOnly(['roles/cloudsql.client', 'roles/cloudsql.instanceUser'])
+   YAML
+   gcloud projects add-iam-policy-binding "$project" --member="$group" \
+     --role=roles/pubsub.admin --condition=None
+   gcloud projects add-iam-policy-binding "$project" --member="$group" \
+     --role=roles/resourcemanager.projectIamAdmin \
+     --condition-from-file=/tmp/only-cloudsql-worker-grants.yaml
+   ```
+
+   Remove both after the apply (step 8) unless they should stay.
+
+4. **Plan.** Sign in as the account that applies. The database passwords are
+   write-only inputs read from Doppler. The saved plan goes stale once
+   `deploy-staging` or another apply touches state, so plan right before
+   applying.
+
+   ```bash
+   gcloud auth login   # dev@codahealth.ai, or the engineering account after step 3
+   root=infra/gcp/rust-environments
+   export GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+   pw() { doppler secrets get DB_PASSWORD --project coda-rust --config "stg_$1" --plain; }
+   export TF_VAR_database_passwords=$(jq -nc \
+     --arg a "$(pw physician_runtime)" --arg b "$(pw physician_migration)" \
+     --arg c "$(pw duet_runtime)" --arg d "$(pw duet_migration)" \
+     '{"physician-runtime":$a,"physician-migration":$b,"duet-runtime":$c,"duet-migration":$d}')
+   tofu -chdir="$root" init -input=false -reconfigure \
+     -backend-config=backend/staging.gcs.tfbackend
+   tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars \
+     -out=staging.tfplan
+   ```
+
+5. **Review the saved plan.** On October 25, 2026 it was 20 to add, 2 to
+   change, 0 to destroy. The additions are the cache; the two topics, the two
+   subscriptions and their three bindings; the push and worker service accounts,
+   the push token grant and the worker's two Cloud SQL grants; the worker, its
+   invoker and its two release grants; the Pub/Sub service identity; and the
+   `redis` and `pubsub` APIs. The two in-place changes are the
+   `physician` service (`cpu_idle` true to false, `min_instance_count` 0 to 1,
+   adds `PHYSICIAN_CHAT_TOPIC`, image unchanged) and the `physician-runtime`
+   Doppler-token reader (adds
+   `physician-worker-runtime`). Nothing may name Duet and nothing may be
+   destroyed:
+
+   ```bash
+   tofu -chdir="$root" show -json staging.tfplan | jq -r '.resource_changes[]
+     | select(.change.actions != ["no-op"])
+     | "\(.change.actions | join(","))\t\(.address)"'
+   tofu -chdir="$root" show -json staging.tfplan | jq -e '[.resource_changes[]
+     | select(.change.actions != ["no-op"])
+     | select((.address | test("duet")) or (.change.actions | index("delete")))]
+     | length == 0'
+   ```
+
+6. **Apply exactly that file.** Memorystore takes several minutes. The access
+   token lasts an hour; if the apply outlives it, export a fresh one and
+   re-plan.
+
+   ```bash
+   tofu -chdir="$root" apply staging.tfplan
+   ```
+
+7. **Write Redis into Doppler and restart.** The AUTH string goes straight from
+   `tofu output` into Doppler and never reaches the screen, argv or a file.
+   Runtimes read Doppler only at process start, so start new revisions.
+   `--revision-suffix` changes only the revision name, which OpenTofu ignores
+   on both services.
+
+   ```bash
+   tf() { tofu -chdir="$root" "$@"; }
+   host=$(tf output -json physician_scale | jq -r .redis_host)
+   port=$(tf output -json physician_scale | jq -r .redis_port)
+   { printf 'rediss://:'; tf output -raw physician_redis_auth_string; printf '@%s:%s' "$host" "$port"; } |
+     doppler secrets set PHYSICIAN_REDIS_URL --project coda-rust --config stg_physician_runtime --silent
+   tf output -raw physician_redis_ca_pem |
+     doppler secrets set PHYSICIAN_REDIS_CA_PEM --project coda-rust --config stg_physician_runtime --silent
+   suffix=redis-$(date +%s)
+   for service in physician physician-worker; do
+     gcloud run services update "$service" --project coda-rust-staging \
+       --region us-east1 --revision-suffix="$suffix" --quiet
+   done
+   ```
+
+8. **Check, then remove any temporary grants.** Each describe must show a
+   Ready revision ending in the suffix from step 7; the subscription must push
+   to the worker with 5 delivery attempts; the cache must be `READY` with AUTH
+   and `SERVER_AUTHENTICATION`.
+
+   ```bash
+   p=(--project coda-rust-staging)
+   for service in physician physician-worker; do
+     gcloud run services describe "$service" "${p[@]}" --region us-east1 \
+       --format='value(metadata.name,status.latestReadyRevisionName)'
+   done
+   gcloud pubsub subscriptions describe physician-chat-turns-worker "${p[@]}" \
+     --format='value(pushConfig.pushEndpoint,deadLetterPolicy.maxDeliveryAttempts)'
+   gcloud redis instances describe rust-physician-cache "${p[@]}" --region us-east1 \
+     --format='value(state,authEnabled,transitEncryptionMode)'
+   # Only if step 3 granted engineering:
+   gcloud projects remove-iam-policy-binding coda-rust-staging \
+     --member=group:gcp-engineering@codahealth.ai --role=roles/pubsub.admin --condition=None
+   gcloud projects remove-iam-policy-binding coda-rust-staging \
+     --member=group:gcp-engineering@codahealth.ai --role=roles/resourcemanager.projectIamAdmin \
+     --condition-from-file=/tmp/only-cloudsql-worker-grants.yaml
+   ```
+
+   Then run the two-tab and Cloud Monitoring checks in step 5 of the activation
+   list above.
+
+#### Cost
+
+These are list prices for `us-east1` in October 2026. The `coda-rust-stg` budget
+is an alert, not a spending cap. Dev raised it from $10 to $200/month on
+October 25, 2026, which covers this gate. Raise
+that alert before applying. Nothing is applied without a reviewed saved plan.
+
+| Item | Billing | Estimate |
+| --- | --- | --- |
+| Memorystore Basic M1, 1 GB | $0.049 per GB-hour, always billed while the instance exists ([pricing](https://cloud.google.com/memorystore/docs/redis/pricing)) | about **$35/month** |
+| Pub/Sub topics and subscriptions | Throughput billing with a monthly free tier; each turn message is a few hundred bytes (`{scope, input_id}`) | negligible, $0 at staging volume |
+| `physician` with `cpu_idle = false` (1 vCPU, 1 GiB, min 1, max 2) | Instance-based: $0.000018 per vCPU-second plus $0.000002 per GiB-second for the whole time an instance is up ([pricing](https://cloud.google.com/run/pricing)) | $0.072 per instance-hour. The minimum instance is up all the time: about **$53/month**, less the free tier of 240,000 vCPU-seconds and 450,000 GiB-seconds per billing account (about $5). A second instance at the cap of 2 adds the same rate while it is up. |
+| `physician-worker` (`cpu_idle = true`) | Request-based, billed only while a turn runs | cents per month at staging volume; model tokens dominate |
+
+The two `db-f1-micro` SQL instances already cost about $20/month. With
+Memorystore and the minimum physician instance, staging's fixed spend is about
+$105/month before the worker and any second site instance.
 
 ## Release procedure
 

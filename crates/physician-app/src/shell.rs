@@ -569,6 +569,32 @@ fn chip_number(
     number
 }
 
+/// What one server-sent frame asks the client to read again.
+#[derive(Debug, PartialEq, Eq)]
+pub enum EventRefetch {
+    /// Nothing changed that this view shows.
+    Nothing,
+    /// The open patient's workspace and chat.
+    OpenPatient,
+    /// Every projection on screen: the server missed events (bus lag or a
+    /// Redis reconnect), so any of them may be stale.
+    Everything,
+}
+
+/// Classifies one frame. `resync` refetches everything once; other events
+/// refetch only what belongs to the open patient.
+#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+pub fn event_refetch(event: &str, data: &str, selected: Option<&str>) -> EventRefetch {
+    if event == "resync" {
+        return EventRefetch::Everything;
+    }
+    if workspace_event_rereads(event, data, selected) {
+        EventRefetch::OpenPatient
+    } else {
+        EventRefetch::Nothing
+    }
+}
+
 /// A workspace or conversation event for the open patient means the chat should be read again.
 // Callers are wasm-gated (follow_workspace_events in lib.rs); the function is
 // exercised by unit tests on every target.
@@ -909,9 +935,13 @@ pub struct ChatLine {
     pub title: String,
 }
 
+/// The workspace's conversations. `opened` is the conversation the page has
+/// open; one the workspace does not list yet (opened from the address, or just
+/// started elsewhere) is shown last, so its messages and composer appear.
 pub fn chat_view(
     selected: Option<&str>,
     current: Option<Result<&PatientWorkspaceResponse, ()>>,
+    opened: Option<&str>,
 ) -> ChatView {
     if selected.is_none() {
         return ChatView::Closed;
@@ -919,17 +949,27 @@ pub fn chat_view(
     match current {
         None => ChatView::Pending,
         Some(Err(())) => ChatView::Unavailable,
-        Some(Ok(workspace)) if workspace.chats.is_empty() => ChatView::Empty,
-        Some(Ok(workspace)) => ChatView::Chats(
-            workspace
+        Some(Ok(workspace)) => {
+            let mut lines: Vec<ChatLine> = workspace
                 .chats
                 .iter()
                 .map(|chat| ChatLine {
                     id: chat.chat_id.clone(),
                     title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
                 })
-                .collect(),
-        ),
+                .collect();
+            if let Some(id) = opened.filter(|id| lines.iter().all(|line| line.id != *id)) {
+                lines.push(ChatLine {
+                    id: id.to_owned(),
+                    title: "Untitled".to_owned(),
+                });
+            }
+            if lines.is_empty() {
+                ChatView::Empty
+            } else {
+                ChatView::Chats(lines)
+            }
+        }
     }
 }
 
@@ -1302,23 +1342,47 @@ mod tests {
 
     #[test]
     fn workspace_chats_and_reader_use_the_open_selection() {
-        assert_eq!(chat_view(None, None), ChatView::Closed);
+        assert_eq!(chat_view(None, None, None), ChatView::Closed);
         let empty: PatientWorkspaceResponse = serde_json::from_str(
             r#"{"patient_workspace_id":"p1","display_name":"Ada","chats":[]}"#,
         )
         .unwrap();
-        assert_eq!(chat_view(Some("p1"), Some(Ok(&empty))), ChatView::Empty);
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&empty)), None),
+            ChatView::Empty
+        );
         let open: PatientWorkspaceResponse = serde_json::from_str(
             r#"{"patient_workspace_id":"p1","display_name":"Ada","chats":[{"chat_id":"c1","title":"Morning","created_at":"2026-10-09T12:00:00Z"}]}"#,
         )
         .unwrap();
+        let morning = ChatLine {
+            id: "c1".to_owned(),
+            title: "Morning".to_owned(),
+        };
         assert_eq!(
-            chat_view(Some("p1"), Some(Ok(&open))),
-            ChatView::Chats(vec![ChatLine {
-                id: "c1".to_owned(),
-                title: "Morning".to_owned(),
-            }])
+            chat_view(Some("p1"), Some(Ok(&open)), None),
+            ChatView::Chats(vec![morning.clone()])
         );
+        // A listed conversation is not repeated when it is the open one.
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&open)), Some("c1")),
+            ChatView::Chats(vec![morning.clone()])
+        );
+        // A conversation the workspace does not list yet still opens.
+        let started = ChatLine {
+            id: "c9".to_owned(),
+            title: "Untitled".to_owned(),
+        };
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&empty)), Some("c9")),
+            ChatView::Chats(vec![started.clone()])
+        );
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&open)), Some("c9")),
+            ChatView::Chats(vec![morning, started])
+        );
+        assert_eq!(chat_view(Some("p1"), None, Some("c9")), ChatView::Pending);
+        assert_eq!(chat_view(None, None, Some("c9")), ChatView::Closed);
         assert_eq!(
             connection_sentence(Some("gmail"), "not_yet_read").as_deref(),
             Some("Coda hasn’t read Gmail yet.")
@@ -1525,6 +1589,31 @@ mod tests {
             r#"{"kind":"draft","target":{"patient_workspace_id":"pw-mary","chat_id":"c1"},"revision":1}"#,
             Some("pw-mary"),
         ));
+        // A server-side gap rereads everything, even with no patient open.
+        assert_eq!(
+            event_refetch("resync", "{}", None),
+            EventRefetch::Everything
+        );
+        assert_eq!(
+            event_refetch("resync", "{}", Some("pw-mary")),
+            EventRefetch::Everything
+        );
+        assert_eq!(
+            event_refetch(
+                "workspace_changed",
+                r#"{"patient_workspace_id":"pw-mary"}"#,
+                Some("pw-mary")
+            ),
+            EventRefetch::OpenPatient
+        );
+        assert_eq!(
+            event_refetch(
+                "workspace_changed",
+                r#"{"patient_workspace_id":"pw-other"}"#,
+                Some("pw-mary")
+            ),
+            EventRefetch::Nothing
+        );
         assert!(pieces.iter().all(|piece| match piece {
             SynopsisPiece::Text(text) => !text.contains("[[patient_source"),
             SynopsisPiece::Chips(_) => true,
