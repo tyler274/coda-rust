@@ -95,7 +95,9 @@ async fn real_http_adapter_frames_request_and_decodes_calls() {
     ]}).to_string();
     let (endpoint, server) = server(response, "200 OK").await;
     let mut provider =
-        Responses::with_endpoint("local-test-key".into(), "test-model".into(), &endpoint).unwrap();
+        Responses::with_endpoint("local-test-key".into(), "test-model".into(), &endpoint)
+            .unwrap()
+            .reasoning_effort("high".into());
     let context = context();
     let limits = limits();
     let request = || Request {
@@ -111,6 +113,7 @@ async fn real_http_adapter_frames_request_and_decodes_calls() {
     assert_eq!(body["store"], false);
     assert_eq!(body["stream"], false);
     assert_eq!(body["model"], "test-model");
+    assert_eq!(body["reasoning"]["effort"], "high");
     assert_eq!(body["max_output_tokens"], 100);
     assert_eq!(body["tools"][0]["type"], "function");
     assert!(matches!(&result.items[1], Item::Call(call) if call.id == "call-1"));

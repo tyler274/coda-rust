@@ -128,8 +128,6 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
     let worker_listen = format!("127.0.0.1:{}", support::free_port());
     let emulator = support::Emulator::start().await;
     emulator.provision(port(&worker_listen)).await;
-    let mut worker = spawn_worker(&home, &database.url, &redis, &emulator.host, &worker_listen);
-    support::wait_ready(&mut worker, port(&worker_listen)).await;
 
     // Instance A publishes to a topic the broker does not have: every wakeup
     // it sends is refused, the same as an instance that dies before its
@@ -195,23 +193,9 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
         DeliveryState::Due
     );
 
-    // A page already open on some instance listens for this workspace. It
-    // subscribes before B starts: B's first sweep runs at startup and the
-    // fixed worker answers at once, so a listener opened after B is ready can
-    // miss the announcement (a page that opens late refetches on open).
-    let bus = physician_bus::RedisBus::connect(&redis, None)
-        .await
-        .expect("valkey bus");
-    let mut events = bus.subscribe();
-    let deadline = Instant::now() + Duration::from_secs(10);
-    while !bus.live() {
-        assert!(Instant::now() < deadline, "test bus never subscribed");
-        tokio::time::sleep(Duration::from_millis(20)).await;
-    }
-
     // Instance B starts (Cloud Run replaces the instance, or another one is
-    // already serving). Its first sweep runs at startup. The page sends
-    // nothing and presses nothing.
+    // already serving). Its first sweep runs at startup. The page reconnects
+    // to B; it sends nothing and presses nothing.
     let b_listen = format!("127.0.0.1:{}", support::free_port());
     let topic = support::topic();
     let mut site_b = spawn_site(
@@ -227,6 +211,19 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
     let tails = |site: &support::Process, worker: &support::Process| {
         format!("{}\n{}", site.tail(), worker.tail())
     };
+    let mut sse = support::Sse::open(
+        &b_listen,
+        &format!("/patient-workspaces/events?patient_workspace_id={workspace}"),
+        &session,
+    )
+    .await
+    .unwrap_or_else(|error| panic!("{error}\n{}", site_b.tail()));
+
+    // B may already have republished the input, but it cannot complete until
+    // the worker starts. Subscribe first: invalidations are live notices, not
+    // a replay log for pages that were disconnected when the reply landed.
+    let mut worker = spawn_worker(&home, &database.url, &redis, &emulator.host, &worker_listen);
+    support::wait_ready(&mut worker, port(&worker_listen)).await;
 
     let deadline = Instant::now() + Duration::from_secs(45);
     let answered = loop {
@@ -263,23 +260,29 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
         store.delivery_state(&delivery).await.expect("state"),
         DeliveryState::Settled
     );
-    let expected = Event::WorkspaceChanged {
-        workspace_id: workspace.to_owned(),
-    };
-    loop {
-        let event = tokio::time::timeout(Duration::from_secs(10), events.recv())
-            .await
-            .unwrap_or_else(|_| {
-                panic!(
-                    "open pages were never told the reply landed\n{}",
-                    tails(&site_b, &worker)
-                )
-            })
-            .expect("bus");
-        if event == expected {
-            break;
-        }
-    }
+    sse.wait_for("event: workspace_changed", Duration::from_secs(10))
+        .await
+        .unwrap_or_else(|error| {
+            panic!(
+                "the page on instance B was never told the reply landed: {error}\n{}",
+                tails(&site_b, &worker)
+            )
+        });
+    drop(sse);
+    let _reconnected = support::Sse::open(
+        &b_listen,
+        &format!("/patient-workspaces/events?patient_workspace_id={workspace}"),
+        &session,
+    )
+    .await
+    .expect("reconnect after completion");
+    let (status, snapshot) = support::get_json(&b_listen, &snapshot_path, &session).await;
+    assert_eq!(status, 200);
+    assert_eq!(
+        assistant_texts(&snapshot["snapshot"]),
+        ["Hello", support::FIXED_TEXT],
+        "a reconnect reads the completed reply without waiting for a past invalidation"
+    );
 }
 
 /// Dev's P2: a turn whose worker leases all run out (each worker died

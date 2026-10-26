@@ -214,6 +214,31 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
         .complete_sign_in("physician@codahealth.test", &sign, auth::now())
         .await
         .unwrap();
+    store.seed_account(
+        auth::STAGING_PRACTICE_ID,
+        "colleague",
+        "colleague@codahealth.test",
+        "Colleague",
+        false,
+    );
+    store
+        .set_membership(
+            &physician_auth::PhysicianIdentity {
+                practice_id: auth::STAGING_PRACTICE_ID.into(),
+                physician_id: "colleague".into(),
+            },
+            WORKSPACE_IDS[0],
+            physician_auth::Membership::Allowed,
+        )
+        .await;
+    let sign = store
+        .begin_sign_in("colleague@codahealth.test", auth::now())
+        .await
+        .unwrap();
+    let (_, colleague) = store
+        .complete_sign_in("colleague@codahealth.test", &sign, auth::now())
+        .await
+        .unwrap();
     let live = live::Live::on(
         live::ChatModel::Fixed("Noted.".into()),
         PhysicianSession::memory(),
@@ -269,6 +294,58 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
             .is_some_and(|at| !at.starts_with("1970")),
         "{listed}"
     );
+    let colleague_page = client
+        .get(format!("{base}/patient-workspaces/{workspace}"))
+        .bearer_auth(&colleague)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(colleague_page.status(), StatusCode::OK);
+    assert_eq!(
+        colleague_page.json::<Value>().await.unwrap()["chats"],
+        json!([])
+    );
+    let snapshot = format!("{base}/patient-workspaces/{workspace}/chats/chat-inline/snapshot");
+    assert_eq!(
+        client
+            .get(&snapshot)
+            .bearer_auth(&colleague)
+            .send()
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap()["snapshot"]["conversation"],
+        json!([]),
+        "patient access must not reveal another physician's conversation"
+    );
+    // Even the same conversation and idempotency IDs name independent work
+    // for another physician. Both snapshots and the list consume that owner.
+    let own_text = "My independent question";
+    let sent = client.post(format!("{base}/commands")).bearer_auth(&colleague)
+        .json(&json!({"type":"message.submit","idempotency_key":"inline-chat-list","payload":{
+            "patient_workspace_id":workspace,"chat_id":"chat-inline","text":own_text,"physician_time_zone":"UTC"
+        }})).send().await.unwrap().json::<Value>().await.unwrap();
+    assert_eq!(sent["outcome"], "accepted", "{sent}");
+    for (session, expected, excluded) in [(&token, long, own_text), (&colleague, own_text, long)] {
+        let body = client
+            .get(&snapshot)
+            .bearer_auth(session)
+            .send()
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap();
+        let texts: Vec<_> = body["snapshot"]["conversation"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter_map(|line| line["text"].as_str())
+            .collect();
+        assert!(texts.contains(&expected), "{body}");
+        assert!(!texts.contains(&excluded), "{body}");
+    }
     task.abort();
 }
 

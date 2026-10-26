@@ -51,22 +51,85 @@ fn durable_admission_restart_and_late_completion_use_one_owner() {
         "single writer is enforced"
     );
     let old = owner
-        .submit(&binding(), "one", "workspace", "chat", "original")
+        .submit(
+            &binding(),
+            "one",
+            ChatScope {
+                owner: None,
+                workspace: "workspace",
+                chat: "chat",
+            },
+            "original",
+        )
         .unwrap()
         .unwrap();
+    let physician = ChatOwner {
+        practice: "practice-a".into(),
+        physician: "me".into(),
+    };
+    let other_practice = ChatOwner {
+        practice: "practice-b".into(),
+        physician: "me".into(),
+    };
+    for (identity, question) in [
+        (&physician, "private question"),
+        (&other_practice, "other practice question"),
+    ] {
+        let scoped = owner
+            .submit(
+                &binding(),
+                "one",
+                ChatScope {
+                    owner: Some(identity),
+                    workspace: "workspace",
+                    chat: "chat",
+                },
+                question,
+            )
+            .unwrap()
+            .unwrap();
+        owner.complete(&scoped, "scoped reply").unwrap();
+    }
     assert!(
         owner
-            .submit(&binding(), "one", "workspace", "chat", "original")
+            .submit(
+                &binding(),
+                "one",
+                ChatScope {
+                    owner: None,
+                    workspace: "workspace",
+                    chat: "chat"
+                },
+                "original"
+            )
             .unwrap()
             .is_none()
     );
     assert!(
         owner
-            .submit(&binding(), "one", "workspace", "chat", "changed")
+            .submit(
+                &binding(),
+                "one",
+                ChatScope {
+                    owner: None,
+                    workspace: "workspace",
+                    chat: "chat"
+                },
+                "changed"
+            )
             .is_err()
     );
     let newer = owner
-        .submit(&binding(), "two", "workspace", "chat", "new input")
+        .submit(
+            &binding(),
+            "two",
+            ChatScope {
+                owner: None,
+                workspace: "workspace",
+                chat: "chat",
+            },
+            "new input",
+        )
         .unwrap()
         .unwrap();
     assert!(owner.complete(&old, "late reply").is_err());
@@ -81,7 +144,16 @@ fn durable_admission_restart_and_late_completion_use_one_owner() {
         .unwrap();
     owner.complete(&newer, "current reply").unwrap();
     let pending = owner
-        .submit(&binding(), "three", "workspace", "chat", "unfinished")
+        .submit(
+            &binding(),
+            "three",
+            ChatScope {
+                owner: None,
+                workspace: "workspace",
+                chat: "chat",
+            },
+            "unfinished",
+        )
         .unwrap()
         .unwrap();
     drop(owner);
@@ -91,9 +163,27 @@ fn durable_admission_restart_and_late_completion_use_one_owner() {
     assert_eq!(owner.work(&old).unwrap().records.len(), 1);
     assert!(owner.complete(&pending, "late after restart").is_err());
     assert_eq!(
-        owner.conversation("workspace", "chat"),
+        owner.conversation(ChatScope {
+            owner: None,
+            workspace: "workspace",
+            chat: "chat"
+        }),
         ["original", "new input", "current reply", "unfinished"]
     );
+    for (identity, question) in [
+        (&physician, "private question"),
+        (&other_practice, "other practice question"),
+    ] {
+        assert_eq!(
+            owner.conversation(ChatScope {
+                owner: Some(identity),
+                workspace: "workspace",
+                chat: "chat",
+            }),
+            [question, "scoped reply"]
+        );
+        assert_eq!(owner.chats(Some(identity), "workspace")[0].1, question);
+    }
     drop(owner);
     cleanup(&path);
 }
@@ -182,7 +272,16 @@ async fn shared_loop_commits_persistent_physician_work_and_keeps_provider_eviden
     let path = path();
     let mut session = PhysicianSession::open(&path).unwrap();
     let work = session
-        .submit(&binding(), "engine", "w", "c", "hello")
+        .submit(
+            &binding(),
+            "engine",
+            ChatScope {
+                owner: None,
+                workspace: "w",
+                chat: "c",
+            },
+            "hello",
+        )
         .unwrap()
         .unwrap();
     let mut answer = response(vec![]);
@@ -220,7 +319,14 @@ async fn shared_loop_commits_persistent_physician_work_and_keeps_provider_eviden
             .iter()
             .any(|record| matches!(record, Record::Exchange { .. }))
     );
-    assert_eq!(session.conversation("w", "c"), ["hello", "authored reply"]);
+    assert_eq!(
+        session.conversation(ChatScope {
+            owner: None,
+            workspace: "w",
+            chat: "c"
+        }),
+        ["hello", "authored reply"]
+    );
     drop(session);
     cleanup(&path);
 }
@@ -230,7 +336,16 @@ fn corrupt_owner_never_resets_and_cancelled_work_never_resumes() {
     let path = path();
     let mut session = PhysicianSession::open(&path).unwrap();
     let work = session
-        .submit(&binding(), "one", "w", "c", "hello")
+        .submit(
+            &binding(),
+            "one",
+            ChatScope {
+                owner: None,
+                workspace: "w",
+                chat: "c",
+            },
+            "hello",
+        )
         .unwrap()
         .unwrap();
     session.settle(&work, Status::Cancelled).unwrap();
@@ -247,19 +362,55 @@ fn corrupt_owner_never_resets_and_cancelled_work_never_resumes() {
 fn chats_list_conversations_newest_first_and_skip_reply_drafts() {
     let mut session = PhysicianSession::memory();
     session
-        .submit(&binding(), "k1", "ws", "chat-old", "First question")
+        .submit(
+            &binding(),
+            "k1",
+            ChatScope {
+                owner: None,
+                workspace: "ws",
+                chat: "chat-old",
+            },
+            "First question",
+        )
         .unwrap();
     session
-        .submit(&binding(), "k2", "ws", "chat-old", "Follow-up")
+        .submit(
+            &binding(),
+            "k2",
+            ChatScope {
+                owner: None,
+                workspace: "ws",
+                chat: "chat-old",
+            },
+            "Follow-up",
+        )
         .unwrap();
     session
-        .submit(&binding(), "k3", "other", "chat-elsewhere", "Not here")
+        .submit(
+            &binding(),
+            "k3",
+            ChatScope {
+                owner: None,
+                workspace: "other",
+                chat: "chat-elsewhere",
+            },
+            "Not here",
+        )
         .unwrap();
     session.save_draft("ws", "reply-draft", 0, "draft").unwrap();
     session
-        .submit(&binding(), "k4", "ws", "chat-new", "Second chat")
+        .submit(
+            &binding(),
+            "k4",
+            ChatScope {
+                owner: None,
+                workspace: "ws",
+                chat: "chat-new",
+            },
+            "Second chat",
+        )
         .unwrap();
-    let chats = session.chats("ws");
+    let chats = session.chats(None, "ws");
     let listed: Vec<_> = chats
         .iter()
         .map(|(chat, first, _)| (chat.as_str(), first.as_str()))
@@ -269,5 +420,5 @@ fn chats_list_conversations_newest_first_and_skip_reply_drafts() {
         [("chat-new", "Second chat"), ("chat-old", "First question")]
     );
     assert!(chats.iter().all(|(_, _, opened_at)| *opened_at > 0));
-    assert!(session.chats("missing").is_empty());
+    assert!(session.chats(None, "missing").is_empty());
 }

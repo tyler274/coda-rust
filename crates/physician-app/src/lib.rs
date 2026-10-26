@@ -236,7 +236,6 @@ fn follow_workspace_events(
         };
         let mut retry = StreamRetryBudget::default();
         let mut next_delay = Some(0);
-        let mut reconnecting = false;
         while let Some(delay) = next_delay {
             if delay > 0 {
                 let wait = js_sys::Promise::new(&mut |resolve, reject| {
@@ -264,7 +263,6 @@ fn follow_workspace_events(
                     .await
             else {
                 next_delay = retry.next_delay_ms(None);
-                reconnecting = true;
                 continue;
             };
             let Ok(response) = value.dyn_into::<web_sys::Response>() else {
@@ -277,7 +275,6 @@ fn follow_workspace_events(
                 workspace_attempt.set(workspace_attempt() + 1);
                 if response.status() == 429 || response.status() >= 500 {
                     next_delay = retry.next_delay_ms(None);
-                    reconnecting = true;
                     continue;
                 }
                 return;
@@ -294,14 +291,12 @@ fn follow_workspace_events(
             let Some(body) = response.body() else {
                 return;
             };
-            if reconnecting {
-                // These events invalidate projections; they are not a second
-                // ledger. Reconcile the gap via authoritative reads, never by
-                // replaying commands or assuming every server supports cursors.
-                today_attempt.set(today_attempt() + 1);
-                workspace_attempt.set(workspace_attempt() + 1);
-                snapshot_attempt.set(snapshot_attempt() + 1);
-            }
+            // Subscribe before rereading: even the first connection can miss
+            // changes made after the page's initial snapshot. Events invalidate
+            // projections; authoritative reads reconcile every connection gap.
+            today_attempt.set(today_attempt() + 1);
+            workspace_attempt.set(workspace_attempt() + 1);
+            snapshot_attempt.set(snapshot_attempt() + 1);
             let started_at = clock.now();
             let reader = body.get_reader();
             let mut buffer = String::new();
@@ -350,7 +345,6 @@ fn follow_workspace_events(
                 );
             }
             next_delay = retry.next_delay_ms(Some(clock.now() - started_at));
-            reconnecting = true;
         }
     });
 }
@@ -640,8 +634,10 @@ fn PhysicianShell(
     session: SessionState,
 ) -> Element {
     // The address's conversation belongs to the address's patient only.
-    let requested_chat = (!open_patient.is_empty() && !open_chat.is_empty())
-        .then(|| (open_patient.clone(), open_chat));
+    let mut requested_chat = use_signal(|| {
+        (!open_patient.is_empty() && !open_chat.is_empty())
+            .then(|| (open_patient.clone(), open_chat.clone()))
+    });
     let mut whoami_name = session.whoami_name;
     let mut whoami = session.whoami;
     let expired = session.expired;
@@ -877,6 +873,16 @@ fn PhysicianShell(
     use_effect(move || {
         let current = selected();
         let cached = workspace_cache.read().clone();
+        let patient = if place() == Place::Workspace {
+            current.as_deref()
+        } else {
+            None
+        };
+        let requested = requested_chat
+            .read()
+            .as_ref()
+            .filter(|(patient, _)| Some(patient.as_str()) == current.as_deref())
+            .map(|(_, chat)| chat.clone());
         let same = cached
             .as_ref()
             .is_some_and(|open| Some(open.patient_workspace_id.as_str()) == current.as_deref());
@@ -884,19 +890,20 @@ fn PhysicianShell(
             if open_chat.read().is_some() {
                 open_chat.set(None);
             }
+            // Keep an initial deep link while its patient loads, but never
+            // pair the previous patient's conversation with a new selection.
+            write_address(patient, requested.as_deref());
             return;
         }
-        let requested = requested_chat
-            .as_ref()
-            .filter(|(patient, _)| Some(patient.as_str()) == current.as_deref())
-            .map(|(_, chat)| chat.clone());
         if open_chat.read().is_none()
             && let Some(chat_id) = requested.or_else(|| {
                 cached.and_then(|open| open.chats.first().map(|chat| chat.chat_id.clone()))
             })
         {
             open_chat.set(Some(chat_id));
+            requested_chat.set(None);
         }
+        write_address(patient, open_chat.read().as_deref());
     });
     let today_read = today.read();
     let today_cache_read = today_cache.read();
@@ -1028,9 +1035,10 @@ fn PhysicianShell(
     // New conversation: a fresh id the server keeps once a message is sent.
     // The address names it, so a reload before the reply still reopens it.
     let mut start_chat = move || {
-        let Some(patient) = selected() else { return };
+        if selected().is_none() {
+            return;
+        }
         let chat = new_chat_id();
-        write_address_chat(&patient, &chat);
         draft.set(String::new());
         open_chat.set(Some(chat));
     };
@@ -3827,13 +3835,19 @@ fn new_chat_id() -> String {
 /// Puts the open patient and conversation in the address, without a history
 /// entry, so a reload reopens the same chat.
 #[cfg(target_arch = "wasm32")]
-fn write_address_chat(patient: &str, chat: &str) {
+fn write_address(patient: Option<&str>, chat: Option<&str>) {
     if let Some(window) = web_sys::window()
         && let Ok(href) = window.location().href()
         && let Ok(url) = web_sys::Url::new(&href)
     {
-        url.search_params().set("patient", patient);
-        url.search_params().set("chat", chat);
+        match patient {
+            Some(patient) => url.search_params().set("patient", patient),
+            None => url.search_params().delete("patient"),
+        }
+        match chat.filter(|_| patient.is_some()) {
+            Some(chat) => url.search_params().set("chat", chat),
+            None => url.search_params().delete("chat"),
+        }
         if let Ok(history) = window.history() {
             let _ =
                 history.replace_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(&url.href()));
@@ -3842,7 +3856,7 @@ fn write_address_chat(patient: &str, chat: &str) {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-fn write_address_chat(_patient: &str, _chat: &str) {}
+fn write_address(_patient: Option<&str>, _chat: Option<&str>) {}
 
 /// Milliseconds since the epoch. `std::time::SystemTime::now` panics on
 /// wasm32-unknown-unknown, so the browser build asks the page's clock.

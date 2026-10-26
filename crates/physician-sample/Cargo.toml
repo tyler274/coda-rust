@@ -33,6 +33,8 @@ google-cloud-pubsub = "1"
 google-cloud-auth = { version = "1", features = ["idtoken"] }
 
 [dev-dependencies]
+# Signed synthetic OIDC tokens exercise Google's verifier, not a mock verdict.
+jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 mailparse = "0.16"
 gmail = { path = "../gmail", features = ["test-util"] }
 public-site = { path = "../public-site" }

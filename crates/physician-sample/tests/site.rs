@@ -243,8 +243,8 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .await;
     assert_eq!(
         reopened.pointer("/result/result/value"),
-        Some(&serde_json::Value::Null),
-        "the reload must not carry ?chat=: {reopened}"
+        Some(&serde_json::json!(chat)),
+        "the address must reflect the conversation selected after a workspace-only reload: {reopened}"
     );
 
     // A second new conversation never shows the listed chat's lines, not even
@@ -274,6 +274,163 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         stale.pointer("/result/result/value"),
         Some(&serde_json::json!({"seen": false, "done": true})),
         "a new conversation showed the previous chat's lines: {stale}"
+    );
+    browser
+        .eval("document.querySelector('button.sidebar-conversation-link').click()")
+        .await;
+    browser
+        .wait_for_text(message, Duration::from_secs(10))
+        .await;
+    let selected = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    assert_eq!(
+        selected.pointer("/result/result/value"),
+        Some(&serde_json::json!(chat)),
+        "selecting the saved conversation left the new conversation in the address: {selected}"
+    );
+    let previous_document = browser.eval("performance.timeOrigin").await;
+    browser.reload().await;
+    let reloaded_document = browser.eval("performance.timeOrigin").await;
+    assert_ne!(
+        reloaded_document.pointer("/result/result/value"),
+        previous_document.pointer("/result/result/value"),
+        "the conversation must be reopened in a new document, not read from the old page"
+    );
+    browser
+        .wait_for_text(message, Duration::from_secs(20))
+        .await;
+    browser
+        .eval("document.querySelector('button[aria-label=\"Open Today\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Coda hasn’t read Gmail yet.", Duration::from_secs(10))
+        .await;
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    assert_eq!(
+        address.pointer("/result/result/value"),
+        Some(&serde_json::json!([null, null])),
+        "Today retained a patient conversation in its address: {address}"
+    );
+    browser
+        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
+        .await;
+    browser.search_for("Jake").await;
+    browser.wait_for_text("DOB", Duration::from_secs(10)).await;
+    browser
+        .eval("document.querySelector('.dialog-results button').click()")
+        .await;
+    browser
+        .wait_for_text("Patient summary", Duration::from_secs(10))
+        .await;
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    assert_eq!(
+        address.pointer("/result/result/value"),
+        Some(&serde_json::json!([
+            "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
+            null
+        ])),
+        "changing patient retained the previous patient's conversation: {address}"
+    );
+    browser.reload().await;
+    browser
+        .wait_for_text("Patient summary", Duration::from_secs(20))
+        .await;
+}
+
+#[tokio::test]
+async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: this binary holds test_lock and serve_isolated's start lock.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let base = format!("http://{}", server.address);
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chat = "chat-before-events";
+    let mut browser = CdpBrowser::launch(&chromium(), "about:blank").await;
+    // Hold the actual first event request before it reaches the server. The
+    // initial snapshot can complete, then another client saves a turn while
+    // this page has no subscription. No synthetic event or refresh is sent.
+    browser
+        .call(
+            "Page.addScriptToEvaluateOnNewDocument",
+            serde_json::json!({"source": r#"(() => {
+        const original = window.fetch.bind(window);
+        window.__eventRequests = 0;
+        window.fetch = (input, init) => {
+            const url = input instanceof Request ? input.url : String(input);
+            if (url.includes('/patient-workspaces/events')) {
+                window.__eventRequests++;
+                if (window.__eventRequests === 1) {
+                    return new Promise(resolve => {
+                        window.__connectEvents = () => resolve(original(input, init));
+                    });
+                }
+            }
+            return original(input, init);
+        };
+    })()"#}),
+        )
+        .await;
+    browser
+        .navigate(&format!("{base}/?patient={patient}&chat={chat}"))
+        .await;
+    browser
+        .wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(20),
+        )
+        .await;
+    let message = "Review the update accepted before this page subscribed";
+    let client = reqwest::Client::new();
+    let accepted: serde_json::Value = client.post(format!("{base}/commands"))
+        .json(&serde_json::json!({"type":"message.submit","idempotency_key":"before-events",
+            "payload":{"patient_workspace_id":patient,"chat_id":chat,"text":message,"physician_time_zone":"UTC"}}))
+        .send().await.unwrap().json().await.unwrap();
+    assert_eq!(accepted["outcome"], "accepted", "{accepted}");
+    let snapshot: serde_json::Value = client
+        .get(format!(
+            "{base}/patient-workspaces/{patient}/chats/{chat}/snapshot"
+        ))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert!(
+        snapshot["snapshot"]["conversation"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|line| line["text"] == message),
+        "{snapshot}"
+    );
+    assert!(
+        !browser.dom().await.contains(message),
+        "the page must still hold the earlier snapshot"
+    );
+    let connected = browser.eval("(() => { if (!window.__connectEvents) return false; window.__connectEvents(); return true; })()").await;
+    assert_eq!(
+        connected.pointer("/result/result/value"),
+        Some(&serde_json::json!(true))
+    );
+    browser
+        .wait_for_text(message, Duration::from_secs(10))
+        .await;
+    let count = browser.eval("window.__eventRequests").await;
+    assert_eq!(
+        count.pointer("/result/result/value"),
+        Some(&serde_json::json!(1)),
+        "the first connection must reconcile without waiting for reconnect"
     );
 }
 
@@ -1471,6 +1628,31 @@ impl CdpBrowser {
     async fn navigate(&mut self, url: &str) {
         self.call("Page.navigate", serde_json::json!({ "url": url }))
             .await;
+    }
+
+    async fn reload(&mut self) {
+        let previous = self.document_loader().await;
+        self.call("Page.reload", serde_json::json!({})).await;
+        let started = Instant::now();
+        // The same conversation text is visible before and after a reload.
+        // Wait for a different document before text waits or clicks can run;
+        // otherwise they can act on the page the browser is about to discard.
+        while self.document_loader().await == previous {
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "reload did not replace the document"
+            );
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+
+    async fn document_loader(&mut self) -> String {
+        self.call("Page.getFrameTree", serde_json::json!({}))
+            .await
+            .pointer("/result/frameTree/frame/loaderId")
+            .and_then(|id| id.as_str())
+            .expect("main frame document loader")
+            .to_owned()
     }
 
     async fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {

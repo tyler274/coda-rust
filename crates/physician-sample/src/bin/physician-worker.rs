@@ -94,8 +94,8 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         .get(axum::http::header::AUTHORIZATION)
         .and_then(|value| value.to_str().ok())
         .map(str::to_owned);
-    if !worker.authorized(header.as_deref()).await {
-        return StatusCode::UNAUTHORIZED;
+    if let Err(status) = authorize_push(worker.verifier.as_ref(), header.as_deref()).await {
+        return status;
     }
     let Ok(bytes) = axum::body::to_bytes(request.into_body(), BODY_LIMIT).await else {
         return StatusCode::BAD_REQUEST;
@@ -400,7 +400,7 @@ impl Worker {
             (
                 ModelSource::Api {
                     key,
-                    model: model_name.clone(),
+                    binding: roles.chat,
                 },
                 "openai",
                 model_name,
@@ -434,20 +434,26 @@ impl Worker {
             adapter,
         })
     }
+}
 
-    async fn authorized(&self, header: Option<&str>) -> bool {
-        let Some(verifier) = &self.verifier else {
-            return true;
-        };
-        let Some(token) = header
-            .and_then(|value| value.strip_prefix("Bearer "))
-            .map(str::trim)
-            .filter(|token| !token.is_empty())
-        else {
-            return false;
-        };
-        verifier.verify(token).await.is_ok()
-    }
+/// The push route's authentication gate runs before decoding or claiming work.
+async fn authorize_push(
+    verifier: Option<&google_cloud_auth::credentials::idtoken::verifier::Verifier>,
+    header: Option<&str>,
+) -> Result<(), StatusCode> {
+    let Some(verifier) = verifier else {
+        return Ok(());
+    };
+    let token = header
+        .and_then(|value| value.strip_prefix("Bearer "))
+        .map(str::trim)
+        .filter(|token| !token.is_empty())
+        .ok_or(StatusCode::UNAUTHORIZED)?;
+    verifier
+        .verify(token)
+        .await
+        .map(|_| ())
+        .map_err(|_| StatusCode::UNAUTHORIZED)
 }
 
 fn push_verifier(
@@ -461,7 +467,7 @@ fn push_verifier(
             audience.ok_or("hosted physician worker requires PHYSICIAN_WORKER_AUDIENCE")?;
         let email =
             email.ok_or("hosted physician worker requires PHYSICIAN_PUSH_SERVICE_ACCOUNT")?;
-        return Ok(Some(identity_verifier(audience, email)));
+        return Ok(Some(identity_verifier(audience, email).build()));
     }
     if configured(get, "PUBSUB_EMULATOR_HOST").is_some() {
         // The emulator sends no token, so the worker verifies none. That is
@@ -475,7 +481,7 @@ fn push_verifier(
         return Ok(None);
     }
     match (audience, email) {
-        (Some(audience), Some(email)) => Ok(Some(identity_verifier(audience, email))),
+        (Some(audience), Some(email)) => Ok(Some(identity_verifier(audience, email).build())),
         _ => Err(
             "physician worker requires PHYSICIAN_WORKER_AUDIENCE and PHYSICIAN_PUSH_SERVICE_ACCOUNT, or PUBSUB_EMULATOR_HOST"
                 .into(),
@@ -486,10 +492,8 @@ fn push_verifier(
 fn identity_verifier(
     audience: String,
     email: String,
-) -> google_cloud_auth::credentials::idtoken::verifier::Verifier {
-    google_cloud_auth::credentials::idtoken::verifier::Builder::new([audience])
-        .with_email(email)
-        .build()
+) -> google_cloud_auth::credentials::idtoken::verifier::Builder {
+    google_cloud_auth::credentials::idtoken::verifier::Builder::new([audience]).with_email(email)
 }
 
 /// Bounds for one hosted chat attempt. The context bound matches the site's
@@ -554,7 +558,7 @@ fn role_environment(get: &impl Fn(&str) -> Option<String>) -> Vec<(String, Strin
 enum ModelSource {
     Api {
         key: String,
-        model: String,
+        binding: local_product::ModelBinding,
     },
     /// Non-hosted proof only. The failure count is shared by every turn on
     /// this process, so "fail N times, then answer" holds across redeliveries.
@@ -572,10 +576,10 @@ impl ModelSource {
     /// provider reads either, for its fail marker.
     fn provider(&self, earlier_attempts: u32, input: &str) -> Result<Model, String> {
         match self {
-            Self::Api { key, model } => Ok(Model::Api(harness::responses::Responses::new(
-                key.clone(),
-                model.clone(),
-            )?)),
+            Self::Api { key, binding } => Ok(Model::Api(
+                harness::responses::Responses::new(key.clone(), binding.model.clone())?
+                    .reasoning_effort(binding.effort.clone()),
+            )),
             Self::Fixed {
                 text,
                 failures_remaining,
@@ -687,6 +691,83 @@ mod tests {
     use axum::http::StatusCode;
     use base64::Engine;
     use serde_json::json;
+
+    #[tokio::test]
+    async fn signed_push_tokens_enforce_audience_issuer_email_and_expiry() {
+        use jsonwebtoken::{Algorithm, EncodingKey, Header};
+        // This publicly committed key has no authority outside this test's
+        // loopback JWKS endpoint. Production always uses Google's endpoint.
+        let key = EncodingKey::from_rsa_pem(include_bytes!(
+            "../../tests/fixtures/pubsub-test-only-key.pem"
+        ))
+        .unwrap();
+        let jwks: Value = serde_json::from_str(include_str!(
+            "../../tests/fixtures/pubsub-test-only-jwks.json"
+        ))
+        .unwrap();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}/certs", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move {
+            axum::serve(
+                listener,
+                Router::new().route(
+                    "/certs",
+                    get(move || {
+                        let jwks = jwks.clone();
+                        async move { Json(jwks) }
+                    }),
+                ),
+            )
+            .await
+            .unwrap();
+        });
+        let audience = "https://physician-worker.example.test";
+        let email = "physician-push@example.test";
+        let verifier = identity_verifier(audience.into(), email.into())
+            .with_jwks_url(endpoint)
+            .build();
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let claims = json!({"iss":"https://accounts.google.com","aud":audience,
+            "sub":"synthetic-service-account","email":email,"email_verified":true,
+            "iat":now-60,"exp":now+600});
+        let mut header = Header::new(Algorithm::RS256);
+        header.kid = Some("synthetic-pubsub-proof".into());
+        let token = |claims: &Value| {
+            format!(
+                "Bearer {}",
+                jsonwebtoken::encode(&header, claims, &key).unwrap()
+            )
+        };
+        // A valid signed control proves the negative cases are not merely
+        // failing key retrieval, signature verification, or token parsing.
+        assert_eq!(
+            authorize_push(Some(&verifier), Some(&token(&claims))).await,
+            Ok(())
+        );
+        for (field, value) in [
+            ("aud", json!("https://another-worker.example.test")),
+            ("iss", json!("https://untrusted-issuer.example.test")),
+            ("email", json!("another-account@example.test")),
+            ("email_verified", json!(false)),
+            ("exp", json!(now - 60)),
+        ] {
+            let mut invalid = claims.clone();
+            invalid[field] = value;
+            assert_eq!(
+                authorize_push(Some(&verifier), Some(&token(&invalid))).await,
+                Err(StatusCode::UNAUTHORIZED),
+                "invalid {field} must be refused before work is claimed"
+            );
+        }
+        assert_eq!(
+            authorize_push(Some(&verifier), None).await,
+            Err(StatusCode::UNAUTHORIZED)
+        );
+        server.abort();
+    }
 
     #[test]
     fn settled_and_live_claims_ack_while_due_and_failed_work_does_not() {
