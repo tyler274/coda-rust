@@ -58,6 +58,18 @@ flattened representation between Verus generation and finite reachability search
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
 
+## Connect the harness through events
+
+The harness stays out of the chart and meets it only at declared events (Dev
+2026-10-26). An agent's event is the harness's output, and each tool it admits is
+one such event: the product host checks that event's `needs` before the effect
+commits, and the model decides when to use it. Retries, timeouts, cadence, memory
+and prompts stay in the harness; `infrastructure-gaps.md` names the events each
+runtime guarantee backs. The runtime records chart events where each fact's owner
+changes it, so a recorded run can be checked against the flat model, and `against`
+checks a more detailed model of the same behavior. The harness has no chart of
+its own; it is just the harness.
+
 Do not force every promise into finite states. Identity, revisions, collections,
 atomic batches and progress need linked data proofs and explicit assumptions.
 Charts without safety rules establish transition correspondence only. Keep generated

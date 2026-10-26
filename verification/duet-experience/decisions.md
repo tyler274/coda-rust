@@ -438,9 +438,9 @@ map; Page and state inventory), with later decisions winning.
 
 ## Notes and medications you enter (step 11)
 
-- The graph is the harness: it gives Duet the right tool for each action you
-  can take yourself and lets the model decide when to use it, gated only by
-  consent and access (Dev 2026-10-26).
+- The graph names a tool for each action you can take yourself, as an "as you
+  asked" event; the harness provides it and the model decides when to use it,
+  gated only by consent and access (Dev 2026-10-26).
 - You add, change and delete notes and medications yourself, from You's add
   menu, with or without AI; you can't edit connected records (north-star.md,
   You). Confirming a medication from your records marks it as one you take;
