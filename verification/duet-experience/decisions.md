@@ -329,7 +329,8 @@ Linear wins.
 - Every import ends: complete (with or without the source's warnings), partial
   with the unreadable items named, or a failure that keeps what you have and
   tries again at the next refresh. It never stays importing (B2, B5, B6; Dev
-  2026-10-04). You can refresh on request, and Duet also refreshes on its own; how often is the harness's (infrastructure-gaps.md).
+  2026-10-04). You can refresh on request, and Duet also refreshes on its own;
+  how often is the harness's (infrastructure-gaps.md).
 - Records are kept exactly as sent; a record missing from a later import is
   never deleted (B3, B4). A correction or a deletion at the source arrives as a
   correction: the old version stays for existing citations, and unfinished work
