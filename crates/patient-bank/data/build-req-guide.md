@@ -60,6 +60,19 @@ you want one):
   source condition (the glucagonoma a pancreatic tumor workup finds) is part of its
   course. Around that, the primary-care layer.
 
+## Records
+
+The seed's `chart_texture` says how complete this patient's records are, and
+build-req says it for each outside contact: what reaches the practice, when and
+in what form. Real charts differ. In a complete chart the letters, reports and
+summaries arrive and the lists are kept current. In a chart with gaps, some
+outside care never sends its letter or sends it late, the practice learns of it
+from the patient or a pharmacy fill, and a list lags. In a sparse chart most
+outside care reaches the practice only as the patient's account, a short ED note
+or a fill history, with few numbers. However complete, every source encounter
+reaches the chart somehow, and nothing it does reach contradicts build-req. A
+number the chart never received is simply absent.
+
 ## Resolutions
 
 Resolve every contradiction. The common ones:
@@ -80,9 +93,11 @@ Resolve every contradiction. The common ones:
 - Interobserver differences between two examiners (a bruit one heard and one did
   not) may stay as written. Say so.
 
-Where the source changes nothing (no drug raised for an LDL of 130, no imaging
-after a neurological event), the gap stays: list it under "Left as the source has
-it". Do not repair the source's medicine.
+Where the source changes nothing at a decision a busy clinician might get wrong (no
+drug raised for an LDL of 130, no imaging after a neurological event), the gap
+stays: list it under "Left as the source has it". Do not repair the source's
+medicine. A diagnosis with no standard treatment at all is not a gap of that kind:
+see Additions.
 
 ## Additions
 
@@ -90,8 +105,11 @@ Keep them few. An addition is justified only when the source needs it to be
 coherent or when any physician would do it at a source event: a drug the source
 names later (it must start somewhere), potassium for a potassium of 2.9, a test
 that supports a diagnosis the source asserts with no evidence (one ABI for a listed
-PAD), the visit that made the referral. Give each addition's numbers or findings
-exactly. Never add a diagnosis, a new problem, a family member or a life event;
+PAD), the visit that made the referral. A diagnosis the source asserts but never
+treats gets its standard ongoing care, chosen conservatively and run by whoever
+would run it: endocrine therapy and oncology follow-up for a metastatic breast
+cancer, a CFTR modulator at the CF center for an eligible adult. Give each
+addition's numbers or findings exactly. Never add a diagnosis, a new problem, a family member or a life event;
 the next steps of a source condition after the source ends are the one place
 additions may run longer.
 
