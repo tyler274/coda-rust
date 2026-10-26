@@ -197,8 +197,8 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .await;
     assert_eq!(
         reopened.pointer("/result/result/value"),
-        Some(&serde_json::Value::Null),
-        "the reload must not carry ?chat=: {reopened}"
+        Some(&serde_json::json!(chat)),
+        "the address must reflect the conversation selected after a workspace-only reload: {reopened}"
     );
 
     // A second new conversation never shows the listed chat's lines, not even
@@ -229,6 +229,60 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         Some(&serde_json::json!({"seen": false, "done": true})),
         "a new conversation showed the previous chat's lines: {stale}"
     );
+    browser
+        .eval("document.querySelector('button.sidebar-conversation-link').click()")
+        .await;
+    browser
+        .wait_for_text(message, Duration::from_secs(10))
+        .await;
+    let selected = browser
+        .eval("new URL(location.href).searchParams.get('chat')")
+        .await;
+    assert_eq!(
+        selected.pointer("/result/result/value"),
+        Some(&serde_json::json!(chat)),
+        "selecting the saved conversation left the new conversation in the address: {selected}"
+    );
+    browser.eval("location.reload()").await;
+    browser
+        .wait_for_text(message, Duration::from_secs(20))
+        .await;
+    browser
+        .eval("document.querySelector('button[aria-label=\"Open Today\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Coda hasn’t read Gmail yet.", Duration::from_secs(10))
+        .await;
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    assert_eq!(
+        address.pointer("/result/result/value"),
+        Some(&serde_json::json!([null, null])),
+        "Today retained a patient conversation in its address: {address}"
+    );
+    browser
+        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
+        .await;
+    browser.search_for("Jake").await;
+    browser.wait_for_text("DOB", Duration::from_secs(10)).await;
+    browser
+        .eval("document.querySelector('.dialog-results button').click()")
+        .await;
+    browser
+        .wait_for_text("Patient summary", Duration::from_secs(10))
+        .await;
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    assert_eq!(
+        address.pointer("/result/result/value"),
+        Some(&serde_json::json!([
+            "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
+            null
+        ])),
+        "changing patient retained the previous patient's conversation: {address}"
+    );
+    browser.eval("location.reload()").await;
+    browser
+        .wait_for_text("Patient summary", Duration::from_secs(20))
+        .await;
 }
 
 #[tokio::test]

@@ -12,6 +12,27 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// Signed-in owner of an inline conversation, supplied by the server.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ChatOwner {
+    /// Practice tenant.
+    pub practice: String,
+    /// Physician within that practice.
+    pub physician: String,
+}
+
+/// The conversation addressed by an inline read or submission. `None` is the
+/// explicit local anonymous session; it never selects signed-in conversations.
+#[derive(Clone, Copy)]
+pub struct ChatScope<'a> {
+    /// Authenticated owner, absent only for local anonymous use.
+    pub owner: Option<&'a ChatOwner>,
+    /// Authorized patient workspace.
+    pub workspace: &'a str,
+    /// Client conversation ID, scoped to this owner and workspace.
+    pub chat: &'a str,
+}
+
 /// Product execution surface; reply revisions cannot acquire write authority.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Surface {
@@ -43,6 +64,10 @@ pub struct Work {
     pub workspace: String,
     /// Conversation or physician-specific draft identity.
     pub target: String,
+    // Old unscoped chat work remains local; it is never assigned to a physician
+    // merely because that physician signs in after an upgrade.
+    #[serde(default)]
+    owner: Option<ChatOwner>,
     /// Expected target revision at admission.
     pub revision: u64,
     /// Product authority surface.
@@ -61,6 +86,8 @@ pub struct Work {
 struct Target {
     workspace: String,
     id: String,
+    #[serde(default)]
+    owner: Option<ChatOwner>,
     revision: u64,
     open: bool,
     turns: Vec<(String, String)>,
@@ -168,10 +195,19 @@ impl PhysicianSession {
         &mut self,
         binding: &ModelBinding,
         id: &str,
-        workspace: &str,
-        target: &str,
+        scope: ChatScope<'_>,
         text: &str,
     ) -> Result<Option<Work>, String> {
+        let ChatScope {
+            owner,
+            workspace,
+            chat: target,
+        } = scope;
+        if owner.is_some_and(|owner| {
+            owner.practice.trim().is_empty() || owner.physician.trim().is_empty()
+        }) {
+            return Err("invalid physician identity".into());
+        }
         if [id, workspace, target, text]
             .iter()
             .any(|s| s.trim().is_empty())
@@ -179,11 +215,12 @@ impl PhysicianSession {
             return Err("invalid physician input".into());
         }
         self.change(|state| {
-            if let Some(work) = state
-                .work
-                .iter()
-                .find(|w| w.id == id && w.workspace == workspace && w.target == target)
-            {
+            if let Some(work) = state.work.iter().find(|w| {
+                w.owner.as_ref() == owner
+                    && w.id == id
+                    && w.workspace == workspace
+                    && w.target == target
+            }) {
                 let same = work.surface == Surface::Chat
                     && work.request.items.last()
                         == Some(&Item::Message {
@@ -199,11 +236,14 @@ impl PhysicianSession {
             let index = state
                 .targets
                 .iter()
-                .position(|t| t.workspace == workspace && t.id == target)
+                .position(|t| {
+                    t.owner.as_ref() == owner && t.workspace == workspace && t.id == target
+                })
                 .unwrap_or_else(|| {
                     state.targets.push(Target {
                         workspace: workspace.into(),
                         id: target.into(),
+                        owner: owner.cloned(),
                         revision: 0,
                         open: true,
                         turns: vec![],
@@ -220,6 +260,7 @@ impl PhysicianSession {
                 id: id.into(),
                 workspace: workspace.into(),
                 target: target.into(),
+                owner: owner.cloned(),
                 revision: target_state.revision,
                 surface: Surface::Chat,
                 status: Status::Active,
@@ -256,7 +297,7 @@ impl PhysicianSession {
             if !state
                 .targets
                 .iter()
-                .any(|t| t.workspace == workspace && t.id == target)
+                .any(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
             {
                 if expected != 0 {
                     return Err("stale draft".into());
@@ -264,6 +305,7 @@ impl PhysicianSession {
                 state.targets.push(Target {
                     workspace: workspace.into(),
                     id: target.into(),
+                    owner: None,
                     revision: 0,
                     open: true,
                     turns: vec![],
@@ -275,7 +317,7 @@ impl PhysicianSession {
             let t = state
                 .targets
                 .iter_mut()
-                .find(|t| t.workspace == workspace && t.id == target)
+                .find(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
                 .unwrap();
             if !t.open || t.revision != expected {
                 return Err("stale draft".into());
@@ -297,7 +339,8 @@ impl PhysicianSession {
     ) -> Result<Work, String> {
         self.change(|state| {
             if state.work.iter().any(|w| {
-                w.workspace == workspace
+                w.owner.is_none()
+                    && w.workspace == workspace
                     && w.target == target
                     && (w.id == id || w.status == Status::Active)
             }) {
@@ -306,7 +349,7 @@ impl PhysicianSession {
             let t = state
                 .targets
                 .iter()
-                .find(|t| t.workspace == workspace && t.id == target)
+                .find(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
                 .ok_or("missing saved draft")?;
             if !t.open || t.revision != expected || t.draft.is_none() {
                 return Err("stale draft".into());
@@ -315,6 +358,7 @@ impl PhysicianSession {
                 id: id.into(),
                 workspace: workspace.into(),
                 target: target.into(),
+                owner: None,
                 revision: expected,
                 surface: Surface::ReplyRevision,
                 request,
@@ -357,11 +401,12 @@ impl PhysicianSession {
             let t = state
                 .targets
                 .iter_mut()
-                .find(|t| t.workspace == workspace && t.id == target)
+                .find(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)
                 .ok_or("missing reply target")?;
             t.open = false;
             for work in &mut state.work {
-                if work.workspace == workspace
+                if work.owner.is_none()
+                    && work.workspace == workspace
                     && work.target == target
                     && work.status == Status::Active
                 {
@@ -373,10 +418,12 @@ impl PhysicianSession {
     }
     /// Reads retained status/evidence for the same accepted identity.
     pub fn work(&self, key: &Work) -> Option<&Work> {
-        self.state
-            .work
-            .iter()
-            .find(|w| w.id == key.id && w.workspace == key.workspace && w.target == key.target)
+        self.state.work.iter().find(|w| {
+            w.owner == key.owner
+                && w.id == key.id
+                && w.workspace == key.workspace
+                && w.target == key.target
+        })
     }
     /// Currentness before dispatch; completion checks it again in the write.
     pub fn check(&self, key: &Work) -> Result<(), String> {
@@ -415,7 +462,9 @@ impl PhysicianSession {
             let t = state
                 .targets
                 .iter_mut()
-                .find(|t| t.workspace == key.workspace && t.id == key.target)
+                .find(|t| {
+                    t.owner == key.owner && t.workspace == key.workspace && t.id == key.target
+                })
                 .unwrap();
             match key.surface {
                 Surface::Chat => t.turns.push(("assistant".into(), text.into())),
@@ -429,23 +478,27 @@ impl PhysicianSession {
         })
     }
     /// Physician-visible authored texts, never provider/tool evidence.
-    pub fn conversation(&self, workspace: &str, target: &str) -> Vec<String> {
+    pub fn conversation(&self, scope: ChatScope<'_>) -> Vec<String> {
         self.state
             .targets
             .iter()
-            .find(|t| t.workspace == workspace && t.id == target)
+            .find(|t| {
+                t.owner.as_ref() == scope.owner
+                    && t.workspace == scope.workspace
+                    && t.id == scope.chat
+            })
             .map(|t| t.turns.iter().map(|(_, text)| text.clone()).collect())
             .unwrap_or_default()
     }
-    /// Chats of a workspace that have a physician turn, newest opened first,
+    /// This owner's chats in a workspace that have a physician turn, newest opened first,
     /// each with its first physician message and opening Unix second. Reply
     /// drafts have no turns and are not chats.
-    pub fn chats(&self, workspace: &str) -> Vec<(String, String, u64)> {
+    pub fn chats(&self, owner: Option<&ChatOwner>, workspace: &str) -> Vec<(String, String, u64)> {
         self.state
             .targets
             .iter()
             .rev()
-            .filter(|t| t.workspace == workspace)
+            .filter(|t| t.owner.as_ref() == owner && t.workspace == workspace)
             .filter_map(|t| {
                 let (_, first) = t.turns.iter().find(|(role, _)| role == "user")?;
                 Some((t.id.clone(), first.clone(), t.opened_at))
@@ -458,7 +511,7 @@ impl PhysicianSession {
             .state
             .targets
             .iter()
-            .find(|t| t.workspace == workspace && t.id == target)?;
+            .find(|t| t.owner.is_none() && t.workspace == workspace && t.id == target)?;
         Some((t.revision, t.draft.clone()?, t.restore_text.clone()))
     }
 }
@@ -466,12 +519,17 @@ fn check(state: &State, key: &Work) -> Result<(), String> {
     let w = state
         .work
         .iter()
-        .find(|w| w.id == key.id && w.workspace == key.workspace && w.target == key.target)
+        .find(|w| {
+            w.owner == key.owner
+                && w.id == key.id
+                && w.workspace == key.workspace
+                && w.target == key.target
+        })
         .ok_or("missing accepted work")?;
     let t = state
         .targets
         .iter()
-        .find(|t| t.workspace == key.workspace && t.id == key.target)
+        .find(|t| t.owner == key.owner && t.workspace == key.workspace && t.id == key.target)
         .ok_or("missing target")?;
     if w.status != Status::Active
         || w.revision != key.revision
@@ -487,7 +545,12 @@ fn work_mut<'a>(state: &'a mut State, key: &Work) -> Result<&'a mut Work, String
     state
         .work
         .iter_mut()
-        .find(|w| w.id == key.id && w.workspace == key.workspace && w.target == key.target)
+        .find(|w| {
+            w.owner == key.owner
+                && w.id == key.id
+                && w.workspace == key.workspace
+                && w.target == key.target
+        })
         .ok_or("missing accepted work".into())
 }
 

@@ -20,7 +20,7 @@ use harness::execution::{
 };
 use local_product::ModelBinding;
 use local_product::codex::CodexTransport;
-use local_product::execution::{PhysicianSession, Status, Work};
+use local_product::execution::{ChatOwner, ChatScope, PhysicianSession, Status, Work};
 use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -185,8 +185,8 @@ impl Live {
 
     /// The signed-in physician's chats in this workspace as wire
     /// `WorkspaceChat`s, latest activity first. Hosted chats come from Postgres,
-    /// scoped to this physician; local chats come from the one-process session,
-    /// which, like its snapshots, is not split by physician.
+    /// scoped to this physician. Inline chats use the same identity in the
+    /// one-process session; anonymous local chats stay in their own scope.
     pub(crate) async fn chats(
         &self,
         ctx: Option<&AuthContext>,
@@ -211,7 +211,7 @@ impl Live {
                 .session
                 .lock()
                 .expect("chat session")
-                .chats(workspace)
+                .chats(chat_owner(ctx).as_ref(), workspace)
                 .into_iter()
                 .map(|(chat, first, opened_at)| {
                     (chat, first, i64::try_from(opened_at).unwrap_or_default())
@@ -264,6 +264,13 @@ impl Live {
         };
         genai::generation_span(&ctx, system, model, adapter)
     }
+}
+
+fn chat_owner(ctx: Option<&AuthContext>) -> Option<ChatOwner> {
+    ctx.map(|ctx| ChatOwner {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+    })
 }
 
 /// Chat titles until the model names chats: the first physician message on
@@ -370,11 +377,15 @@ pub(crate) async fn submit(
     }
     let request = {
         let mut session = live.session.lock().expect("chat session");
+        let owner = chat_owner(auth_ctx.as_ref().map(|Extension(ctx)| ctx));
         match session.submit(
             &live.binding,
             &idempotency_key,
-            &payload.patient_workspace_id,
-            &payload.chat_id,
+            ChatScope {
+                owner: owner.as_ref(),
+                workspace: &payload.patient_workspace_id,
+                chat: &payload.chat_id,
+            },
             &payload.text,
         ) {
             Ok(work) => work,
@@ -532,11 +543,16 @@ pub(crate) async fn snapshot(
         )
         .await;
     }
+    let owner = chat_owner(auth_ctx.as_ref().map(|Extension(ctx)| ctx));
     let conversation = live
         .session
         .lock()
         .expect("chat session")
-        .conversation(&workspace, &chat);
+        .conversation(ChatScope {
+            owner: owner.as_ref(),
+            workspace: &workspace,
+            chat: &chat,
+        });
     Json(json!({
         "snapshot": {
             "conversation": conversation

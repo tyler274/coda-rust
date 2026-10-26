@@ -16,6 +16,7 @@ pub struct Responses {
     endpoint: reqwest::Url,
     key: String,
     model: String,
+    reasoning_effort: Option<String>,
     streaming: bool,
 }
 
@@ -53,8 +54,16 @@ impl Responses {
             endpoint,
             key,
             model,
+            reasoning_effort: None,
             streaming: false,
         })
+    }
+
+    /// Uses the reasoning effort selected by the product's model binding.
+    /// Omitting this option preserves the provider default for other callers.
+    pub fn reasoning_effort(mut self, effort: String) -> Self {
+        self.reasoning_effort = Some(effort);
+        self
     }
 
     /// Enables SSE delivery through `Provider::complete_stream`. Direct buffered
@@ -78,7 +87,7 @@ impl Responses {
                 value.clone()
             }
         })).collect();
-        Ok(json!({
+        let mut body = json!({
             "model": self.model, "instructions": request.context.instructions,
             "input": input?, "store": false, "stream": self.streaming,
             "max_output_tokens": request.limits.output_tokens,
@@ -86,7 +95,11 @@ impl Responses {
                 "type": "function", "name": tool.name, "description": tool.description,
                 "parameters": tool.parameters,
             })).collect::<Vec<_>>(),
-        }))
+        });
+        if let Some(effort) = &self.reasoning_effort {
+            body["reasoning"] = json!({ "effort": effort });
+        }
+        Ok(body)
     }
 }
 

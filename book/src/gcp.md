@@ -379,16 +379,19 @@ redeploy.
 
 #### Apply commands for Dev
 
-**Status, October 25, 2026.** Dev applied the original plan as the project
-Owner. Redis, both topics and subscriptions, and `physician-worker` exist; the
-Redis URL and CA are in Doppler `stg_physician_runtime`; the worker is Ready;
-the budget alert is $200/month. That plan predates two fixes in this stack:
+**Status, October 26, 2026.** Dev provisioned the infrastructure as the project
+Owner while leaving the physician site's queue activation pending. Redis, both
+topics and subscriptions, and `physician-worker` exist; the Redis URL and CA are in Doppler `stg_physician_runtime`; the worker is Ready;
+the budget alert is $200/month. The remaining activation is:
 
 - The physician site keeps one instance while scaling is on
   (`min_instance_count` 0 to 1), so its recovery sweep always runs. After the
   stack merges and `deploy-staging` is green, run steps 4 to 6 once more. The
-  saved plan should be exactly one in-place change, `google_cloud_run_v2_service.app["physician"]`
-  with `min_instance_count` 0 to 1, and nothing added or destroyed. The minimum
+  saved plan should update `google_cloud_run_v2_service.app["physician"]`
+  in place: `min_instance_count` 0 to 1, `cpu_idle` true to false, and add
+  `PHYSICIAN_CHAT_TOPIC`. The readback at 05:09 UTC still had minimum zero,
+  CPU throttling enabled, and no topic. Review every changed field in a fresh
+  saved plan; expect nothing added or destroyed and no Duet changes. The minimum
   instance costs about $48/month after the free tier (see [Cost](#cost)).
 - The worker image now sets `PHYSICIAN_AUTH=required`. The same key in
   `stg_physician_runtime` becomes redundant and harmless; it can stay.
