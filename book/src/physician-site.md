@@ -1,18 +1,27 @@
 # The physician site and the Coda Agents harness
 
-The shipping physician client is the React site in `submodules/coda-agents/web`. The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, speaking the same projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and a recorded projection of the synthetic practice, and forwards physician routes to the Node server through `PHYSICIAN_UPSTREAM`. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`harness`](/crates/harness/src/lib.rs) loads the clinical skill catalog in [`skills/`](/skills) once through [`agent-skills`](/crates/agent-skills/src/lib.rs), the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
+The shipping physician client is the React site in `submodules/coda-agents/web`. The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, speaking the same projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and the physician routes over the synthetic practice, with chat through the model execution described next; tests also use its recorded projection, and `PHYSICIAN_UPSTREAM` forwards physician routes to the Node server. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`agent-skills`](/crates/agent-skills/src/lib.rs) reads the clinical skill catalog in [`skills/`](/skills) for [`harness`](/crates/harness/src/lib.rs), though no product runtime loads it yet; the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
 
 ## Product direction and proof
 
 The [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
-and its outcome tickets own current physician behavior. [ENG-160](https://linear.app/coda-health/issue/ENG-160)
-owns the physician UI, [ENG-159](https://linear.app/coda-health/issue/ENG-159)
-the shared execution boundary, and [ENG-185](https://linear.app/coda-health/issue/ENG-185)
-the physician design foundation: the <a href="/verification/physician-experience/README%2Emd">physician statechart</a>,
-which is the behavior spec, and its Verus proof. <a href="/verification/README%2Emd">Verification</a>
+owns current product intent. The
+<a href="/verification/physician-experience/README%2Emd">physician statechart</a>
+is the behavior spec, accompanied by its design decisions, its Verus proof and
+<a href="/verification/physician-experience/coverage%2Emd">coverage.md</a>, which says
+what the Rust app shows for each of its states. <a href="/verification/README%2Emd">Verification</a>
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
 specification or a claim of current Rust completeness.
+
+## Current execution paths
+
+[`physician-sample::live`](/crates/physician-sample/src/live.rs) currently opens
+[`PhysicianSession`](/crates/local-product/src/execution.rs) for mounted chat
+and reply work, using the local session file outside test fixtures. The separate
+Postgres [`runtime::Store`](/crates/local-product/src/runtime.rs) owns durable
+acceptance, leases and recovery primitives; configuring the physician auth
+database does not connect chat routes to that store.
 
 ## Physician sign-in and practice access
 

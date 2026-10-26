@@ -23,7 +23,8 @@ Follow the [shared principles](../../../verification/README.md#principles).
    and evals. Actors choose nondeterministically (`may`); keep hard limits few,
    each with a reason naming what it protects. Every event declares its cause; an
    agent's event is an output of the system running it. Charts compose through
-   shared declared events, not copied states. A chart that details part of
+   shared declared events, not copied states: a composition file pairs them and
+   holds the rules that span charts. A chart that details part of
    another is connected to it by one map and checked with `against`.
 5. State each promise and its decision source beside the diagram. Revise words
    and diagrams together. Resolve new product meaning with Dev; checking a draft
@@ -54,6 +55,8 @@ proof reasoning. Follow [correspondence](../../../verification/README.md#keep-th
 in both directions; name omitted behavior even when existing proofs pass.
 
 Build or audit the real Rust owner against that design when implementation exists.
+Keep what the app shows for each state in one coverage table beside the chart,
+checked with `coverage`, so built, partial and missing states stay explicit.
 Use [app creation](../coda-create-verification/SKILL.md) for its driving/readback
 recipe. Investigate failures before claiming a bug: repair mistranslation while
 preserving the promise, and return proposed behavior changes to Dev.

@@ -11,6 +11,8 @@ import { lint, queryEvent, queryRegion, queryState, summary } from "./chart-quer
 import { checkRules, printRules } from "./chart-rules.mjs";
 import { compareCharts, printComparison, readRenames } from "./compare-charts.mjs";
 import { against, printAgainst, readMap } from "./chart-against.mjs";
+import { coverage, printCoverage } from "./chart-coverage.mjs";
+import { COMPOSES, resolveComposition } from "./chart-compose.mjs";
 
 class Usage extends Error {}
 
@@ -25,7 +27,11 @@ const moduleName = (flags, required) => {
     throw new Usage("provide --module NAME (letters, digits, underscores)");
   return flags.module;
 };
-const read = (file) => fs.readFileSync(file, "utf8");
+// A composition names its charts by paths relative to itself.
+const read = (file) => {
+  const text = fs.readFileSync(file, "utf8");
+  return COMPOSES.test(text) ? resolveComposition(text, file) : text;
+};
 
 export const COMMANDS = {
   verus: {
@@ -68,6 +74,10 @@ export const COMMANDS = {
       if (flags.out !== undefined) fs.writeFileSync(flags.out, result.layered);
       return printAgainst(result);
     },
+  },
+  coverage: {
+    inputs: 2,
+    run: ([chart, table]) => printCoverage(coverage(read(chart), read(table))),
   },
   flat: {
     inputs: 1,

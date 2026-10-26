@@ -44,6 +44,8 @@ pub struct TodayLine {
     pub reason: String,
     pub did: String,
     pub waiting_since: String,
+    /// Coda marked the concern as needing the physician now, not just today.
+    pub now: bool,
     pub resume_work_item_id: Option<String>,
     pub resume_run_id: Option<String>,
 }
@@ -61,14 +63,57 @@ pub struct VisitLine {
     pub cue: Option<String>,
 }
 
+/// One read the page shows (physician.mmd: Loading, Showing, Showing with one
+/// quiet line and Retry, Couldn't load with Retry).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum TodayView {
+pub enum ReadView<T> {
     Loading,
+    Showing(T),
+    Stale(T),
     Unavailable,
-    Quiet,
-    Stale(Vec<TodayLine>),
-    Rows(Vec<TodayLine>),
 }
+
+impl<T> ReadView<T> {
+    pub fn stage(&self) -> ui::ReadStage {
+        match self {
+            Self::Loading => ui::ReadStage::Loading,
+            Self::Showing(_) => ui::ReadStage::Showing,
+            Self::Stale(_) => ui::ReadStage::Stale,
+            Self::Unavailable => ui::ReadStage::Unavailable,
+        }
+    }
+
+    /// What shows: the answer, or the last one under a failed refresh.
+    pub fn content(&self) -> Option<&T> {
+        match self {
+            Self::Showing(value) | Self::Stale(value) => Some(value),
+            Self::Loading | Self::Unavailable => None,
+        }
+    }
+}
+
+/// `current` is the latest read. `None` means that read has not answered.
+/// A failed refresh keeps `previous`; a failed first read does not.
+pub fn read_view<T>(previous: Option<T>, current: Option<Result<T, ()>>) -> ReadView<T> {
+    match (current, previous) {
+        (Some(Ok(value)), _) => ReadView::Showing(value),
+        (Some(Err(())), Some(last)) => ReadView::Stale(last),
+        (Some(Err(())), None) => ReadView::Unavailable,
+        (None, Some(last)) => ReadView::Showing(last),
+        (None, None) => ReadView::Loading,
+    }
+}
+
+/// A read's answer, kept with the question it answered. A rerun leaves the last
+/// answer in place until the new one lands, so a page asking a new question (a
+/// query, a patient, a conversation) has no answer yet.
+pub fn answer_to<'a, Q: PartialEq, T>(asking: &Q, answer: Option<&'a (Q, T)>) -> Option<&'a T> {
+    answer
+        .filter(|(asked, _)| asked == asking)
+        .map(|(_, answer)| answer)
+}
+
+pub type TodayView = ReadView<Vec<TodayLine>>;
 
 pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
     list.rows.iter().map(today_line).collect()
@@ -83,6 +128,7 @@ fn today_line(row: &TodayRow) -> TodayLine {
         reason: row.reason.clone().unwrap_or_default(),
         did: row_did(row),
         waiting_since: row.waiting_since.clone(),
+        now: row.urgency == "now",
         resume_work_item_id: row
             .resume_target
             .as_ref()
@@ -837,24 +883,15 @@ fn split_offset(rest: &str) -> Option<(&str, Option<i64>)> {
     Some((clock, Some(sign * seconds)))
 }
 
-/// `current` is the latest read. `None` means that read has not answered.
-/// A failed refresh keeps `previous`; a failed first read does not.
+/// Today's read; an empty answer is the quiet list.
 pub fn today_view(
     previous: Option<&[TodayLine]>,
     current: Option<Result<&TodayListResponse, ()>>,
 ) -> TodayView {
-    match current {
-        None => match previous {
-            Some(rows) if !rows.is_empty() => TodayView::Rows(rows.to_vec()),
-            _ => TodayView::Loading,
-        },
-        Some(Err(())) => match previous {
-            Some(rows) if !rows.is_empty() => TodayView::Stale(rows.to_vec()),
-            _ => TodayView::Unavailable,
-        },
-        Some(Ok(list)) if list.rows.is_empty() => TodayView::Quiet,
-        Some(Ok(list)) => TodayView::Rows(today_lines(list)),
-    }
+    read_view(
+        previous.map(<[TodayLine]>::to_vec),
+        current.map(|answer| answer.map(today_lines)),
+    )
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1130,8 +1167,18 @@ pub fn reply_review_actions(reply: &WorkspaceReply) -> Vec<ReplyReviewAction> {
 pub fn reply_channel_label(channel: &str) -> String {
     match channel {
         "spruce" => "Spruce".to_owned(),
-        "email" => "Email".to_owned(),
+        // The practice's email is its Gmail connection, and Connections calls it that.
+        "email" => "Gmail".to_owned(),
         other => capitalize_first(other),
+    }
+}
+
+/// A reply's urgency in words, never the raw tier.
+pub fn reply_urgency_words(urgency: &str) -> String {
+    match urgency {
+        "urgent_ed" => "Urgent, ED".to_owned(),
+        "routine" => "Routine".to_owned(),
+        other => capitalize_first(&other.replace('_', " ")),
     }
 }
 
@@ -1212,20 +1259,45 @@ mod tests {
 
     #[test]
     fn today_covers_loading_empty_error_stale_and_loaded() {
-        assert_eq!(today_view(None, None), TodayView::Loading);
+        assert_eq!(today_view(None, None), ReadView::Loading);
         let empty = today_json("");
-        assert_eq!(today_view(None, Some(Ok(&empty))), TodayView::Quiet);
-        assert_eq!(today_view(None, Some(Err(()))), TodayView::Unavailable);
+        assert_eq!(
+            today_view(None, Some(Ok(&empty))),
+            ReadView::Showing(Vec::new())
+        );
+        assert_eq!(today_view(None, Some(Err(()))), ReadView::Unavailable);
         let loaded = today_json(&row());
         let lines = today_lines(&loaded);
         assert_eq!(
             today_view(None, Some(Ok(&loaded))),
-            TodayView::Rows(lines.clone())
+            ReadView::Showing(lines.clone())
         );
         assert_eq!(
             today_view(Some(&lines), Some(Err(()))),
-            TodayView::Stale(lines)
+            ReadView::Stale(lines)
         );
+    }
+
+    #[test]
+    fn an_answer_counts_only_for_the_question_it_answered() {
+        let answered = ("Mary".to_owned(), Ok::<_, ()>(vec!["Mary Louis"]));
+        assert_eq!(
+            answer_to(&"Mary".to_owned(), Some(&answered)),
+            Some(&Ok(vec!["Mary Louis"]))
+        );
+        assert_eq!(answer_to(&"Tanvir".to_owned(), Some(&answered)), None);
+        assert_eq!(
+            answer_to::<String, Result<Vec<&str>, ()>>(&"Mary".to_owned(), None),
+            None
+        );
+    }
+
+    #[test]
+    fn a_row_says_when_coda_marked_it_now() {
+        let today = today_json(&row());
+        assert!(!today_lines(&today)[0].now);
+        let now = today_json(&row().replace(r#""urgency":"today""#, r#""urgency":"now""#));
+        assert!(today_lines(&now)[0].now);
     }
 
     #[test]
@@ -1270,6 +1342,7 @@ mod tests {
             reason: "New note".to_owned(),
             did: "New note".to_owned(),
             waiting_since: "2026-10-09T12:00:00Z".to_owned(),
+            now: false,
             resume_work_item_id: None,
             resume_run_id: None,
         };
@@ -1675,6 +1748,8 @@ mod tests {
             ..ready
         };
         assert!(reply_review_actions(&superseded).is_empty());
-        assert_eq!(reply_channel_label("email"), "Email");
+        assert_eq!(reply_channel_label("email"), "Gmail");
+        assert_eq!(reply_urgency_words("urgent_ed"), "Urgent, ED");
+        assert_eq!(reply_urgency_words("same_day"), "Same day");
     }
 }

@@ -6,6 +6,7 @@ export const USAGE = {
   rules: "node statechart.mjs rules CHART.mmd [--rule NAME] [--max-cone N] [--max-states N]",
   compare: "node statechart.mjs compare FIRST.mmd SECOND.mmd [--rename MAP.json]",
   against: "node statechart.mjs against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]",
+  coverage: "node statechart.mjs coverage CHART.mmd COVERAGE.md",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats]",
@@ -77,6 +78,16 @@ const COMPARE = `compare FIRST.mmd SECOND.mmd [--rename MAP.json]
   --rename reads {"regions": {...}, "states": {...}, "events": {...}}, each
   mapping a FIRST name to its SECOND name; state renames apply in every region.
   Exit: 0 the same flat model; 1 differences or an invalid chart.`;
+
+const COVERAGE = `coverage CHART.mmd COVERAGE.md
+  Check a Markdown coverage table that accounts for every state of the chart, such
+  as what an app shows for each. One "## REGION" heading per region of the
+  expanded chart, in its caption, each followed by a table whose first column is
+  the state and whose second is its status: built, partial, missing or not shown.
+  Other columns are free text; prose goes under "#" headings. A region's
+  "(not in ...)" value is not listed. Reports missing, unknown or repeated regions
+  and states and unknown statuses, then the count for each status.
+  Exit: 0 the table matches the chart; 1 problems or an invalid chart.`;
 
 const AGAINST = `against DETAIL.mmd AGREED.mmd --map MAP.json [--out LAYERED.mmd]
   Check a chart that details part of another against it, through one map in the
@@ -152,9 +163,13 @@ Commands:
   rules   check each rule on a small cone of regions (large charts)
   compare differences between two charts' flat models
   against check a detailed chart against the chart it details, through a map
+  coverage check a table that accounts for every state of the chart
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
   lint    unreachable states, dead edges, and event-declaration problems
+
+CHART may be a composition: %% compose lines join separate charts through shared
+events (references/compiler.md, Compositions); verus and check take one chart.
 
 ${more()}
 
@@ -166,6 +181,7 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   rules: RULES,
   compare: COMPARE,
   against: AGAINST,
+  coverage: COVERAGE,
   flat: FLAT,
   query: QUERY,
   lint: LINT,

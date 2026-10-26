@@ -1217,3 +1217,278 @@ test("against checks a detailed chart against the chart it details, in both dire
   const unknown = check({ ...map, omits: { "ship faster": "x" } });
   assert.match(unknown.stderr, /the map omits "ship faster", which no step of the agreed chart has/);
 });
+
+test("coverage checks a table that accounts for every state of a chart, region by region", () => {
+  const chart = fixture(here("door.mmd")).input;
+  const table = (body) => {
+    const file = path.join(fs.mkdtempSync(path.join(run, "coverage-")), "coverage.md");
+    fs.writeFileSync(file, body);
+    return cmd("coverage", chart, file);
+  };
+  const section = (region, rows) => `## ${region}\n\n| State | Status | Where |\n| --- | --- | --- |\n${rows.map(([s, st]) => `| ${s} | ${st} | x |`).join("\n")}\n\n`;
+  const full = "# Door app\n\nProse with | a pipe is ignored.\n\n"
+    + section("Door", [["Open", "built"], ["Locked", "built"]])
+    + section("Door/Locked/Alarm", [["Disarmed", "partial"], ["Armed", "missing"], ["Ringing", "missing"]])
+    + section("Door/Locked/Keypad", [["Idle", "not shown"], ["Typing", "built"]])
+    + section("Siren", [["Quiet", "not shown"], ["Loud", "built"]]);
+  const ok = table(full);
+  assert.equal(ok.status, 0, ok.text);
+  assert.match(ok.stdout, /9 states: 4 built, 1 partial, 2 missing, 2 not shown\./);
+  // A state the chart gains, a state it no longer has, an unknown status, a missing region.
+  const drift = table(full.replace("| Ringing | missing | x |\n", "").replace("| Typing | built |", "| Typing | done |")
+    .replace("| Loud | built | x |", "| Loud | built | x |\n| Muted | missing | x |").replace(/## Door\/Locked\/Keypad[\s\S]*?(?=## Siren)/, ""));
+  assert.equal(drift.status, 1);
+  assert.match(drift.stdout, /"Door\/Locked\/Alarm" does not list the state "Ringing"/);
+  assert.match(drift.stdout, /"Siren" has no state "Muted"/);
+  assert.match(drift.stdout, /the region "Door\/Locked\/Keypad" has no "## Door\/Locked\/Keypad" section/);
+  const status = table(full.replace("| Typing | built |", "| Typing | done |"));
+  assert.match(status.stdout, /"Typing" has the status "done"; use built, partial, missing, not shown/);
+  const extra = table(`${full}## Garage\n\n| State | Status |\n| --- | --- |\n| Shut | built |\n`);
+  assert.match(extra.stdout, /the chart has no region "Garage"/);
+});
+
+test("compose joins separate charts through shared events and checks rules across them", () => {
+  const dir = fs.mkdtempSync(path.join(run, "compose-"));
+  for (const name of ["compose-app.mmd", "compose-practice.mmd"]) fs.writeFileSync(path.join(dir, name), here(name));
+  const write = (body) => {
+    const file = path.join(dir, `composition-${fs.readdirSync(dir).length}.mmd`);
+    fs.writeFileSync(file, body);
+    return file;
+  };
+  const base = [
+    "stateDiagram-v2",
+    "%% compose app: compose-app.mmd",
+    "%% compose practice: compose-practice.mmd",
+    "%% shared app: you're invited = practice: invite the patient",
+    "%% shared practice: the patient joins = app: join",
+    "%% shared practice: a record arrives = app: save a note",
+    "%% outside practice: by the patient through the app",
+    "%% never SameStatus: app: Connected & practice: Not connected -- Both sides show one connection.",
+    "%% never SameStatusBack: practice: Connected & app: Not connected -- Both sides show one connection.",
+    "%% never JoinedBothSides: practice: Connected & app: Invited -- The practice connects only when the patient joins.",
+  ];
+  const both = write(base.join("\n"));
+  const lint = cmd("lint", both);
+  assert.equal(lint.status, 0, lint.text);
+  const flat = cmd("flat", both).stdout;
+  // Each chart's regions sit under its own name; its states stay its own.
+  assert.match(flat, /state "Patient app\/Your practice"/);
+  assert.match(flat, /state "Practice\/Connection"/);
+  // A shared event is one event: the follower's step is drawn on the owner's label.
+  const practice = /state "Practice\/Connection" as (r\d+) \{([\s\S]*?)\n  \}/.exec(flat)[2];
+  assert.match(practice, /--> r\d+s\d+ : join/);
+  assert.match(practice, /: save a note/);
+  assert.doesNotMatch(flat, /a record arrives/);
+  // The same words in two charts are two events unless the composition shares them.
+  assert.match(flat, /: new records arrive \(practice\)/);
+  assert.match(flat, /%% event new records arrive \(app\) \| by your records source/);
+  // Rules: the chart's own keep holding, named by chart; composition rules name chart: caption.
+  const rules = cmd("rules", both);
+  assert.equal(rules.status, 0, rules.text);
+  assert.match(rules.stdout, /HOLDS practice\.OwedOnlyFromSharing/);
+  assert.match(rules.stdout, /HOLDS SameStatus /);
+  assert.match(rules.stdout, /4 hold, 0 violated/);
+  // A note saved before the practice connects reaches no work: the follower keeps its needs.
+  const event = cmd("query", both, "--event", "save a note").stdout;
+  assert.match(event, /Practice\/Work\n      Idle --> Owed \(needs here: when Practice\/Connection is Connected/);
+  // A follower's step also waits for the owner event's needs: the app is invited only when the
+  // practice can invite.
+  const invite = cmd("query", both, "--event", "invite the patient").stdout;
+  assert.match(invite, /Patient app\/Your practice\n      Not connected --> Invited \(needs here: when Patient app\/Your practice is Not connected[^)]*; the event's own needs: when Practice\/Connection is Not connected/);
+  // Negative control: joining on the wrong event breaks the status rule, and trace shows how.
+  const wrong = write(base.join("\n").replace("%% shared practice: the patient joins = app: join", "%% shared practice: the patient joins = app: save a note"));
+  const broken = cmd("trace", wrong);
+  assert.equal(broken.status, 1, broken.text);
+  assert.match(broken.stdout, /JoinedBothSides/);
+  // An owner event that is itself relabeled onto another chart's event is refused.
+  const chained = cmd("lint", write(base.join("\n").replace("= app: join", "= app: you're invited")));
+  assert.equal(chained.status, 1);
+  assert.match(chained.stdout, /"you're invited" in app is itself shared as another chart's event/);
+  // An event caused outside its chart must be shared.
+  const unshared = cmd("lint", write(base.filter((l) => !l.includes("a record arrives =")).join("\n")));
+  assert.equal(unshared.status, 1);
+  assert.match(unshared.stdout, /"a record arrives" in practice is caused by the patient through the app, outside practice, but no %% shared line says which event it is/);
+  // A shared line names events each chart carries.
+  const missing = cmd("rules", write(base.join("\n").replace("app: save a note", "app: save a nate")));
+  assert.equal(missing.status, 1);
+  assert.match(missing.text, /%% shared names "save a nate", which app does not carry/);
+  // Verus judges drift on one chart's text, so it refuses a composition.
+  const model = cmd("verus", both, "--module", "Both");
+  assert.equal(model.status, 1);
+  assert.match(model.text, /verus and check take one chart/);
+  // A composition names chart: caption, and a rule's caption is looked up in that chart only.
+  const loose = cmd("rules", write([...base.slice(0, 7), "%% never Loose: Connected & practice: Not connected -- x"].join("\n")));
+  assert.equal(loose.status, 1);
+  assert.match(loose.text, /name a composed chart as KEY: \.\.\./);
+  // A template's rules still find a caption repeated across its instances once composed.
+  fs.writeFileSync(path.join(dir, "lockers.mmd"), here("lockers.mmd"));
+  const templated = cmd("rules", write(["stateDiagram-v2", "%% compose lockers: lockers.mmd", "%% compose practice: compose-practice.mmd"].join("\n")));
+  assert.equal(templated.status, 0, templated.text);
+  assert.match(templated.stdout, /HOLDS lockers\.NotBothFull_a/);
+});
+
+test("a nested composed step yields to its parent only while its own event's needs hold", () => {
+  const dir = fs.mkdtempSync(path.join(run, "compose-nested-"));
+  const put = (name, lines) => fs.writeFileSync(path.join(dir, name), lines.join("\n"));
+  put("room.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event the bell rings | by the school | Class ends.",
+    "%% event the child is called | by the school | needs Ready | reason: only a ready child is called | The child goes to the desk.",
+    "%% event get ready | by you | The child gets ready.",
+    "state \"Room\" as Room {",
+    "  state \"Place\" as Place {",
+    "    [*] --> Class",
+    "    state \"Out of class\" as Out",
+    "    state \"In class\" as Class {",
+    "      [*] --> Seat",
+    "      state \"At the seat\" as Seat",
+    "      state \"At the desk\" as Desk",
+    "      Seat --> Desk : the child is called",
+    "    }",
+    "    Class --> Out : the bell rings",
+    "  }",
+    "  --",
+    "  state \"Readiness\" as Readiness {",
+    "    [*] --> NotReady",
+    "    state \"Not ready\" as NotReady",
+    "    state \"Ready\" as Ready",
+    "    NotReady --> Ready : get ready",
+    "  }",
+    "}",
+  ]);
+  put("clock.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event tick | by the clock | The clock ticks.",
+    "state \"Clock\" as Clock {",
+    "  [*] --> Going",
+    "  state \"Going\" as Going",
+    "  Going --> Going : tick",
+    "}",
+  ]);
+  const both = path.join(dir, "both.mmd");
+  put("both.mmd", [
+    "stateDiagram-v2",
+    "%% compose room: room.mmd",
+    "%% compose clock: clock.mmd",
+    "%% shared room: the bell rings = clock: tick",
+    "%% shared room: the child is called = clock: tick",
+    "%% outside room: by the school",
+    "%% never LeavesOnlyWhenReady: room: Out of class & room: Not ready -- (expected to break: the bell ends class for an unready child)",
+    "%% never CalledOnlyWhenReady: room: In class.At the desk & room: Not ready -- Only a ready child is called.",
+  ]);
+  // Before the fix, the nested step on tick discarded the parent's, so an unready child never left.
+  const trace = cmd("trace", both);
+  assert.equal(trace.status, 1, trace.text);
+  assert.match(trace.stdout, /LeavesOnlyWhenReady/);
+  assert.doesNotMatch(trace.stdout, /CalledOnlyWhenReady/);
+  // While the nested step can fire, it still wins: a ready child is called, not sent out.
+  const flat = cmd("flat", both).stdout;
+  assert.match(flat, /: tick\n    %% blocked while: when Room\/Readiness is Ready\n/);
+});
+
+test("a step shared onto a command's refusal happens only when the owner's refusal can", () => {
+  const dir = fs.mkdtempSync(path.join(run, "compose-refused-"));
+  const put = (name, lines) => fs.writeFileSync(path.join(dir, name), lines.join("\n"));
+  put("desk.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event someone else closes the item | by another physician | Another physician closes it first.",
+    "%% event close the item | by you | command on the item: Close | needs Open | reason: only an open item closes | You close it.",
+    "state \"Desk\" as Desk {",
+    "  state \"Item\" as Item {",
+    "    [*] --> Open",
+    "    state \"Open\" as Open",
+    "    state \"Closed\" as Closed",
+    "    Open --> Closed : close the item",
+    "    Open --> Closed : someone else closes the item",
+    "  }",
+    "  --",
+    "  state \"Your command on the item\" as Rc {",
+    "    %% receipt the item",
+    "  }",
+    "}",
+  ]);
+  put("watcher.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event a refusal is seen | by the desk | The watcher sees a refusal.",
+    "state \"Watcher\" as Watcher {",
+    "  [*] --> Unseen",
+    "  state \"No refusal seen\" as Unseen",
+    "  state \"Refusal seen\" as Seen",
+    "  Unseen --> Seen : a refusal is seen",
+    "}",
+  ]);
+  const both = path.join(dir, "both.mmd");
+  put("both.mmd", [
+    "stateDiagram-v2",
+    "%% compose desk: desk.mmd",
+    "%% compose watcher: watcher.mmd",
+    "%% shared watcher: a refusal is seen = desk: your Close on the item is refused",
+    "%% outside watcher: by the desk",
+    "%% never SeenOnlyWhenClosed: watcher: Refusal seen & desk: Open -- A refusal comes only once the item no longer allows Close.",
+  ]);
+  // Before the fix, the watcher saw a refusal the desk could not make while the item was still open.
+  const rules = cmd("rules", both);
+  assert.equal(rules.status, 0, rules.text);
+  assert.match(rules.stdout, /HOLDS SeenOnlyWhenClosed/);
+});
+
+test("a nested composed refusal yields to its parent only while the command's needs fail", () => {
+  const dir = fs.mkdtempSync(path.join(run, "compose-refusal-"));
+  const put = (name, lines) => fs.writeFileSync(path.join(dir, name), lines.join("\n"));
+  put("room.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event the bell rings | by the school | Class ends.",
+    "%% event get ready | by you | The child gets ready.",
+    "%% event lose focus | by you | The child loses focus.",
+    "%% event answer the question | by you | command on the question: Answer | needs Ready | reason: only a ready child answers | The child answers.",
+    "state \"Room\" as Room {",
+    "  state \"Place\" as Place {",
+    "    [*] --> Class",
+    "    state \"Out of class\" as Out",
+    "    state \"In class\" as Class {",
+    "      [*] --> Rc",
+    "      state \"Your command on the question\" as Rc {",
+    "        %% receipt the question",
+    "      }",
+    "    }",
+    "    Class --> Out : the bell rings",
+    "  }",
+    "  --",
+    "  state \"Readiness\" as Readiness {",
+    "    [*] --> NotReady",
+    "    state \"Not ready\" as NotReady",
+    "    state \"Ready\" as Ready",
+    "    NotReady --> Ready : get ready",
+    "    Ready --> NotReady : lose focus",
+    "    Ready --> Ready : answer the question",
+    "  }",
+    "}",
+  ]);
+  put("clock.mmd", [
+    "stateDiagram-v2",
+    "%% events declared",
+    "%% event tick | by the clock | The clock ticks.",
+    "state \"Clock\" as Clock {",
+    "  [*] --> Going",
+    "  state \"Going\" as Going",
+    "  Going --> Going : tick",
+    "}",
+  ]);
+  const both = path.join(dir, "both.mmd");
+  put("both.mmd", [
+    "stateDiagram-v2",
+    "%% compose room: room.mmd",
+    "%% compose clock: clock.mmd",
+    "%% shared room: the bell rings = clock: tick",
+    "%% shared room: your Answer on the question is refused = clock: tick",
+    "%% outside room: by the school",
+  ]);
+  // Before the fix, a sending answer dropped the bell, so a ready child stayed in class.
+  const flat = cmd("flat", both).stdout;
+  assert.match(flat, /: tick\n    %% blocked while: unless Room\/Readiness is Ready\n/);
+});

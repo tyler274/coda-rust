@@ -131,7 +131,9 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
     local.sort((a, b) => lookup(b.from).depth - lookup(a.from).depth);
     // Within a region the deepest source wins for an equally labeled step while it is
     // enabled. A source inside a parallel part wins only while that part is in it, and a
-    // guarded step only while its guard holds, so shallower steps get the negation.
+    // guarded step only while its guard holds, so shallower steps get the negation. A
+    // composed step drawn from another event keeps that event's needs, which its
+    // neighbours on the label don't share, so it wins only while they hold too.
     const handled = new Set(), negated = new Map(), unless = new Map();
     let pending = [], pendingNegated = [], pendingUnless = [];
     let depth = null;
@@ -167,6 +169,7 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             label: t.label,
             ...(t.when ? { when: t.when } : {}),
             ...(t.needsIds ? { needsIds: t.needsIds } : {}),
+            ...(t.ownerIds ? { ownerIds: t.ownerIds } : {}),
             ...(within.length ? { within } : {}),
             ...(blockers ? { unless: blockers } : {}),
             ...(t.refuseIds ? { refuseIds: t.refuseIds } : {}),
@@ -174,7 +177,9 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             ...(t.optional ? { optional: true } : {}),
             ...(t.intent ? { intent: t.intent } : {}),
           });
-        if (t.label && t.when) pendingUnless.push([key, { within: source, when: t.when }]);
+        const own = t.shared ? { needsIds: t.needsIds, ownerIds: t.ownerIds } : {};
+        if (t.label && (t.when || own.needsIds || own.ownerIds || t.refuseIds))
+          pendingUnless.push([key, { within: source, when: t.when, ...own, refuseIds: t.refuseIds }]);
         else if (t.label && source) pendingNegated.push([key, { ...source, not: true }]);
         else if (t.label) pending.push(key);
       }
@@ -277,8 +282,22 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
         t.needs = needs(t.needsIds, t.label);
         delete t.needsIds;
       }
-      // A shallower step yields to each deeper one while that one's guard (and part) holds.
-      if (t.unless) t.unless = t.unless.map((c) => [...(c.within ? [c.within] : []), guard(c.when, name)]);
+      // A composed chart's step on another chart's event also waits for that event's own needs.
+      if (t.ownerIds) {
+        t.within = [...(t.within ?? []), { ...needs(t.ownerIds, t.label), owner: true }];
+        delete t.ownerIds;
+      }
+      // A shallower step yields to each deeper one exactly while that one is enabled: its part,
+      // guard and needs hold, and a refusal's command needs fail somewhere (one blocker per region).
+      if (t.unless) t.unless = t.unless.flatMap((c) => {
+        const all = [...(c.within ? [c.within] : []),
+          ...(c.when ? [guard(c.when, name)] : []),
+          ...(c.needsIds ? [needs(c.needsIds, t.label)] : []),
+          ...(c.ownerIds ? [{ ...needs(c.ownerIds, t.label), owner: true }] : [])];
+        if (!c.refuseIds) return [all];
+        return Object.entries(needs(c.refuseIds, t.label).states)
+          .map(([region, states]) => [...all, { not: true, states: { [region]: states } }]);
+      });
       // A command is refused exactly while its needs fail.
       if (t.refuseIds) {
         t.unless = [...(t.unless ?? []), [needs(t.refuseIds, t.label)]];

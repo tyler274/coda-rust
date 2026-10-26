@@ -75,12 +75,12 @@ Linear, then the settled docs, then mockups.
     where they were, and running work is unaffected.
 
 Applied with these, from sources: a calendar lost mid-session keeps the last good
-day (PX-147); deleting the patient's account while invited cancels the invitation
-(ENG-70); a match decision or its Undo wakes the review (PM-331); physician chat
+day (PX-147); deleting the patient's account while invited cancels the invitation;
+a match decision or its Undo wakes the review (PM-331); physician chat
 can wake another initial-understanding attempt (CT-1196).
 
 Also 2026-10-23: any signed-in physician can match a patient message; the
-patient's connection means sharing, with no pause (ENG-70); a stopped follow-up is
+patient's connection means sharing, with no pause; a stopped follow-up is
 held until Resume (supersedes CT:98's "Pause is removed entirely").
 
 ## Node-and-edge audit decisions (2026-10-23)
@@ -114,7 +114,7 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
 - **Send beside Copy.** The reply card offers Send, which has Coda send exactly
   the approved words, shown as sent by Coda for the physician. This is the ideal
   state; direct sending is not in the MVP, where the physician copies the reply
-  and sends it in Gmail or Spruce (Dev, 2026-10-24; ENG-8).
+  and sends it in Gmail or Spruce (Dev, 2026-10-24).
 - **Work runs side by side.** There is no per-patient work slot; only real
   dependencies order work, such as later work building on the initial
   understanding.
@@ -134,15 +134,35 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
     one is sent nothing. Opening a link that no longer grants access to this
     practice shows "No access to this practice".
   - After the session expires, the prompt emails a link to the same address.
-    Opening it resumes both the covered page and the link's own page exactly
-    where the physician was. If Coda was closed meanwhile, reopening shows the
-    sign-in page and signing in opens Today.
+    Opening it resumes the covered page exactly where the physician was; the
+    link's own tab opens Today, since the email carries no place (below). If
+    Coda was closed meanwhile, reopening shows the sign-in page and signing in
+    opens Today.
   - While signed in, the physician's own link changes nothing; another
     physician's link ends this session and opens Today for them, with drafts and
     seen state kept per physician (N7).
+  - **The sign-in email carries no patient** (Dev, "keep it simple"). A Coda
+    link opened while signed out is held by the tab that opened it. Signing in
+    in any tab of the browser signs in its signed-out tabs, as sign-out reaches
+    every tab, so the holding tab lands on its patient; the emailed link's own
+    tab opens Today.
 - **Records refresh overdue is left out.** A scheduled pull that didn't happen,
   while the source is up, is runtime scheduling; keeping records current is on
   the infrastructure-gaps list, and a source that is actually down is decision 9.
+
+## 2026-10-25
+
+- **Connected to Duet through shared events.** The practice connection meets
+  Duet's in [connected-care](../connected-care/connection.mmd): each graph owns
+  its side, and rules there hold both sides to one status (ENG-39, ENG-70).
+- **Any open invitation can be accepted** (Dev, 2026-10-25). A patient who taps
+  Share on the invitation they hold connects, even while the practice resends it
+  or a resend couldn't be delivered; both sides show Connected.
+- **Joining shares what the patient already has** (Dev, 2026-10-25). The join
+  is news for the patient: their connected records arrive with it, so Coda's
+  work is owed at once, on a first join and on joining again after the
+  connection ended. The patient's For my doctor arrives only when they send it,
+  like a message from them (Dev, 2026-10-26).
 
 ## Audit findings the graph cites
 
@@ -153,7 +173,7 @@ from the sources:
 | --- | --- | --- |
 | N1 | Every work kind runs on any authorized source, Duet included. | CT:1203-1205 |
 | N2 | From a correction onward, items built on the moved message are withheld until the old patient's re-review revises, re-authors, ends or closes each. | PM:640-711; Dev 2026-10-03 |
-| N3 | Typed input is never lost, including when access is lost or the session ends. | ENG-19 |
+| N3 | Typed input is never lost, including when access is lost or the session ends. | Linear product requirement |
 | N5, N9 | Dictation stores no audio and has no audio retry; expiry cancels a recording and keeps the text. | px.md:349-350 |
 | N7 | A different physician starts at their own Today; drafts and seen state are per physician. | px.md |
 | N8 | Resume re-reads from an authorized source pull. | px.md:130 |

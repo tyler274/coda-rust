@@ -47,6 +47,11 @@ impl PostgresAuthStore {
         Ok(Self { db })
     }
 
+    /// The runtime pool, for the authority change listener.
+    pub fn pool(&self) -> &sea_orm::sqlx::PgPool {
+        self.db.get_postgres_connection_pool()
+    }
+
     /// Checks all owned tables without installing or updating a migration ledger.
     pub async fn check_schema(&self) -> Result<(), DbErr> {
         Accounts::find().one(&self.db).await?;

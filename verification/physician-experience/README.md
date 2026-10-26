@@ -7,8 +7,9 @@ The physician web app's behavior, written as one statechart.
 | [physician.mmd](physician.mmd) | The spec: the ideal behavior of the full product for every user. It covers what people see and how things act and work for them. |
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the audit findings the graph cites. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph leaves to the runtime, and what the runtime must still guarantee. |
+| [coverage.md](coverage.md) | What the Rust app shows today for each graph state: built, partial, missing or not shown, and whether the server data exists. `statechart.mjs coverage` checks it against the graph. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
-| [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, and its Page region is what one browser tab shows. It has no safety rules. |
+| [sign-in.mmd](sign-in.mmd) | Signing in with an email link, in detail: its Session region details the graph's session, its Page region is what one browser tab shows, and its Patient link region is the Coda link that tab holds. It has no safety rules. |
 | [sign-in.against.json](sign-in.against.json) | The map that connects sign-in.mmd to the graph, in the graph's words. |
 | [evidence/](evidence/) | Screenshots from exercising the running app, such as the staging email sign-in on 2026-10-24. |
 
@@ -16,8 +17,8 @@ The physician web app's behavior, written as one statechart.
 
 The graph owns sign-in behavior. sign-in.mmd details it, and one map,
 sign-in.against.json, labels sign-in.mmd's session states and steps in the
-graph's words. The page states map to nothing, because the graph has no browser
-tabs. Check the connection from the repository root:
+graph's words. The page and patient-link states map to nothing, because the
+graph has no browser tabs. Check the connection from the repository root:
 
 ```bash
 node .agents/skills/coda-statechart/scripts/statechart.mjs against verification/physician-experience/sign-in.mmd verification/physician-experience/physician.mmd --map verification/physician-experience/sign-in.against.json
@@ -29,29 +30,18 @@ It must report that sign-in.mmd follows the graph in both directions:
 - every graph step from a session state sign-in.mmd reaches is shown, unless the
   map's `omits` says why.
 
-The omits are the open list. Three are graph behavior that sign-in doesn't do
-yet (Dev 2026-10-24, decisions.md):
-
-- the expired prompt that emails a link and resumes in place;
-- the "No access to this practice" page;
-- keeping a Coda link's patient or item through sign-in.
-
-When one is built, add it to sign-in.mmd and remove its omit. A change to how
-signing in behaves goes in the graph first, and sign-in.mmd and the map follow.
+The map's `omits` names graph behavior sign-in.mmd leaves out; it is empty.
+What the app builds for each state is in coverage.md. A change to how signing in
+behaves goes in the graph first, and sign-in.mmd and the map follow.
 
 ## What the graph is
 
 The graph is the spec. It is written from Dev's intent and the settled sources,
 never from existing code. Verification models derive from it.
 
-It sets hard limits only on four things. Each limit names the line it protects,
-and everything Coda judges is a "may" (decisions.md, Charter):
-
-- access;
-- communication standards: Coda never sends on its own, and only the exact words
-  a physician approved go out;
-- data and consent;
-- owner consistency: one owner per fact.
+Its hard limits are the four in decisions.md's Charter: access, communication
+standards, data and consent, and owner consistency. Each limit names the line it
+protects, and everything Coda judges is a "may".
 
 It describes the ideal state. Runtime capacity, retries, timeouts, interruptions
 and sync are left out and listed in infrastructure-gaps.md. Failures from the

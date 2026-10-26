@@ -5,6 +5,10 @@ implementation, operations and proof. Start with the [canonical map](book/src/re
 Dev's latest explicit decisions take precedence; pinned submodules are historical
 reference, not a competing specification.
 
+Keep individual Linear ticket IDs, links and status mappings out of repository
+documentation. Linear owns that tracking; docs use source and document links to
+explain responsibilities, implemented behavior and operating procedures.
+
 ## Where work goes
 
 | Work | Contract |
@@ -12,7 +16,7 @@ reference, not a competing specification.
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
 | Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; no production DNS or Vercel cutover |
 | Physician product, clinical runtime, and the clinical skill catalog | [Operating invariants](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
-| Clinical skill markdown | [skills](skills), loaded once by `crates/harness` through `crates/agent-skills` |
+| Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; no product runtime loads it yet |
 | Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
 | Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
@@ -28,7 +32,7 @@ because it appears in an older contract or generated wire schema.
 
 `eval/` inside coda-agents is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
-Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, `gmail`, and `harness`. `gmail` sends plain-text or HTML messages through the Gmail API or Workspace SMTP relay and does not know either product. `harness` is product-neutral execution mechanics ([ENG-159](https://linear.app/coda-health/issue/ENG-159)): it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
+Duet and the physician product do not share clinical types, accounts, servers, or durable application state. Shared crates are `ui`, `http`, `gmail`, and `harness`. `gmail` sends plain-text or HTML messages through the Gmail API or Workspace SMTP relay and does not know either product. `harness` is product-neutral execution mechanics: it must not depend on either product or keep a second run ledger, and Duet must not import `local-product`. Each product keeps instructions, tool authority, clinical state, effects, and recovery.
 
 Duet schema changes go in `crates/duet-api/migrations` and run through `duet-migrate` (`DUET_MIGRATION_DATABASE_URL`, `DUET_RUNTIME_ROLE`), not on API startup. Do not replay the coda-app ledger. Additive wire types go in `crates/duet-api/openapi/additions.json`; regenerate with `cargo run -p workspace-tools -- generate-duet-wire` and do not edit generated DTOs.
 
@@ -55,8 +59,7 @@ The live Node projection server moves into `physician-sample` route family by ro
   CRUD pattern. Keep migrations with `duet-migrate` and preserve the separate
   reference `schema_migrations` ledger. Do not import physician entities,
   combine product stores, or mass-convert persistence merely to comply with
-  this preference. [ENG-161](https://linear.app/coda-health/issue/ENG-161) owns
-  the account/privacy outcome.
+  this preference.
 - SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
   coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
   removes a query, update the formatter's required-file inventory and its tests
@@ -70,7 +73,7 @@ Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in on
 
 Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` installs the pinned, checksum-verified CLI for images and runners.
 
-`infra/gcp` is the monorepo copy of the physician OpenTofu roots (`foundation`, `staging`, `clinical-evidence`). Apply authority stays in the product repositories. This workspace does not init a backend or apply those roots. The exception is `infra/gcp/public-site`. This workspace owns its staging state (GCS prefix `public-site/staging`) and may init, plan and apply it for staging only, from a reviewed saved plan. Production is never planned or applied from here.
+`infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) lists each one and who applies it. This workspace owns two staging roots, `public-site` and `rust-environments`, and applies each only from a reviewed saved plan. The other roots are references whose apply authority stays in the product repositories. Production is never planned or applied from here.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

@@ -8,9 +8,9 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- | --- | --- |
 | `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Shared tokens and the tab bar for both Dioxus apps | [UI surface map](ui-surface-map.md) |
 | `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
-| `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | One plain-text message through the Gmail API. Products own the copy and the links | [GCP](gcp.md) |
-| `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder used by Duet discovery and physician retrieval | [Physician site](physician-site.md) |
-| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus loading `skills/` once and admitting `skill_view`. Products keep authority, effects, persistence, and recovery. | [Operating invariants](agent-contracts.md) |
+| `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | Plain-text or HTML messages through the Gmail API or the Workspace SMTP relay. Products own the copy and the links | [GCP](gcp.md) |
+| `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder binary, reached through `CODA_PATIENT_ENCODER_BIN` (flake.nix); no crate depends on it | [Physician site](physician-site.md) |
+| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | Product-neutral bounded provider and tool execution, plus reading `skills/` and admitting `skill_view`; no product runtime loads the catalog yet. Products keep authority, effects, persistence, and recovery. | [Operating invariants](agent-contracts.md) |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
 | `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services | [Observability](observability.md) |
 
@@ -21,7 +21,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | Standalone account entry, current tab roots and connection controls; remaining gaps are tracked in the UI map | [UI and design](ui-surface-map.md) |
 | `duet-api` | [`src/lib.rs`](/crates/duet-api/src/lib.rs), [`src/main.rs`](/crates/duet-api/src/main.rs) | Axum owner for identity, evidence, conversation, saved work, privacy and the existing connection adapter | [Backend architecture](backend-architecture.md), [Patient front door](front-door.md) |
 | `duet-client` | [`src/lib.rs`](/crates/duet-client/src/lib.rs) | Duet caller over the generated client, adding the app-build headers | [Backend architecture](backend-architecture.md) |
-| `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs) | Models and operations generated from <a href="/submodules/coda-app/docs/openapi%2Ejson">coda-app's <code>openapi.json</code></a> by `cargo run -p workspace-tools -- generate-duet-wire` ([`wire.rs`](/crates/workspace-tools/src/wire.rs)). Regenerate it; do not edit it by hand. | [Backend architecture](backend-architecture.md) |
+| `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs), <a href="/crates/duet-wire/README%2Emd">generated API index</a> | Models, operations and reference docs generated from the pinned coda-app OpenAPI plus Duet-owned additions. Regenerate with `cargo run -p workspace-tools -- generate-duet-wire`; do not edit outputs by hand. | [API generation](backend-architecture.md#api-and-clients) |
 | `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs) | On-device health samples from HealthKit and Health Connect | [Duet backend](backend-architecture.md) |
 | `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Duet backend](backend-architecture.md) |
 | `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [UI and design](ui-surface-map.md) |
@@ -35,10 +35,11 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `physician-app` | [`src/lib.rs`](/crates/physician-app/src/lib.rs), [`src/main.rs`](/crates/physician-app/src/main.rs) | The physician Dioxus shell: sidebar, Today, patient page, and reader | [Physician site](physician-site.md) |
 | `physician-wire` | [`src/lib.rs`](/crates/physician-wire/src/lib.rs) | The physician read types, following coda-agents' <a href="/submodules/coda-agents/src/server/apiTypes%2Ets"><code>apiTypes.ts</code></a> | [Physician site](physician-site.md) |
 | `physician-client` | [`src/lib.rs`](/crates/physician-client/src/lib.rs) | The caller for the Node `CodaServer` and the sample server | [Physician site](physician-site.md) |
-| `physician-sample` | [`src/lib.rs`](/crates/physician-sample/src/lib.rs), [`src/main.rs`](/crates/physician-sample/src/main.rs) | Serves the page and the recorded synthetic practice, plus auth and live chat routes | [Physician site](physician-site.md) |
+| `physician-sample` | [`src/lib.rs`](/crates/physician-sample/src/lib.rs), [`src/main.rs`](/crates/physician-sample/src/main.rs) | Serves the page and the recorded synthetic practice, plus auth and live chat routes; the `physician-migrate` binary runs the physician schema migrations | [Physician site](physician-site.md) |
 | `physician-auth` | [`src/lib.rs`](/crates/physician-auth/src/lib.rs), [`src/bin/physician-auth-migrate.rs`](/crates/physician-auth/src/bin/physician-auth-migrate.rs) | Physician identity, membership, panels, and sessions | [Physician site](physician-site.md#physician-sign-in-and-practice-access) |
 | `local-product` | [`src/lib.rs`](/crates/local-product/src/lib.rs) | Model execution in `live`, `record`, `replay`, and `api` modes | [Physician site](physician-site.md) |
 | `patient-work` | [`src/lib.rs`](/crates/patient-work/src/lib.rs) | The patient-work dispatcher's grouping window | [Physician site](physician-site.md) |
+
 ## Between the products
 
 | Crate | Entry | Owns | Chapter |
@@ -57,7 +58,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
 | `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart and retain the reference shipping clients | This page |
-| `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | The workspace commands that replaced `scripts/`: `generate-duet-wire`, `install-doppler`, `apply-migrations`, and the rest listed in its module doc | [Build, CI, and release](release.md) |
+| `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, and `apply-migrations`; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
 
 ## Platform bindings
