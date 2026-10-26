@@ -56,6 +56,8 @@ jobs:
           node-version: '22'
       - name: Test Doppler release and security watch
         run: node --test crates/workspace-tools/tests/doppler-watch.test.cjs
+      - name: Test PR review launcher without model calls
+        run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
       # Preinstalled SDKs are unused here and leave no room to archive target
       # beside itself (run 39309157954, ENOSPC during cache save). The build,
       # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
