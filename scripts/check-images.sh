@@ -8,12 +8,13 @@
 #     refuses to start without a token, servers refuse Cloud Run hosting
 #     (K_SERVICE) and jobs refuse missing database configuration.
 #  3. Start a disposable PostgreSQL (initdb in mktemp, loopback only), run
-#     both migration images twice, and start both servers with PORT set:
-#     /health must answer 200 and /readyz must stay 503.
+#     both migration images twice, and start the servers with PORT set:
+#     /health and /readyz must answer 200. physician-worker starts hosted
+#     on the image's own PHYSICIAN_AUTH.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-images=(physician-sample-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image)
+images=(physician-sample-image physician-worker-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image)
 nix build --no-link --print-out-paths "${images[@]/#/.#}" > image-paths
 mapfile -t archives < image-paths
 python3 scripts/check-images.py "${archives[@]}"
@@ -32,8 +33,12 @@ containers=()
 # `docker run --rm` can report a daemon cleanup race (exit 125, e.g. a busy
 # ZFS dataset) as the job's failure. Run attached, then report the
 # container's own exit code and remove it separately.
+#
+# expect_failure calls run in a command substitution, so containers+= does not
+# reach this shell there; $BASHPID keeps each subshell's name unique so a
+# removal the daemon has not finished cannot collide with the next run.
 run() {
-  local container="coda-image-smoke-$$-${#containers[@]}"
+  local container="coda-image-smoke-$$-$BASHPID-${#containers[@]}"
   containers+=("$container")
   docker run --name "$container" "$@" || true
   local code
@@ -61,7 +66,7 @@ for tag in "${tag_of[@]}"; do
   expect_failure "$tag doppler entrypoint" "you must provide a token" \
     run "${locked[@]}" --network none "$tag"
 done
-for name in coda-physician-sample coda-duet-api; do
+for name in coda-physician-sample coda-physician-worker coda-duet-api; do
   expect_failure "${tag_of[$name]} hosted start" "hosted activation is not qualified" \
     run "${locked[@]}" --network none -e K_SERVICE=qualification-smoke \
       --entrypoint "$(binary_of "${tag_of[$name]}")" "${tag_of[$name]}"
@@ -176,6 +181,20 @@ expect_status "http://127.0.0.1:$physician_port/health" 200
 expect_status "http://127.0.0.1:$physician_port/readyz" 200
 expect_status "http://127.0.0.1:$physician_port/" 200
 expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
+
+# The worker as staging runs it: hosted, with no PHYSICIAN_AUTH passed in, so
+# the image's own setting must satisfy hosted startup. The placeholder key is
+# never used because no push is sent; the audience and push account only
+# configure token verification.
+worker_port=$(free_port)
+serve coda-physician-worker "$worker_port" \
+  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
+  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
+  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
+  -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
+  -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com
+expect_status "http://127.0.0.1:$worker_port/health" 200
+expect_status "http://127.0.0.1:$worker_port/readyz" 200
 
 duet_port=$(free_port)
 publication_key=$(python3 -c 'import base64; print(base64.urlsafe_b64encode(b"0123456789abcdef0123456789abcdef").decode().rstrip("="))')
