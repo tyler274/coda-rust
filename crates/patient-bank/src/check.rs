@@ -12,7 +12,7 @@ use std::collections::{HashMap, HashSet};
 use jiff::ToSpan;
 
 use crate::catalog::Catalog;
-use crate::labs::{DIFFERENTIAL, derived};
+use crate::labs::DIFFERENTIAL;
 use crate::ledger::{
     Appointment, ConditionAction, Event, MedicationAction, OrderAction, Patient, Stamp, num,
 };
@@ -380,12 +380,7 @@ fn check_event<'a>(
                 errors.push(format!(
                     "{eid}: lab {test:?} is pending; it has no value until it comes back"
                 ));
-            } else if !lab.pending
-                && r.value.is_none()
-                && r.text.is_none()
-                // a panel's derived member is calculated from the panel when rendered
-                && !(derived(test) && members.is_some_and(|m| m.iter().any(|m| m == test)))
-            {
+            } else if !lab.pending && r.value.is_none() && r.text.is_none() {
                 errors.push(format!("{eid}: lab {test:?} needs value or text"));
             }
             if let (Some(members), Some(p)) = (members, panel)

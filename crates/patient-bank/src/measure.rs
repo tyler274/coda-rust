@@ -6,17 +6,21 @@
 //! the current level plus the variation a cuff, a scale or an analyzer gives, and a
 //! level the author never set is the patient's own normal. Every draw is seeded by
 //! the patient, event and test, so the same ledger always measures the same values.
-//! A value the author did write stays as written.
+//! A value the author did write stays as written. `draw` makes every number of a lab
+//! draw, so the measured ledger holds every number the chart shows.
 
 use std::collections::HashMap;
 
 use serde_json::Number;
 
 use crate::catalog::Catalog;
-use crate::labs::{derived, normal, rounded};
-use crate::ledger::{LabResult, Patient, State, Vital, VitalSet, Vitals, num};
+use crate::draw::{self, Draw, SOLVE, own_normal};
+use crate::labs::{normal, rounded};
+use crate::ledger::{Patient, State, Vital, VitalSet, Vitals, num};
 use crate::rng::Rng;
 use crate::seeds::{Seed, Sex};
+use crate::time;
+use crate::timeline::Timeline;
 
 /// The patient's current levels while walking the chart forward.
 struct Levels {
@@ -84,47 +88,6 @@ fn spread(v: Vital) -> (f64, usize) {
         Vital::WeightKg => (0.5, 1),
         Vital::HeightCm => (0.6, 1),
     }
-}
-
-/// A derived test's level, when an author sets it, moves the input it is
-/// calculated from, so the rendered derivation lands on that level: (derived
-/// test, input, the other inputs, the input's level from the derived level and
-/// the others' levels). The other inputs are pinned at their levels too, so the
-/// renderer derives from the same numbers.
-type Solve = fn(f64, &[f64]) -> f64;
-const SOLVE: &[(&str, &str, &[&str], Solve)] = &[
-    (
-        "Total Cholesterol",
-        "Low Density Lipoprotein",
-        &["High Density Lipoprotein", "Triglycerides"],
-        |tc, o| tc - o[0] - o[1] / 5.0,
-    ),
-    (
-        "Non-HDL Cholesterol",
-        "Low Density Lipoprotein",
-        &["Triglycerides"],
-        |n, o| n - o[0] / 5.0,
-    ),
-    (
-        "Transferrin Saturation",
-        "Iron",
-        &["Total Iron-Binding Capacity"],
-        |sat, o| sat * o[0] / 100.0,
-    ),
-    ("Hematocrit", "Hemoglobin", &[], |hct, _| hct * 0.334),
-    (
-        "Absolute Neutrophil Count",
-        "Neutrophils %",
-        &["White Blood Cells"],
-        |anc, o| anc / o[0] * 100.0,
-    ),
-];
-
-/// The patient's own normal for a test, the same every draw.
-fn own_normal(mrn: &str, test: &str, female: bool) -> Option<(f64, usize)> {
-    let ((lo, hi), dec) = normal(test, female)?;
-    let mut rng = Rng::from_text(&format!("normal:{mrn}:{test}"));
-    Some((rng.uniform(lo + (hi - lo) * 0.3, hi - (hi - lo) * 0.3), dec))
 }
 
 /// `p` with every measured value filled in, and what could not be measured.
@@ -208,64 +171,23 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
             }
             ev.vitals = Vitals::One(set);
         }
+        let collected: Vec<_> = ev.labs.iter().map(|l| Timeline::collected(ev, l)).collect();
         for (k, lab) in ev.labs.iter_mut().enumerate() {
             if lab.pending {
                 continue;
             }
-            // a member whose level the author set is measured even when not named
-            let members = lab.panel.as_ref().and_then(|p| catalog.panels.get(p));
-            for m in members.map(|e| &e.members).into_iter().flatten() {
-                if levels.labs.contains_key(m)
-                    && !derived(m)
-                    && !lab.results.iter().any(|r| &r.test == m)
-                {
-                    lab.results.push(LabResult {
-                        test: m.clone(),
-                        loinc: None,
-                        unit: None,
-                        value: None,
-                        text: None,
-                        resulted: None,
-                    });
-                }
-            }
-            // a derived member is left for the renderer to calculate
-            for r in lab
-                .results
-                .iter_mut()
-                .filter(|r| r.value.is_none() && r.text.is_none() && !derived(&r.test))
-            {
-                let range = normal(&r.test, female);
-                let level = (levels.labs.get(&r.test).copied())
-                    .or_else(|| own_normal(&p.mrn, &r.test, female));
-                let Some((level, given)) = level else {
-                    errors.push(format!(
-                        "{eid}: {:?} has no value and no level; set its level in `state`",
-                        r.test
-                    ));
-                    continue;
-                };
-                // a level strays a tenth of its range, but never more than 15% of
-                // itself (a ferritin of 5 stays near 5); an abnormal one strays at
-                // least 3% of itself
-                let (sd, dec) = match range {
-                    Some(((lo, hi), dec)) => {
-                        let sd = ((hi - lo) * 0.1).min(level.abs() * 0.15);
-                        let abnormal = !(lo..=hi).contains(&level);
-                        (
-                            if abnormal {
-                                sd.max(level.abs() * 0.03)
-                            } else {
-                                sd
-                            },
-                            dec,
-                        )
-                    }
-                    None => (level.abs() * 0.04, given),
-                };
-                let mut rng = Rng::from_text(&format!("measure:{eid}:{k}:{}", r.test));
-                r.value = Some(rounded(rng.gauss(level, sd).max(0.0), dec.max(given)));
-            }
+            let members = (lab.panel.as_ref())
+                .and_then(|p| catalog.panels.get(p))
+                .map_or(&[][..], |e| &e.members[..]);
+            let d = Draw {
+                mrn: &p.mrn,
+                eid: &eid,
+                k,
+                female,
+                age: time::age_on(p.birth_date.0, collected[k].date()),
+                levels: &levels.labs,
+            };
+            draw::fill(lab, members, &d, &mut errors);
         }
     }
     (out, errors)

@@ -6,9 +6,9 @@
 //! from the same code: `Timeline` says when each record happened and what was true
 //! at the moment, and a record exists only once its own time has passed.
 //!
-//! Code here never chooses a diagnosis, drug or result the ledger did not state.
-//! It fills unstated panel members and derives computed values (see `labs`), and
-//! every such value is listed in the render receipt.
+//! Code here never chooses a diagnosis, drug or result the ledger did not state:
+//! every lab value is already in the measured ledger (see `draw`). BMI and
+//! anything left uncoded are listed in the render receipt.
 
 use std::sync::LazyLock;
 
@@ -20,7 +20,7 @@ use sha2::{Digest, Sha256};
 
 use crate::catalog::{Catalog, Category, Entry, RXNORM};
 use crate::fhir::*;
-use crate::labs::{self, Baselines, LabContext, OBS_CAT, V2_0074};
+use crate::labs::{self, LabContext, OBS_CAT, V2_0074};
 use crate::ledger::{
     self, AllergyType, ConditionItem, Criticality, DocStatus, Event, Kind, MaritalStatus,
     MedicationAction, OrderAction, OrderCategory, Severity, Stamp, Terms, num,
@@ -191,7 +191,6 @@ pub fn friendly_drug(name: &str) -> String {
 /// What one render filled, derived, could not code, left pending or skipped.
 #[derive(Clone, Debug, Default, PartialEq, Serialize)]
 pub struct Receipt {
-    pub filled: Vec<String>,
     pub derived: Vec<String>,
     pub uncoded: Vec<String>,
     pub pending: Vec<String>,
@@ -504,7 +503,6 @@ impl Renderer<'_> {
             });
         }
 
-        let mut baselines = Baselines::default();
         let mut height: Option<f64> = None;
         let vital_cat =
             CodeableConcept::coding_only(Coding::new(OBS_CAT, "vital-signs", "Vital Signs"));
@@ -687,7 +685,7 @@ impl Renderer<'_> {
                 at,
             };
             for (i, lab) in ev.labs.iter().enumerate() {
-                let out = labs::render(&cx, ev, i, lab, &mut baselines, &mut receipt);
+                let out = labs::render(&cx, ev, i, lab, &mut receipt);
                 chart
                     .observations
                     .extend(out.observations.into_iter().map(|mut o| {

@@ -59,14 +59,16 @@ fn patient(events: serde_json::Value) -> Patient {
     .expect("patient")
 }
 
+/// A ledger rendered the way the bank renders it: measured first.
 fn render(p: &Patient, when: &str) -> Chart {
     let catalog = Catalog::load(&paths::catalog()).expect("catalog");
     let terms = Terms::default();
+    let (p, _) = measure::apply(&seed(), p, &catalog);
     Renderer {
         catalog: &catalog,
         terms: &terms,
     }
-    .render(&seed(), p, at(when))
+    .render(&seed(), &p, at(when))
     .0
 }
 
@@ -683,14 +685,20 @@ fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
                 .find(|r| r.test == t)
                 .map(|r| r.value.clone())
         };
-        // derived members are left for the renderer, which calculates them
-        assert_eq!(value(0, "Total Cholesterol"), Some(None));
-        assert_eq!(value(0, "Non-HDL Cholesterol"), Some(None));
-        // a set total cholesterol moves the measured members it is derived from
+        // the draw's calculated members agree with the values they come from
         let lipid = |t: &str| patient_bank::ledger::num(value(0, t).flatten().as_ref().expect(t));
         let total = lipid("Low Density Lipoprotein")
             + lipid("High Density Lipoprotein")
             + lipid("Triglycerides") / 5.0;
+        assert!(
+            (lipid("Total Cholesterol") - total).abs() <= 0.5,
+            "total {total}"
+        );
+        assert_eq!(
+            lipid("Non-HDL Cholesterol"),
+            lipid("Total Cholesterol") - lipid("High Density Lipoprotein")
+        );
+        // a set total cholesterol moves the members it is calculated from
         assert!((total - 240.0).abs() < 25.0, "total cholesterol {total}");
         // a set level reaches the panel member the author did not name
         let hgb =

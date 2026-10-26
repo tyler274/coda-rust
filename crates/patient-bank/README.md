@@ -62,12 +62,17 @@ under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
   results and booked visits, nothing stops, resolves or closes before it started,
   results come after their draw, and lab arithmetic is what an analyzer reports.
   It does not judge how a chart reads; the author's reread of `chart.txt` does.
+- **Numbers.** `measure` makes every number the chart shows, at `check`, and
+  writes it into the ledger. A contact's vitals and each draw's results read the
+  patient's level (set in `state`, or the patient's own normal) plus the scatter a
+  cuff or an analyzer gives. Unstated panel members are measured too, the open
+  differential shares what is left of 100%, and red-cell indices, eGFR (CKD-EPI
+  2021), anion gap, cholesterol totals and transferrin saturation are calculated
+  from the draw. A level set on a calculated test moves the inputs it comes from.
 - **The renderer.** Encounters, Conditions, MedicationRequests, Observations
   (lab panels with `hasMember`, BP with components), DiagnosticReports,
   Procedures, AllergyIntolerances, DocumentReferences, Immunizations and
-  ServiceRequests, with UTC timestamps and opaque ids. Unstated panel members get
-  per-patient normal values; eGFR (CKD-EPI 2021), CBC indices, the differential's
-  remainder and other derived values are calculated.
+  ServiceRequests, with UTC timestamps and opaque ids, from the ledger as it is.
 
 ## Reused
 
