@@ -24,6 +24,7 @@ keep the gap visible and update the responsible owner as the work lands.
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
 | Statecharts, design decisions and formal proof | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician-experience/README%2Emd">physician experience</a> |
+| Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 
 Keep ticket references, lists, status and acceptance tracking in Linear. This book

@@ -13,6 +13,7 @@
 - [Security boundaries](security-posture.md)
 - [Physician site](physician-site.md)
 - [Public site](public-site.md)
+- [Synthetic patients](patient-bank.md)
 
 # Operations and proof
 

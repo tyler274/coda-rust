@@ -1,11 +1,9 @@
 # Synthetic patient bank
 
-Fictional adult patients of one primary-care practice in western Massachusetts,
-each a longitudinal chart in FHIR R4 NDJSON in the Coda Agents Roger fixture's
-format. Each patient is made from one adult patient of
-[synthetic_hospital](https://github.com/sparkcpark/synthetic_hospital) (MIT, fully
-synthetic), placed in the practice. Every chart ends at the bank's today, 2026-08-27T12:00 Eastern. Nothing
-here is real patient data, and nothing is physician reviewed.
+The tool that writes, checks and builds the synthetic patient bank. Where the
+patients come from and what a chart holds is in
+[Synthetic patients](../../book/src/patient-bank.md); this file is how the tool
+works.
 
 ## Pipeline
 
@@ -77,11 +75,3 @@ the terminology cache, the bank and the schema live under the ignored
   (lab panels with `hasMember`, BP with components), DiagnosticReports,
   Procedures, AllergyIntolerances, DocumentReferences, Immunizations and
   ServiceRequests, with UTC timestamps and opaque ids, from the ledger as it is.
-
-## Reused
-
-- **Format:** the Roger fixture in coda-agents `docs/local-product-fixtures`: its
-  families, MRN system, note header, code systems and CPT displays.
-- **Lab labels and ranges:** coda-gym's `lab_reference_ranges.xlsx`
-  (`data/gym-lab-ranges.json`).
-- **Validation:** the official HL7 R4 4.0.1 JSON schema.
