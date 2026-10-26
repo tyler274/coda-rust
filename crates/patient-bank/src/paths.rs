@@ -52,6 +52,11 @@ pub fn terminology_cache() -> PathBuf {
     root().join("terminology-cache.json")
 }
 
+/// Fictional names and towns the import draws from, by origin, sex and birth year.
+pub fn name_pool() -> PathBuf {
+    data_dir().join("name-pool.json")
+}
+
 /// coda-gym's lab labels and reference ranges.
 pub fn gym_lab_ranges() -> PathBuf {
     data_dir().join("gym-lab-ranges.json")
