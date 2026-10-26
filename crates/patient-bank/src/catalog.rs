@@ -295,6 +295,34 @@ impl Lookup {
         self.search("loinc_items", &q, code)
     }
 
+    /// Real codes near a rejected one, as "code display", so the author can pick:
+    /// ICD-10-CM codes under the code's prefix, LOINC codes matching the label.
+    /// Any lookup failure reads as no candidates.
+    pub fn near(&mut self, loinc: bool, terms: &str) -> Vec<String> {
+        let (api, q) = if loinc {
+            let df = ("df", "LOINC_NUM,LONG_COMMON_NAME");
+            ("loinc_items", [("terms", terms), df, ("maxList", "5")])
+        } else {
+            (
+                "icd10cm",
+                [("sf", "code"), ("terms", terms), ("maxList", "5")],
+            )
+        };
+        let url = format!(
+            "https://clinicaltables.nlm.nih.gov/api/{api}/v3/search?{}",
+            urlencode(&q)
+        );
+        let Ok(found) = self.get(&url, "application/json") else {
+            return Vec::new();
+        };
+        found[3]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .filter_map(|row| Some(format!("{} {}", row[0].as_str()?, row[1].as_str()?)))
+            .collect()
+    }
+
     /// Any lookup failure, offline misses included, reads as "not found".
     pub fn snomed(&mut self, code: &str) -> Option<String> {
         self.tx(SNOMED, code)

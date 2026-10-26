@@ -174,6 +174,21 @@ pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode
             }));
         }
     }
+    // approximateTerm can miss an exact clinical drug; try the ingredient's own list
+    for drug in look.rxnorm_drugs(&first)? {
+        let (Some(rxcui), Some(name)) = (drug["rxcui"].as_str(), drug["name"].as_str()) else {
+            continue;
+        };
+        if equivalent(text, name) {
+            return Ok(Some(VerifiedCode {
+                code: rxcui.into(),
+                display: name.into(),
+                ingredient: Some(first),
+                unit: None,
+                receipt: "NLM RxNav drugs".into(),
+            }));
+        }
+    }
     Ok(None)
 }
 
@@ -207,7 +222,10 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                         };
                         terms.conditions.insert(key, v);
                     }
-                    Ok(None) => terms.rejected.push(format!("condition {key} not found")),
+                    Ok(None) => terms.rejected.push(format!(
+                        "condition {key} not found{}",
+                        closest(look.near(false, &code))
+                    )),
                     Err(e) => terms
                         .rejected
                         .push(format!("condition {key} lookup failed: {e}")),
@@ -279,9 +297,10 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                 };
                 map.insert(label.to_string(), v);
             }
-            Ok(None) => terms
-                .rejected
-                .push(format!("{kind} {label:?} LOINC {code} not found")),
+            Ok(None) => terms.rejected.push(format!(
+                "{kind} {label:?} LOINC {code} not found{}",
+                closest(look.near(true, label))
+            )),
             Err(e) => terms
                 .rejected
                 .push(format!("{kind} {label:?} LOINC lookup failed: {e}")),
@@ -289,6 +308,14 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
     }
     look.save()?;
     Ok(terms)
+}
+
+fn closest(near: Vec<String>) -> String {
+    if near.is_empty() {
+        String::new()
+    } else {
+        format!("; closest real codes: {}", near.join("; "))
+    }
 }
 
 #[cfg(test)]
