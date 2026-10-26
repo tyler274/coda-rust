@@ -9,14 +9,13 @@ mod shell;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use dioxus::prelude::*;
 use icons::{Icon, IconName};
 use physician_client::PhysicianClient;
 use physician_wire::{
-    PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, SignInResponse,
-    SimulationStatus, WhoamiResponse, WorkspaceReply,
+    ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
+    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkspaceReply,
 };
 
 use panels::Panel;
@@ -699,6 +698,7 @@ fn PhysicianShell(
     let reply_slot = use_command_slot();
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
+    let chat_resume_slot = use_command_slot();
     let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
@@ -997,13 +997,7 @@ fn PhysicianShell(
                 (Some(workspace_id), Some(chat_id)) => client
                     .chat_snapshot(workspace_id, chat_id)
                     .await
-                    .map(|page| {
-                        page.snapshot
-                            .conversation
-                            .iter()
-                            .filter_map(|turn| turn.body().map(str::to_owned))
-                            .collect::<Vec<_>>()
-                    })
+                    .map(|page| conversation_lines(&page.snapshot))
                     .map_err(|_| ()),
                 _ => Ok(Vec::new()),
             };
@@ -1520,6 +1514,17 @@ fn PhysicianShell(
                             on_draft: move |value: String| draft.set(value),
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
+                            conversation_resume_busy: chat_resume_slot.sending(),
+                            conversation_resume_notice: chat_resume_slot.notice(client),
+                            on_conversation_resume: move |target: WorkResumeTarget| {
+                                if let Some(command) =
+                                    chat_resume_command(selected(), open_chat(), &target)
+                                {
+                                    chat_resume_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_save: move |_| {
                                 let Some(id) = selected() else { return };
@@ -2626,8 +2631,11 @@ fn PatientSurface(
     on_send: EventHandler,
     on_dictate: EventHandler,
     on_editing: EventHandler<bool>,
-    conversation: ReadView<Vec<String>>,
+    conversation: ReadView<Vec<ConversationLine>>,
     on_conversation_retry: EventHandler,
+    conversation_resume_busy: bool,
+    conversation_resume_notice: Element,
+    on_conversation_resume: EventHandler<WorkResumeTarget>,
     on_open_chat: EventHandler<String>,
     conversation_open: bool,
     past_work: bool,
@@ -3096,9 +3104,23 @@ fn PatientSurface(
                         if conversation_open && conversation.content().is_some_and(Vec::is_empty) {
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
-                        for message in conversation.content().cloned().unwrap_or_default() {
-                            FormattedMessage { text: message }
+                        for line in conversation.content().cloned().unwrap_or_default() {
+                            if let Some(target) = line.resume {
+                                div { class: "conversation-mechanical", role: "status",
+                                    p { "{line.text}" }
+                                    button {
+                                        class: "control-secondary",
+                                        r#type: "button",
+                                        disabled: conversation_resume_busy,
+                                        onclick: move |_| on_conversation_resume.call(target.clone()),
+                                        "{TRY_AGAIN}"
+                                    }
+                                }
+                            } else {
+                                FormattedMessage { text: line.text }
+                            }
                         }
+                        {conversation_resume_notice}
                         textarea {
                             class: "composer",
                             placeholder: "Write a message",
@@ -3679,6 +3701,51 @@ fn message_command(
     ))
 }
 
+/// One line of the open conversation. A turn Coda couldn't finish carries the
+/// work and run its Try again resumes.
+#[derive(Debug, Clone, PartialEq)]
+struct ConversationLine {
+    text: String,
+    resume: Option<WorkResumeTarget>,
+}
+
+/// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
+/// resume target; turns with no text are skipped.
+fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
+    snapshot
+        .conversation
+        .iter()
+        .filter_map(|turn| {
+            let text = turn.body()?.to_owned();
+            let resume = turn
+                .resume_target
+                .clone()
+                .filter(|_| turn.kind.as_deref() == Some("mechanical"));
+            Some(ConversationLine { text, resume })
+        })
+        .collect()
+}
+
+/// Try again on a chat turn Coda couldn't finish. Like the Today row, its key
+/// names the run, so pressing again for the same run is the same request.
+fn chat_resume_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    target: &WorkResumeTarget,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::keyed(
+        "work.resume",
+        format!("resume-{}-{}", target.work_item_id, target.expected_run_id),
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "work_item_id": target.work_item_id,
+            "expected_run_id": target.expected_run_id,
+        }),
+    ))
+}
+
 /// Try again on one piece of work. Its key names the run it resumes, so
 /// pressing again for the same run is the same request.
 fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
@@ -3701,9 +3768,103 @@ fn resume_command(line: &TodayLine, time_zone: &str) -> Option<Command> {
 fn idempotency_key() -> String {
     static NEXT: AtomicU64 = AtomicU64::new(1);
     let n = NEXT.fetch_add(1, Ordering::Relaxed);
-    let millis = SystemTime::now()
+    format!("submit-{}-{n}", now_millis())
+}
+
+/// Milliseconds since the epoch. `std::time::SystemTime::now` panics on
+/// wasm32-unknown-unknown, so the browser build asks the page's clock.
+#[cfg(target_arch = "wasm32")]
+fn now_millis() -> u128 {
+    js_sys::Date::now() as u128
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn now_millis() -> u128 {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|duration| duration.as_millis())
-        .unwrap_or(0);
-    format!("submit-{millis}-{n}")
+        .unwrap_or(0)
+}
+
+#[cfg(test)]
+mod conversation_line_tests {
+    use super::{ConversationLine, chat_resume_command, conversation_lines};
+    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+
+    fn target() -> WorkResumeTarget {
+        WorkResumeTarget {
+            work_item_id: "work-1".into(),
+            expected_run_id: "run-1".into(),
+        }
+    }
+
+    #[test]
+    fn a_couldnt_finish_line_keeps_the_run_its_try_again_resumes() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "physician", "text": "Hello" },
+                    { "kind": "model", "text": "",
+                      "resume_target": { "work_item_id": "x", "expected_run_id": "y" } },
+                    { "kind": "mechanical",
+                      "text": "Coda couldn’t finish this response. Your message is saved.",
+                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                ],
+                "runs": [{ "run_id": "run-1", "state": "failed" }],
+            }
+        }))
+        .unwrap();
+        assert_eq!(
+            conversation_lines(&page.snapshot),
+            vec![
+                ConversationLine {
+                    text: "Hello".into(),
+                    resume: None,
+                },
+                ConversationLine {
+                    text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    resume: Some(target()),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn only_a_mechanical_line_offers_try_again() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "model", "text": "Done",
+                  "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                { "text": "Older server line" },
+            ] }
+        }))
+        .unwrap();
+        assert!(
+            conversation_lines(&page.snapshot)
+                .iter()
+                .all(|line| line.resume.is_none())
+        );
+    }
+
+    #[test]
+    fn try_again_is_one_keyed_resume_of_the_named_run() {
+        let command =
+            chat_resume_command(Some("pw-1".into()), Some("chat-1".into()), &target()).unwrap();
+        assert_eq!(
+            command.0,
+            serde_json::json!({
+                "type": "work.resume",
+                "idempotency_key": "resume-work-1-run-1",
+                "payload": {
+                    "patient_workspace_id": "pw-1",
+                    "chat_id": "chat-1",
+                    "work_item_id": "work-1",
+                    "expected_run_id": "run-1",
+                },
+            })
+        );
+        assert!(chat_resume_command(None, Some("chat-1".into()), &target()).is_none());
+        assert!(chat_resume_command(Some("pw-1".into()), None, &target()).is_none());
+    }
 }

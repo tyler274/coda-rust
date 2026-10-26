@@ -105,7 +105,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     };
     let claim = match worker.store.claim_delivery(&delivery, LEASE_SECONDS).await {
         Ok(Some(claim)) => claim,
-        Ok(None) => return absent_claim(&worker.store, &delivery).await,
+        Ok(None) => return absent_claim(&worker, &delivery).await,
         Err(_) => {
             tracing::warn!("physician chat claim failed");
             return StatusCode::INTERNAL_SERVER_ERROR;
@@ -147,6 +147,8 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
             if worker.store.retry_delivery(&host.claim).await.is_err() {
                 tracing::warn!("physician chat delivery was not returned to pending");
             }
+            // Counted like a model failure, so the fifth one ends the turn.
+            announce(&worker, workspace_id).await;
             return StatusCode::INTERNAL_SERVER_ERROR;
         }
     };
@@ -159,15 +161,8 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
             let output = message_text(&worker.store, &host.claim.scope, "assistant").await;
             genai::record_output(&span, &output);
             drop(output);
-            if worker
-                .bus
-                .publish(Event::WorkspaceChanged { workspace_id })
-                .await
-                .is_err()
-            {
-                // The turn is committed. Redelivery sees it settled and acks.
-                tracing::warn!("physician workspace invalidation not published");
-            }
+            // The turn is committed. Redelivery sees it settled and acks.
+            announce(&worker, workspace_id).await;
             StatusCode::NO_CONTENT
         }
         Err(_) => {
@@ -176,15 +171,38 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
             if worker.store.retry_delivery(&host.claim).await.is_err() {
                 tracing::warn!("physician chat delivery was not returned to pending");
             }
+            announce(&worker, workspace_id).await;
             StatusCode::INTERNAL_SERVER_ERROR
         }
     }
 }
 
-async fn absent_claim(store: &Store, delivery: &Delivery) -> StatusCode {
-    match store.delivery_state(delivery).await {
-        Ok(state) => absent_status(state),
-        Err(_) => StatusCode::INTERNAL_SERVER_ERROR,
+async fn absent_claim(worker: &Worker, delivery: &Delivery) -> StatusCode {
+    let state = match worker.store.delivery_state(delivery).await {
+        Ok(state) => state,
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
+    };
+    if state == DeliveryState::Failed {
+        // This claim may itself have ended the turn: an exhausted lease is
+        // recorded as the last failure and leaves nothing to claim. Every
+        // redelivery of a failed turn repeats the notice; a refetch is cheap.
+        announce(worker, delivery.scope.workspace.clone()).await;
+    }
+    absent_status(state)
+}
+
+/// Tells every open page on this workspace to refetch. Sent after each
+/// committed reply and each failed attempt, so a page holding a running turn
+/// learns when it completed or ended as "couldn't finish". Lossy: a page that
+/// misses it still converges on its next refetch or resync.
+async fn announce(worker: &Worker, workspace_id: String) {
+    if worker
+        .bus
+        .publish(Event::WorkspaceChanged { workspace_id })
+        .await
+        .is_err()
+    {
+        tracing::warn!("physician workspace invalidation not published");
     }
 }
 
