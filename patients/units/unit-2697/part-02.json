@@ -1,0 +1,342 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002697",
+      "events": [
+        {
+          "id": "2022-01-18a",
+          "kind": "office_visit",
+          "start": "2022-01-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heartburn and regurgitation",
+          "measure": ["bp", "hr", "weight_kg"],
+          "state": {"weight_kg": 82.6},
+          "orders": [
+            {"id": "gi-referral-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "reflux symptoms with regurgitation"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-01-18T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Reflux", "author": "PCP", "date": "2022-01-18T16:30", "body": "S: Since late summer, burning high in the belly and sour fluid in the back of her throat after big meals, a few evenings a week. Belching more. Worst if she lies down on the couch soon after dinner, and at work when she bends to reshelve the bottom rows. Swallowing fine, no vomiting blood, no black stools. Weight down a few pounds, she says on purpose (smaller portions since the holidays). Tried an antacid tablet now and then.\n\nO: Vitals per flowsheet. Abdomen soft, minimally tender in the epigastrium, no mass.\n\nA/P: Reflux-type symptoms, about 5 months, with regurgitation and postural triggers. She asked to see GI rather than just start a pill; reasonable. Referral placed. In the meantime smaller evening meals, nothing for 3 hours before bed, wedge pillow."}
+          ]
+        },
+        {
+          "id": "2022-02-25a",
+          "kind": "specialist_visit",
+          "start": "2022-02-25T13:00",
+          "service": "Gastroenterology",
+          "reason": "reflux and regurgitation",
+          "conditions": [
+            {"label": "Hiatal hernia", "icd10": "K44.9", "action": "diagnosed", "onset": "2022-02-25"},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "diagnosed", "onset": "2021-08-15"}
+          ],
+          "medications": [
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth daily, 30 minutes before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GERD with hiatal hernia"}
+          ],
+          "state": {"weight_kg": 82.4},
+          "vitals": {"bp": [130, 78], "hr": 78, "temp_c": 37.0},
+          "orders": [
+            {"id": "gi-referral-2022", "action": "done", "date": "2022-02-25T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2022-03-01T10:15", "body": "OUTSIDE GASTROENTEROLOGY CONSULTATION\nDate of visit: 02/25/2022\nReferred by: primary care, for reflux symptoms\n\nDear colleague,\n\nI met Ms. Merrill, 56, today. For roughly half a year she has had on-and-off epigastric burning and an acid taste with regurgitation, mostly after a large meal. She describes more belching than usual and food seeming to rise back up if she reclines within an hour or so of eating. Her job as a librarian has her stooping to low shelves and that reliably brings it on. She has no trouble swallowing solids or liquids, has not vomited blood and has not lost weight unintentionally.\n\nHistory: hypertension, well controlled; obesity; knee osteoarthritis. No operations. Medications: hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, acetaminophen as needed. Allergies: none known. Never smoker, no alcohol. No family history of cancer.\n\nExam: BMI 31. Temp 37.0 C (98.6 F), BP 130/78, pulse 78. Abdomen with mild epigastric tenderness, no rebound or guarding, no masses. Heart and lungs normal.\n\nBarium swallow (performed earlier this week at our imaging suite): a portion of the gastric fundus together with the gastroesophageal junction lies above the diaphragm, with contrast filling a small saccular pouch in the lower chest. Esophageal motility otherwise normal; no stricture or mass. No reflux of contrast to the upper esophagus during the study.\n\nImpression: sliding hiatal hernia with typical gastroesophageal reflux symptoms; no alarm features.\n\nPlan:\n1. Omeprazole 20 mg once daily, 30 minutes before breakfast.\n2. Smaller meals, avoid eating within 3 hours of lying down, elevate the head of the bed, squat rather than bend at the waist when possible. Weight reduction will help.\n3. Endoscopy not needed now given the absence of alarm features; would reconsider if symptoms persist on therapy.\n4. Follow up with us as needed.\n\nThank you for this referral.\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-03-02a",
+          "kind": "portal_message",
+          "start": "2022-03-02T20:14",
+          "documents": [
+            {"type": "Patient Message", "title": "GI visit", "author": "patient", "date": "2022-03-02T20:14", "body": "Just so you know, the GI doctor said I have a small hiatal hernia and put me on omeprazole every morning. Only a few days in and the evenings are already quieter. Do you need anything from me?"},
+            {"type": "Patient Message", "title": "RE: GI visit", "author": "PCP", "date": "2022-03-03T08:20", "body": "Got their letter, thanks. Omeprazole is on your list now. Keep up the before-bed rules too. If you're still having breakthrough in a couple of months, tell me."}
+          ]
+        },
+        {
+          "id": "2022-04-20a",
+          "kind": "imaging",
+          "start": "2022-04-20T08:40",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-04-20T08:40", "text": "Screening tomosynthesis of both breasts, compared with 04/2021 and 03/2020. Scattered areas of fibroglandular density. No suspicious mass, calcification or distortion. Stable appearance.", "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2022-04-21T08:10", "body": "Breast imaging center report filed: negative, BI-RADS 1. Return in 12 months."}
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and reflux follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-24T12:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-05-24T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Follow-up", "author": "PCP", "date": "2022-05-24T12:15", "body": "Interval: GI saw her in February, small sliding hiatal hernia on barium study, started omeprazole 20 every morning. Reflux now rare, maybe once in two weeks after a heavy restaurant meal. Bed wedge helps. Knees unchanged, acetaminophen a few days a week. Pool once a week.\n\nBP per flowsheet, at goal. Weight a bit lower than last fall. Heart regular, lungs clear, no edema.\n\nA/P: HTN controlled on HCTZ/amlodipine - BMP for potassium. GERD with hiatal hernia - good response, continue omeprazole. OA - stable. Annual in October."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "pharmacy",
+          "start": "2022-08-09T10:05",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill - omeprazole", "author": "MA", "date": "2022-08-09T10:05", "body": "Pharmacy requested renewal of omeprazole 20 mg (original Rx from GI, 3 months). Patient using daily with good effect per May note. 90-day supply with 3 refills sent under PCP."}
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "annual_physical",
+          "start": "2022-10-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-25T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-25T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-10-25T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-10-25T08:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-25T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-25T08:46"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-10-25T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-10-25T09:55", "body": "56F annual. Reflux quiet on omeprazole. Knees a little worse this year - stairs at the library annex are the problem, and she has been taking acetaminophen nearly daily. Wonders whether she should see someone about them. No bleeding since menopause. Mood good.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN. NKDA.\n\nExam: vitals per flowsheet. Neck no nodes, thyroid normal. Cardiac RRR, no murmur. Lungs clear. Breast exam unremarkable. Abdomen soft, non-tender. Knees: bony enlargement both sides, crepitus, no warmth or effusion. No pedal edema.\n\nPlan:\n- HTN at goal, continue.\n- GERD/hiatal hernia controlled, continue PPI.\n- Knee OA - told her to give it the winter; if still limiting by January we'll get her to orthopedics.\n- Labs today. Flu + bivalent COVID booster given.\n- Mammogram April. Pap/HPV due next year. Colonoscopy 2028."}
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "knee pain worse",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
+          "orders": [
+            {"id": "ortho-referral-2023", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics & Sports Medicine", "reason": "bilateral knee osteoarthritis, worsening"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-17T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Knees", "author": "PCP", "date": "2023-01-17T09:45", "body": "Knees still giving her trouble, pain 6/10 by the end of a shift. Same pattern as before - mornings and after sitting through a long meeting, better once warmed up. No injury. Acetaminophen most days, helps some. Has kept up the pool. No swelling episodes.\n\nKnees: bony prominence, crepitus, no effusion, no warmth. BP per flowsheet, fine.\n\nA/P: Bilateral knee OA, progressing symptomatically despite acetaminophen and exercise. Referred to orthopedics/sports medicine for further options. Continue acetaminophen; avoid regular oral NSAIDs with her BP."}
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "specialist_visit",
+          "start": "2023-02-23T14:20",
+          "service": "Orthopedics & Sports Medicine",
+          "reason": "bilateral knee pain",
+          "medications": [
+            {"drug": "diclofenac sodium 0.01 MG/MG Topical Gel", "action": "start", "sig": "Apply 4 g to each affected knee up to four times daily as needed", "dose": {"value": 4, "unit": "g"}, "frequency": "QID PRN", "route": "Topical", "course": "chronic", "reason": "knee osteoarthritis"}
+          ],
+          "reports": [
+            {"study": "Knee X-ray", "performed": "2023-02-23T14:00", "text": "Weight-bearing AP, lateral and Merchant views of both knees, compared with 09/2021. Bilateral joint space narrowing with subchondral sclerosis and osteophyte formation at the joint margins. No fracture, loose body or effusion. Alignment maintained.", "conclusion": "Bilateral knee osteoarthritis."}
+          ],
+          "orders": [
+            {"id": "ortho-referral-2023", "action": "done", "date": "2023-02-23T14:20"},
+            {"id": "pt-referral-2023", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "bilateral knee osteoarthritis"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedics & Sports Medicine Consultation", "author": "orthopedics", "date": "2023-02-27T11:00", "body": "ORTHOPAEDICS & SPORTS MEDICINE - NEW CONSULT\nVisit date: 02/23/2023\nReason: bilateral knee pain, referred by her primary care physician\n\nHPI: 57-year-old librarian. Both knees have been getting gradually worse for about two years. They are at their worst in the morning and after long periods seated and ease with gentle activity. No trauma. Her PCP evaluated the knees in September 2021 with radiographs. She uses acetaminophen and does water exercise.\n\nPMH: hypertension, obesity, GERD with hiatal hernia. PSH: none. Meds: hydrochlorothiazide, amlodipine 5 mg, omeprazole, acetaminophen PRN. Allergies: NKDA. Social: never smoker, no alcohol.\n\nExam: knees without erythema or warmth. Bony enlargement at the joint margins bilaterally. Crepitus with flexion and extension. No effusion. Ligamentously stable. Neurovascularly intact distally.\n\nImaging: weight-bearing films today show joint space narrowing, subchondral sclerosis and osteophytes in both knees.\n\nAssessment: bilateral knee osteoarthritis.\n\nPlan:\n- Formal physical therapy for quadriceps and hip strengthening.\n- Diclofenac 1% gel to the knees up to four times a day as needed; topical route keeps systemic exposure low given her blood pressure.\n- Continue acetaminophen and weight management.\n- Injections can be considered later if needed.\n- Return as needed.\n\nOrthopaedics & Sports Medicine"}
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "outside_records",
+          "start": "2023-03-09T16:00",
+          "reason": "physical therapy evaluation",
+          "orders": [
+            {"id": "pt-referral-2023", "action": "done", "date": "2023-03-07T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Physical Therapy Initial Evaluation", "author": "physical therapy", "date": "2023-03-09T16:00", "body": "OUTPATIENT PHYSICAL THERAPY - INITIAL EVALUATION\nDate: 03/07/2023\nDx: bilateral knee OA\n\nSubjective: knee pain with prolonged sitting and stairs, morning stiffness. Goal: get through a full workday and climb the annex stairs without stopping.\nObjective: knee ROM 0-125 bilaterally, end-range discomfort. Quad strength 4/5 bilat, hip abductors 4-/5. Sit-to-stand x5 slowed. Gait mildly antalgic on stairs.\nAssessment: deficits in LE strength and endurance consistent with knee OA.\nPlan: 2x/week for 6 weeks, home exercise program issued (quad sets, straight leg raises, clamshells, step-ups), activity pacing.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "imaging",
+          "start": "2023-04-25T09:50",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-04-25T09:50", "text": "Bilateral screening tomosynthesis compared with prior studies through 04/2022. Breast tissue is scattered fibroglandular. No new mass, suspicious calcification or architectural distortion.", "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2023-04-26T08:00", "body": "Mammogram report received from the breast center. BI-RADS 1. Annual screening."}
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "annual_physical",
+          "start": "2023-06-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2023-06-06T08:35", "body": "No-show for 8:00 physical. Called, she had it on her calendar for next week and apologized. Rebooked 6/20."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "state": {"weight_kg": 80.4},
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-20T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-20T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-20T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-06-20T08:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-20T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-20T09:50", "body": "57F, physical (rescheduled from 6/6). Finished six weeks of PT in April and kept the home exercises; diclofenac gel before work, acetaminophen less often now. Reflux controlled. Down a few more pounds with the PT and walking. No vaginal bleeding. Sleeping fine.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, diclofenac 1% gel PRN, acetaminophen PRN. NKDA.\n\nExam: vitals per flowsheet, BP at goal. HEENT ok. Heart RRR. Lungs clear. Breasts no masses. Abdomen soft, nontender, no masses felt. Knees crepitus, no effusion. Skin fine.\n\nPlan: continue all. Labs today. Pap/HPV due this fall - she'd like it at a separate visit, will schedule. Mammogram April normal. Flu and updated COVID in the fall."}
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "portal_message",
+          "start": "2023-08-14T07:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Bleeding", "author": "patient", "date": "2023-08-14T07:12", "body": "This is a little embarrassing. For the past several weeks I've had bleeding like a period again - one stretch was heavy, then nothing for a few weeks, then it started again Saturday. I haven't had anything like this since 2017. Some crampy pressure low down too. Is this something you want to see me for?"},
+            {"type": "Patient Message", "title": "RE: Bleeding", "author": "PCP", "date": "2023-08-14T08:05", "body": "Not embarrassing at all, and yes - any bleeding after menopause needs to be looked at. Can you come Wednesday at 10? I'll get you to gynecology quickly after that."}
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "office_visit",
+          "start": "2023-08-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postmenopausal bleeding",
+          "conditions": [
+            {"label": "Postmenopausal bleeding", "action": "diagnosed", "onset": "2023-07-01"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-16T10:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "gyn-referral-2023", "action": "placed", "order": "Gynecology referral, urgent", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "postmenopausal bleeding"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-16T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Postmenopausal Bleeding", "author": "PCP", "date": "2023-08-16T11:05", "body": "S: Bleeding episodes since roughly early July: a heavy few days, then several weeks of nothing, then another bout starting last weekend. She thought at first her periods were coming back. Dull pelvic ache with it. LMP before this was 2017; no HRT ever. No fevers. No urinary symptoms. Weight steady.\n\nO: Vitals per flowsheet. Abdomen soft, mild lower abdominal tenderness, no mass I can feel through the abdominal wall. Deferred pelvic exam to gynecology, who can see her next week and will do ultrasound in the same visit.\n\nA/P: Postmenopausal bleeding. Needs endometrial evaluation and pelvic imaging. Urgent gyn referral placed, appointment 8/24. CBC today to check she isn't losing too much. Told her to call or text if the bleeding soaks more than a pad an hour or she feels faint."},
+            {"type": "Result Note", "title": "CBC result", "author": "PCP", "date": "2023-08-17T12:20", "body": "Hemoglobin normal, no anemia from the bleeding. Messaged patient."}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "specialist_visit",
+          "start": "2023-08-24T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postmenopausal bleeding",
+          "state": {"weight_kg": 79.7},
+          "vitals": {"bp": [135, 85]},
+          "labs": [
+            {"panel": null, "collected": "2023-08-24T10:30", "results": [
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 450},
+              {"test": "Follicle Stimulating Hormone", "value": 7.2},
+              {"test": "Luteinizing Hormone", "loinc": "10501-5", "unit": "mIU/mL", "value": 3.1}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2023-08-24T10:00", "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, normal in size. Left ovary replaced by a 5.0 cm mass with mixed solid and cystic components. Right ovary normal in size and appearance. No free fluid.", "conclusion": "5 cm solid and cystic left ovarian mass."}
+          ],
+          "orders": [
+            {"id": "gyn-referral-2023", "action": "done", "date": "2023-08-24T09:30"},
+            {"id": "gynonc-referral-2023", "action": "placed", "order": "Gynecologic oncology referral", "category": "referral", "to": "Gynecologic Oncology", "reason": "left ovarian mass with estrogen excess"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation", "author": "gynecology", "date": "2023-08-28T09:00", "body": "GYNECOLOGY CONSULTATION\nDate of service: 08/24/2023\nReferring: primary care, urgent, for postmenopausal bleeding\n\nMs. Merrill is a 57-year-old G0 who went through menopause in 2017 and has had several weeks of irregular bleeding: heavy episodes separated by weeks with none. She also notes pelvic discomfort. She denies significant weight loss, fevers or night sweats. Hypertension and osteoarthritis are her main medical problems; she has never had surgery and never used hormone therapy.\n\nMedications: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, topical diclofenac, acetaminophen. Allergies: NKDA. Family history: no gynecologic or other cancers.\n\nExam: BP 135/85. BMI 30. External genitalia and vagina normal; small amount of dark blood in the vault. Cervix normal. Bimanual: a mobile mass is palpable in the left adnexa. Uterus not enlarged.\n\nLabs today: estradiol 450 pg/mL (lab reference 12-233), FSH 7.2 mIU/mL (3.5-12.5), LH 3.1 mIU/mL (2.4-12.6). In a woman six years past menopause these are far from expected: estradiol strikingly high and the gonadotropins suppressed.\n\nTransvaginal ultrasound today: 5 cm left ovarian mass with both solid and cystic elements.\n\nImpression: postmenopausal bleeding with a complex left adnexal mass and biochemical estrogen excess, concerning for a hormonally active malignant ovarian neoplasm (sex cord-stromal type most likely).\n\nPlan: referred to gynecologic oncology for surgical management; appointment secured for 09/06. Discussed findings with patient, who understands.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "specialist_visit",
+          "start": "2023-09-06T13:30",
+          "service": "Gynecologic Oncology",
+          "reason": "left ovarian mass",
+          "orders": [
+            {"id": "gynonc-referral-2023", "action": "done", "date": "2023-09-06T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Consultation", "author": "gynecologic oncology", "date": "2023-09-08T15:20", "body": "GYNECOLOGIC ONCOLOGY - NEW PATIENT\nDate: 09/06/2023\n\n57-year-old postmenopausal woman, nulligravid, referred by gynecology for a 5 cm complex left ovarian mass found during evaluation of postmenopausal bleeding, with estradiol 450 and suppressed FSH/LH. Comorbidities: hypertension, obesity, GERD with hiatal hernia, knee osteoarthritis. No prior abdominal surgery. NKDA. Never smoker.\n\nExam: well-appearing. Abdomen obese, soft, nontender, no palpable mass or ascites. Pelvic: left adnexal fullness, mobile; right adnexa unremarkable.\n\nAssessment: hormonally active left ovarian neoplasm, presumed malignant.\n\nPlan: laparoscopic left salpingo-oophorectomy with peritoneal washings and staging biopsies, with frozen section, scheduled 09/19/2023. Risks, benefits and recovery discussed and consent obtained. Pre-op labs per our protocol.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "hospital_admission",
+          "start": "2023-09-19T06:30",
+          "end": "2023-09-20T11:00",
+          "service": "Gynecologic Oncology",
+          "reason": "laparoscopic left salpingo-oophorectomy",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary", "author": "gynecologic oncology", "date": "2023-09-21T09:40", "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted: 09/19/2023  Discharged: 09/20/2023\nService: Gynecologic Oncology\n\nProcedure 09/19/2023: laparoscopic left salpingo-oophorectomy, peritoneal washings, omental and peritoneal biopsies. Findings: 5 cm smooth, intact left ovarian mass; right ovary, fallopian tube and uterus grossly normal; no ascites; upper abdomen, diaphragm and bowel surfaces without visible disease. Frozen section: sex cord-stromal tumor. Uterus and right adnexa left in place. EBL 50 mL. No complications.\n\nCourse: overnight observation, pain controlled with oral analgesia, tolerating diet and ambulating, voiding. Discharged home POD 1.\n\nDischarge medications: home medications unchanged (hydrochlorothiazide 25 mg daily, amlodipine 5 mg daily, omeprazole 20 mg daily, acetaminophen as needed). Allergies: NKDA.\n\nFollow-up: final pathology to be reviewed by phone; post-op visit in gynecologic oncology in 2 weeks. Lifting limit 10 lb for 2 weeks."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T14:10",
+          "reason": "surgical pathology",
+          "conditions": [
+            {"label": "Malignant neoplasm of ovary", "action": "diagnosed", "onset": "2023-08-24", "note": "adult granulosa cell tumor, left ovary, FIGO IA"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-09-19T09:15", "issued": "2023-09-25T16:00", "text": "A. Left ovary and fallopian tube: adult granulosa cell tumor, 5.0 cm, confined to the ovary; capsule intact, no surface involvement. Fallopian tube without tumor. B. Peritoneal washings: negative for malignant cells. C. Omental biopsy: no tumor. D. Peritoneal biopsies (pelvic, paracolic): no tumor.", "conclusion": "Adult granulosa cell tumor of the left ovary, FIGO stage IA."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Surgical pathology - left salpingo-oophorectomy", "author": "pathology", "date": "2023-09-26T14:10", "body": "Pathology report from the hospital received and filed to the chart. Adult granulosa cell tumor, left ovary, 5.0 cm, capsule intact; washings and biopsies negative; FIGO IA. Problem list updated. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "telephone",
+          "start": "2023-09-28T17:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call to patient", "author": "PCP", "date": "2023-09-28T17:45", "body": "Called her after seeing the pathology. She had already heard from gyn onc: granulosa cell tumor, confined to the ovary, no further treatment for now, surveillance with exams and estradiol levels. Incisions fine, mild soreness, off everything but acetaminophen. Bleeding has stopped. She sounded relieved and tired. Will see her in two weeks for a check and her flu shot."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative check",
+          "conditions": [
+            {"label": "Postmenopausal bleeding", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:06"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-10-10T14:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - After Surgery", "author": "PCP", "date": "2023-10-10T15:30", "body": "Three weeks after laparoscopic left salpingo-oophorectomy for what proved to be an adult granulosa cell tumor, stage IA. Saw gyn onc last week, incisions healed, plan is surveillance every 3 months to start, with exam and estradiol. No bleeding since surgery. Back at work part days. Some worry, understandably; PHQ-2 1, sleeping ok.\n\nVitals per flowsheet. Port sites healed. Abdomen soft, nontender. No edema.\n\nA/P\n1. Adult granulosa cell tumor, left ovary, IA - s/p LSO 9/19. Surveillance with gyn onc. Postmenopausal bleeding resolved after surgery.\n2. HTN - at goal, continue.\n3. GERD/hiatal hernia, OA - stable.\n4. Flu and updated COVID today. Pap/HPV: gyn onc will be examining her; we'll do the screening Pap at her next physical.\nRTC 4-6 months."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "specialist_visit",
+          "start": "2023-12-12T10:00",
+          "service": "Gynecologic Oncology",
+          "reason": "surveillance",
+          "labs": [
+            {"panel": null, "collected": "2023-12-12T10:30", "results": [{"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 14}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Follow-up", "author": "gynecologic oncology", "date": "2023-12-14T13:00", "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate: 12/12/2023\nDiagnosis: adult granulosa cell tumor, left ovary, FIGO IA, s/p laparoscopic LSO and staging 09/19/2023.\n\nInterval: no bleeding, no pain, appetite normal.\nMeds: HCTZ, amlodipine, omeprazole, acetaminophen, topical diclofenac. NKDA.\nExam: abdomen soft, incisions well healed. Pelvic: cervix normal, uterus small, no adnexal mass on either side.\nLabs: estradiol 14 pg/mL, back in the postmenopausal range.\n\nImpression: no evidence of disease.\nPlan: surveillance exam and estradiol every 3 months for the first two years.\n\nGynecologic Oncology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

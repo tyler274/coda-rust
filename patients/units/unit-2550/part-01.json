@@ -1,0 +1,327 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002550",
+      "given": "Miles",
+      "family": "Bailey",
+      "birth_date": "1991-12-25",
+      "address_line": "88 Pleasant Street, Apt 3",
+      "phone": "+1-518-555-0156",
+      "email": "miles.bailey@example.test",
+      "marital_status": "single",
+      "summary": "Accountant in his early thirties who joined healthy in 2023, was found to have hypertension and autosomal dominant polycystic kidney disease in late 2024, had a pit viper bite on a hiking trip in 2025, and was admitted to an ICU with anti-GBM (Goodpasture) disease in April 2026, now on a prednisone taper after plasma exchange and cyclophosphamide.",
+      "events": [
+        {
+          "id": "2023-09-05a",
+          "kind": "telephone",
+          "start": "2023-09-05T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-09-05T10:20",
+              "body": "Caller is a 31 y/o man looking to set up primary care here. Says he hasn't had a regular doctor since finishing grad school, only the campus clinic. Works in accounting now, employer plan. Explained membership model and that labs/imaging still go through his insurance. Booked new patient physical 9/12 at 8:40. Asked him to request records from the student health service; release form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 78.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social drinker, 2 to 4 drinks per week"},
+            {"item": "Occupation", "value": "Accountant"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:15", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2023-09-12T09:15", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-09-12T09:30"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T09:30"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-12T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2023-09-12T08:40",
+              "body": "31M establishing care. Last routine care through a university student clinic during his graduate program; now working as an accountant. No ongoing complaints. No chronic conditions, takes nothing regularly, no supplements. No surgeries. NKDA.\n\nFamily: father has autosomal dominant polycystic kidney disease. A paternal uncle died after a ruptured brain aneurysm. Mother has high blood pressure.\n\nSocial: lives alone in Easthampton. Never smoked. Drinks socially, 2-4 a week. No drug use. Runs and hikes on weekends.\n\nROS: negative in full.\n\nExam: well-appearing, in no distress. Vitals per flowsheet, BP in normal range. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin without concerning lesions. Extremities warm, no edema. Mood and affect normal.\n\nAssessment/plan:\n- Health maintenance, adult male. Fasting lipids, CMP. HIV and hep C screening once, he agrees. Tdap today (last tetanus shot he can recall was in high school). Flu vaccine today. PHQ-2 0.\n- Family history of PKD in father noted.\n- Return yearly, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-09-14T16:05",
+              "body": "Miles, your bloodwork came back fine: LDL cholesterol just above the lab's cutoff, which at your age and with no other risk factors needs nothing but a recheck in a few years, kidney and liver function normal, blood sugar normal. HIV and hepatitis C screens were negative. Nothing to change. Good to have you with us."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "outside_records",
+          "start": "2023-10-10T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Student health service records",
+              "author": "front desk",
+              "date": "2023-10-10T11:00",
+              "body": "Records received by fax from the university student health service, covering 2018 to 2022. Contents: intake forms, two sports-type physicals with normal exams, one visit for a sprained wrist with no fracture, routine immunization history (childhood series, meningococcal and HPV series completed). No medications, no allergies listed. Scanned to chart; PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID vaccine",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-17T12:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-17T12:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2023-10-17T12:30",
+              "body": "Here on lunch break for 2023-24 COVID vaccine. No prior reactions to vaccines. Feeling well today. Moderna updated formula 0.5 mL IM left deltoid. Observed 15 minutes, no issues, back to work."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "portal_message",
+          "start": "2024-03-19T09:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Employer wellness form",
+              "author": "patient",
+              "date": "2024-03-19T09:12",
+              "body": "My company's insurance gives a premium discount if a doctor signs off that I had a physical in the last 12 months. Can someone fill out the attached form? Just needs the date and blood pressure."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Employer wellness form",
+              "author": "MA",
+              "date": "2024-03-19T14:40",
+              "body": "Done, completed with your September visit info and signed by the doctor. Uploaded back to your portal as a PDF."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "telephone",
+          "start": "2024-09-16T08:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancel physical",
+              "author": "front desk",
+              "date": "2024-09-16T08:05",
+              "body": "Patient left voicemail over the weekend, quarter-end close at work, needs to skip Wednesday's annual. Called back, offered October dates, he'll call when things settle. Cancelled."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T08:20",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T13:00",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-05T11:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-05T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunizations entered",
+              "author": "MA",
+              "date": "2024-10-08T13:00",
+              "body": "State registry shows flu (quadrivalent) and 2024-25 Pfizer COVID given at a community pharmacy 10/5/2024. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "portal_message",
+          "start": "2024-11-04T20:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "High blood pressure readings",
+              "author": "patient",
+              "date": "2024-11-04T20:47",
+              "body": "Hi, I used the blood pressure machine at the pharmacy twice in the last week while waiting on something and both times it said around 160 over 100. I've been getting mild headaches on and off for a few months, figured it was screens at work. Is this something I should come in for? I missed my physical in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: High blood pressure readings",
+              "author": "PCP",
+              "date": "2024-11-05T07:52",
+              "body": "Thanks for flagging this, yes, I'd like to see you. Those kiosk machines aren't perfect but two readings that high are worth checking properly. Any chest pain, shortness of breath, vision trouble, or a sudden severe headache, go to the ED. Otherwise front desk will reach out for a visit this week."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "office_visit",
+          "start": "2024-11-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Elevated blood pressure, headaches",
+          "vitals": {"bp": [162, 100], "hr": 76},
+          "state": {"bp": [162, 100]},
+          "measure": ["spo2", "temp_c", "weight_kg"],
+          "social": [
+            {"item": "History of alcohol use", "value": "Social drinker; plans to stop"}
+          ],
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2024-11-07"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-07T16:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Urinalysis", "collected": "2024-11-07T16:35", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "neph-referral", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "Bilateral flank masses, new hypertension, father with polycystic kidney disease"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-07T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-07T16:00",
+              "body": "S: Came in after two pharmacy readings near 160/100. Has had mild, dull headaches a few times a week for a few months, nothing sudden or severe, no neuro symptoms. No chest pain, no change in vision, no shortness of breath. Appetite fine. Urinating normally, hasn't seen blood or dark urine. Mentions that both sides of his belly sometimes feel full, no pain. Drinks a few beers a week. No NSAID use to speak of, no decongestants, no energy drinks.\n\nFH again: father with polycystic kidneys (on his mind, he knows it runs in families), paternal uncle died of a ruptured aneurysm, mother on BP medication.\n\nO: BP 162/100 L arm seated, repeat after 5 min similar. HR 76. Well appearing. Fundi not well seen, no obvious abnormality. Heart regular, no murmur. Lungs clear. Abdomen: smooth, nontender, fullness palpable in both flanks consistent with enlarged kidneys. No edema.\n\nA/P:\n1. Hypertension, stage 2 range, young, with family history of PKD and palpable kidneys. Most likely the kidneys are the story. Start lisinopril 10 mg daily. BMP and UA today. Low-salt diet reviewed. He'd already been thinking of cutting back on drinking and says he'll just stop for now. Get a home cuff and send readings.\n2. Bilateral flank masses + FH of ADPKD: referring to nephrology for evaluation and imaging; easier for them to order the ultrasound and see him with it.\n3. Headaches: likely pressure-related; red flags reviewed.\nRN call in 2 weeks re tolerance; recheck BMP at nephrology or here in 2-3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "portal_message",
+          "start": "2024-11-08T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP and urine results",
+              "author": "PCP",
+              "date": "2024-11-08T12:30",
+              "body": "Kidney function, sodium and potassium all normal. Urine without protein or blood. Good baseline before the lisinopril settles in. Nephrology referral has been sent; their office will call you."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "telephone",
+          "start": "2024-11-21T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "BP medication check",
+              "author": "RN",
+              "date": "2024-11-21T11:15",
+              "body": "Called to check in two weeks into lisinopril. No cough, no lightheadedness, no lip or tongue swelling. Bought a home cuff; readings still above goal so far, still early. Has stopped drinking. Nephrology appt is 12/5. Told him to bring the cuff log there and send it to us too."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-05a",
+          "kind": "specialist_visit",
+          "start": "2024-12-05T09:30",
+          "service": "Nephrology",
+          "reason": "Hypertension, bilateral flank masses, family history of polycystic kidney disease",
+          "vitals": {"bp": [165, 102], "hr": 78},
+          "conditions": [
+            {"label": "Polycystic kidney, adult type", "action": "diagnosed", "onset": "2024-12-05"},
+            {"label": "Chronic kidney disease, stage 1", "icd10": "N18.1", "action": "diagnosed", "onset": "2024-12-05", "note": "Structural kidney disease from ADPKD with normal filtration"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-05T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2024-12-05T10:40",
+              "text": "Indication: hypertension, palpable flank masses, father with ADPKD.\nTechnique: grayscale and color images of both kidneys and the bladder.\nRight kidney: enlarged, 16.4 cm in length, with multiple simple-appearing cysts of varying size throughout the cortex and medulla. No hydronephrosis. No shadowing stones.\nLeft kidney: enlarged, 17.0 cm in length, with multiple cysts of varying size throughout. No hydronephrosis. No shadowing stones.\nNormal flow in both kidneys on color imaging.\nBladder: unremarkable.\nVisualized liver and spleen: unremarkable.",
+              "conclusion": "Bilaterally enlarged kidneys with multiple cysts, consistent with autosomal dominant polycystic kidney disease in this clinical setting. No hydronephrosis."
+            }
+          ],
+          "orders": [
+            {"id": "neph-referral", "action": "done", "date": "2024-12-05T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "author": "nephrology",
+              "date": "2024-12-09T14:20",
+              "body": "Outside nephrology group\nDate of visit: 12/05/2024\nReason for consultation: elevated blood pressure, palpable flanks, family history of PKD.\n\nThank you for asking us to see this 32-year-old accountant. He came to attention after high readings on a pharmacy machine. For the last few months he has had mild headaches. Otherwise he feels well. He has had no chest pain, visual symptoms or breathlessness. Appetite is normal and he has noticed nothing different about his urine. He describes an occasional sense of fullness across both sides of the abdomen.\n\nPMH: hypertension, diagnosed by his PCP last month. No prior kidney evaluation.\nPSH: none.\nMedications: lisinopril 10 mg daily (started 11/7/24).\nAllergies: NKDA.\nFamily history: father with ADPKD; paternal uncle with a ruptured intracranial aneurysm; mother with hypertension.\nSocial: accountant. Never smoker. Currently not drinking.\n\nExam: BP 165/102, pulse 78. Cardiac exam normal, lungs clear. Abdomen: bilateral, non-tender flank masses, smooth. No edema.\n\nData: serum creatinine today within normal limits; potassium normal.\nRenal ultrasound performed in our office today: both kidneys enlarged (R 16.4 cm, L 17.0 cm) and replaced by numerous cysts bilaterally, no hydronephrosis or stones.\n\nImpression:\n1. Autosomal dominant polycystic kidney disease, by imaging criteria with a positive family history.\n2. CKD stage 1 related to ADPKD; filtration currently preserved.\n3. Hypertension secondary to ADPKD. Pressure remains high but he is only four weeks into the ACE inhibitor.\n\nRecommendations:\n- Continue lisinopril 10 mg daily. Sodium under 2 g/day; generous water intake through the day.\n- Avoid NSAIDs.\n- Keep a home BP log.\n- With his uncle's aneurysm rupture, his own ADPKD and the recent headaches, we are arranging a screening MRI brain with non-contrast MR angiography.\n- Follow up here in 6 months with BMP and urine albumin/creatinine.\n\nAllergies: NKDA. We appreciate the referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney specialist visit",
+              "author": "PCP",
+              "date": "2024-12-10T08:30",
+              "body": "Hi Miles, I got the nephrology letter. As you heard from them, the ultrasound shows polycystic kidney disease, the same condition as your dad. Your kidney function is normal right now, which is the important part, and blood pressure control is the biggest thing we can do to protect it. Stick with the lisinopril, the salt and water advice, and avoid ibuprofen/naproxen type painkillers (Tylenol is fine). They're also setting up a brain MRA because of your uncle's history; that's a standard screening step. Let's do a BP visit here in about 2 months. Happy to talk anytime."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney specialist visit",
+              "author": "patient",
+              "date": "2024-12-10T12:14",
+              "body": "Thanks. Not a huge surprise given my dad. MRI is booked for January. Will book the follow up."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

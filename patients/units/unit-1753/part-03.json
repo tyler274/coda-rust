@@ -1,0 +1,228 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001753",
+      "events": [
+        {
+          "id": "2022-04-26a",
+          "kind": "lab_only",
+          "start": "2022-04-26T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-month RPR after syphilis treatment",
+          "orders": [{"id": "rpr-6mo", "action": "done", "date": "2022-04-26T07:45"}],
+          "labs": [
+            {"panel": null, "collected": "2022-04-26T07:45", "resulted": "2022-04-27T15:20", "results": [
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:8"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-04-26T07:45"}],
+          "documents": [
+            {"type": "Result Note", "title": "RPR 6 months", "author": "PCP", "date": "2022-04-28T07:55",
+             "body": "RPR 1:8, down from 1:64 at diagnosis in October. That is better than a fourfold fall; appropriate response to treatment. Repeat at 12 months with her physical."}
+          ]
+        },
+        {
+          "id": "2022-04-28a",
+          "kind": "portal_message",
+          "start": "2022-04-28T08:00",
+          "reason": "result",
+          "documents": [
+            {"type": "Patient Message", "title": "Your syphilis follow-up test", "author": "PCP", "date": "2022-04-28T08:00",
+             "body": "Hi Leah, good news. Your RPR has come down from 1:64 to 1:8, which is exactly the drop we want after treatment. One more check in the fall when you come in for your physical."},
+            {"type": "Patient Message", "title": "RE: Your syphilis follow-up test", "author": "patient", "date": "2022-04-28T12:31",
+             "body": "Oh thank god. OK see you in the fall."}
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "annual_physical",
+          "start": "2022-10-19T15:00",
+          "end": "2022-10-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2022-10-19T15:35", "resulted": "2022-10-20T16:10", "results": [
+              {"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:2"}
+            ]}
+          ],
+          "conditions": [{"label": "Early syphilis", "icd10": "A51.9", "action": "resolved", "note": "treated October 2021; RPR 1:64 to 1:8 to 1:2"}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-19T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-19T15:36"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-10-19T15:00"},
+            {"procedure": "Immunization administration", "performed": "2022-10-19T15:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-10-19T15:50",
+             "body": "ANNUAL PHYSICAL\n\n26 now, third year of grad school. Feels well. No rash, sores or discharge. Partners: still more than one; condoms 'more than before.'\n\nNo meds. NKDA. Never smoker. Alcohol 1-2 drinks a week.\n\nExam: vitals as charted. Skin clear, no residual rash on palms or soles. No adenopathy. Heart, lungs, abdomen normal.\n\nA/P\n1. Early syphilis, treated 10/2021: 12-month RPR drawn today.\n2. High-risk sexual behavior: reviewed condoms and testing every 3-6 months while she has multiple partners.\n3. Pap done 2021; next 2024.\n4. Flu and bivalent COVID booster today, opposite arms.\n\nPhysical next October."},
+            {"type": "Result Note", "title": "RPR 12 months", "author": "PCP", "date": "2022-10-21T08:20",
+             "body": "RPR 1:2. Sustained decline from 1:64; serologic response adequate. Early syphilis marked resolved. A low titer may persist. Patient notified through portal."}
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "specialist_visit",
+          "start": "2022-11-01T11:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "dysuria and vaginal discharge",
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2022-11-01T11:25", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"},
+              {"test": "Urine Nitrite", "text": "Negative"},
+              {"test": "Urine White Blood Cells", "value": 0, "unit": "/[HPF]"}
+            ]},
+            {"panel": null, "collected": "2022-11-01T11:25", "results": [
+              {"test": "Pregnancy Test, Urine", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2022-11-01T11:30", "resulted": "2022-11-03T10:00", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "conditions": [{"label": "Chlamydia trachomatis cervicitis", "icd10": "A56.09", "action": "diagnosed", "onset": "2022-10-29"}],
+          "medications": [{"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 7 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "cervicitis"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Office Visit (outside)", "author": "gynecology", "date": "2023-01-24T14:15",
+             "body": "OUTSIDE OB/GYN OFFICE NOTE\nDate of service: 11/01/2022\nFaxed per request 1/2023\n\nCC: burning with urination, discharge.\n\n26 y/o G0 with a history of an ED evaluation for genital sores and our prior visits. Three days of dysuria, going more often, and a yellow vaginal discharge. Denies fever, flank or back pain, abdominal pain. LMP 2 weeks ago, normal. Multiple partners; condoms used inconsistently.\n\nMeds: none. NKDA.\n\nVitals within normal limits.\nPelvic: mucopurulent discharge from the cervical os; cervical motion tenderness present.\n\nUrine hCG negative. UA: no bacteria, no WBCs.\nCT/GC NAAT: chlamydia DETECTED; gonorrhea not detected (resulted 11/3, patient informed by phone).\n\nA/P: Chlamydia trachomatis cervicitis.\n- Doxycycline 100 mg PO BID x 7 days, started at visit.\n- Abstain 7 days after completing treatment and until partners treated; expedited partner therapy offered.\n- Retest in 3 months."}
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "pharmacy",
+          "start": "2022-11-03T09:30",
+          "reason": "fill notification",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Outside prescription fill", "author": "MA", "date": "2022-11-03T09:30",
+             "body": "Medication history refresh shows doxycycline hyclate 100 mg caps, #14, filled 11/1/22, prescriber at an outside OB/GYN office. No note from that office on file for this. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-11-04a",
+          "kind": "portal_message",
+          "start": "2022-11-04T21:47",
+          "reason": "outside diagnosis",
+          "documents": [
+            {"type": "Patient Message", "title": "FYI", "author": "patient", "date": "2022-11-04T21:47",
+             "body": "Just so you know, I saw my gyn on Tuesday because it was burning when I peed and I had some discharge. They called yesterday and it was chlamydia. I'm on doxycycline twice a day for a week. Ugh. Do I need to do anything on your end?"},
+            {"type": "Patient Message", "title": "RE: FYI", "author": "PCP", "date": "2022-11-07T08:10",
+             "body": "Thanks for the update, Leah. Doxycycline for a week is the right treatment. Take it with a full glass of water and stay upright for a while after, and go easy on direct sun. No sex until a week after you finish and your partners have been treated. We should retest in about 3 months; I'll have the staff set that up for early February. I'll also ask your gyn's office for the visit note."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "telephone",
+          "start": "2023-01-10T10:40",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2023-01-10T10:40",
+             "body": "Nothing received yet from the outside OB/GYN office for the 11/1/22 visit. Called their records line, re-sent the release by fax. They said 2-3 weeks."}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "nurse_visit",
+          "start": "2023-02-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chlamydia retest",
+          "labs": [
+            {"panel": null, "collected": "2023-02-07T08:25", "resulted": "2023-02-09T13:40", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Retest swab", "author": "RN", "date": "2023-02-07T08:35",
+             "body": "Here for 3-month test of reinfection after chlamydia treated in November. Finished all 7 days of doxycycline. No symptoms. Self-collected vaginal swab for CT/GC NAAT, instructions given. Results to portal."}
+          ]
+        },
+        {
+          "id": "2023-02-10a",
+          "kind": "portal_message",
+          "start": "2023-02-10T07:50",
+          "reason": "result",
+          "conditions": [{"label": "Chlamydia trachomatis cervicitis", "icd10": "A56.09", "action": "resolved", "note": "retest negative February 2023"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Retest negative", "author": "PCP", "date": "2023-02-10T07:50",
+             "body": "Hi Leah, your repeat swab was negative for both chlamydia and gonorrhea. You are all clear from the November infection. Keep the condoms going."}
+          ]
+        },
+        {
+          "id": "2023-04-29a",
+          "kind": "pharmacy",
+          "start": "2023-04-29T16:20",
+          "reason": "fill notification",
+          "medications": [{"drug": "valacyclovir 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 10 days", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "prescribed in the emergency department"}],
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Outside prescription fill", "author": "MA", "date": "2023-05-01T08:05",
+             "body": "Fill history (weekend) shows valacyclovir 1 g tabs #20, filled Saturday 4/29/23, written by an emergency department prescriber. No ED record received. Added to med list as an outside short course; routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-05-01a",
+          "kind": "telephone",
+          "start": "2023-05-01T09:15",
+          "reason": "ED visit for genital sores",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Patient call", "author": "RN", "date": "2023-05-01T09:15",
+             "body": "Pt called. Went to the ED Saturday with painful blisters 'down there', burning with urination, fever and feeling run down; started about a week after sex with someone new. ED told her it looked like herpes, swabbed it, and started valacyclovir. She got a call Sunday that the swab was positive for herpes. Still sore, urinating is painful but she is managing; using sitz baths. Fever gone since yesterday. Able to urinate. Wants to be seen. Booked with PCP Thursday 5/4. Told to call back if she cannot pass urine, gets a headache with stiff neck, or the pain gets worse."}
+          ]
+        },
+        {
+          "id": "2023-05-04a",
+          "kind": "office_visit",
+          "start": "2023-05-04T11:30",
+          "end": "2023-05-04T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for genital lesions",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "conditions": [{"label": "Primary genital herpes simplex virus infection", "icd10": "A60.04", "action": "diagnosed", "onset": "2023-04-26"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-04T11:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED Follow-up", "author": "PCP", "date": "2023-05-04T12:20",
+             "body": "FOLLOW-UP, GENITAL HERPES\n\nNo ED record yet; history from Leah and the fill history.\n\nAbout a week after unprotected sex with a new partner she developed fever and malaise, then three days of painful urination and blisters on the labia. Seen in the ED Saturday 4/29. She says they examined her, noted swollen glands in both groins, checked her urine, swabbed a sore, and started valacyclovir 1 g twice a day for 10 days. The ED called her Sunday: swab positive for herpes simplex. She does not know the type. Day 6 of valacyclovir, taking it on schedule. Fever gone. Urination still stings but is better.\n\nExam: vitals as charted, afebrile. Labia with several shallow healing ulcers, no new vesicles. Tender, mobile inguinal nodes on both sides. No vaginal discharge on inspection.\n\nA/P\n1. Primary genital HSV infection, healing on valacyclovir. Finish the 10 days. Sitz baths; urinating in a warm bath helps the stinging. Talked through what recurrences look like and that they tend to be milder. Disclosure to partners, condoms, no sex during sores.\n2. High-risk sexual behavior: repeat STI here at any time she wants testing.\n3. Requesting ED record."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T13:50",
+          "reason": "records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ED records follow-up", "author": "MA", "date": "2023-06-13T13:50",
+             "body": "Second request to the regional ED medical records office for the 4/29/23 visit (first sent 5/4). Voicemail left; release re-faxed. Will close the request if nothing comes."}
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "annual_physical",
+          "start": "2023-10-13T09:40",
+          "end": "2023-10-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-13T10:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-13T10:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-13T10:16"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-10-13T09:40"},
+            {"procedure": "Immunization administration", "performed": "2023-10-13T10:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-10-13T10:30",
+             "body": "ANNUAL PHYSICAL\n\n27, still in her graduate program. Feels well. No herpes outbreaks since the spring episode healed. No discharge, no urinary symptoms. Still dating, more than one partner at times.\n\nThe ED never sent the April record despite two requests; closed. Our chart has her account and our exam from 5/4.\n\nNo meds. NKDA. Never smoker. Alcohol unchanged.\n\nExam: vitals as charted. Skin clear. No lymphadenopathy. Heart, lungs, abdomen normal. Genital exam deferred, no complaints.\n\nA/P\n1. Primary genital HSV, no recurrence.\n2. High-risk sexual behavior, history of syphilis and chlamydia: condoms; testing any time.\n3. Pap due next year.\n4. Flu and updated COVID vaccine today. Basic chemistry panel sent.\n\nSee her next fall."}
+          ]
+        }
+      ]
+    }
+  ]
+}

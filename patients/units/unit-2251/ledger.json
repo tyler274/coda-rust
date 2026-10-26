@@ -1,0 +1,2945 @@
+{
+  "unit": "unit-2251",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002251",
+      "given": "Walter",
+      "family": "Wells",
+      "birth_date": "1957-09-16",
+      "address_line": "112 Pendleton Avenue",
+      "phone": "+1-646-555-0132",
+      "email": "walter.wells@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with hypertension, BPH and diverticulosis who joined in 2024. Adhesive small-bowel obstruction needed laparotomy, complicated by a catheter-related bulbar urethral injury; chronic retention led to a bladder stone, and two weeks after its removal he developed enterococcal tricuspid endocarditis treated with six weeks of ampicillin and ceftriaxone.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-27T10:20",
+              "author": "front desk",
+              "body": "Caller is a 66 y/o retired teacher, moved across the river last spring and his old office is now a 40 minute drive. Asked how the membership works and whether we take his insurance for labs. Went over fees and the texting line. He signed up on the call. New patient visit set for 9/10 at 9:00, asked him to bring his pill bottles. Records release form emailed for his prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T09:00",
+          "end": "2024-09-10T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2011-06-01",
+              "note": "long-standing, on two drugs"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "diagnosed",
+              "onset": "2016-03-01"
+            },
+            {
+              "label": "Diverticulosis of colon",
+              "action": "diagnosed",
+              "onset": "2019-05-01",
+              "note": "sigmoid, on colonoscopy"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "note": "remote open cholecystectomy, year not recalled"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "note": "quit about 2012, 15 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily, 30 minutes after the same meal each day",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "BPH"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              84
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 83.7,
+            "height_cm": 178.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-10T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-09-10T10:02"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2024",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "continuity"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n66 y/o man, retired after 31 years teaching math (mostly algebra II and calc), here to establish. Previous PCP was fine, he just wants someone closer who answers the phone.\n\nCurrent issues: none acute. Feels well.\n\nHTN - diagnosed in his 50s, has been on amlodipine plus lisinopril for years. Doesn't check at home regularly, has an old cuff. No headaches, CP, SOB, swelling.\nBPH - urology dx several years back. On tamsulosin, gets up once at night, stream 'slower than it used to be but fine.' No retention episodes, no UTIs. Hasn't seen urology in a couple years.\nDiverticulosis - found on his colonoscopy in 2019, never had diverticulitis. Mother had diverticular trouble too.\n\nPSH: gallbladder out through an open incision, long ago, can't remember the year. Nothing else.\nMeds: amlodipine 5 daily, lisinopril 10 daily, tamsulosin 0.4 daily. No OTCs.\nAllergies: none to meds.\nFH: father had high BP and coronary disease. Mother diverticular disease.\nSH: smoked about 15 pack-years, quit ~12 yrs ago. Wine or a beer once or twice a month. No drugs ever. Walks most mornings. Retired from teaching high school math.\n\nROS otherwise negative.\n\nExam: vitals as charted. Pleasant, well appearing. HEENT unremarkable. Neck supple, no bruits, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, well-healed right subcostal scar. No edema, pulses 2+ distally. Skin fine.\n\nA/P\n1. HTN - reasonable on current regimen, continue amlodipine 5 + lisinopril 10. CMP today.\n2. BPH with LUTS - stable on tamsulosin, continue. Will need urology again if anything changes.\n3. Diverticulosis - fiber, fluids. Colonoscopy records requested.\n4. Former smoker - 15 pk-yr so below the threshold for lung screening.\n5. HM - high-dose flu and PCV20 today. Hep C and HIV screens with labs. Lipids. PHQ-2 0.\n\nRTC 3-4 months for BP, sooner prn. Texting line explained."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              82
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T16:40",
+              "author": "PCP",
+              "body": "Hi Walter - labs from Tuesday all look good. Kidney function and potassium are normal on the lisinopril, blood counts normal, liver tests normal. Cholesterol numbers are fine. Hep C and HIV screens negative, so those are done for good. Nothing to change. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2024-09-12T19:02",
+              "author": "patient",
+              "body": "Thank you. Quicker than I'm used to."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "outside_records",
+          "start": "2024-09-19T11:15",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-04-11T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-03-02T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-05-18T10:00"
+            },
+            {
+              "vaccine": "COVID-19, unspecified",
+              "date": "2021-02-09T10:00"
+            },
+            {
+              "vaccine": "COVID-19, unspecified",
+              "date": "2021-03-09T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2024",
+              "action": "done",
+              "date": "2024-09-19T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2024-09-19T11:15",
+              "author": "MA",
+              "body": "38 pages received by fax from prior PCP office. Highlights abstracted:\n- Colonoscopy 05/2019: scattered sigmoid diverticula, no polyps, prep good. Repeat 10 yrs.\n- Immunizations: Tdap 4/2017. Shingrix #1 3/2021, #2 5/2021. COVID primary series 2021 (brand not listed); later boosters not on their record.\n- Problem list: HTN, BPH. Med list matches ours.\n- Last urology note 2022: BPH, tamsulosin, PVR 'small', return as needed.\nFull packet in media tab."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2024-09-20T08:10",
+              "author": "PCP",
+              "body": "Reviewed old records. Colonoscopy due 2029. Shingles series done. Tdap good through 2027. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T14:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "date": "2024-10-09T09:00",
+              "author": "pharmacy",
+              "body": "Immunization administered at community pharmacy: COVID-19 vaccine 2024-2025 formula, 0.3 mL IM, left deltoid. No immediate reaction reported."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "ed_visit",
+          "start": "2024-11-28T15:10",
+          "end": "2024-11-28T21:40",
+          "service": "Emergency Medicine",
+          "reason": "abdominal pain, vomiting, no stool or gas",
+          "conditions": [
+            {
+              "label": "Adhesive small bowel obstruction",
+              "action": "diagnosed",
+              "onset": "2024-11-26",
+              "note": "requiring CT",
+              "icd10": "K56.50"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-28T15:18",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-28T15:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-28T15:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-11-28T17:05",
+              "text": "INDICATION: Small-bowel obstruction on radiograph, prior open cholecystectomy.\nTECHNIQUE: Axial CT of the abdomen and pelvis after IV contrast, with coronal and sagittal reformats. Oral contrast not given.\nFINDINGS: Multiple fluid-filled dilated small-bowel loops measuring up to 3.6 cm, with a transition point in the mid abdomen and collapsed distal ileum. No discrete mass at the transition. No closed-loop configuration. Bowel wall enhances normally; no pneumatosis, portal venous gas or free air. Small amount of free fluid between loops. Colon decompressed; scattered sigmoid diverticula without inflammation. Surgically absent gallbladder. Liver, spleen, pancreas, adrenals and kidneys unremarkable. Abdominal aorta normal in caliber. Bladder partially distended. Prostate mildly enlarged. No adenopathy.",
+              "conclusion": "Small-bowel obstruction with a mid-abdominal transition point, likely adhesive. No closed loop or signs of ischemia. Sigmoid diverticulosis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-11-28T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-12-04T10:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of visit: 11/28/2024\n\nCC: belly pain and vomiting\n\nHPI: 67M with HTN, BPH and diverticulosis, remote open cholecystectomy, here with two days of crampy, severe generalized abdominal pain coming in waves, several episodes of emesis, and no bowel movement or flatus since the day before yesterday. Denies fevers or chills. No blood in emesis.\n\nMeds: amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily. NKDA.\nFH: father HTN and CAD; mother diverticular disease.\nSH: ex-smoker (15 pk-yr, quit 12 yr ago), rare alcohol, retired math teacher.\n\nTriage: BP 150/90, HR 110, RR 22, T 37.2 C.\n\nExam: uncomfortable, retching. Abdomen visibly distended and tympanitic, tender throughout but no rebound and no guarding. Tinkling, high-pitched, hyperactive bowel sounds. Old RUQ incision. DRE: vault empty, no mass.\n\nLabs: WBC 14.0 K. Rest of CBC and BMP unremarkable.\nUpright abdominal film: dilated small-bowel loops with numerous air-fluid levels, no gas in the rectum.\nCT A/P w contrast: SBO with mid-abdominal transition, no closed loop or ischemic signs, presumed adhesive.\n\nCourse: IV fluids, ondansetron, IV analgesia. NG tube placed with large bilious return and relief. General surgery consulted, recommends admission for nonoperative trial.\n\nDx: small-bowel obstruction, likely adhesive.\nDispo: admit to general surgery."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28b",
+          "kind": "hospital_admission",
+          "start": "2024-11-28T21:40",
+          "end": "2024-12-02T13:00",
+          "service": "General Surgery",
+          "reason": "small-bowel obstruction, nonoperative management",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-11-28T22:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-02T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "General Surgery Discharge Summary",
+              "date": "2024-12-04T10:32",
+              "author": "general surgery",
+              "body": "Admission 11/28/2024 - Discharge 12/02/2024\nService: General Surgery\n\nAdmitting dx: adhesive small-bowel obstruction\nDischarge dx: same, resolved without operation\n\nHospital course: Admitted from ED with SBO on CT, mid-abdominal transition point, no ischemic features. Managed with NG decompression, bowel rest, IV fluids and serial abdominal exams. NG output fell steadily, he passed flatus on hospital day 2 and had a BM on day 3. NG removed 12/1, clears advanced to regular diet and tolerated. Abdomen soft and nondistended at discharge. Home antihypertensives held while NPO and resumed 12/1.\n\nDischarge meds: unchanged - amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily.\nAllergies: NKDA\n\nInstructions: soft diet for a few days then advance. Return for recurrent pain, vomiting, distension or no flatus. Discussed that adhesions can cause this again and may need surgery if so.\nFollow-up: PCP within 1-2 weeks. Surgery clinic as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "telephone",
+          "start": "2024-12-04T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-12-04T11:10",
+              "author": "RN",
+              "body": "Called pt after receiving hospital paperwork. Home since Monday. Eating soups and toast, had a normal BM yesterday, passing gas. No vomiting, mild soreness only. Taking his 3 usual meds. Knows to call or go back in if the pain or vomiting returns. Booked with PCP 12/9."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, bowel obstruction",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 66,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 83.6
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2024-12-09T14:05",
+              "author": "PCP",
+              "body": "Seen after admission 11/28-12/2 for adhesive SBO, settled with NG tube and bowel rest, no surgery. Discharge summary and ED record reviewed; CT showed mid-abdominal transition, no ischemia.\n\nSince home: back to regular food, BMs daily, no cramping or bloating. Lost a couple of pounds while in. Energy coming back.\n\nMeds reconciled, unchanged: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted. Comfortable. Abdomen soft, not distended, nontender, normal bowel sounds. Old subcostal scar.\n\nA/P\nAdhesive SBO, resolved nonoperatively - likely from the old open gallbladder surgery. Reviewed warning signs; low threshold to go in if it recurs. Small, frequent meals for a bit.\nHTN - fine today, no change.\nFollow up in March for BP, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "hospital_admission",
+          "start": "2024-12-30T08:50",
+          "end": "2025-01-07T14:00",
+          "service": "General Surgery",
+          "reason": "recurrent small-bowel obstruction",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets per day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-30T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-01-07T12:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "outside_records",
+          "start": "2024-12-31T07:30",
+          "reason": "intraoperative record",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Operative Report",
+              "date": "2025-01-09T09:45",
+              "author": "general surgery",
+              "body": "Date of operation: 12/31/2024\nPreop dx: recurrent adhesive small-bowel obstruction\nPostop dx: same\nProcedure: exploratory laparotomy, lysis of adhesions\nAnesthesia: general endotracheal\n\nFindings: dense band adhesions from the old right upper quadrant field to mid small bowel producing an obstruction, dilated proximal loops, decompressed distal ileum. All bowel viable after release; no resection required. No hernia, no mass.\n\nDescription: Midline laparotomy. Adhesiolysis performed sharply, small bowel run from ligament to ileocecal valve twice, no enterotomy. Abdomen irrigated, fascia closed with running looped suture, skin with staples. Urethral catheter placed at start of case. EBL 50 mL. To PACU stable."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-04a",
+          "kind": "specialist_visit",
+          "start": "2025-01-04T10:40",
+          "service": "Urology",
+          "reason": "inpatient consult, difficult catheterization with meatal bleeding",
+          "conditions": [
+            {
+              "label": "Partial bulbar urethral injury",
+              "action": "diagnosed",
+              "onset": "2025-01-04",
+              "note": "catheter-related, on retrograde urethrogram",
+              "icd10": "S37.33XA"
+            },
+            {
+              "label": "Retention of urine",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "note": "postoperative, with BPH",
+              "icd10": "R33.9"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "outside_records",
+          "start": "2025-01-09T09:45",
+          "reason": "hospital records received",
+          "conditions": [
+            {
+              "label": "Adhesive small bowel obstruction",
+              "action": "resolved",
+              "note": "laparotomy and adhesiolysis 12/31/2024",
+              "icd10": "K56.50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "General Surgery Discharge Summary",
+              "date": "2025-01-09T09:45",
+              "author": "general surgery",
+              "body": "Admission 12/30/2024 - Discharge 01/07/2025\nService: General Surgery\n\nDx: recurrent adhesive small-bowel obstruction; postoperative urinary retention; catheter-related urethral injury\nProcedure: exploratory laparotomy with lysis of adhesions 12/31/2024 (no bowel resection)\n\nCourse: Readmitted four weeks after nonoperative management of an adhesive SBO with return of colicky pain, emesis and obstipation; imaging again showed small-bowel obstruction. Given recurrence, taken to the OR 12/31 for laparotomy and adhesiolysis; all bowel viable. Diet advanced from POD 2 and tolerated, bowel function returned POD 3.\nUrethral catheter removed morning of 1/3. He did not void and bladder scan showed retention; straight catheterization done. On 1/4 an indwelling catheter could not be passed beyond the proximal urethra and there was blood at the meatus - see urology consult. Catheter placed by urology over a wire; to remain about three weeks.\n\nDischarge meds: amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily, acetaminophen 1 g every 6 h as needed.\nAllergies: NKDA\nWound: midline staples in place, clean. Staples out at surgery clinic in about 2 weeks. No lifting over 10 lb for 6 weeks.\nCatheter: leg bag by day, night bag at night. Urology clinic in about 3 weeks for catheter study.\nFollow-up: PCP 1 week."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Urology Inpatient Consultation",
+              "date": "2025-01-09T09:50",
+              "author": "urology",
+              "body": "UROLOGY CONSULT - 01/04/2025\nReason: difficult catheter placement, blood at meatus\n\n67-year-old with BPH on tamsulosin, POD 4 from laparotomy and adhesiolysis for a recurrent adhesive obstruction (first admitted for obstruction in late November). Retained after his catheter came out yesterday. This morning nursing tried to re-site a catheter; it stopped after a few centimeters, he had a sudden pain in the perineum, and some blood showed at the tip of the penis. Catheter pulled back at once and we were called.\n\nMeds: amlodipine, lisinopril, tamsulosin. NKDA.\nFH: father HTN/CAD, mother diverticular disease. Former smoker, 15 pk-yr. Retired math teacher.\n\nExam: palpable, distended bladder above the pubis. Perineum mildly tender to touch, no swelling, no scrotal hematoma. Small amount of dried blood at meatus.\n\nRetrograde urethrogram (performed today): extravasation of contrast at the bulbar urethra with contrast also continuing into the bladder - partial bulbar urethral disruption. Posterior urethra and bladder neck otherwise unremarkable.\n\nAssessment: iatrogenic partial bulbar urethral injury; urinary retention after surgery in a man with BPH.\n\nPlan: flexible cystoscopy at bedside; guidewire passed through the injured segment into the bladder and a 16 Fr catheter railroaded over it without difficulty, clear urine after initial blood-tinged drainage. Keep catheter about 3 weeks, then pericatheter urethrogram in clinic. Continue tamsulosin. Nobody else to manipulate the catheter - call urology for any problem."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "office_visit",
+          "start": "2025-01-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge, laparotomy and urethral injury",
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 80,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 84.1
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge Visit",
+              "date": "2025-01-13T11:50",
+              "author": "PCP",
+              "body": "Seen 6 days after discharge. Second SBO admission - this time went to the OR 12/31 for laparotomy and adhesiolysis, no resection. Course complicated by retention after the catheter came out and then a partial bulbar urethral tear during a re-catheterization attempt 1/4; urology placed a catheter over a wire. Op note, discharge summary and urology consult all reviewed.\n\nToday: incision a little sore, using acetaminophen once or twice a day. Eating normally, BMs daily. Catheter draining yellow urine, some perineal ache that is improving. No fevers. Managing the leg bag fine though says he 'is counting the days.'\n\nMeds reviewed: amlodipine 5, lisinopril 10, tamsulosin 0.4, acetaminophen prn. NKDA.\n\nExam: vitals as charted, afebrile. Midline incision with staples, edges together, no erythema or drainage. Abdomen soft, appropriately tender near incision. Catheter in place, urine clear. No calf tenderness.\n\nA/P\n1. S/p laparotomy/adhesiolysis for recurrent adhesive SBO - healing. Staples at surgery clinic next week.\n2. Partial bulbar urethral injury, catheter in - urology follow-up ~1/24 for the dye study. Catheter care reviewed.\n3. Urinary retention post-op, BPH - continue tamsulosin.\n4. HTN - fine.\nI'll check in by text next week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "specialist_visit",
+          "start": "2025-01-21T14:00",
+          "service": "General Surgery",
+          "reason": "post-op check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Clinic Letter",
+              "date": "2025-01-23T08:20",
+              "author": "general surgery",
+              "body": "Dear colleague,\n\nI saw your patient today three weeks out from laparotomy and adhesiolysis. He is eating a full diet with regular bowel movements and only minor incisional discomfort. The midline wound has healed; staples were removed and adhesive strips applied. No hernia on cough.\n\nNo lifting over 10 lb until six weeks after surgery, then no restriction. He knows adhesions can recur and what symptoms should bring him in. No routine follow-up needed with us.\n\nMeds as listed by your office. NKDA.\n\nGeneral Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-24a",
+          "kind": "specialist_visit",
+          "start": "2025-01-24T09:30",
+          "service": "Urology",
+          "reason": "pericatheter urethrogram, catheter removal",
+          "conditions": [
+            {
+              "label": "Partial bulbar urethral injury",
+              "action": "resolved",
+              "note": "healed on pericatheter urethrogram",
+              "icd10": "S37.33XA"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Clinic Note",
+              "date": "2025-01-27T13:10",
+              "author": "urology",
+              "body": "UROLOGY - 01/24/2025\n\nReturns 20 days after cystoscopic catheter placement for a partial bulbar urethral injury sustained during catheterization after abdominal surgery.\n\nPericatheter urethrogram: contrast outlines a smooth bulbar urethra with no extravasation. Catheter removed. Bladder filled by gravity and he voided in clinic; post-void residual by bladder scan 150 mL.\n\nImpression: urethral injury healed. Voiding with a modest residual on a background of BPH.\n\nPlan: continue tamsulosin 0.4 mg daily. Watch for slowing of the stream or spraying that could mean a stricture forming. Recheck flow and residual in 3 months.\n\nMeds: amlodipine 5 mg, lisinopril 10 mg, tamsulosin 0.4 mg. NKDA.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2025-02-11T08:15",
+              "author": "patient",
+              "body": "Good morning. My blood pressure pills and the prostate one are on their last refill from the old doctor. Can you send new ones to the same pharmacy? Also the catheter is out and I am a new man."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2025-02-11T11:40",
+              "author": "PCP",
+              "body": "Great news about the catheter. Sent amlodipine, lisinopril and tamsulosin, 90 days with refills. See you in March."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              79
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 83.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-18T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-18T10:00",
+              "author": "PCP",
+              "body": "BP f/u. Feeling back to normal after the winter of hospitals. Walking 2 miles again. Bowels regular. Urine stream 'about what it was' before all this, up once a night. No dysuria.\nHome BP readings run 128-138 / 78-84.\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. Midline scar healed, no bulge. No edema.\n\nA/P\nHTN - at goal, continue both. BMP today.\nBPH / recent retention - urology recheck next month.\nS/p adhesiolysis - doing well.\nRTC June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "specialist_visit",
+          "start": "2025-04-22T15:00",
+          "service": "Urology",
+          "reason": "voiding follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up Letter",
+              "date": "2025-04-25T09:05",
+              "author": "urology",
+              "body": "Thank you for sharing the care of this 67-year-old with BPH and a healed bulbar urethral injury from January.\n\nHe reports a weaker stream than before the winter and a sense of not emptying fully; nocturia once. No dysuria, no hematuria, no spraying.\n\nExam: prostate smooth, symmetric, nontender, about 50 g. Post-void residual by bladder scan 240 mL.\n\nImpression: chronic urinary retention from benign prostatic obstruction. No sign of urethral stricture.\n\nPlan: continue tamsulosin 0.4 mg daily. We talked through an outlet procedure; he would like to hold off for now, which is reasonable. Recheck in 6 months, sooner for infection or inability to void.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2025-06-17T11:00",
+              "author": "front desk",
+              "body": "Pt did not arrive for 10:30. Left VM. He called back at 2 pm, had the date wrong in his calendar. Offered video next week, accepted."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-24T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-06-24T16:20",
+              "author": "PCP",
+              "body": "Video, pt at his kitchen table, ID verified.\nApologized for missing last week. Doing well. Sent a photo of his BP log - two weeks of mornings, mostly 126-136/76-84, one 142/86 after a bad night's sleep.\nNo dizziness, no ankle swelling. Saw urology in April: residual a bit high, staying on tamsulosin, he's not keen on a procedure yet.\nMeds unchanged. NKDA.\n\nA/P\nHTN controlled - continue amlodipine 5 / lisinopril 10.\nBPH with retention - per urology, recheck there in the fall. Told him to call if he can't go, gets fevers or burning.\nWellness visit and labs in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:30",
+          "end": "2025-09-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              139,
+              71
+            ],
+            "hr": 69,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 83.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-16T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-09-16T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-09-16T09:40",
+              "author": "PCP",
+              "body": "ANNUAL WELLNESS VISIT - turns 68 today.\n\nInterval: no hospital visits since January. Urology in April: residual 240, chronic retention from the prostate, continuing tamsulosin, procedure deferred by his choice. Says the stream is slow and he sometimes goes back to the bathroom a second time. No UTIs, no fevers.\nHTN: home readings in the low-mid 130s/80s.\nBowels regular since surgery, no pain or bloating.\n\nFunctional: independent with everything, drives, does his own finances and the yard. No falls. Hearing fine for conversation. Vision corrected, eye exam last year.\nCognition: clock and 3-word recall normal.\nMood: PHQ-2 0.\nSafety: seat belt, smoke detectors, no firearms.\nHabits: ex-smoker, 15 pk-yr. A drink or so a month. Walks most days.\n\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted. Well. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed midline and subcostal scars, no hernia. No edema.\n\nPrevention:\n- Colonoscopy 2019, diverticulosis only, next 2029.\n- Lung screening: not eligible at 15 pk-yr.\n- AAA: aorta normal caliber on CT 11/2024, satisfies screening.\n- Vaccines: PCV20 2024, Shingrix done, Tdap 2017. Flu/COVID due next month - nurse visit booked.\n- Hep C / HIV done 2024.\n\nPlan: CBC, CMP, lipids today. Written prevention schedule given. Follow BP 3-4 mo. Urology recheck this fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "portal_message",
+          "start": "2025-09-18T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness visit labs",
+              "date": "2025-09-18T12:30",
+              "author": "PCP",
+              "body": "Walter, labs are all normal - kidneys, salts, blood count, cholesterol. No changes. Nurse visit for your shots is on the books for 10/7."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T09:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-07T09:40",
+              "author": "RN",
+              "body": "Screening questions negative, no prior reactions. High-dose flu given IM in the left arm, 2025-26 COVID (Moderna) IM in the right arm. Observed 15 min, no reaction. Mentioned he has a urology ultrasound next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "imaging",
+          "start": "2025-10-14T13:00",
+          "service": "Radiology",
+          "reason": "urinary retention",
+          "conditions": [
+            {
+              "label": "Calculus in bladder",
+              "action": "diagnosed",
+              "onset": "2025-10-14",
+              "icd10": "N21.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2025-10-14T13:00",
+              "text": "INDICATION: Chronic urinary retention, BPH.\nCOMPARISON: CT abdomen/pelvis 11/2024.\nFINDINGS: Right kidney 11.0 cm, left kidney 11.3 cm, normal cortical thickness and echogenicity. No hydronephrosis, stones or masses in either kidney. Bladder: pre-void volume 470 mL; a single mobile echogenic focus with posterior shadowing in the dependent bladder measuring 1.6 cm, consistent with a calculus. Post-void residual 310 mL. Prostate volume 52 mL.",
+              "conclusion": "1.6 cm bladder stone. Post-void residual 310 mL. Prostate 52 mL. Normal kidneys without hydronephrosis."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "specialist_visit",
+          "start": "2025-10-21T10:00",
+          "service": "Urology",
+          "reason": "bladder stone, chronic retention",
+          "orders": [
+            {
+              "id": "cysto-stone-2025",
+              "action": "placed",
+              "order": "Cystoscopy with laser cystolitholapaxy",
+              "category": "procedure",
+              "to": "Urology",
+              "reason": "bladder stone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up Letter",
+              "date": "2025-10-23T15:30",
+              "author": "urology",
+              "body": "Dear Doctor,\n\nYour patient's follow-up ultrasound shows a 1.6 cm bladder stone, a post-void residual of 310 mL and a 52 mL prostate; the kidneys are normal without hydronephrosis. The stone is almost certainly a product of incomplete emptying.\n\nWe have scheduled cystoscopy with laser cystolitholapaxy at our surgery center for 11/26. He again prefers to stay on tamsulosin rather than add an outlet procedure at the same sitting; we will revisit that afterward. Please send a preoperative history and physical with an ECG and basic labs.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preoperative evaluation, cystoscopy",
+          "vitals": {
+            "bp": [
+              142,
+              83
+            ],
+            "hr": 57,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-12T14:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-12T14:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-11-12T14:20",
+              "text": "Sinus rhythm, rate 72. PR 170 ms, QRS 92 ms, QTc 418 ms. Normal axis. No ST or T wave abnormality. No prior for comparison.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-12T14:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-11-12T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-12T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preoperative Evaluation",
+              "date": "2025-11-12T15:00",
+              "author": "PCP",
+              "body": "PRE-OP H&P\nProcedure: cystoscopy with laser cystolitholapaxy, 11/26, urology surgery center, general or spinal anesthesia.\nIndication: 1.6 cm bladder stone with chronic retention from BPH (PVR 310 on 10/14 US).\n\nHx: HTN, BPH with chronic retention, diverticulosis. Laparotomy/adhesiolysis 12/2024 under general without anesthetic problems; partial bulbar urethral injury 1/2025, healed. Remote open cholecystectomy.\nFunctional capacity: walks 2 miles, climbs 2 flights without stopping - well over 4 METs.\nNo CP, SOB, palpitations, syncope. No bleeding history. No anticoagulants or antiplatelets.\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\nFormer smoker, rare alcohol.\n\nExam: vitals as charted. Airway unremarkable. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed scars. No edema.\nECG: normal sinus rhythm, no ST-T changes.\nLabs: CBC, BMP drawn - will forward.\n\nAssessment: low-risk procedure, good functional capacity, no active cardiac conditions. Acceptable risk; no further testing needed.\nRecs: take amlodipine and tamsulosin morning of surgery; hold lisinopril the morning of. Resume after.\nFaxed to urology with labs when back."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "telephone",
+          "start": "2025-11-14T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op packet sent",
+              "date": "2025-11-14T09:05",
+              "author": "MA",
+              "body": "Pre-op H&P, ECG tracing and labs (CBC, BMP normal) faxed to urology surgery center. Confirmation page received."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "procedure_visit",
+          "start": "2025-11-26T07:30",
+          "end": "2025-11-26T12:45",
+          "service": "Urology",
+          "reason": "bladder stone",
+          "conditions": [
+            {
+              "label": "Calculus in bladder",
+              "action": "resolved",
+              "note": "removed by cystolitholapaxy",
+              "icd10": "N21.0"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cysto-stone-2025",
+              "action": "done",
+              "date": "2025-11-26T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Operative Note - Cystolitholapaxy",
+              "date": "2025-12-01T10:15",
+              "author": "urology",
+              "body": "Date: 11/26/2025\nProcedure: cystourethroscopy with holmium laser cystolitholapaxy\nAnesthesia: general (LMA)\nPreop antibiotic: single IV dose per protocol\n\nFindings: anterior urethra normal caliber, bulbar segment patent and well healed at the site of the January injury. Prostatic urethra with enlarged lateral lobes. Single 1.6 cm bladder stone, fragmented and evacuated completely. Ureteral orifices normal. No bladder tumor.\n\nNo complications. Catheter not left. Voided before discharge home the same day.\nPlan: continue tamsulosin. Urology clinic in the spring to recheck residual and discuss outlet surgery again.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "ed_visit",
+          "start": "2025-12-12T11:20",
+          "end": "2025-12-12T19:30",
+          "service": "Emergency Medicine",
+          "reason": "fevers, malaise, poor appetite",
+          "conditions": [
+            {
+              "label": "Acute infective endocarditis of tricuspid valve, Enterococcus faecalis",
+              "action": "diagnosed",
+              "onset": "2025-12-06",
+              "icd10": "I33.0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-12-12T11:28",
+              "temp_c": 38.3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-12T11:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-12T11:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T11:55",
+              "resulted": "2025-12-14T11:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 1 of 3: positive. Gram stain: gram-positive cocci in pairs and chains. Identification: Enterococcus faecalis. Susceptible to ampicillin."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T12:00",
+              "resulted": "2025-12-14T11:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 2 of 3: positive. Gram stain: gram-positive cocci in pairs and chains. Identification: Enterococcus faecalis."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-12T12:10",
+              "resulted": "2025-12-14T11:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 3 of 3: positive. Gram stain: gram-positive cocci in pairs and chains. Identification: Enterococcus faecalis."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-12-12T16:30",
+              "text": "INDICATION: Fever, new murmur, positive blood cultures.\nFINDINGS: Normal left ventricular size and wall thickness; LVEF estimated 60%. Normal right ventricular size and function. A mobile echodensity is attached to the tricuspid valve. Aortic, mitral and pulmonic valves appear structurally normal without vegetation. No pericardial effusion. IVC normal with respiratory variation.",
+              "conclusion": "Mobile mass on the tricuspid valve, consistent with vegetation in this setting. Normal biventricular function."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-12T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-12-22T09:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of visit: 12/12/2025\n\nCC: fevers on and off for nearly a week\n\nHPI: 68M, HTN, BPH with chronic retention, diverticulosis; hospitalized last winter for adhesive SBO needing laparotomy, complicated by a catheter-related urethral injury. Had cystoscopy with bladder stone removal about two weeks ago. Since roughly 12/6 has had intermittent fevers, feeling run down, and not wanting to eat. No cough, no dysuria, no abdominal pain.\nNo prosthetic valves, no indwelling lines. Never used IV drugs.\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\nFH: father HTN/CAD; mother diverticular disease.\n\nTriage temp 38.3 C (101 F).\n\nExam: febrile, tired-appearing. New holosystolic murmur loudest at the left lower sternal border. No Janeway lesions, no Osler nodes. Lungs clear. Abdomen benign. No CVA tenderness.\n\nWorkup: three blood culture sets from separate sites drawn before antibiotics. All three flagged positive overnight with gram-positive cocci in pairs and chains; identified as an Enterococcus species, later E. faecalis. TTE: mobile mass on the tricuspid valve.\n\nImpression: enterococcal infective endocarditis of the tricuspid valve, likely seeded from the recent urologic procedure.\nPlan: admit to medicine, ID and cardiology consults, empiric therapy after cultures."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-12b",
+          "kind": "hospital_admission",
+          "start": "2025-12-12T19:30",
+          "end": "2025-12-19T13:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "enterococcal tricuspid valve endocarditis",
+          "medications": [
+            {
+              "drug_text": "ampicillin 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 4 hours via PICC through 1/25/2026",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "Q4H",
+              "route": "Intravenous",
+              "reason": "enterococcal endocarditis"
+            },
+            {
+              "drug_text": "ceftriaxone 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV every 12 hours via PICC through 1/25/2026",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Intravenous",
+              "reason": "enterococcal endocarditis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-14T06:00",
+              "resulted": "2025-12-19T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 1 of 2: no growth at 5 days."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-14T06:10",
+              "resulted": "2025-12-19T06:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 2 of 2: no growth at 5 days."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-12-12T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-12-19T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Medicine Discharge Summary",
+              "date": "2025-12-22T09:15",
+              "author": "hospital medicine",
+              "body": "Admission 12/12/2025 - Discharge 12/19/2025\n\nPrincipal dx: native tricuspid valve infective endocarditis, Enterococcus faecalis (ampicillin-susceptible)\nOther: HTN, BPH with chronic urinary retention, diverticulosis\n\nCourse: Admitted from ED with fever, new murmur, 3 of 3 blood culture sets positive and a tricuspid mass on TTE. Recent cystoscopy with stone removal (11/26) the likely portal. Started on ampicillin plus ceftriaxone after ID input once the isolate was identified. Fever resolved within 48 h. Repeat cultures 12/14 no growth - that date counts as day 1 of therapy.\nTEE 12/15: 1.1 cm mobile vegetation on the tricuspid valve. No perivalvular abscess. Aortic, mitral and pulmonic valves normal. Cardiology: no surgical indication; medical therapy.\nPICC placed right arm 12/17, tip at cavoatrial junction.\nAppetite returning at discharge, ambulating independently.\n\nDischarge meds:\n- ampicillin 2 g IV q4h (home infusion pump) through 1/25/2026\n- ceftriaxone 2 g IV q12h through 1/25/2026\n- amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily - unchanged\nAllergies: NKDA\n\nFollow-up: home infusion with weekly CBC and BMP to ID and PCP. ID clinic at end of therapy. Repeat TTE after therapy. PCP within 1 week."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases Consultation",
+              "date": "2025-12-22T09:20",
+              "author": "infectious diseases",
+              "body": "ID CONSULT - 12/13/2025\n\n68-year-old man with BPH and chronic retention who had cystoscopic stone removal 11/26, now with a week of fevers, a new tricuspid-area murmur, 3/3 cultures with E. faecalis (ampicillin-susceptible) and a tricuspid vegetation on TTE. No IV drug use, no prosthetic material or lines. Genitourinary source most likely.\n\nRecommendations:\n1. Ampicillin 2 g IV q4h plus ceftriaxone 2 g IV q12h - avoids aminoglycoside toxicity at his age.\n2. Repeat blood cultures until negative; duration 6 weeks from the first negative set.\n3. TEE to define the vegetation and look for abscess.\n4. PICC once cultures clear; OPAT with weekly CBC and BMP.\n5. ID clinic near end of therapy.\n\nInfectious Diseases"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "telephone",
+          "start": "2025-12-22T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-12-22T13:40",
+              "author": "RN",
+              "body": "Called after hospital records came in. Home since Friday. Infusion nurse came Saturday and set him up; ampicillin runs on a pump, he does the ceftriaxone twice a day himself after teaching. PICC dressing dry. No fevers since discharge, temps 98s. Eating better. Knows to call for fever, arm swelling or redness at the line. TCM visit 12/29 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-27a",
+          "kind": "outside_records",
+          "start": "2025-12-27T10:00",
+          "reason": "home infusion weekly labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-26T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-26T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Weekly Labs",
+              "date": "2025-12-27T10:00",
+              "author": "home infusion pharmacy",
+              "body": "OPAT weekly monitoring, week 2 of therapy. Draw 12/26 via PICC. CBC with diff and BMP attached. Line flushing well, dressing changed, site clean. Doses on schedule, no missed infusions. Copy to ID."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "office_visit",
+          "start": "2025-12-29T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge, endocarditis",
+          "vitals": {
+            "bp": [
+              139,
+              88
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 83.9
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-29T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2025-12-29T10:50",
+              "author": "PCP",
+              "body": "Post-discharge visit. Admitted 12/12-12/19 with E. faecalis tricuspid valve endocarditis, 2 weeks after his cystolitholapaxy. TEE 1.1 cm vegetation, no abscess, no surgery needed. On ampicillin + ceftriaxone via R arm PICC until 1/25. Records, ID consult and first OPAT labs reviewed.\n\nHe's tired but better each day. No fevers at home. Appetite back. Pump is a nuisance at night. Voiding ok, no burning. No SOB, no leg swelling.\n\nMeds: ampicillin 2 g IV q4h, ceftriaxone 2 g IV q12h, amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted, afebrile. Systolic murmur at LLSB. Lungs clear. PICC site R upper arm clean, no erythema, no arm swelling. No edema. No peripheral stigmata.\n\nA/P\n1. Enterococcal tricuspid IE - on track. Weekly labs going to us and ID. ID visit end of January, TTE after.\n2. HTN - fine, continue.\n3. BPH with chronic retention - stable; urology in spring.\nText line for anything. Return in about 6 weeks after therapy ends."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-01-03a",
+          "kind": "outside_records",
+          "start": "2026-01-03T10:15",
+          "reason": "home infusion weekly labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-02T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-02T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Weekly Labs",
+              "date": "2026-01-03T10:15",
+              "author": "home infusion pharmacy",
+              "body": "Week 3. Labs drawn 1/2 from PICC, results attached. Patient afebrile per log. Pump alarms twice overnight 12/31, resolved by nurse call, no doses lost."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-10a",
+          "kind": "outside_records",
+          "start": "2026-01-10T09:50",
+          "reason": "home infusion weekly labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-09T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-09T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Weekly Labs",
+              "date": "2026-01-10T09:50",
+              "author": "home infusion pharmacy",
+              "body": "Week 4 monitoring. 1/9 CBC/diff and BMP attached. Dressing and cap change done. Site without redness."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Result Note",
+              "date": "2026-01-12T08:30",
+              "author": "PCP",
+              "body": "OPAT labs through 1/9 reviewed - counts and kidney function steady on ampicillin/ceftriaxone. No action."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17a",
+          "kind": "outside_records",
+          "start": "2026-01-17T10:30",
+          "reason": "home infusion weekly labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-16T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-16T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Weekly Labs",
+              "date": "2026-01-17T10:30",
+              "author": "home infusion pharmacy",
+              "body": "Week 5. 1/16 labs attached. Tolerating therapy. Final week of doses scheduled to end 1/25, PICC pull to be arranged by ID."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Almost done",
+              "date": "2026-01-20T07:55",
+              "author": "patient",
+              "body": "Five days left on the IV. Feeling like myself. Do I need to see you before the ID doctor or after?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Almost done",
+              "date": "2026-01-20T09:30",
+              "author": "PCP",
+              "body": "After is fine. ID on the 28th, then the echo, then come see me mid-February. Front desk will send a time."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-24a",
+          "kind": "outside_records",
+          "start": "2026-01-24T09:40",
+          "reason": "home infusion weekly labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-23T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-23T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Home Infusion Weekly Labs",
+              "date": "2026-01-24T09:40",
+              "author": "home infusion pharmacy",
+              "body": "Week 6, final monitoring set. 1/23 labs attached. Last doses 1/25."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "specialist_visit",
+          "start": "2026-01-28T13:30",
+          "service": "Infectious Diseases",
+          "reason": "end of therapy, enterococcal endocarditis",
+          "conditions": [
+            {
+              "label": "Acute infective endocarditis of tricuspid valve, Enterococcus faecalis",
+              "action": "resolved",
+              "note": "6 weeks ampicillin + ceftriaxone completed 1/25/2026",
+              "icd10": "I33.0"
+            },
+            {
+              "label": "Personal history of infective endocarditis",
+              "action": "history",
+              "onset": "2025-12-12",
+              "icd10": "Z86.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ampicillin 2000 MG Injection",
+              "action": "stop",
+              "reason": "course completed 1/25/2026"
+            },
+            {
+              "drug_text": "ceftriaxone 2000 MG Injection",
+              "action": "stop",
+              "reason": "course completed 1/25/2026"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-26T09:00",
+              "resulted": "2026-01-31T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 1 of 2: no growth at 5 days."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-26T09:10",
+              "resulted": "2026-01-31T09:10",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Set 2 of 2: no growth at 5 days."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases Clinic Letter",
+              "date": "2026-02-02T11:00",
+              "author": "infectious diseases",
+              "body": "Dear colleague,\n\nYour patient completed six weeks of ampicillin and ceftriaxone for ampicillin-susceptible E. faecalis endocarditis of the native tricuspid valve on 1/25. His PICC was removed on 1/26 and two surveillance blood cultures drawn the same day have no growth at five days. Weekly monitoring labs were unremarkable throughout. He has had no fever since the second hospital day and reports normal appetite and energy.\n\nExam today: afebrile, heart regular without murmur, PICC site healed, no peripheral stigmata.\n\nAssessment: enterococcal tricuspid endocarditis, treated. Genitourinary source after cystolitholapaxy.\n\nRecommendations:\n- End-of-therapy transthoracic echo, ordered for 2/10.\n- Because of prior endocarditis he should receive antibiotic prophylaxis before dental procedures that involve the gums or tooth roots: amoxicillin 2 g by mouth 30 to 60 minutes before. Please prescribe as needed.\n- Report any fever promptly and have blood cultures drawn before any antibiotic.\n\nNo routine ID follow-up after the echo if it is reassuring.\n\nInfectious Diseases"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "imaging",
+          "start": "2026-02-10T10:30",
+          "service": "Cardiology",
+          "reason": "end of therapy echo, endocarditis",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-02-10T10:30",
+              "text": "INDICATION: Completed therapy for tricuspid valve endocarditis.\nCOMPARISON: TTE 12/12/2025.\nFINDINGS: Normal left ventricular size, wall thickness and systolic function, LVEF 60%. Normal right ventricular size and function. Tricuspid valve leaflets thin and mobile; no vegetation seen. Aortic, mitral and pulmonic valves normal. Normal valve function. No pericardial effusion.",
+              "conclusion": "No residual vegetation. Normal valve function. LVEF 60%."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after endocarditis",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 84.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-17T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-17T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-17T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-17T09:45",
+              "author": "PCP",
+              "body": "F/u after E. faecalis tricuspid IE. Finished 6 wk ampicillin/ceftriaxone 1/25, PICC out 1/26, surveillance cultures no growth (ID letter reviewed). End-of-therapy TTE 2/10: no vegetation, normal valve function, EF 60%.\n\nFeels fully recovered. Back to walking. No fever, night sweats, SOB or swelling. Voiding about as before; some hesitancy.\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted, afebrile. Heart regular, no murmur now. Lungs clear. Old PICC site healed. No edema.\n\nA/P\n1. Hx enterococcal IE, treated - per ID, dental prophylaxis from now on. He has a cleaning in March - will send amoxicillin. Fever = call before any antibiotic, cultures first.\n2. BPH with chronic retention - urology in April. Copy of ID letter and echo to urology so they have the history.\n3. HTN - continue. BMP, CBC today.\nRTC May."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "telephone",
+          "start": "2026-02-19T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records to urology",
+              "date": "2026-02-19T10:10",
+              "author": "MA",
+              "body": "Faxed ID letter, discharge summary and echo report to urology per PCP so they have it before his April visit. Labs from 2/17 normal, pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T08:20",
+          "medications": [
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 4 capsules (2 g) by mouth 30 to 60 minutes before dental procedures",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "endocarditis prophylaxis before dental work"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dentist",
+              "date": "2026-03-09T08:20",
+              "author": "patient",
+              "body": "Cleaning is next Thursday the 19th. The dental office asked if I need the antibiotic."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dentist",
+              "date": "2026-03-09T12:05",
+              "author": "PCP",
+              "body": "Yes - sent amoxicillin to your pharmacy. Take all 4 capsules together 30-60 minutes before the appointment. Gave you a few extra doses' worth with refills so you have it for future visits. Bring the bottle so the dentist can note it."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "specialist_visit",
+          "start": "2026-04-21T14:30",
+          "service": "Urology",
+          "reason": "voiding follow-up after stone removal",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up Letter",
+              "date": "2026-04-24T09:20",
+              "author": "urology",
+              "body": "Dear Doctor,\n\nThanks for forwarding the infectious diseases records; noted for any future procedure.\n\nHe is five months out from cystolitholapaxy. Stream is better than last fall, no infections, no hematuria. Bladder scan post-void residual today 95 mL.\n\nImpression: BPH with chronic retention, much improved emptying after the stone was cleared.\n\nPlan: continue tamsulosin 0.4 mg daily. Outlet surgery not needed at this point. Recheck residual in 6-12 months.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "office_visit",
+          "start": "2026-05-19T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              147,
+              81
+            ],
+            "hr": 77,
+            "spo2": 96,
+            "weight_kg": 83.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-19T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-19T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-19T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-19T15:35",
+              "author": "PCP",
+              "body": "Routine BP check. Spring has been quiet. Dental cleaning in March went fine with the amoxicillin. Urology in April: residual down to 95, no surgery for now.\nHome BP 124-134 / 76-82. No side effects.\nMeds: amlodipine 5, lisinopril 10, tamsulosin 0.4, amoxicillin 2 g before dental work. NKDA.\n\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\nHTN - controlled, no change. BMP today.\nHx IE - prophylaxis in place, no fevers.\nBPH - per urology.\nWellness visit in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "reason": "annual wellness visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute infective endocarditis of tricuspid valve, Enterococcus faecalis|I33.0": {
+        "code": "I33.0",
+        "display": "Acute and subacute infective endocarditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Adhesive small bowel obstruction|K56.50": {
+        "code": "K56.50",
+        "display": "Intestinal adhesions [bands], unspecified as to partial versus complete obstruction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Calculus in bladder|N21.0": {
+        "code": "N21.0",
+        "display": "Calculus in bladder",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Partial bulbar urethral injury|S37.33XA": {
+        "code": "S37.33XA",
+        "display": "Laceration of urethra, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of infective endocarditis|Z86.79": {
+        "code": "Z86.79",
+        "display": "Personal history of other diseases of the circulatory system",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Retention of urine|R33.9": {
+        "code": "R33.9",
+        "display": "Retention of urine, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ampicillin 2000 MG Injection": {
+        "code": "1721476",
+        "display": "ampicillin 2000 MG Injection",
+        "ingredient": "ampicillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ceftriaxone 2000 MG Injection": {
+        "code": "1665046",
+        "display": "ceftriaxone 2000 MG Injection",
+        "ingredient": "ceftriaxone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

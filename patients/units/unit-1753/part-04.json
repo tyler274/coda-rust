@@ -1,0 +1,893 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001753",
+      "events": [
+        {
+          "id": "2024-04-27a",
+          "kind": "ed_visit",
+          "start": "2024-04-27T13:15",
+          "end": "2024-04-27T19:20",
+          "service": "Emergency Medicine",
+          "reason": "migratory joint pain, fever and rash",
+          "vitals": {
+            "temp_c": 38.7,
+            "hr": 102,
+            "bp": [
+              120,
+              78
+            ]
+          },
+          "measure": [
+            "rr",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-27T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T13:50",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 90
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-27T14:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:30",
+              "resulted": "2024-04-27T16:00",
+              "results": [
+                {
+                  "test": "Gram stain, skin lesion exudate",
+                  "loinc": "664-3",
+                  "text": "Gram-negative diplococci"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "diagnosed",
+              "onset": "2024-04-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-04-27T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "author": "emergency medicine",
+              "date": "2024-05-03T10:20",
+              "body": "EMERGENCY DEPARTMENT NOTE - outside facility\nDOS 04/27/2024\n\nCC: joint pain moving from joint to joint, fever, rash.\n\nHPI: 27F with prior STIs (early syphilis 2021, chlamydial cervicitis 2022, primary genital HSV 2023). Two days of pain and swelling that shifts between joints, now mostly wrists and knees, with fevers and chills. Rash started as small red spots on arms and legs and turned into little pus-topped blisters. Multiple partners, barrier protection inconsistent.\n\nMeds: none. Allergies: NKDA.\n\nTriage: T 38.7 C, HR 102, BP 120/78.\nExam: uncomfortable, moderate distress with pain. Wrists and knees swollen and tender; pain along the flexor tendon sheaths of both wrists, consistent with tenosynovitis. Scattered small vesiculopustules on the extremities, a few with an erythematous halo. Heart tachycardic, regular, no murmur. Lungs clear. Abdomen soft.\n\nResults: WBC 15.0 (80% neutrophils). CRP 90 mg/L. ESR 70 mm/hr. UA unremarkable. Gram stain of unroofed pustule: gram-negative diplococci.\n\nMDM: arthritis-dermatitis syndrome; picture is disseminated gonococcal infection. Blood cultures x2, cervical and pharyngeal swabs sent. Ceftriaxone 1 g IV given. Admit to medicine.\n\nDx: disseminated gonococcal infection."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-27b",
+          "kind": "hospital_admission",
+          "start": "2024-04-27T19:20",
+          "end": "2024-04-30T11:40",
+          "service": "Hospital Medicine",
+          "reason": "disseminated gonococcal infection",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:20",
+              "resulted": "2024-04-29T09:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae culture, cervix",
+                  "loinc": "688-2",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:00",
+              "resulted": "2024-04-30T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/3)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-04-27T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-04-30T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "hospitalist",
+              "date": "2024-05-03T10:25",
+              "body": "DISCHARGE SUMMARY\nAdmitted 04/27/2024 - Discharged 04/30/2024\n\nPrincipal diagnosis: disseminated gonococcal infection (arthritis-dermatitis).\n\nHospital course: Admitted from the ED with fever, migratory polyarthralgia with wrist tenosynovitis, and vesiculopustular skin lesions; Gram stain of a lesion showed gram-negative diplococci. Started ceftriaxone 1 g IV every 24 hours. Cervical NAAT positive for N. gonorrhoeae, negative for chlamydia. Cervical culture grew N. gonorrhoeae susceptible to ceftriaxone and cefixime. Blood cultures without growth. Fever resolved within 36 hours; joint swelling and skin lesions improving. No effusion requiring aspiration.\n\nDischarge meds: cefixime 400 mg PO BID to finish a 7-day total course (through 5/3).\nAllergies: NKDA.\nCondition at discharge: stable, afebrile, ambulating.\nInstructions: no sex until treatment complete and partners treated; partner services notified. PCP follow-up within 1 week.\n\nFollow-up: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-29a",
+          "kind": "portal_message",
+          "start": "2024-04-29T18:05",
+          "reason": "hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "in the hospital",
+              "author": "patient",
+              "date": "2024-04-29T18:05",
+              "body": "Hi, I'm in the hospital since Saturday. My joints blew up and I had a fever and spots, they're saying it's gonorrhea that spread into my blood/joints. On IV antibiotics. Feeling better today. They said I need to see you after I get out, probably Tuesday or Wednesday?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: in the hospital",
+              "author": "PCP",
+              "date": "2024-04-29T19:10",
+              "body": "Sorry you're going through this, Leah, and glad you're improving. I'll have the front desk hold a spot for you next Tuesday 5/7. Bring your discharge paperwork."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "office_visit",
+          "start": "2024-05-07T13:30",
+          "end": "2024-05-07T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "resolved",
+              "note": "treated, April 2024"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-05-07T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2024-05-07T14:25",
+              "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 4/27-4/30 for disseminated gonococcal infection (ED note and discharge summary received 5/3, reviewed): fever, migratory joint pain with wrist tenosynovitis, pustular rash; WBC 15.0, CRP 90, ESR 70; lesion Gram stain GN diplococci; cervical NAAT and culture positive for gonorrhea, susceptible; blood cultures negative. Ceftriaxone IV, then cefixime to finish 7 days.\n\nToday: finished the cefixime Friday. No fever. Wrists still a little stiff in the morning, knees fine. Spots have crusted and are fading.\n\nExam: vitals as charted, afebrile. Wrists without swelling, full range. Knees without effusion. A few small crusted macules on forearms and shins.\n\nA/P\n1. Disseminated gonococcal infection, treated and clinically resolved. Call for fever, a hot swollen joint, or new spots.\n2. High-risk sexual behavior. Long talk about condoms with every partner. Partners treated per health department.\n3. Med rec: no ongoing medications."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "annual_physical",
+          "start": "2024-10-24T08:15",
+          "end": "2024-10-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-24T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-24T08:45",
+              "issued": "2024-10-29T11:30",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-24T08:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-24T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-24T09:10",
+              "body": "ANNUAL PHYSICAL\n\n28. Doing fine. No joint pain since the spring hospitalization; skin healed. No herpes recurrence. No meds.\n\nExam: vitals as charted. Joints without swelling or tenderness. Skin clear. Pelvic: normal external genitalia, no ulcers; cervix normal appearing. Pap collected.\n\nA/P\n1. Preventive: Pap today (last 2021). CBC.\n2. History of DGI, early syphilis, chlamydia and HSV; condoms and testing reviewed again.\n3. Flu shot.\n\nNext fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pap",
+              "author": "PCP",
+              "date": "2024-10-30T08:00",
+              "body": "Pap NILM. CBC normal. Next cervical screen 2027. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "ed_visit",
+          "start": "2025-05-07T10:05",
+          "end": "2025-05-07T16:30",
+          "service": "Emergency Medicine",
+          "reason": "fever and migratory joint pain",
+          "vitals": {
+            "temp_c": 38.7,
+            "hr": 102,
+            "bp": [
+              120,
+              78
+            ]
+          },
+          "measure": [
+            "rr",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-07T12:40",
+              "resulted": "2025-05-07T13:30",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "value": 50000,
+                  "unit": "/uL"
+                },
+                {
+                  "test": "Synovial fluid neutrophils",
+                  "loinc": "17836-8",
+                  "value": 90,
+                  "unit": "%"
+                },
+                {
+                  "test": "Gram stain, synovial fluid",
+                  "loinc": "664-3",
+                  "text": "Gram-negative diplococci"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "diagnosed",
+              "onset": "2025-05-04"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-07T10:05"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2025-05-07T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "author": "emergency medicine",
+              "date": "2025-06-18T09:10",
+              "body": "ED PHYSICIAN NOTE (outside facility)\nDate of visit: 05/07/2025\nReceived after records request\n\nCC: fever, joint pain x3 days.\n\nHPI: 28 y/o woman with a history of syphilis, chlamydia and HSV, and an admission for disseminated gonococcal infection in April 2024, presenting with three days of fever and pain that has moved among knees, wrists and ankles, with swelling and marked tenderness. New rash on arms and legs. She says it feels like last year. Multiple partners, inconsistent condom use. No medications.\n\nAllergies: NKDA.\n\nVitals: T 38.7 C, HR 102, BP 120/78.\nExam: petechial eruption over palms and soles. Right knee erythematous, warm and swollen; motion limited by pain. Bilateral wrist tenosynovitis.\n\nProcedure: right knee arthrocentesis under sterile technique. Synovial WBC 50,000/mm3, 90% neutrophils. Gram stain: gram-negative diplococci. Culture sent.\nBlood cultures drawn. Cervical and pharyngeal NAAT collected.\n\nMDM: recurrent DGI with septic gonococcal arthritis of the right knee. Ceftriaxone 1 g IV. Admitted.\n\nDx: disseminated gonococcal infection, recurrent."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-07b",
+          "kind": "hospital_admission",
+          "start": "2025-05-07T16:30",
+          "end": "2025-05-10T12:15",
+          "service": "Hospital Medicine",
+          "reason": "recurrent disseminated gonococcal infection",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-07T12:40",
+              "resulted": "2025-05-09T15:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T11:00",
+              "resulted": "2025-05-09T08:30",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae rRNA, throat",
+                  "loinc": "60255-7",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T11:00",
+              "resulted": "2025-05-10T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/13)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-07T18:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-05-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "hospitalist",
+              "date": "2025-06-18T09:15",
+              "body": "DISCHARGE SUMMARY\nAdmission 05/07/2025 - Discharge 05/10/2025\n\nDiagnosis: recurrent disseminated gonococcal infection with right knee gonococcal arthritis.\n\nCourse: Second episode in about a year. Right knee aspirate in the ED: 50,000 WBC, 90% PMNs, gram-negative diplococci; culture grew N. gonorrhoeae, susceptible to ceftriaxone and cefixime. Cervical NAAT positive for gonorrhea; chlamydia negative; pharyngeal gonorrhea NAAT negative. Blood cultures no growth. Ceftriaxone 1 g IV daily with rapid defervescence; knee effusion decreased and range of motion improved; no repeat aspiration needed. Rash fading.\n\nDischarge medications: cefixime 400 mg PO BID to complete 7 days total (through 5/13).\nAllergies: NKDA.\nDischarge condition: good.\nFollow-up: PCP in one week. Abstain until treatment complete and partners treated."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "pharmacy",
+          "start": "2025-05-10T14:00",
+          "reason": "fill notification",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside prescription fill",
+              "author": "MA",
+              "date": "2025-05-12T08:10",
+              "body": "Fill history: cefixime 400 mg caps #8 filled Saturday 5/10/25, prescriber a hospital medicine physician. No hospital records received. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "portal_message",
+          "start": "2025-05-12T09:02",
+          "reason": "hospital discharge",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "it happened again",
+              "author": "patient",
+              "date": "2025-05-12T09:02",
+              "body": "Hi, I was admitted again last week with the same gonorrhea joint thing, this time mostly my right knee. They drained it. Home since Saturday on cefixime. Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: it happened again",
+              "author": "front desk",
+              "date": "2025-05-12T10:15",
+              "body": "Hi Leah, you're booked Wednesday 5/14 at 2:40 with the doctor. Please bring any discharge papers you have since we haven't received them yet."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T14:40",
+          "end": "2025-05-14T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-14T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-05-14T15:30",
+              "body": "TRANSITIONAL CARE VISIT\n\nNo hospital records yet; she forgot her discharge papers. History from Leah and the fill history.\n\nAdmitted 5/7-5/10 at the regional hospital: fever, joint pain moving around, rash on palms and soles, then a hot swollen right knee that was drained in the ED. Told the fluid showed the same gonorrhea bacteria as last year. IV antibiotics, then cefixime twice daily; last dose tomorrow morning.\n\nToday: no fever since Thursday. Right knee still a little stiff going down stairs but much better. Rash fading.\n\nExam: vitals as charted, afebrile. Right knee: no warmth, mild residual swelling, flexion slightly limited. Wrists without swelling. A few faint macules on palms.\n\nA/P\n1. Recurrent disseminated gonococcal infection, second episode, on oral step-down. Finish cefixime. Gentle range of motion for the knee. Records requested from the hospital.\n2. High-risk sexual behavior. Condoms, partner treatment.\n\nRecheck as needed; physical in the fall."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "MA",
+              "date": "2025-05-14T16:00",
+              "body": "Release signed today. Request for 5/7/25 ED record and discharge summary faxed to the hospital records office."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T07:40",
+          "reason": "records received",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital records arrived",
+              "author": "PCP",
+              "date": "2025-06-19T07:40",
+              "body": "Hi Leah, your May ED and hospital records finally came in. They match what you told me: the knee fluid grew gonorrhea that was sensitive to the antibiotics you got, and the blood cultures stayed negative. How is the knee doing these days?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital records arrived",
+              "author": "patient",
+              "date": "2025-06-19T20:14",
+              "body": "Pretty much back to normal! Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "annual_physical",
+          "start": "2025-10-20T10:00",
+          "end": "2025-10-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "resolved",
+              "note": "May 2025 episode treated"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T10:36"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-20T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-20T10:55",
+              "body": "ANNUAL PHYSICAL\n\n29. Well. Right knee has been fine since early summer. No fevers, rashes, sores or discharge. No meds.\n\nProblem list cleanup: the May DGI episode was still showing as active; it was treated and has resolved. Closed.\n\nExam: vitals as charted. Right knee without effusion, full range. Skin clear. Heart and lungs normal.\n\nA/P\n1. History of two DGI episodes (2024, 2025), treated, no residual joint problems.\n2. High-risk sexual behavior: condoms; testing any time she wants it.\n3. Pap 2024 normal; next 2027.\n4. Flu and updated COVID today.\n\nSee next fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-02a",
+          "kind": "ed_visit",
+          "start": "2026-05-02T08:50",
+          "end": "2026-05-02T15:10",
+          "service": "Emergency Medicine",
+          "reason": "right knee pain and swelling, fever",
+          "vitals": {
+            "temp_c": 38.2,
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 16
+          },
+          "measure": [
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-02T10:30",
+              "resulted": "2026-05-02T11:20",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "value": 20000,
+                  "unit": "/uL"
+                },
+                {
+                  "test": "Synovial fluid neutrophils",
+                  "loinc": "17836-8",
+                  "value": 90,
+                  "unit": "%"
+                },
+                {
+                  "test": "Gram stain, synovial fluid",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "icd10": "A54.89",
+              "action": "diagnosed",
+              "onset": "2026-04-30"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-02T08:50"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2026-05-02T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "author": "emergency medicine",
+              "date": "2026-05-11T11:00",
+              "body": "EMERGENCY MEDICINE NOTE (outside)\nService date: 05/02/2026\n\nCC: R knee pain/swelling x2 days.\n\nHPI: 29F, DGI in 2024 and 2025. Two days of a painful, swollen right knee without any injury. Low-grade fevers. Noticed a few small pustules on her palm that do not hurt. No vaginal discharge, no pelvic pain. No medications. NKDA.\n\nVS: T 38.2 C, BP 120/75, HR 88, RR 16.\nExam: right knee warm, swollen and tender, limited flexion and extension due to pain. Palms with a few scattered pustules on a red base. Wrists and other joints without swelling.\n\nArthrocentesis R knee: WBC 20,000/mm3, 90% PMN. Gram stain: no organisms seen. Culture pending. Blood cultures x2. Cervical NAAT and culture sent.\n\nMDM: third presentation compatible with DGI with knee involvement; negative Gram stain does not exclude it. Ceftriaxone 1 g IV. Admit."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-02b",
+          "kind": "hospital_admission",
+          "start": "2026-05-02T15:10",
+          "end": "2026-05-05T11:30",
+          "service": "Hospital Medicine",
+          "reason": "disseminated gonococcal infection, third episode",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-02T10:30",
+              "resulted": "2026-05-05T08:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "No growth"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-02T11:15",
+              "resulted": "2026-05-04T14:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae culture, cervix",
+                  "loinc": "688-2",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-02T09:30",
+              "resulted": "2026-05-05T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/8)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-05-02T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-05T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "author": "hospitalist",
+              "date": "2026-05-11T11:05",
+              "body": "DISCHARGE SUMMARY\n05/02/2026 to 05/05/2026\n\nDiagnosis: disseminated gonococcal infection, third episode (prior 2024, 2025), right knee arthritis and palmar pustules.\n\nCourse: Right knee aspirate 20,000 WBC with 90% neutrophils, Gram stain negative; synovial culture final no growth. Blood cultures no growth. Cervical NAAT positive for N. gonorrhoeae, chlamydia negative; cervical culture grew N. gonorrhoeae susceptible to ceftriaxone and cefixime. Ceftriaxone 1 g IV daily; afebrile by hospital day 2, knee swelling improved, ambulating without assistance.\n\nDischarge medications: cefixime 400 mg PO BID to complete 7 days (through 5/8).\nAllergies: NKDA.\nFollow-up: primary care within 1 week. Abstain until treatment complete; partner services contacted."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T12:20",
+          "reason": "hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "author": "patient",
+              "date": "2026-05-04T12:20",
+              "body": "Hi, I'm admitted again, right knee this time with fever. They tapped it Saturday. Same thing as before they think. Probably going home tomorrow. Can I get in to see you end of the week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in the hospital",
+              "author": "front desk",
+              "date": "2026-05-04T13:05",
+              "body": "Hi Leah, the doctor asked us to put you on Friday 5/8 at 9:20. Feel better."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "office_visit",
+          "start": "2026-05-08T09:20",
+          "end": "2026-05-08T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-05-08T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-05-08T10:10",
+              "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 5/2-5/5 for a third DGI episode, right knee. She brought her discharge instructions; full records requested. Per her paperwork: knee tapped in the ED, the Gram stain was negative, cultures sent; cervical swab positive for gonorrhea; IV ceftriaxone then cefixime. Last cefixime dose tonight.\n\nToday: no fever since Monday. Knee swelling down; still sore at the end of the day. Palm spots gone.\n\nExam: vitals as charted, afebrile. Right knee: mild residual swelling, no redness, flexion slightly limited. Palms clear. Other joints normal.\n\nA/P\n1. Disseminated gonococcal infection, third episode, finishing oral step-down today. Return for fever or worsening knee. I'll check in by portal in a couple of weeks.\n2. High-risk sexual behavior. Condoms with each partner; partner treatment again."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

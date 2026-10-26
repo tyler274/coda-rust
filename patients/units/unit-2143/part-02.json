@@ -1,0 +1,459 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002143",
+      "events": [
+        {
+          "id": "2025-01-23a",
+          "kind": "specialist_visit",
+          "start": "2025-01-23T09:30",
+          "end": "2025-01-23T12:30",
+          "service": "Pulmonary & Critical Care",
+          "reason": "dyspnea and dry cough, abnormal chest X-ray",
+          "conditions": [
+            {
+              "label": "Idiopathic pulmonary fibrosis",
+              "action": "diagnosed",
+              "onset": "2025-01-23"
+            }
+          ],
+          "vitals": {
+            "spo2": 94
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-23T12:15",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-01-23T10:15",
+              "issued": "2025-01-23T15:40",
+              "text": "HIGH-RESOLUTION CT CHEST WITHOUT CONTRAST, supine and prone, inspiratory and expiratory images.\nIndication: exertional dyspnea, dry cough, basilar interstitial pattern on radiograph.\nComparison: chest radiograph 12/12/2024.\nFindings: Reticulonodular opacities with a peripheral and basal predominance. Subpleural honeycombing at the lung bases. Opacities persist on prone images. No consolidation. No pleural effusion. Central airways patent. Heart size normal, no pericardial effusion. No mediastinal or hilar lymphadenopathy by size criteria. Visualized upper abdomen unremarkable.",
+              "conclusion": "Peripheral and basal predominant reticulonodular opacities with subpleural honeycombing, consistent with a usual interstitial pneumonia pattern."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2025-01-23T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary consultation",
+              "author": "pulmonology",
+              "date": "2025-01-29T10:05",
+              "body": "OUTSIDE PULMONARY & CRITICAL CARE CONSULTATION\nDate of service: 01/23/2025\nReferred by: primary care physician\n\nReason: half a year of worsening breathlessness and a dry cough.\n\nHistory: Mr. Jacobs is a 56-year-old financial analyst who now gets winded climbing one flight of stairs. The cough is dry and persistent and has not responded to over-the-counter remedies. He has no wheeze, no sputum, no chest pain and no leg swelling. No occupational exposures. No recent travel and no known tuberculosis contact.\n\nPMH: none. PSH: none. Medications: none. Allergies: NKDA.\nFamily: father had interstitial lung disease; mother has rheumatoid arthritis.\nSocial: never smoker; 1 to 2 drinks per week.\n\nExam: Fine inspiratory crackles at both bases. No wheezes. No signs of volume overload; JVP not elevated. Heart regular with normal sounds. No peripheral edema. No clubbing.\nOxygen saturation 94% on room air at rest. Six-minute walk test: saturation fell to 88% on room air with exertion.\n\nData:\n- Chest radiograph from his PCP (12/12/2024): subtle basilar-predominant interstitial pattern.\n- HRCT today: reticulonodular opacities, peripheral and basal, with subpleural honeycombing.\n- Pulmonary function tests today: TLC 66% predicted, FVC 68% predicted, FEV1/FVC 0.83, DLCO 51% predicted. Restriction with reduced diffusing capacity; no obstruction.\n- Serologies today: ANA negative, RF negative, anti-CCP negative.\n\nImpression: Idiopathic pulmonary fibrosis. UIP pattern on HRCT, no exposures, no drug cause, and no evidence of connective tissue disease. The family history of ILD in his father is noted.\n\nRecommendations:\n1. Discussed the diagnosis and its usual course at length. Antifibrotic therapy recommended; we will review options at his return visit next month.\n2. Ambulatory oxygen assessment given exertional desaturation; oxygen to be arranged with exertion.\n3. Repeat PFTs in about 6 months.\n4. Pneumococcal and annual influenza vaccination per PCP.\n\nThank you for this referral.\nPulmonary & Critical Care"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "telephone",
+          "start": "2025-01-30T17:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pulmonary consult reviewed",
+              "author": "PCP",
+              "date": "2025-01-30T17:10",
+              "body": "Pulm letter came in yesterday. Dx idiopathic pulmonary fibrosis: HRCT UIP pattern with honeycombing, restrictive PFTs, desats to 88% walking, serologies negative. Added IPF to problem list.\nCalled Lloyd. He had already heard it from pulmonary and has been reading online, which scared him. Talked through what we know and that the antifibrotic medicines slow it down. He is going back to pulm 2/27 to start treatment. Offered to see him any time to talk more. Will plan pneumococcal vaccine at his next visit here."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "specialist_visit",
+          "start": "2025-02-27T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "IPF follow-up, start antifibrotic",
+          "medications": [
+            {
+              "drug_text": "nintedanib 150 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily about 12 hours apart with food",
+              "dose": {
+                "value": 150,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Idiopathic pulmonary fibrosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "author": "pulmonology",
+              "date": "2025-03-04T09:20",
+              "body": "Pulmonary & Critical Care - follow-up letter\nVisit 02/27/2025\n\nDear colleague,\nI saw Mr. Jacobs back to plan treatment for his idiopathic pulmonary fibrosis. Symptoms unchanged since January. We reviewed the two available antifibrotic agents and chose nintedanib 150 mg twice daily with food, to be dispensed through the specialty pharmacy once authorization clears. Common GI effects and the need for liver test monitoring were reviewed; our office will check liver enzymes monthly for the first three months and then every three months.\n\nBased on his walk test he qualifies for ambulatory oxygen. He will use 2 L/min by portable concentrator with exertion; none needed at rest.\n\nPulmonary rehabilitation information given. Next visit with full PFTs in about five months.\n\nMedications: nintedanib 150 mg BID (new); oxygen 2 L/min with exertion.\nAllergies: NKDA\n\nPulmonary & Critical Care"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "pharmacy",
+          "start": "2025-03-06T11:25",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Specialty pharmacy records request",
+              "author": "front desk",
+              "date": "2025-03-06T11:25",
+              "body": "Specialty pharmacy faxed a request for recent clinic notes to support the nintedanib authorization started by pulmonary. Sent 12/10/24 office note and CXR report per release on file. Pulmonary office is handling the PA itself; FYI to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "office_visit",
+          "start": "2025-04-16T10:00",
+          "end": "2025-04-16T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "IPF follow-up",
+          "vitals": {
+            "spo2": 94
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-16T10:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-04-16T10:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-16T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-16T10:35",
+              "body": "F/u after his IPF diagnosis. Started nintedanib early March after the authorization went through; taking it twice a day with meals and tolerating it. Uses the portable concentrator at 2 L when walking or on stairs, not at rest. Breathing about the same as in December, cough unchanged. Still working full time from home.\nMood: understandably anxious about the diagnosis, sleeping alright, not depressed. Has been reading less online, which helps.\n\nMeds: nintedanib 150 mg BID (pulm). O2 2 L with exertion.\nNKDA.\n\nExam: no distress at rest. SpO2 94% RA sitting. Heart RRR. Lungs with fine bibasilar crackles, unchanged. No clubbing, no edema.\n\nA/P\nIPF on nintedanib, followed by pulmonary.\n- CMP today; pulm is also following LFTs, will forward to them\n- PCV20 today\n- Flu every fall\n- Discussed that pulmonary may bring up transplant evaluation down the line; he has heard of it and wants to take things one step at a time\nRTC 2-3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "portal_message",
+          "start": "2025-04-17T09:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-04-17T09:02",
+              "body": "Your liver and kidney tests from yesterday are normal, so the nintedanib is agreeing with you so far. I've sent a copy to your pulmonary office."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "IPF follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2025-06-23T16:48",
+              "body": "Pt called to cancel tomorrow's 2:00, quarter-end at work. Doing OK, nothing new. Will rebook after his pulmonary visit in July."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "specialist_visit",
+          "start": "2025-07-24T08:45",
+          "service": "Pulmonary & Critical Care",
+          "reason": "IPF follow-up with PFTs",
+          "vitals": {
+            "spo2": 93
+          },
+          "orders": [
+            {
+              "id": "transplant-referral",
+              "action": "placed",
+              "order": "Lung transplant evaluation referral",
+              "category": "referral",
+              "to": "Lung Transplant",
+              "reason": "idiopathic pulmonary fibrosis with declining FVC and DLCO"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary follow-up",
+              "author": "pulmonology",
+              "date": "2025-07-29T14:15",
+              "body": "Pulmonary & Critical Care - interval note to PCP\nDate of service: 07/24/2025\n\nIPF, on nintedanib 150 mg twice daily since March with good tolerance; monthly liver tests have been normal.\nHe reports that stairs are a little harder than in winter. Uses oxygen 2 L/min with exertion.\nResting saturation 93% on room air. Fine bibasilar crackles.\n\nPFTs today: FVC 61% predicted (68% in January), DLCO 44% predicted (51% in January).\n\nAssessment: idiopathic pulmonary fibrosis with measurable decline over six months despite antifibrotic therapy.\nPlan:\n- Continue nintedanib and exertional oxygen.\n- Referral placed to a lung transplant center for evaluation. Discussed with him that early referral is standard in IPF and does not commit him to anything.\n- Return in 4 months.\n\nPulmonary & Critical Care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "specialist_visit",
+          "start": "2025-09-18T09:00",
+          "service": "Lung Transplant",
+          "reason": "lung transplant evaluation",
+          "orders": [
+            {
+              "id": "transplant-referral",
+              "action": "done",
+              "date": "2025-09-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Lung transplant evaluation, initial visit",
+              "author": "lung transplant",
+              "date": "2025-09-23T15:30",
+              "body": "LUNG TRANSPLANT PROGRAM - initial evaluation visit 09/18/2025\n\nMr. Jacobs, 56, referred by his pulmonologist for idiopathic pulmonary fibrosis diagnosed in January 2025, on nintedanib with exertional oxygen at 2 L/min. FVC 61% and DLCO 44% predicted in July, both lower than at diagnosis. Never smoker, light alcohol use, no other medical problems, no prior surgery, NKDA.\n\nWe met with him today and began the formal candidacy evaluation (cardiac, imaging, laboratory, nutrition, social work and financial review over the coming weeks).\n\nRequest to primary care: please send documentation of age-appropriate cancer screening and his vaccination history, and confirm that he is due for this season's influenza and COVID vaccines. A form is enclosed.\n\nLung Transplant Program"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "telephone",
+          "start": "2025-09-25T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Transplant center form",
+              "author": "RN",
+              "date": "2025-09-25T10:15",
+              "body": "Transplant program letter and form reviewed. Called pt; he'd like to come in so the form can be done at a visit and he can get his fall shots. Booked 10/31 with PCP. He knows to bring the form copy he got at the transplant center too."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-31a",
+          "kind": "office_visit",
+          "start": "2025-10-31T09:00",
+          "end": "2025-10-31T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "IPF follow-up, transplant evaluation paperwork, vaccines",
+          "vitals": {
+            "spo2": 93
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-31T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-31T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-31T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-31T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-31T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-31T09:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-31T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-31T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-10-31T09:45",
+              "body": "Here for IPF check-in and the transplant program's paperwork.\n\nInterval: pulmonary in July showed FVC and DLCO lower than in January; referred to transplant, first evaluation visit 9/18, more testing being scheduled by them. Still on nintedanib BID, tolerating it. Oxygen 2 L with exertion. Stairs slower. Cough the same. Working, fewer hours in the office building.\nMood okay. PHQ-2 1. Says having a plan helps.\n\nMeds: nintedanib 150 mg BID (pulmonary). O2 2 L/min with exertion.\nNKDA.\n\nExam: SpO2 93% RA at rest. Heart regular. Fine crackles both bases. No clubbing or edema.\n\nAssessment and plan\n1. IPF under pulmonary care, transplant evaluation in progress.\n2. Transplant center form completed: colonoscopy 2019 normal (next 2029); Tdap 2019; Shingrix x2 2024; PCV20 4/2025; flu and COVID given today. Hep C and HIV screens negative 2023. Will fax with today's labs once back.\n3. Labs: CBC, CMP, lipids, A1c.\n4. Flu (L arm) and 2025-26 COVID (R arm) given today.\nI'll see him back in the spring, sooner if anything changes; he will keep us posted on the transplant process."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "portal_message",
+          "start": "2025-11-04T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs and transplant form",
+              "author": "PCP",
+              "date": "2025-11-04T12:40",
+              "body": "Hi Lloyd, Friday's labs were all normal. The transplant program's form is done and was faxed today with your lab results, vaccine record and the colonoscopy report from your old practice. Let me know if they ask for anything else."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Labs and transplant form",
+              "author": "patient",
+              "date": "2025-11-04T19:55",
+              "body": "Thank you. They called today to set up the heart testing so it's moving."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "specialist_visit",
+          "start": "2025-12-11T10:30",
+          "service": "Lung Transplant",
+          "reason": "transplant evaluation results",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Lung transplant evaluation summary",
+              "author": "lung transplant",
+              "date": "2025-12-16T11:10",
+              "body": "LUNG TRANSPLANT PROGRAM - evaluation summary, visit 12/11/2025\n\nDiagnosis: idiopathic pulmonary fibrosis (dx 01/2025), on nintedanib 150 mg twice daily; oxygen 2 L/min with exertion.\n\nRepeat PFTs: FVC 55% predicted, DLCO 38% predicted, continuing the decline from 61% and 44% in July.\nThe remainder of the candidacy evaluation is complete without contraindication; thank you for the screening and vaccine documentation.\n\nThe selection committee has accepted Mr. Jacobs as a candidate for bilateral lung transplantation. Listing will follow once insurance authorization is finalized. Pulmonary will continue his routine IPF care in the meantime.\n\nLung Transplant Program"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

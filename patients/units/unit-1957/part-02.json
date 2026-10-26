@@ -1,0 +1,504 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001957",
+      "events": [
+        {
+          "id": "2025-02-18a",
+          "kind": "portal_message",
+          "start": "2025-02-18T21:12",
+          "reason": "rash on back",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "spots on my back",
+              "author": "patient",
+              "date": "2025-02-18T21:12",
+              "body": "Hi, I have these blotchy patches on my upper back and shoulders. I think they've been there since around December but I didn't really notice until I got back from a beach trip last week, now they look pale compared to the rest of me. They don't itch. Is this something I should come in for?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: spots on my back",
+              "author": "PCP",
+              "date": "2025-02-19T07:35",
+              "body": "Worth a look. Can you come in today at 11:30?"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "office_visit",
+          "start": "2025-02-19T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "patches on upper back",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-19T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "discolored patches of upper back and shoulders"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-19T12:05",
+              "body": "S: Patches on the upper back and shoulders, probably present since around December. More obvious after a beach trip earlier this month - she tanned and the spots didn't. No itch, no pain, no new soaps or detergents. Otherwise well. No meds. NKDA.\n\nO: Vitals fine. Upper back and both shoulders: several flat patches, some light brown, some paler than the surrounding tanned skin, irregular borders, a faint fine scale when stretched. Chest, face, arms clear. No raised lesions.\n\nA/P: Discolored scaly patches of the upper trunk. Pattern looks fungal to me but I'd like a scraping/KOH done to be sure before treating, and we don't run that here. Referral to dermatology placed; she prefers the group near campus. Nothing to start today."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "portal_message",
+          "start": "2025-03-24T18:50",
+          "reason": "dermatology update",
+          "conditions": [
+            {
+              "label": "Tinea versicolor",
+              "icd10": "B36.0",
+              "action": "diagnosed",
+              "onset": "2024-12-01",
+              "note": "Diagnosed by outside dermatology 3/12/2025, KOH positive per patient; letter pending"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ketoconazole 20 MG/ML Medicated Shampoo",
+              "action": "historical",
+              "sig": "Lather onto trunk and shoulders, leave on 5 minutes, rinse; daily for 2 weeks",
+              "route": "Topical",
+              "frequency": "DAILY",
+              "course": "short",
+              "reason": "Tinea versicolor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "derm appointment",
+              "author": "patient",
+              "date": "2025-03-24T18:50",
+              "body": "Just fyi I saw dermatology on the 12th. They shined a black light on it and scraped it and said it's tinea versicolor, a yeast thing. I'm using a ketoconazole shampoo on my back every day for 2 weeks. Already looks a bit better. Did they send you anything?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: derm appointment",
+              "author": "PCP",
+              "date": "2025-03-25T08:10",
+              "body": "Thanks for letting me know, that fits what it looked like. We haven't received their note yet - we'll ask for it. The color can take a while to even out after the yeast is gone, so don't be discouraged if the pale spots linger."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "telephone",
+          "start": "2025-04-16T10:15",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records request",
+              "author": "MA",
+              "date": "2025-04-16T10:15",
+              "body": "Second request to dermatology office for 3/12 consult note (first faxed 3/26, nothing back). Spoke with their front desk, they said the letter was never routed to us. Re-faxed the request with signed release."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "outside_records",
+          "start": "2025-05-07T13:40",
+          "reason": "dermatology consult note",
+          "orders": [
+            {
+              "id": "derm-referral-2025",
+              "action": "done",
+              "date": "2025-05-07T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation (date of service 03/12/2025)",
+              "author": "dermatology",
+              "date": "2025-05-07T13:40",
+              "body": "OUTPATIENT DERMATOLOGY\nDate of service: 03/12/2025\nReferred by: primary care\n\nReason for referral: patches on the trunk.\n\nHistory: 24-year-old woman with roughly three months of several irregular, faintly scaly spots on the trunk. They started out light brown and stood out more after a recent beach trip, when the skin around them tanned. Denies itch or discomfort.\n\nPast history: none. Medications: none. Allergies: no known drug allergies.\nFamily history: mother hypothyroidism; father hypertension. No melanoma or autoimmune skin disease in the family.\nSocial: graduate student, works as a lifeguard in summer. Never smoker; drinks rarely, 1-2 per month.\n\nExamination: Several salmon-pink and lighter-than-surrounding macules over the upper back and both shoulders, irregular in outline. Wood's lamp: yellowish fluorescence over the involved skin. Scrapings taken for KOH.\n\nKOH preparation: short, stubby hyphae with clusters of round spores.\n\nAssessment: Tinea versicolor (pityriasis versicolor).\n\nPlan:\n- Ketoconazole 2% shampoo: lather onto affected skin, leave 5 minutes, rinse. Daily for 2 weeks.\n- Discussed that pigment changes may persist for weeks to months after the yeast clears, and that recurrence in warm, humid weather is common.\n- Return as needed.\n\nThank you for the referral.\nDermatology"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Filed outside note",
+              "author": "MA",
+              "date": "2025-05-07T13:55",
+              "body": "Derm consult from 3/12 finally received after 2 requests. Routed to PCP and filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "annual_physical",
+          "start": "2025-06-11T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Pap",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-11T08:50",
+              "resulted": "2025-06-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-11T08:50",
+              "resulted": "2025-06-12T10:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-11T08:50",
+              "resulted": "2025-06-12T10:05",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-06-11T08:35",
+              "issued": "2025-06-16T15:20",
+              "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. Organisms: none identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-11T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2025",
+              "action": "placed",
+              "order": "CBC, CMP, urine GC/CT, cervical cytology",
+              "category": "lab",
+              "reason": "annual screening"
+            },
+            {
+              "id": "labs-2025",
+              "action": "done",
+              "date": "2025-06-16T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-06-11T08:55",
+              "body": "Here for yearly exam and Pap. Back at the lake starting next week.\n\nInterval: saw derm 3/12 - tinea versicolor, KOH positive, did two weeks of ketoconazole shampoo. Spots gone; color evened out by about May. No other new issues. No meds now. NKDA.\nFH/SH unchanged.\n\nExam: vitals fine. HEENT, neck normal. Heart and lungs normal. Abdomen soft. Skin: upper back and shoulders clear, no scale, even tone. Pelvic: normal external genitalia, vagina and cervix normal appearing; Pap collected. PHQ-2 0.\n\nA/P:\n1. Preventive - Pap today (next in 3 yrs if normal). CBC, CMP, urine GC/CT.\n2. Tinea versicolor - cleared. Told her it likes heat and sweat, so it may come back over the summer; if so, the same shampoo works, let us know.\nFlu in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "portal_message",
+          "start": "2025-06-17T07:40",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Pap and lab results",
+              "author": "PCP",
+              "date": "2025-06-17T07:40",
+              "body": "Your Pap smear is normal, and the blood and urine tests are all normal too. Next Pap in 2028. Have a good summer!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T16:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2025-10-08T16:45",
+              "body": "Influenza vaccine 0.5 mL IM L deltoid. No fever or illness today. Tolerated, waited 15 min. Declined COVID booster this year, will think about it."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T12:20",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "physical",
+              "author": "patient",
+              "date": "2026-07-08T12:20",
+              "body": "Hi, I think I'm due for my yearly physical. Anything in August works but mornings before 10 are best since I'm on the stand most days until Labor Day."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: physical",
+              "author": "front desk",
+              "date": "2026-07-08T15:10",
+              "body": "You're booked Thursday 8/20 at 8:00 am. Please come fasting if you can."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "annual_physical",
+          "start": "2026-08-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ketoconazole 20 MG/ML Medicated Shampoo",
+              "action": "historical",
+              "sig": "Apply to trunk and shoulders, leave 5 minutes, rinse; daily for 2 weeks, then per dermatology",
+              "route": "Topical",
+              "frequency": "DAILY",
+              "course": "short",
+              "reason": "Tinea versicolor"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-20T08:45",
+              "resulted": "2026-08-20T17:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-20T08:45",
+              "resulted": "2026-08-20T17:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-20T08:45",
+              "resulted": "2026-08-20T17:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-20T08:45",
+              "resulted": "2026-08-20T17:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-08-20T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2026",
+              "action": "placed",
+              "order": "CBC, CMP, lipid panel, TSH",
+              "category": "lab",
+              "reason": "annual screening"
+            },
+            {
+              "id": "labs-2026",
+              "action": "done",
+              "date": "2026-08-20T17:30"
+            },
+            {
+              "id": "derm-records-2026",
+              "action": "placed",
+              "order": "Request outside dermatology note, 7/29/2026",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "records request"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-08-20T08:50",
+              "body": "Annual. 25 now, finishing her degree this year. Lifeguarding again this summer.\n\nInterval: the back rash came back. She says it showed up last summer too, mid-season, and faded on its own by fall so she never called. This summer it came back over more of her back and shoulders, so she went back to dermatology on 7/29. Scraping positive again per her. Using ketoconazole shampoo daily, about done with the 2 weeks, then they want her to use it monthly through the warm months. We don't have their note - requested today.\n\nNo other concerns. No meds besides the shampoo. NKDA. FH: mom hypothyroid, dad HTN. Never smoker, rare alcohol.\n\nExam: vitals reviewed. Well. Neck, thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: upper back and shoulders with faint lighter and darker patches, minimal scale, improving per her. No other rashes. PHQ-2 0.\n\nA/P:\n1. Tinea versicolor, recurrent - on derm's plan, nothing to add. Reasonable to keep the monthly shampoo going in summer.\n2. Preventive - CBC, CMP, lipids, TSH today. Pap up to date (2025). Flu shot in October - nurse visit booked.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "portal_message",
+          "start": "2026-08-21T07:55",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-08-21T07:55",
+              "body": "Hi Paige, yesterday's labs all look normal - blood count, chemistry, cholesterol and thyroid. Nothing to change."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2026-08-21T09:14",
+              "body": "Thanks! Back looks better already"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "outside_records",
+          "start": "2026-08-25T11:20",
+          "reason": "dermatology follow-up note",
+          "orders": [
+            {
+              "id": "derm-records-2026",
+              "action": "done",
+              "date": "2026-08-25T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up (date of service 07/29/2026)",
+              "author": "dermatology",
+              "date": "2026-08-25T11:20",
+              "body": "OUTPATIENT DERMATOLOGY - RETURN VISIT\nDate of service: 07/29/2026\n\nHPI: 25-year-old seen here in March 2025 for tinea versicolor of the trunk, treated with ketoconazole shampoo. She reports the eruption came back during summer 2025 and cleared without treatment by autumn. Since early this summer it has returned on the back and shoulders and covers a larger area than before. She calls the spots \"oddly colored.\" No itching or pain.\n\nMedications: none. Allergies: NKDA.\nFamily history: mother hypothyroidism, father hypertension; no melanoma or autoimmune skin disease.\nSocial: graduate student, summer lifeguard. Never smoker, occasional alcohol (1-2 drinks monthly).\n\nExam: numerous hyper- and hypopigmented macules with fine overlying scale across the upper trunk and both shoulders.\n\nKOH (one lesion): short hyphae and spores seen.\n\nImpression: Recurrent tinea versicolor.\n\nPlan:\n1. Ketoconazole 2% shampoo to affected areas, 5-minute contact, daily x 2 weeks.\n2. Then once monthly, May through September, to reduce recurrences.\n3. Pigment may take months to normalize after treatment; this does not mean treatment failure.\n4. Follow up as needed.\n\ncc: primary care\nDermatology"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside note filed",
+              "author": "MA",
+              "date": "2026-08-25T11:35",
+              "body": "Derm note from 7/29 received by fax today in response to 8/20 request. Scanned and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-07a",
+          "kind": "nurse_visit",
+          "start": "2026-10-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

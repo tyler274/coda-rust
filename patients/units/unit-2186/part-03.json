@@ -1,0 +1,334 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002186",
+      "events": [
+        {
+          "id": "2025-01-10a",
+          "kind": "imaging",
+          "start": "2025-01-10T10:30",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-01-10T10:30",
+              "text": "Indication: annual lung cancer screening. Comparison: 1/12/2024.\nTechnique: low-dose helical CT without contrast.\nFindings: Interval median sternotomy with intact sternal wires; mitral annuloplasty ring. No pulmonary nodule. Stable mild upper-lobe emphysema. No consolidation or effusion. Heart size normal. LAD stent and coronary calcification. No adenopathy.",
+              "conclusion": "Lung-RADS 1: negative. Postoperative changes only. Annual LDCT in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T11:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening CT",
+              "author": "PCP",
+              "date": "2025-01-14T11:05",
+              "body": "This year's lung CT is negative. It shows the wires and the valve ring from your surgery, which is expected. Next screen next January."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hip pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-04T15:40"}],
+          "orders": [{"id": "ortho-referral", "action": "placed", "order": "Orthopedic surgery referral", "category": "referral", "to": "Orthopedic Surgery", "reason": "right hip pain, suspected osteoarthritis"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hip pain",
+              "author": "PCP",
+              "date": "2025-02-04T16:20",
+              "body": "Right hip has bothered him for months, he thinks since last summer, and it got harder to ignore once he started walking every day for his heart. Deep ache in the groin and outer hip, worse after a mile, stiff getting out of the car, better with rest. No fall or injury. No back pain, numbness or weakness. No fever.\nHeart side: doing well, cardiology happy in December. Breathing stable.\n\nExam: antalgic gait on the right. Right hip internal rotation limited and reproduces groin pain; FABER uncomfortable on the right. Left hip full and painless. Lumbar spine nontender, straight leg raise negative. Strength and sensation normal in the legs. Distal pulses intact.\n\nA/P: right hip pain with the pattern of osteoarthritis. Wants a surgical opinion now rather than months of trial-and-error. Referred to orthopedics; they will image in their office. Cardiac history means any surgery needs clearance - will coordinate when the time comes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "specialist_visit",
+          "start": "2025-03-13T09:40",
+          "service": "Orthopedic Surgery",
+          "reason": "Right hip pain",
+          "conditions": [{"label": "Primary osteoarthritis of hip", "action": "diagnosed", "onset": "2024-07-01", "note": "right hip"}],
+          "orders": [{"id": "ortho-referral", "action": "done", "date": "2025-03-13T09:40"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic Consultation",
+              "author": "orthopedics",
+              "date": "2025-03-18T08:30",
+              "body": "Outside orthopedic practice. Seen 3/13/2025 at the request of his primary care physician.\n\nHistory: 68-year-old retired truck driver with progressive right groin and lateral hip pain for most of a year, now limiting his walking program. Cardiac history notable for mitral valve repair in October 2024 and a 2019 LAD stent. COPD. NKDA.\n\nExam: antalgic gait. Right hip flexion limited, with painful, restricted internal rotation. Neurovascularly intact.\n\nRadiographs (AP pelvis, right hip AP/lateral, taken today): right hip joint space narrowing with osteophyte formation, consistent with osteoarthritis. Left hip preserved.\n\nImpression: primary osteoarthritis, right hip.\nPlan: discussed options. Given his functional goals, he would like to proceed with right total hip arthroplasty. Will schedule for June pending medical and cardiology clearance. Pre-op education class.\n\nThank you for the referral.\nOrthopedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-operative evaluation for right total hip arthroplasty",
+          "state": {"labs": {"Hemoglobin": 15.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-20T08:55", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-05-20T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-05-20T08:40",
+              "text": "Normal sinus rhythm. Q waves consistent with the prior infarct. No acute ST-T changes. Compared with October 2024, no significant change.",
+              "conclusion": "Sinus rhythm; old infarct; unchanged."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-20T08:20"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-05-20T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pre-operative Evaluation",
+              "author": "PCP",
+              "date": "2025-05-20T09:30",
+              "body": "Pre-op eval, right THA scheduled 6/18 with outside orthopedics.\n\nFunctional capacity: walks about a mile on level ground, slowed by the hip not by breath or chest. Climbs a flight of stairs without stopping. No angina, orthopnea, PND, syncope or palpitations.\nPulmonary: COPD, no flare in more than a year, rescue inhaler a couple times a week.\nAnesthesia: tolerated cardiac surgery in October without problems.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 25, tiotropium, albuterol PRN. NKDA.\n\nExam: vitals per flowsheet. Lungs with prolonged expiration, no wheeze today. Heart regular, no murmur. Sternotomy well healed. No edema.\nECG: sinus, old infarct, unchanged from October.\nCBC and BMP drawn.\n\nAssessment: elevated-risk surgery candidate because of his CAD and recent mitral repair, but functionally good and without active cardiac symptoms; COPD stable. Defer to cardiology for final clearance; appointment set next week. Continue beta-blocker through surgery. Aspirin plan per surgeon and cardiology. Bring inhalers to the hospital; use albuterol the morning of surgery if needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T09:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pre-op labs",
+              "author": "PCP",
+              "date": "2025-05-22T09:40",
+              "body": "Pre-op blood count and chemistry are normal. I've faxed my note, the ECG and the labs to the orthopedic office."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-29a",
+          "kind": "specialist_visit",
+          "start": "2025-05-29T14:00",
+          "service": "Cardiology",
+          "reason": "Pre-operative cardiac evaluation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Pre-operative Letter",
+              "author": "cardiology",
+              "date": "2025-06-02T08:15",
+              "body": "Outside cardiology group. Visit 5/29/2025.\n\nRe: right total hip arthroplasty planned 6/18/2025.\n\nMr. Lewandowski is seven months out from mitral repair with ring annuloplasty after papillary muscle rupture, with an LVEF of 50% and no significant residual MR on his December echo. He has no angina or heart failure symptoms and good exercise tolerance limited by the hip. ECG from his PCP's office is unchanged.\n\nAssessment: acceptable cardiac risk for the planned orthopedic surgery. No further preoperative testing needed. Continue metoprolol succinate 25 mg and atorvastatin perioperatively; continue aspirin 81 mg through surgery.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "hospital_admission",
+          "start": "2025-06-18T06:00",
+          "end": "2025-06-27T12:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Elective right total hip arthroplasty",
+          "procedures": [{"procedure": "Total hip arthroplasty", "performed": "2025-06-18T08:15"}],
+          "state": {"labs": {"Hemoglobin": 13.8}},
+          "vitals": [
+            {"time": "2025-06-20T04:40", "bp": [85, 50], "rr": 28}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-06-20T05:10", "results": [
+              {"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 8},
+              {"test": "B-type Natriuretic Peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900},
+              {"test": "pH, Arterial", "loinc": "2744-1", "unit": "[pH]", "value": 7.32},
+              {"test": "PaCO2", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45},
+              {"test": "PaO2", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate, Arterial", "loinc": "1960-4", "unit": "mmol/L", "value": 22}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-20T05:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-20T05:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-06-20T04:55",
+              "text": "Sinus rhythm. Findings of the old infarct. No new changes compared with the preoperative ECG.",
+              "conclusion": "No new changes from preoperative tracing."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (Orthopedics / Cardiac ICU)",
+              "author": "hospitalist",
+              "date": "2025-08-06T10:45",
+              "body": "Regional hospital. Admitted 6/18/2025, discharged 6/27/2025. Copy received 8/6/2025 after second records request.\n\nAdmitting: elective right total hip arthroplasty for osteoarthritis (orthopedic surgery). Procedure 6/18, uncomplicated per brief op report (full operative note not included).\n\nHospital course: on postoperative day 2 (6/20) early morning he became acutely short of breath and hypotensive without chest pain. BP 85/50, RR 28, working to breathe. Neck veins distended, crackles to the mid-lung fields bilaterally, S3, cool extremities, 1+ pitting edema of both lower legs. Transferred to the cardiac ICU.\nLabs: troponin I 8 ng/mL (ref <0.04), BNP 900 pg/mL (ref <100). ABG pH 7.32 / PaCO2 45 / PaO2 60 / HCO3 22. CBC and BMP normal.\nECG: no new changes vs preoperative.\nPulmonary artery catheter: cardiac index 1.8 L/min/m2, PCWP 28 mmHg.\n\nDiagnoses: cardiogenic shock; acute hypoxemic respiratory failure without hypercapnia.\nTreatment: dobutamine infusion and IV furosemide with supplemental oxygen; metoprolol held. Hemodynamics improved over 72 hours; dobutamine weaned off 6/23, PA catheter removed, IV diuretic stopped. Transferred to the orthopedic floor 6/24. Metoprolol succinate 25 mg resumed 6/26. Worked with PT, weight bearing as tolerated.\n\nDischarge 6/27 to home with home PT.\nDischarge medications: aspirin 81 mg daily, atorvastatin 40 mg daily, metoprolol succinate 25 mg daily, tiotropium daily, albuterol as needed. No new medications.\nAllergies: NKDA.\nFollow-up: orthopedics 2 weeks; cardiology 6-8 weeks; PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "portal_message",
+          "start": "2025-06-30T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home from hip surgery",
+              "author": "patient",
+              "date": "2025-06-30T08:12",
+              "body": "Got the new hip on the 18th. Hip part went fine but two days later my heart and lungs went bad and they put me in the ICU with a line in my neck and IV drips. Out Friday. Feel weak but ok. Do you want to see me? They said see my doctor in a week. Joe"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home from hip surgery",
+              "author": "RN",
+              "date": "2025-06-30T10:30",
+              "body": "Glad you're home, Joe. Yes - PCP has a spot tomorrow at 2:40, booked for you. Please bring every medicine bottle and any papers they gave you. If you get more short of breath, can't lie flat, chest pain or swelling in the legs, call 911. We've asked the hospital to send records."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "office_visit",
+          "start": "2025-07-01T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit after hip replacement and ICU stay",
+          "conditions": [
+            {"label": "Primary osteoarthritis of hip", "action": "resolved", "note": "right hip replaced 6/18/2025"},
+            {"label": "Presence of right artificial hip joint", "action": "diagnosed", "onset": "2025-06-18"},
+            {"label": "Cardiogenic shock", "icd10": "R57.0", "action": "diagnosed", "onset": "2025-06-20", "note": "postoperative day 2 after right THA"},
+            {"label": "Acute respiratory failure with hypoxia", "icd10": "J96.01", "action": "diagnosed", "onset": "2025-06-20", "note": "without hypercapnia"}
+          ],
+          "state": {"weight_kg": 90.5, "labs": {"Hemoglobin": 14.4}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-07-01T15:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-01T15:15", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-07-01T14:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-07-01T15:30",
+              "body": "No records yet from the hospital; history from patient and his discharge med sheet. Right THA 6/18. On day 2 he became very short of breath with low blood pressure, moved to the cardiac ICU, had a catheter placed through the neck and was on IV drips for a few days. Told his heart 'wasn't pumping enough.' Home 6/27 with home PT.\n\nNow: using a walker indoors, cane on the porch. Pain controlled. Breathing at his usual, sleeping flat. No chest pain. Legs not swollen. Med sheet lists the same five medicines and doses as before admission - metoprolol succinate 25 included.\n\nExam: vitals per flowsheet. Right hip incision clean and dry, staples out. Heart regular, no murmur. Lungs with mild prolonged expiration, no crackles. No JVD. No calf tenderness, no edema.\n\nA/P:\n1. Right THA - recovering. PT continues; ortho visit next week.\n2. Postoperative cardiogenic shock per patient, now recovered clinically. Need the ICU details. BMP and CBC today. Cardiology follow-up in August. Hold off on any changes until records arrive.\n3. COPD, CAD, HTN - no changes.\nSecond records request faxed today."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-03a",
+          "kind": "portal_message",
+          "start": "2025-07-03T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tuesday labs",
+              "author": "PCP",
+              "date": "2025-07-03T12:15",
+              "body": "Labs from Tuesday are fine - kidneys normal after the IV water pills, and your blood count held up well after the hip surgery."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "outside_records",
+          "start": "2025-08-06T10:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "author": "front desk",
+              "date": "2025-08-06T10:50",
+              "body": "Discharge summary 6/18-6/27/2025 received from hospital after second request, scanned. Operative report for the hip still not included. Routed to PCP for review.\nPCP addendum: reviewed. Postoperative day 2 cardiogenic shock with hypoxemic respiratory failure, PA catheter CI 1.8 / wedge 28, troponin I 8, BNP 900; treated with dobutamine and IV furosemide; discharged on his prior medicines. Matches his account. Cardiology visit 8/21 already booked."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "specialist_visit",
+          "start": "2025-08-21T11:20",
+          "service": "Cardiology",
+          "reason": "Follow-up after postoperative cardiogenic shock",
+          "conditions": [
+            {"label": "Cardiogenic shock", "icd10": "R57.0", "action": "resolved"},
+            {"label": "Acute respiratory failure with hypoxia", "icd10": "J96.01", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "author": "cardiology",
+              "date": "2025-08-27T09:00",
+              "body": "Outside cardiology group. Visit 8/21/2025.\n\nDear colleague,\nMr. Lewandowski returns two months after the episode of cardiogenic shock on postoperative day 2 of his right hip replacement, managed in the cardiac ICU with inotrope and diuretic. He has recovered well: walking without a cane, no orthopnea, no edema, no chest pain.\n\nExam: euvolemic. Regular rhythm without murmur or gallop. Lungs without crackles.\n\nImpression: recovered from postoperative cardiogenic shock. CAD s/p LAD stent and prior MIs; mitral repair with ring.\nPlan: no medication changes - aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 25 mg. Follow up in 6 months.\nAllergies: NKDA.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin": 15.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2025-09-16T10:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-16T10:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-16T10:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-09-16T10:07"}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-09-16T09:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-09-16T10:30",
+              "body": "AWV, 69M. Big year: hip replacement in June complicated by postoperative cardiogenic shock, now recovered; cardiology saw him in August with no changes.\nHRA: independent ADLs/IADLs, back to driving, walking 30-40 min most days with the new hip - says it's the best he's walked in years. No falls since surgery. PHQ-2 1 (tired in July, better now). Recall 3/3.\nTobacco: quit nearly 3 years. Alcohol 1-2 drinks a month.\nMeds reviewed with bottles: aspirin, atorvastatin 40, metoprolol succinate 25, tiotropium, albuterol PRN. NKDA.\nExam: lungs with mild expiratory prolongation; heart regular without murmur; healed sternotomy and right hip incisions; no edema.\nPrevention: high-dose flu and updated COVID today. Colonoscopy due 2028. LDCT due January. Pneumococcal, shingles, Tdap, RSV done.\nLabs: CMP, CBC, lipids.\nNext: chronic visit in early 2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "portal_message",
+          "start": "2025-09-18T16:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness labs",
+              "author": "PCP",
+              "date": "2025-09-18T16:50",
+              "body": "Everything normal on this year's labs, cholesterol unchanged. Good to see you walking so well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "pharmacy",
+          "start": "2025-11-18T13:25",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Tiotropium PA for 2026",
+              "author": "MA",
+              "date": "2025-11-18T13:25",
+              "body": "Part D formulary letter: tiotropium capsules need a new PA for 2026. Submitted with COPD group C history and current notes. Approved 11/21 for calendar 2026. Patient informed by portal."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2872 @@
+{
+  "unit": "unit-1753",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001753",
+      "given": "Leah",
+      "family": "Gagnon",
+      "birth_date": "1996-09-20",
+      "address_line": "27 Ashfield Lane",
+      "phone": "+1-978-555-0130",
+      "email": "leah.gagnon@example.test",
+      "marital_status": "single",
+      "summary": "Healthy young woman, a student then graduate student on a parent's plan, with the practice since 2017. Her chart is a run of sexually transmitted infections seen mostly at an outside gynecology office and an emergency department: early syphilis, chlamydial cervicitis, primary genital herpes and three episodes of disseminated gonococcal infection, with outside records that arrive late or not at all.",
+      "events": [
+        {
+          "id": "2017-08-09a",
+          "kind": "telephone",
+          "start": "2017-08-09T14:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2017-08-09T14:20",
+              "author": "front desk",
+              "body": "Caller is a 20 y/o college student home in Greenfield for the rest of the summer. A family member suggested the practice; she has not had a regular doctor since aging out of her pediatrician. Membership packet emailed. New patient visit booked 8/22 at 10:00. Asked her to bring her insurance card (she is on a parent's plan) and any vaccine paperwork she can find."
+            }
+          ]
+        },
+        {
+          "id": "2017-08-22a",
+          "kind": "establish_care",
+          "start": "2017-08-22T10:00",
+          "end": "2017-08-22T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 77,
+            "spo2": 99,
+            "weight_kg": 59.9,
+            "height_cm": 164.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social use (1-2 drinks per week)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2017-08-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2017-08-22T10:50",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\nLeah is 20 and starting her junior year at college in the fall. Comes in to set up primary care now that she is too old for her pediatric office. Feels well. No complaints today.\n\nPMH: none. No hospitalizations. No surgeries.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nGyn: menarche at 12, cycles regular about every 28 days. Never pregnant. Has not had a pelvic exam or Pap yet.\nFamily: mother has hypothyroidism; father has high blood pressure. No other family history she knows of.\nSocial: full-time student, lives with her parents in Greenfield between semesters. Never smoked. Drinks socially, 1-2 drinks most weeks. No drug use.\n\nROS: negative across systems.\n\nExam: well-appearing young woman. Vitals as charted. HEENT normal, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. No lymphadenopathy.\n\nA/P\n1. Health maintenance, age 20. Healthy. Pap due at 21; will do it at next year's physical. Asked her to have her pediatric office send the immunization record so we can see where the HPV and meningococcal series landed. Flu shot when it arrives this fall.\n2. Counseled on safer sex and contraception options; she is not currently sexually active and would like to revisit it later.\n\nReturn in one year, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 60.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2017-09-06a",
+          "kind": "outside_records",
+          "start": "2017-09-06T09:15",
+          "reason": "pediatric immunization record",
+          "immunizations": [
+            {
+              "vaccine": "MMR",
+              "date": "1997-09-24T10:00"
+            },
+            {
+              "vaccine": "Varicella",
+              "date": "1997-09-24T10:00"
+            },
+            {
+              "vaccine": "MMR",
+              "date": "2001-10-02T10:00"
+            },
+            {
+              "vaccine": "Varicella",
+              "date": "2001-10-02T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2008-10-06T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2008-10-06T15:30"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-10-06T15:30"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-12-08T15:30"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2009-04-13T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2013-08-19T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pediatric Immunization Record",
+              "date": "2017-09-06T09:15",
+              "author": "pediatrics",
+              "body": "Immunization history faxed from the patient's former pediatric office at the request of the family.\n\nChildhood primary series complete per state schedule. MMR x2 (1997, 2001). Varicella x2 (1997, 2001). Tdap 10/2008. MenACWY 10/2008 with booster 8/2013. HPV quadrivalent 3-dose series completed 4/2009.\n\nAbstracted into the immunization record by MA 9/6/17."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-13a",
+          "kind": "nurse_visit",
+          "start": "2017-10-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-13T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2017-10-13T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza Vaccine",
+              "date": "2017-10-13T16:25",
+              "author": "RN",
+              "body": "Here on her way back to campus for the weekend. Screening questions negative; no egg or vaccine reactions in the past. Quadrivalent flu 0.5 mL IM left deltoid. VIS reviewed. Observed briefly, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-27a",
+          "kind": "annual_physical",
+          "start": "2018-09-27T08:30",
+          "end": "2018-09-27T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 78,
+            "spo2": 99,
+            "weight_kg": 59.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-09-27T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 317
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-27T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-27T09:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2018-09-27T09:00",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; endocervical/transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2018-10-01T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2018-09-27T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2018-09-27T09:25",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nNow 22, senior year. Doing well, busy with a thesis. Became sexually active this past year, one partner at a time, condoms most of the time. No pelvic pain, discharge or sores. Periods regular. No meds.\n\nSocial: no tobacco. Alcohol a couple of drinks a week at most.\nFamily: unchanged (mother hypothyroid, father hypertension).\n\nROS negative.\n\nExam: vitals as charted. Well appearing. Thyroid normal. Heart and lungs normal. Abdomen benign. Pelvic: normal external genitalia, vagina and cervix without lesions, scant normal physiologic secretions. Bimanual without tenderness or masses. Pap and swab collected.\n\nA/P\n1. Preventive care. First Pap today. Gonorrhea/chlamydia NAAT, HIV and hepatitis C screening sent as routine for her age. Basic labs.\n2. Contraception: content with condoms for now; reviewed that the pill, ring, implant and IUD are all options whenever she wants to talk about them.\n3. Flu vaccine declined today, says she will get it on campus.\n\nOne year."
+            },
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2018-10-02T12:40",
+              "author": "PCP",
+              "body": "Pap negative. HIV, hepatitis C, gonorrhea and chlamydia all negative. CBC and chemistries normal. Released to portal with a short note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-10-02a",
+          "kind": "portal_message",
+          "start": "2018-10-02T12:45",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical results",
+              "date": "2018-10-02T12:45",
+              "author": "PCP",
+              "body": "Hi Leah, everything from your physical came back normal: the Pap, the infection screening and the blood work. Next Pap would be due in three years. Have a good semester."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your physical results",
+              "date": "2018-10-02T19:02",
+              "author": "patient",
+              "body": "Thank you!! That's a relief."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "annual_physical",
+          "start": "2019-09-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2019-09-10T16:05",
+              "author": "front desk",
+              "body": "No-show for 3:30 physical. Left voicemail on cell to rebook. Patient texted back at 4:40 that she had orientation for her graduate program and forgot; rebooked 9/26."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "annual_physical",
+          "start": "2019-09-26T08:00",
+          "end": "2019-09-26T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 61.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-09-26T08:40",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2019-09-26T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-26T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-26T08:40"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-26T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-09-26T08:55",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nFinished college in May and has just started a graduate program; still on a parent's insurance. Feels well. A little more stress with the new program, sleeping fine. Not in a relationship right now; sexual partners since last year, uses condoms most of the time. No symptoms.\n\nNo meds. NKDA. Never smoker. Social drinker.\n\nExam: vitals as charted. Normal general exam; heart, lungs, abdomen unremarkable.\n\nA/P\n1. Preventive: urine NAAT for gonorrhea and chlamydia. Pap not due until 2021.\n2. Tdap today (last one 2008). Flu shot today.\n3. Mood fine, PHQ-2 of 1.\n\nNext physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-04-27a",
+          "kind": "specialist_visit",
+          "start": "2020-04-27T13:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "routine gynecologic exam, contraception counseling",
+          "conditions": [
+            {
+              "label": "Syphilis screening negative",
+              "action": "diagnosed",
+              "onset": "2020-04-27",
+              "icd10": "Z11.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              68
+            ],
+            "hr": 82
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-04-27T14:10",
+              "resulted": "2020-04-29T09:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Visit (outside)",
+              "date": "2020-05-12T10:30",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN OFFICE NOTE\nDate of service: 04/27/2020\nCopy to primary care physician\n\nReason for visit: well-woman exam; contraception and STI prevention counseling.\n\n23 y/o G0, graduate student, here for a routine gynecologic exam. She has recently begun a new relationship and wants to go over birth control and how to protect herself from infections, and asks whether she should be tested. No symptoms today. Cycles regular. LMP about two weeks ago. Denies any genital sores, abnormal discharge or burning with urination.\n\nPMH: none. Meds: none. Allergies: NKDA.\nFH: mother - hypothyroidism; father - hypertension.\nSH: never smoker; alcohol 1-2 drinks/week; graduate student.\n\nVitals: within normal limits.\nPelvic: external genitalia normal. Speculum: cervix without mucopurulent discharge. Bimanual normal; no cervical motion tenderness; no adnexal masses or tenderness.\n\nLabs: RPR nonreactive. Gonorrhea/chlamydia NAAT negative.\n\nAssessment/Plan:\n1. Well-woman exam, normal.\n2. Contraception counseling: reviewed combined pills, progestin-only options, the implant, copper and hormonal IUDs. She prefers to rely on condoms for now and will call if she wants to start a method.\n3. STI prevention: syphilis screen negative, GC/CT negative. Encouraged consistent condom use with new partners.\nReturn as needed or in one year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2020-07-29a",
+          "kind": "specialist_visit",
+          "start": "2020-07-29T09:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "vaginal discharge",
+          "conditions": [
+            {
+              "label": "Physiologic leukorrhea",
+              "action": "diagnosed",
+              "onset": "2020-05-01",
+              "icd10": "N89.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              67
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-07-29T09:40",
+              "results": [
+                {
+                  "test": "Epithelial cells, vaginal wet prep",
+                  "loinc": "12211-9",
+                  "text": "Numerous"
+                },
+                {
+                  "test": "Leukocytes, vaginal wet prep",
+                  "loinc": "12226-7",
+                  "text": "Rare"
+                },
+                {
+                  "test": "Clue cells, vaginal wet prep",
+                  "loinc": "20502-1",
+                  "text": "None seen"
+                },
+                {
+                  "test": "Trichomonas vaginalis, vaginal wet prep",
+                  "loinc": "14367-7",
+                  "text": "Not seen"
+                },
+                {
+                  "test": "Vaginal fluid pH",
+                  "loinc": "48037-6",
+                  "unit": "[pH]",
+                  "value": 4.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Visit (outside)",
+              "date": "2020-11-18T11:05",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN OFFICE NOTE\nDate of service: 07/29/2020\nSent in response to records request\n\nCC: vaginal discharge.\n\nSeen about three months after her well visit. For several months she has noticed a white discharge. No odor. No itching, burning or irritation. LMP began 14 days ago; cycles every 28 days. One partner; condoms not every time.\n\nMeds: none. NKDA.\n\nVitals normal.\nSpeculum: small amount of white mucoid discharge at the cervical os. No erythema. No lesions. No sign of trauma.\n\nWet mount: numerous epithelial cells; rare PMNs; normal vaginal flora (lactobacilli predominant); no trichomonads; no clue cells. pH 4.5.\n\nImpression: physiologic leukorrhea. No evidence of bacterial vaginosis, trichomoniasis or yeast.\nPlan: reassured; no treatment needed. Reviewed what normal mid-cycle discharge looks like and when to come back (odor, itching, color change, pelvic pain)."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2020-10-21a",
+          "kind": "annual_physical",
+          "start": "2020-10-21T09:00",
+          "end": "2020-10-21T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              70
+            ],
+            "hr": 60,
+            "spo2": 99,
+            "weight_kg": 61.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-21T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-21T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-21T09:50",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL (masked visit)\n\n24 y/o grad student, classes remote this term. Feels well.\n\nInterval: started seeing an outside gynecologist this spring. Had a well-woman visit in April (we have that note: syphilis screen and GC/CT negative, chose condoms for contraception). Went back in July for a white discharge she had noticed for a few months; she says they looked at it under the microscope and told her it was normal discharge, nothing to treat. No current symptoms. We never got the July note; requesting it.\n\nNo meds. NKDA. No tobacco. Light alcohol.\n\nExam: vitals as charted. Well. Heart and lungs normal. Abdomen soft. Pelvic deferred, followed by gyn.\n\nA/P\n1. Preventive: Pap next due 2021. Flu vaccine given.\n2. Gyn care outside; records request sent for 7/29 visit.\n3. Mood good, PHQ-2 of 1.\n\nYear."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2020-10-21T11:20",
+              "author": "MA",
+              "body": "Request for 7/29/20 office note and lab results sent to the outside OB/GYN office by fax with signed release."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "portal_message",
+          "start": "2020-11-19T08:15",
+          "reason": "outside records received",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gyn note came in",
+              "date": "2020-11-19T08:15",
+              "author": "PCP",
+              "body": "Hi Leah, the gynecology note from July finally arrived. It matches what you told me: the discharge was normal, the microscope check showed no yeast, BV or trich, and no treatment was needed. Filed in your chart. Nothing for you to do."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "outside_records",
+          "start": "2021-05-20T13:00",
+          "reason": "COVID-19 vaccine card",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-12T11:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine card",
+              "date": "2021-05-20T12:50",
+              "author": "patient",
+              "body": "Hi, uploading a photo of my covid vaccine card so you have it. Both doses at the pharmacy, 4/12 and 5/3. Arm was sore after the second and that was it."
+            },
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 Vaccination Record",
+              "date": "2021-05-20T13:00",
+              "author": "MA",
+              "body": "Patient-uploaded card reviewed. Pfizer-BioNTech dose 1 04/12/2021, dose 2 05/03/2021, both given at a community pharmacy. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-23a",
+          "kind": "annual_physical",
+          "start": "2021-09-23T10:20",
+          "end": "2021-09-23T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Physiologic leukorrhea",
+              "action": "resolved",
+              "note": "no discharge concerns",
+              "icd10": "N89.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              80
+            ],
+            "hr": 68,
+            "spo2": 98,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-23T11:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-23T11:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-23T11:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-09-23T10:50",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2021-09-28T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-23T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-23T11:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-23T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-23T11:15",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nBack on campus in person this fall, second year of her program. Feels well. No complaints. The discharge from last year is not bothering her; no itching or odor. Periods regular. Sexually active, not with one steady partner at the moment; condoms some of the time.\n\nNo meds. NKDA. Never smoker. 1-2 drinks a week. COVID series done in the spring.\n\nExam: vitals as charted. Healthy-appearing. Heart, lungs, abdomen normal. Pelvic: normal external genitalia; cervix appears normal; no discharge beyond scant clear secretions. Bimanual nontender.\n\nA/P\n1. Preventive: Pap (3 years since the first), GC/CT swab, CBC and fasting lipids for a baseline.\n2. Physiologic leukorrhea, resolved; off the active list.\n3. Talked about condoms with every new partner. She says she knows and is trying.\n4. Flu shot today.\n\nNext physical fall 2022."
+            },
+            {
+              "type": "Result Note",
+              "title": "Results",
+              "date": "2021-09-29T08:30",
+              "author": "PCP",
+              "body": "Pap NILM, GC/CT negative, CBC normal, lipids fine. Portal note sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-22a",
+          "kind": "ed_visit",
+          "start": "2021-10-22T19:40",
+          "end": "2021-10-22T23:55",
+          "service": "Emergency Medicine",
+          "reason": "fever, malaise and rash",
+          "conditions": [
+            {
+              "label": "Early syphilis",
+              "action": "diagnosed",
+              "onset": "2021-06-01",
+              "note": "secondary stage: rash on palms and soles, generalized lymphadenopathy",
+              "icd10": "A51.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
+              "action": "start",
+              "sig": "2.4 million units IM once (given in the ED)",
+              "dose": {
+                "value": 2400000,
+                "unit": "[iU]"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "early syphilis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-22T20:30",
+              "resulted": "2021-10-22T23:10",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive, titer 1:64"
+                },
+                {
+                  "test": "Treponema pallidum antibody, TP-PA",
+                  "loinc": "24312-1",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2021-10-22T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2021-10-27T09:40",
+              "author": "emergency medicine",
+              "body": "REGIONAL EMERGENCY DEPARTMENT - PHYSICIAN DOCUMENTATION\nVisit: 10/22/2021\n\nChief complaint: fever, malaise, rash x 2 weeks.\n\nHPI: 25 y/o F. About two weeks of low energy, feeling feverish, and a rash that started on her chest and back and has spread down her arms and legs, now on her palms and the soles of her feet. Not itchy. When asked, she recalls a few painless sores in the genital area some months back that went away without treatment; she never had them checked. Last syphilis test she knows of was negative at a gyn visit about a year and a half ago. Several recent partners, condoms inconsistently.\n\nPMH: none active. Meds: none. Allergies: NKDA.\nFH: mother hypothyroidism, father hypertension.\n\nExam: VS within normal limits. Diffuse nonpruritic maculopapular eruption over trunk and extremities including palms and soles. Generalized lymphadenopathy with palpable epitrochlear nodes bilaterally. Oropharynx clear. No meningismus. Neuro nonfocal; no visual complaints.\n\nResults: RPR reactive, 1:64. TP-PA reactive. HIV Ag/Ab nonreactive.\n\nED course / MDM: presentation and serologies consistent with early (secondary) syphilis. No neurologic or ocular symptoms. Benzathine penicillin G 2.4 million units IM given x1; observed 30 min, no reaction. Counseled on possible fever/myalgias in the first day after treatment. Health department partner services referral made. Abstain until rash resolved and partners treated.\n\nDx: Early syphilis, secondary.\nDispo: home. Follow up with PCP within 1-2 weeks; repeat RPR at 6 and 12 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2021-10-23a",
+          "kind": "portal_message",
+          "start": "2021-10-23T10:12",
+          "reason": "ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER last night",
+              "date": "2021-10-23T10:12",
+              "author": "patient",
+              "body": "Hi, I went to the ER last night for the rash I've had. They said it's syphilis and gave me a shot of penicillin in the hip. I feel kind of achy today but they warned me about that. They told me to see you in a week or two. Can I get an appointment? Kind of freaked out honestly."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER last night",
+              "date": "2021-10-23T13:30",
+              "author": "PCP",
+              "body": "Thanks for telling me, and I'm glad you went in. This is very treatable and the shot you got is the right treatment. The achiness the first day is expected; acetaminophen is fine. Our front desk will reach out Monday to book you for next week. If you get a headache that won't quit, vision changes, or anything that scares you, call the after-hours line."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-02a",
+          "kind": "office_visit",
+          "start": "2021-11-02T14:00",
+          "end": "2021-11-02T14:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "conditions": [
+            {
+              "label": "High risk sexual behavior",
+              "action": "diagnosed",
+              "icd10": "Z72.51"
+            },
+            {
+              "label": "Syphilis screening negative",
+              "action": "resolved",
+              "note": "superseded by the October 2021 diagnosis",
+              "icd10": "Z11.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 69,
+            "temp_c": 37.1,
+            "weight_kg": 60.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-02T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rpr-6mo",
+              "action": "placed",
+              "order": "Rapid plasma reagin, 6-month post-treatment",
+              "category": "lab",
+              "reason": "early syphilis follow-up"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2021-11-02T14:45",
+              "author": "PCP",
+              "body": "FOLLOW-UP AFTER ED VISIT\n\nSeen 10/22 at the regional ED (record received 10/27 and reviewed): two weeks of malaise and a rash on trunk, limbs, palms and soles; remote painless genital sores; RPR 1:64, TP-PA reactive, HIV negative. Treated with benzathine penicillin 2.4 MU IM once.\n\nSince then: achy and warm for about a day after the shot, then better. Rash is fading and mostly gone from her hands. Energy coming back. Health department called her about partners; she gave them names.\n\nSexual history: several partners over the past year, condoms inconsistently. We talked about it plainly; she is not interested in a lecture and I did not give one.\n\nExam: vitals as charted, afebrile. A few faint coppery macules on forearms; palms and soles nearly clear. Small shotty nodes in the neck and groin. No mucosal lesions seen.\n\nA/P\n1. Early syphilis, treated. Repeat RPR at 6 months (late April) and 12 months (October with her physical). Expect a fourfold drop by 6-12 months. Avoid sex until rash gone and partners treated.\n2. High-risk sexual behavior: multiple partners, inconsistent condoms. Condoms with each partner; regular testing here.\n3. Old 'syphilis screening negative' entry from April 2020 closed out.\n\nRPR order placed for April."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "lab_only",
+          "start": "2022-04-26T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6-month RPR after syphilis treatment",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-26T07:45",
+              "resulted": "2022-04-27T15:20",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive, titer 1:8"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-04-26T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rpr-6mo",
+              "action": "done",
+              "date": "2022-04-26T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "RPR 6 months",
+              "date": "2022-04-28T07:55",
+              "author": "PCP",
+              "body": "RPR 1:8, down from 1:64 at diagnosis in October. That is better than a fourfold fall; appropriate response to treatment. Repeat at 12 months with her physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-28a",
+          "kind": "portal_message",
+          "start": "2022-04-28T08:00",
+          "reason": "result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your syphilis follow-up test",
+              "date": "2022-04-28T08:00",
+              "author": "PCP",
+              "body": "Hi Leah, good news. Your RPR has come down from 1:64 to 1:8, which is exactly the drop we want after treatment. One more check in the fall when you come in for your physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your syphilis follow-up test",
+              "date": "2022-04-28T12:31",
+              "author": "patient",
+              "body": "Oh thank god. OK see you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "annual_physical",
+          "start": "2022-10-19T15:00",
+          "end": "2022-10-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Early syphilis",
+              "action": "resolved",
+              "note": "treated October 2021; RPR 1:64 to 1:8 to 1:2",
+              "icd10": "A51.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              71
+            ],
+            "hr": 73,
+            "spo2": 99,
+            "weight_kg": 59.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-19T15:35",
+              "resulted": "2022-10-20T16:10",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Reactive, titer 1:2"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-19T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-19T15:50",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n26 now, third year of grad school. Feels well. No rash, sores or discharge. Partners: still more than one; condoms 'more than before.'\n\nNo meds. NKDA. Never smoker. Alcohol 1-2 drinks a week.\n\nExam: vitals as charted. Skin clear, no residual rash on palms or soles. No adenopathy. Heart, lungs, abdomen normal.\n\nA/P\n1. Early syphilis, treated 10/2021: 12-month RPR drawn today.\n2. High-risk sexual behavior: reviewed condoms and testing every 3-6 months while she has multiple partners.\n3. Pap done 2021; next 2024.\n4. Flu and bivalent COVID booster today, opposite arms.\n\nPhysical next October."
+            },
+            {
+              "type": "Result Note",
+              "title": "RPR 12 months",
+              "date": "2022-10-21T08:20",
+              "author": "PCP",
+              "body": "RPR 1:2. Sustained decline from 1:64; serologic response adequate. Early syphilis marked resolved. A low titer may persist. Patient notified through portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "specialist_visit",
+          "start": "2022-11-01T11:10",
+          "service": "Obstetrics & Gynecology",
+          "reason": "dysuria and vaginal discharge",
+          "conditions": [
+            {
+              "label": "Chlamydia trachomatis cervicitis",
+              "action": "diagnosed",
+              "onset": "2022-10-29",
+              "icd10": "A56.09"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 7 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cervicitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              76
+            ],
+            "hr": 76,
+            "temp_c": 36.8
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-11-01T11:25",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "unit": "/[HPF]",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-01T11:25",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-01T11:30",
+              "resulted": "2022-11-03T10:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Office Visit (outside)",
+              "date": "2023-01-24T14:15",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN OFFICE NOTE\nDate of service: 11/01/2022\nFaxed per request 1/2023\n\nCC: burning with urination, discharge.\n\n26 y/o G0 with a history of an ED evaluation for genital sores and our prior visits. Three days of dysuria, going more often, and a yellow vaginal discharge. Denies fever, flank or back pain, abdominal pain. LMP 2 weeks ago, normal. Multiple partners; condoms used inconsistently.\n\nMeds: none. NKDA.\n\nVitals within normal limits.\nPelvic: mucopurulent discharge from the cervical os; cervical motion tenderness present.\n\nUrine hCG negative. UA: no bacteria, no WBCs.\nCT/GC NAAT: chlamydia DETECTED; gonorrhea not detected (resulted 11/3, patient informed by phone).\n\nA/P: Chlamydia trachomatis cervicitis.\n- Doxycycline 100 mg PO BID x 7 days, started at visit.\n- Abstain 7 days after completing treatment and until partners treated; expedited partner therapy offered.\n- Retest in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "pharmacy",
+          "start": "2022-11-03T09:30",
+          "reason": "fill notification",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside prescription fill",
+              "date": "2022-11-03T09:30",
+              "author": "MA",
+              "body": "Medication history refresh shows doxycycline hyclate 100 mg caps, #14, filled 11/1/22, prescriber at an outside OB/GYN office. No note from that office on file for this. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-04a",
+          "kind": "portal_message",
+          "start": "2022-11-04T21:47",
+          "reason": "outside diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "FYI",
+              "date": "2022-11-04T21:47",
+              "author": "patient",
+              "body": "Just so you know, I saw my gyn on Tuesday because it was burning when I peed and I had some discharge. They called yesterday and it was chlamydia. I'm on doxycycline twice a day for a week. Ugh. Do I need to do anything on your end?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: FYI",
+              "date": "2022-11-07T08:10",
+              "author": "PCP",
+              "body": "Thanks for the update, Leah. Doxycycline for a week is the right treatment. Take it with a full glass of water and stay upright for a while after, and go easy on direct sun. No sex until a week after you finish and your partners have been treated. We should retest in about 3 months; I'll have the staff set that up for early February. I'll also ask your gyn's office for the visit note."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "telephone",
+          "start": "2023-01-10T10:40",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-01-10T10:40",
+              "author": "MA",
+              "body": "Nothing received yet from the outside OB/GYN office for the 11/1/22 visit. Called their records line, re-sent the release by fax. They said 2-3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "nurse_visit",
+          "start": "2023-02-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chlamydia retest",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-07T08:25",
+              "resulted": "2023-02-09T13:40",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Retest swab",
+              "date": "2023-02-07T08:35",
+              "author": "RN",
+              "body": "Here for 3-month test of reinfection after chlamydia treated in November. Finished all 7 days of doxycycline. No symptoms. Self-collected vaginal swab for CT/GC NAAT, instructions given. Results to portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-10a",
+          "kind": "portal_message",
+          "start": "2023-02-10T07:50",
+          "reason": "result",
+          "conditions": [
+            {
+              "label": "Chlamydia trachomatis cervicitis",
+              "action": "resolved",
+              "note": "retest negative February 2023",
+              "icd10": "A56.09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Retest negative",
+              "date": "2023-02-10T07:50",
+              "author": "PCP",
+              "body": "Hi Leah, your repeat swab was negative for both chlamydia and gonorrhea. You are all clear from the November infection. Keep the condoms going."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-29a",
+          "kind": "pharmacy",
+          "start": "2023-04-29T16:20",
+          "reason": "fill notification",
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "prescribed in the emergency department"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside prescription fill",
+              "date": "2023-05-01T08:05",
+              "author": "MA",
+              "body": "Fill history (weekend) shows valacyclovir 1 g tabs #20, filled Saturday 4/29/23, written by an emergency department prescriber. No ED record received. Added to med list as an outside short course; routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-01a",
+          "kind": "telephone",
+          "start": "2023-05-01T09:15",
+          "reason": "ED visit for genital sores",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call",
+              "date": "2023-05-01T09:15",
+              "author": "RN",
+              "body": "Pt called. Went to the ED Saturday with painful blisters 'down there', burning with urination, fever and feeling run down; started about a week after sex with someone new. ED told her it looked like herpes, swabbed it, and started valacyclovir. She got a call Sunday that the swab was positive for herpes. Still sore, urinating is painful but she is managing; using sitz baths. Fever gone since yesterday. Able to urinate. Wants to be seen. Booked with PCP Thursday 5/4. Told to call back if she cannot pass urine, gets a headache with stiff neck, or the pain gets worse."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-04a",
+          "kind": "office_visit",
+          "start": "2023-05-04T11:30",
+          "end": "2023-05-04T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for genital lesions",
+          "conditions": [
+            {
+              "label": "Primary genital herpes simplex virus infection",
+              "action": "diagnosed",
+              "onset": "2023-04-26",
+              "icd10": "A60.04"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              76
+            ],
+            "hr": 74,
+            "temp_c": 36.8,
+            "weight_kg": 60.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-04T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2023-05-04T12:20",
+              "author": "PCP",
+              "body": "FOLLOW-UP, GENITAL HERPES\n\nNo ED record yet; history from Leah and the fill history.\n\nAbout a week after unprotected sex with a new partner she developed fever and malaise, then three days of painful urination and blisters on the labia. Seen in the ED Saturday 4/29. She says they examined her, noted swollen glands in both groins, checked her urine, swabbed a sore, and started valacyclovir 1 g twice a day for 10 days. The ED called her Sunday: swab positive for herpes simplex. She does not know the type. Day 6 of valacyclovir, taking it on schedule. Fever gone. Urination still stings but is better.\n\nExam: vitals as charted, afebrile. Labia with several shallow healing ulcers, no new vesicles. Tender, mobile inguinal nodes on both sides. No vaginal discharge on inspection.\n\nA/P\n1. Primary genital HSV infection, healing on valacyclovir. Finish the 10 days. Sitz baths; urinating in a warm bath helps the stinging. Talked through what recurrences look like and that they tend to be milder. Disclosure to partners, condoms, no sex during sores.\n2. High-risk sexual behavior: repeat STI here at any time she wants testing.\n3. Requesting ED record."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T13:50",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED records follow-up",
+              "date": "2023-06-13T13:50",
+              "author": "MA",
+              "body": "Second request to the regional ED medical records office for the 4/29/23 visit (first sent 5/4). Voicemail left; release re-faxed. Will close the request if nothing comes."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "annual_physical",
+          "start": "2023-10-13T09:40",
+          "end": "2023-10-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              83
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 59.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-13T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-13T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-13T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-13T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-13T10:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-13T10:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n27, still in her graduate program. Feels well. No herpes outbreaks since the spring episode healed. No discharge, no urinary symptoms. Still dating, more than one partner at times.\n\nThe ED never sent the April record despite two requests; closed. Our chart has her account and our exam from 5/4.\n\nNo meds. NKDA. Never smoker. Alcohol unchanged.\n\nExam: vitals as charted. Skin clear. No lymphadenopathy. Heart, lungs, abdomen normal. Genital exam deferred, no complaints.\n\nA/P\n1. Primary genital HSV, no recurrence.\n2. High-risk sexual behavior, history of syphilis and chlamydia: condoms; testing any time.\n3. Pap due next year.\n4. Flu and updated COVID vaccine today. Basic chemistry panel sent.\n\nSee her next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-27a",
+          "kind": "ed_visit",
+          "start": "2024-04-27T13:15",
+          "end": "2024-04-27T19:20",
+          "service": "Emergency Medicine",
+          "reason": "migratory joint pain, fever and rash",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "action": "diagnosed",
+              "onset": "2024-04-25",
+              "icd10": "A54.89"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 102,
+            "rr": 15,
+            "temp_c": 38.7,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-27T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 316
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 14
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 4
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 12.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T13:50",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 90
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-27T14:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:30",
+              "resulted": "2024-04-27T16:00",
+              "results": [
+                {
+                  "test": "Gram stain, skin lesion exudate",
+                  "loinc": "664-3",
+                  "text": "Gram-negative diplococci"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-04-27T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2024-05-03T10:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT NOTE - outside facility\nDOS 04/27/2024\n\nCC: joint pain moving from joint to joint, fever, rash.\n\nHPI: 27F with prior STIs (early syphilis 2021, chlamydial cervicitis 2022, primary genital HSV 2023). Two days of pain and swelling that shifts between joints, now mostly wrists and knees, with fevers and chills. Rash started as small red spots on arms and legs and turned into little pus-topped blisters. Multiple partners, barrier protection inconsistent.\n\nMeds: none. Allergies: NKDA.\n\nTriage: T 38.7 C, HR 102, BP 120/78.\nExam: uncomfortable, moderate distress with pain. Wrists and knees swollen and tender; pain along the flexor tendon sheaths of both wrists, consistent with tenosynovitis. Scattered small vesiculopustules on the extremities, a few with an erythematous halo. Heart tachycardic, regular, no murmur. Lungs clear. Abdomen soft.\n\nResults: WBC 15.0 (80% neutrophils). CRP 90 mg/L. ESR 70 mm/hr. UA unremarkable. Gram stain of unroofed pustule: gram-negative diplococci.\n\nMDM: arthritis-dermatitis syndrome; picture is disseminated gonococcal infection. Blood cultures x2, cervical and pharyngeal swabs sent. Ceftriaxone 1 g IV given. Admit to medicine.\n\nDx: disseminated gonococcal infection."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-04-27b",
+          "kind": "hospital_admission",
+          "start": "2024-04-27T19:20",
+          "end": "2024-04-30T11:40",
+          "service": "Hospital Medicine",
+          "reason": "disseminated gonococcal infection",
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/3)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:20",
+              "resulted": "2024-04-29T09:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae culture, cervix",
+                  "loinc": "688-2",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-27T14:00",
+              "resulted": "2024-04-30T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-04-27T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-04-30T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "date": "2024-05-03T10:25",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY\nAdmitted 04/27/2024 - Discharged 04/30/2024\n\nPrincipal diagnosis: disseminated gonococcal infection (arthritis-dermatitis).\n\nHospital course: Admitted from the ED with fever, migratory polyarthralgia with wrist tenosynovitis, and vesiculopustular skin lesions; Gram stain of a lesion showed gram-negative diplococci. Started ceftriaxone 1 g IV every 24 hours. Cervical NAAT positive for N. gonorrhoeae, negative for chlamydia. Cervical culture grew N. gonorrhoeae susceptible to ceftriaxone and cefixime. Blood cultures without growth. Fever resolved within 36 hours; joint swelling and skin lesions improving. No effusion requiring aspiration.\n\nDischarge meds: cefixime 400 mg PO BID to finish a 7-day total course (through 5/3).\nAllergies: NKDA.\nCondition at discharge: stable, afebrile, ambulating.\nInstructions: no sex until treatment complete and partners treated; partner services notified. PCP follow-up within 1 week.\n\nFollow-up: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-29a",
+          "kind": "portal_message",
+          "start": "2024-04-29T18:05",
+          "reason": "hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "in the hospital",
+              "date": "2024-04-29T18:05",
+              "author": "patient",
+              "body": "Hi, I'm in the hospital since Saturday. My joints blew up and I had a fever and spots, they're saying it's gonorrhea that spread into my blood/joints. On IV antibiotics. Feeling better today. They said I need to see you after I get out, probably Tuesday or Wednesday?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: in the hospital",
+              "date": "2024-04-29T19:10",
+              "author": "PCP",
+              "body": "Sorry you're going through this, Leah, and glad you're improving. I'll have the front desk hold a spot for you next Tuesday 5/7. Bring your discharge paperwork."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "office_visit",
+          "start": "2024-05-07T13:30",
+          "end": "2024-05-07T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "action": "resolved",
+              "note": "treated, April 2024",
+              "icd10": "A54.89"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              72
+            ],
+            "hr": 79,
+            "temp_c": 36.9,
+            "weight_kg": 60.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-05-07T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-05-07T14:25",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 4/27-4/30 for disseminated gonococcal infection (ED note and discharge summary received 5/3, reviewed): fever, migratory joint pain with wrist tenosynovitis, pustular rash; WBC 15.0, CRP 90, ESR 70; lesion Gram stain GN diplococci; cervical NAAT and culture positive for gonorrhea, susceptible; blood cultures negative. Ceftriaxone IV, then cefixime to finish 7 days.\n\nToday: finished the cefixime Friday. No fever. Wrists still a little stiff in the morning, knees fine. Spots have crusted and are fading.\n\nExam: vitals as charted, afebrile. Wrists without swelling, full range. Knees without effusion. A few small crusted macules on forearms and shins.\n\nA/P\n1. Disseminated gonococcal infection, treated and clinically resolved. Call for fever, a hot swollen joint, or new spots.\n2. High-risk sexual behavior. Long talk about condoms with every partner. Partners treated per health department.\n3. Med rec: no ongoing medications."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "annual_physical",
+          "start": "2024-10-24T08:15",
+          "end": "2024-10-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              72
+            ],
+            "hr": 74,
+            "spo2": 99,
+            "weight_kg": 59.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-24T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 310
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-10-24T08:45",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-10-29T11:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-24T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-24T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-24T09:10",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n28. Doing fine. No joint pain since the spring hospitalization; skin healed. No herpes recurrence. No meds.\n\nExam: vitals as charted. Joints without swelling or tenderness. Skin clear. Pelvic: normal external genitalia, no ulcers; cervix normal appearing. Pap collected.\n\nA/P\n1. Preventive: Pap today (last 2021). CBC.\n2. History of DGI, early syphilis, chlamydia and HSV; condoms and testing reviewed again.\n3. Flu shot.\n\nNext fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pap",
+              "date": "2024-10-30T08:00",
+              "author": "PCP",
+              "body": "Pap NILM. CBC normal. Next cervical screen 2027. Portal message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "ed_visit",
+          "start": "2025-05-07T10:05",
+          "end": "2025-05-07T16:30",
+          "service": "Emergency Medicine",
+          "reason": "fever and migratory joint pain",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "action": "diagnosed",
+              "onset": "2025-05-04",
+              "icd10": "A54.89"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 102,
+            "rr": 17,
+            "temp_c": 38.7,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-07T12:40",
+              "resulted": "2025-05-07T13:30",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 50000
+                },
+                {
+                  "test": "Synovial fluid neutrophils",
+                  "loinc": "17836-8",
+                  "unit": "%",
+                  "value": 90
+                },
+                {
+                  "test": "Gram stain, synovial fluid",
+                  "loinc": "664-3",
+                  "text": "Gram-negative diplococci"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-07T10:05"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2025-05-07T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2025-06-18T09:10",
+              "author": "emergency medicine",
+              "body": "ED PHYSICIAN NOTE (outside facility)\nDate of visit: 05/07/2025\nReceived after records request\n\nCC: fever, joint pain x3 days.\n\nHPI: 28 y/o woman with a history of syphilis, chlamydia and HSV, and an admission for disseminated gonococcal infection in April 2024, presenting with three days of fever and pain that has moved among knees, wrists and ankles, with swelling and marked tenderness. New rash on arms and legs. She says it feels like last year. Multiple partners, inconsistent condom use. No medications.\n\nAllergies: NKDA.\n\nVitals: T 38.7 C, HR 102, BP 120/78.\nExam: petechial eruption over palms and soles. Right knee erythematous, warm and swollen; motion limited by pain. Bilateral wrist tenosynovitis.\n\nProcedure: right knee arthrocentesis under sterile technique. Synovial WBC 50,000/mm3, 90% neutrophils. Gram stain: gram-negative diplococci. Culture sent.\nBlood cultures drawn. Cervical and pharyngeal NAAT collected.\n\nMDM: recurrent DGI with septic gonococcal arthritis of the right knee. Ceftriaxone 1 g IV. Admitted.\n\nDx: disseminated gonococcal infection, recurrent."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-07b",
+          "kind": "hospital_admission",
+          "start": "2025-05-07T16:30",
+          "end": "2025-05-10T12:15",
+          "service": "Hospital Medicine",
+          "reason": "recurrent disseminated gonococcal infection",
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/13)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-07T12:40",
+              "resulted": "2025-05-09T15:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T11:00",
+              "resulted": "2025-05-09T08:30",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae rRNA, throat",
+                  "loinc": "60255-7",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-07T11:00",
+              "resulted": "2025-05-10T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-07T18:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-05-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "date": "2025-06-18T09:15",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY\nAdmission 05/07/2025 - Discharge 05/10/2025\n\nDiagnosis: recurrent disseminated gonococcal infection with right knee gonococcal arthritis.\n\nCourse: Second episode in about a year. Right knee aspirate in the ED: 50,000 WBC, 90% PMNs, gram-negative diplococci; culture grew N. gonorrhoeae, susceptible to ceftriaxone and cefixime. Cervical NAAT positive for gonorrhea; chlamydia negative; pharyngeal gonorrhea NAAT negative. Blood cultures no growth. Ceftriaxone 1 g IV daily with rapid defervescence; knee effusion decreased and range of motion improved; no repeat aspiration needed. Rash fading.\n\nDischarge medications: cefixime 400 mg PO BID to complete 7 days total (through 5/13).\nAllergies: NKDA.\nDischarge condition: good.\nFollow-up: PCP in one week. Abstain until treatment complete and partners treated."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-10a",
+          "kind": "pharmacy",
+          "start": "2025-05-10T14:00",
+          "reason": "fill notification",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Outside prescription fill",
+              "date": "2025-05-12T08:10",
+              "author": "MA",
+              "body": "Fill history: cefixime 400 mg caps #8 filled Saturday 5/10/25, prescriber a hospital medicine physician. No hospital records received. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "portal_message",
+          "start": "2025-05-12T09:02",
+          "reason": "hospital discharge",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "it happened again",
+              "date": "2025-05-12T09:02",
+              "author": "patient",
+              "body": "Hi, I was admitted again last week with the same gonorrhea joint thing, this time mostly my right knee. They drained it. Home since Saturday on cefixime. Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: it happened again",
+              "date": "2025-05-12T10:15",
+              "author": "front desk",
+              "body": "Hi Leah, you're booked Wednesday 5/14 at 2:40 with the doctor. Please bring any discharge papers you have since we haven't received them yet."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T14:40",
+          "end": "2025-05-14T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              62
+            ],
+            "hr": 72,
+            "temp_c": 36.7,
+            "weight_kg": 60.0
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-14T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-05-14T15:30",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\n\nNo hospital records yet; she forgot her discharge papers. History from Leah and the fill history.\n\nAdmitted 5/7-5/10 at the regional hospital: fever, joint pain moving around, rash on palms and soles, then a hot swollen right knee that was drained in the ED. Told the fluid showed the same gonorrhea bacteria as last year. IV antibiotics, then cefixime twice daily; last dose tomorrow morning.\n\nToday: no fever since Thursday. Right knee still a little stiff going down stairs but much better. Rash fading.\n\nExam: vitals as charted, afebrile. Right knee: no warmth, mild residual swelling, flexion slightly limited. Wrists without swelling. A few faint macules on palms.\n\nA/P\n1. Recurrent disseminated gonococcal infection, second episode, on oral step-down. Finish cefixime. Gentle range of motion for the knee. Records requested from the hospital.\n2. High-risk sexual behavior. Condoms, partner treatment.\n\nRecheck as needed; physical in the fall."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-05-14T16:00",
+              "author": "MA",
+              "body": "Release signed today. Request for 5/7/25 ED record and discharge summary faxed to the hospital records office."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T07:40",
+          "reason": "records received",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital records arrived",
+              "date": "2025-06-19T07:40",
+              "author": "PCP",
+              "body": "Hi Leah, your May ED and hospital records finally came in. They match what you told me: the knee fluid grew gonorrhea that was sensitive to the antibiotics you got, and the blood cultures stayed negative. How is the knee doing these days?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital records arrived",
+              "date": "2025-06-19T20:14",
+              "author": "patient",
+              "body": "Pretty much back to normal! Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "annual_physical",
+          "start": "2025-10-20T10:00",
+          "end": "2025-10-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "action": "resolved",
+              "note": "May 2025 episode treated",
+              "icd10": "A54.89"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              71
+            ],
+            "hr": 73,
+            "spo2": 99,
+            "weight_kg": 59.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-20T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T10:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-20T10:55",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n29. Well. Right knee has been fine since early summer. No fevers, rashes, sores or discharge. No meds.\n\nProblem list cleanup: the May DGI episode was still showing as active; it was treated and has resolved. Closed.\n\nExam: vitals as charted. Right knee without effusion, full range. Skin clear. Heart and lungs normal.\n\nA/P\n1. History of two DGI episodes (2024, 2025), treated, no residual joint problems.\n2. High-risk sexual behavior: condoms; testing any time she wants it.\n3. Pap 2024 normal; next 2027.\n4. Flu and updated COVID today.\n\nSee next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-02a",
+          "kind": "ed_visit",
+          "start": "2026-05-02T08:50",
+          "end": "2026-05-02T15:10",
+          "service": "Emergency Medicine",
+          "reason": "right knee pain and swelling, fever",
+          "conditions": [
+            {
+              "label": "Disseminated gonococcal infection",
+              "action": "diagnosed",
+              "onset": "2026-04-30",
+              "icd10": "A54.89"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "start",
+              "sig": "1 g IV every 24 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "disseminated gonococcal infection"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 38.2,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-02T10:30",
+              "resulted": "2026-05-02T11:20",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 20000
+                },
+                {
+                  "test": "Synovial fluid neutrophils",
+                  "loinc": "17836-8",
+                  "unit": "%",
+                  "value": 90
+                },
+                {
+                  "test": "Gram stain, synovial fluid",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-02T08:50"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2026-05-02T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2026-05-11T11:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY MEDICINE NOTE (outside)\nService date: 05/02/2026\n\nCC: R knee pain/swelling x2 days.\n\nHPI: 29F, DGI in 2024 and 2025. Two days of a painful, swollen right knee without any injury. Low-grade fevers. Noticed a few small pustules on her palm that do not hurt. No vaginal discharge, no pelvic pain. No medications. NKDA.\n\nVS: T 38.2 C, BP 120/75, HR 88, RR 16.\nExam: right knee warm, swollen and tender, limited flexion and extension due to pain. Palms with a few scattered pustules on a red base. Wrists and other joints without swelling.\n\nArthrocentesis R knee: WBC 20,000/mm3, 90% PMN. Gram stain: no organisms seen. Culture pending. Blood cultures x2. Cervical NAAT and culture sent.\n\nMDM: third presentation compatible with DGI with knee involvement; negative Gram stain does not exclude it. Ceftriaxone 1 g IV. Admit."
+            }
+          ],
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-02b",
+          "kind": "hospital_admission",
+          "start": "2026-05-02T15:10",
+          "end": "2026-05-05T11:30",
+          "service": "Hospital Medicine",
+          "reason": "disseminated gonococcal infection, third episode",
+          "medications": [
+            {
+              "drug_text": "cefixime 400 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to complete 7 days of therapy (last dose 5/8)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "disseminated gonococcal infection, oral step-down"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-02T10:30",
+              "resulted": "2026-05-05T08:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "621-3",
+                  "text": "No growth"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-02T11:15",
+              "resulted": "2026-05-04T14:00",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae culture, cervix",
+                  "loinc": "688-2",
+                  "text": "Neisseria gonorrhoeae isolated; susceptible to ceftriaxone and cefixime"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-02T09:30",
+              "resulted": "2026-05-05T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at final read"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-05-02T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-05T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary (outside)",
+              "date": "2026-05-11T11:05",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY\n05/02/2026 to 05/05/2026\n\nDiagnosis: disseminated gonococcal infection, third episode (prior 2024, 2025), right knee arthritis and palmar pustules.\n\nCourse: Right knee aspirate 20,000 WBC with 90% neutrophils, Gram stain negative; synovial culture final no growth. Blood cultures no growth. Cervical NAAT positive for N. gonorrhoeae, chlamydia negative; cervical culture grew N. gonorrhoeae susceptible to ceftriaxone and cefixime. Ceftriaxone 1 g IV daily; afebrile by hospital day 2, knee swelling improved, ambulating without assistance.\n\nDischarge medications: cefixime 400 mg PO BID to complete 7 days (through 5/8).\nAllergies: NKDA.\nFollow-up: primary care within 1 week. Abstain until treatment complete; partner services contacted."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T12:20",
+          "reason": "hospitalized",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "date": "2026-05-04T12:20",
+              "author": "patient",
+              "body": "Hi, I'm admitted again, right knee this time with fever. They tapped it Saturday. Same thing as before they think. Probably going home tomorrow. Can I get in to see you end of the week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in the hospital",
+              "date": "2026-05-04T13:05",
+              "author": "front desk",
+              "body": "Hi Leah, the doctor asked us to put you on Friday 5/8 at 9:20. Feel better."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "office_visit",
+          "start": "2026-05-08T09:20",
+          "end": "2026-05-08T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              66
+            ],
+            "hr": 73,
+            "temp_c": 37.0,
+            "weight_kg": 59.6
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-05-08T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-05-08T10:10",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 5/2-5/5 for a third DGI episode, right knee. She brought her discharge instructions; full records requested. Per her paperwork: knee tapped in the ED, the Gram stain was negative, cultures sent; cervical swab positive for gonorrhea; IV ceftriaxone then cefixime. Last cefixime dose tonight.\n\nToday: no fever since Monday. Knee swelling down; still sore at the end of the day. Palm spots gone.\n\nExam: vitals as charted, afebrile. Right knee: mild residual swelling, no redness, flexion slightly limited. Palms clear. Other joints normal.\n\nA/P\n1. Disseminated gonococcal infection, third episode, finishing oral step-down today. Return for fever or worsening knee. I'll check in by portal in a couple of weeks.\n2. High-risk sexual behavior. Condoms with each partner; partner treatment again."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Chlamydia trachomatis cervicitis|A56.09": {
+        "code": "A56.09",
+        "display": "Other chlamydial infection of lower genitourinary tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disseminated gonococcal infection|A54.89": {
+        "code": "A54.89",
+        "display": "Other gonococcal infections",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Early syphilis|A51.9": {
+        "code": "A51.9",
+        "display": "Early syphilis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "High risk sexual behavior|Z72.51": {
+        "code": "Z72.51",
+        "display": "High risk heterosexual behavior",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Physiologic leukorrhea|N89.8": {
+        "code": "N89.8",
+        "display": "Other specified noninflammatory disorders of vagina",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary genital herpes simplex virus infection|A60.04": {
+        "code": "A60.04",
+        "display": "Herpesviral vulvovaginitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Syphilis screening negative|Z11.3": {
+        "code": "Z11.3",
+        "display": "Encounter for screening for infections with a predominantly sexual mode of transmission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "cefixime 400 MG Oral Capsule": {
+        "code": "409823",
+        "display": "cefixime 400 MG Oral Capsule",
+        "ingredient": "cefixime",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ceftriaxone 1000 MG Injection": {
+        "code": "1665021",
+        "display": "ceftriaxone 1000 MG Injection",
+        "ingredient": "ceftriaxone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "penicillin G benzathine 600000 UNT/ML Injectable Suspension": {
+        "code": "731572",
+        "display": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
+        "ingredient": "penicillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Clue cells, vaginal wet prep": {
+        "code": "20502-1",
+        "display": "Clue cells [Presence] in Vaginal fluid by Wet preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Epithelial cells, vaginal wet prep": {
+        "code": "12211-9",
+        "display": "Epithelial cells [Presence] in Vaginal fluid by Wet preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Gram stain, skin lesion exudate": {
+        "code": "664-3",
+        "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Gram stain, synovial fluid": {
+        "code": "664-3",
+        "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes, vaginal wet prep": {
+        "code": "12226-7",
+        "display": "Leukocytes [Presence] in Vaginal fluid by Wet preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Neisseria gonorrhoeae culture, cervix": {
+        "code": "688-2",
+        "display": "Neisseria gonorrhoeae [Presence] in Cervix by Organism specific culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Neisseria gonorrhoeae rRNA, throat": {
+        "code": "60255-7",
+        "display": "Neisseria gonorrhoeae rRNA [Presence] in Throat by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid culture": {
+        "code": "621-3",
+        "display": "Bacteria identified in Synovial fluid by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid leukocytes": {
+        "code": "26469-7",
+        "display": "Leukocytes [#/volume] in Synovial fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Synovial fluid neutrophils": {
+        "code": "17836-8",
+        "display": "Neutrophils/Leukocytes in Synovial fluid",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Treponema pallidum antibody, TP-PA": {
+        "code": "24312-1",
+        "display": "Treponema pallidum Ab [Presence] in Serum by Agglutination",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Trichomonas vaginalis, vaginal wet prep": {
+        "code": "14367-7",
+        "display": "Trichomonas vaginalis [Presence] in Vaginal fluid by Wet preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Vaginal fluid pH": {
+        "code": "48037-6",
+        "display": "pH of Vaginal fluid",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

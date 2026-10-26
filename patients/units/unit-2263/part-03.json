@@ -1,0 +1,397 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002263",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heart failure and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-23T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-23T08:00", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-23T07:30"},
+            {"procedure": "Venipuncture", "performed": "2024-01-23T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-01-23T07:30", "body": "HF/CAD/HTN check. Winter is slow for work, which he says his heart appreciates. Breathless on a full flight of stairs, same as summer. One pillow. No ankle swelling. No chest pain, no nitro used in the past year. Weighs himself most mornings, steady. Shoulders sore on cold mornings.\nExam: vitals as charted. JVP not elevated. Heart regular, apical systolic murmur. Lungs clear. No edema.\nA/P: HFrEF, NYHA II, euvolemic. CAD s/p LAD DES, on aspirin and clopidogrel. HTN fine. Continue all meds. BMP, CBC. Back in 6 months for the AWV, sooner if weight climbs."}
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "hospital_admission",
+          "start": "2024-03-01T15:50",
+          "end": "2024-03-02T14:30",
+          "service": "Emergency Medicine",
+          "reason": "neck pain and hand weakness after motor vehicle collision",
+          "conditions": [
+            {"label": "Neuropathic pain syndrome", "icd10": "M79.2", "action": "diagnosed", "onset": "2024-03-01", "note": "both upper extremities, after neck injury on cervical spondylosis"}
+          ],
+          "medications": [
+            {"drug": "gabapentin 300 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 300, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "neuropathic pain, both hands"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-01T16:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-01T16:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "MRI cervical spine without contrast", "loinc": "30667-0", "performed": "2024-03-01T18:40", "text": "Multiplanar multisequence MRI of the cervical spine without contrast. Alignment maintained. No acute fracture. No marrow edema. No prevertebral soft tissue swelling. Chronic degenerative changes with disc space narrowing, disc-osteophyte complexes and facet arthropathy at multiple levels. Craniocervical junction normal.", "conclusion": "No acute fracture. Chronic degenerative changes of the cervical spine."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-03-01T15:50"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2024-03-02T14:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2024-03-01T15:50", "body": "Regional hospital ED.\nCC: neck pain, both hands weak after car accident.\nHPI: 68-year-old man, known cervical spondylosis and coronary disease, was the driver of a pickup struck from behind while stopped at a light this afternoon. Belted. Immediate neck pain; since then both hands feel weak and clumsy and numb. Did not pass out. Legs feel normal.\nMeds: aspirin, clopidogrel, metoprolol succinate, lisinopril, furosemide, atorvastatin, pantoprazole, indomethacin as needed, SL nitroglycerin as needed. NKDA.\nExam: c-collar in place on arrival. Neck range limited by pain. Grip weak bilaterally, fine finger movements slow and clumsy. Light touch and pinprick reduced in both arms, most in the hands. Biceps and brachioradialis reflexes diminished both sides; knee and ankle reflexes normal. Lower extremity strength full. No incontinence; rectal tone intact.\nMRI cervical spine: no fracture, chronic degenerative changes.\nPlan: spine surgery consulted; observation overnight with neuro checks."},
+            {"type": "Consult Note", "title": "Spine Surgery Consultation", "author": "spine surgery", "date": "2024-03-01T21:15", "body": "Asked to see for bilateral hand weakness and sensory change after a rear-end collision on a background of cervical degenerative disease. Exam as documented by ED; lower extremities intact. MRI shows no fracture and chronic degenerative change only. No instability. Recommend nonoperative care: soft collar for comfort for 2 weeks, outpatient physical therapy, neuro checks overnight. No surgical intervention indicated. Return precautions for leg weakness, gait change, bowel or bladder change."},
+            {"type": "Discharge Summary", "title": "Observation Discharge Summary", "author": "hospitalist", "date": "2024-03-02T14:30", "body": "Observation 3/1 to 3/2/2024.\nReason: neck injury in a rear-end collision with bilateral hand weakness and sensory change.\nCourse: neuro checks stable overnight. Hand strength slightly better this morning. Burning, pins-and-needles pain in both hands keeps him up. Spine surgery: nonoperative.\nDischarge diagnosis: neuropathic pain syndrome of both upper extremities after neck injury, on cervical spondylosis. No fracture.\nNew medication: gabapentin 300 mg at bedtime.\nContinue home medications unchanged. NKDA.\nOrders: soft collar as needed; outpatient PT referral to be placed by PCP.\nFollow-up: PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "office_visit",
+          "start": "2024-03-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after collision",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2024-03-07T07:30"}],
+          "orders": [
+            {"id": "pt-2024", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "hand weakness and neck pain after collision, cervical spondylosis"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Observation Visit", "author": "PCP", "date": "2024-03-07T07:30", "body": "Rear-ended last Friday, overnight observation, MRI without fracture. Hands: grip is coming back slowly, still dropping screws. Burning and tingling in both hands, worst at night; gabapentin at bedtime helps him sleep. Neck sore. Legs fine, walking fine, no bladder issues.\nExam: neck tender paraspinal, rotation limited. Grip reduced bilaterally, better than the ED described. Light touch reduced in the fingertips both hands. Biceps and brachioradialis reflexes still diminished. Gait normal.\nA/P: neuropathic pain in both hands after neck injury on spondylosis, improving motor. PT referral placed. Continue gabapentin 300 at bedtime for now. No driving until he can turn his head and grip the wheel well. Recheck 4 weeks."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T10:00",
+          "service": "Physical Therapy",
+          "reason": "PT evaluation",
+          "procedures": [{"procedure": "Physical therapy evaluation, moderate complexity", "performed": "2024-03-12T10:00"}],
+          "orders": [{"id": "pt-2024", "action": "done", "date": "2024-03-12T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical Therapy Initial Evaluation", "author": "physical therapy", "date": "2024-03-12T10:00", "body": "Outpatient PT evaluation. 68M, self-employed handyman, 11 days after a rear-end collision with neck pain and bilateral hand weakness and sensory change; cervical spondylosis; nonoperative per spine surgery. Goals: return to using hand tools, fasteners, driving.\nFindings: cervical rotation limited and painful; grip and pinch reduced bilaterally; fine motor (coin pickup, buttoning) slowed; sensation diminished in the fingertips; gait and balance normal.\nPlan: twice weekly for 8 weeks: cervical mobility, postural work, graded grip and dexterity training, home program. Cardiac precautions noted (HFrEF, CAD)."}
+          ]
+        },
+        {
+          "id": "2024-04-04a",
+          "kind": "office_visit",
+          "start": "2024-04-04T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hand pain follow-up",
+          "medications": [
+            {"drug": "gabapentin 300 MG Oral Capsule", "action": "stop", "reason": "dose increase"},
+            {"drug": "gabapentin 300 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth three times daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "neuropathic pain, both hands"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-04T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-04-04T07:30", "body": "Four weeks out. PT twice a week, likes it. Grip clearly stronger, can run a screwdriver again but tires quickly. The burning in both hands persists through the day now, not just at night. Gabapentin at bedtime tolerated, no fogginess.\nExam: grip improved bilaterally. Fingertip light touch still reduced. Neck rotation better.\nA/P: neuropathic pain syndrome, hands; motor recovering. Gabapentin increased to 300 mg three times daily. Kidney function normal on last labs. Caution re drowsiness on ladders. Continue PT. Back to driving short trips is reasonable now."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T12:00",
+          "service": "Physical Therapy",
+          "reason": "PT discharge summary received",
+          "documents": [
+            {"type": "Outside Records", "title": "Physical Therapy Discharge Summary", "author": "physical therapy", "date": "2024-05-21T12:00", "body": "Discharged from PT after 15 visits (one missed). Cervical rotation now functional both directions. Grip and pinch close to expected for age and work; dexterity tasks within normal time. Residual intermittent burning in the fingertips, managed by his physician. Independent with home exercise program."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "specialist_visit",
+          "start": "2024-06-11T14:00",
+          "service": "Cardiology",
+          "reason": "annual cardiology follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2024-06-11T13:45", "text": "Sinus rhythm. Anterior Q waves with persistent ST elevation, unchanged from prior tracings.", "conclusion": "No change from prior."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-11T14:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2024-06-11T13:45"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Annual Follow-up", "author": "cardiology", "date": "2024-06-11T14:00", "body": "Letter to PCP. Seen for yearly review of CAD (proximal LAD DES 1/2023), ischemic cardiomyopathy with anterior aneurysm and HFrEF. No angina. Stable class II symptoms. Car accident in March with hand symptoms, now on gabapentin. ECG unchanged. Euvolemic on exam.\nMedications: aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, gabapentin 300 TID, indomethacin as needed, NTG SL as needed. NKDA.\nPlan: continue current therapy including dual antiplatelet therapy. Return in one year."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "annual_physical",
+          "start": "2024-07-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-16T08:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-16T08:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-16T08:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "Pain severity (0-10)", "value": 3}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-07-16T07:30"},
+            {"procedure": "Venipuncture", "performed": "2024-07-16T08:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-07-16T07:30", "body": "AWV, age 69. Grip back to where it was before the accident since about June, back to small carpentry jobs. Fingertip burning still there most days but milder on gabapentin 300 TID. Neck stiff as always. Heart: stairs with mild breathlessness, unchanged. Saw cardiology in June, no changes.\nNo falls. PHQ-2 negative. Lives alone, independent.\nExam: vitals as charted. Grip strong and symmetric. Fingertip light touch mildly reduced. Heart regular, apical murmur. Lungs clear. No edema.\nPlan: CMP, lipids, CBC. Fall vaccines: flu, COVID, and RSV this year given his heart failure. LDCT November."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T07:35"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2024-10-08T07:36"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T07:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2024-10-08T07:45", "body": "Three vaccines today per PCP: high-dose flu L deltoid, RSV (Abrysvo) R deltoid, 2024-25 Moderna COVID L deltoid lower site. Pressure held on each (on DAPT). Waited 15 minutes, no reaction. Told him a sore arm tomorrow would not be surprising."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T13:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-12T13:30", "text": "Low-dose noncontrast CT of the chest compared with 11/2023. No pulmonary nodules. No consolidation or pleural effusion. Airways patent.", "conclusion": "Lung-RADS 1. Annual screening."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2024-11-13T07:45", "body": "Lung-RADS 1 again. Sent to portal."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heart failure follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-12-10T09:15", "body": "No-show for 7:30 follow-up. Reached him at 9:05: forgot, was on a job in Hartland plowing out a client's walkway. Rebooked for 1/14. Reminded about texting the office if anything changes with breathing or weight."}
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heart failure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-14T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-14T07:30"},
+            {"procedure": "Venipuncture", "performed": "2025-01-14T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-01-14T07:30", "body": "Rebooked from December. Doing OK. Stairs with some breathlessness, about the same. Sleeping flat on one pillow. No swelling. Home weights steady. Hand burning a 3 out of 10 most days.\nExam: vitals as charted. Heart regular, apical systolic murmur. Lungs clear. No edema.\nA/P: HFrEF stable. CAD, no angina. Neuropathic hand pain controlled on gabapentin. BMP. Continue meds; see in spring."}
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T14:10",
+          "end": "2025-03-03T12:30",
+          "service": "Cardiology",
+          "reason": "progressive shortness of breath",
+          "state": {"weight_kg": 94.5, "labs": {"N-terminal Pro-B-Type Natriuretic Peptide": 4850}},
+          "vitals": [
+            {"time": "2025-02-26T14:20", "temp_c": 36.9, "bp": [102, 66], "hr": 108, "rr": 24, "spo2": 89}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-02-26T14:40", "results": [{"test": "N-terminal Pro-B-Type Natriuretic Peptide", "value": 4850}, {"test": "Troponin I, High Sensitivity", "value": 9}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-26T14:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-26T14:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-03T06:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-02-26T14:55", "text": "Portable AP chest. Bilateral perihilar airspace opacities in a pattern of pulmonary edema. No pneumothorax.", "conclusion": "Pulmonary edema."},
+            {"study": "Transthoracic echocardiogram", "performed": "2025-02-27T11:00", "text": "Dilated LV with anterior aneurysm, unchanged in appearance. LVEF 30%. Moderate functional mitral regurgitation. RV normal size. No pericardial effusion.", "conclusion": "LVEF 30%; anterior LV aneurysm unchanged."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-02-26T14:10"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-02-26T18:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-03-03T11:30"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2025-02-26T14:10", "body": "Regional hospital ED.\n69-year-old man with ischemic cardiomyopathy, HFrEF and anterior LV aneurysm after an old MI. For two weeks breathlessness has crept up: a flight of stairs or a short walk now stops him. Wakes at night gasping and has gone to three pillows. No chest pain, fever or recent illness.\nVitals: T 36.9, BP 102/66, HR 108, RR 24, SpO2 89% on room air.\nExam: mildly distressed, using accessory muscles. Late inspiratory crackles at both bases, no wheeze. S3 gallop. Mild pitting edema both legs.\nCXR: bilateral perihilar opacities, pulmonary edema. NT-proBNP 4850. Troponin not elevated.\nPlan: oxygen, IV furosemide, admit to the cardiac unit. NKDA."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospitalist", "date": "2025-03-03T12:30", "body": "Admitted 2/26/2025, discharged 3/3/2025.\nDiagnosis: acute decompensated heart failure, HFrEF, ischemic cardiomyopathy with anterior LV aneurysm.\nCourse: hypoxic with pulmonary edema on arrival. A pulmonary artery catheter was placed in the cardiac unit on the first night to guide therapy given soft blood pressure; wedge pressure elevated at 27 mmHg. IV furosemide with good response, oxygen weaned by day 3, catheter removed day 3. Echo: LVEF 30%, aneurysm unchanged, moderate functional MR. Troponin not elevated, no ischemic trigger found. Weight down 5 kg at discharge. Renal function stable.\nDischarge medications (unchanged from home): aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40 daily, atorvastatin 40, pantoprazole 40, gabapentin 300 TID, indomethacin as needed, NTG SL as needed.\nNKDA.\nFollow-up: PCP within 1 week, cardiology 2-3 weeks. Daily weights, 2 g sodium diet, fluid around 2 L."}
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "office_visit",
+          "start": "2025-03-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, heart failure",
+          "state": {"weight_kg": 89.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-06T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-03-06T07:30"},
+            {"procedure": "Venipuncture", "performed": "2025-03-06T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-03-06T07:30", "body": "First heart failure admission, 2/26 to 3/3, pulmonary edema, diuresed, PA catheter, EF now 30%. Home 3 days. Breathing much better, back to one pillow, can do the porch steps. Weighing daily, holding at discharge weight. Discharge meds reviewed line by line with his pill box: unchanged from before.\nExam: vitals as charted. No JVD. Heart regular, apical systolic murmur, no gallop today. Faint crackles right base. Trace ankle edema.\nA/P: HFrEF after decompensation, near dry weight. Continue furosemide 40 daily; extra dose only on instruction. Low-salt diet reviewed. BMP today. Cardiology 3/20."}
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "specialist_visit",
+          "start": "2025-03-20T09:30",
+          "service": "Cardiology",
+          "reason": "follow-up after heart failure admission",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-20T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2025-03-20T09:30", "body": "Seen after his first heart failure hospitalization (late February). Now euvolemic, class II, weight stable at home. LVEF 30% on the inpatient echo with the known anterior aneurysm.\nMedications unchanged: aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, gabapentin, indomethacin as needed, NTG SL as needed. NKDA.\nPlan: continue current regimen. Sodium and fluid guidance reinforced. Return in 6 months."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "annual_physical",
+          "start": "2025-06-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-17T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-06-17T08:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-17T08:00", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}, {"survey": "AUDIT-C total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-06-17T07:30"},
+            {"procedure": "Venipuncture", "performed": "2025-06-17T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-06-17T07:30", "body": "AWV, 70 last month. Since the February admission he has kept to light jobs. Stairs with mild breathlessness. One pillow. Weights steady. Hands burn mildly; gabapentin continues. Shoulders and elbows ache after work.\nMood screen PHQ-9 4. No falls. Lives alone; brother nearby.\nExam: vitals as charted. Heart regular, murmur unchanged. Lungs clear. No edema.\nPlan: CMP, lipids, CBC. Flu and COVID in the fall. LDCT in November. Colonoscopy due 2027. Cardiology in September."}
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "hospital_admission",
+          "start": "2025-09-04T06:30",
+          "end": "2025-09-09T13:00",
+          "service": "Cardiology",
+          "reason": "shortness of breath, acute pulmonary edema",
+          "conditions": [
+            {"label": "Acute pulmonary edema due to left heart failure", "icd10": "I50.1", "action": "diagnosed", "onset": "2025-09-01"}
+          ],
+          "state": {"weight_kg": 93.5, "labs": {"N-terminal Pro-B-Type Natriuretic Peptide": 6120}},
+          "labs": [
+            {"panel": null, "collected": "2025-09-04T06:50", "results": [{"test": "N-terminal Pro-B-Type Natriuretic Peptide", "value": 6120}, {"test": "Troponin I, High Sensitivity", "value": 8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-04T06:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-04T06:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-09T05:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-09-04T07:05", "text": "Portable AP chest. Increased pulmonary vascular markings. Small bilateral pleural effusions. No pneumothorax.", "conclusion": "Pulmonary vascular congestion with small bilateral pleural effusions."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-09-04T06:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-09-04T10:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-09-09T12:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2025-09-04T06:30", "body": "Regional hospital ED.\n70M with HFrEF and an anterior LV aneurysm from a prior anterior MI years ago, admitted here in February for decompensated heart failure. Over the last several days, breathlessness has steadily worsened; he wakes up gasping and sleeps propped up on several pillows. Appetite down, legs a little swollen. No chest pain, cough or fever.\nExam: tired, short of breath at rest. S3. Crackles at both bases, no wheeze. JVP elevated. Peripheral pulses weak.\nCXR: increased vascular markings, small bilateral effusions. NT-proBNP 6120, troponin not elevated.\nImpression: acute pulmonary edema from left heart failure.\nPlan: IV diuresis, admit to the cardiac unit; pulmonary artery catheter for hemodynamic monitoring. NKDA."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospitalist", "date": "2025-09-09T13:00", "body": "Admitted 9/4/2025, discharged 9/9/2025.\nDiagnosis: acute pulmonary edema due to left heart failure; HFrEF (LVEF 30% 2/2025), ischemic cardiomyopathy with anterior aneurysm.\nCourse: pulmonary artery catheter placed in the cardiac unit for hemodynamic monitoring; PCWP 25 mmHg on placement. IV furosemide, brisk diuresis, catheter out on day 2, off oxygen day 3. Renal function stable. Weight down about 4 kg.\nDischarge medications unchanged from home: aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, gabapentin 300 TID, indomethacin 25 as needed, NTG SL as needed.\nNKDA.\nFollow-up: PCP within a week, cardiology next month."}
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "office_visit",
+          "start": "2025-09-11T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pulmonary edema",
+          "conditions": [
+            {"label": "Acute pulmonary edema due to left heart failure", "icd10": "I50.1", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 89.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-11T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-09-11T07:30"},
+            {"procedure": "Venipuncture", "performed": "2025-09-11T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-09-11T07:30", "body": "Second HF admission this year, 9/4 to 9/9, acute pulmonary edema, PA catheter, IV diuresis. Discharged on the same regimen. Feels much better; one pillow again; walked the driveway twice yesterday. Daily weights at discharge weight.\nExam: vitals as charted. No JVD. Heart regular, apical murmur, no S3 today. Lungs clear. Trace edema.\nA/P: pulmonary edema resolved; HFrEF back to dry weight. Low-sodium cooking reviewed again; he will keep a weight log on the fridge. BMP today. Cardiology in October. Flu and COVID at that time too."}
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-16T07:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-16T07:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-16T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2025-10-16T07:40", "body": "High-dose flu and 2025-26 COVID given. Pressure held, no bleeding. Weight log reviewed at the door: stable."}
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "specialist_visit",
+          "start": "2025-10-23T10:30",
+          "service": "Cardiology",
+          "reason": "follow-up after second heart failure admission",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-23T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2025-10-23T10:30", "body": "Follow-up after September admission for pulmonary edema. Euvolemic and stable since. Regimen continued without change: aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40. NKDA. Return in 4 to 6 months."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "imaging",
+          "start": "2025-11-18T13:40",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-11-18T13:40", "text": "Low-dose noncontrast CT chest, compared with 11/2024. No pulmonary nodules. No consolidation. No pleural effusion.", "conclusion": "Lung-RADS 1. Next screen in 12 months."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2025-11-19T08:00", "body": "LDCT Lung-RADS 1. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T19:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refills",
+          "documents": [
+            {"type": "Patient Message", "title": "Refills before the holidays", "author": "patient", "date": "2025-12-09T19:22", "body": "Can you send refills for the metoprolol, furosemide and gabapentin so I'm not scrambling at the end of the month. Also the stomach pill. Weight's holding."},
+            {"type": "Patient Message", "title": "RE: Refills before the holidays", "author": "MA", "date": "2025-12-10T08:40", "body": "All four sent as 90-day supplies first thing today. Glad the weights are steady. Your next visit is January 20."}
+          ]
+        }
+      ]
+    }
+  ]
+}

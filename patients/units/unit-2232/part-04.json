@@ -1,0 +1,485 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002232",
+      "events": [
+        {
+          "id": "2024-02-05a",
+          "kind": "portal_message",
+          "start": "2024-02-05T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology visit last month",
+              "author": "patient",
+              "date": "2024-02-05T21:14",
+              "body": "This is Kristen, Dennis's daughter, writing on his account. We saw neurology on January 19. They did another head CT and said there are many small old strokes and that his memory problem is now vascular dementia, not just the fluid. They told him no more driving, because he got lost several times last fall coming home from the store. He is upset about the car. They said they'd send you the notes. Do we need to change anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology visit last month",
+              "author": "PCP",
+              "date": "2024-02-06T12:30",
+              "body": "Kristen, thank you for letting me know, and I'm sorry, that's a hard visit. I haven't received their note yet; we'll request it today. I agree with the driving advice. No medicine changes for now. Let's get him in next month so we can go over it together, and bring his pill box."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "office_visit",
+          "start": "2024-03-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology, dementia",
+          "conditions": [
+            {
+              "label": "Vascular dementia",
+              "icd10": "F01.50",
+              "action": "diagnosed",
+              "onset": "2024-01-19"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-04T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-03-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: vascular dementia per neurology",
+              "author": "PCP",
+              "date": "2024-03-04T10:40",
+              "body": "With wife and daughter. Per family, neurology in January diagnosed vascular dementia on a new CT showing multiple small strokes, and advised him to stop driving after he got lost several times. Their letter still not received; second request faxed today. He has handed over the car keys, reluctantly. More trouble planning his day, more confused. Wife now gives all medications again.\nExam: vitals as charted. Oriented to person and place, not date. Walker gait, slow. Right arm swings less than left.\nA/P:\n1. Vascular dementia (per neurology, pending letter): added to problem list. Safety at home, supervision of meds and finances. Caregiver resources given to Kristen.\n2. Secondary prevention: continue aspirin, atorvastatin, BP meds.\n3. BMP today. RTC June for diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "outside_records",
+          "start": "2024-04-22T14:45",
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2024-01-19T11:10",
+              "text": "Indication: progressive memory loss, executive dysfunction.\nTechnique: Noncontrast axial CT of the head.\nFindings: Multiple small hypodense foci in the subcortical white matter of both cerebral hemispheres and in both basal ganglia. Ventricles enlarged, similar to the prior study. No acute hemorrhage, mass, or territorial infarct. No extra-axial collection.",
+              "conclusion": "Multiple small subcortical white matter and bilateral basal ganglia hypodensities, consistent with small vessel ischemic change. Stable ventriculomegaly."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up, 01/19/2024 (received 04/22)",
+              "author": "neurology",
+              "date": "2024-04-22T14:45",
+              "body": "OUTSIDE NEUROLOGY — Follow-up, 01/19/2024\n(Received after third request.)\nReturns with daughter. Over the past year, progressive forgetfulness and difficulty organizing and planning daily tasks, which the family says is unlike him. He acknowledges feeling more muddled and has lost his way driving on several occasions. Background: prior TIA, CKD, cervical spondylotic myelopathy and normal pressure hydrocephalus (tap test with modest response, no shunt).\nMedications: metformin 1000 mg BID, lisinopril 20 mg, HCTZ 12.5 mg, tamsulosin 0.4 mg qhs, morphine ER 60 mg BID, morphine IR 15 mg prn, atorvastatin 40 mg, aspirin 81 mg.\nAllergies: sulfonamide antibiotics, iodinated contrast.\nVitals: BP 145/90.\nLab: fasting glucose 162.\nExam: Drift of the right arm on pronator testing. Right-sided reflexes brisker than left. Slow gait with less arm swing on the right.\nCT head without contrast: report attached.\nImpression: Vascular dementia.\nPlan: Stop driving. Vascular risk control with PCP. Home safety and caregiver support. Follow-up 1 year.\nNeurologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "office_visit",
+          "start": "2024-06-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Microalbumin/Creatinine Ratio": 1100
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-17T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 1100
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-17T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-17T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-17T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "author": "PCP",
+              "date": "2024-06-17T09:50",
+              "body": "With wife. Neurology letter came in April: matches what family told us. Not driving. Snacking more in the afternoons.\nExam: vitals as charted. Feet: no lesions.\nPlan: A1c, urine albumin, lipids, BMP. Meal structure discussed with wife."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-06-18T16:00",
+              "body": "A1c 7.6, up from 7.2. Urine albumin/creatinine 1,100 mg/g. Kidney function stable. For someone with dementia, 7.6 is acceptable; I'd rather avoid lows than add another pill. Recheck in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-15a",
+          "kind": "outside_records",
+          "start": "2024-07-15T11:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-oncology follow-up",
+              "author": "hematology-oncology",
+              "date": "2024-07-15T11:00",
+              "body": "OUTSIDE CANCER CENTER — Follow-up, 06/28/2024\nWM with AL lambda amyloidosis, ongoing very good partial response, no therapy since 2021. Family reports vascular dementia diagnosed by neurology.\nLabs: hemoglobin 13.0; light chains remain low and stable.\nPlan: observation every 6 months. Continue furosemide.\nHematology-oncology physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "annual_physical",
+          "start": "2024-09-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-23T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-23T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-09-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-09-23T09:45",
+              "body": "AWV with wife. Since summer he has insisted on filling and taking his own pill box again; wife lets him to keep the peace and checks on it 'when I can.' Needs help bathing. Walker always. No falls. PHQ-9 5.\nAdvance care plan reviewed; proxy unchanged.\nSafety: shower chair, grab bars in place.\nExam: as charted.\nVaccines next month: flu, COVID, RSV.\nLabs today."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T10:15",
+          "reason": "vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T10:17"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T10:19"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-10-08T10:21"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T10:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T10:35",
+              "body": "Flu (high-dose) L deltoid, COVID (Moderna updated) R deltoid, RSV L deltoid lower site. Wife consented with pt. Observed, tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-28a",
+          "kind": "outside_records",
+          "start": "2024-10-28T09:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pain management follow-up",
+              "author": "pain management",
+              "date": "2024-10-28T09:20",
+              "body": "OUTSIDE PAIN MANAGEMENT CLINIC — Follow-up, 10/18/2024\nLumbar spinal stenosis; also cervical myelopathy, NPH and vascular dementia per records. Seen with wife, who reports pain stable. Regimen unchanged: morphine ER 60 mg q12h, morphine IR 15 mg q4h prn. Wife holds and dispenses the morphine. Monitoring program reviewed. Return 3 months.\nPain management physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telephone",
+          "start": "2024-12-10T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-12-10T09:05",
+              "body": "Called re missed visit 12/9. Wife says they mixed up the date and the roads were icy. Rebooked 1/21 at 10:00. Reminder call set."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "state": {
+            "bp": [
+              156,
+              92
+            ],
+            "labs": {
+              "Hemoglobin A1c": 8.3,
+              "Glucose": 190
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes / HTN follow-up",
+              "author": "PCP",
+              "date": "2025-01-21T10:35",
+              "body": "With wife. He says he takes all his pills; he does his own box. Wife not sure. No headaches, no chest pain.\nO: BP high today, repeated after rest, still up. Heart regular, no edema.\nA/P: BP above goal and A1c drawn. Before adding anything, asked wife to take back the pill box and to bring all bottles next visit for a count. Recheck BP in 6-8 weeks. Will call with A1c."
+            },
+            {
+              "type": "Result Note",
+              "title": "A1c result",
+              "author": "PCP",
+              "date": "2025-01-22T12:20",
+              "body": "A1c 8.3, up from 7.6. Likely adherence; spoke with wife, who will supervise. Recheck BP and sugars at March visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "outside_records",
+          "start": "2025-04-03T13:40",
+          "conditions": [],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-03-29T15:25",
+              "text": "Indication: acute involuntary movements of left arm and leg.\nTechnique: Noncontrast axial CT of the head.\nFindings: Small area of hyperdensity in the deep structures of the right cerebral hemisphere. Multiple small chronic hypodensities in the subcortical white matter and both basal ganglia, unchanged. Enlarged ventricles, unchanged. No hemorrhage elsewhere, no mass effect, no extra-axial collection.",
+              "conclusion": "Small right deep hemispheric hyperdensity, consistent with acute lacunar infarct. Chronic small vessel changes and ventriculomegaly unchanged."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record, 03/29/2025",
+              "author": "emergency medicine",
+              "date": "2025-04-03T13:40",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — Physician record, 03/29/2025 (received 04/03/2025)\nCC: involuntary flinging movements, left side.\nHPI: 74M with cervical spondylotic myelopathy, Waldenström macroglobulinemia and vascular dementia, brought by his wife after large, unpredictable flinging movements of the left arm and leg began earlier today and worsened through the afternoon; unable to walk or feed himself. Never had anything like this before. Hypertension and diabetes, both poorly controlled; reports not taking lisinopril or metformin for several months.\nHome meds per list: HCTZ 12.5 mg, tamsulosin 0.4 mg, morphine ER 60 mg BID, morphine IR 15 mg prn, atorvastatin 40 mg, aspirin 81 mg; lisinopril and metformin prescribed but not taken.\nAllergies: sulfonamide antibiotics (hives); iodinated contrast (anaphylaxis) — no CT angiography.\nExam: Alert and oriented. Continuous, irregular, large-amplitude movements of the left arm and leg. Tone hard to judge with the movements; no spasticity or rigidity. Reflexes symmetric. No pronator drift. Sensation intact. Cranial nerves intact.\nFingerstick glucose 214.\nNoncontrast head CT: report attached.\nImpression: Left hemiballism (chorea) from acute right lacunar infarct.\nDisposition: Admitted to the hospital medicine service with neurology consultation.\nED physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "outside_records",
+          "start": "2025-05-19T15:00",
+          "orders": [],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Home physical therapy discharge summary",
+              "author": "physical therapy",
+              "date": "2025-05-19T15:00",
+              "body": "HOME HEALTH PHYSICAL THERAPY — Discharge summary\n9 visits 04/10-05/15/2025. Diagnosis: right lacunar infarct with left hemiballism, vascular dementia, chronic gait disorder.\nProgress: involuntary left arm movements now rare and small; transfers with supervision; ambulates household distances with rolling walker and standby assist. Caregiver trained in safe transfers.\nRecommendations: continue home exercise program with wife; supervision for all walking.\nPhysical therapist"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "outside_records",
+          "start": "2025-08-04T10:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-oncology follow-up",
+              "author": "hematology-oncology",
+              "date": "2025-08-04T10:30",
+              "body": "OUTSIDE CANCER CENTER — Follow-up, 07/18/2025\nWM / AL lambda amyloidosis in sustained response. Interval stroke in March noted. Hemoglobin 12.7; light chains stable and low.\nPlan: observation every 6 months; continue furosemide.\nHematology-oncology physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T09:30",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-03-20T19:40",
+              "text": "Indication: acute right-sided weakness.\nTechnique: Multiplanar multisequence MRI of the brain without contrast, including diffusion-weighted imaging.\nFindings: Small focus of restricted diffusion in a deep location, consistent with an acute lacunar infarct. Chronic small vessel changes in the subcortical white matter and basal ganglia. Ventriculomegaly, unchanged. No hemorrhage, mass or extra-axial collection.",
+              "conclusion": "Small acute lacunar infarct. Chronic small vessel disease and stable ventriculomegaly."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record, 03/20/2026",
+              "author": "emergency medicine",
+              "date": "2026-03-24T09:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — Physician record, 03/20/2026 (received 03/24/2026)\nCC: sudden right-sided weakness.\nHistory: 75M with WM, AL amyloidosis, NPH, vascular dementia, prior right lacunar infarct with left hemiballism (2025), HTN, T2DM, CKD 3a.\nHome meds: metformin 1000 mg BID, lisinopril 20 mg, HCTZ 12.5 mg, tamsulosin 0.4 mg, morphine ER 60 mg BID, morphine IR 15 mg prn, atorvastatin 40 mg, aspirin 81 mg.\nAllergies: sulfonamide antibiotics (hives); iodinated contrast (anaphylaxis).\nExam: Weakness of the right face, arm and leg, equally reduced in proximal and distal muscles. Sensation, coordination, language and cranial nerves otherwise normal.\nMRI brain: small lacunar infarct (report attached).\nImpression: Acute lacunar infarct with pure motor right hemiparesis.\nDisposition: ED observation overnight; therapy evaluation; discharged home 03/21 with home PT and PCP follow-up.\nED physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "outside_records",
+          "start": "2026-04-27T14:10",
+          "orders": [],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Home physical therapy progress note",
+              "author": "physical therapy",
+              "date": "2026-04-27T14:10",
+              "body": "HOME HEALTH PHYSICAL THERAPY — Progress note, 04/24/2026\n8 visits since 03/30. Right-sided strength improving; ambulates 40 ft with rolling walker and contact guard. Transfers with minimal assist. Wife trained. Plan: 4 more weeks, then home program.\nPhysical therapist"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "outside_records",
+          "start": "2026-06-22T11:25",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology-oncology follow-up",
+              "author": "hematology-oncology",
+              "date": "2026-06-22T11:25",
+              "body": "OUTSIDE CANCER CENTER — Follow-up, 06/05/2026\nWM with AL lambda amyloidosis, sustained response, no therapy since 2021. New lacunar stroke in March noted; recovering with home therapy. Hemoglobin 12.9; light chains stable.\nPlan: observation; consider moving to yearly visits given stability and travel burden. Continue furosemide.\nHematology-oncology physician"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

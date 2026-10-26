@@ -1,0 +1,561 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002251",
+      "given": "Walter",
+      "family": "Wells",
+      "birth_date": "1957-09-16",
+      "address_line": "112 Pendleton Avenue",
+      "phone": "+1-646-555-0132",
+      "email": "walter.wells@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with hypertension, BPH and diverticulosis who joined in 2024. Adhesive small-bowel obstruction needed laparotomy, complicated by a catheter-related bulbar urethral injury; chronic retention led to a bladder stone, and two weeks after its removal he developed enterococcal tricuspid endocarditis treated with six weeks of ampicillin and ceftriaxone.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-27T10:20",
+              "body": "Caller is a 66 y/o retired teacher, moved across the river last spring and his old office is now a 40 minute drive. Asked how the membership works and whether we take his insurance for labs. Went over fees and the texting line. He signed up on the call. New patient visit set for 9/10 at 9:00, asked him to bring his pill bottles. Records release form emailed for his prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T09:00",
+          "end": "2024-09-10T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2011-06-01",
+              "note": "long-standing, on two drugs"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "diagnosed",
+              "onset": "2016-03-01"
+            },
+            {
+              "label": "Diverticulosis of colon",
+              "action": "diagnosed",
+              "onset": "2019-05-01",
+              "note": "sigmoid, on colonoscopy"
+            },
+            {
+              "label": "Acquired absence of gallbladder",
+              "action": "history",
+              "note": "remote open cholecystectomy, year not recalled"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "note": "quit about 2012, 15 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily, 30 minutes after the same meal each day",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "BPH"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              82
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-10T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-09-10T10:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2024",
+              "action": "placed",
+              "order": "Records request, prior primary care office",
+              "category": "procedure",
+              "reason": "continuity"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T10:05",
+              "body": "NEW PATIENT\n\n66 y/o man, retired after 31 years teaching math (mostly algebra II and calc), here to establish. Previous PCP was fine, he just wants someone closer who answers the phone.\n\nCurrent issues: none acute. Feels well.\n\nHTN - diagnosed in his 50s, has been on amlodipine plus lisinopril for years. Doesn't check at home regularly, has an old cuff. No headaches, CP, SOB, swelling.\nBPH - urology dx several years back. On tamsulosin, gets up once at night, stream 'slower than it used to be but fine.' No retention episodes, no UTIs. Hasn't seen urology in a couple years.\nDiverticulosis - found on his colonoscopy in 2019, never had diverticulitis. Mother had diverticular trouble too.\n\nPSH: gallbladder out through an open incision, long ago, can't remember the year. Nothing else.\nMeds: amlodipine 5 daily, lisinopril 10 daily, tamsulosin 0.4 daily. No OTCs.\nAllergies: none to meds.\nFH: father had high BP and coronary disease. Mother diverticular disease.\nSH: smoked about 15 pack-years, quit ~12 yrs ago. Wine or a beer once or twice a month. No drugs ever. Walks most mornings. Retired from teaching high school math.\n\nROS otherwise negative.\n\nExam: vitals as charted. Pleasant, well appearing. HEENT unremarkable. Neck supple, no bruits, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, well-healed right subcostal scar. No edema, pulses 2+ distally. Skin fine.\n\nA/P\n1. HTN - reasonable on current regimen, continue amlodipine 5 + lisinopril 10. CMP today.\n2. BPH with LUTS - stable on tamsulosin, continue. Will need urology again if anything changes.\n3. Diverticulosis - fiber, fluids. Colonoscopy records requested.\n4. Former smoker - 15 pk-yr so below the threshold for lung screening.\n5. HM - high-dose flu and PCV20 today. Hep C and HIV screens with labs. Lipids. PHQ-2 0.\n\nRTC 3-4 months for BP, sooner prn. Texting line explained."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-12T16:40",
+              "body": "Hi Walter - labs from Tuesday all look good. Kidney function and potassium are normal on the lisinopril, blood counts normal, liver tests normal. Cholesterol numbers are fine. Hep C and HIV screens negative, so those are done for good. Nothing to change. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "author": "patient",
+              "date": "2024-09-12T19:02",
+              "body": "Thank you. Quicker than I'm used to."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "outside_records",
+          "start": "2024-09-19T11:15",
+          "orders": [
+            {
+              "id": "prior-records-2024",
+              "action": "done",
+              "date": "2024-09-19T11:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-04-11T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-03-02T10:00"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-05-18T10:00"
+            },
+            {
+              "vaccine": "COVID-19, unspecified",
+              "date": "2021-02-09T10:00"
+            },
+            {
+              "vaccine": "COVID-19, unspecified",
+              "date": "2021-03-09T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "MA",
+              "date": "2024-09-19T11:15",
+              "body": "38 pages received by fax from prior PCP office. Highlights abstracted:\n- Colonoscopy 05/2019: scattered sigmoid diverticula, no polyps, prep good. Repeat 10 yrs.\n- Immunizations: Tdap 4/2017. Shingrix #1 3/2021, #2 5/2021. COVID primary series 2021 (brand not listed); later boosters not on their record.\n- Problem list: HTN, BPH. Med list matches ours.\n- Last urology note 2022: BPH, tamsulosin, PVR 'small', return as needed.\nFull packet in media tab."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "author": "PCP",
+              "date": "2024-09-20T08:10",
+              "body": "Reviewed old records. Colonoscopy due 2029. Shingles series done. Tdap good through 2027. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "pharmacy",
+          "start": "2024-10-08T14:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notification",
+              "author": "pharmacy",
+              "date": "2024-10-09T09:00",
+              "body": "Immunization administered at community pharmacy: COVID-19 vaccine 2024-2025 formula, 0.3 mL IM, left deltoid. No immediate reaction reported."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "ed_visit",
+          "start": "2024-11-28T15:10",
+          "end": "2024-11-28T21:40",
+          "service": "Emergency Medicine",
+          "reason": "abdominal pain, vomiting, no stool or gas",
+          "conditions": [
+            {
+              "label": "Adhesive small bowel obstruction",
+              "icd10": "K56.50",
+              "action": "diagnosed",
+              "onset": "2024-11-26",
+              "note": "requiring CT"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-28T15:18",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-28T15:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-28T15:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-11-28T17:05",
+              "text": "INDICATION: Small-bowel obstruction on radiograph, prior open cholecystectomy.\nTECHNIQUE: Axial CT of the abdomen and pelvis after IV contrast, with coronal and sagittal reformats. Oral contrast not given.\nFINDINGS: Multiple fluid-filled dilated small-bowel loops measuring up to 3.6 cm, with a transition point in the mid abdomen and collapsed distal ileum. No discrete mass at the transition. No closed-loop configuration. Bowel wall enhances normally; no pneumatosis, portal venous gas or free air. Small amount of free fluid between loops. Colon decompressed; scattered sigmoid diverticula without inflammation. Surgically absent gallbladder. Liver, spleen, pancreas, adrenals and kidneys unremarkable. Abdominal aorta normal in caliber. Bladder partially distended. Prostate mildly enlarged. No adenopathy.",
+              "conclusion": "Small-bowel obstruction with a mid-abdominal transition point, likely adhesive. No closed loop or signs of ischemia. Sigmoid diverticulosis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-11-28T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-12-04T10:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of visit: 11/28/2024\n\nCC: belly pain and vomiting\n\nHPI: 67M with HTN, BPH and diverticulosis, remote open cholecystectomy, here with two days of crampy, severe generalized abdominal pain coming in waves, several episodes of emesis, and no bowel movement or flatus since the day before yesterday. Denies fevers or chills. No blood in emesis.\n\nMeds: amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily. NKDA.\nFH: father HTN and CAD; mother diverticular disease.\nSH: ex-smoker (15 pk-yr, quit 12 yr ago), rare alcohol, retired math teacher.\n\nTriage: BP 150/90, HR 110, RR 22, T 37.2 C.\n\nExam: uncomfortable, retching. Abdomen visibly distended and tympanitic, tender throughout but no rebound and no guarding. Tinkling, high-pitched, hyperactive bowel sounds. Old RUQ incision. DRE: vault empty, no mass.\n\nLabs: WBC 14.0 K. Rest of CBC and BMP unremarkable.\nUpright abdominal film: dilated small-bowel loops with numerous air-fluid levels, no gas in the rectum.\nCT A/P w contrast: SBO with mid-abdominal transition, no closed loop or ischemic signs, presumed adhesive.\n\nCourse: IV fluids, ondansetron, IV analgesia. NG tube placed with large bilious return and relief. General surgery consulted, recommends admission for nonoperative trial.\n\nDx: small-bowel obstruction, likely adhesive.\nDispo: admit to general surgery."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28b",
+          "kind": "hospital_admission",
+          "start": "2024-11-28T21:40",
+          "end": "2024-12-02T13:00",
+          "service": "General Surgery",
+          "reason": "small-bowel obstruction, nonoperative management",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-11-28T22:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-02T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "General Surgery Discharge Summary",
+              "author": "general surgery",
+              "date": "2024-12-04T10:32",
+              "body": "Admission 11/28/2024 - Discharge 12/02/2024\nService: General Surgery\n\nAdmitting dx: adhesive small-bowel obstruction\nDischarge dx: same, resolved without operation\n\nHospital course: Admitted from ED with SBO on CT, mid-abdominal transition point, no ischemic features. Managed with NG decompression, bowel rest, IV fluids and serial abdominal exams. NG output fell steadily, he passed flatus on hospital day 2 and had a BM on day 3. NG removed 12/1, clears advanced to regular diet and tolerated. Abdomen soft and nondistended at discharge. Home antihypertensives held while NPO and resumed 12/1.\n\nDischarge meds: unchanged - amlodipine 5 mg daily, lisinopril 10 mg daily, tamsulosin 0.4 mg daily.\nAllergies: NKDA\n\nInstructions: soft diet for a few days then advance. Return for recurrent pain, vomiting, distension or no flatus. Discussed that adhesions can cause this again and may need surgery if so.\nFollow-up: PCP within 1-2 weeks. Surgery clinic as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "telephone",
+          "start": "2024-12-04T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2024-12-04T11:10",
+              "body": "Called pt after receiving hospital paperwork. Home since Monday. Eating soups and toast, had a normal BM yesterday, passing gas. No vomiting, mild soreness only. Taking his 3 usual meds. Knows to call or go back in if the pain or vomiting returns. Booked with PCP 12/9."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, bowel obstruction",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "author": "PCP",
+              "date": "2024-12-09T14:05",
+              "body": "Seen after admission 11/28-12/2 for adhesive SBO, settled with NG tube and bowel rest, no surgery. Discharge summary and ED record reviewed; CT showed mid-abdominal transition, no ischemia.\n\nSince home: back to regular food, BMs daily, no cramping or bloating. Lost a couple of pounds while in. Energy coming back.\n\nMeds reconciled, unchanged: amlodipine 5, lisinopril 10, tamsulosin 0.4. NKDA.\n\nExam: vitals as charted. Comfortable. Abdomen soft, not distended, nontender, normal bowel sounds. Old subcostal scar.\n\nA/P\nAdhesive SBO, resolved nonoperatively - likely from the old open gallbladder surgery. Reviewed warning signs; low threshold to go in if it recurs. Small, frequent meals for a bit.\nHTN - fine today, no change.\nFollow up in March for BP, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "hospital_admission",
+          "start": "2024-12-30T08:50",
+          "end": "2025-01-07T14:00",
+          "service": "General Surgery",
+          "reason": "recurrent small-bowel obstruction",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-30T12:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-01-07T12:00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain, max 6 tablets per day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "outside_records",
+          "start": "2024-12-31T07:30",
+          "reason": "intraoperative record",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Operative Report",
+              "author": "general surgery",
+              "date": "2025-01-09T09:45",
+              "body": "Date of operation: 12/31/2024\nPreop dx: recurrent adhesive small-bowel obstruction\nPostop dx: same\nProcedure: exploratory laparotomy, lysis of adhesions\nAnesthesia: general endotracheal\n\nFindings: dense band adhesions from the old right upper quadrant field to mid small bowel producing an obstruction, dilated proximal loops, decompressed distal ileum. All bowel viable after release; no resection required. No hernia, no mass.\n\nDescription: Midline laparotomy. Adhesiolysis performed sharply, small bowel run from ligament to ileocecal valve twice, no enterotomy. Abdomen irrigated, fascia closed with running looped suture, skin with staples. Urethral catheter placed at start of case. EBL 50 mL. To PACU stable."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,419 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001862",
+      "events": [
+        {
+          "id": "2025-02-26a",
+          "kind": "ed_visit",
+          "start": "2025-02-26T13:40",
+          "end": "2025-02-26T18:30",
+          "service": "Emergency Medicine",
+          "reason": "confusion and seizure at home",
+          "conditions": [
+            {"label": "Gastroenteritis", "icd10": "K52.9", "action": "history", "onset": "2025-02-22"},
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "diagnosed", "onset": "2025-02-26"},
+            {"label": "Seizure", "icd10": "R56.9", "action": "diagnosed", "onset": "2025-02-26"}
+          ],
+          "vitals": [
+            {"time": "2025-02-26T13:45", "temp_c": 37.1, "bp": [130, 85], "hr": 88, "rr": 16}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-26T14:05", "results": [
+              {"test": "Sodium", "value": 118},
+              {"test": "Potassium", "value": 4.2},
+              {"test": "Chloride", "value": 88},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Glucose", "value": 180}
+            ]},
+            {"panel": null, "collected": "2025-02-26T14:05", "results": [
+              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 240}
+            ]},
+            {"panel": null, "collected": "2025-02-26T14:30", "results": [
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 500},
+              {"test": "Sodium, Urine", "loinc": "2955-3", "unit": "mmol/L", "value": 40},
+              {"test": "Pregnancy Test, Urine", "text": "Negative"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-02-26T13:40"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2025-03-24T10:15",
+              "body": "Regional hospital ED. Visit 02/26/2025 13:40. Copy released to primary care on request.\n\nCC: altered, seized at home.\n\nHPI: 33-year-old woman with type 1 diabetes and hypothyroidism arrives by private car with her husband. About four days of a stomach bug with lots of vomiting and loose stools, now easing. Husband says she has been forcing water all week, several large bottles a day, trying to keep up with the fluid losses. This morning she was muddled and slow to answer, and around noon he watched her go stiff and then shake all over for about a minute. Slept afterward, still not herself. No head strike reported. Diabetes control has been poor per husband.\n\nPMH: DM1, autoimmune hypothyroidism. PSH: T&A.\nMeds: glargine 24 u at bedtime, lispro sliding scale with meals, levothyroxine 88 mcg, prenatal vitamin w/ iron.\nAllergies: NKDA.\nSocial: no tobacco, no ETOH. Works customer service.\nFamily: brother DM1, mother thyroid disease, maternal grandmother delivered preterm.\n\nTriage VS: T 37.1, BP 130/85, HR 88, RR 16.\n\nExam: drowsy, opens eyes and answers to voice, knows her name but not place or date. Moves all extremities, globally weak, no focal deficit, no facial asymmetry. No tongue laceration. Mucous membranes moist. Heart regular. Lungs clear. Abdomen soft, nontender.\n\nLabs: Na 118, K 4.2, Cl 88, HCO3 24, glucose 180. Serum osm 240. Urine osm 500, urine Na 40. Urine hCG negative.\n\nMDM: severe hypotonic hyponatremia with a seizure. Heavy free-water intake on top of GI losses; urine is concentrated, so ADH is active (likely from the vomiting illness). Glucose only modestly high, does not explain the sodium. 100 mL of 3% saline given as a bolus here, then fluid restriction. Seizure provoked by the low sodium; no antiepileptic. Admit to medicine, step-down, sodium q4-6h with a correction limit.\n\nDispo: admitted."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26b",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T18:30",
+          "end": "2025-03-01T11:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "hyponatremia with seizure",
+          "labs": [
+            {"panel": null, "collected": "2025-02-27T06:00", "results": [{"test": "Sodium", "value": 123}]},
+            {"panel": null, "collected": "2025-02-28T06:00", "results": [{"test": "Sodium", "value": 131}]},
+            {"panel": null, "collected": "2025-03-01T06:00", "results": [{"test": "Sodium", "value": 134}]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-02-26T19:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-03-01T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-03-24T10:20",
+              "body": "Admission 02/26/2025 - Discharge 03/01/2025. Hospital medicine service.\n\nPrincipal diagnosis: acute symptomatic hyponatremia.\nSecondary: provoked generalized seizure; recent viral gastroenteritis; type 1 diabetes mellitus; autoimmune hypothyroidism.\n\nCourse: admitted from the ED after a single generalized seizure with a serum sodium of 118, in the setting of a vomiting and diarrheal illness and very large water intake. Received one 100 mL 3% saline bolus in the ED. Managed on the step-down unit with free-water restriction and serial sodium checks. Sodium 123 on the morning of 2/27, 131 on 2/28 and 134 on 3/1, within the daily correction limit. Mental status cleared fully by hospital day 2. No further seizure activity; no antiseizure medication started. GI symptoms resolved and she was eating normally by 2/28. Home basal and correction insulin continued with standard inpatient monitoring. Levothyroxine continued.\n\nDischarge medications (unchanged): insulin glargine 24 units at bedtime; insulin lispro per sliding scale before meals; levothyroxine 88 mcg daily; prenatal vitamin with iron daily.\nAllergies: NKDA.\n\nInstructions: drink to thirst rather than by the bottle; with any future vomiting or diarrhea use salt-containing fluids and call primary care early. Follow up with PCP within one week with a repeat sodium.\nCondition at discharge: good, alert and oriented."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hailey in hospital",
+              "author": "patient",
+              "date": "2025-02-27T07:55",
+              "body": "This is Hailey's husband writing from her account. She had a seizure at home yesterday and is admitted, they said her sodium was really low from all the water she drank after being sick. She is more awake today. Just wanted you to know. They said she should see you after she gets out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hailey in hospital",
+              "author": "PCP",
+              "date": "2025-02-27T09:10",
+              "body": "Thank you so much for letting me know, and I'm sorry you both went through that. I'm glad she's more awake. When she's discharged, please have the front desk book her with me within the week, and ask the hospital to send her discharge paperwork to our office. Bring whatever papers they give you."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "office_visit",
+          "start": "2025-03-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, hyponatremia and seizure",
+          "conditions": [
+            {"label": "Gastroenteritis", "icd10": "K52.9", "action": "resolved"},
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "resolved"},
+            {"label": "Seizure", "icd10": "R56.9", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-04T14:30", "results": [{"test": "Sodium"}, {"test": "Glucose"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-04T14:00"},
+            {"procedure": "Venipuncture", "performed": "2025-03-04T14:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-03-04T14:45",
+              "body": "Here with husband after a 2/26-3/1 admission. Formal records not yet received; working from her discharge instruction sheet and what they tell me.\n\nStory: GI bug for several days, vomiting and diarrhea. Was told to keep hydrated and took that to mean as much water as possible, plain water only. Became confused and had a generalized seizure at home. Sodium 118 in the ED per her paperwork, given hypertonic saline, fluid restricted, sodium 134 the day she left. No seizure since. Memory of 2/26 is patchy; otherwise feels back to herself. No headache, no weakness. Eating normally. Sugars ran high in the hospital, back to her usual now. Back to work next Monday.\n\nExam: alert, oriented x3, conversant, normal speech. Cranial nerves intact, strength 5/5 throughout, gait normal. Mucous membranes moist. No edema.\n\nA/P\n1. Hyponatremia with provoked seizure - resolved clinically. BMP today to confirm sodium is normal. Explained what happened in plain terms: large amounts of plain water while the body is holding on to water during a vomiting illness. Going forward: drink to thirst, use broth or an electrolyte drink when sick, and call or text me early with any vomiting illness so we can manage insulin and fluids together.\n2. DM1 - no change today; sick-day plan reviewed again.\n3. Requesting full hospital records.\nFollow-up as scheduled in spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T10:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium level",
+              "author": "PCP",
+              "date": "2025-03-05T10:40",
+              "body": "Good news: your sodium is back in the normal range and your kidney numbers are fine. No more blood tests needed for this. Take it easy this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "telephone",
+          "start": "2025-03-10T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "MA",
+              "date": "2025-03-10T11:15",
+              "body": "Called hospital HIM for ED record and discharge summary, admission 2/26-3/1. Told request was not on file. Faxed request with signed release. Will follow up in two weeks if not received.\n\nAddendum 3/24: ED record and discharge summary received, scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "office_visit",
+          "start": "2025-05-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed period, positive home pregnancy test",
+          "conditions": [
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-02-14"}
+          ],
+          "state": {"weight_kg": 64.2, "labs": {"Hemoglobin A1c": 9.0}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-08T09:30", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]},
+            {"panel": null, "collected": "2025-05-08T09:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [
+            {"id": "ob-referral", "action": "placed", "order": "High-risk obstetrics referral", "category": "referral", "to": "Maternal-Fetal Medicine", "reason": "pregnancy with type 1 diabetes"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-08T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-05-08T09:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-05-08T10:05",
+              "body": "Texted last night: two positive home tests. LMP 2/14/25 (sure of the date), so 11w6d today, EDD 11/21/25. Some nausea in the mornings, no vomiting, keeping fluids and food down. No bleeding or cramping.\n\nStill on glargine 24 units nightly and lispro by scale, levothyroxine 88, and the prenatal vitamin she has been on for years.\n\nUrine hCG positive in office.\n\nExam: well. BP normal. Abdomen soft, nontender.\n\nA/P\n1. Intrauterine pregnancy by dates, about 12 weeks. Diabetes in pregnancy needs a high-risk OB/maternal-fetal medicine team; referral placed today, front desk will help her get the first appointment soon. A1c and TSH today.\n2. Talked about why tight sugars matter now and about calling right away for any vomiting (after February). She plans to keep checking 4 times a day.\n3. Continue prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "portal_message",
+          "start": "2025-05-09T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-05-09T15:20",
+              "body": "Hi Hailey, thyroid level is in a good range for early pregnancy, so the levothyroxine stays at 88. The A1c is still on the high side. The OB team will want to work on that with you; please keep your appointment with them, and send me your sugars any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "portal_message",
+          "start": "2025-06-04T20:10",
+          "orders": [
+            {"id": "ob-referral", "action": "done", "date": "2025-06-04T20:10"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "OB appointment",
+              "author": "patient",
+              "date": "2025-06-04T20:10",
+              "body": "Had my first appointment with the high risk OB today. They checked everything and said the baby looks ok. They want to see me every 2 weeks which is going to be hard with work, it's 45 minutes each way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: OB appointment",
+              "author": "RN",
+              "date": "2025-06-05T09:00",
+              "body": "Thanks for the update, Hailey! Glad the first visit went well. If the travel is a problem, ask them whether some visits can be by video or whether your plan covers rides to appointments. We'll ask their office to send us the visit note."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-10T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes in pregnancy check-in",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2025-07-10T12:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-07-10T12:40",
+              "body": "Video, at work break room, ID confirmed. About 21 weeks.\n\nHas only made it to the first OB visit; missed the next two (couldn't get the time off, then car trouble). Has not rescheduled. No note from OB has reached us despite our request.\n\nSugars from her log: fasting 140s-180s, after meals often over 200. Nausea gone. Feeling movement. No bleeding, no headaches, no swelling.\n\nA: Pregnancy at ~21 weeks with type 1 diabetes, glucose above pregnancy targets, prenatal care limited by access.\nP: Strongly encouraged rebooking with the OB team this week; front desk will call their office with her to find a slot. In-person here late August with A1c. She will send sugars weekly by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "outside_records",
+          "start": "2025-07-23T13:30",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye examination",
+              "author": "optometry",
+              "date": "2025-07-23T13:30",
+              "body": "Exam date 07/18/2025. Type 1 diabetic, currently pregnant (second trimester), referred by PCP for dilated exam.\nVision 20/20 each eye with correction. Pressures normal. Anterior segment quiet.\nDilated fundus: optic nerves healthy, macula normal, no microaneurysms, hemorrhages or exudates, no neovascularization, both eyes.\nAssessment: no diabetic retinopathy OU.\nPlan: repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "office_visit",
+          "start": "2025-08-26T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up in pregnancy",
+          "state": {"weight_kg": 70.4},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-08-26T15:20", "results": [{"test": "Hemoglobin A1c", "value": 9.2}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-08-26T15:30"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-08-26T15:00"},
+            {"procedure": "Immunization administration", "performed": "2025-08-26T15:30"},
+            {"procedure": "Venipuncture", "performed": "2025-08-26T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-08-26T15:50",
+              "body": "27w4d by LMP. Went to one more OB visit in late July, missed one in August. Their notes still haven't come to us. Says they told her the baby is measuring fine.\n\nSugars by log: fasting 150-190, post-dinner 200s. No lows. Same insulin doses, same levothyroxine. Prenatal vitamin daily.\n\nGood fetal movement. No bleeding, leaking fluid, contractions or headaches.\n\nVitals as charted; BP normal. Weight up appropriately. Gravid abdomen, nontender. No edema.\n\nA/P\n- Pregnancy 27 weeks, type 1 diabetes poorly controlled, limited prenatal care. A1c today. Asked her again to get the remaining OB visits on the calendar before she leaves the building; MA helped her call.\n- Tdap given today (recommended each pregnancy, 27-36 weeks).\n- Flu and COVID vaccines when available in the fall; both are safe in pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "PCP",
+              "date": "2025-08-28T11:10",
+              "body": "Your A1c is 9.2%. That's higher than the target for pregnancy, and the OB team needs to see this number - I've sent it to their office as well. Please keep the appointment they gave you on Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "nurse_visit",
+          "start": "2025-10-02T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines in pregnancy",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-02T16:20"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-02T16:22"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-02T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2025-10-02T16:35",
+              "body": "About 33 weeks pregnant. No fever or illness. Inactivated flu vaccine IM L deltoid, 2025-26 COVID vaccine IM R deltoid. Monitored 15 minutes, no reaction. Reminded to keep her OB appointment next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "hospital_admission",
+          "start": "2025-10-17T04:50",
+          "end": "2025-10-19T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "preterm labor at 35 weeks",
+          "conditions": [
+            {"label": "Preterm labor with preterm delivery, third trimester", "icd10": "O60.14X0", "action": "diagnosed", "onset": "2025-10-17"},
+            {"label": "Pregnant state", "icd10": "Z33.1", "action": "resolved"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-10-17T05:30"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2025-12-10T09:40",
+              "body": "Labor and delivery, regional hospital. Admit 10/17/2025, discharge 10/19/2025.\n\n33-year-old woman presented in active labor at 35w0d by LMP. Prenatal care limited (intake visit at our clinic in June, few visits after). Pregnancy complicated by pregestational type 1 diabetes with poor glycemic control (most recent A1c 9.2%, drawn by her primary care in August) and autoimmune hypothyroidism. Hyponatremia with a provoked seizure in February 2025, resolved before pregnancy.\n\nOn arrival anxious but not in distress, vital signs stable. Fetal heart tones normal. Glucose managed per labor protocol. Spontaneous vaginal delivery of a liveborn male, 2500 g.\n\nNewborn: respiratory distress right after birth with grunting, nasal flaring and intercostal retractions; one- and five-minute scores 5 and 7. Saturation 85% on room air, up to 92% with supplemental oxygen. Chest film showed diffuse bilateral ground-glass atelectasis consistent with respiratory distress syndrome of prematurity. Admitted to the newborn intensive care unit on oxygen; ongoing care under the neonatal team.\n\nMaternal postpartum course: uncomplicated. Insulin and levothyroxine continued at home doses.\n\nDischarge medications: insulin glargine 24 units at bedtime, insulin lispro sliding scale before meals, levothyroxine 88 mcg daily, prenatal vitamin with iron daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with obstetrics in 6 weeks; PCP for diabetes within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-18a",
+          "kind": "portal_message",
+          "start": "2025-10-18T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby came early",
+              "author": "patient",
+              "date": "2025-10-18T21:05",
+              "body": "Wanted to tell you I had the baby yesterday, a boy, 5 lb 8 oz. He came at 35 weeks. He needed help breathing and is in the NICU but they say he's doing better. I'm ok, going home tomorrow. Do I need to change my insulin?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby came early",
+              "author": "PCP",
+              "date": "2025-10-19T08:30",
+              "body": "Congratulations, Hailey, and I'm glad you're both being looked after. Insulin needs often drop fast after delivery, so check before every meal and at bedtime for the next couple of weeks and text me any reading under 80. Stay on the same doses unless you see lows. Let's see you next week - front desk will call with a time."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "office_visit",
+          "start": "2025-10-28T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum diabetes follow-up",
+          "conditions": [
+            {"label": "Preterm labor with preterm delivery, third trimester", "icd10": "O60.14X0", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 66.4, "labs": {"Hemoglobin A1c": 8.8}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-10-28T10:55", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-28T10:55", "results": [{"test": "Sodium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-28T10:30"},
+            {"procedure": "Venipuncture", "performed": "2025-10-28T10:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Visit",
+              "author": "PCP",
+              "date": "2025-10-28T11:10",
+              "body": "11 days after a vaginal delivery at 35 weeks (her report and her message; hospital summary not received). Son was in the NICU for breathing problems; she is visiting daily and tired but coping. Bleeding tapering. No fever, no calf pain, no headache.\n\nSugars since delivery: fasting 110s-150s, a couple of 75-85s overnight, nothing lower. On glargine 24 units and lispro scale, unchanged. Levothyroxine 88. Still taking the prenatal vitamin.\n\nPHQ-9 3. Has her husband and her mother helping. No thoughts of self-harm.\n\nExam: tired-appearing, comfortable. BP normal, afebrile. Thyroid normal. Heart and lungs normal. Abdomen soft, fundus nontender. No calf tenderness or edema.\n\nA/P\n1. Postpartum after preterm delivery - recovering. OB postpartum visit in 6 weeks; she has the appointment.\n2. DM1 - sugars running lower than during pregnancy, no hypoglycemia below 70. Keep same doses for now, check overnight once or twice a week, call with lows.\n3. Hypothyroid - TSH today, postpartum check.\n4. Mood screen reassuring; will recheck at next visit.\nDiabetes visit with A1c in January. Hospital summary requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "telephone",
+          "start": "2025-12-10T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records received",
+              "author": "MA",
+              "date": "2025-12-10T09:45",
+              "body": "Obstetric discharge summary from October admission finally received after second request. Scanned and routed to PCP. Still nothing from the OB clinic visits or her postpartum visit. Pt says postpartum check with OB went fine."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

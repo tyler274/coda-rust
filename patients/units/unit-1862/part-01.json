@@ -1,0 +1,160 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001862",
+      "given": "Hailey",
+      "family": "Roy",
+      "birth_date": "1992-01-24",
+      "address_line": "27 Brookhollow Lane, Apt 2",
+      "phone": "+1-413-555-0169",
+      "email": "hailey.roy@example.test",
+      "marital_status": "married",
+      "summary": "Young woman with type 1 diabetes since childhood and autoimmune hypothyroidism, chronically above A1c goal, who joins in 2022. In February 2025 a stomach bug and heavy water drinking end in a sodium of 118 with a seizure and a short admission; that spring she is pregnant and delivers a son at 35 weeks in October 2025 after limited prenatal care.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "telephone",
+          "start": "2022-09-07T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-09-07T10:20",
+              "body": "Caller would like to transfer her primary care here. Current office is closing its adult panel and she says she can never get a callback about insulin questions. Has type 1 diabetes and a thyroid condition. Insurance Medicaid, verified active. Booked new patient slot 9/14 at 9:00. Emailed the release form for her old office; she signed and sent it back while still on the line. Asked her to bring all insulin pens and pill bottles to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T09:00",
+          "end": "2022-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care, type 1 diabetes, hypothyroidism",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus without complications", "action": "history", "onset": "2003-06-01"},
+            {"label": "Autoimmune hypothyroidism", "icd10": "E06.3", "action": "history", "onset": "2017-04-01"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[IU]"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "Type 1 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin before meals per sliding scale", "frequency": "TID", "route": "Subcutaneous", "course": "chronic", "reason": "Type 1 diabetes"},
+            {"drug": "levothyroxine sodium 0.088 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 88, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypothyroidism"},
+            {"drug_text": "prenatal multivitamin with iron Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Customer service representative"}
+          ],
+          "state": {"weight_kg": 63.6, "height_cm": 165.0, "labs": {"Hemoglobin A1c": 8.9, "Thyroid Stimulating Hormone": 2.2, "Microalbumin/Creatinine Ratio": 9}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-14T10:00", "results": [{"test": "Sodium"}, {"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-14T10:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-14T10:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-14T10:00", "results": [
+              {"test": "Hemoglobin A1c"},
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-14T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-14T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-14T10:05",
+              "body": "30F here to establish. Transferring from another primary care office in the area; records release done last week, nothing received yet.\n\nType 1 DM since age 11. Uses glargine 24 units every night and lispro with meals off a correction scale her old endocrinologist wrote years ago; she lost touch with endocrine when she aged off the pediatric clinic and her prior PCP has been managing since. Fingersticks 2-3 times a day, more like twice on work days. Says morning sugars run 150s-220s, worse after late dinners. Remembers her last A1c as \"in the 8s.\" Has had a few lows into the 60s, always awake, treats with juice. No DKA admissions as an adult. No numbness or tingling in the feet. Last eye exam about a year ago, told it was fine.\n\nHypothyroid since 2017, antibodies positive at the time per her report. Levothyroxine 88 mcg, takes it before coffee. No dose change in years.\n\nAlso takes a prenatal vitamin with iron daily, has for years, likes that it is one pill.\n\nPSH: T&A as a child.\nMeds: as above. Allergies: none to medications.\nFH: younger brother with type 1 DM. Mother hypothyroid, autoimmune. Maternal grandmother had a baby early, details unknown.\nSH: married. Works phones in a customer service center, mostly day shift. Never smoked. Does not drink. No drug use.\n\nROS: no polyuria or polydipsia beyond baseline, no weight loss, no palpitations, no heat or cold intolerance, no vision change.\n\nExam: well appearing, pleasant. Thyroid not enlarged, no nodules. Heart RRR, no murmur. Lungs clear. Abdomen soft, injection sites on abdomen and thighs without lipohypertrophy. Feet: skin intact, no calluses, DP pulses 2+ bilat, monofilament intact both feet.\n\nA/P\n1. Type 1 diabetes, above goal by history. A1c, CMP, lipids, urine microalbumin today. Talked about rotating sites and checking before every meal so the correction scale actually has a number to work from. Will look at her meter log next time. Eye exam due within the year; she will book with her optometrist.\n2. Hypothyroidism on levothyroxine 88. TSH today.\n3. Health maintenance: hep C and HIV screening today, she agrees. Pap was 2021 per her, normal; will confirm in records. Flu shot next month when we get stock.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-09-16T13:40",
+              "body": "Hi Hailey, your labs are in. Kidney function, liver tests, blood counts and cholesterol all look good, and the urine protein test is normal. Thyroid level is right where we want it, so no change to the levothyroxine. Hepatitis C and HIV screens were negative.\n\nThe A1c is higher than we want it. That is your 3-month sugar average, and it lines up with the morning numbers you described. Let's work on it together at your December visit. In the meantime, try to check before each meal and write the numbers down or bring the meter.\n\nTalk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T11:00",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2022-10-05T11:00",
+              "body": "Records received by fax, 41 pages, covering 2017-2022.\n\nProblem list on their system: diabetes mellitus type 1 (childhood onset), hypothyroidism (antithyroid peroxidase antibody positive, 2017).\nMedications: insulin glargine 24 units nightly; insulin lispro per correction scale before meals; levothyroxine 88 mcg daily; prenatal multivitamin daily.\nAllergies: NKDA.\nScreening: Pap cytology 06/2021 negative for intraepithelial lesion. Last lipid panel 2021 within normal limits.\nImmunizations: childhood series complete including hepatitis B x3; Tdap 2019; COVID-19 mRNA primary series 2021 (two doses).\nRecent A1c values per their flowsheet ranged 8.3 to 9.0 over the last two years.\n\nScanned to chart. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T16:17"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-20T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2022-10-20T16:25",
+              "body": "Came after work for vaccines. Denies fever or illness today. No prior vaccine reactions.\nFlu (quadrivalent) 0.5 mL IM left deltoid.\nCOVID bivalent booster IM right deltoid.\nVIS sheets offered. Observed 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-12-06T09:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-06T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2022-12-06T09:20",
+              "body": "Brought her meter this time. About 60% of fasting readings 160-230, dinner-time readings all over, a couple of 300s after holiday parties at work. Two lows (58, 64) mid-afternoon on days she skipped lunch. Checking more like 3 times a day now.\n\nNo other complaints. Taking all meds.\n\nExam: NAD. Weight stable. Feet unchanged.\n\nA1c point of care drawn today; sent out.\n\nPlan: no dose change today. Went over the afternoon lows (don't correct with lispro at lunch then skip the meal) and carrying glucose tabs at her desk. She is willing to see endocrinology again at some point but would rather work on it here first. Records from old office reviewed, nothing new. Eye exam booked for January per pt. RTC 3 mo."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

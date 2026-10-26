@@ -1,0 +1,283 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001701",
+      "events": [
+        {
+          "id": "2026-01-14a",
+          "kind": "office_visit",
+          "start": "2026-01-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurosurgery admission",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-14T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit - subdural hematoma",
+              "author": "PCP",
+              "date": "2026-01-14T11:05",
+              "body": "Trauma center records 12/29-1/9 reviewed: head-on collision as the belted driver, right subdural hematoma that enlarged with early uncal herniation, emergency right craniotomy the same night. Extubated next day, home 1/9. Trauma CT otherwise negative; the dissection unchanged.\n\nHusband drove her in. Tired, mild incisional soreness, no worsening headache, no vomiting, no weakness, no seizures. Sleeping a lot. Taking every medicine on time - he has the blister packs.\n\nExam: alert, oriented x3, speech fluent. Pupils equal and reactive. Strength symmetric, gait steady. Right scalp incision clean and dry, staples removed today without difficulty. Forehead bruise fading. Lungs clear. BP within goal.\n\nA/P\n1. Traumatic right SDH with herniation, s/p craniotomy - recovering well. Neurosurgery visit with CT on 2/11. No driving. Off work until neurosurgery clears; work note given.\n2. Type B dissection - BP controlled; CTA due February.\n3. Epilepsy - LEV 500 BID, no events.\n4. Lupus nephritis - labs at nephrology in March.\nReturn precautions for headache, confusion, weakness, seizure."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "specialist_visit",
+          "start": "2026-02-11T13:40",
+          "service": "Neurosurgery",
+          "reason": "post-craniotomy follow-up",
+          "conditions": [
+            {
+              "label": "Brain herniation",
+              "icd10": "G93.5",
+              "action": "resolved"
+            },
+            {
+              "label": "Traumatic subdural hematoma",
+              "icd10": "S06.5XAA",
+              "action": "resolved"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-02-11T12:50",
+              "text": "Compared with 12/31/2025. Postoperative change of right craniotomy. No residual or recurrent subdural collection. No midline shift. Ventricles and cisterns normal.",
+              "conclusion": "Postoperative change, no reaccumulation."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery Follow-up",
+              "author": "neurosurgery",
+              "date": "2026-02-13T09:10",
+              "body": "Outside Neurosurgery - Postoperative Follow-up\nDate of service: 2/11/2026\n\nSix weeks after right craniotomy for acute traumatic subdural hematoma with early herniation. Headaches gone. No seizures. Back to her usual self per husband.\n\nExam: incision well healed. Neurologically intact.\n\nCT today: no reaccumulation.\n\nPlan: may return to work at the register (no lifting over 20 lb for another 6 weeks). Driving: cleared from a neurosurgical standpoint; defer to neurology given her seizure history. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "imaging",
+          "start": "2026-02-25T09:30",
+          "reason": "aortic dissection surveillance",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-02-25T09:30",
+              "text": "CT angiography of the chest, abdomen and pelvis with IV contrast, compared with 5/28/2025 and 12/29/2025. Chronic type B dissection of the descending thoracic aorta beginning just beyond the left subclavian artery, unchanged in extent and caliber. Branch vessels perfused from the true lumen. Aortic root dilation, unchanged. No new findings.",
+              "conclusion": "Stable chronic type B aortic dissection at one year."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular Surgery Follow-up",
+              "author": "vascular surgery",
+              "date": "2026-02-27T11:30",
+              "body": "Outside Vascular Surgery - Follow-up\nDate of service: 2/25/2026\n\nOne year after uncomplicated type B dissection; interval craniotomy for traumatic subdural (12/2025), recovering well. No chest or back pain. On metoprolol succinate 50 mg and lisinopril 10 mg; home readings at goal.\n\nCTA today: stable.\n\nPlan: continue medical therapy. Next CTA in one year. Cardiology following the bicuspid valve and root."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "portal_message",
+          "start": "2026-03-04T12:15",
+          "reason": "return to work",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back at work",
+              "author": "patient",
+              "date": "2026-03-04T12:15",
+              "body": "Went back to work Monday, just register for now like they said. Headaches are gone. Neurology appointment for the driving question isn't until September, is that ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Back at work",
+              "author": "PCP",
+              "date": "2026-03-04T17:40",
+              "body": "Great to hear. Yes, that's fine as long as no seizures - until neurology sees you, husband or bus. If anything changes, text me."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "specialist_visit",
+          "start": "2026-03-17T14:00",
+          "service": "Nephrology",
+          "reason": "lupus nephritis follow-up",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-17T13:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-17T13:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "author": "nephrology",
+              "date": "2026-03-19T10:40",
+              "body": "Outside Nephrology - Follow-up\nDate of service: 3/17/2026\n\nClass IV lupus nephritis, renal flare 4/2024 in remission since autumn 2024. Interval events: craniotomy for traumatic SDH 12/2025, renal function stable throughout. On mycophenolate 1 g bid, prednisone 20 mg daily, lisinopril 10 mg, metoprolol succinate 50 mg.\n\nCreatinine stable, urine bland today.\n\nAssessment: lupus nephritis in sustained remission.\n\nPlan: continue mycophenolate. Labs every 3 months through PCP. Return 6 months. Program renewal paperwork signed today."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "specialist_visit",
+          "start": "2026-04-15T10:30",
+          "service": "Rheumatology",
+          "reason": "lupus follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2026-04-17T09:30",
+              "body": "Outside Rheumatology Clinic - Follow-up\nDate of service: 4/15/2026\n\nSLE with arthropathy and class IV lupus nephritis, renal remission. Interval craniotomy after a car crash in December, recovered. No joint swelling, no rash, no oral ulcers.\n\nOn mycophenolate 1 g bid and prednisone 20 mg daily.\n\nExam: no synovitis; skin clear; craniotomy scar healed.\n\nPlan: continue current therapy per nephrology. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "office_visit",
+          "start": "2026-05-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up and Pap",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-13T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-13T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-05-13T08:40",
+              "issued": "2026-05-20T12:00",
+              "text": "Specimen adequate; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-13T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-13T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-05-13T09:00",
+              "body": "Routine. Full shifts again since April. No headaches, no seizures. Home BP mostly 110s-120s/70s. No chest or back pain. Asthma fine, albuterol rarely.\nExam: BP at goal. Lungs clear. Heart regular, diastolic murmur unchanged. Scar healed. No edema. Pelvic normal; Pap with HPV collected.\nA/P: dissection - controlled. Lupus nephritis - remission; labs today. Epilepsy - LEV, seizure-free since 8/2024. Echo due June. RTC 3-4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pap and labs",
+              "author": "PCP",
+              "date": "2026-05-21T08:10",
+              "body": "Pap normal, HPV negative. CBC and CMP unremarkable. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "imaging",
+          "start": "2026-06-10T11:00",
+          "reason": "bicuspid aortic valve surveillance",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-06-10T11:00",
+              "text": "Complete transthoracic study. Bicuspid aortic valve. Aortic root 4.0 cm at the sinuses, unchanged from 2/2025. Left ventricle normal in size, wall thickness and systolic function. Normal right ventricle. No pericardial effusion.",
+              "conclusion": "Bicuspid aortic valve; aortic root 4.0 cm, unchanged. Normal LV function."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Echo Review",
+              "author": "cardiology",
+              "date": "2026-06-12T14:20",
+              "body": "Outside Cardiology - Echo review\nDate of service: 6/10/2026\n\nYearly echo for bicuspid aortic valve and aortic root dilation, in a patient with a chronic type B dissection (stable CTA 2/2026). Root 4.0 cm, unchanged. LV normal.\n\nPlan: continue metoprolol succinate and lisinopril. Repeat echo in one year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002275",
+      "events": [
+        {
+          "id": "2024-02-06a",
+          "kind": "telephone",
+          "start": "2024-02-06T11:15",
+          "reason": "Refill and update",
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved", "onset": "2024-01-08"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2024-01-08", "note": "40 pack-years, quit January 2024"}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Telephone Note", "author": "RN", "date": "2024-02-06T11:15", "body": "Pt called for metoprolol refill (sent, 90 days). Also wanted the doctor to know he quit cigarettes right after New Year's -- cold turkey, about 4 weeks now. Some irritability, chewing gum, no patches. Congratulated; offered NRT if cravings get bad, he declined. Missed Dec visit: rebooked for March.\n\nPCP: Great news. Updated smoking status. Keep the March appt."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "office_visit",
+          "start": "2024-06-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "conditions": [
+            {"label": "Obesity, unspecified", "action": "diagnosed", "note": "BMI 33"}
+          ],
+          "state": {"bp": [150, 92], "weight_kg": 104.6},
+          "vitals": {"bp": [150, 92], "hr": 82, "rr": 16, "temp_c": 37.1},
+          "measure": ["spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-10T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-06-10T10:25", "body": "68M, routine f/u (cancelled in March).\n\nHPI: His main agenda today is his blood pressure -- he'd like to try a natural route rather than add anything. Not keen on more pills. Denies chest pain, headaches, lightheadedness. Has not needed nitro since winter. Off cigarettes since January, about 5 months, still chewing gum. Beer still 2-3 most nights. Cooks for himself; honest that it's mostly cold cuts, hot dogs, boxed meals.\n\nMeds reviewed: lisinopril 10, HCTZ 25, metoprolol succinate 50, ASA 81, atorvastatin 40, NTG prn. Says he takes the lisinopril; keeps all bottles on the kitchen counter.\nAllergies: NKDA.\nSH: lives alone. 40 pk-yr history, former smoker as of 1/2024.\n\nObjective: BP 150/92, P 82, RR 16, T 98.7 F. BMI 33.\nGen: comfortable, obese. CV: regular, no murmur, no gallop heard. Lungs: clear. Ext: no edema.\n\nAssessment / plan:\n1. Hypertension -- above goal. He wants to work on it himself first: walk 20-30 min most days, cut processed meats and canned soups (sodium), DASH handout, try to halve the beer. No medication change today per his preference; recheck in about 3 months, bring home log.\n2. Obesity, BMI 33 -- added to problem list; diet as above.\n3. CAD / stable angina -- quiet. Continue ASA, statin, beta blocker.\n4. Former smoker -- well done; LDCT due again in November.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T14:30",
+          "reason": "Cardiology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up Letter", "author": "cardiology", "date": "2024-07-23T14:30", "body": "Outside cardiology group -- annual follow-up, seen 2024-07-16.\n\nCoronary artery disease with chronic stable angina. He reports no chest discomfort over recent months and has not used nitroglycerin. He stopped smoking this year, which we strongly support. No dyspnea or palpitations reported.\nExam: regular rhythm, no murmur, clear lungs, no edema.\nMeds: lisinopril 10 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg, atorvastatin 40 mg, nitroglycerin 0.4 mg SL as needed. Allergies: none known.\nPlan: no changes. Return one year.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T08:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-09-24T08:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 5}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-09-24T09:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-09-24T09:07"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2024-09-24T09:09"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-09-24T08:20"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:30"}
+          ],
+          "orders": [{"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "former smoker, quit 2024, 40 pack-years"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit (subsequent)", "author": "PCP", "date": "2024-09-24T09:20", "body": "Subsequent AWV.\n\nHRA: lives alone, independent, still drives, no falls, no new hearing or vision issues. Advance directive packet from last year not completed -- encouraged again, daughter remains his named contact.\n\nSince June: walking 'when the weather's good,' cut back on hot dogs, beer about the same. No home BP log (cuff broken). No chest pain, no nitro use. Still not smoking, ~9 months.\n\nPHQ-2 0. AUDIT-C 5 -- reviewed limits again.\n\nExam: BP remains above target. Heart regular, lungs clear, no edema. Weight roughly stable.\n\nPlan: \n- HTN: still prefers lifestyle; meds unchanged. Bring the cuff to the next visit to check it against ours.\n- Labs today.\n- Vaccines: high-dose flu, updated COVID, RSV today.\n- LDCT November -- ordered.\n- Colonoscopy 2028.\nf/u December."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T17:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2024-09-26T17:20", "body": "Your labs are stable: normal kidney and liver tests, normal blood count and A1c. LDL is still about 140. See you in December -- bring that cuff."},
+            {"type": "Patient Communication", "title": "RE: Lab results", "author": "patient", "date": "2024-09-27T07:48", "body": "ok thanks doc. will do"}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T09:30",
+          "reason": "Lung cancer screening",
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-12T09:30"}],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-12T09:30", "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING\nComparison: 2023-11-07, 2022-11-08.\nSmoking history: 40 pack-years, quit 2024.\nFindings: No pulmonary nodules. Lungs clear. No pleural effusion. Central airways patent. Heart size within normal limits. No lymphadenopathy. Limited upper abdomen unremarkable.", "conclusion": "Lung-RADS category 1: negative. Recommend continued annual screening."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "hospital_admission",
+          "start": "2025-02-05T13:40",
+          "end": "2025-02-07T11:30",
+          "service": "Cardiology",
+          "reason": "Worsening exertional dyspnea",
+          "conditions": [
+            {"label": "Hypertensive heart disease with heart failure", "icd10": "I11.0", "action": "diagnosed", "note": "acute hypertensive heart failure"},
+            {"label": "Heart failure with preserved ejection fraction", "action": "diagnosed", "note": "LVEF 55-60% on echo"}
+          ],
+          "state": {"bp": [160, 90], "weight_kg": 101.4},
+          "vitals": {"bp": [160, 90], "hr": 78},
+          "measure": ["rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-05T14:30", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.1}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-02-06T06:00", "results": [{"test": "Fasting Glucose", "value": 98}]},
+            {"panel": "Lipid Panel", "collected": "2025-02-06T06:00", "results": [{"test": "Total Cholesterol", "value": 210}, {"test": "Low Density Lipoprotein", "value": 140}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Triglycerides"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-02-05T14:10", "text": "Sinus rhythm, rate 78. Normal axis. Normal intervals. Voltage criteria for left ventricular hypertrophy. No acute ST-segment changes.", "conclusion": "Sinus rhythm with left ventricular hypertrophy."},
+            {"study": "Transthoracic echocardiogram", "performed": "2025-02-06T10:00", "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: dyspnea, hypertension.\nLeft ventricle: normal cavity size, concentric left ventricular hypertrophy. Normal wall motion. LVEF 55-60% (visual estimate). Mitral inflow and tissue Doppler show an impaired relaxation pattern.\nRight ventricle: normal size and function.\nValves: no significant stenosis or regurgitation.\nPericardium: no effusion.", "conclusion": "Preserved LV systolic function, LVEF 55-60%. Concentric LVH with impaired relaxation. Normal RV. No significant valve disease."}
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "outside_records",
+          "start": "2025-02-10T09:05",
+          "reason": "Hospital discharge summary",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary -- Cardiology", "author": "cardiology", "date": "2025-02-10T09:05", "body": "Regional hospital, cardiology service. Admitted 2025-02-05, discharged 2025-02-07.\n\nPrincipal diagnosis: acute hypertensive heart failure (hypertensive heart disease with heart failure), preserved ejection fraction.\n\nHistory: 69-year-old man with hypertension, coronary artery disease with chronic stable angina and obesity, admitted with exertional breathlessness progressing over several months and occasional episodes of waking short of breath at night. He acknowledged taking his antihypertensives irregularly. Hydrochlorothiazide is his main stated BP drug.\n\nOn arrival: BP 160/90, HR 78, BMI 32. Presystolic (S4) gallop at the apex, accentuated in the left lateral decubitus position. Lungs clear. No peripheral edema.\n\nLabs: Na 140, K 4.2, creatinine 1.1, fasting glucose 98. Total cholesterol 210, LDL 140, HDL 40.\nECG: sinus rhythm, left ventricular hypertrophy.\nEcho 2/6: LVEF 55-60%, concentric LVH, impaired relaxation, normal RV, no significant valvular disease.\n\nHospital course: Monitored on telemetry without arrhythmia. Home antihypertensives given daily under observation with improvement in BP and in breathing on ward ambulation. Extensive teaching on taking medications every day, sodium restriction and daily weights.\n\nDischarge medications (unchanged): lisinopril 10 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, nitroglycerin 0.4 mg SL prn chest pain.\nAllergies: NKDA.\nSocial: former smoker, 40 pack-years, quit about a year ago; 2-3 beers nightly; retired long-haul truck driver; lives alone.\nFamily: father MI at 64; mother hypertension and stroke; brother type 2 diabetes.\n\nFollow-up: PCP within 1 week; cardiology clinic in 6 weeks.\n\nHospital medicine / cardiology"}
+          ]
+        },
+        {
+          "id": "2025-02-10b",
+          "kind": "telephone",
+          "start": "2025-02-10T13:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2025-02-10T13:30", "body": "Called after receiving discharge summary. Home since Friday, says breathing 'much better.' Has all six meds at home, no changes made at discharge. Reviewed: take them every morning, use a pill box, weigh daily before breakfast, call for gain of 3 lb in a day or 5 lb in a week or worse breathing. No bathroom scale -- will buy one. TCM visit booked 2/13."}
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "office_visit",
+          "start": "2025-02-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, heart failure",
+          "state": {"bp": [146, 88]},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-13T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-02-13T10:00"},
+            {"procedure": "Venipuncture", "performed": "2025-02-13T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2025-02-13T10:50", "body": "TCM visit, 6 days after discharge (admitted 2/5-2/7, cardiology service, acute hypertensive HF with preserved EF). Discharge summary and echo reviewed.\n\nHe is breathing better. Walks to the mailbox and around the block without stopping. Sleeps flat, no waking up short of breath since he got home. No chest pain. Bought a scale, weights steady over 3 days. Admits that before the admission he went days at a time without his pills -- 'I'd take them when I remembered.' Now using a weekly pill organizer his daughter set up.\n\nMeds reconciled: no changes at discharge. Lisinopril 10, HCTZ 25, metoprolol succ 50, ASA 81, atorvastatin 40, NTG prn.\n\nExam: BP lower than hospital, still above goal. No JVD. Heart regular, S4 not appreciated today. Lungs clear. No edema.\n\nA/P\n1. Heart failure with preserved EF, hypertensive heart disease -- added to problem list. Euvolemic. Daily weights, 2 g sodium, limit beer (also fluid). Call parameters reviewed.\n2. HTN -- adherence was the main issue; continue regimen, recheck.\n3. CAD -- no angina.\nBMP today. Cardiology clinic 6 wks. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2025-02-14a",
+          "kind": "portal_message",
+          "start": "2025-02-14T15:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Kidney and potassium check", "author": "PCP", "date": "2025-02-14T15:10", "body": "Kidney function and potassium are normal. Keep up the daily weights and the pill box."}
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "specialist_visit",
+          "start": "2025-03-19T14:00",
+          "service": "Cardiology",
+          "reason": "Heart failure follow-up",
+          "state": {"bp": [142, 86]},
+          "vitals": {"bp": [142, 86], "hr": 70},
+          "measure": ["weight_kg"]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "outside_records",
+          "start": "2025-03-24T10:20",
+          "reason": "Cardiology clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Clinic Letter", "author": "cardiology", "date": "2025-03-24T10:20", "body": "Outside cardiology group -- clinic visit 2025-03-19, post-hospital follow-up.\n\nDear colleague,\nWe saw Mr. Sheehan six weeks after his admission for hypertensive heart failure with preserved ejection fraction (LVEF 55-60%, concentric LVH). His exertional breathlessness has improved and he has had no further nocturnal episodes. He is taking his medications daily with a pill organizer.\n\nBP 142/86, HR 70. Lungs clear, no peripheral edema, no JVD.\n\nMedications: lisinopril 10 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, atorvastatin 40 mg, SL nitroglycerin prn. NKDA.\n\nImpression: HFpEF due to hypertensive heart disease, clinically improved; stable angina, quiet. No medication changes today. Continue sodium restriction and daily weights.\nReturn in 6 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "office_visit",
+          "start": "2025-05-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and blood pressure follow-up",
+          "state": {"bp": [138, 84], "weight_kg": 101.0},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-05-16T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2025-05-16T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-05-16T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-05-16T09:40", "body": "3-month f/u, HFpEF/HTN/CAD. Cardiology letter from March reviewed.\n\nFeels well. Walking most days, gardening. No orthopnea or PND; sleeps on one pillow. No chest pain. Home weights steady (scale reads about 220). Pill organizer working, he thinks he's missed 2 doses in a month. Still has 2 beers most nights, down from 3. Not smoking.\n\nExam: BP best we've seen. Neck veins flat. Regular, no gallop. Lungs clear to bases. No pedal edema.\n\nA/P:\n- HFpEF / hypertensive heart disease: compensated. Continue regimen, sodium limits, daily weights.\n- HTN: improved with adherence.\n- CAD/angina: quiet.\n- Former smoker: LDCT due November.\nBMP, lipids today. RTC 3 months, AWV in fall with flu shot."}
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "portal_message",
+          "start": "2025-05-19T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2025-05-19T12:30", "body": "Kidneys and potassium normal. Cholesterol numbers unchanged from before. Please book your August follow-up on the way out of the portal if you haven't."}
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T08:30",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2025-08-12T08:30", "body": "Electronic refill request: lisinopril 10, HCTZ 25, metoprolol succinate 50, atorvastatin 40, 90-day supply. Last OV 5/16/25. No f/u booked -- flagged for recall.\n\nPCP: approved x90 days."}
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "telephone",
+          "start": "2025-08-26T10:45",
+          "reason": "Recall for overdue follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Recall Call", "author": "front desk", "date": "2025-08-26T10:45", "body": "Called to book overdue 3-month f/u. No answer, voicemail left with callback number."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T11:00",
+          "reason": "Wellness visit reminder",
+          "documents": [
+            {"type": "Patient Communication", "title": "Time for your yearly visit", "author": "front desk", "date": "2025-10-07T11:00", "body": "Hello Mr. Sheehan, you're due for your yearly wellness visit, a heart and blood pressure check, and this season's flu shot. Reply here or call the office and we'll find a time that works."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "pharmacy",
+          "start": "2025-11-18T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2025-11-18T09:10", "body": "Refill request aspirin -- OTC, n/a. Metoprolol succinate 50 and NTG SL requested. Last seen 5/2025, overdue; recall message unanswered.\n\nPCP: metoprolol approved 90 days, NTG approved. Please call him -- needs a visit and his lung CT is overdue."},
+            {"type": "Telephone Encounter", "title": "Call Attempt", "author": "front desk", "date": "2025-11-18T14:20", "body": "Called per PCP. Line rang out, no voicemail set up."}
+          ]
+        }
+      ]
+    }
+  ]
+}

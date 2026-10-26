@@ -1,0 +1,812 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002866",
+   "given": "Judith",
+   "family": "Zielinski",
+   "birth_date": "1957-04-09",
+   "address_line": "214 Lincoln Street",
+   "phone": "+1-917-555-0141",
+   "email": "judith.zielinski@example.test",
+   "marital_status": "single",
+   "summary": "Retired teacher with chronic atrial fibrillation on practice-managed warfarin, hypertension, hyperlipidemia and knee osteoarthritis. A 2024 left knee replacement was complicated by heparin-induced thrombocytopenia with a left popliteal DVT; a year later a right lower lobe PE occurred with a subtherapeutic INR after a missed check.",
+   "events": [
+    {
+     "id": "2021-08-10a",
+     "kind": "telephone",
+     "start": "2021-08-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2021-08-10T10:31",
+       "body": "Ms. Zielinski called asking to become a patient. Retired teacher, moving her care from an internist she has seen for years who is cutting back hours. On warfarin and says she needs someone to keep up with her INR checks. Medicare plus Plan G. New patient visit booked for 8/24 at 9:00. Records release signed by e-form; request faxed to prior internist's office today, asked for last 3 years of notes, labs, immunizations and any colonoscopy/mammo reports."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-24a",
+     "kind": "establish_care",
+     "start": "2021-08-24T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "end": "2021-08-24T10:05",
+     "reason": "Establish care; atrial fibrillation on warfarin",
+     "conditions": [
+      {
+       "label": "Chronic atrial fibrillation, unspecified",
+       "icd10": "I48.20",
+       "action": "history",
+       "onset": "2015-06-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2009-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Bilateral primary osteoarthritis of knee",
+       "action": "history",
+       "onset": "2016-01-01"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "history",
+       "onset": "2012-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "warfarin sodium 5 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily in the evening or as directed by INR clinic",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chronic atrial fibrillation",
+       "action": "historical"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Rate control, atrial fibrillation",
+       "action": "historical"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension",
+       "action": "historical"
+      },
+      {
+       "drug": "rosuvastatin calcium 20 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia",
+       "action": "historical"
+      },
+      {
+       "drug_text": "acetaminophen 325 MG Oral Tablet",
+       "sig": "Take 2 tablets (650 mg) by mouth every 6 hours as needed for pain",
+       "dose": {
+        "value": 650,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Osteoarthritis of knees",
+       "action": "historical"
+      }
+     ],
+     "state": {
+      "weight_kg": 74.2,
+      "height_cm": 163.0,
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.5,
+       "Low Density Lipoprotein": 84
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2021-08-24T10:10",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-24T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-08-24T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-24T10:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-24T10:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired elementary school teacher"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 glasses of wine per week"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-08-24T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-08-24T13:40",
+       "body": "NEW PATIENT VISIT\n\n64F here to establish. Taught 2nd and 3rd grade for over thirty years, retired. Wants one doctor who answers the phone and handles her warfarin.\n\nAtrial fibrillation: told years ago it was \"here to stay\"; no cardioversion attempts that she recalls. Feels an occasional flutter climbing stairs, otherwise unaware of it. No syncope, no exertional chest discomfort. Takes metoprolol succinate 100 and warfarin 5 mg nightly; INRs at her old office ran mostly in range, checked about monthly.\nHTN: lisinopril 10, home cuff readings in the 120s/70s.\nLipids: rosuvastatin 20 for about a decade, tolerates it.\nKnees: both ache, left more, worse after gardening and on stairs. Tylenol 650 as needed, a few times a week. Avoids NSAIDs because of the warfarin.\n\nPSH: appendectomy 1975; hysterectomy 1998 for fibroids.\nAllergies: none to medicines.\nFamily: father had AF and HTN, died at 81. Mother had type 2 DM and a stroke at 76. A maternal uncle had a PE after hip surgery. Sister on thyroid replacement.\nSocial: quit cigarettes about 9 years ago after roughly 20 pack-years. 1-2 glasses of wine a week. Lives on her own, drives, gardens.\n\nExam: well, pleasant. Vitals as recorded. Pulse irregularly irregular, rate controlled. Heart without murmur. Lungs clear. No JVD. No edema. Knees: bony enlargement and crepitus bilaterally, L>R, no effusion, ROM mildly reduced on the left. Neuro grossly normal.\n\nA/P\n1. Chronic AF, rate controlled. Continue metoprolol. Warfarin 5 mg daily, goal INR 2-3; we will run her INRs here, every 4-6 weeks when stable. INR today.\n2. HTN at goal. Continue lisinopril. CMP.\n3. HLD on rosuvastatin 20. Lipids, CBC.\n4. Knee OA. Acetaminophen as needed, stay active; keep NSAIDs off the table.\n5. Former smoker, 20 pk-yr, quit ~2012. Qualifies for annual low-dose CT; she would like to think about it, will raise again at next visit.\n6. Health maintenance: HCV screen today. Awaiting old records for colonoscopy, mammogram and vaccines. PHQ-2 0.\nFollow up in about 4 months, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-26a",
+     "kind": "portal_message",
+     "start": "2021-08-26T16:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent labs",
+       "author": "PCP",
+       "date": "2021-08-26T16:05",
+       "body": "Hi Ms. Zielinski, everything from Tuesday looks good. INR is in range, so stay on 5 mg each evening and we will recheck in about 4 weeks. Kidney function, potassium, liver tests and blood counts are normal, and the cholesterol numbers are where we want them on the rosuvastatin. Hepatitis C screen was negative. Talk soon."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-09a",
+     "kind": "outside_records",
+     "start": "2021-09-09T11:15",
+     "reason": "Records from prior internist",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior internal medicine records",
+       "author": "front desk",
+       "date": "2021-09-09T11:15",
+       "body": "Received 41 pages by fax from patient's prior internist. Scanned. PCP summary of relevant items:\n- Colonoscopy 05/2019, no polyps, repeat in 10 years.\n- Screening mammogram 03/2021 negative (BI-RADS 1).\n- Shingrix dose 1 04/2019, dose 2 07/2019.\n- Tdap 2017.\n- Influenza vaccine yearly; COVID primary series spring 2021 (Pfizer) at a pharmacy, card copy included.\n- INR flowsheet 2018-2021, mostly 2.0-3.0 on warfarin 5 mg daily.\n- No prior DXA on file.\nNothing that changes current plan."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "lab_only",
+     "start": "2021-09-21T08:40",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2021-09-21T08:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T10:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T10:38"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "MA",
+       "date": "2021-10-05T10:50",
+       "body": "High-dose flu given left arm and Pfizer booster given right arm. Screening questions negative. Reminded her that bruising at the site can be a little more on warfarin; firm pressure held 2 minutes each site. Observed 15 min, left feeling well."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "lab_only",
+     "start": "2021-10-19T08:30",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2021-10-19T08:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2021-11-30a",
+     "kind": "lab_only",
+     "start": "2021-11-30T08:50",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2021-11-30T08:50",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "office_visit",
+     "start": "2021-12-14T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up atrial fibrillation and hypertension",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2021-12-14T14:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-12-14T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-12-14T15:10",
+       "body": "F/u AF, HTN.\nDoing fine. Fall cleanup went OK, knees sore after but settle with Tylenol. No bleeding, no dark stools, no nosebleeds. No palpitations beyond the usual. Home BPs 118-130/70s.\nExam: irregularly irregular, rate fine. Lungs clear. No edema.\nA/P: AF rate controlled, INR checked today, continue warfarin 5 mg. BP controlled on lisinopril. Lipids at goal in August. We talked again about low-dose CT for lung screening; she is willing, will order after the holidays with mammogram. Return 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-25a",
+     "kind": "lab_only",
+     "start": "2022-01-25T08:35",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-01-25T08:35",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-02-22a",
+     "kind": "office_visit",
+     "start": "2022-02-22T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up; screening orders",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "Former smoker, 20 pack-years, quit 2012"
+      },
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      },
+      {
+       "id": "dxa-2022",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging",
+       "reason": "Osteoporosis screening, age 64 female"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-02-22T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-02-22T11:05",
+       "body": "Routine f/u. Quiet winter. Walking indoors at the mall a few mornings a week. No chest pain, no dyspnea, no bleeding on warfarin. Last INR in range.\nExam: rate-controlled irregular rhythm, no murmur, lungs clear, no edema. Knees unchanged.\nPlan: Shared decision on lung screening done today; she understands false positives and follow-up scans and wants it. Ordered LDCT. Mammogram due in March; ordered with first DXA. Continue all meds. Next visit late summer for the Welcome to Medicare exam after her birthday."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "lab_only",
+     "start": "2022-03-08T08:45",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-03-08T08:45",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-03-10a",
+     "kind": "imaging",
+     "start": "2022-03-10T13:20",
+     "reason": "Lung cancer screening",
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-03-10T13:20"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-03-10T13:20",
+       "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (BASELINE)\nTechnique: Low-dose helical CT of the chest without contrast.\nComparison: None.\nFindings: No pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal; no pericardial effusion. No coronary artery calcification. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT result",
+       "author": "PCP",
+       "date": "2022-03-11T08:15",
+       "body": "Baseline lung screening CT is negative, Lung-RADS 1. Repeat in one year. Message sent to patient."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-19a",
+     "kind": "lab_only",
+     "start": "2022-04-19T08:30",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-04-19T08:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 3.2
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Anticoagulation Note",
+       "title": "INR above range",
+       "author": "RN",
+       "date": "2022-04-19T13:20",
+       "body": "INR 3.2 today (goal 2-3). Spoke with pt. No bleeding or bruising. No new meds, no antibiotics; says she ate less than usual last week with a cold that has passed. Per PCP protocol: skip tonight's dose, then resume 5 mg daily. Recheck in 2 weeks. Pt repeated plan back."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-03a",
+     "kind": "lab_only",
+     "start": "2022-05-03T08:40",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-05-03T08:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-05-12a",
+     "kind": "imaging",
+     "start": "2022-05-12T09:30",
+     "reason": "Screening mammogram and bone density",
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-05-12T09:30"
+      },
+      {
+       "id": "dxa-2022",
+       "action": "done",
+       "date": "2022-05-12T10:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-05-12T09:30",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison with outside study 03/2021. Breasts are scattered fibroglandular density. No suspicious mass, calcifications or architectural distortion.",
+       "conclusion": "BI-RADS 1: negative. Routine screening recommended."
+      },
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2022-05-12T10:00",
+       "text": "Lumbar spine L1-L4 T-score -0.6. Left femoral neck T-score -0.9. Total left hip T-score -0.4.",
+       "conclusion": "Normal bone density by WHO criteria."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "lab_only",
+     "start": "2022-06-14T08:30",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-06-14T08:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "lab_only",
+     "start": "2022-07-26T08:35",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-07-26T08:35",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "annual_physical",
+     "start": "2022-08-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "end": "2022-08-23T09:55",
+     "reason": "Welcome to Medicare preventive visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-08-23T10:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-08-23T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-08-23T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-08-23T10:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-08-23T09:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+       "performed": "2022-08-23T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-08-23T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Initial Preventive Physical Exam",
+       "author": "PCP",
+       "date": "2022-08-23T12:30",
+       "body": "WELCOME TO MEDICARE VISIT\nTurned 65 in April. Feels well. Independent, drives, volunteers at the library reading program on Thursdays. No falls this year. Hearing and vision fine with readers. Advance directive: has a health care proxy form at home, will bring a copy.\nPHQ-2 negative. Home safety reviewed; rugs taped, grab bar in tub.\nMeds unchanged: warfarin 5, metoprolol succinate 100, lisinopril 10, rosuvastatin 20, acetaminophen PRN.\nExam: AF rhythm, rate controlled. Lungs clear. Abdomen benign, healed scars. No edema. Knees with crepitus, L>R.\nScreening status: colonoscopy 2019 normal; mammogram and DXA normal 5/2022; LDCT negative 3/2022 (next 3/2023); HCV negative 2021; Shingrix complete 2019; Tdap 2017.\nPCV20 given today.\nLabs drawn. Fall flu/COVID in October."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-06a",
+     "kind": "lab_only",
+     "start": "2022-09-06T08:30",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-09-06T08:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T10:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T10:08"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-10-11T10:15",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Vaccines and INR",
+       "author": "MA",
+       "date": "2022-10-11T10:30",
+       "body": "Flu high dose L arm, bivalent COVID booster R arm. Pressure held. INR drawn same visit. Tolerated, waited 15 min."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "lab_only",
+     "start": "2022-11-29T08:40",
+     "reason": "INR check on warfarin",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-11-29T08:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "pharmacy",
+     "start": "2022-12-06T09:10",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Rosuvastatin refill",
+       "author": "MA",
+       "date": "2022-12-06T09:10",
+       "body": "Pharmacy fax: request to change rosuvastatin 20 mg to 90-day supply for mail order. Lipids 8/2022 at goal. Approved per PCP, 90 days x 3 refills."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+# unit-2027 story: David Donovan
+
+- 2021-09-08 phone, front desk: asks to join the practice (P)
+- 2021-09-14 new patient visit: HTN, CKD 3b on lisinopril/amlodipine; BP 146/92; Cr 1.74; UACR 72; lung screening ordered (A1, A11, A12)
+- 2021-09-17 portal: results (P)
+- 2021-10-05 prior practice records arrive (S, P)
+- 2021-10-19 nurse visit: flu, PCV20 (P)
+- 2021-11-16 low-dose CT lung, Lung-RADS 1 (A11)
+- 2022-02-08 visit: tells of January open appendectomy; BP (S, R3)
+- 2022-03-11 pharmacy: Shingrix 1 (P)
+- 2022-04-20 hospital discharge summary arrives on request (R3)
+- 2022-05-20 pharmacy: Shingrix 2 (P)
+- 2022-06-14 HTN/CKD follow-up (P)
+- 2022-08-09 pharmacy refill request (P)
+- 2022-09-20 annual physical, flu, COVID bivalent, UACR (P, A12)
+- 2022-10-17 exertional dyspnea, BP 158/96, cardiology referral (A2)
+- 2022-11-04 cardiology consult, echo: LVH (S); letter received 2022-11-14
+- 2022-11-16 phone: PCP reviews echo (P)
+- 2022-12-06 low-dose CT lung, Lung-RADS 1 (A11)
+- 2023-01-24 HTN follow-up (P)
+- 2023-03-28 portal: GI symptoms, scheduled (P)
+- 2023-04-12 visit: diarrhea, flushing, weight loss; GI referral (A3)
+- 2023-05-02 CT abdomen/pelvis: ileal mass, liver lesions (S, A4)
+- 2023-05-08 GI consult: carcinoid syndrome, metastatic ileal NET (S, R1, R2); letter 2023-05-16
+- 2023-05-16 phone: PCP and patient talk (P)
+- 2023-06-26 phone: wife reports laparotomy and hemicolectomy 06-19 (R3)
+- 2023-07-06 post-op visit (P)
+- 2023-07-20 phone: specialty pharmacy prior auth for octreotide (A5)
+- 2023-08-22 pathology report arrives (A4)
+- 2023-09-12 oncology consult letter arrives (A5)
+- 2023-09-19 follow-up: octreotide added to list; symptoms better; flu, COVID (A5, P)
+- 2023-11-07 no-show (P)
+- 2023-12-04 visit: abdominal bulge; ultrasound, surgery referral (A6)
+- 2023-12-12 low-dose CT lung, Lung-RADS 1 (A11)
+- 2024-01-10 abdominal ultrasound: wall defect with omental fat (S)
+- 2024-01-11 portal: ultrasound result (P)
+- 2024-01-24 general surgery consult: incisional hernia, watchful waiting (S, A6); letter 2024-02-01
+- 2024-03-19 annual physical (P)
+- 2024-06-04 oncology surveillance CT stable; oncology letter (A5)
+- 2024-06-10 visit: hand weakness, tripping; labs, CK 268; neurology referral (A7)
+- 2024-06-12 portal: results (P)
+- 2024-07-31 neurology: ALS, EMG, riluzole (S, A8); letter 2024-08-08
+- 2024-08-13 visit: ALS discussion, advance care planning, LFTs (A8, P)
+- 2024-09-10 LFTs (A8)
+- 2024-09-24 nurse visit: flu, COVID, RSV (P)
+- 2024-10-04 portal: medical leave paperwork (R8)
+- 2024-10-08 LFTs (A8)
+- 2024-12-10 low-dose CT lung, Lung-RADS 1 (A11)
+- 2025-01-07 phone: insurance update (R8)
+- 2025-02-07 neurology: spirometry (S, R5); letter 2025-02-14
+- 2025-03-11 Welcome to Medicare visit (P)
+- 2025-05-06 phone: riluzole prior auth (P)
+- 2025-06-03 oncology surveillance CT stable (A5)
+- 2025-06-10 HTN/CKD follow-up, K 4.9 (P)
+- 2025-07-25 neurology: bulbar symptoms; swallow evaluation (S, A9); letter arrives 2025-10-21
+- 2025-08-19 visit: wife reports neurology visit; weight 77; records requested (P)
+- 2025-10-14 nurse visit: flu, COVID (P)
+- 2025-11-18 video visit: check-in (P)
+- 2026-01-26 neurology: ABG, FVC 60%, BiPAP (S, R5, A10); letter 2026-02-03
+- 2026-02-05 phone: BiPAP paperwork (A10)
+- 2026-02-10 visit: BMP drawn (P)
+- 2026-02-11 phone: K 5.4, Cr 1.98, hyperkalemia, nephrology referral (A12)
+- 2026-03-25 portal: nephrology advised low-potassium diet (S, A12)
+- 2026-05-12 annual wellness visit, K 5.2 (P)
+- 2026-08-10 nephrology: K 5.6, Cr 2.1, eGFR 35 (S, R6); letter 2026-08-18
+- 2026-08-24 BMP drawn, pending (A12)
+- 2026-09-14 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002027 on 2026-05-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

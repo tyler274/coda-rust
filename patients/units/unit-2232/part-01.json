@@ -1,0 +1,381 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002232",
+      "given": "Dennis",
+      "family": "Mayhew",
+      "birth_date": "1950-07-19",
+      "address_line": "41 Mill Village Road",
+      "phone": "+1-917-555-0179",
+      "email": "dennis.mayhew@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal clerk with hypertension, type 2 diabetes, CKD 3a, BPH and chronic lumbar stenosis on pain-clinic morphine who joins in 2015. Over the next decade he has a TIA, cervical myelopathy, Waldenström macroglobulinemia, then AL amyloidosis, normal pressure hydrocephalus, vascular dementia and two lacunar strokes, with outside letters that often arrive late.",
+      "events": [
+        {
+          "id": "2015-08-24a",
+          "kind": "telephone",
+          "start": "2015-08-24T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2015-08-24T10:12",
+             "body": "Pt called asking to become a patient. His longtime primary doctor in Greenfield retired over the summer and the practice is closing its files. Turned 65 in July, now on Part B. Says he has 'sugar, blood pressure, prostate and a bad back.' Back pain meds come from a pain clinic, not his old PCP. Booked new patient + welcome exam 9/14 at 9:00. Release form mailed so we can request the old chart. Asked him to bring all pill bottles."}
+          ]
+        },
+        {
+          "id": "2015-09-14a",
+          "kind": "establish_care",
+          "start": "2015-09-14T09:00",
+          "end": "2015-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; initial preventive exam",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2004-01-01"},
+            {"label": "Type 2 diabetes mellitus with diabetic chronic kidney disease", "action": "history", "onset": "2008-06-01"},
+            {"label": "Chronic kidney disease, stage 3a", "action": "history", "onset": "2013-01-01"},
+            {"label": "Benign prostatic hyperplasia with lower urinary tract symptoms", "action": "history", "onset": "2010-01-01"},
+            {"label": "Lumbar spinal stenosis", "action": "history", "onset": "2011-01-01"},
+            {"label": "Cervical spondylosis", "icd10": "M47.812", "action": "history", "onset": "2012-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2008-06-01"},
+            {"label": "Long term (current) use of opiate analgesic", "action": "history", "onset": "2013-01-01"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2010-01-01"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 12.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "BPH"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 40, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"},
+            {"drug_text": "morphine sulfate 60 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 12 hours (prescribed by pain management)", "dose": {"value": 60, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "lumbar spinal stenosis"},
+            {"drug_text": "morphine sulfate 15 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 4 hours as needed for breakthrough pain (prescribed by pain management)", "dose": {"value": 15, "unit": "mg"}, "frequency": "Q4H PRN", "route": "Oral", "course": "chronic", "reason": "breakthrough back pain"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "state": {"bp": [136, 84], "weight_kg": 92.0, "height_cm": 175.0, "labs": {"Hemoglobin A1c": 7.1, "Glucose": 150, "Creatinine": 1.36, "Microalbumin/Creatinine Ratio": 42, "Hemoglobin": 14.1, "Low Density Lipoprotein": 130, "High Density Lipoprotein": 40, "Triglycerides": 200, "Prostate Specific Antigen": 1.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2015-09-14T10:10", "results": [{"test": "Creatinine", "value": 1.36}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2015-09-14T10:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2015-09-14T10:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2015-09-14T10:10", "results": [{"test": "Hemoglobin A1c", "value": 7.1}, {"test": "Microalbumin/Creatinine Ratio", "value": 42}, {"test": "Prostate Specific Antigen"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "Pain severity (0-10)", "value": 5}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired postal clerk"},
+            {"item": "History of alcohol use", "value": "1-2 beers on weekends"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2015-09-14T10:00"},
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2015-09-14T10:02"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2015-09-14T09:00"},
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2015-09-14T09:00"},
+            {"procedure": "Immunization administration", "performed": "2015-09-14T10:00"},
+            {"procedure": "Venipuncture", "performed": "2015-09-14T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit and Initial Preventive Exam", "author": "PCP", "date": "2015-09-14T10:05",
+             "body": "65 y/o retired postal clerk here to establish care. Prior PCP retired; records requested.\n\nHPI: Diabetes for roughly seven years, on metformin 1000 twice a day; says his last A1c 'was around 7.' BP treated for about ten years with lisinopril and HCTZ; doesn't check at home. Prostate: gets up twice a night, stream okay on tamsulosin. Back: lumbar stenosis, aching low back and buttocks with standing and walking, better sitting; followed by an outside pain clinic for several years, which prescribes long-acting morphine 60 twice daily and short-acting 15 for bad days (uses 1-2 a day). Neck stiffness for years, told it was arthritis in the neck. Told by old PCP his kidney numbers were 'a little low.'\n\nPMH: HTN, T2DM, CKD 3a, BPH, lumbar spinal stenosis, cervical spondylosis, hyperlipidemia.\nPSH: none.\nMeds: metformin 1000 BID, lisinopril 20 daily, HCTZ 12.5 daily, tamsulosin 0.4 qhs, atorvastatin 40 qhs; morphine ER 60 q12h and morphine IR 15 q4h prn (pain clinic).\nAllergies: sulfa antibiotics (hives); IV contrast dye (anaphylaxis, needed epinephrine during a CT years ago).\nFH: father had an ischemic stroke at 74. Mother had diabetes and high blood pressure. Maternal uncle had Waldenström macroglobulinemia, found in his early 70s. Sister has osteoarthritis.\nSH: lives with his wife in Deerfield. Retired from the postal service. Quit cigarettes in 2010, about 25 pack-years. 1-2 beers on weekends. No other substances.\n\nROS: no chest pain, no shortness of breath, no weakness or numbness, no blood in urine, no falls.\n\nExam: BP and vitals as recorded. Alert, pleasant. Fundi not well seen through undilated pupils. Heart regular, no murmur. Lungs clear. Abdomen soft, no bruit. Lumbar paraspinal tenderness, forward flexion limited by pain. Neck rotation mildly reduced both ways. Strength full in arms and legs, reflexes 2+ and symmetric, toes down. Feet: monofilament intact, pulses 2+, no ulcers or calluses. Gait normal.\n\nWelcome exam: vision screen done, hearing okay to whisper, PHQ-2 0, no falls in past year, home safe, wife at home. Advance directive: not yet; handout given.\n\nA/P:\n1. T2DM with CKD 3a: A1c, CMP, urine albumin/creatinine today. Continue metformin.\n2. HTN: at goal today. Continue lisinopril/HCTZ.\n3. Hyperlipidemia: lipids today, continue atorvastatin 40.\n4. Lumbar stenosis on chronic opioids: pain clinic manages. Will keep their letters on file.\n5. BPH: PSA after discussion, he wants it.\n6. Prevention: Tdap and PCV13 today. Hep C screen once. Old colonoscopy report to come with records. Flu shot next month when stocked.\nReturn 3 months."}
+          ]
+        },
+        {
+          "id": "2015-09-16a",
+          "kind": "portal_message",
+          "start": "2015-09-16T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2015-09-16T16:40",
+             "body": "Mr. Mayhew, welcome again. Your A1c is 7.1, close to where we want it. Kidney function (creatinine 1.36) puts you at the same stage 3a your prior doctor described, and there is a small amount of protein in the urine (42), which the lisinopril helps with. Cholesterol, blood count and PSA were fine, and the hepatitis C screen was negative. No changes. See you in December."}
+          ]
+        },
+        {
+          "id": "2015-10-05a",
+          "kind": "outside_records",
+          "start": "2015-10-05T13:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "MA", "date": "2015-10-05T13:20",
+             "body": "Received 64 pages from prior PCP office (retired physician's files, sent by records custodian). Scanned to media. Abstracted:\n- Colonoscopy 2012 (outside GI): normal to cecum, no polyps, good prep; repeat advised in 10 years.\n- Diabetes since 2008, on metformin throughout.\n- Contrast reaction documented 2009: anaphylaxis after IV contrast for an abdominal CT, treated with epinephrine.\n- Pneumococcal and Tdap not documented.\n- Last eye exam 2014, optometry, no diabetic changes.\nProblem and medication lists match what pt gave at intake."}
+          ]
+        },
+        {
+          "id": "2015-10-08a",
+          "kind": "nurse_visit",
+          "start": "2015-10-08T14:30",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2015-10-08T14:32"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2015-10-08T14:32"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2015-10-08T14:40",
+             "body": "High-dose flu vaccine given IM left arm. Screening questions negative. Pt tolerated well and left after the usual wait."}
+          ]
+        },
+        {
+          "id": "2015-11-02a",
+          "kind": "outside_records",
+          "start": "2015-11-02T11:05",
+          "documents": [
+            {"type": "Consult Note", "title": "Pain management annual summary", "author": "pain management", "date": "2015-11-02T11:05",
+             "body": "OUTSIDE PAIN MANAGEMENT CLINIC — Annual summary to new PCP\nRe: Dennis Mayhew, DOB 07/19/1950\n\nThank you for taking over his primary care. He has been with our clinic for lumbar spinal stenosis with neurogenic claudication, managed on a stable opioid regimen: morphine sulfate ER 60 mg every 12 hours plus morphine IR 15 mg up to every 4 hours as needed. Controlled substance agreement on file; urine drug testing consistent; state monitoring program reviewed each fill. Function: walks about 15 minutes at a time, does light yard work.\n\nAllergies: sulfonamide antibiotics (hives), iodinated contrast (anaphylaxis).\n\nWe see him every 3 months and write all opioid prescriptions. Please do not prescribe opioids. We would appreciate yearly kidney function results.\n\nPain management physician"}
+          ]
+        },
+        {
+          "id": "2015-12-14a",
+          "kind": "office_visit",
+          "start": "2015-12-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2015-12-14T09:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2015-12-14T09:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2015-12-14T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes / HTN follow-up", "author": "PCP", "date": "2015-12-14T09:10",
+             "body": "S: Doing okay. Some holiday cookies. Takes everything as listed. Back the same; pain clinic visit last month. No dizziness, no chest pain.\nO: Vitals as charted. Heart regular, lungs clear, no edema. Feet without lesions.\nA/P: T2DM, HTN, CKD 3a. A1c and BMP drawn. Continue current regimen. Flu shot done in October. Next visit April."}
+          ]
+        },
+        {
+          "id": "2016-03-07a",
+          "kind": "pharmacy",
+          "start": "2016-03-07T11:15",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request: metformin, lisinopril", "author": "MA", "date": "2016-03-07T11:15",
+             "body": "Pharmacy fax for 90-day supplies of metformin 1000 mg and lisinopril 20 mg. Last visit 12/14. Sent per protocol, 1 refill each."}
+          ]
+        },
+        {
+          "id": "2016-04-11a",
+          "kind": "office_visit",
+          "start": "2016-04-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2016-04-11T10:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2016-04-11T10:45", "results": [{"test": "Creatinine"}]}
+          ],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2016-04-11T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2016-04-11T10:50",
+             "body": "Feels well. Walking more now that the snow is gone, limited by his back after 10-15 min. Nocturia x2, stable.\nExam: BP as charted. Heart and lungs normal. No edema. Monofilament intact both feet.\nDecember A1c was in his usual range. Repeating today with BMP.\nPlan: no changes. Eye exam due this summer, reminded. RTC 4-5 months for wellness visit."}
+          ]
+        },
+        {
+          "id": "2016-07-18a",
+          "kind": "portal_message",
+          "start": "2016-07-18T19:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Tamsulosin refill", "author": "patient", "date": "2016-07-18T19:02",
+             "body": "Hi, I'm down to the last week of the prostate capsules. Can you send more to the same pharmacy. Thanks, Dennis"},
+            {"type": "Patient Message", "title": "RE: Tamsulosin refill", "author": "MA", "date": "2016-07-19T08:31",
+             "body": "Sent a 90-day supply with 3 refills. Should be ready this afternoon."}
+          ]
+        },
+        {
+          "id": "2016-09-19a",
+          "kind": "annual_physical",
+          "start": "2016-09-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2016-09-19T10:00", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2016-09-19T10:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2016-09-19T10:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2016-09-19T09:55"}],
+          "orders": [{"id": "aaa-us-2016", "action": "placed", "order": "Abdominal aortic aneurysm screening ultrasound", "category": "imaging", "reason": "male former smoker 65-75"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2016-09-19T09:20"},
+            {"procedure": "Immunization administration", "performed": "2016-09-19T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2016-09-19T10:05",
+             "body": "First AWV here.\nHealth risk review: independent in all daily activities, drives, does the grocery shopping with his wife. No falls. Hearing fine. Mood good, PHQ-2 0. Sleeps okay apart from nocturia.\nMeds reviewed, unchanged. Allergies reviewed.\nExam: as charted, unremarkable apart from his chronic low back tenderness.\nPrevention: PPSV23 today (PCV13 was last fall). Colonoscopy 2012 normal, next 2022. Ever-smoker man 65-75: one-time aortic ultrasound ordered; contrast not needed. Shingles vaccine: he'd like to wait.\nLabs for diabetes and kidneys today.\nAdvance directive: still thinking; wife would be his decision-maker.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2016-09-29a",
+          "kind": "imaging",
+          "start": "2016-09-29T13:00",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2016-09-29T13:00",
+             "text": "Indication: Abdominal aortic aneurysm screening, male former smoker.\nTechnique: Grayscale and color imaging of the abdominal aorta.\nFindings: The abdominal aorta is normal in caliber throughout, measuring 2.0 cm maximum outer-to-outer diameter in the infrarenal segment. No aneurysm or dissection flap. Common iliac arteries normal in caliber. Visualized liver and kidneys unremarkable.",
+             "conclusion": "No abdominal aortic aneurysm."}
+          ],
+          "orders": [{"id": "aaa-us-2016", "action": "done", "date": "2016-09-29T13:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "Aortic ultrasound result", "author": "PCP", "date": "2016-09-30T08:20",
+             "body": "Normal aorta, no aneurysm. No further screening needed. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2016-10-11a",
+          "kind": "nurse_visit",
+          "start": "2016-10-11T15:10",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2016-10-11T15:12"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2016-10-11T15:12"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2016-10-11T15:20",
+             "body": "Flu vaccine (high-dose) IM right deltoid. No prior reactions. Observed, no issues."}
+          ]
+        },
+        {
+          "id": "2016-11-08a",
+          "kind": "telephone",
+          "start": "2016-11-08T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Wife calling re ED visit", "author": "RN", "date": "2016-11-08T09:25",
+             "body": "Wife Lorraine called. Yesterday afternoon he had trouble getting his words out and his right hand was clumsy, maybe 20 minutes, all gone before the ambulance got him to the hospital. ED told them it was a mini-stroke (TIA), scans okay, sent home last night on a baby aspirin. He's back to himself this morning, no new symptoms. Advised 911 for any recurrence. Scheduled follow-up with PCP 11/14. Asked her to bring any ED paperwork; we will request the record."}
+          ]
+        },
+        {
+          "id": "2016-11-14a",
+          "kind": "office_visit",
+          "start": "2016-11-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, transient ischemic attack",
+          "conditions": [{"label": "Transient ischemic attack", "action": "diagnosed", "onset": "2016-11-07"}],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "TIA, started in the ED"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2016-11-14T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED visit: TIA", "author": "PCP", "date": "2016-11-14T11:40",
+             "body": "Here with wife. On 11/7 at home, about 20 min of word-finding difficulty and right-hand clumsiness, fully resolved before ED arrival. Per their discharge sheet: head CT without contrast normal, carotid ultrasound without significant narrowing, ECG sinus rhythm. No MRI (they did not offer one). Started aspirin 81 there. No recurrence. No headache, no vision loss.\nExam: alert, fluent speech, naming and repetition intact. Cranial nerves normal. Strength 5/5 throughout, fine finger movements equal, reflexes symmetric, toes down. Heart regular, no murmur, no carotid bruits.\nA/P: TIA, now resolved. Continue aspirin 81 daily. Already on atorvastatin 40; continue. BP fine today. Diabetes as before. Full ED record requested. Stroke warning signs reviewed with both of them."}
+          ]
+        },
+        {
+          "id": "2017-01-09a",
+          "kind": "outside_records",
+          "start": "2017-01-09T14:40",
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2016-11-07T16:05",
+             "text": "Indication: transient aphasia and right hand weakness.\nTechnique: Noncontrast axial CT of the head.\nFindings: No acute hemorrhage, mass or territorial infarct. Gray-white differentiation preserved. Ventricles and sulci appropriate for age. No extra-axial collection. Calvarium intact.",
+             "conclusion": "No acute intracranial abnormality."},
+            {"study": "Carotid duplex ultrasound", "performed": "2016-11-07T18:30",
+             "text": "Bilateral common, internal and external carotid arteries evaluated. Mild smooth plaque at both carotid bulbs. Velocities in the internal carotid arteries within normal limits bilaterally. Antegrade vertebral flow bilaterally.",
+             "conclusion": "No hemodynamically significant carotid stenosis (less than 50% bilaterally)."},
+            {"study": "12-lead ECG", "performed": "2016-11-07T15:50",
+             "text": "Sinus rhythm, rate 76. Normal axis. Normal intervals. No acute ST-T changes.",
+             "conclusion": "Normal sinus rhythm."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record, 11/07/2016", "author": "emergency medicine", "date": "2017-01-09T14:40",
+             "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — physician record, date of service 11/07/2016 (received by fax 01/09/2017 after second request)\n\nCC: Trouble speaking, right hand weakness.\nHPI: 66M, HTN, DM, CKD, brought by EMS after wife noted he could not find words and was dropping things with the right hand, onset about 14:50, lasted ~20 minutes. Resolved on arrival.\nAllergies: sulfa (hives), IV contrast (anaphylaxis) — CTA not done.\nExam: Neuro intact, NIHSS 0.\nWorkup: noncontrast CT head negative; carotid duplex <50% bilaterally; ECG sinus rhythm\nImpression: Transient ischemic attack.\nPlan: aspirin 81 mg daily started. Continue statin. Discharged with wife; PCP follow-up this week; outpatient MRI at PCP's discretion.\nED physician"}
+          ]
+        },
+        {
+          "id": "2017-02-13a",
+          "kind": "office_visit",
+          "start": "2017-02-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "conditions": [
+            {"label": "Transient ischemic attack", "action": "resolved"},
+            {"label": "Personal history of transient ischemic attack", "icd10": "Z86.73", "action": "diagnosed", "onset": "2016-11-07"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2017-02-13T10:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2017-02-13T10:05", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2017-02-13T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2017-02-13T10:10",
+             "body": "No further neuro episodes since November. Taking aspirin daily, no bruising or black stools. ED record finally arrived last month: CT and carotids as he described.\nBack pain stable; pain clinic every 3 months.\nExam: vitals as charted, neuro nonfocal, heart regular.\nA/P: TIA moved to history. Continue aspirin, statin, BP meds. A1c and BMP today. RTC June."}
+          ]
+        },
+        {
+          "id": "2017-05-22a",
+          "kind": "outside_records",
+          "start": "2017-05-22T10:30",
+          "documents": [
+            {"type": "Consult Note", "title": "Pain management progress note", "author": "pain management", "date": "2017-05-22T10:30",
+             "body": "OUTSIDE PAIN MANAGEMENT CLINIC — progress note to PCP, visit 05/12/2017\nLumbar spinal stenosis with neurogenic claudication. Pain 5/10 average. Function unchanged. Aware of TIA in November; now on aspirin. Regimen unchanged: morphine ER 60 mg q12h, morphine IR 15 mg q4h prn (uses about 1-2 daily). Agreement renewed. Next visit 3 months.\nPain management physician"}
+          ]
+        },
+        {
+          "id": "2017-06-12a",
+          "kind": "office_visit",
+          "start": "2017-06-12T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2017-06-12T14:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2017-06-12T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2017-06-12T14:50",
+             "body": "Quick visit. Feels well. Garden going in. BP fine. Feet checked, fine. A1c today. Reminded about eye exam, he's scheduled in August. No changes."}
+          ]
+        },
+        {
+          "id": "2017-08-28a",
+          "kind": "outside_records",
+          "start": "2017-08-28T12:10",
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic eye examination", "author": "optometry", "date": "2017-08-28T12:10",
+             "body": "OPTOMETRY — Diabetic eye exam report, exam 08/21/2017\nVA cc 20/25 OD, 20/25 OS. Pupils normal. IOP 15/16. Dilated fundus exam: no diabetic retinopathy either eye; discs and maculae healthy. Mild early lens changes both eyes, not visually significant.\nImpression: Type 2 diabetes without retinopathy. Return 1 year.\nOptometrist"}
+          ]
+        },
+        {
+          "id": "2017-09-25a",
+          "kind": "annual_physical",
+          "start": "2017-09-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2017-09-25T09:40", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2017-09-25T09:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2017-09-25T09:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2017-09-25T09:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2017-09-25T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2017-09-25T09:45",
+             "body": "Wellness visit. Doing well, no new concerns. No falls. Independent. PHQ-2 0. Eye exam in August without retinopathy.\nMeds and allergies reviewed. Vaccines: flu next month; new shingles vaccine discussed, he'll get it at the pharmacy once available.\nExam unremarkable except chronic lumbar tenderness.\nYearly labs drawn. RTC December."}
+          ]
+        },
+        {
+          "id": "2017-10-10a",
+          "kind": "nurse_visit",
+          "start": "2017-10-10T13:45",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2017-10-10T13:47"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2017-10-10T13:47"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "MA", "date": "2017-10-10T13:55",
+             "body": "High-dose influenza vaccine IM left deltoid. VIS reviewed. No issues."}
+          ]
+        },
+        {
+          "id": "2017-12-11a",
+          "kind": "office_visit",
+          "start": "2017-12-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2017-12-11T10:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2017-12-11T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2017-12-11T10:30",
+             "body": "S: No complaints. Back about the same. Nocturia unchanged.\nO: Vitals as charted. Neck and lumbar range limited as before, neuro nonfocal. No edema.\nA/P: Diabetes, HTN, CKD stable on the September labs. A1c today. Continue all. RTC 2 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,652 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002263",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heart failure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-20T08:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-20T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-20T07:30",
+              "body": "Winter check. No admissions since September. Breathing at his usual: one flight with a pause. One pillow. Weight log on his phone, steady. Shoulders and elbows bother him in the cold. Hands still tingle and burn some days.\nExam: vitals as charted. No JVD. Heart regular, apical systolic murmur. Lungs clear. No edema.\nA/P: HFrEF, compensated. CAD without angina. Neuropathic hand pain on gabapentin. BMP, CBC. Next visit in spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "hospital_admission",
+          "start": "2026-02-19T10:50",
+          "end": "2026-02-23T12:00",
+          "service": "Internal Medicine",
+          "reason": "melena, fatigue, lightheadedness",
+          "conditions": [
+            {
+              "label": "Bleeding duodenal ulcer",
+              "icd10": "K26.4",
+              "action": "diagnosed",
+              "onset": "2026-02-05"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "indomethacin 25 MG Oral Capsule",
+              "action": "stop",
+              "reason": "bleeding duodenal ulcer; avoid NSAIDs"
+            },
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "stop",
+              "reason": "GI bleed; more than 3 years after PCI, single antiplatelet per cardiology"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "dose increase"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily before breakfast and dinner for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bleeding duodenal ulcer"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every other day",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "QOD",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "iron replacement after GI blood loss"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1-2 tablets by mouth every 8 hours as needed for joint pain, max 3,000 mg per day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoarthritis pain, in place of NSAIDs"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.2,
+              "Hematocrit": 25.0,
+              "Mean Corpuscular Volume": 82,
+              "Blood Urea Nitrogen": 38,
+              "Creatinine": 1.1,
+              "Platelets": 240
+            }
+          },
+          "vitals": [
+            {
+              "time": "2026-02-19T11:00",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 98,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-19T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-19T11:20",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 38
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-19T11:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-23T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Upper GI endoscopy",
+              "loinc": "18751-8",
+              "performed": "2026-02-20T09:30",
+              "text": "Procedure: esophagogastroduodenoscopy under monitored anesthesia care. Esophagus normal. Stomach: no blood in the stomach; mucosa normal; antrum and body biopsied for H. pylori. Duodenum: 12 mm ulcer in the duodenal bulb with a nonbleeding visible vessel. Treated with dilute epinephrine injection in four quadrants and two hemostatic clips with good result. Second portion of the duodenum normal.",
+              "conclusion": "Duodenal bulb ulcer, 12 mm, nonbleeding visible vessel; endoscopic hemostasis with epinephrine and two clips. Gastric biopsies sent for H. pylori."
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-20T09:40",
+              "issued": "2026-02-22T14:00",
+              "text": "Specimen: gastric antrum and body, biopsies. Gastric mucosa without significant inflammation. No organisms seen; immunostain for Helicobacter pylori negative. No intestinal metaplasia or dysplasia.",
+              "conclusion": "Negative for Helicobacter pylori."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-19T10:50"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-19T15:00"
+            },
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-02-20T09:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-23T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "author": "emergency medicine",
+              "date": "2026-02-19T10:50",
+              "body": "Regional hospital ED.\nCC: tired, lightheaded, black stools.\nHPI: 70-year-old man with coronary disease (LAD stent), HFrEF with an anterior aneurysm, and a duodenal ulcer years ago, with two weeks of worsening fatigue and lightheadedness when he gets up from a chair. Winded on stairs, more than his usual. Stools black and sticky, which he calls tarry. Some nausea, eating less. No vomiting, no belly pain, no red blood. No fevers, chills or weight loss. He figured he was just getting old and the arthritis was slowing him down. Pulmonary edema admission in September.\nMeds: he fills his own pill box and has not gone over it with anyone recently. Takes aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, gabapentin 300 TID, and indomethacin 25 for joint pain most days lately. NKDA.\nExam: BP 108/66, HR 98, RR 16. Pale and tired. Heart and lungs unremarkable. Abdomen: mild epigastric tenderness, no rebound or guarding, no masses, no hepatosplenomegaly, no signs of chronic liver disease. Rectal: black tarry stool, guaiac positive.\nLabs: Hgb 8.2, MCV 82, BUN 38, Cr 1.1, platelets 240,000, INR 1.0.\nImpression: upper GI bleed, likely peptic ulcer on NSAID plus dual antiplatelet therapy.\nPlan: two large-bore IVs, IV pantoprazole, hold clopidogrel and indomethacin, GI consulted, admit to medicine."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2026-02-23T12:00",
+              "body": "Admitted 2/19/2026, discharged 2/23/2026.\nDiagnosis: bleeding duodenal ulcer, NSAID-associated, on dual antiplatelet therapy. Blood loss anemia.\nCourse: Hgb 8.2 on arrival with CAD; 1 unit packed red cells given. IV pantoprazole. EGD 2/20: 12 mm duodenal bulb ulcer with a nonbleeding visible vessel, treated with epinephrine injection and two clips. Gastric biopsies negative for H. pylori. No rebleeding. Aspirin 81 continued. Cardiology consulted: more than three years from the LAD stent, stop clopidogrel and continue aspirin alone. Volume status watched closely given HFrEF; home furosemide continued. Hgb 9.1 on day of discharge.\nDischarge medications:\n- STOP indomethacin. No NSAIDs (ibuprofen, naproxen, indomethacin, etc.).\n- STOP clopidogrel.\n- pantoprazole 40 mg twice daily for 8 weeks, then once daily.\n- ferrous sulfate 325 mg every other day (new).\n- acetaminophen 500 mg 1-2 tablets every 8 hours as needed for joint pain, max 3 g/day (new).\n- Continue aspirin 81, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, gabapentin 300 TID, NTG SL as needed.\nNKDA.\nFollow-up: PCP within 1 week with CBC; cardiology in 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "telephone",
+          "start": "2026-02-20T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "admission notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission notice",
+              "author": "RN",
+              "date": "2026-02-20T16:10",
+              "body": "Hospital notification: Mr. Babcock admitted 2/19 with GI bleed, scoped today. Called his cell; he sounds tired but fine, says the scope found an ulcer and they clipped it. Brother is driving him home when discharged. Post-hospital slot held for 2/26."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "office_visit",
+          "start": "2026-02-26T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, GI bleed",
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.8,
+              "Hematocrit": 30.0,
+              "Blood Urea Nitrogen": 17,
+              "Creatinine": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-26T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-26T08:00",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-02-26T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-26T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-02-26T07:30",
+              "body": "Admitted 2/19 to 2/23 for a bleeding duodenal ulcer; EGD with clips, 1 unit of blood, H. pylori negative. Indomethacin and clopidogrel stopped. No black stools since discharge; stools dark green on iron. Less lightheaded. Still tires easily. Breathing at baseline, weight steady.\nWe went through the bottle bag: indomethacin bottle taken home for disposal by us. He did not realize it could cause a bleed with his other pills.\nExam: vitals as charted. Mild pallor. Heart regular, apical murmur. Lungs clear. Abdomen soft, nontender. No edema.\nLabs today: Hgb 9.8, up from 9.1 at discharge.\nA/P: bleeding duodenal ulcer, recovering. Pantoprazole 40 BID through about 4/20, then daily. Iron every other day. Aspirin alone. Acetaminophen for joints; no NSAIDs, flagged on his chart. Recheck CBC and ferritin in April. Cardiology 3/19."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "portal_message",
+          "start": "2026-03-04T07:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "stool color question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stool color",
+              "author": "patient",
+              "date": "2026-03-04T07:02",
+              "body": "Stools are still dark, kind of greenish black. Not sticky like before. Is this the iron or should I worry"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stool color",
+              "author": "RN",
+              "date": "2026-03-04T08:15",
+              "body": "Good question. Iron commonly turns stool dark green to black, and formed stool that isn't sticky or tar-like fits the iron. If it turns tarry again, or you feel faint, short of breath or your heart races, call us right away or go to the ER. Otherwise keep going with the iron and pantoprazole."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "specialist_visit",
+          "start": "2026-03-19T09:00",
+          "service": "Cardiology",
+          "reason": "follow-up after GI bleed",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "author": "cardiology",
+              "date": "2026-03-19T09:00",
+              "body": "Letter to PCP. Seen after admission for a bleeding duodenal ulcer while on aspirin, clopidogrel and indomethacin. More than three years from the proximal LAD stent and angina-free; we stopped clopidogrel in hospital and he will remain on aspirin 81 mg alone going forward. Heart failure stable, class II, euvolemic.\nMedications: aspirin 81, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40 BID (to daily after 8 weeks), ferrous sulfate, gabapentin, acetaminophen as needed, NTG SL as needed. NKDA. No NSAIDs.\nReturn in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "office_visit",
+          "start": "2026-04-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "anemia recheck, end of twice-daily PPI",
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "8 weeks of twice-daily dosing complete"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "history of bleeding duodenal ulcer, on aspirin"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Hematocrit": 35.5,
+              "Ferritin": 18,
+              "Iron": 48,
+              "Transferrin Saturation": 13,
+              "Total Iron-Binding Capacity": 380
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-20T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-20T08:00",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 18
+                },
+                {
+                  "test": "Iron",
+                  "value": 48
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 13
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 380
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-04-20T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-04-20T07:30",
+              "body": "Eight weeks since the ulcer bleed. Energy much better, back to half days of work. No melena, no abdominal pain. Taking iron every other day without trouble. Joints manageable on acetaminophen, though he grumbles that it is not as good as the indomethacin was.\nExam: color better. Heart regular. Abdomen soft, nontender.\nLabs today: Hgb 11.6, ferritin 18, iron 48, saturation 13%.\nA/P: bleeding duodenal ulcer, healing course. Pantoprazole down to 40 daily today and continued while on aspirin. Iron stores still low: continue ferrous sulfate. CBC again at the June AWV."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "annual_physical",
+          "start": "2026-06-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "conditions": [
+            {
+              "label": "Bleeding duodenal ulcer",
+              "icd10": "K26.4",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.9,
+              "Hematocrit": 39.0,
+              "Mean Corpuscular Volume": 85
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-16T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-16T08:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-16T08:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-06-16T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-16T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2026-06-16T07:30",
+              "body": "AWV, 71 last month. Good spring. No black stools since February. Energy close to normal. Heart failure: one flight with a pause, unchanged; one pillow; weights steady. No angina. Hands burn on and off, gabapentin continues. Shoulders and elbows ache on work days; acetaminophen takes the edge off.\nMedication review done together with his pill box, now 10 items; NSAID avoidance reviewed again.\nPHQ-2 1. No falls. Lives alone, brother nearby, proxy unchanged.\nExam: vitals as charted. Heart regular, apical murmur. Lungs clear. No edema.\nLabs: Hgb 12.9.\nA/P: bleeding duodenal ulcer resolved; history kept on the list. Continue pantoprazole daily, iron for now, aspirin alone. CMP, lipids today. CBC in August. Flu and COVID in the fall. LDCT November. Colonoscopy due 2027."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "lab_only",
+          "start": "2026-08-13T07:20",
+          "service": "Laboratory",
+          "reason": "CBC and BMP",
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.4,
+              "Hematocrit": 40.5,
+              "Mean Corpuscular Volume": 88
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-13T07:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-13T07:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

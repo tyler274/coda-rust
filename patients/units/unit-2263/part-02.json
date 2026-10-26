@@ -1,0 +1,426 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002263",
+      "events": [
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-02-08T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-02-08T07:40"},
+            {"procedure": "Venipuncture", "performed": "2022-02-08T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-02-08T07:40", "body": "Routine HTN visit. No complaints today beyond being behind on jobs after the snow. No CP/SOB. Taking meds. Home BP log in range.\nExam: BP fine here. Heart regular. Lungs clear. No edema.\nPlan: continue lisinopril, aspirin, atorvastatin. BMP. AWV in June."}
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "portal_message",
+          "start": "2022-04-19T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2022-04-19T20:14", "body": "Need the cholesterol pill refilled, pharmacy says no refills left. Same pharmacy as always. Thanks"},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "MA", "date": "2022-04-20T08:31", "body": "Atorvastatin 40 mg sent, 90 days with 3 refills. Should be ready after noon."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "annual_physical",
+          "start": "2022-06-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-06-14T08:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-06-14T08:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-06-14T08:05", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-06-14T07:30"},
+            {"procedure": "Venipuncture", "performed": "2022-06-14T08:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-06-14T07:30", "body": "AWV. 67 last month. Feels fine, working full days. No exertional symptoms. No GI bleeding symptoms.\nFunctional status intact, no falls, no memory concerns. PHQ-2 negative.\nExam: vitals as charted. Heart RRR, no murmur. Lungs clear. No edema.\nPlan: CMP, lipids, CBC. Vaccines up to date except fall flu and the updated COVID booster when available. LDCT in November. Colonoscopy due 2027."}
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "office_visit",
+          "start": "2022-08-29T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shoulder and elbow pain",
+          "conditions": [
+            {"label": "Osteoarthritis of shoulders and elbows", "icd10": "M15.9", "action": "diagnosed", "onset": "2020-08-01"}
+          ],
+          "medications": [
+            {"drug_text": "indomethacin 25 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth three times daily as needed for joint pain, with food", "dose": {"value": 25, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "osteoarthritis"},
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily before breakfast", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GI protection, history of duodenal ulcer, on aspirin and NSAID"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-08-29T16:55", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 12}, {"test": "C Reactive Protein", "value": 2}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-29T16:20"},
+            {"procedure": "Venipuncture", "performed": "2022-08-29T16:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-08-29T16:20", "body": "CC: shoulders and elbows.\nHPI: 67M, handyman. Says both shoulders and both elbows have been aching more and more for about two years. It builds over the workday and is worst in the evening after a day of overhead work or running a drill; rest takes the edge off. In the morning he is stiff for only a few minutes and then loosens up. No fevers, rashes, weight loss, recent illness. Never injured these joints. No history of inflammatory arthritis that he knows of. Neck is his usual neck.\nExam: vitals as charted. Shoulders and elbows: crepitus with passive range of motion bilaterally. No warmth, no effusion or real swelling. ROM modestly limited at the end ranges by pain. Strength full and symmetric. Sensation intact in both arms. No nodules, no skin changes over the joints.\nAssessment: degenerative arthritis of shoulders and elbows, fits with decades of manual work; picture is mechanical, not inflammatory. Neck spondylosis known.\nPlan: ESR and CRP to be thorough. Wants something he can take on heavy days. Indomethacin 25 mg up to three times daily as needed with food. Given the old duodenal ulcer and daily aspirin, adding pantoprazole 40 mg daily alongside it. Ice/heat, pacing overhead work. Call if black stools or stomach pain."}
+          ]
+        },
+        {
+          "id": "2022-08-31a",
+          "kind": "portal_message",
+          "start": "2022-08-31T12:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Inflammation markers", "author": "PCP", "date": "2022-08-31T12:05", "body": "Hi Alan, the two inflammation tests (sed rate 12 and CRP 2) are normal, which fits wear-and-tear arthritis rather than an inflammatory type. Keep the indomethacin to the days you need it and take the pantoprazole every day."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-11T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T07:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2022-10-11T07:40", "body": "Flu high-dose L arm, Pfizer bivalent booster R arm. Observed 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "imaging",
+          "start": "2022-11-15T14:00",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-15T14:00", "text": "Low-dose noncontrast CT chest. Comparison 11/2021. No pulmonary nodules. No consolidation or effusion. Central airways clear.", "conclusion": "Lung-RADS 1. Next annual screen in 12 months."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2022-11-16T07:50", "body": "Lung-RADS 1. Annual."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T21:47",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cough and leg swelling",
+          "documents": [
+            {"type": "Patient Message", "title": "Cough and swelling", "author": "patient", "date": "2022-11-29T21:47", "body": "Doc, been coughing at night for a few weeks, mostly when I lie down. Ankles are puffy by the end of the day and I'm more winded than I should be carrying stuff up stairs. Tired all the time. No fever. Figured it was a cold but it's not going away."},
+            {"type": "Patient Message", "title": "RE: Cough and swelling", "author": "PCP", "date": "2022-11-29T22:05", "body": "Alan, I'd like to see you Thursday morning, 7:30. If you get chest pain, can't catch your breath at rest, or can't lie flat at all before then, call 911. Otherwise see you Thursday."}
+          ]
+        },
+        {
+          "id": "2022-12-01a",
+          "kind": "office_visit",
+          "start": "2022-12-01T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dyspnea, cough, leg swelling",
+          "state": {"weight_kg": 95.0, "bp": [132, 84]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-01T08:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-01T08:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2022-12-01T07:30"},
+            {"procedure": "Venipuncture", "performed": "2022-12-01T08:05"}
+          ],
+          "orders": [
+            {"id": "cards-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "new dyspnea, nocturnal cough and edema, concern for heart failure"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-12-01T07:30", "body": "S: About 3 weeks of getting more short of breath with exertion, fatigue, and a cough that comes on at night lying down. Both ankles swell by evening. No chest pain he will admit to, no fever, no sputum. Weight up about 3 kg since summer per our scale.\nO: Vitals as charted. Mildly winded walking from the lobby. JVP hard to see with his neck. Heart regular. Lungs: crackles at both bases. Ankles: pitting edema bilaterally.\nA: New exertional dyspnea, orthopneic cough and edema in a 67-year-old ex-smoker with HTN and a strong family history. Heart failure is the main concern.\nP: BMP and CBC today. Called the cardiology office directly and got him in on 12/7 for consultation and echocardiogram. Precautions reviewed: 911 for chest pain or breathlessness at rest."}
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "specialist_visit",
+          "start": "2022-12-07T10:00",
+          "service": "Cardiology",
+          "reason": "consultation for dyspnea and edema",
+          "vitals": {"bp": [130, 85], "hr": 88, "rr": 18},
+          "measure": ["spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Coronary artery disease", "action": "diagnosed", "onset": "2022-12-07"},
+            {"label": "Old myocardial infarction", "action": "diagnosed", "note": "anterior, unrecognized, date unknown"},
+            {"label": "Left ventricular aneurysm", "icd10": "I25.3", "action": "diagnosed", "onset": "2022-12-07", "note": "anterior wall, after old MI"},
+            {"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2022-11-01", "note": "LVEF 35%"}
+          ],
+          "medications": [
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HFrEF, CAD"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HFrEF, volume overload"}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2022-12-07T09:15", "text": "Left ventricle is dilated. The anterior wall is thinned and dyskinetic, consistent with a left ventricular aneurysm. Remaining segments contract. Visually estimated LVEF 35%. Mitral valve leaflets structurally normal with a central regurgitant jet, functional mitral regurgitation, moderate. Aortic valve trileaflet without stenosis. Right ventricle normal in size and function. No pericardial effusion.", "conclusion": "Dilated LV with anterior wall dyskinesis (aneurysm); LVEF 35%. Moderate functional mitral regurgitation."},
+            {"study": "12-lead ECG", "performed": "2022-12-07T09:45", "text": "Sinus rhythm. Deep Q waves across the anterior precordial leads with persistent ST-segment elevation in the same leads. No acute changes elsewhere.", "conclusion": "Anterior Q waves with persistent ST elevation, consistent with old anterior infarct and aneurysm."}
+          ],
+          "procedures": [
+            {"procedure": "Office consultation, comprehensive", "performed": "2022-12-07T10:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-12-07T09:45"}
+          ],
+          "orders": [{"id": "cards-2022", "action": "done", "date": "2022-12-07T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Consultation", "author": "cardiology", "date": "2022-12-07T10:00", "body": "Outside cardiology group, consultation letter to referring PCP.\n\nReason: worsening breathlessness and fatigue with a nocturnal cough and leg swelling.\n\nHistory: 67-year-old self-employed handyman, hypertensive, former smoker (20 pack-years), father with MI at 58. Over recent weeks he has become progressively more winded and tired, and coughs mostly at night. Legs swell. He recalls no episode of crushing chest pain.\n\nMedications: lisinopril 20 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, pantoprazole 40 mg daily, indomethacin 25 mg as needed. Allergies: NKDA.\n\nExam: BP 130/85, HR 88, RR 18. Holosystolic murmur at the apex radiating toward the axilla. Bibasilar crackles. 2+ pitting edema of both legs.\n\nStudies today: echo shows a dilated LV with a dyskinetic anterior wall and LVEF about 35%, with moderate functional MR. ECG: deep anterior Q waves with ST elevation that persists, the pattern of an established anterior aneurysm rather than an acute event.\n\nImpression:\n1. Ischemic cardiomyopathy: prior unrecognized anterior MI with LV aneurysm; heart failure with reduced EF, volume overloaded.\n2. Coronary artery disease, presumed LAD territory.\n3. Hypertension.\n\nPlan: start metoprolol succinate 50 mg daily and furosemide 40 mg each morning. Continue lisinopril 20, aspirin 81, atorvastatin 40. Daily weights; call for a gain over 1 kg in a day or 2 kg in a week. BMP in one week. Coronary angiography to be scheduled. Thank you for the referral.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "lab_only",
+          "start": "2022-12-14T07:20",
+          "service": "Laboratory",
+          "reason": "BMP after diuretic start",
+          "state": {"weight_kg": 92.0},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-14T07:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results and check-in", "author": "RN", "date": "2022-12-14T15:10", "body": "Called pt with BMP: kidney function and potassium fine on the new furosemide. He says he is peeing a lot in the morning and the ankles are already down. Home scale down about 3 kg. Coughing less at night. Reviewed daily weights and the cardiology call parameters. Cath date pending from cardiology. Copy of cardiology letter in chart."}
+          ]
+        },
+        {
+          "id": "2023-01-11a",
+          "kind": "hospital_admission",
+          "start": "2023-01-11T05:40",
+          "end": "2023-01-13T13:00",
+          "service": "Cardiology",
+          "reason": "chest pressure at rest",
+          "conditions": [
+            {"label": "Unstable angina", "icd10": "I20.0", "action": "diagnosed", "onset": "2023-01-10"},
+            {"label": "Presence of coronary artery stent", "action": "diagnosed", "note": "placed 2023-01-12; paclitaxel-coated DES, proximal LAD"}
+          ],
+          "medications": [
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 75, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "dual antiplatelet therapy after DES"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "start", "sig": "Place 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3 doses; call 911 if not relieved", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "angina"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2023-01-11T06:00", "results": [{"test": "Troponin I, High Sensitivity", "value": 4}]},
+            {"panel": null, "collected": "2023-01-11T09:00", "results": [{"test": "Troponin I, High Sensitivity", "value": 5}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-11T06:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-11T06:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "Cardiac catheterization with PCI", "loinc": "18745-0", "performed": "2023-01-12T10:30", "text": "Access: right radial artery. Left main: normal. Left anterior descending: severe 90% stenosis in the proximal segment, distal vessel fills normally. Left circumflex: no significant stenosis. Right coronary artery: no significant stenosis. Intervention: proximal LAD lesion predilated and treated with a single paclitaxel-coated drug-eluting stent, postdilated. 0% residual stenosis, TIMI 3 flow, no dissection. Radial band applied, hemostasis achieved.", "conclusion": "Single-vessel CAD: severe proximal LAD stenosis treated with a paclitaxel-coated drug-eluting stent. Dual antiplatelet therapy with aspirin and clopidogrel."},
+            {"study": "12-lead ECG", "performed": "2023-01-11T05:50", "text": "Sinus rhythm. Anterior Q waves with persistent ST elevation, unchanged from 12/2022. No new ST changes.", "conclusion": "No acute change from prior."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2023-01-11T08:00"},
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2023-01-12T10:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2023-01-13T12:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2023-01-11T05:40", "body": "Regional hospital ED. 67M with recently diagnosed ischemic cardiomyopathy (LVEF 35%, anterior aneurysm), awaiting outpatient cath, woke at 0400 with central chest pressure at rest lasting about 20 minutes, a second shorter episode in the car. Pain free on arrival. ECG with the known anterior Q waves and ST elevation, unchanged from the cardiology tracing in December. First troponin normal. Cardiology aware; admitted to the cardiac unit for unstable angina and catheterization. Allergies: NKDA."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "cardiology", "date": "2023-01-13T13:00", "body": "Admitted 1/11/2023, discharged 1/13/2023.\nDiagnosis: unstable angina; single-vessel coronary disease; ischemic cardiomyopathy with LV aneurysm, HFrEF.\nCourse: rest angina, troponin normal on serial testing, ECG unchanged. Catheterization 1/12 via right radial: severe proximal LAD stenosis, treated with one paclitaxel-coated drug-eluting stent with an excellent result; other vessels without significant disease. No further chest pain. Radial site clean.\nDischarge medications: aspirin 81 mg daily; clopidogrel 75 mg daily (new, do not stop without talking to cardiology); metoprolol succinate 50 mg daily; lisinopril 20 mg daily; furosemide 40 mg daily; atorvastatin 40 mg daily; pantoprazole 40 mg daily; nitroglycerin 0.4 mg SL as needed (new); indomethacin 25 mg as needed per home list.\nAllergies: NKDA.\nFollow-up: PCP within 1 week; cardiology in about 6 weeks."}
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "office_visit",
+          "start": "2023-01-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after PCI",
+          "state": {"weight_kg": 90.5, "bp": [118, 72]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2023-01-19T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-01-19T07:30", "body": "Seen 6 days after discharge. Stent to proximal LAD 1/12 for rest angina. No chest pain since. Breathing better than before Christmas; sleeping on one pillow. Right wrist bruised, healing. Asking when he can get back on a ladder.\nMeds reconciled with discharge list: aspirin, clopidogrel (new), metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, SL NTG (new). Indomethacin as needed per list.\nExam: vitals as charted, weight down from December. Heart regular, apical systolic murmur. Lungs clear. Trace ankle edema. Radial site without hematoma.\nA/P: CAD s/p PCI, HFrEF, euvolemic-ish. Continue DAPT without interruption. Light work only for a week, no heavy lifting from the right arm for a few more days. Keep daily weights. Cardiology f/u end of February is booked."}
+          ]
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "specialist_visit",
+          "start": "2023-02-28T13:20",
+          "service": "Cardiology",
+          "reason": "follow-up after PCI",
+          "conditions": [
+            {"label": "Unstable angina", "icd10": "I20.0", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-28T13:20"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2023-02-28T13:20", "body": "Follow-up letter. Mr. Babcock is about six weeks out from a drug-eluting stent to the proximal LAD, placed in January for unstable angina, on a background of coronary disease, HFrEF and an anterior LV aneurysm. Since then he has had no chest pain and no breathlessness. He takes aspirin and clopidogrel every day without missed doses. Blood pressure and heart rate are well controlled on today's readings. For the record, the stent from the January procedure is a paclitaxel-coated device.\n\nMedications: aspirin 81, clopidogrel 75, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole 40, nitroglycerin SL as needed, indomethacin 25 as needed. NKDA.\n\nPlan: continue current regimen including dual antiplatelet therapy. Return in about 2 months with a repeat echo."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "ed_visit",
+          "start": "2023-03-22T19:10",
+          "end": "2023-03-23T01:30",
+          "service": "Emergency Medicine",
+          "reason": "pleuritic chest pain and fevers",
+          "conditions": [
+            {"label": "Dressler syndrome", "icd10": "I24.1", "action": "diagnosed", "onset": "2023-03-08"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "stop", "reason": "replaced by anti-inflammatory dose for 2 weeks"},
+            {"drug_text": "aspirin 325 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets (650 mg) by mouth three times daily with food for 14 days, then return to aspirin 81 mg daily", "dose": {"value": 650, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "short", "reason": "Dressler syndrome"},
+            {"drug": "colchicine 0.6 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 3 months", "dose": {"value": 0.6, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Dressler syndrome"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-03-22T19:30", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 14.2}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-03-22T19:30", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 55},
+              {"test": "C Reactive Protein", "value": 25},
+              {"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "text": "<0.04"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-22T19:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2023-03-22T19:15", "text": "Sinus rhythm. Diffuse ST-segment elevation with PR-segment depression. Known anterior Q waves.", "conclusion": "Diffuse ST elevation and PR depression, consistent with pericarditis."},
+            {"study": "Transthoracic echocardiogram", "performed": "2023-03-22T21:40", "text": "Limited bedside study. Small pericardial effusion, circumferential, without chamber collapse or other features of tamponade. Dilated LV with anterior aneurysm, systolic function reduced as previously described.", "conclusion": "Small pericardial effusion without tamponade."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2023-03-22T19:10"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2023-03-23T01:30", "body": "Regional hospital emergency department.\nCC: chest pain with breathing, fevers.\nHPI: 67M with CAD and LV aneurysm, about ten weeks after LAD stent, reports two weeks of sharp chest pain that catches when he takes a deep breath and eases when he sits up and leans forward. Low-grade temperatures at home. Not like his January pressure.\nMeds per patient: aspirin, clopidogrel, metoprolol, lisinopril, furosemide, atorvastatin, pantoprazole, indomethacin as needed. NKDA.\nExam: vitals stable, hemodynamically sound. Friction rub heard at the left sternal border. Lungs clear. No JVD.\nData: WBC 12.0, Hgb 14.2, ESR 55, CRP 25 mg/L, troponin I <0.04 ng/mL. ECG diffuse ST elevation with PR depression. Bedside echo: small effusion, no tamponade.\nImpression: post-MI pericarditis (Dressler syndrome).\nPlan: colchicine 0.6 mg twice daily for 3 months; aspirin 650 mg three times daily for 2 weeks then back to 81 mg; continue clopidogrel. Discharged home. Cardiology aware, PCP follow-up within a week. Return for worsening pain, breathlessness or lightheadedness."}
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "office_visit",
+          "start": "2023-03-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, pericarditis",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-28T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2023-03-28T07:30", "body": "ED 3/22 for Dressler pericarditis, sent home on colchicine and high-dose aspirin. Pain is about half what it was, no fever since Saturday.\nExam: afebrile. No rub today. Heart regular, apical murmur as before. Lungs clear. No edema.\nA/P: Dressler syndrome improving. Finish the 14 days of aspirin 650 TID, then back to 81 daily; RN will call him on day 14 to confirm the switch. Colchicine through late June. Still on clopidogrel and pantoprazole. Cardiology f/u with echo in April."}
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "telephone",
+          "start": "2023-04-06T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "aspirin step-down",
+          "medications": [
+            {"drug_text": "aspirin 325 MG Oral Tablet", "action": "stop", "reason": "2-week course complete"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "CAD, coronary stent"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Aspirin step-down", "author": "RN", "date": "2023-04-06T09:40", "body": "Called on day 15. Finished the high-dose aspirin yesterday. Back on the 81 mg as of this morning. Pain essentially gone, only a twinge with a big breath. No fever. Continues colchicine twice daily. Med list updated."}
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "specialist_visit",
+          "start": "2023-04-20T11:00",
+          "service": "Cardiology",
+          "reason": "follow-up, pericarditis, echo",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-04-20T10:15", "results": [{"test": "C Reactive Protein", "value": 3}]}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2023-04-20T10:30", "text": "Dilated LV with thinned, dyskinetic anterior wall (aneurysm), unchanged. LVEF 35%. Moderate functional mitral regurgitation, unchanged. RV normal. No pericardial effusion.", "conclusion": "Pericardial effusion resolved. LVEF 35%, unchanged."}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-04-20T11:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2023-04-20T11:00", "body": "Follow-up letter. Pleuritic pain has resolved and there have been no fevers. No angina since the January stent. Echo today shows the effusion is gone; LV size and function unchanged with LVEF 35%. CRP down to 3.\n\nImpression: Dressler syndrome, resolving on colchicine. CAD s/p LAD DES. HFrEF, stable.\n\nPlan: finish the 3-month colchicine course. Continue aspirin 81 and clopidogrel, metoprolol succinate 50, lisinopril 20, furosemide 40, atorvastatin 40, pantoprazole. NKDA. Annual visit, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "office_visit",
+          "start": "2023-06-22T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, end of colchicine",
+          "conditions": [
+            {"label": "Dressler syndrome", "icd10": "I24.1", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "colchicine 0.6 MG Oral Tablet", "action": "stop", "reason": "3-month course complete"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-22T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-22T08:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-22T07:30"},
+            {"procedure": "Venipuncture", "performed": "2023-06-22T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-06-22T07:30", "body": "Three months of colchicine done this week. No chest pain, no fevers. Working again, mostly ground-level jobs. Walks up a flight with mild breathlessness at the top, no worse than spring. Weight stable on home scale. No orthopnea.\nExam: vitals as charted. Heart regular, apical systolic murmur. Lungs clear. No edema.\nA/P: Dressler syndrome resolved; colchicine stopped. HFrEF stable on metoprolol, lisinopril, furosemide. CAD on DAPT and atorvastatin; lipids and BMP today. AWV next month."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "annual_physical",
+          "start": "2023-07-18T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-18T08:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-07-18T08:00", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-07-18T07:30"},
+            {"procedure": "Venipuncture", "performed": "2023-07-18T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-07-18T07:30", "body": "AWV. Rough year with the heart. Mood: frustrated about cutting back work, PHQ-9 3, not depressed. Still doing small jobs, has given up roofs. Falls: none. Lives alone; brother checks in. Drives.\nMeds reviewed, 9 on the list. Uses a weekly pill box. Indomethacin occasionally for the shoulders.\nExam: vitals as charted. Heart regular with the known murmur. Lungs clear. No edema.\nPlan: CBC and liver tests today. Fall flu and COVID. LDCT November. Colonoscopy 2027."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T07:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2023-10-10T07:40", "body": "Flu (high-dose) and 2023-24 COVID given, one in each arm. On DAPT: pressure held 2 minutes each site, no bruising before he left."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T14:20",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-14T14:20", "text": "Low-dose noncontrast CT chest compared with 11/2022. No pulmonary nodules. No consolidation. No pleural effusion.", "conclusion": "Lung-RADS 1. Continue annual screening."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2023-11-15T08:05", "body": "Negative screen, Lung-RADS 1. Portal letter sent."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "pharmacy",
+          "start": "2023-12-12T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2023-12-12T14:30", "body": "Pharmacy requested clopidogrel 75 mg; cardiology prescription ran out of refills and their office closed for the afternoon. Per PCP, sent 90-day supply to bridge. Cardiology office notified by fax."}
+          ]
+        }
+      ]
+    }
+  ]
+}

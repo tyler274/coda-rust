@@ -1,0 +1,802 @@
+{
+  "unit": "unit-2674",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002674",
+      "given": "Cameron",
+      "family": "Finn",
+      "birth_date": "1991-11-26",
+      "address_line": "27 Brockway Lane, Apt 1",
+      "phone": "+1-347-555-0197",
+      "email": "cameron.finn@example.test",
+      "marital_status": "single",
+      "summary": "Healthy man in his thirties who works nights running a box-folding machine and writes technical documentation freelance. The practice diagnosed schizoid personality disorder at a 2024 routine exam; occupational health and later psychiatry describe the same lifelong, untroubled preference for solitude, and he declines treatment.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2023-08-22T15:40",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; his last office closed its adult panel to him after a long gap between visits. Explained the membership model and that insurance still covers labs and outside care. He asked twice whether most things can be handled by message instead of phone. Told him yes. Works overnight, prefers afternoon appointments. Records release emailed and returned signed same day. New patient slot held for Sept 12, 2:30 pm."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T10:15",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-03-09T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2023-08-29T10:15",
+              "author": "outside primary care",
+              "body": "Summary of care, adult primary care office (records released at patient request).\n\nPatient seen for occasional well visits, most recent 2019. No chronic diagnoses on file. No active prescriptions. Allergies: no known drug allergies. Surgical history: none. Tobacco: never. Alcohol: none.\n\nImmunizations on file: Tdap 03/2017 (left deltoid). Childhood series documented as complete per school record.\n\nLast visit note 2019: well adult exam, unremarkable. Blood pressure normal. No labs drawn at that visit.\n\nNo outstanding orders or referrals."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records Review",
+              "date": "2023-08-30T08:05",
+              "author": "PCP",
+              "body": "Prior office records reviewed ahead of new patient visit. Thin chart, healthy, nothing pending. Tdap 2017 entered. Will cover screening at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T14:30",
+          "end": "2023-09-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 68,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 73.6,
+            "height_cm": 179.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            },
+            {
+              "item": "Occupation",
+              "value": "Machine operator, night shift, box plant; freelance technical writer"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone, apartment"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-09-12T14:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-12T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T15:20",
+              "author": "PCP",
+              "body": "31 y/o man establishing care. No complaints today. Here mostly because he has not had a doctor since 2019 and wanted one on file.\n\nPMH: none. PSH: none. Meds: none. Allergies: NKDA.\nFH: nothing he knows of that runs in the family.\nSH: Runs a folding/gluing line at a box plant, overnight shift, has been there several years. Also does freelance technical writing from home. Lives by himself in an apartment he can walk to work from. Never smoked, does not drink, no drugs.\n\nROS: negative across systems. Sleeps days, reports this suits him.\n\nExam: Well appearing, in no distress. HEENT normal. Neck supple, no thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Neuro grossly normal.\nVitals reviewed, normal. BMI about 23.\n\nPHQ-2: 0.\n\nA/P: Healthy adult.\n- Flu vaccine given today, tolerated.\n- Tdap current (2017).\n- Will do baseline labs and one-time HIV and hepatitis C screening at a physical next year; he would rather not get stuck today.\n- Portal set up; he asked that we reach him there."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:52",
+          "reason": "Contact preference",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Contact Preference",
+              "date": "2023-09-14T16:52",
+              "author": "patient",
+              "body": "Please use this portal for anything non-urgent. I sleep roughly 8 am to 3 pm and keep my phone silent then."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Contact Preference",
+              "date": "2023-09-15T09:10",
+              "author": "MA",
+              "body": "Noted on your chart. We'll message first and only call if something can't wait."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T15:31",
+          "reason": "Scheduling physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2024-05-28T15:31",
+              "author": "patient",
+              "body": "Due for a physical I think. Anything after 2 pm works. Should I skip breakfast for the bloodwork?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical",
+              "date": "2024-05-28T16:04",
+              "author": "front desk",
+              "body": "Booked Monday June 17 at 2:00. Fasting is not required. Water is fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "annual_physical",
+          "start": "2024-06-17T14:00",
+          "end": "2024-06-17T14:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine health examination",
+          "conditions": [
+            {
+              "label": "Schizoid personality disorder",
+              "action": "diagnosed",
+              "onset": "2024-06-17",
+              "icd10": "F60.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              61
+            ],
+            "hr": 67,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 212
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T07:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 151
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 104
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T07:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-17T14:40",
+              "resulted": "2024-06-18T11:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-06-17T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-17T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-17T15:10",
+              "author": "PCP",
+              "body": "32 y/o M for a routine exam. No physical complaints.\n\nIn talking through social history he volunteers, without any sign it bothers him, that he has never dated and has no interest in it. He knows a few people from work to nod to but keeps his time off to himself, mostly reading and writing code. Asked whether he would like more people in his life; he says no, plainly. Compliments and criticism from others do not seem to land either way. No prior psychiatric care or diagnoses. No substance use.\n\nMeds: none. Allergies: NKDA. FH: noncontributory.\n\nExam: Vitals normal. Tidy, well groomed. Holds eye contact only briefly; answers are short and matter-of-fact, offers little beyond the question. Describes mood as \"neutral\"; affect restricted in range. No hallucinations, no delusions, no unusual beliefs or behaviors on questioning. Thought linear.\nHEENT, neck, heart, lungs, abdomen, skin, extremities normal.\n\nPHQ-9: 2.\n\nA/P:\n1. Schizoid personality disorder. Lifelong, consistent preference for solitude and emotional reserve, no psychotic features, not distressed, functioning well at two jobs. He is not looking for treatment. Explained what the label means and that options exist if he ever wants them. Added to problem list.\n2. Health maintenance: CBC, CMP, TSH, lipids today. One-time HIV and hepatitis C screens, he agreed.\n3. Flu shot in the fall.\nReturn in a year."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 86,
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "portal_message",
+          "start": "2024-06-18T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2024-06-18T12:20",
+              "author": "PCP",
+              "body": "Cameron, all of yesterday's bloodwork is normal: blood counts, kidney and liver tests, thyroid and cholesterol. HIV and hepatitis C screens were negative, and those don't need repeating unless your risk changes. Nothing to do until next year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab Results",
+              "date": "2024-06-18T15:47",
+              "author": "patient",
+              "body": "Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "date": "2024-10-08T15:20",
+              "author": "RN",
+              "body": "Screening questions negative. Trivalent flu vaccine 0.5 mL IM to the right arm. VIS reviewed. No reaction during observation. Patient says he'll get the COVID booster at his pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "pharmacy",
+          "start": "2024-11-04T17:30",
+          "reason": "Outside vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-02T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy Immunization Record",
+              "date": "2024-11-04T17:30",
+              "author": "pharmacy",
+              "body": "Immunization administered at community pharmacy 11/02/2024: COVID-19 vaccine, 2024-2025 formula (Pfizer-BioNTech), 0.3 mL IM left deltoid. No adverse event reported. Allergies on pharmacy profile: NKDA. Sent to primary care for records."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T15:05",
+          "reason": "Employer physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work Exam",
+              "date": "2025-06-10T15:05",
+              "author": "patient",
+              "body": "The plant is sending everyone on the machines through an annual exam at their occupational health clinic this month. Do you need to fill anything out or do I just go?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Work Exam",
+              "date": "2025-06-10T17:40",
+              "author": "PCP",
+              "body": "Nothing needed from us. Go ahead, and sign their release so the results come here too. We'll still see you for your own physical this summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "outside_records",
+          "start": "2025-06-30T11:20",
+          "reason": "Occupational health exam letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Occupational Health Examination",
+              "date": "2025-06-30T11:20",
+              "author": "occupational medicine",
+              "body": "Occupational Health Services\nDate of service: 06/23/2025\nReason: annual employer-required examination, machine operator\n\nHistory: Has run the folding and gluing equipment at the plant for close to eight years. Asks for the overnight shift whenever it is open; says the plant is quieter with fewer people around. Per his supervisor's input on the employer form, he is on time, efficient, never involved in conflict, and talks with coworkers only as much as the job requires.\n\nOutside work his interests are all solitary: he makes sculptures out of scrap cardboard from the line and reads equipment and technical manuals. He spends evenings at his computer keeping spreadsheets and files that track things like his household electricity use and daily step counts. No close friends. Little contact with family apart from a birthday email to his mother. Has never dated and says he does not see why he would. He is content with all of this and calls it a comfortable, efficient way to live.\n\nDenies low mood, hopelessness, or change in sleep or appetite. No history of hallucinations, delusions, disorganized thinking, or manic or hypomanic periods. Describes himself as a quiet child who chose the library over playground games; teachers saw him as bright but hard to draw out. Denies trauma, bullying or abuse. No alcohol, tobacco or drug use.\n\nCurrent medications: none. Allergies: NKDA. Known diagnoses: schizoid personality disorder (per primary care, 2024). Family history noncontributory.\n\nExam: Alert and oriented, groomed appropriately. Speech sparse but coherent. Affect flat; mood \"fine.\" Thought process linear, content unremarkable. Limited insight into his social withdrawal, which he does not regard as a problem. General physical examination normal; vision and hearing screens passed.\n\nLabs: CBC, metabolic panel and thyroid function within normal limits.\n\nDetermination: Meets requirements; medically cleared to continue in current position.\n\nComment to primary care: Given a lifelong pattern of detachment and limited emotional expression, a psychiatric evaluation could be considered at your discretion.\n\nOccupational medicine physician"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Letter Reviewed",
+              "date": "2025-07-01T08:15",
+              "author": "PCP",
+              "body": "Occupational health letter reviewed. Cleared for work, labs normal there so no need to repeat at his physical. Their picture matches what he told me last year. They suggest psychiatry; will raise it at his physical next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "annual_physical",
+          "start": "2025-07-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-07-08b",
+          "kind": "telephone",
+          "start": "2025-07-08T16:25",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Physical",
+              "date": "2025-07-08T16:25",
+              "author": "front desk",
+              "body": "Patient called back after our portal note about the missed 2:30. Covered an extra overnight shift and slept through his alarm. Apologetic. Rebooked to Tues 7/22 at 2:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T14:30",
+          "end": "2025-07-22T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 58,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 73.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-07-22T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-22T15:25",
+              "author": "PCP",
+              "body": "33 y/o M, annual exam. Feels well. Still on nights at the plant and doing writing work during the day.\n\nWent over the occupational health letter with him. He agrees with how they described him and is unbothered by it. Offered a psychiatry evaluation as they suggested, framed as a chance to have a specialist confirm the picture and talk through options. He declined: does not feel anything needs fixing. Respected; told him the offer stands.\n\nMeds: none. Allergies: NKDA.\nROS: negative. Sleep regular on his schedule. Appetite normal.\n\nExam: Vitals normal, weight steady. Calm, brief, cooperative. Affect restricted, consistent with prior. Heart, lungs, abdomen, skin normal.\n\nPHQ-9: 1.\n\nA/P:\n1. Schizoid personality disorder: stable, no distress, declines referral for now.\n2. Health maintenance: labs done by occupational health in June, normal; none today. Flu shot in the fall. Tdap good until 2027.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "date": "2025-10-14T15:10",
+              "author": "RN",
+              "body": "No fever, no prior vaccine reaction. 2025-26 trivalent flu vaccine 0.5 mL IM left deltoid. Observed 15 min, fine. Declined COVID shot here this year."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T15:48",
+          "reason": "Psychiatry referral request",
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "Evaluation of schizoid personality disorder at patient request"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "That Psychiatry Thing",
+              "date": "2026-03-24T15:48",
+              "author": "patient",
+              "body": "Last summer you offered a referral to a psychiatrist. My sister has been on me about it since the holidays. Her view is that I never connect with anyone. I don't agree there is a problem but I'd rather go once than keep having the conversation. Can you set it up? Afternoons only."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: That Psychiatry Thing",
+              "date": "2026-03-24T17:02",
+              "author": "PCP",
+              "body": "Happy to. Referral sent to outpatient psychiatry with a note that you work nights and need an afternoon slot. Their office will contact you through the number on file, so you may want to leave your ringer on in the afternoons for a week or two. One visit commits you to nothing."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "telephone",
+          "start": "2026-04-02T11:05",
+          "reason": "Referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Psychiatry Appointment",
+              "date": "2026-04-02T11:05",
+              "author": "front desk",
+              "body": "Psychiatry office called: couldn't reach patient by phone, so they mailed a letter and asked us to pass along that he is booked for an intake June 9 at 3:00 pm. Portal message sent to patient with the date."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "outside_records",
+          "start": "2026-06-16T10:40",
+          "reason": "Psychiatry consultation letter",
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2026-06-16T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Evaluation",
+              "date": "2026-06-16T10:40",
+              "author": "psychiatry",
+              "body": "Outpatient Psychiatry\nInitial evaluation, date of service 06/09/2026\nReferred by primary care\n\nThank you for sending Mr. Finn. He came at the urging of his sister, who worries that he does not connect with anyone. He came to settle the question rather than with any concern of his own.\n\nBackground: Your 2024 exam recorded his preference for solitude and a diagnosis of schizoid personality disorder; his 2025 occupational health exam described the same pattern. No prior psychiatric treatment.\n\nHistory: He writes technical documentation freelance from home and continues on the overnight shift at the box plant. Has lived in the same one-room apartment for eight years. His free time goes to reading up on little-known historical subjects, single-player computer games, and long walks by himself late at night. He has never had a romantic partner and cannot remember when he last saw a friend face to face. Finds family get-togethers tiring and tends to leave early after talking with very few people.\n\nReview of symptoms: No sadness, anhedonia, sleep or appetite change, or suicidal ideation. No suspiciousness, magical thinking or perceptual disturbance. He is satisfied with how he lives and says he does best when people leave him alone.\n\nSubstances: never smoked, no alcohol. Medications: none. Allergies: NKDA. Family psychiatric history: noncontributory.\n\nMental status: Flat affect. Answers brief, little spontaneous speech. Thought process linear and goal directed. No hallucinations or delusions.\n\nAssessment: Presentation is consistent with schizoid personality disorder. No mood, anxiety or psychotic disorder identified.\n\nPlan:\n- No medication is indicated.\n- Individual psychotherapy was offered; he declined, as he does not experience his situation as a problem.\n- Follow-up with psychiatry as needed; he knows he can call to return.\n- Ongoing care with primary care.\n\nOutpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "portal_message",
+          "start": "2026-06-17T13:15",
+          "reason": "Psychiatry letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Psychiatry Visit",
+              "date": "2026-06-17T13:15",
+              "author": "PCP",
+              "body": "Got the psychiatrist's letter. They agree with the diagnosis, don't recommend any medication, and left the door open if you ever want therapy. Nothing changes on our end. We can talk more at your physical in July if you like."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Psychiatry Visit",
+              "date": "2026-06-17T16:30",
+              "author": "patient",
+              "body": "That matches what I expected. I forwarded the summary to my sister. See you in July."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "annual_physical",
+          "start": "2026-07-21T14:30",
+          "end": "2026-07-21T15:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              69
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 73.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-21T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-21T15:20",
+              "author": "PCP",
+              "body": "34 y/o M, yearly exam. No concerns.\n\nInterval: saw outpatient psychiatry in June. Letter reviewed: diagnosis confirmed, no medication, declined therapy, follow up as needed. He says the visit was fine and his sister has eased off. Same two jobs, same routine.\n\nMeds: none. Allergies: NKDA. Never smoker, no alcohol.\nROS: negative.\n\nExam: Vitals normal, weight unchanged. Brief, polite, restricted affect as before. No psychotic features. HEENT, neck, heart, lungs, abdomen, skin, extremities normal.\n\nPHQ-9: 2.\n\nA/P:\n1. Schizoid personality disorder: stable. Psychiatry available if he changes his mind.\n2. Health maintenance: up to date. No labs needed this year. Flu shot booked for late September. Tdap due next year.\nRTC 1 year, portal in between."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "nurse_visit",
+          "start": "2026-09-29T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Schizoid personality disorder|F60.1": {
+        "code": "F60.1",
+        "display": "Schizoid personality disorder",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

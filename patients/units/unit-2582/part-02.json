@@ -1,0 +1,677 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002582",
+   "events": [
+    {
+     "id": "2025-03-01a",
+     "kind": "hospital_admission",
+     "start": "2025-03-01T22:47",
+     "end": "2025-03-10T13:30",
+     "service": "Emergency Medicine; Trauma Surgery",
+     "reason": "gunshot wound to the abdomen",
+     "vitals": [
+      {
+       "time": "2025-03-01T22:49",
+       "bp": [
+        76,
+        42
+       ],
+       "hr": 134
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-03-01T22:55",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "Platelets",
+         "value": 131
+        }
+       ],
+       "resulted": "2025-03-01T23:20"
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-03-01T22:55",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.9
+        }
+       ],
+       "resulted": "2025-03-01T23:20"
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-01T22:55",
+       "results": [
+        {
+         "test": "Fibrinogen",
+         "loinc": "3255-7",
+         "unit": "mg/dL",
+         "value": 112
+        }
+       ],
+       "resulted": "2025-03-01T23:20"
+      },
+      {
+       "panel": null,
+       "collected": "2025-03-01T22:55",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 6.8
+        }
+       ],
+       "resulted": "2025-03-01T23:20"
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-03-10T05:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.3
+        }
+       ],
+       "resulted": "2025-03-10T06:50"
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-03-10T05:40",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.1
+        }
+       ],
+       "resulted": "2025-03-10T06:50"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2025-03-01T23:20"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "postoperative pain"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-03-01T22:47"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-03-02T03:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-03-10T12:00"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "portal_message",
+     "start": "2025-03-11T08:12",
+     "reason": "recent hospitalization",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Was in the hospital",
+       "author": "patient",
+       "date": "2025-03-11T08:12",
+       "body": "Hey doc, wanted you to know I got shot in the stomach on the 1st and was in the trauma unit for about 10 days. They operated and I'm home since yesterday. They gave me pain pills and told me to see my regular doctor in a week or two. Do I need to send you anything?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Was in the hospital",
+       "author": "PCP",
+       "date": "2025-03-11T09:30",
+       "body": "August, I'm so sorry, and glad you're home. We'll request the records from the trauma center ourselves. Our nurse will call you today, and let's see you next week. If you get fever, worsening belly pain, vomiting, redness or drainage at the incision, or feel faint, go to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11b",
+     "kind": "telephone",
+     "start": "2025-03-11T11:45",
+     "reason": "post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-Discharge Call",
+       "author": "RN",
+       "date": "2025-03-11T11:45",
+       "body": "Called pt 1 day after discharge from outside trauma admission (GSW abdomen, laparotomy per pt). Says he is sore but walking around the apartment. Eating soft foods, BMs returning. No fever. Incision has staples, dry dressing, no drainage. Taking oxycodone/APAP about twice a day. Staples out at trauma clinic next week. A buddy from his unit is staying with him for a few days. F/u here 3/18 booked. Records request faxed to trauma center for ED record, op note and discharge summary."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-12a",
+     "kind": "outside_records",
+     "start": "2025-03-12T14:20",
+     "reason": "ED record received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Trauma Center Emergency Department Record (received)",
+       "author": "emergency medicine",
+       "date": "2025-03-12T14:20",
+       "body": "REGIONAL TRAUMA CENTER — EMERGENCY DEPARTMENT\nDate of service: 03/01/2025, arrival 22:47 by ALS\n\nCC: Gunshot wound, abdomen.\n\nHPI: 22-year-old male, active-duty soldier, brought in by EMS with a single gunshot wound to the abdomen. Medics describe a large volume of blood at the scene. On arrival he is drowsy and only barely rouses to voice.\n\nAllergies: no known drug allergies. Meds: none. Social: never smoker, light social drinker, Army infantry. FH noncontributory.\n\nPrimary survey / exam: airway maintained but GCS declining. BP 76/42, HR 134. Pale, sweaty, extremities cold, pulses thready, capillary refill delayed. Neck veins flat. Breath sounds equal and clear on both sides. Heart sounds normal, no muffling. Abdomen with wound as above.\n\nLabs: Hgb 9.8, plt 131, INR 1.9, fibrinogen 112, lactate 6.8.\n\nED course: rapid sequence intubation. Two large-bore lines placed, warmed fluid resuscitation started and massive transfusion protocol activated (PRBC, plasma, platelets). Tranexamic acid given. Tdap given. Trauma surgery at bedside; taken directly to the OR.\n\nImpression: hemorrhagic shock from penetrating abdominal trauma with acute traumatic coagulopathy.\nDisposition: OR, then surgical ICU. Critical care time 52 minutes."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-18a",
+     "kind": "office_visit",
+     "start": "2025-03-18T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hospital follow-up",
+     "state": {
+      "weight_kg": 74.6,
+      "labs": {
+       "Hemoglobin": 11.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 3
+      },
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-03-18T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.2
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-03-18T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-03-18T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-03-18T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-03-18T10:00",
+       "body": "22M seen after a 3/1-3/10 trauma admission elsewhere. ED record in hand: GSW to abdomen, hemorrhagic shock with coagulopathy, intubated, massive transfusion, straight to OR. Op note and discharge summary not received yet, requested.\n\nPer pt: ex lap, in the ICU a few days, tube out on day 2. Staples came out at the trauma clinic yesterday. Finished the oxycodone/APAP over the weekend, now plain Tylenol once or twice a day. Eating normally, BMs normal, no fever. Walking 20 min a day. Tired. Sleeping ok. Unit has him on convalescent leave.\n\nExam: vitals as charted, down about 6 kg from his fall weight. Alert, comfortable. Mild pallor. Heart regular, no murmur. Lungs clear. Abdomen: long midline incision closed, steri-strips, no erythema, drainage or hernia; appropriately tender around it, soft otherwise, BS present. Small healed puncture marks at the old line sites. No calf tenderness.\n\nA/P\n1. S/p exploratory laparotomy for GSW with hemorrhagic shock and coagulopathy. Recovering well. CBC/BMP today. Acetaminophen as needed. No lifting over 10 lb until trauma surgery clears him.\n2. Anemia after hemorrhage, expected; recheck count.\n3. PHQ-2 1. He says he is handling it; knows he can message.\nRTC 6-8 wk."
+      },
+      {
+       "type": "Result Note",
+       "title": "CBC Result",
+       "author": "PCP",
+       "date": "2025-03-19T08:05",
+       "body": "Hgb 11.2, up from 9.3 at discharge per pt's papers. Kidney function and potassium fine. Message sent. Recheck at next visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-02a",
+     "kind": "outside_records",
+     "start": "2025-04-02T15:40",
+     "reason": "discharge summary received",
+     "conditions": [
+      {
+       "label": "Traumatic hemorrhagic shock with acute coagulopathy",
+       "icd10": "T79.4XXA",
+       "action": "diagnosed",
+       "onset": "2025-03-01",
+       "note": "gunshot wound to abdomen; exploratory laparotomy 3/2025"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Trauma Surgery Discharge Summary (received)",
+       "author": "trauma surgery",
+       "date": "2025-04-02T15:40",
+       "body": "REGIONAL TRAUMA CENTER — TRAUMA SURGERY DISCHARGE SUMMARY\nAdmitted 03/01/2025. Discharged 03/10/2025.\n\nPrincipal diagnosis: hemorrhagic shock secondary to penetrating gunshot wound of the abdomen, with acute traumatic coagulopathy.\nProcedure: emergent exploratory laparotomy with control of hemorrhage, 03/01-03/02/2025.\n\nCourse: Arrived in shock (BP 76/42, HR 134) with INR 1.9, fibrinogen 112, lactate 6.8. Intubated in the ED, massive transfusion protocol with balanced products and tranexamic acid. Bleeding controlled at laparotomy. Admitted to the surgical ICU, where a pulmonary artery catheter was placed to guide resuscitation. Coagulopathy corrected with products. Extubated hospital day 2. PA catheter removed day 3. Diet advanced, ambulating independently. Wound clean.\n\nDischarge labs: Hgb 9.3, INR 1.1.\nAllergies: NKDA.\nDischarge medications: acetaminophen-oxycodone 325/5 mg 1 tab q6h prn severe pain, #20, no refills. Acetaminophen as needed.\nFollow-up: trauma clinic for staple removal in 1 week; primary care in 1-2 weeks. No heavy lifting 6 weeks."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Records Review",
+       "author": "PCP",
+       "date": "2025-04-03T07:40",
+       "body": "Discharge summary finally in after second request. Hemorrhagic shock with coagulopathy added to the problem list; ex lap 3/2025 added to surgical history. Nothing new vs. what pt told us. Trauma clinic note from 3/17 still not here."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-08a",
+     "kind": "telephone",
+     "start": "2025-04-08T13:15",
+     "reason": "duty status paperwork",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Form Request",
+       "author": "front desk",
+       "date": "2025-04-08T13:15",
+       "body": "Pt called, his unit needs a civilian provider statement on his current activity limits for his profile. Dropping the form off tomorrow. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Form Completed",
+       "author": "PCP",
+       "date": "2025-04-10T17:20",
+       "body": "Completed the unit's temporary profile form: no lifting over 10 lb and no ruck/PT until cleared by trauma surgery and reassessed here mid-May. Copy scanned. Pt picking up."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "office_visit",
+     "start": "2025-05-13T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after abdominal surgery",
+     "state": {
+      "weight_kg": 78.9,
+      "labs": {
+       "Hemoglobin": 14.3
+      }
+     },
+     "conditions": [
+      {
+       "label": "Traumatic hemorrhagic shock with acute coagulopathy",
+       "icd10": "T79.4XXA",
+       "action": "resolved",
+       "onset": "2025-03-01"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-05-13T14:25",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.3
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-05-13T14:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-05-13T14:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-05-13T14:00",
+       "body": "S: 10 weeks out from ex lap for GSW. Says trauma surgery cleared him last week to go back to full activity (no letter from them yet; he showed me the clearance on his phone). Back running, no pain, no meds. Energy back. Appetite good, weight coming back.\n\nO: vitals as charted, weight up ~4 kg. Looks well, color good. Abd: healed midline scar, no hernia with cough, nontender. Heart and lungs normal.\n\nA/P: recovered from hemorrhagic shock/coagulopathy after abdominal GSW. Hgb normal today, 14.3. Marking the shock resolved; laparotomy stays in surgical hx. Returned his profile form with no limits. Physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-30a",
+     "kind": "hospital_admission",
+     "start": "2025-08-30T16:58",
+     "end": "2025-09-08T11:00",
+     "service": "Emergency Medicine; Medical Intensive Care",
+     "reason": "submersion, unresponsive",
+     "vitals": [
+      {
+       "time": "2025-08-30T17:00",
+       "temp_c": 35.6,
+       "bp": [
+        110,
+        70
+       ],
+       "hr": 102,
+       "rr": 8,
+       "spo2": 85
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-08-30T17:20",
+       "results": [
+        {
+         "test": "pH of Arterial blood",
+         "loinc": "2744-1",
+         "unit": "[pH]",
+         "value": 7.25
+        },
+        {
+         "test": "Carbon dioxide partial pressure in Arterial blood",
+         "loinc": "2019-8",
+         "unit": "mm[Hg]",
+         "value": 50
+        },
+        {
+         "test": "Oxygen partial pressure in Arterial blood",
+         "loinc": "2703-7",
+         "unit": "mm[Hg]",
+         "value": 60
+        },
+        {
+         "test": "Bicarbonate in Arterial blood",
+         "loinc": "1960-4",
+         "unit": "mmol/L",
+         "value": 24
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-08-30T17:35",
+       "text": "Portable AP chest. Endotracheal tube tip about 4 cm above the carina. Enteric tube courses below the diaphragm. Bilateral diffuse airspace opacities. Heart size normal. No pneumothorax. No effusion.",
+       "conclusion": "Bilateral diffuse airspace opacities. Lines and tubes in good position.",
+       "issued": "2025-08-30T17:55"
+      },
+      {
+       "study": "CT head without contrast",
+       "performed": "2025-08-30T18:10",
+       "text": "No intracranial hemorrhage, mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci normal for age. Calvarium intact.",
+       "conclusion": "No acute intracranial abnormality.",
+       "issued": "2025-08-30T18:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-08-30T16:58"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-08-30T21:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-09-08T10:00"
+      }
+     ]
+    },
+    {
+     "id": "2025-09-03a",
+     "kind": "outside_records",
+     "start": "2025-09-03T09:50",
+     "reason": "ED record received",
+     "conditions": [
+      {
+       "label": "Acute respiratory distress syndrome",
+       "icd10": "J80",
+       "action": "diagnosed",
+       "onset": "2025-08-30",
+       "note": "refractory hypoxemia after nonfatal submersion"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Emergency Department Record (received)",
+       "author": "emergency medicine",
+       "date": "2025-09-03T09:50",
+       "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of service: 08/30/2025, 16:58\n\nCC: Pulled from lake, unresponsive.\n\nHPI: 22-year-old man. Friends on shore say he was last seen swimming about 20 minutes before he was found under the water and brought out. Bystander and EMS support en route. History of abdominal gunshot wound with laparotomy six months ago, recovered.\n\nAllergies: NKDA. Meds: none. Social: never smoker, occasional alcohol, Army infantry.\n\nExam on arrival: unresponsive, GCS 8. Temp 35.6 C, BP 110/70, HR 102, RR 8 and shallow, SpO2 85% on room air. Crackles throughout both lung fields. Pink frothy secretions in the oropharynx. Healed midline laparotomy scar.\n\nABG on 100% FiO2: pH 7.25 / PaCO2 50 / PaO2 60 / HCO3 24.\nPortable CXR: bilateral diffuse airspace opacities.\nCT head: no acute abnormality.\n\nCourse: intubated for airway protection and hypoxemia. Lung-protective settings, PEEP titrated up. Persistent severe hypoxemia despite FiO2 1.0.\n\nImpression: drowning-related acute respiratory distress syndrome with refractory hypoxemia.\nDisposition: medical ICU."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Records Review",
+       "author": "PCP",
+       "date": "2025-09-03T12:30",
+       "body": "ED note from Saturday: near-drowning, ARDS, intubated, in the ICU. Added ARDS to the problem list. Called the ICU for an update; he is still on the vent and proned. Will follow."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-15a",
+     "kind": "outside_records",
+     "start": "2025-09-15T16:10",
+     "reason": "discharge summary received",
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Medical ICU Discharge Summary (received)",
+       "author": "critical care",
+       "date": "2025-09-15T16:10",
+       "body": "DISCHARGE SUMMARY — MEDICAL INTENSIVE CARE\nAdmit 08/30/2025, discharge 09/08/2025.\n\nDiagnosis: ARDS with refractory hypoxemia following nonfatal submersion.\n\nHospital course: Intubated in the ED. Low tidal volume ventilation with high PEEP; prone positioning for several sessions given P/F ratio near 60 on FiO2 1.0. Oxygenation improved over the following days, and he was extubated on hospital day 5 to nasal cannula, then weaned to room air. CT head on admission normal. No neurologic deficits on recovery; mental status at baseline. Ambulating independently at discharge.\n\nDischarge exam: SpO2 96% on room air. Lungs clear. Neuro intact.\nAllergies: NKDA.\nDischarge medications: none.\nFollow-up: primary care within 1-2 weeks; consider pulmonary follow-up with lung function testing."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-16a",
+     "kind": "office_visit",
+     "start": "2025-09-16T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after ICU stay",
+     "state": {
+      "weight_kg": 75.2
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "vitals": {
+      "spo2": 97
+     },
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-16T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-09-16T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-referral",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "lung function after ARDS"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-09-16T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-09-16T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ICU Visit",
+       "author": "PCP",
+       "date": "2025-09-16T09:20",
+       "body": "Here 8 days after discharge from a 10-day ICU stay for ARDS after a near-drowning on 8/30 (records reviewed, intubated, proned, extubated day 5). Second critical admission this year; the gunshot was in March.\n\nHe remembers going in for a swim and then waking up in the ICU. Breathing feels back to normal now, walking and doing stairs fine, no cough to speak of. No headaches, memory feels ok to him. Not back at work yet, on leave until cleared.\n\nExam: vitals as charted, SpO2 97% RA, weight 75 kg (lost ~4 kg in hospital). Alert, oriented, conversational, good recall of the visit. Lungs clear to the bases, good air movement. Heart regular. Neuro: CN intact, strength and gait normal.\n\nA/P\n1. ARDS after submersion, recovering, lungs clear today. Pulmonology referral for PFTs given the severity; TRICARE auth submitted.\n2. Neuro: intact, CT head was normal.\n3. Mood: PHQ-9 3. Says he's ok, sleeping fine.\n4. CBC/BMP.\nLetter for unit: no duty until pulmonary eval. RTC after pulm."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Result",
+       "author": "RN",
+       "date": "2025-09-17T11:00",
+       "body": "Called pt: CBC and BMP normal per PCP. Pulmonology referral approved by TRICARE, they will call him to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza Vaccine",
+       "author": "RN",
+       "date": "2025-10-14T16:35",
+       "body": "Flu vaccine 0.5 mL IM left deltoid. Screening questions negative, no prior reactions. VIS reviewed. Tolerated, left after 15 min. Pt says he has the lung appointment next month."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-19a",
+     "kind": "specialist_visit",
+     "start": "2025-11-19T13:00",
+     "service": "Pulmonology",
+     "reason": "lung function after ARDS",
+     "reports": [
+      {
+       "study": "Spirometry",
+       "performed": "2025-11-19T13:20",
+       "text": "Good effort, acceptable and repeatable maneuvers. FVC, FEV1 and FEV1/FVC within normal limits. No obstruction or restriction pattern. DLCO, corrected for hemoglobin, within normal limits.",
+       "conclusion": "Normal spirometry and diffusing capacity.",
+       "issued": "2025-11-19T14:00"
+      },
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-11-19T12:40",
+       "text": "Lungs are clear. No consolidation, effusion or pneumothorax. Heart and mediastinum normal. Bones intact.",
+       "conclusion": "Normal chest.",
+       "issued": "2025-11-19T13:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office consultation, comprehensive",
+       "performed": "2025-11-19T13:00"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
