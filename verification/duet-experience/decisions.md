@@ -62,8 +62,10 @@ Linear wins.
   so it is presentation, like picking the companion, and is left out;
   connecting itself is in Your health sources.
 - Newer Terms gate the app: until you accept them, only accepting, signing out,
-  deleting your account and withdrawing AI permission are available
-  (north-star.md, Identity and setup).
+  deleting your account, exporting your data and withdrawing AI permission are
+  available (north-star.md, Identity and setup; export, Dev 2026-10-26).
+- You can change your display name at any time after setup; it is never
+  verified. Duet holds no legal name (Dev 2026-10-26).
 - The AI choice covers conversation, private memory and Duet's own reviews.
   The standing notice is shown with it: "Duet's AI isn't a doctor. It explains
   health information and doesn't diagnose or treat. In an emergency, call 911."
@@ -83,6 +85,12 @@ Linear wins.
 - Deletion removes everything, stops all sharing including with a practice,
   finishes if interrupted, and is never brought back by old work or a restored
   backup (ENG-161, F2).
+- Export (ENG-161, journey D5): you ask for everything Duet keeps about you,
+  each item with its source and date (north-star.md, Source access, export and
+  deletion lists what it covers); deleting your account ends it.
+  Assumed, not yet decided by Dev: one export is prepared at a time; it ends
+  ready to save or couldn't finish, and you ask again to retry; asking for a
+  new export replaces the last one, even if the new one then fails.
 
 ## The conversation (step 2)
 
@@ -156,8 +164,15 @@ Linear wins.
 - A Check-in that can't finish shows unfinished with Try again, never silence
   (D1). It stays scheduled: its next time replaces it, delivered or passed
   undelivered, and pause, change or cancel work on it as on any other.
-- A Plan is a routine with no schedule. Deleting it leaves its Reminders and
-  Check-ins running (Dev 2026-09-28). Today, not the companion's card, is where
+- A Plan is a routine with no schedule. A Reminder or Check-in serves at most
+  one Plan, and the Plan's detail shows it. Duet's AI sets or clears that link
+  when your request serves the Plan; you change it in conversation, not with a
+  new control. Deleting the Plan leaves its Reminders and Check-ins running,
+  unlinked. A Plan shows no progress, streak or results (north-star.md,
+  Sep 28; kept, Dev 2026-10-26).
+- Your own edit, pause, resume or cancel of a Reminder or Check-in makes a reply
+  already writing look again, so it never overwrites your change (D9;
+  behaviour-contract rule 16), as your Plan edits already do. Today, not the companion's card, is where
   Plans, Reminders and Check-ins live (ENG-34, ENG-168).
 - Modeling note: one item per kind stands for each saved item of that kind.
 

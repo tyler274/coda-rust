@@ -3,7 +3,7 @@ stateDiagram-v2
 %% The graph is the spec; Verus derives from it. It states the ideal behavior of the full
 %% product for every person, from Dev's intent and the settled sources, never from existing
 %% code. decisions.md holds the charter, the sources and the dated decisions it cites.
-%% Written region by region; this file currently holds the account, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
+%% Written region by region; this file currently holds the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
 %% Scope: MVP behavior (Dev 2026-10-25); later functionality joins as connected graphs.
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
@@ -12,6 +12,7 @@ stateDiagram-v2
 %% event sign in | by you | needs not ADeleting | reason: an account being deleted takes no new sessions (north-star.md, Identity and setup) | You sign in on this device: Sign in with Apple or email on iPhone, Google or email on Android, email on the web (ENG-161, Dev 2026-10-20). Whatever the method, a person has one account; a first sign-in creates it, and nothing about your health is kept before it (ENG-111).
 %% event agree and continue | by you | command on your setup: Agree and continue, clicked while DIn | needs AAgree | reason: only your own agreement on this device records the Terms | You agree to the current Terms after signing in; Duet records that version and when (north-star.md, Identity and setup). Duet then asks for a display name only when your sign-in brought none.
 %% event save your display name | by you | command on your setup: Save name, clicked while DIn | needs AName | reason: the name is yours to give | You give Duet the name it uses for you; it is never verified.
+%% event change your display name | by you | command on your account: Change name, clicked while DIn | needs AReady, TCur | reason: the name is yours to change; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change the name Duet uses for you, at any time; it is never verified, and Duet holds no legal name (Dev 2026-10-26).
 %% event allow AI | by you | command on your setup: Allow AI, clicked while DIn | needs AChoose | reason: AI permission is your choice | You allow Duet's AI for conversation, its private memory of you, and its own reviews, after reading what it does and its limits (north-star.md, Privacy; ENG-161 standing notice).
 %% event not now for AI | by you | command on your setup: Not now, clicked while DIn | needs AChoose | reason: AI permission is your choice | You decline Duet's AI for now; everything that isn't AI keeps working.
 %% event allow AI in settings | by you | command on your AI settings: Allow AI, clicked while DIn | needs PNot, TCur | reason: AI permission is your choice; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You give Duet's AI permission later, from settings.
@@ -30,6 +31,9 @@ stateDiagram-v2
 %% event sign out on another device | by you | needs ODIn | reason: only a signed-in device signs out | That device forgets your account.
 %% event delete your account | by you | command on your account: Delete account, clicked while DIn | needs AAgree, AName, AChoose, AReady | reason: deletion is yours alone, once, for an account not already being deleted | After confirming who you are, Duet starts deleting everything it keeps about you and ends any practice connection (ENG-161, F2).
 %% event the deletion finishes | by Duet | needs ADeleting | reason: only a started deletion finishes | Everything is gone from Duet and from every device; nothing old work or a restored backup does brings it back (ENG-161). A deletion still finishing is never shown as done.
+%% event export your data | by you | command on your account: Export, clicked while DIn | needs AReady, ExNone, ExReady, ExFailed | reason: exporting is always yours, even before newer Terms, as deleting your account is (Dev 2026-10-26); one export is prepared at a time | You ask for everything Duet keeps about you; a new export replaces the last one (ENG-161).
+%% event your export is ready | by Duet | needs ExPreparing | reason: only an export being prepared finishes | Everything Duet keeps about you is ready to save, each item with its source and date: the conversation and its runs with your feedback, your health records and readings, insights, Plans, Reminders and Check-ins, For my doctor, your doctor's plan, and your sources and connections (ENG-161; north-star.md, Source access, export and deletion).
+%% event your export can't finish | by Duet's runtime | needs ExPreparing | reason: only an export being prepared fails | The export is never shown as ready when it isn't; you can ask again.
 %%
 %% The conversation: one continuous thread, like texting (Dev 2026-10-25: chat works like Muse and
 %% Instinct). You can always type; a message you send while Duet writes steers that reply; there is
@@ -78,6 +82,8 @@ stateDiagram-v2
 %% event change the Plan | by you | command on the Plan: Save, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit the Plan directly; asking in conversation saves it again.
 %% event delete the Plan | by you | command on the Plan: Delete, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The Plan goes; Reminders and Check-ins that served it keep running (Dev 2026-09-28).
 %% event Duet deletes the Plan as you asked | by Duet's AI | needs RWriting, PlSaved | reason: a reply deletes a Plan only from your current message | The Plan goes as your message asked; Reminders and Check-ins that served it keep running.
+%% event Duet links the {kind} to your Plan as you asked | by Duet's AI | needs RWriting, PlSaved, FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key} | reason: a reply links follow-through only from your current message, to a saved Plan, for a {kind} you have (Dev 2026-09-28) | The {kind} now serves your Plan, and the Plan's detail shows it. A {kind} serves at most one Plan; you change the link in conversation, not with a new control.
+%% event Duet unlinks the {kind} from your Plan as you asked | by Duet's AI | needs RWriting, LkPlan@{key} | reason: a reply changes the link only from your current message (Dev 2026-09-28) | The {kind} keeps running on its own.
 %%
 %% Duet's own reviews and Today. Three kinds of review: a daily look once a day completes, a weekly
 %% recap once a week completes, and a review when new records arrive. Each may finish quietly, and
@@ -119,8 +125,10 @@ stateDiagram-v2
 %% events records come in = new records arrive | clinical records arrive from your phone's health app
 %% events your records change = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app
 %% Unfinished work looks again before it publishes when something it read changes (ENG-34). A reply
-%% hears the changes you or your sources make; Duet's own Plan saves happen inside the reply.
-%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate
+%% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
+%% reply already writing never overwrites them (D9; behaviour-contract rule 16). Duet's own Plan saves
+%% happen inside the reply.
+%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in
 %% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked
 %% Your edits to For my doctor and your appointment don't restart work that is running. A review or
 %% reply notes the change, and an update it proposes afterwards waits for you to review it again
@@ -134,7 +142,7 @@ stateDiagram-v2
 %% event the insights' time passes | by the clock | needs TdInsights | reason: only current insights leave | The current insights leave Today and stay in Earlier insights (north-star.md, Today).
 %% event the decision's time passes | by the clock | needs TdQuiet, TdCouldnt | reason: only a quiet or failed decision goes stale | The day it spoke for is over; Today no longer says Quiet or Couldn't check for it.
 %% event mark an insight not accurate | by you | command on the insight: Not accurate, clicked while DIn | needs TCur | reason: an insight on Today, in Earlier insights or on a source can be marked; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The insight is marked corrected and stays as written; Duet never replaces it on its own (E5).
-%% events you change your follow-through = Duet saves the Reminder you asked for | Duet saves the Check-in you asked for | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | Duet changes the Reminder as you asked | Duet changes the Check-in as you asked | Duet pauses the Reminder as you asked | Duet pauses the Check-in as you asked | Duet cancels the Reminder as you asked | Duet cancels the Check-in as you asked
+%% events you change your follow-through = Duet saves the Reminder you asked for | Duet saves the Check-in you asked for | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | Duet changes the Reminder as you asked | Duet changes the Check-in as you asked | Duet pauses the Reminder as you asked | Duet pauses the Check-in as you asked | Duet cancels the Reminder as you asked | Duet cancels the Check-in as you asked | Duet links the Reminder to your Plan as you asked | Duet links the Check-in to your Plan as you asked | Duet unlinks the Reminder from your Plan as you asked | Duet unlinks the Check-in from your Plan as you asked
 %%
 %% For my doctor (ENG-169, Dev 2026-10-24): one continuing workspace that helps any clinician
 %% understand what matters, what changed, what you tried and what you need next. It is yours:
@@ -489,6 +497,47 @@ stateDiagram-v2
           PlSaved --> PlSaved : change the Plan
           PlSaved --> PlNone : delete the Plan
           PlSaved --> PlNone : Duet deletes the Plan as you asked
+        }
+        --
+        %% Which Plan a Reminder or Check-in serves (Dev 2026-09-28; kept 2026-10-26): a thin link to at
+        %% most one Plan. Duet's AI sets or clears it when your request serves that Plan, and you change it
+        %% in conversation. Deleting the Plan leaves the follow-up running, unlinked. A Plan shows no progress.
+        state "{Kind}: its Plan" as Lk {
+          %% template
+          %% instance reminder: kind = Reminder, Kind = Reminder
+          %% instance checkin: kind = Check-in, Kind = Check-in
+          [*] --> LkNone
+          state "{Kind} serves no Plan" as LkNone
+          state "{Kind} serves your Plan" as LkPlan
+          LkNone --> LkPlan : Duet links the {kind} to your Plan as you asked
+          LkPlan --> LkNone : Duet unlinks the {kind} from your Plan as you asked
+          LkPlan --> LkNone : delete the Plan
+          LkPlan --> LkNone : Duet deletes the Plan as you asked
+          LkPlan --> LkNone : Duet saves the {kind} you asked for [a new {kind}]
+          %% when FuNone@{key}, FuDone@{key}, FuCancelled@{key} | reason: a new {kind} replaces a finished one and starts unlinked
+          %% never LinkWithoutPlan: {Kind} serves your Plan & No Plan -- A {kind} serves only a saved Plan (Dev 2026-09-28).
+        }
+        --
+        %% Your export (ENG-161, journey D5): everything Duet keeps about you, prepared on request. Deleting
+        %% your account ends it with everything else.
+        state "Your export" as Ex {
+          [*] --> ExNone
+          state "No export" as ExNone
+          state "Preparing your export" as ExPreparing
+          state "Your export is ready to save" as ExReady
+          state "Your export couldn't finish; you can ask again" as ExFailed
+          ExNone --> ExPreparing : export your data
+          ExReady --> ExPreparing : export your data
+          ExFailed --> ExPreparing : export your data
+          ExPreparing --> ExReady : your export is ready
+          ExPreparing --> ExFailed : your export can't finish
+        }
+        --
+        %% The name Duet uses for you: yours to change at any time; Duet holds no legal name (Dev 2026-10-26).
+        state "Your display name" as Nm {
+          [*] --> NmSet
+          state "The name Duet uses for you" as NmSet
+          NmSet --> NmSet : change your display name
         }
         --
         state "{Review}" as Rv {
