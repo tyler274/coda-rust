@@ -21,8 +21,8 @@ stateDiagram-v2
 %% event allow the new AI permission | by you | command on your AI settings: Allow the new version, clicked while DIn | needs PNew, TCur | reason: AI permission is your choice; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You allow the new version; paused work continues.
 %% event turn AI off | by you | command on your AI settings: Turn off, clicked while DIn | needs SwOn, TCur | reason: the switch is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You turn off Conversation and insights: AI work pauses without being used up, and your conversation stays readable (D7).
 %% event turn AI on | by you | command on your AI settings: Turn on, clicked while DIn | needs SwOff, TCur | reason: the switch is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You turn AI back on; paused work continues.
-%% event pause proactive work | by you | command on your AI settings: Pause proactive work, clicked while DIn | needs PwOn, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | One control pauses Duet's own reviews and the Reminders and Check-ins you asked for; chat and memory keep working (north-star.md, Requested follow-through).
-%% event resume proactive work | by you | command on your AI settings: Resume proactive work, clicked while DIn | needs PwPaused, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Reviews, Reminders and Check-ins continue.
+%% event pause proactive work | by you | command on your AI settings: Pause proactive work, clicked while DIn | needs PwOn, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | One control pauses Duet's own work and the Reminders and Check-ins you asked for; chat and memory keep working (north-star.md, Requested follow-through).
+%% event resume proactive work | by you | command on your AI settings: Resume proactive work, clicked while DIn | needs PwPaused, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Duet's own work, Reminders and Check-ins continue.
 %% event Duet publishes new Terms | by Duet | needs not TNew | reason: newer Terms already waiting are replaced by the newest | Duet asks you to accept newer Terms; until you do, the app waits on them and AI work pauses without being used up (D7; Dev 2026-10-04). During setup you agree to the newest version.
 %% event accept the new Terms | by you | command on your account: Accept the new Terms, clicked while DIn | needs TNew | reason: only your own agreement records the Terms | You accept the newer Terms and paused work continues.
 %% event sign out on this device | by you | needs DIn | reason: commands need a session on this device | This device forgets your account and stops its notifications; your other devices and any practice connection are unchanged (north-star.md, sign-out).
@@ -53,7 +53,7 @@ stateDiagram-v2
 %% event Duet finishes the reply | by Duet's AI | needs RWriting | reason: only a reply being written finishes | The reply is complete in the thread with what it cites.
 %% event the reply can't finish | by Duet's runtime | needs RWriting | reason: only a reply being written can fail | What was written stays, marked unfinished, with Try again; never silence (D1). Whatever the reply already saved stays saved.
 %% events Duet posts in the thread = Duet finishes the reply | the reply can't finish
-%% events Duet has something to tell you = Duet proposes a note | Duet finishes the daily look with something to tell you | Duet finishes the weekly recap with something to tell you | Duet finishes the new-records review with something to tell you | Duet finishes the work it took on with something to tell you | Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in keeps failing | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
+%% events Duet has something to tell you = Duet proposes a note | Duet finishes its own work with something to tell you | Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in keeps failing | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
 %% events Duet stops writing early = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | withdraw AI permission
 %% event you see the new messages | by you | needs ThUnseen, DIn, AppFront, TabDuet, CoNone, RdShown@conversation, RdKept@conversation, TCur | reason: only messages on screen in front of you are seen; newer Terms wait for your acceptance first | The conversation shows Duet's new messages on this device's screen, so they are seen everywhere: seen is one fact for your account (Dev 2026-10-26).
 %% event you see the new messages on another device | by you | needs ThUnseen, ODIn | reason: only a signed-in device shows the conversation | You read Duet's new messages on your other device; they are seen here too (Dev 2026-10-26).
@@ -109,12 +109,10 @@ stateDiagram-v2
 %% event Duet unlinks the {kind} from your Plan as you asked | by Duet's AI | needs RWriting, LkPlan@{key} | reason: a reply changes the link only from your current message (Dev 2026-09-28) | The {kind} keeps running on its own.
 %%
 %% Duet's own work and Today. Duet may take something on whenever it judges it worth doing for you
-%% (Dev 2026-10-26); its routine reviews are examples: a daily look once a day completes, a weekly
-%% recap once a week completes, and a review when new records arrive. Each may finish with something
-%% to tell you, posted in the thread and pinned on Today, or quietly, and silence is success. Whether they pause while you're away is open (Dev 2026-10-25). A review
-%% running when what it read changes looks again from a fresh snapshot, without being used up.
-%% event a day completes | by the clock | Your local day ends; Duet owes it one look. Each day is decided once: a look still owed or running for the day before gives way to the newer day (E3).
-%% event a week with fresh records completes | by the clock | Your local week, Saturday to Friday, ends with something new to read; Duet owes it one recap, which gives way to a newer week the same way. A week with nothing new owes nothing.
+%% (Dev 2026-10-26): a look at your day, a weekly recap, new records, a trend to follow. When and how
+%% often is the harness's (infrastructure-gaps.md). Work may finish with something to tell you, posted
+%% in the thread and pinned on Today, or quietly, and silence is success. Work running when what it
+%% read changes looks again from a fresh snapshot.
 %% Your health sources (ENG-162; behaviour-contract A, B, F1; north-star.md, Connect your health and
 %% Source access): your phone's health data (Apple Health on iPhone, Health Connect on Android) and
 %% Doctors & hospitals, where each organization you sign in to is authorized, refreshed, fails and is
@@ -147,7 +145,6 @@ stateDiagram-v2
 %% event new records arrive | by your records source | needs OrgImporting | reason: records arrive only through an import that is running | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5). Apple Health readings wait for the next review rather than starting one (Dev 2026-10-06).
 %% event a record is corrected | by your records source | needs OrgImporting | reason: corrections and deletions arrive only through an import that is running | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5; ENG-162). Unfinished work looks again before it publishes, so nothing goes out from the old version (ENG-34).
 %% events records come in = new records arrive | clinical records arrive from your phone's health app
-%% events your records change = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app
 %% Unfinished work looks again before it publishes when something it read changes (ENG-34). A reply
 %% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
 %% reply already writing never overwrites them (D9; behaviour-contract rule 16). Duet's own Plan saves
@@ -159,14 +156,11 @@ stateDiagram-v2
 %% against your latest version (Dev 2026-10-26).
 %% events you change For my doctor or your appointment = save For my doctor | start fresh | save your appointment date | remove your appointment date | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment
 %% events Duet changes For my doctor or your appointment as you asked = Duet saves your question for your doctor as you said it | Duet notes your appointment as you said
-%% event Duet starts the {review} | by Duet | needs RvOwed@{key}, PAllowed, SwOn, TCur, PwOn | reason: a review is AI work Duet chose to do: it needs your permission, the switch on, current Terms and proactive work on (F3, D7) | Duet's AI begins the {review} from a stable dated snapshot of what you allowed it to read.
-%% event Duet decides to take something on | by Duet's AI | needs PAllowed, SwOn, TCur, PwOn | reason: Duet chooses its own work only with your permission, AI on, current Terms and proactive work on (F3, D7) | Duet judges something worth doing for you and takes it on, whenever and for whatever reason: a trend to follow, a new record to look into, your doctor's plan against your readings. The routine reviews are examples, not a menu (Dev 2026-10-26).
-%% event Duet finishes the {review} with something to tell you | by Duet's AI | needs RvRun@{key} | reason: only running work finishes | Duet posts what it noticed in the thread as one message, and Today pins it: insights (at most three current across all of Duet's work, E1), a proposed update for your doctor, or whatever it judges worth saying. Only what reached Duet's AI counts as reviewed (D5); published insights never change (E5).
-%% event Duet finishes the {review} quietly | by Duet's AI | needs RvRun@{key} | reason: only running work finishes | Duet decided nothing needs saying; silence is success. No message is owed, Today says Quiet, and current insights stay (E3; Dev 2026-10-26).
-%% event the {review} can't finish | by Duet's runtime | needs RvRun@{key} | reason: only running work fails | The {review} ends without a decision and is never shown as quiet; when the daily look fails, Today says Duet couldn't check, with Retry (E3). No message is owed; Duet may still mention it (Dev 2026-10-26).
-%% event retry the daily look | by you | needs DIn, TdCouldnt, RvIdle@daily, PAllowed, SwOn, TCur, PwOn | reason: Retry runs the daily look under the same consent, AI switch, Terms and proactive work as any run (Dev 2026-10-26) | From Today's Couldn't check, Duet looks again now at the day it couldn't check.
-%% events Duet finishes with something to tell you = Duet finishes the daily look with something to tell you | Duet finishes the weekly recap with something to tell you | Duet finishes the new-records review with something to tell you | Duet finishes the work it took on with something to tell you
-%% events Duet finishes quietly = Duet finishes the daily look quietly | Duet finishes the weekly recap quietly | Duet finishes the new-records review quietly | Duet finishes the work it took on quietly
+%% event Duet takes on its own work | by Duet's AI | needs PAllowed, SwOn, TCur, PwOn | reason: Duet chooses its own work only with your permission, AI on, current Terms and proactive work on (F3, D7) | Duet judges something worth doing for you and begins it from a stable dated snapshot of what you allowed it to read, whenever and for whatever reason. Routine looks are examples, not a menu (Dev 2026-10-26).
+%% event Duet finishes its own work with something to tell you | by Duet's AI | needs OwRun | reason: only running work finishes | Duet posts what it noticed in the thread as one message, and Today pins it: insights (at most three current across all of Duet's work, E1), a proposed update for your doctor, or whatever it judges worth saying. Only what reached Duet's AI counts as reviewed (D5); published insights never change (E5).
+%% event Duet finishes its own work quietly | by Duet's AI | needs OwRun | reason: only running work finishes | Duet decided nothing needs saying; silence is success. No message is owed, Today says Quiet, and current insights stay (E3; Dev 2026-10-26).
+%% event Duet's own work can't finish | by Duet's runtime | needs OwRun | reason: only running work fails | The work ends without a decision and is never shown as quiet: Today says Duet couldn't check, with Retry (E3). No message is owed; Duet may still mention it (Dev 2026-10-26).
+%% event retry the check | by you | needs DIn, TdCouldnt, OwIdle, PAllowed, SwOn, TCur, PwOn | reason: Retry runs under the same consent, AI switch, Terms and proactive work as any of Duet's work (Dev 2026-10-26) | From Today's Couldn't check, Duet looks again now.
 %% event the insights' time passes | by the clock | needs TdInsights | reason: only current insights leave | The current insights leave Today and stay in Earlier insights (north-star.md, Today).
 %% event the decision's time passes | by the clock | needs TdQuiet, TdCouldnt | reason: only a quiet or failed decision goes stale | The day it spoke for is over; Today no longer says Quiet or Couldn't check for it.
 %% event mark an insight not accurate | by you | command on the insight: Not accurate, clicked while DIn | needs TCur | reason: an insight on Today, in Earlier insights or on a source can be marked; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The insight is marked corrected and stays as written; Duet never replaces it on its own (E5).
@@ -722,63 +716,41 @@ stateDiagram-v2
           NmSet --> NmSet : change your display name
         }
         --
-        state "{Review}" as Rv {
-          %% template
-          %% instance daily: review = daily look, Review = Daily look, none = No daily look due, owed = Daily look due, running = Daily look running
-          %% instance weekly: review = weekly recap, Review = Weekly recap, none = No weekly recap due, owed = Weekly recap due, running = Weekly recap running
-          %% instance arrival: review = new-records review, Review = New-records review, none = No new-records review due, owed = New-records review due, running = New-records review running
-          %% instance own: review = work it took on, Review = Work Duet took on, none = Nothing Duet took on, owed = Duet's own work waiting to start, running = Duet's own work running
-          [*] --> RvIdle
-          state "{none}" as RvIdle
-          state "{owed}" as RvOwed
-          state "{running}" as RvRun {
-            [*] --> RvLatest
-            state "{running} on your latest edits" as RvLatest
-            state "{running}, you edited since it started" as RvBehind
-            RvLatest --> RvBehind : Duet saves the update for your doctor as you asked
-            RvLatest --> RvBehind : you change For my doctor or your appointment
-            RvLatest --> RvBehind : Duet changes For my doctor or your appointment as you asked
-            RvLatest --> RvBehind : save the update for your doctor
+        %% Duet's own work: one region stands for whatever Duet took on. A pause or a withdrawal stops it, and
+        %% Duet may take it on again once it may work. Looking again starts over from your latest edits.
+        state "Duet's own work" as Own {
+          [*] --> OwIdle
+          state "Nothing Duet is working on" as OwIdle
+          state "Duet's own work running" as OwRun {
+            [*] --> OwLatest
+            state "Duet's own work running on your latest edits" as OwLatest
+            state "Duet's own work running, you edited since it started" as OwBehind
+            OwLatest --> OwBehind : Duet saves the update for your doctor as you asked
+            OwLatest --> OwBehind : you change For my doctor or your appointment
+            OwLatest --> OwBehind : Duet changes For my doctor or your appointment as you asked
+            OwLatest --> OwBehind : save the update for your doctor
           }
-          RvIdle --> RvOwed : a day completes
-          %% only daily
-          RvOwed --> RvOwed : a day completes
-          %% only daily
-          RvRun --> RvOwed : a day completes
-          %% only daily
-          RvIdle --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvOwed --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvRun --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvIdle --> RvOwed : your records change
-          %% only arrival
-          RvIdle --> RvOwed : retry the daily look
-          %% only daily
-          RvIdle --> RvOwed : Duet decides to take something on
-          %% only own
-          RvRun --> RvOwed : records come in
-          RvRun --> RvOwed : what Duet read changes
-          RvOwed --> RvRun : Duet starts the {review}
-          RvRun --> RvIdle : Duet finishes the {review} with something to tell you
-          RvRun --> RvIdle : Duet finishes the {review} quietly
-          RvRun --> RvIdle : the {review} can't finish
-          RvRun --> RvOwed : proactive AI work pauses
-          RvRun --> RvOwed : you change your follow-through
-          RvRun --> RvOwed : Duet receives your message / may look again at the {review}
-          RvRun --> RvIdle : withdraw AI permission
-          RvOwed --> RvIdle : withdraw AI permission
-          %% never ReviewNeedsAIAllowed: {running} & AI not allowed -- No AI work without your permission (F3).
-          %% never ReviewNeedsAIOn: {running} & AI off -- The AI switch pauses AI work (D7).
-          %% never ReviewNeedsCurrentAIPermission: {running} & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
-          %% never ReviewNeedsCurrentTerms: {running} & Newer Terms to accept -- Newer Terms pause AI work (D7).
-          %% never ReviewNeedsProactiveOn: {running} & Proactive work paused -- The proactive-work control pauses Duet's reviews.
+          OwIdle --> OwRun : Duet takes on its own work
+          OwIdle --> OwRun : retry the check
+          OwRun --> OwRun : records come in
+          OwRun --> OwRun : what Duet read changes
+          OwRun --> OwRun : you change your follow-through
+          OwRun --> OwRun : Duet receives your message / may look again at its own work
+          OwRun --> OwIdle : Duet finishes its own work with something to tell you
+          OwRun --> OwIdle : Duet finishes its own work quietly
+          OwRun --> OwIdle : Duet's own work can't finish
+          OwRun --> OwIdle : proactive AI work pauses
+          OwRun --> OwIdle : withdraw AI permission
+          %% never OwnWorkNeedsAIAllowed: Duet's own work running & AI not allowed -- No AI work without your permission (F3).
+          %% never OwnWorkNeedsAIOn: Duet's own work running & AI off -- The AI switch pauses AI work (D7).
+          %% never OwnWorkNeedsCurrentAIPermission: Duet's own work running & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
+          %% never OwnWorkNeedsCurrentTerms: Duet's own work running & Newer Terms to accept -- Newer Terms pause AI work (D7).
+          %% never OwnWorkNeedsProactiveOn: Duet's own work running & Proactive work paused -- The proactive-work control pauses Duet's own work.
         }
         --
         %% Today pins what Duet told you from its own work (Dev 2026-10-26): at most three insights, or
-        %% silence. Quiet appears only after Duet actually decided; a failure says Duet couldn't check, with
-        %% Retry (E3). A quiet decision never erases current insights, and once a decision's time passes
+        %% silence. Its status speaks for Duet's latest work, whatever prompted it: Quiet appears only after
+        %% Duet actually decided; a failure says Duet couldn't check, with Retry (E3). A quiet decision never erases current insights, and once a decision's time passes
         %% Today says nothing it no longer knows. Quiet and Couldn't check are Today's own status, not messages.
         state "What Duet noticed on Today" as Today {
           [*] --> TdBuilding
@@ -787,17 +759,17 @@ stateDiagram-v2
           state "Quiet" as TdQuiet
           state "Couldn't check" as TdCouldnt
           state "No current insights" as TdNothing
-          TdBuilding --> TdInsights : Duet finishes with something to tell you
-          TdQuiet --> TdInsights : Duet finishes with something to tell you
-          TdCouldnt --> TdInsights : Duet finishes with something to tell you
-          TdInsights --> TdInsights : Duet finishes with something to tell you
-          TdNothing --> TdInsights : Duet finishes with something to tell you
-          TdBuilding --> TdQuiet : Duet finishes quietly
-          TdCouldnt --> TdQuiet : Duet finishes quietly
-          TdNothing --> TdQuiet : Duet finishes quietly
-          TdBuilding --> TdCouldnt : the daily look can't finish
-          TdQuiet --> TdCouldnt : the daily look can't finish
-          TdNothing --> TdCouldnt : the daily look can't finish
+          TdBuilding --> TdInsights : Duet finishes its own work with something to tell you
+          TdQuiet --> TdInsights : Duet finishes its own work with something to tell you
+          TdCouldnt --> TdInsights : Duet finishes its own work with something to tell you
+          TdInsights --> TdInsights : Duet finishes its own work with something to tell you
+          TdNothing --> TdInsights : Duet finishes its own work with something to tell you
+          TdBuilding --> TdQuiet : Duet finishes its own work quietly
+          TdCouldnt --> TdQuiet : Duet finishes its own work quietly
+          TdNothing --> TdQuiet : Duet finishes its own work quietly
+          TdBuilding --> TdCouldnt : Duet's own work can't finish
+          TdQuiet --> TdCouldnt : Duet's own work can't finish
+          TdNothing --> TdCouldnt : Duet's own work can't finish
           TdInsights --> TdNothing : the insights' time passes
           TdQuiet --> TdNothing : the decision's time passes
           TdCouldnt --> TdNothing : the decision's time passes
@@ -842,38 +814,14 @@ stateDiagram-v2
           %% when RrBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
           PrHas --> PrStale : Duet proposes an update for your doctor [For my doctor changed while it ran]
           %% when RrBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the daily look with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@daily | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the daily look with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@daily | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the daily look with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@daily | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the daily look with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@daily | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the weekly recap with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@weekly | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the weekly recap with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@weekly | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the weekly recap with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@weekly | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the weekly recap with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@weekly | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the new-records review with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@arrival | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the new-records review with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@arrival | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the new-records review with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@arrival | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the new-records review with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@arrival | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the work it took on with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@own | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the work it took on with something to tell you [read your latest] / may propose an update for your doctor
-          %% when RvLatest@own | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the work it took on with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@own | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the work it took on with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@own | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
+          PrNone --> PrReady : Duet finishes its own work with something to tell you [read your latest] / may propose an update for your doctor
+          %% when OwLatest | reason: it read your latest For my doctor
+          PrHas --> PrReady : Duet finishes its own work with something to tell you [read your latest] / may propose an update for your doctor
+          %% when OwLatest | reason: it read your latest For my doctor
+          PrNone --> PrStale : Duet finishes its own work with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
+          %% when OwBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
+          PrHas --> PrStale : Duet finishes its own work with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
+          %% when OwBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
           PrReady --> PrNone : save the update for your doctor
           PrReady --> PrNone : Duet saves the update for your doctor as you asked
           PrHas --> PrNone : dismiss the update for your doctor
@@ -1484,7 +1432,7 @@ stateDiagram-v2
       %% when AppBack, NtOn, DIn | reason: a reply alerts like a text, only while you're away and this device allows alerts (Dev 2026-10-26)
       NoNone --> NoWaiting : Duet tells you what you asked for or your practice's news [you're away, alerts allowed, not mid-reply]
       %% when AppBack, NtOn, DIn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what you asked for and your practice's news alert wherever alerts are allowed; while Duet writes it waits for the reply (Dev 2026-10-26)
-      NoNone --> NoWaiting : Duet finishes with something to tell you [you're away, alerts allowed, your switch on, not mid-reply]
+      NoNone --> NoWaiting : Duet finishes its own work with something to tell you [you're away, alerts allowed, your switch on, not mid-reply]
       %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
       NoNone --> NoWaiting : Duet proposes a note [you're away, alerts allowed, your switch on, not mid-reply]
       %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet offers on its own alerts only once you turn it on (Dev 2026-10-26)

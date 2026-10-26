@@ -66,7 +66,7 @@ Linear wins.
   available (north-star.md, Identity and setup; export, Dev 2026-10-26).
 - You can change your display name at any time after setup; it is never
   verified. Duet holds no legal name (Dev 2026-10-26).
-- The AI choice covers conversation, private memory and Duet's own reviews.
+- The AI choice covers conversation, private memory and Duet's own work.
   The standing notice is shown with it: "Duet's AI isn't a doctor. It explains
   health information and doesn't diagnose or treat. In an emergency, call 911."
   (Duet project, Dev 2026-10-21).
@@ -76,7 +76,7 @@ Linear wins.
   without using it up until you allow it; your earlier consent never covers a
   use you haven't seen. Withdrawing instead means AI is not allowed (Dev
   2026-10-25).
-- One proactive-work control pauses Duet's own reviews and requested Reminders
+- One proactive-work control pauses Duet's own work and requested Reminders
   and Check-ins, keeping chat and memory (north-star.md, Requested
   follow-through).
 - Sign out on this device leaves other devices and sharing alone; sign out
@@ -181,43 +181,43 @@ Linear wins.
   Plans, Reminders and Check-ins live (ENG-34, ENG-168).
 - Modeling note: one item per kind stands for each saved item of that kind.
 
-## Duet's reviews and Today (step 4)
+## Duet's own work and Today (step 4)
 
-- Three kinds of review: a daily look once your local day completes, a weekly
-  recap once a Saturday-to-Friday week with something new completes, and a
-  review when new records arrive (Dev 2026-10-25, keeping coda-app's three).
-  Each is decided once and may finish quietly; silence is success (E1-E5;
-  north-star.md, Today). A look still owed or running for an older day or week
-  gives way to the newer one.
-- A running review looks again from a fresh snapshot, without being used up,
-  when what it read changes: new records, a corrected record, your doctor's
-  plan, your follow-through, a Plan (yours or one Duet saves as you asked), a
-  Not accurate mark, or a message that Duet's AI judges corrects it (ENG-34). A
-  running Check-in and a proposed update for your doctor do the same for
-  corrections, your doctor's plan, Plans and Not accurate marks; a reply being
-  written hears the ones you or your sources make, since Duet's own Plan saves
-  happen inside it. Edits to For my doctor and your appointment restart
-  nothing; see For my doctor.
+- Duet may take something on whenever it judges it worth doing for you: a
+  look at your day, a weekly recap, new records, a trend to follow (Dev
+  2026-10-25, 2026-10-26). One region stands for all of it. When and how often
+  it looks is the harness's, not the graph's (infrastructure-gaps.md); the
+  graph keeps only what you see and what must hold. Work may finish quietly,
+  and silence is success (E1-E5; north-star.md, Today).
+- Running work looks again from a fresh snapshot when what it read changes:
+  new records, a corrected record, your doctor's plan, your follow-through, a
+  Plan (yours or one Duet saves as you asked), a Not accurate mark, or a
+  message that Duet's AI judges corrects it (ENG-34). A running Check-in and a
+  proposed update for your doctor do the same for corrections, your doctor's
+  plan, Plans and Not accurate marks; a reply being written hears the ones you
+  or your sources make, since Duet's own Plan saves happen inside it. Edits to
+  For my doctor and your appointment restart nothing; see For my doctor.
 - A corrected record is its own event, not an arrival (ENG-34, ENG-162; Dev
   2026-10-25): unfinished work must not publish from information that was
   corrected. The reply being written reads the new version before it finishes,
-  a running Check-in or review looks again, the new-records review becomes due,
-  and a proposed update for your doctor waits for your review again. What was
+  a running Check-in or Duet's own work looks again, and a proposed update for your doctor waits for your review again. What was
   already published keeps the version it used (E5). The graph doesn't track
   which record each piece of work read, so every unfinished producer looks
   again; work that didn't use the record loses nothing by it.
-- Apple Health readings don't start a review on their own; they reach the next
-  one (Dev 2026-10-06). Reprocessing Duet's own data is not an arrival (C5).
-- A review may publish insights, at most three current across all reviews,
-  write in the conversation, or stay quiet (E1). Published insights never change; Not accurate marks one corrected and
+- Reprocessing Duet's own data is not an arrival (C5).
+- Duet's own work may publish insights, at most three current across all of
+  it, write in the conversation, or stay quiet (E1). Published insights never change; Not accurate marks one corrected and
   Duet never replaces it on its own (E5).
-- Today says Still building context before any decision, Quiet only after a
-  real decision, and Couldn't check when the daily look fails; a quiet later
+- Today's status speaks for Duet's latest work, whatever prompted it (Dev
+  2026-10-26). Today says Still building context before any decision, Quiet
+  only after a real decision, and Couldn't check when that work fails, with
+  Retry; a quiet later
   decision never erases insights that are still current (E3; north-star.md).
   Once insights or a decision go stale, Today shows no current insights rather
   than a Quiet nobody decided. Not accurate works wherever an insight shows.
-- Reviews are AI work and proactive work: they need your permission, the AI
-  switch on, current Terms and proactive work on.
+- Duet's own work is AI work and proactive work: it needs your permission, the
+  AI switch on, current Terms and proactive work on. A pause or a withdrawal
+  stops it; Duet may take it on again once it may work.
 
 ## For my doctor (step 5)
 
@@ -226,13 +226,13 @@ Linear wins.
   you need next (ENG-169, Dev 2026-10-24). This supersedes north-star.md's
   fixed one-page PDF; there is no PDF, and sharing outside Coda is later.
 - It is yours: editing, saving and Start fresh work with AI off. Duet proposes
-  whenever it judges an update useful, in conversation or after a review (a
+  whenever it judges an update useful, in conversation or from its own work (a
   "may"; Dev 2026-10-25: the graph never limits Duet's judgment, and a proposal
   changes nothing until you review it). A proposal never saves by itself. Only
   your own exact question saves without review (north-star.md, For my doctor).
 - Stale work never overwrites your newer edits (ENG-169). Your edits to For my
   doctor or your appointment (yours or the practice's) don't restart work that
-  is running: a review or reply notes them, and an update it proposes
+  is running: Duet's own work or a reply notes them, and an update it proposes
   afterwards, or one already waiting, must be reviewed again against your
   latest version before it saves (Dev 2026-10-26: "let it finish, review
   again").
@@ -286,8 +286,8 @@ Linear wins.
   wording (Dev 2026-10-21). When the connection ends, the last plan stays,
   marked no longer updated; joining again brings it current.
 - A change to your doctor's plan reaches work that read it, as a corrected
-  record does: a reply being written looks again, a running Check-in or review
-  starts over from the current plan before it publishes, and a proposed update
+  record does: a reply being written looks again, a running Check-in or Duet's
+  own work starts over from the current plan before it publishes, and a proposed update
   for your doctor waits for you to review it again (ENG-34, ENG-45).
 - Your answer to a Check-in about your doctor's plan reaches the practice with
   what you share, for its next review, never as an alert on its own (ENG-45;
@@ -323,11 +323,10 @@ Linear wins.
   looks again (A4, E5, ENG-34). A deletion in the phone's health app works the
   same way; lost access or an empty read is never a deletion (A4).
 - Phone readings arrive one by one with their time and time zone (A2, A3) and
-  reach the next review rather than starting one (Dev 2026-10-06). Portal
-  records start the new-records review.
+  wait for Duet's next look rather than prompting one (Dev 2026-10-06).
 - On iPhone, Apple Health also brings in clinical records you already connected
   and approved in the Health app, after their own Apple permission. They arrive
-  and change like portal records and start the new-records review. Duet never
+  and change like portal records. Duet never
   claims it can add, refresh or disconnect those provider accounts (north-star.md,
   Source access).
 - The phone reads and uploads only while you're signed in on it; what's queued
@@ -382,12 +381,13 @@ map; Page and state inventory), with later decisions winning.
   the conversation, and Today pins what matters from it. Only Today's own
   status (Still building context, Quiet, Couldn't check) is not a message
   (Dev 2026-10-26, replacing north-star.md's Today-first insights).
-- What a review noticed goes out together in one Duet message, and Today pins
-  it. A quiet day and a review that couldn't finish owe you no message: Today
+- What Duet's own work noticed goes out together in one Duet message, and
+  Today pins it. Work that ends quietly or couldn't finish owes you no message: Today
   shows them, and Duet may still mention them when it judges that worth
   saying (Dev 2026-10-26).
-- Today's Couldn't check has Retry, which runs the daily look again under the
-  same consent, AI switch and Terms as any run (Dev 2026-10-26).
+- Today's Couldn't check has Retry, which asks Duet to look again under the
+  same consent, AI switch, Terms and proactive work as any of its work (Dev
+  2026-10-26).
 - Duet's own messages wait while it is replying to you and post right after
   the reply ends. A message from you still steers and goes ahead of anything
   waiting (Dev 2026-10-26).
@@ -400,7 +400,7 @@ map; Page and state inventory), with later decisions winning.
   seen everywhere and clears the notification waiting on your phone
   (Dev 2026-10-26).
 - Each message alerts once, like texting, while Duet is in the background and
-  alerts are allowed on that phone; a review's findings are one message, so
+  alerts are allowed on that phone; what Duet's work found is one message, so
   they buzz once (Dev 2026-10-26). Replies, a reply that couldn't finish and
   your practice's news alert wherever alerts are allowed (Dev 2026-10-26);
   so do Reminders and Check-ins, since you asked for them (Dev 2026-10-26).
@@ -426,8 +426,8 @@ map; Page and state inventory), with later decisions winning.
 - Duet keeps no quiet hours of its own: its messages alert as they post, and
   your phone's Focus or Do Not Disturb decides whether they sound
   (Dev 2026-10-26).
-- Duet may take something on whenever it judges it worth doing for you, beyond
-  its three routine reviews, as Coda may for the physician (Dev 2026-10-26).
+- Duet may take something on whenever it judges it worth doing for you, as
+  Coda may for the physician (Dev 2026-10-26).
   It runs under your consent, the AI switch, current Terms and proactive work,
   and reaches you only as a message.
 - The graph enables Duet's intelligence and never restricts it: it adds
@@ -462,7 +462,7 @@ map; Page and state inventory), with later decisions winning.
 
 ## Open, to add later
 
-- **Pausing reviews while you're away (Dev 2026-10-25).** coda-app paused
+- **Pausing Duet's own work while you're away (Dev 2026-10-25).** coda-app paused
   Duet's own reviews after 7 days without opening Duet (D10). Dev: the pause
   may not apply to someone who pays, and "I'm not sure about the pauses yet.
   Can we add that later?" No pause is in the graph. Reminders and Check-ins

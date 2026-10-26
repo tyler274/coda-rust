@@ -8,8 +8,8 @@ system must still guarantee, so that the product people use behaves as the graph
 says. How to meet each guarantee is the runtime's call.
 
 Failures caused by the outside world are not on this list. They are in the
-graph: a reply that can't finish, a message Duet refuses, a review that can't
-finish, a deletion still finishing.
+graph: a reply that can't finish, a message Duet refuses, Duet's own work that
+can't finish, a deletion still finishing.
 
 ## One reply at a time, steered
 
@@ -31,6 +31,19 @@ repeatedly it is paused, with Resume (Dev 2026-10-26).
 **Must guarantee.** A Check-in that keeps failing stops on its own and says so
 in the thread instead of failing silently at every scheduled time; three in a
 row is the starting point Dev picked. Only you resume it.
+
+## When Duet does its own work
+
+**Assumed away.** When and how often Duet looks on its own. The graph has one
+"Duet takes on its own work" under your consent, the AI switch, current Terms
+and proactive work, and keeps only how it ends (Dev 2026-10-26).
+
+**Must guarantee.** The routine looks Dev kept from coda-app still happen: a
+daily look once your local day completes, a weekly recap once a Saturday-to-
+Friday week with something new completes, and a look when portal or Health app
+clinical records arrive (Dev 2026-10-25). Each day and week is decided once,
+and a look still owed for an older one gives way to the newer one. Phone
+readings wait for the next look rather than starting one (Dev 2026-10-06).
 
 ## Sending messages
 
@@ -78,8 +91,8 @@ overdue (ENG-162, ENG-73).
 
 ## Scheduling follow-through
 
-**Assumed away.** Clocks and timers. The graph's "comes due", "a day completes"
-and "a week with fresh records completes" are events; how they fire is not.
+**Assumed away.** Clocks and timers. The graph's "comes due" is an event; how it
+fires is not.
 
 **Must guarantee.** Reminders and Check-ins fire at their time in the timezone
 the person agreed. A time that comes while AI work is paused passes undelivered
