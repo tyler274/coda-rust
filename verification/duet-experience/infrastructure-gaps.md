@@ -45,6 +45,17 @@ clinical records arrive (Dev 2026-10-25). Each day and week is decided once,
 and a look still owed for an older one gives way to the newer one. Phone
 readings wait for the next look rather than starting one (Dev 2026-10-06).
 
+## For my doctor stays live
+
+**Assumed away.** How the workspace syncs across your devices and Duet's saves.
+The graph has one saved version and says only that it is live (Dev 2026-10-26).
+
+**Must guarantee.** Every open editor receives newer saves as they land and keeps
+the person's unsaved words; a save made from an older version never drops what
+was saved since, and only an edit to the same words in two places asks the
+person to pick. Records in the workspace resolve to their current version when
+shown and when sent.
+
 ## Sending messages
 
 **Assumed away.** How an unconfirmed send is checked. The graph keeps Sending,

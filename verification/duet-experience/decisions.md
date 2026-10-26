@@ -242,6 +242,14 @@ Linear wins.
   it; later saves don't change what you sent (Dev 2026-10-26, replacing "every
   save reaches it" from 2026-10-25). This is the deliberate "send something to
   your practice" from 2026-10-25, not a separate feature.
+- For my doctor is one live version everywhere (Dev 2026-10-26: "updates
+  should just update globally live... not keep stale stuff hanging around").
+  A record in it always shows and sends its current version; a record its
+  source corrected says when, so you can check your own words beside it, and
+  Send is never held for it. Every open editor shows newer saves as they land,
+  such as a question Duet saved as you said it or a save from your other
+  phone, and keeps your unsaved words. Saving never removes anything saved
+  since; only the same words changed in two places ask you to pick.
 - Appointment context: your own date, or one you mention in conversation;
   preparation never waits on it and a date change keeps what you prepared.
   The practice's schedule and conflicting dates join with the connection.
