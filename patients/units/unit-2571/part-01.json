@@ -1,0 +1,243 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002571",
+      "given": "August",
+      "family": "Rosen",
+      "birth_date": "2001-10-11",
+      "address_line": "27 Lower Meadow Lane",
+      "phone": "+1-617-555-0193",
+      "email": "august.rosen@example.test",
+      "marital_status": "single",
+      "summary": "Young construction laborer with ADHD on methylphenidate and seasonal allergic rhinitis, followed for routine primary care from 2023; quit smoking in 2024. In February 2026, after the practice last saw him, a high-speed crash left him with diffuse axonal injury, cerebral edema with raised ICP and sympathetic storming; the practice learns of it mostly through his mother and late hospital records.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T15:40",
+          "reason": "new patient intake",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Intake Call", "author": "front desk", "date": "2023-08-29T15:40",
+             "body": "Caller is a 21 y/o man looking for a new PCP; his old office is an hour each way and he works construction days so evening texting appeals to him. Membership explained, he will keep his employer plan for labs and meds. Takes a daily ADHD med and an allergy pill. New patient slot booked for the 12th at 7:30 so he can get to his site after. Release form for his prior PCP emailed."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:30",
+          "end": "2023-09-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, ADHD medication management",
+          "conditions": [
+            {"label": "Attention-deficit hyperactivity disorder, combined type", "action": "diagnosed", "note": "longstanding, managed by prior PCP"},
+            {"label": "Allergic rhinitis due to pollen", "action": "diagnosed", "note": "seasonal"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "note": "1/2 pack per day"}
+          ],
+          "medications": [
+            {"drug_text": "methylphenidate hydrochloride 20 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "QAM", "route": "Oral", "course": "chronic", "reason": "ADHD, combined type; continued from prior PCP"},
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "seasonal allergic rhinitis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 81.6, "height_cm": 180.3},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Construction laborer"},
+            {"item": "History of alcohol use", "value": "2-3 beers on weekends"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-09-12T08:20",
+             "body": "NEW PATIENT\n21M here to establish. Main need is continuing his ADHD medicine; previous PCP has prescribed it for years.\n\nADHD, combined type: on methylphenidate ER 20 mg every morning. Says it lets him get through a work day without losing track of tasks and keeps him safer around equipment. Takes it around 6 am, no doses after noon. Appetite a little lower at lunch, makes up at dinner. Sleeps 6-7 h. No palpitations, no chest discomfort, no fainting. Brother has ADHD too.\n\nAllergies (seasonal): itchy eyes and sneezing in spring and late summer, cetirizine 10 mg on bad days, OTC.\n\nPMH: ADHD, seasonal allergic rhinitis.\nPSH: T&A at 8. Right distal radius fracture at 16 repaired with plate and screws (ORIF), no ongoing wrist trouble.\nMeds: methylphenidate ER 20 mg qAM; cetirizine 10 mg prn.\nAllergies: NKDA.\nFH: father - HTN and high cholesterol. Mother - major depression. Older brother - ADHD.\nSH: construction laborer. Cigarettes about half a pack a day. Beer 2-3 on weekends only. No other substances. Single.\n\nExam: vitals as charted. Well appearing. TMs clear, turbinates mildly pale, oropharynx surgically absent tonsils. Neck supple. RRR without murmur, lungs clear, no wheeze. Abd soft. Well-healed volar scar R wrist, full ROM. Mood good, organized, linear.\n\nA/P\n1. ADHD, combined - stable on current dose. Continue methylphenidate ER 20 mg qAM. Mass PMP reviewed, fills consistent and from one prescriber. Controlled substance agreement reviewed and signed. Monthly e-scripts; visits q3-4 months with BP/pulse.\n2. Seasonal allergic rhinitis - cetirizine prn, fine.\n3. Tobacco - half ppd. Talked about it; he wants to cut down on his own for now. Offered help whenever he's ready.\n4. Records request to prior PCP for vaccines and anything else.\nRTC December."},
+            {"type": "Consent", "title": "Controlled Substance Agreement", "author": "PCP", "date": "2023-09-12T08:15",
+             "body": "Controlled substance agreement for methylphenidate ER reviewed with the patient and signed. One prescriber, one pharmacy, no early refills, lost scripts not replaced, PMP checked each prescription cycle. Copy given to patient."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "outside_records",
+          "start": "2023-10-10T11:05",
+          "reason": "prior primary care records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records From Prior Primary Care Office", "author": "front desk", "date": "2023-10-10T11:05",
+             "body": "36 pages from his previous family practice, came in after we resent the release. Covers 2016-2023. Childhood series complete per the immunization printout; HPV series of 3 completed in his early teens; Tdap given at age 12. ADHD followed there on methylphenidate ER 20 mg each morning, no dose changes in the last several years. Seasonal allergies on cetirizine. Surgical history matches what he told us. No labs in the last 3 years. Filed to media; PCP flagged."},
+            {"type": "Progress Notes", "title": "Outside Records Review", "author": "PCP", "date": "2023-10-11T07:10",
+             "body": "Prior records read. Nothing new. Tdap was 2013 - due now-ish, will do at physical. HPV done. Fine."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "measure": ["temp_c"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-24T16:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-24T16:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu Vaccine", "author": "RN", "date": "2023-10-24T16:55",
+             "body": "Came in after work for flu shot. Afebrile, feels well, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Left without issue."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "portal_message",
+          "start": "2023-11-07T20:12",
+          "reason": "methylphenidate refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2023-11-07T20:12",
+             "body": "hey doc, down to about 5 of the methylphenidate. same pharmacy as before"},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "PCP", "date": "2023-11-08T06:40",
+             "body": "Sent this morning. I put in December and January as well, each dated so the pharmacy can fill them a month apart. See you in December."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-12-12T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ADHD Follow-up", "author": "PCP", "date": "2023-12-12T07:55",
+             "body": "f/u ADHD. Work slower in winter, still going. Med doing its job, no side effects besides the lunchtime appetite thing. Sleep ok. Still smoking, roughly the same.\nBP and HR fine today. Wt stable.\nPMP reviewed - one prescriber, on schedule.\nPlan: continue methylphenidate ER 20 mg qAM; scripts for Feb-Apr when due. Asked about smoking again, not yet. March."}
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "portal_message",
+          "start": "2024-02-27T18:30",
+          "reason": "methylphenidate refill",
+          "documents": [
+            {"type": "Patient Message", "title": "meds", "author": "patient", "date": "2024-02-27T18:30",
+             "body": "pharmacy says they don't have a script for march?"},
+            {"type": "Patient Message", "title": "RE: meds", "author": "MA", "date": "2024-02-28T09:15",
+             "body": "Hi August, the doctor sent March this morning; the pharmacy confirmed they have it now. Your next visit is March 19 at 7:30."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-19T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ADHD Follow-up", "author": "PCP", "date": "2024-03-19T07:58",
+             "body": "Here for ADHD check. Back on a bigger crew this spring, focus fine on the med. Allergies starting up with the pollen, sneezing in the mornings, cetirizine helps. Smoking unchanged; says he'd like to stop before summer but isn't ready to set a date.\nVitals ok. Nose a little boggy, no polyps. Heart regular, lungs clear.\nPMP checked.\nA/P: ADHD stable, same dose, 3 dated scripts sent. AR - can take cetirizine every day through the season. Tobacco - motivational talk, offered patch/med options, wants to try alone first. Physical in June."}
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "portal_message",
+          "start": "2024-04-23T21:04",
+          "reason": "allergy symptoms",
+          "documents": [
+            {"type": "Patient Message", "title": "allergies", "author": "patient", "date": "2024-04-23T21:04",
+             "body": "is it ok to take the zyrtec every day right now? eyes are killing me on site with all the dust and pollen"},
+            {"type": "Patient Message", "title": "RE: allergies", "author": "PCP", "date": "2024-04-24T06:52",
+             "body": "Yes, once daily through the season is fine and works better than catching up after symptoms start. Tell me if it isn't enough."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-06-18T07:50"}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-06-18T07:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-18T07:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-18T07:55", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-06-18T07:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-06-18T07:15"},
+            {"procedure": "Immunization administration", "performed": "2024-06-18T07:50"},
+            {"procedure": "Venipuncture", "performed": "2024-06-18T07:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-06-18T08:05",
+             "body": "PHYSICAL, 22M\nFeels well. Working long days, hydrating. ADHD controlled on methylphenidate ER 20 qAM. Allergies better now that the spring pollen is done. Still half a pack a day, thinking about quitting.\nROS negative - no exertional chest pain, palpitations, SOB, weight change, mood trouble.\nPHQ-9 1. AUDIT-C 3, weekend beers only.\nFH: dad HTN/lipids, mom depression, brother ADHD.\n\nExam: vitals as charted. Alert, fit. HEENT normal. No thyromegaly or nodes. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, no organomegaly. Skin: no rashes. Joints full ROM incl R wrist. Neuro grossly normal.\n\nA/P\n- Health maintenance: Tdap today (last 2013). Screening labs today: CBC, CMP, lipid panel (dad's cholesterol), one-time HIV and hep C.\n- Tobacco: strongly advised to quit, he's leaning toward going cold turkey in a few weeks. Quitline number given.\n- ADHD: stable, continue.\n- RTC Sept."}
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T12:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Your Lab Results", "author": "PCP", "date": "2024-06-20T12:20",
+             "body": "August - everything from Tuesday is normal: blood counts, kidney and liver numbers, sugar and cholesterol. HIV and hepatitis C screens are negative; neither needs repeating unless your risk changes. Nothing to do."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "portal_message",
+          "start": "2024-08-20T19:47",
+          "reason": "smoking update",
+          "documents": [
+            {"type": "Patient Message", "title": "quit", "author": "patient", "date": "2024-08-20T19:47",
+             "body": "fyi i quit smoking. been about 2 weeks, no cigarettes since the start of the month. its rough at break time but im doing it"},
+            {"type": "Patient Message", "title": "RE: quit", "author": "PCP", "date": "2024-08-21T06:35",
+             "body": "That's great news, really. The first month is the hardest. If cravings get bad enough that you're about to start again, message me and we can add a patch or something for a few weeks - no shame in it. See you next month."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved", "onset": "2024-08-01", "note": "quit early August 2024"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2024-08-01"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-09-17T07:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ADHD Follow-up", "author": "PCP", "date": "2024-09-17T07:52",
+             "body": "Still not smoking - six weeks or so, quit at the beginning of August without meds. Chews gum on breaks. ADHD fine on the usual dose, focus good at work.\nVitals unremarkable. Exam brief: heart regular, lungs clear.\nPMP reviewed.\nA/P: Former smoker now, problem list updated; congratulated. ADHD - continue methylphenidate ER 20 mg, Oct-Dec scripts. Flu and COVID shots at a nurse visit next month. RTC Jan."}
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-15T16:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-15T16:46"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-15T16:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall Vaccines", "author": "RN", "date": "2024-10-15T16:55",
+             "body": "Flu (trivalent) into the left arm, 2024-25 COVID into the right arm. No fever, no reactions in the past. Observed 15 minutes, fine. Back to work tomorrow, told him a sore arm is common."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T10:20",
+          "reason": "medication supply",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy Call - Stock", "author": "RN", "date": "2024-12-03T10:20",
+             "body": "Pharmacist called: on backorder for methylphenidate ER 20 mg, the December script can't be filled this week. Patient prefers the chain pharmacy near his job site, which has it. Asked to cancel the remaining scripts at the old store. PCP sent December and January to the new pharmacy; old ones voided by phone. PMP shows no duplicate fill. Pt texted the new location."}
+          ]
+        }
+      ]
+    }
+  ]
+}

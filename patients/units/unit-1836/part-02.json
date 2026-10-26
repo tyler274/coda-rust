@@ -1,0 +1,663 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001836",
+   "events": [
+    {
+     "id": "2023-01-16a",
+     "kind": "specialist_visit",
+     "start": "2023-01-16T09:15",
+     "service": "Hematology",
+     "reason": "Macrocytic anemia",
+     "conditions": [
+      {
+       "label": "Vitamin B12 deficiency anemia",
+       "action": "diagnosed",
+       "onset": "2022-08-23"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "vitamin B12 1 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet (1000 mcg) by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Vitamin B12 deficiency"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-01-16T10:00",
+       "resulted": "2023-01-19T11:00",
+       "results": [
+        {
+         "test": "Homocysteine",
+         "loinc": "13965-9",
+         "unit": "umol/L",
+         "text": "Elevated"
+        },
+        {
+         "test": "Methylmalonic acid",
+         "loinc": "13964-2",
+         "unit": "umol/L",
+         "text": "Elevated"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2022",
+       "action": "done",
+       "date": "2023-01-16T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology consultation",
+       "author": "hematology",
+       "date": "2023-01-23T14:20",
+       "body": "Outside hematology and oncology group\nDate of service: 01/16/2023\nReferred for: macrocytic anemia\n\nMs. Duffy, 34, describes roughly six months of tiredness, recent intermittent palpitations, and a painful, raw tongue. She has ileocolonic Crohn's disease with a prior ileal resection, and she keeps a strict vegetarian diet. Her vitamin D deficiency has been treated and her PTH has normalized.\n\nCurrent medications: albuterol as needed, prenatal multivitamin, ferrous sulfate 325 mg daily, vitamin D3 2000 units daily.\nAllergies: penicillin, sulfonamides.\n\nExam: vital signs normal. Skin is pale. No jaundice, no lymphadenopathy, no splenomegaly. Neurologic screen without sensory loss.\n\nReferring labs (12/06/2022): hemoglobin 9.8 g/dL, MCV 105 fL.\nDrawn here: homocysteine elevated, methylmalonic acid elevated.\n\nImpression: Macrocytic anemia from vitamin B12 deficiency. The elevated MMA and homocysteine confirm a tissue-level deficiency. Loss of terminal ileum and a vegetarian diet both contribute.\n\nPlan: start cyanocobalamin 1000 mcg by mouth daily, indefinitely. Repeat CBC in about 3 months through her PCP; we expect the hemoglobin and MCV to normalize. Please send her back if they do not.\n\nThank you."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "lab_only",
+     "start": "2023-04-11T08:05",
+     "state": {
+      "labs": {
+       "Hemoglobin": 12.3,
+       "Mean Corpuscular Volume": 93
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-11T08:05",
+       "resulted": "2023-04-11T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.3
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 93
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-04-11T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC on B12",
+       "author": "PCP",
+       "date": "2023-04-12T09:20",
+       "body": "Karen - three months into B12 your hemoglobin is back to 12.3 and the red cell size is normal again (93). Nice response. Keep taking the B12 every day; it's long-term given your surgery. Fax copy to hematology."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: CBC on B12",
+       "author": "patient",
+       "date": "2023-04-12T12:48",
+       "body": "Great news. Tongue is totally back to normal and no more racing heart. Way more energy."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-16a",
+     "kind": "outside_records",
+     "start": "2023-05-16T11:00",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology annual letter",
+       "author": "gastroenterology",
+       "date": "2023-05-16T11:00",
+       "body": "Outside gastroenterology group\nVisit: 05/09/2023\n\nAnnual Crohn's review. Ms. Duffy has had no flares; stools formed, no bleeding or pain. Since last year she was found to be deficient in vitamin D and B12, now replaced through endocrinology and hematology; this is consistent with her ileal resection and we will support ongoing supplementation.\n\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3 2000 units, B12 1000 mcg daily.\nAllergies: penicillin, sulfa.\n\nExam: abdomen soft, nontender.\n\nAssessment: ileocolonic Crohn's disease, mild and inactive. No change; continue observation. Return in one year."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-27a",
+     "kind": "office_visit",
+     "start": "2023-06-27T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Painful intercourse, dysuria",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-06-27T14:20",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "placed",
+       "order": "Gynecology referral",
+       "category": "referral",
+       "to": "Obstetrics & Gynecology",
+       "reason": "dyspareunia, intermittent dysuria, anterior vaginal wall fullness"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-06-27T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-06-27T14:00",
+       "body": "Since around the new year, intercourse has become painful, and she gets spells of burning with urination every few weeks that settle on their own in a day or two. She also feels a sort of fullness or bulge at the front of the vagina. No fever, no flank pain, no discharge she's noticed. Has not had a UTI treated this year.\n\nUA today: negative.\n\nShe preferred a gynecologist do the pelvic exam rather than me today.\n\nA/P: dyspareunia, intermittent dysuria and anterior vaginal fullness, UA clean. Needs a pelvic exam by GYN. Referral placed. Return/call for fever or flank pain."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-17a",
+     "kind": "specialist_visit",
+     "start": "2023-07-17T11:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Dyspareunia, dysuria, anterior vaginal wall fullness",
+     "conditions": [
+      {
+       "label": "Urethral diverticulum",
+       "icd10": "N36.1",
+       "action": "diagnosed",
+       "onset": "2023-01-01"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-07-17T11:10",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gyn-referral-2023",
+       "action": "done",
+       "date": "2023-07-17T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology consultation",
+       "author": "gynecology",
+       "date": "2023-07-24T09:40",
+       "body": "Outside women's health practice\nDate of service: 07/17/2023\n\nHPI: 34-year-old with Crohn's disease, recently treated vitamin D and B12 deficiency, and a long history of urinary tract infections, sent for six months of dyspareunia and on-and-off dysuria. She also notices a full feeling along the front wall of the vagina.\n\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3, vitamin B12.\n\nPelvic exam: external genitalia normal. Speculum: cervix normal. On the anterior vaginal wall beneath the urethra there is a tender, soft mass; gentle pressure expresses a small amount of purulent fluid from the urethral meatus. Uterus and adnexa normal size, nontender.\n\nUrinalysis in clinic: unremarkable.\n\nAssessment: urethral diverticulum.\n\nPlan: reviewed the diagnosis and its link to her infections and pain. Follow up here as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "annual_physical",
+     "start": "2023-09-12T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Vitamin B12": 560
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-12T09:15",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-12T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-12T09:15",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        },
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2023-09-12T08:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-09-12T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-09-12T08:30",
+       "body": "34F, annual. Feels the best she has in two years: energy back, no bone pain, tongue fine. Taking D3 2000 and B12 1000 daily without misses. Ferrous sulfate and prenatal vitamin also continuing.\n\nSaw GYN in July - told she has a urethral diverticulum. Still some discomfort with sex, occasional burning, no fevers. GYN to follow as needed.\nCrohn's quiet per GI in May. Asthma: one albuterol use this summer.\n\nExam: well. Vitals per flowsheet. Mucous membranes pink. Lungs clear, heart regular. Abdomen nontender, port scars. No CVA tenderness. No edema. PHQ-2 0.\n\nA/P\n1. Vitamin D deficiency / secondary HPT: on maintenance D3; check level and calcium.\n2. B12 deficiency anemia: on oral B12; CBC and B12 level.\n3. Urethral diverticulum: per GYN.\n4. HM: Pap due - she asked to wait until after the GYN visit settled; will do with next physical. Flu/COVID next month at nurse visit."
+      },
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2023-09-14T08:10",
+       "body": "Everything in range: vitamin D, B12, calcium, kidney and liver function, blood count. Continue the same supplements."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "nurse_visit",
+     "start": "2023-10-17T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-17T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-17T16:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T16:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2023-10-17T16:10",
+       "body": "Flu (L arm) and 2023-24 COVID (R arm) given. VIS provided. No prior vaccine reactions. Pt left after 15 min, feeling fine."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "pharmacy",
+     "start": "2024-02-06T10:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill: albuterol",
+       "author": "MA",
+       "date": "2024-02-06T10:30",
+       "body": "eRx renewal request from pharmacy for albuterol HFA. Last filled 7 months ago. Approved per standing protocol, 1 inhaler + 3 refills. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "outside_records",
+     "start": "2024-05-21T09:45",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology annual letter",
+       "author": "gastroenterology",
+       "date": "2024-05-21T09:45",
+       "body": "Outside gastroenterology group\nVisit: 05/14/2024\n\nCrohn's disease, ileocolonic, status post ileocecal resection 2020. Asymptomatic over the past year. Exam benign. Continues vitamin D and B12 replacement, and we agree with indefinite B12.\n\nAllergies: penicillin, sulfonamides.\n\nPlan: continue observation without maintenance medication. Yearly review."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "annual_physical",
+     "start": "2024-09-17T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical with Pap",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-17T09:40",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-17T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-17T09:40",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        },
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2024-09-17T09:25",
+       "text": "Liquid-based cervical cytology, satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM, HPV negative. Repeat co-testing in 5 years."
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-09-17T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-09-17T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-09-17T09:00",
+       "body": "35F. Doing well overall. Supplements daily. Diverticulum: intermittent discomfort and burning still, nothing that has sent her to urgent care this year; GYN has not needed to see her back. Crohn's stable, GI saw her in May. Asthma minimal.\n\nExam: well. BP/HR per flowsheet. Neck no nodes. Lungs clear. Heart regular. Abdomen soft, nontender. Pelvic: external normal; speculum - cervix appears normal, co-test collected; mild tenderness anterior vaginal wall, known. No CVA tenderness.\n\nA/P\n1. HM: Pap/HPV done. PHQ-2 0. Flu shot next month.\n2. Vitamin D / B12 deficiencies: labs today.\n3. Urethral diverticulum, recurrent UTI hx: return early for fever, flank pain.\n4. Crohn's, asthma: stable."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "portal_message",
+     "start": "2024-09-24T13:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Pap and labs",
+       "author": "PCP",
+       "date": "2024-09-24T13:15",
+       "body": "Hi Karen - your Pap is normal and HPV negative, so you're set for 5 years. Vitamin D, B12, blood count and chemistries are normal. Have a good fall."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-08T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu vaccine",
+       "author": "RN",
+       "date": "2024-10-08T15:35",
+       "body": "Trivalent flu vaccine L deltoid. Declined COVID update today, will think about it. Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-11a",
+     "kind": "ed_visit",
+     "start": "2024-11-11T18:40",
+     "end": "2024-11-11T23:55",
+     "service": "Emergency Medicine",
+     "reason": "Fever, chills, left flank pain",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "diagnosed",
+       "onset": "2024-11-04",
+       "note": "left; E. coli"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute pyelonephritis"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-11-11T18:50",
+       "temp_c": 38.7,
+       "bp": [
+        110,
+        68
+       ],
+       "hr": 102,
+       "rr": 18
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-11-11T19:05",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "text": "Many"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-11T19:05",
+       "resulted": "2024-11-13T10:00",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2024-11-11T18:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2024-11-13T08:30",
+       "body": "Community hospital emergency department\nVisit 11/11/2024\n\nCC: fever, chills, left flank pain x3 days\nHPI: 35F with Crohn's disease and a urethral diverticulum. A week of burning and frequency, then three days of fevers with shaking chills and pain in the left flank. No vomiting, tolerating fluids.\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3, vitamin B12.\n\nTriage: T 38.7 C, BP 110/68, HR 102, RR 18.\nExam: flushed, nontoxic. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. Mild left CVA tenderness to percussion.\n\nUA: pyuria with bacteriuria. Urine culture sent.\n\nED course: acetaminophen, 1 L normal saline, ceftriaxone 1 g IV given without reaction. Fever down, HR 88 at recheck. Tolerating PO.\n\nImpression: acute pyelonephritis, left.\nDisposition: home on ciprofloxacin 500 mg twice daily for 7 days. Follow up with PCP this week. Return for vomiting, worsening pain or persistent fever.\n\nAddendum 11/13: urine culture >100K E. coli, susceptible to ciprofloxacin."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-13a",
+     "kind": "telephone",
+     "start": "2024-11-13T11:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-ED check",
+       "author": "RN",
+       "date": "2024-11-13T11:20",
+       "body": "Called after ED record arrived. Pt on day 2 of cipro, fever broke yesterday, flank still sore but better. Eating and drinking. Culture grew E. coli sensitive to cipro - she's on the right drug. Appt with PCP 11/19. Reviewed when to go back to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "office_visit",
+     "start": "2024-11-19T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, pyelonephritis",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-11-19T10:55",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-11-19T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Visit",
+       "author": "PCP",
+       "date": "2024-11-19T10:40",
+       "body": "Seen in ED 11/11 for left pyelo, E. coli sensitive to cipro. Finished cipro yesterday. No fever since day 2, flank pain gone, no dysuria. First kidney infection of her life.\n\nExam: afebrile, looks well. No CVA tenderness. Abdomen soft.\nUA today negative.\n\nA/P: left pyelonephritis, resolved. Diverticulum likely a reservoir. Reviewed hydration and early contact for symptoms; given her allergies, cipro worked well - note for next time."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

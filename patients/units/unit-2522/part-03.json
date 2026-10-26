@@ -1,0 +1,209 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002522",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "outside_records",
+          "start": "2024-01-16T11:00",
+          "reason": "Nephrology follow-up received",
+          "conditions": [
+            {"label": "Nephrotic syndrome", "action": "diagnosed", "onset": "2023-11-08", "note": "Per nephrology, albumin 2.1, 4.2 g/24 h"}
+          ],
+          "medications": [
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Nephrotic edema, prescribed by nephrology"}
+          ],
+          "state": {"labs": {"Creatinine": 1.9, "Albumin": 2.1, "Hemoglobin A1c": 7.2}},
+          "vitals": {"bp": [145, 90]},
+          "labs": [
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Albumin", "value": 2.1}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "g/(24.h)", "value": 4.2}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Fasting Glucose", "value": 130}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Hepatitis B Surface Antigen", "text": "Negative"}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Hepatitis C Antibody", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Follow-up", "author": "nephrology", "date": "2024-01-16T11:00", "body": "Outside nephrology group - follow-up, seen 01/08/2024.\n\nHe returns six months after the clinical diagnosis of IgA nephropathy. For about two months his legs have been swelling progressively, and he notices foamy urine at times. No infections in the interval, no new drugs, no medication changes, no recreational drugs.\n\nOther history: type 2 diabetes and hypertension on metformin and lisinopril; HIV on a bictegravir-based regimen with TMP-SMX prophylaxis through ID.\nAllergies: NKDA.\n\nExam: BP 145/90. Mild periorbital puffiness. Pitting edema 3+ both legs to the knees. Lungs clear.\n\nLabs today: serum albumin 2.1, 24-hour urine protein 4.2 g, creatinine as attached, fasting glucose 130, A1c 7.2%. Hepatitis B surface antigen and hepatitis C antibody negative.\n\nAssessment: nephrotic syndrome - heavy proteinuria with hypoalbuminemia and edema - in a patient with presumed IgA nephropathy. The picture has changed enough that tissue is needed.\nPlan:\n- Percutaneous kidney biopsy performed today under ultrasound guidance, left lower pole; no complications, observed and discharged. Pathology to follow.\n- Furosemide 40 mg daily for edema; low-salt diet.\n- Continue lisinopril.\n- BMP in 2 weeks; return after pathology."}
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "outside_records",
+          "start": "2024-01-22T15:20",
+          "reason": "Kidney biopsy pathology received",
+          "conditions": [
+            {"label": "Focal segmental glomerulosclerosis", "icd10": "N04.1", "action": "diagnosed", "onset": "2024-01-08", "note": "Kidney biopsy"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-01-08T11:30", "issued": "2024-01-19T16:00", "text": "Specimen: native kidney, left, percutaneous needle core biopsy.\nLight microscopy: cortex and medulla with adequate glomeruli for evaluation. Several glomeruli show segmental sclerosis with hyalinosis; the remaining glomeruli are unremarkable by light microscopy. Tubules, interstitium and vessels without specific diagnostic change.\nImmunofluorescence and electron microscopy: no significant immune-complex deposition.\nComment: findings correlate with the clinical history of nephrotic-range proteinuria.", "conclusion": "Focal segmental glomerulosclerosis pattern of injury; no significant immune-complex deposition."}
+          ],
+          "documents": [
+            {"type": "Pathology Report", "title": "Kidney Biopsy - Surgical Pathology", "author": "pathology", "date": "2024-01-22T15:20", "body": "Native kidney biopsy collected 01/08/2024, report signed 01/19/2024 and copied to primary care.\nDiagnosis: focal segmental glomerulosclerosis pattern - segmental sclerosis and hyalinosis in some glomeruli, without significant immune-complex deposition. Full report attached."},
+            {"type": "Telephone Encounter", "title": "Biopsy result reviewed", "author": "PCP", "date": "2024-01-23T08:30", "body": "Read biopsy. FSGS pattern. Nephrology will direct; they had kept IgA nephropathy as the clinical diagnosis and will now follow both. Added FSGS and nephrotic syndrome to list, added furosemide from nephrology. Called pt - he had already heard from nephrology. Swelling slowly better on the water pill. Visit Feb."}
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, kidney biopsy results",
+          "state": {"weight_kg": 86.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-02-12T10:10", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "CBC with Differential", "collected": "2024-02-12T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2024-02-12T10:10", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-12T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-02-12T10:30", "body": "F/u after biopsy. Swelling down to the ankles, puffiness around eyes gone. Urinating more on furosemide, no dizziness. Foamy urine continues.\n\nHIV - says the last couple months have been bad for pills, \"stuff at home\". Didn't want to go into it. Missed his ID visit in January. Urged him to reschedule.\n\nMeds: metformin 1000 BID, lisinopril 20, furosemide 40, bictegravir/FTC/TAF, TMP-SMX.\n\nExam: BP as charted, wt 86 kg. No periorbital edema. Lungs clear. Trace to 1+ ankle edema. Biopsy site healed.\n\nA/P\n1. FSGS / nephrotic syndrome, IgA nephropathy, CKD 3a - per nephrology. CMP today for potassium and creatinine on the diuretic.\n2. HIV - please call ID this week. Offered to have our MA call with him; he said he'd do it.\n3. DM2 - A1c 7.2 at nephrology last month.\n4. HTN - still above goal, continue current.\n5. Smoking - advised again.\nRTC 2-3 months."}
+          ]
+        },
+        {
+          "id": "2024-02-14a",
+          "kind": "portal_message",
+          "start": "2024-02-14T13:00",
+          "reason": "Result note",
+          "documents": [
+            {"type": "Result Note", "title": "Labs from Monday", "author": "PCP", "date": "2024-02-14T13:00", "body": "Potassium and sodium ok on the water pill. Kidney number about the same as January. Albumin still low, which goes with the kidney protein leak. Nephrology has a copy. Did you get through to the ID clinic?"}
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "office_visit",
+          "start": "2024-04-22T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-04-22b",
+          "kind": "telephone",
+          "start": "2024-04-22T08:10",
+          "reason": "Cancellation",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2024-04-22T08:15", "body": "Pt called this am to cancel 2:20, no ride. Offered video, he declined, will call back to rebook. Left task for MA to follow up in 2 wks."}
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "pharmacy",
+          "start": "2024-05-13T10:30",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Refills: metformin, lisinopril, furosemide", "author": "MA", "date": "2024-05-13T10:40", "body": "Pharmacy requests metformin 1000 mg, lisinopril 20 mg, furosemide 40 mg (furosemide originally from nephrology, now asking us). 90 days sent. Called pt to rebook the cancelled April visit - voicemail, left message to call."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling, foamy urine",
+          "conditions": [
+            {"label": "HIV-related opportunistic skin infection", "icd10": "L08.9", "action": "diagnosed", "onset": "2024-07-16", "note": "Organism not identified; to ID"},
+            {"label": "Medication noncompliance", "icd10": "Z91.148", "action": "diagnosed", "onset": "2024-01-15", "note": "Antiretrovirals not taken for about 6 months"}
+          ],
+          "state": {"bp": [150, 95], "weight_kg": 89.0, "labs": {"Creatinine": 3.2}},
+          "vitals": {"bp": [150, 95]},
+          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2024-07-16T11:20", "results": [{"test": "Urine Protein", "text": "4+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Glucose", "text": "Negative"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-16T11:30", "resulted": "2024-07-17T07:30", "results": [{"test": "Creatinine", "value": 3.2}, {"test": "Albumin"}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
+            {"panel": "CBC with Differential", "collected": "2024-07-16T11:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2024-07-16T11:30", "resulted": "2024-07-17T09:00", "results": [{"test": "CD4 Count", "value": 180, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2024-07-16T11:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-07-16T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-07-16T12:10", "body": "Came in on his own after 5 months away. Legs swelling again for the past 2 weeks, urine foamy on and off.\n\nHe told me today he has not taken his HIV medicine at all for about 6 months, since around January. Ran out, didn't refill, then didn't want to face ID. TMP-SMX also mostly not taken. Still taking metformin, lisinopril, furosemide most days. Has not seen nephrology since January.\n\nROS: no fever, cough, dyspnea, chest pain, dysphagia, diarrhea, headache. Noticed some spots on his skin.\n\nExam: BP 150/95, wt 89 kg (86 in Feb). Not in distress. No periorbital edema today. Pitting edema both legs up to the knees. Lungs clear. Heart regular. Skin: scattered lesions on the trunk and arms, appearance consistent with an HIV-related opportunistic skin infection; organism not clear clinically. Mouth clear.\n\nOffice UA: 4+ protein. Microscopy with oval fat bodies.\n\nA/P\n1. Nephrotic syndrome / FSGS, IgA nephropathy, CKD 3a - edema recurring, likely worse with untreated HIV. CMP, CBC, A1c today. Will call with creatinine and contact nephrology.\n2. HIV off ART x 6 months - CD4 today. Needs to be back with ID now; long talk, no lecture. He agreed to restart if we help him get in.\n3. Skin infection, HIV-related - ID to evaluate at re-engagement.\n4. Medication nonadherence - documented; case management referral through ID again.\n5. HTN - above goal. Continue lisinopril 20 and furosemide 40.\nWill call tomorrow."}
+          ]
+        },
+        {
+          "id": "2024-07-17a",
+          "kind": "telephone",
+          "start": "2024-07-17T10:15",
+          "reason": "Results call",
+          "conditions": [
+            {"label": "Acute kidney injury", "icd10": "N17.9", "action": "diagnosed", "onset": "2024-07-16", "note": "Creatinine 3.2 from baseline 1.6-1.9"}
+          ],
+          "orders": [
+            {"id": "id-referral-2024", "action": "placed", "order": "Infectious disease referral, re-engagement", "category": "referral", "to": "Infectious Disease", "reason": "HIV off ART 6 months, CD4 180, skin infection"},
+            {"id": "lab-2024-08", "action": "placed", "order": "Repeat BMP and CBC end of August", "category": "lab", "reason": "AKI on CKD"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Creatinine and CD4 results", "author": "PCP", "date": "2024-07-17T10:40", "body": "Creatinine 3.2 (was 1.6-1.9). CD4 180. Potassium ok.\n\nAKI on CKD. Spoke with nephrology on call: they will move up his appointment; agree with restarting ART promptly through ID, keep up the furosemide, recheck labs. No urgent admission needed with normal potassium and no symptoms.\n\nCalled pt with all of this. He has not taken any ibuprofen. ID referral faxed marked urgent; clinic nurse will call him. Lab recheck end of August, video visit right after."},
+            {"type": "Telephone Encounter", "title": "ID appointment", "author": "MA", "date": "2024-07-18T13:00", "body": "ID clinic scheduled pt Aug 12, 9:00. Pt informed and confirmed. Case manager there aware."}
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "outside_records",
+          "start": "2024-08-19T09:45",
+          "reason": "ID follow-up letter received",
+          "orders": [{"id": "id-referral-2024", "action": "done", "date": "2024-08-19T09:45"}],
+          "labs": [
+            {"panel": null, "collected": "2024-08-12T09:30", "results": [{"test": "HIV-1 RNA Viral Load", "value": 72000}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Re-engagement Visit", "author": "infectious disease", "date": "2024-08-19T09:45", "body": "ID clinic, seen 08/12/2024 after a gap of about 14 months.\n\nHIV-1 with poor adherence; reports no antiretrovirals since roughly January. Recent CD4 at primary care 180. HIV-1 RNA today 72,000 copies/mL.\nRecent kidney course noted: FSGS on biopsy in January, nephrotic syndrome, creatinine 3.2 last month.\n\nExam: afebrile. Skin lesions on trunk and arms as described by primary care - HIV-related opportunistic skin infection; we will follow these here. Oropharynx clear. Lungs clear. Leg edema.\n\nPlan:\n- Restart bictegravir/emtricitabine/TAF daily today with resistance testing sent. Kidney function will be watched closely.\n- Restart TMP-SMX DS daily.\n- Case manager re-assigned; weekly pharmacy delivery restarted.\n- Return 4 weeks.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "lab_only",
+          "start": "2024-08-29T08:20",
+          "state": {"labs": {"Creatinine": 2.4}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-08-29T08:20", "results": [{"test": "Creatinine", "value": 2.4}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-29T08:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2024-08-29T08:20"}],
+          "orders": [{"id": "lab-2024-08", "action": "done", "date": "2024-08-29T16:00"}]
+        },
+        {
+          "id": "2024-09-02a",
+          "kind": "telehealth_visit",
+          "start": "2024-09-02T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up of kidney function and HIV restart",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-09-02T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-09-02T11:00", "body": "Holiday Monday; he asked for the video slot and I had time.\n\nRestarted ART at ID on Aug 12, says he has taken it every day for three weeks, blister packs are coming weekly. TMP-SMX too. Swelling is down, now mostly at the ankles by evening. Urine still foamy. No fever, cough, diarrhea, headache. Skin spots unchanged, ID is following them.\n\nLabs 8/29: creatinine 2.4, down from 3.2 in July but well above his 1.6-1.9 baseline. Potassium fine.\n\nNo vitals (video).\n\nA/P\n1. AKI on CKD 3a - improving; not back to baseline. Recheck with next visit. Nephrology appointment pending; reminded him.\n2. HIV - back on bictegravir/FTC/TAF and TMP-SMX through ID. Keep going.\n3. FSGS, IgA nephropathy, nephrotic syndrome - furosemide 40, lisinopril 20.\n4. DM2 - metformin as before.\n5. Skin infection - per ID.\nRTC in person in 3 months with labs. Front desk to book."}
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T09:30",
+          "reason": "Scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Follow-up scheduling attempt", "author": "front desk", "date": "2024-09-03T09:35", "body": "Called to book 3 mo f/u per PCP. No answer, voicemail full. Sent portal message with scheduling link."}
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "portal_message",
+          "start": "2024-11-04T12:00",
+          "reason": "Outreach",
+          "documents": [
+            {"type": "Patient Message", "title": "Time for your follow-up", "author": "RN", "date": "2024-11-04T12:00", "body": "Hi Andre, this is the nurse from your primary care office. You're due for your kidney labs and a visit with the doctor, and your flu shot. Reply here or call and we'll find a time that works with your ride. We can also do the visit by video and arrange the labs separately."}
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "pharmacy",
+          "start": "2024-12-02T15:10",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Refills: metformin, lisinopril, furosemide", "author": "MA", "date": "2024-12-02T15:15", "body": "Pharmacy refill requests x3. Not seen in person since July, overdue for labs. PCP approved 30-day supply each with note to pharmacy: patient must schedule visit/labs for further refills. Portal message from Nov unread."}
+          ]
+        }
+      ]
+    }
+  ]
+}

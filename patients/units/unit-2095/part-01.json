@@ -1,0 +1,304 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002095",
+      "given": "Todd",
+      "family": "Jacobs",
+      "birth_date": "1975-12-19",
+      "address_line": "14 Quarry Hill Road",
+      "phone": "+1-774-555-0172",
+      "email": "todd.jacobs@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker on disability with HIV/AIDS on ART at an outside ID clinic, heavy current smoker, history of IV drug use in remission. Joins in 2021 with weakness and dysphagia that become a hereditary myopathy and achalasia; Kaposi sarcoma in 2024 treated with liposomal doxorubicin; drug-induced urticarial vasculitis from SMX-TMP in 2026 after his last visit.",
+      "events": [
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T09:40",
+          "end": "2021-06-08T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; weakness and trouble swallowing",
+          "conditions": [
+            {"label": "Human immunodeficiency virus disease", "action": "diagnosed", "note": "AIDS by history (recurrent bacterial pneumonia); ART through outside ID clinic"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "note": "1.5 ppd since age 20, 35 pack-years"},
+            {"label": "History of intravenous drug use (in remission)", "icd10": "F19.21", "action": "history"},
+            {"label": "History of recurrent bacterial pneumonia", "icd10": "Z87.01", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV, prescribed by ID clinic"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "pain"},
+            {"drug": "24 HR nicotine 0.875 MG/HR Transdermal System", "action": "start", "sig": "Apply 1 patch to skin daily, rotate sites", "dose": {"value": 21, "unit": "mg/24h"}, "frequency": "DAILY", "route": "Transdermal", "course": "chronic", "reason": "tobacco use"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 78.0, "height_cm": 178.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-08T10:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-08T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2021-06-08T10:40", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Construction worker, currently on medical disability"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2021-06-08T10:35"}],
+          "orders": [
+            {"id": "neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "progressive limb weakness, dysphagia, brother with myopathy"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-06-08T11:20", "body": "45M here to set up primary care. Has not had regular primary care for a while; his ID clinic wanted him to have a PCP for everything else.\n\nCC: getting weaker, and food sticks.\n\nHPI: Over the last several months he has noticed his arms and legs giving out on him. Hard to get up off the floor, carrying drywall was the first thing to go and he hasn't worked construction since he went out on disability. No falls yet. Separately, trouble getting food and sometimes drinks to go down; he eats slowly and drinks a lot of water with meals. He wonders if the two are connected because his brother has a muscle disease that started with leg weakness.\n\nPMH: HIV, told he has AIDS because of repeated bacterial pneumonias years ago at the old practice. Followed at an outside ID clinic, on bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily, says he doesn't miss doses. Recurrent bacterial pneumonia in the past. Former IV drug use, in remission for years, not interested in going into detail today and I didn't push.\nMeds: B/F/TAF daily (ID prescribes). Acetaminophen 500 mg q6h prn aches.\nAllergies: penicillin (rash).\nFH: brother with progressive limb-girdle weakness, told it is genetic. Father COPD. Paternal uncle lung cancer at 62.\nSH: smokes 1.5 packs/day since age 20, about 35 pack-years. Alcohol 1-2 drinks a month. On disability from construction.\n\nROS: no fever, no chest pain. Denies weight loss. No rash.\n\nExam: vitals as recorded. Pleasant, in no distress. Oropharynx clear. Lungs clear bilaterally. RRR, no murmur. Abdomen soft. Has to push off his thighs to stand from the chair. Reflexes present and symmetric. Skin without lesions.\n\nA/P:\n1. Progressive limb weakness + dysphagia, family history of a genetic myopathy. Neurology referral placed; likely needs neuromuscular workup.\n2. HIV/AIDS - per ID. Requesting their last note and labs.\n3. Tobacco use disorder - wants to try something. Nicotine patch 21 mg daily sent. Talked about cutting down while on it. Not setting a quit date yet.\n4. Hx IVDU in remission. HCV antibody today.\n5. Baseline CBC, CMP.\n6. Records request to prior practice.\nRTC 3-4 months, sooner once neuro weighs in."}
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T14:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2021-06-10T14:05", "body": "Hi Todd, your blood counts, kidney and liver tests came back fine. Hepatitis C antibody is negative. Neurology should be calling you to schedule; let us know if you haven't heard from them in two weeks."},
+            {"type": "Patient Communication", "title": "RE: Lab results", "author": "patient", "date": "2021-06-10T19:31", "body": "ok thanks. they called already, appt is end of july"}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T11:15",
+          "labs": [
+            {"panel": null, "collected": "2021-05-20T09:30", "results": [
+              {"test": "CD4 Count", "value": 342, "unit": "cells/uL"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-06T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-27T13:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Infectious Disease Clinic Note (05/20/2021)", "author": "infectious disease", "date": "2021-06-22T11:15", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 05/20/2021\n\n45-year-old man with HIV, AIDS-defining history of recurrent bacterial pneumonia, here for routine follow-up. Taking bictegravir/emtricitabine/tenofovir alafenamide daily, reports full adherence, no side effects. No recent infections.\n\nAllergies: penicillin (rash).\nSocial: active smoker, about 1.5 ppd. Prior IVDU, in sustained remission.\n\nLabs today: CD4 342 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: virologically suppressed on current regimen. CD4 above 200, no OI prophylaxis indicated.\nPlan: continue B/F/TAF, 90-day supply sent. Return in about 1 year with labs, sooner as needed. Encouraged smoking cessation. Patient states he is establishing with a new PCP; copy of this note to be sent."},
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2021-06-22T11:20", "body": "Records from prior primary care office, received by fax.\n\nProblem list on file: HIV disease, followed by ID. Tobacco use. History of pneumonia, several episodes. History of IV drug use.\nAllergies: PCN - rash.\nImmunization record: COVID-19 Pfizer 04/06/2021 and 04/27/2021 (pharmacy, per state registry). Tdap and influenza dates not documented.\nLast visit in file was a routine follow-up with normal vitals. Lipids at that visit within normal limits.\nNo colorectal cancer screening on file.\n\nScanned to chart."},
+            {"type": "Miscellaneous", "title": "Records received", "author": "front desk", "date": "2021-06-22T11:25", "body": "Prior PCP records and ID clinic note received by fax. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2021-08-16a",
+          "kind": "specialist_visit",
+          "start": "2021-08-16T13:30",
+          "service": "Neurology",
+          "reason": "Progressive muscle weakness and dysphagia",
+          "conditions": [
+            {"label": "Hereditary myopathy with chaperone protein abnormality", "icd10": "G71.8", "action": "diagnosed", "onset": "2021-08-16"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2021-07-27T10:00", "issued": "2021-08-10T15:00", "text": "Specimen: skeletal muscle, left quadriceps, open biopsy.\nGross: received in multiple portions, fresh and in fixative.\nMicroscopic: skeletal muscle with myopathic changes. Immunohistochemistry demonstrates abnormal accumulation of chaperone proteins within muscle fibers. No inflammatory infiltrate. No vasculitis.\nComment: findings support a hereditary myopathy involving chaperone protein abnormality. Correlate with genetic evaluation.", "conclusion": "Skeletal muscle with abnormal chaperone protein accumulation, consistent with a hereditary myopathy."}
+          ],
+          "orders": [
+            {"id": "neuro-referral", "action": "done", "date": "2021-08-16T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2021-08-24T09:10", "body": "OUTSIDE NEUROLOGY - NEUROMUSCULAR CLINIC\nDate of service: 08/16/2021\nReason for referral: weakness, swallowing difficulty\n\nThank you for sending Mr. Jacobs, a 45-year-old right-handed man with HIV, seen first in July for slowly worsening weakness of the arms and legs over many months. He also has trouble swallowing. His brother has a progressive limb-girdle pattern of weakness attributed to a genetic myopathy.\n\nWe obtained a left quadriceps muscle biopsy on 07/27/2021. Today we reviewed the result with him: abnormal accumulation of chaperone proteins within the muscle fibers, no inflammation.\n\nMeds: bictegravir/emtricitabine/TAF daily, acetaminophen as needed, nicotine patch.\nAllergies: penicillin (rash).\nSocial: smoker, 35 pack-years. Rare alcohol. On medical disability from construction work.\nFamily: brother with genetic myopathy, as above.\n\nImpression: hereditary myopathy with chaperone protein abnormality. The family history fits an inherited process. Genetic counseling offered; he will think about it.\n\nRegarding the dysphagia: he describes both solids and liquids hanging up. That pattern is not typical for a myopathic oropharyngeal problem, and I would recommend gastroenterology evaluation for an esophageal cause.\n\nPlan: home exercise program, avoid exhausting effort. Return in 1 year, sooner if breathing or swallowing change. Will monitor respiratory function at follow-up.\n\nNeurology"}
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "telephone",
+          "start": "2021-08-26T12:10",
+          "orders": [
+            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "dysphagia to solids and liquids"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Neurology results discussed", "author": "PCP", "date": "2021-08-26T12:25", "body": "Called pt. Went over the neuromuscular letter: biopsy shows an inherited myopathy, same family of problem as his brother. He was not surprised. Neuro wants GI to look at the swallowing, which makes sense to me - solids and liquids both. GI referral placed. He will keep up the home exercises. Asked how the patch is going: wearing it most days, down to about a pack a day on a good day."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "office_visit",
+          "start": "2021-10-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, weakness, smoking",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T15:50"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-10-12T15:52"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-12T15:45"},
+            {"procedure": "Immunization administration", "performed": "2021-10-12T15:52"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-10-12T16:30", "body": "S: Checking in. Neuro diagnosed an inherited myopathy in August. Doing the stretches they gave him most days. Swallowing about the same, eats slow, a lot of water. GI appointment is set for early November. Smoking back up to 1.5 ppd, patch helps a little in the mornings. Not ready to set a date.\nNo fevers, cough or breathing trouble.\n\nO: vitals as charted. NAD. Lungs clear. Heart regular. Stands from the chair with a push from his hands, unchanged from June.\n\nA/P:\n- Hereditary myopathy - neuro following; annual review there.\n- Dysphagia - GI pending.\n- HIV - ID clinic, suppressed in May.\n- Tobacco - counseled again, keep the patch, try to delay the first cigarette.\n- Flu shot and PCV20 today (immunocompromised).\nRTC 3-4 months."},
+            {"type": "Nursing Note", "title": "Immunizations", "author": "MA", "date": "2021-10-12T15:55", "body": "Influenza quadrivalent 0.5 mL IM left deltoid. PCV20 0.5 mL IM right deltoid. VIS given. Tolerated well, observed 15 min."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "specialist_visit",
+          "start": "2021-12-14T10:00",
+          "service": "Gastroenterology",
+          "reason": "Progressive dysphagia to solids and liquids",
+          "vitals": {"temp_c": 36.9, "bp": [126, 78], "hr": 74, "rr": 14},
+          "conditions": [
+            {"label": "Achalasia", "action": "diagnosed", "onset": "2021-12-14"}
+          ],
+          "medications": [
+            {"drug_text": "nifedipine 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 30, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "achalasia, prescribed by GI"}
+          ],
+          "procedures": [
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2021-11-30T08:30"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2021-11-30T08:45", "issued": "2021-12-03T14:00", "text": "Specimen: gastroesophageal junction, biopsies.\nMicroscopic: squamous and glandular mucosa without dysplasia or malignancy. No eosinophilia.", "conclusion": "Benign gastroesophageal junction mucosa. No dysplasia or malignancy."}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "done", "date": "2021-12-14T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Follow-up Consultation", "author": "gastroenterology", "date": "2022-01-25T10:40", "body": "OUTSIDE GASTROENTEROLOGY ASSOCIATES\nDate of service: 12/14/2021\nReferring: primary care\n\nMr. Jacobs returns to go over his swallowing workup. He has HIV, a hereditary myopathy diagnosed by neurology this summer, and has been seen once here already. For several months food and liquids alike hang up behind the breastbone. He brings back undigested food, sometimes his breath smells bad, and he gets a vague, mild chest discomfort with meals. No weight loss, no pain with swallowing, no heartburn.\n\nMeds: bictegravir/emtricitabine/TAF, acetaminophen prn, nicotine patch.\nAllergies: penicillin (rash).\nSocial: current smoker, 35 pack-years. Alcohol 1-2 drinks monthly. On medical disability.\nFamily: brother with a genetic myopathy; father COPD.\n\nVitals: T 36.9 C, BP 126/78, HR 74, RR 14.\nExam: unremarkable.\n\nStudies since the first visit:\n- Barium esophagram: dilated esophagus with retained contrast and smooth tapering to a narrow segment at the gastroesophageal junction (bird's-beak appearance).\n- Upper endoscopy 11/30/2021: retained food in a dilated esophagus. No mass and no stricture at the GE junction; the scope passed with gentle pressure. GE junction biopsies benign.\n- High-resolution esophageal manometry: absent peristalsis with incomplete relaxation of the lower esophageal sphincter.\n\nImpression: achalasia. Endoscopy does not suggest a mechanical or malignant cause.\n\nPlan: we discussed options. Starting nifedipine extended-release 30 mg daily. Eat upright, small bites, liquids with meals, stay upright after eating. Return in 6 months.\n\nGastroenterology"},
+            {"type": "Miscellaneous", "title": "GI records received", "author": "front desk", "date": "2022-01-25T10:45", "body": "GI consult note from 12/14/21 received by fax today after our request. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-01-06a",
+          "kind": "portal_message",
+          "start": "2022-01-06T20:12",
+          "documents": [
+            {"type": "Patient Communication", "title": "new med from GI", "author": "patient", "date": "2022-01-06T20:12", "body": "fyi the stomach doctor put me on nifedipine 30 once a day, they said its for the esophagus muscle. they said it might drop my blood pressure. is that ok with my HIV pill"},
+            {"type": "Patient Communication", "title": "RE: new med from GI", "author": "PCP", "date": "2022-01-07T08:50", "body": "Thanks for telling me. No problem combining nifedipine with your HIV medicine. If you get lightheaded standing up or your ankles swell, let me know. We haven't received the GI note yet so I'll ask them to fax it. See you in February."}
+          ]
+        },
+        {
+          "id": "2022-02-15a",
+          "kind": "office_visit",
+          "start": "2022-02-15T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up achalasia, myopathy",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-02-15T10:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-02-15T11:15", "body": "Follow-up. GI note now in: achalasia on esophagram, endoscopy and manometry; endoscopy benign. On nifedipine ER 30 daily since mid-December. No dizziness, no ankle swelling. Still regurgitates sometimes at night, sleeps propped on two pillows. Weakness stable by his account. Smoking 1-1.5 ppd with the patch.\n\nExam: BP and HR as charted, fine on nifedipine. Lungs clear. No edema.\n\nAssessment/plan:\n- Achalasia - GI managing, nifedipine ER 30. Back to GI in June.\n- Hereditary myopathy - neuro in August.\n- HIV - ID visit due in spring.\n- Tobacco use disorder - patch refilled, counseled.\nPhysical in May with fasting labs."},
+            {"type": "Medication Refill", "title": "Nicotine patch refill", "author": "PCP", "date": "2022-02-15T11:16", "body": "Nicotine 21 mg/24 hr patch, #28, 2 refills, sent to his pharmacy."}
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "specialist_visit",
+          "start": "2022-04-26T09:15",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2022-04-26T09:40", "results": [
+              {"test": "CD4 Count", "value": 371, "unit": "cells/uL"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2022-05-03T13:00", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 04/26/2022\n\nHIV follow-up. Interval diagnoses from outside: hereditary myopathy (neurology), achalasia (GI, started on nifedipine ER). No interactions of concern with his ART. Adherent to bictegravir/emtricitabine/TAF.\n\nLabs: CD4 371 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: HIV well controlled. Plan: continue regimen, labs and visit in 12 months. Smoking cessation encouraged."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-17T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-05-17T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-05-17T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2022-05-17T09:15", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}, {"test": "Urine Glucose"}]},
+            {"panel": null, "collected": "2022-05-17T09:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-05-17T09:20"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-05-17T09:05"},
+            {"procedure": "Immunization administration", "performed": "2022-05-17T09:20"}
+          ],
+          "orders": [
+            {"id": "fit-2022", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-05-17T10:00", "body": "Annual exam, 46M.\n\nInterval: saw ID last month, viral load still undetectable, CD4 in the 300s. Swallowing about the same on nifedipine, still some nighttime regurgitation. Weakness slowly creeping per him, still walks fine on level ground, stairs harder. Smoking unchanged, wears the patch most days.\nDiet: soft foods, small meals. Activity: home exercises.\nPHQ-9 3.\n\nExam: vitals as charted. Well appearing. HEENT normal, dentition fair. Neck supple, no nodes. Lungs clear. RRR. Abdomen soft, nontender, no organomegaly. Skin: no rashes or lesions. Neuro: proximal pushing off to rise, otherwise unchanged. No edema.\n\nPreventive:\n- Colorectal: none prior, age 46. FIT kit given.\n- Shingrix #1 today (HIV); #2 in 2 months.\n- Hep C done 2021, negative.\n- Labs: CBC, CMP, lipids, A1c, UA.\n- Tobacco: counseled, 5 minutes. Not ready to quit.\n\nRTC fall."},
+            {"type": "Nursing Note", "title": "Shingrix dose 1", "author": "MA", "date": "2022-05-17T09:22", "body": "Shingrix 0.5 mL IM left deltoid. Dose 2 due in 2 months, nurse visit booked July."}
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:30",
+          "documents": [
+            {"type": "Patient Communication", "title": "Physical labs", "author": "PCP", "date": "2022-05-19T12:30", "body": "Todd - all of your labs from the physical were normal: blood count, kidney and liver function, sugar, cholesterol and urine. Don't forget to send back the stool card."}
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "lab_only",
+          "start": "2022-06-07T11:00",
+          "labs": [
+            {"panel": null, "collected": "2022-06-03T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2022", "action": "done", "date": "2022-06-07T11:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "RN", "date": "2022-06-07T15:10", "body": "FIT negative. Pt notified by portal. Repeat in 1 year."}
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "nurse_visit",
+          "start": "2022-07-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-07-19T13:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-07-19T13:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #2", "author": "RN", "date": "2022-07-19T13:55", "body": "Here for the second Shingrix. Said the first one knocked him out for a day. Shingrix 0.5 mL IM right deltoid, tolerated. Series complete."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "specialist_visit",
+          "start": "2022-08-23T14:00",
+          "service": "Neurology",
+          "reason": "Myopathy follow-up",
+          "reports": [
+            {"study": "Spirometry", "performed": "2022-08-23T13:30", "text": "Good effort and reproducibility. FVC, FEV1 and FEV1/FVC within normal limits. No restrictive or obstructive pattern. Seated and supine FVC similar.", "conclusion": "Normal spirometry."}
+          ],
+          "procedures": [{"procedure": "Spirometry", "performed": "2022-08-23T13:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Follow-up", "author": "neurology", "date": "2022-09-01T09:30", "body": "OUTSIDE NEUROLOGY - NEUROMUSCULAR CLINIC\nDate of service: 08/23/2022\n\nOne-year follow-up for hereditary myopathy with chaperone protein abnormality. He feels the weakness has progressed slowly; stairs and getting up from low seats are harder than last year. No shortness of breath, no orthopnea. Swallowing now attributed to achalasia by GI, on nifedipine.\n\nExam: slowly progressive limb weakness compared with last year; gait steady.\nSpirometry today normal, no difference sitting versus lying.\n\nPlan: continue home exercise program; physical therapy referral offered, he declined for now. Genetic counseling still open to him. Return 1 year or sooner with breathing symptoms.\n\nNeurology"}
+          ]
+        },
+        {
+          "id": "2022-10-10a",
+          "kind": "office_visit",
+          "start": "2022-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-up",
+          "conditions": [
+            {"label": "Lung cancer screening candidate (high-risk smoker)", "icd10": "Z12.2", "action": "diagnosed", "onset": "2022-10-10", "note": "35 pack-years, current smoker; annual LDCT from age 50 (Dec 2025)"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-10T09:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-10T09:37"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-10T09:30"},
+            {"procedure": "Immunization administration", "performed": "2022-10-10T09:37"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-10-10T10:05", "body": "Routine follow-up: HIV, inherited myopathy, achalasia. Neuro saw him in August (letter in chart, spirometry normal). GI follow-up done over the summer per him, no changes. Feels fine today, nothing new to report.\n\nHe has been thinking about lung cancer - father has COPD, uncle had lung cancer, he knows he smokes too much. Wants to know if there's a test.\n\nExam: vitals normal. Lungs clear to auscultation throughout, no wheeze or crackles. Heart regular.\n\nA/P:\n- Lung cancer risk: 35 pack-years and still smoking, so he qualifies for annual low-dose CT screening by smoking history, but screening starts at age 50 - he turns 50 in Dec 2025. Explained what the scan is, the false-positive and follow-up scan issue, and that quitting does more than any scan. Added to problem list so we catch it at 50. He liked having a plan.\n- Tobacco - same; patch refilled.\n- Achalasia - nifedipine ER 30, GI following.\n- Myopathy - neuro yearly.\n- HIV - ID yearly, suppressed.\n- Flu and bivalent COVID booster today.\nPhysical in spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

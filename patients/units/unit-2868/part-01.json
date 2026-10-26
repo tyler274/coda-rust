@@ -1,0 +1,590 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002868",
+   "given": "Heather",
+   "family": "Cronin",
+   "birth_date": "1960-07-02",
+   "address_line": "41 Jabish Brook Road",
+   "phone": "+1-978-555-0108",
+   "email": "heather.cronin@example.test",
+   "marital_status": "single",
+   "summary": "Two-time cancer survivor (triple-negative right breast cancer 2018, cervical SCC 2021) with right-arm lymphedema who develops radiation proctitis, then metastatic midgut NET with carcinoid syndrome on lanreotide, then a lymphedema/radiation-associated angiosarcoma of the right chest wall treated with resection and paclitaxel.",
+   "events": [
+    {
+     "id": "2021-08-30a",
+     "kind": "telephone",
+     "start": "2021-08-30T10:12",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient inquiry",
+       "author": "front desk",
+       "date": "2021-08-30T10:12",
+       "body": "Caller Heather Cronin, DOB 07/02/1960. Her primary care doctor of many years retired this summer and she would like to establish here. Medicare through disability. Currently finishing up follow-up with an outside cancer center. Membership info emailed. Booked new patient visit 9/13 at 9:00, 60 min. Asked her to sign the records release for the old office and the cancer center when she comes in."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-13a",
+     "kind": "establish_care",
+     "start": "2021-09-13T09:00",
+     "end": "2021-09-13T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "History of breast cancer",
+       "action": "diagnosed",
+       "onset": "2018-02-01",
+       "note": "Right breast IDC, triple-negative, stage IIA; lumpectomy, SLNB and completion ALND, adjuvant chemotherapy via port, adjuvant radiation, 2018"
+      },
+      {
+       "label": "History of cervical cancer",
+       "action": "diagnosed",
+       "onset": "2021-02-01",
+       "note": "Squamous cell carcinoma stage IB2; radical hysterectomy with BSO and pelvic radiation, 2021"
+      },
+      {
+       "label": "Lymphedema",
+       "action": "diagnosed",
+       "onset": "2018-09-01",
+       "note": "Secondary lymphedema right upper extremity, chronic, grade 2, after axillary dissection"
+      },
+      {
+       "label": "Osteopenia",
+       "action": "diagnosed",
+       "onset": "2020-05-01",
+       "note": "DXA 2020 at prior practice"
+      },
+      {
+       "label": "Personal history of irradiation",
+       "icd10": "Z92.3",
+       "action": "diagnosed",
+       "onset": "2018-10-01",
+       "note": "Right breast 2018; pelvis 2021"
+      },
+      {
+       "label": "Acquired absence of uterus and cervix",
+       "action": "diagnosed",
+       "onset": "2021-04-01"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 68.0,
+      "height_cm": 163.0,
+      "labs": {
+       "Hemoglobin": 12.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired elementary school teacher (on disability)"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.82
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-13T10:00",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-09-13T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "rec-req-2021",
+       "action": "placed",
+       "order": "Outside records request (prior PCP, cancer center)",
+       "category": "procedure",
+       "to": "Medical Records",
+       "reason": "establish care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-09-13T10:05",
+       "body": "New patient, 61F, establishing after her longtime PCP retired.\n\nShe has been through a lot in a short stretch. In 2018 she was treated for a right breast cancer (invasive ductal, triple-negative, stage IIA): lumpectomy with sentinel node and then a full axillary dissection, chemotherapy through a port on the right, and breast radiation finished in the fall of 2018. Port came out in 2019. The right arm has been swollen ever since the node dissection; she wears a compression sleeve most days and a gauntlet when gardening. Grade 2 per her therapist.\n\nThen early this year she was diagnosed with cervical squamous cell carcinoma, stage IB2. Radical hysterectomy with both tubes and ovaries in the spring, pelvic radiation after, wrapped up in July. Gyn onc is following her every 6 months. She is tired but says the worst is behind her.\n\nTold at the old office that her bones were thin (DXA last year). No fractures.\n\nMeds: none. Not on any supplements. NKDA.\nFH: mother had breast cancer after menopause, in her 70s (74). Father MI at 68. One sister, well.\nSH: taught second and third grade for many years, on disability since the breast cancer treatment. Never smoked. Does not drink. Lives in Belchertown.\n\nROS: fatigue, otherwise negative. No bowel or bladder change, no bleeding since surgery, no bone pain, no cough.\n\nExam: vitals as charted. Well appearing. Right breast with healed lumpectomy scar and post-radiation skin change, no masses; left breast normal. No axillary or supraclavicular nodes. Right arm visibly fuller than the left, non-pitting, skin intact. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed midline scar. No leg edema.\n\nAssessment/plan\n1. Breast cancer survivor, 3 years out. Survivorship with outside breast oncology; yearly diagnostic mammograms.\n2. Cervical cancer, recently completed treatment. Surveillance with gyn onc.\n3. RUE lymphedema, chronic. Continue sleeve. Will refer to lymphedema therapy for refitting when she is ready.\n4. Osteopenia. Get prior DXA report. Repeat at a 2-3 year interval.\n5. Health maintenance: CBC, CMP, lipids, TSH. Hep C and HIV screening once, she agreed. Flu and COVID booster at a nurse visit next month. Records requested.\n\nRTC for wellness visit in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-15a",
+     "kind": "portal_message",
+     "start": "2021-09-15T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-09-15T16:40",
+       "body": "Hi Heather, your blood work from Monday is all normal: blood counts, kidney and liver tests, thyroid, and cholesterol. The hepatitis C and HIV screens were negative. Nothing to do. See you in the spring, and the nurse will see you for the vaccines in October."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-27a",
+     "kind": "outside_records",
+     "start": "2021-09-27T11:20",
+     "orders": [
+      {
+       "id": "rec-req-2021",
+       "action": "done",
+       "date": "2021-09-27T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care and cancer center records",
+       "author": "MA",
+       "date": "2021-09-27T11:20",
+       "body": "Records received from prior primary care office and the outside cancer center (138 pages), scanned to media.\n\nSummary for the chart:\n- Prior PCP: screening colonoscopy 2017, normal to the cecum, no polyps, 10-year interval. DXA 05/2020: lowest T-score -1.7 at the left femoral neck, osteopenia. Routine labs normal through 2020.\n- Breast oncology: right breast invasive ductal carcinoma, ER/PR/HER2 negative, stage IIA, 02/2018. Lumpectomy with sentinel node biopsy then completion axillary dissection 03/2018. Adjuvant chemotherapy via right subclavian port 2018. Whole-breast radiation completed 10/2018. Port removed 03/2019. Survivorship visits yearly.\n- Gyn oncology: cervical squamous cell carcinoma stage IB2, 02/2021. Radical hysterectomy with bilateral salpingo-oophorectomy 04/2021. Pelvic external beam radiation completed 07/2021. Surveillance every 6 months.\n- Allergies on all records: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T14:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-19T14:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Immunizations",
+       "author": "RN",
+       "date": "2021-10-19T14:20",
+       "body": "Here for flu vaccine and COVID booster. Screening questions negative, no fever today. Flu 0.5 mL IM left deltoid. Pfizer booster IM left deltoid (right arm avoided, lymphedema). Waited 15 minutes, tolerated well. VIS given."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-11a",
+     "kind": "outside_records",
+     "start": "2022-01-11T09:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Gynecologic Oncology surveillance visit",
+       "author": "gynecologic oncology",
+       "date": "2022-01-11T09:30",
+       "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE VISIT\nDate of service: 01/06/2022\nDiagnosis: cervical squamous cell carcinoma, FIGO IB2, s/p radical hysterectomy, BSO and adjuvant pelvic radiation (completed 07/2021).\n\nInterval: 6 months from completion of therapy. Mild fatigue. No vaginal bleeding or discharge, no pelvic pain, no leg swelling. Bowel and bladder function at baseline.\nAllergies: NKDA. Medications: none.\nExam: no inguinal or supraclavicular adenopathy. Speculum: vaginal cuff intact, healed, mild post-radiation pallor, no lesions. Bimanual/rectovaginal: no masses or nodularity.\nVaginal cuff cytology obtained: negative for intraepithelial lesion or malignancy.\nImpression: no evidence of disease.\nPlan: return in 6 months with pelvic MRI before the visit. Vaginal dilator use reviewed."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "imaging",
+     "start": "2022-02-08T08:40",
+     "reports": [
+      {
+       "study": "Diagnostic mammogram",
+       "performed": "2022-02-08T08:40",
+       "text": "Bilateral diagnostic mammogram with tomosynthesis. History of right breast cancer treated with lumpectomy and radiation 2018. Comparison 02/2021. Breasts are scattered fibroglandular density. Right breast post-lumpectomy architectural distortion and skin thickening at the surgical site, stable. No suspicious mass, calcifications or new distortion in either breast.",
+       "conclusion": "Benign post-treatment change, right breast. BI-RADS 2. Annual diagnostic mammogram."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "Diagnostic mammogram result",
+       "author": "MA",
+       "date": "2022-02-08T15:10",
+       "body": "Diagnostic mammogram report received from the outside breast imaging center, BI-RADS 2. Routed to PCP. Patient will see it in the portal."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "annual_physical",
+     "start": "2022-03-08T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-03-08T10:45"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-03-08T10:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-03-08T10:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-08T10:50",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D",
+         "value": 33
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2022-03-08T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-03-08T10:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "lymph-pt-2022",
+       "action": "placed",
+       "order": "Lymphedema therapy referral",
+       "category": "referral",
+       "to": "Physical Therapy - Lymphedema",
+       "reason": "chronic RUE lymphedema, sleeve refit"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-03-08T11:00",
+       "body": "Initial Medicare AWV. Heather is 61, on Medicare through disability.\n\nSince fall: saw gyn onc in January, cuff cytology negative, no evidence of disease. Mammogram last month BI-RADS 2. Energy slowly coming back; walking 30 min most days with her sister. Sleeve is wearing out and the fit is poor since she lost some weight during treatment.\n\nFunctional: independent, drives, manages finances. No falls. Hearing and vision fine (glasses). Lives alone, sister nearby. Advance directive: has a health care proxy (sister), copy requested.\nPHQ-9 3.\nMeds none. NKDA.\n\nExam: vitals charted. Comfortable. HEENT normal. Neck no nodes. Lungs clear. Heart regular, no murmur. Breasts: right lumpectomy scar, radiation change, no mass; left normal. Axillae clear. Abdomen soft. RUE non-pitting swelling, unchanged. Legs without edema.\n\nPlan\n- Shingrix #1 today, #2 in two months.\n- Lymphedema therapy referral for measurement and a new sleeve.\n- CBC, CMP, vitamin D.\n- Colonoscopy due 2027. Mammogram yearly. Cervical surveillance per gyn onc.\n- DXA next spring."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-29a",
+     "kind": "outside_records",
+     "start": "2022-03-29T13:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Breast Oncology survivorship visit",
+       "author": "medical oncology",
+       "date": "2022-03-29T13:00",
+       "body": "BREAST MEDICAL ONCOLOGY - SURVIVORSHIP\nVisit date: 03/24/2022\n61-year-old woman with right breast IDC, triple-negative, stage IIA, diagnosed 02/2018, treated with lumpectomy, SLNB and completion ALND, adjuvant chemotherapy and whole-breast radiation (completed 10/2018). Also treated in 2021 for cervical SCC, now under gyn onc surveillance.\n\nShe feels well apart from fatigue. No new breast changes, bone pain, cough, headache or weight loss.\nAllergies: NKDA. Medications: none.\nExam: well. Right breast post-surgical and radiation change without mass. Left breast normal. No regional adenopathy. Right arm lymphedema, stable.\nMammogram 02/08/2022: BI-RADS 2.\n\nAssessment: no evidence of recurrence, 4 years from diagnosis.\nPlan: continue annual diagnostic mammography. Return in 1 year; after the 5-year mark we will transition survivorship to her PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-19a",
+     "kind": "outside_records",
+     "start": "2022-04-19T10:15",
+     "orders": [
+      {
+       "id": "lymph-pt-2022",
+       "action": "done",
+       "date": "2022-04-19T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Lymphedema therapy evaluation",
+       "author": "physical therapy",
+       "date": "2022-04-19T10:15",
+       "body": "OUTPATIENT REHABILITATION - LYMPHEDEMA EVALUATION\nDate: 04/14/2022\nReferral: chronic secondary lymphedema RUE after ALND (2018).\nSubjective: arm heavy by evening, sleeve loose. No cellulitis episodes. Right-hand dominant.\nObjective: skin intact, Stemmer sign positive at the right second digit, circumferential measurements taken and recorded in the therapy flowsheet. No pitting.\nAssessment: stable grade 2 lymphedema, poorly fitted garment.\nPlan: measured for custom flat-knit sleeve and gauntlet (2 sets), home program of self manual lymph drainage and exercises reviewed, 4 visits. Garment Rx request sent to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-10a",
+     "kind": "nurse_visit",
+     "start": "2022-05-10T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix #2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-05-10T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-05-10T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Shingrix dose 2",
+       "author": "RN",
+       "date": "2022-05-10T15:50",
+       "body": "Second Shingrix dose IM left deltoid. First dose gave her a sore arm for a day, fine to proceed. Observed, no reaction. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "portal_message",
+     "start": "2022-06-14T08:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Sleeve prescription",
+       "author": "patient",
+       "date": "2022-06-14T08:55",
+       "body": "Hi, the therapist said the medical supply place still hasn't gotten the prescription for my new sleeves. Can you resend it? They need it to say custom flat knit, 2 sets. Thank you, Heather"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Sleeve prescription",
+       "author": "MA",
+       "date": "2022-06-14T11:30",
+       "body": "Hi Heather, the prescription for 2 sets of custom flat-knit compression sleeves and gauntlets for the right arm was signed by the doctor and faxed to the supplier this morning, with the diagnosis and measurements from the therapist. Give them a day or two to process."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "outside_records",
+     "start": "2022-07-12T14:10",
+     "conditions": [
+      {
+       "label": "Post-radiation pelvic fibrosis",
+       "icd10": "N94.89",
+       "action": "diagnosed",
+       "onset": "2022-07-01"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Gynecologic Oncology surveillance visit and pelvic MRI",
+       "author": "gynecologic oncology",
+       "date": "2022-07-12T14:10",
+       "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate of service: 07/07/2022\nCervical SCC IB2, one year from completion of adjuvant pelvic radiation.\n\nMRI pelvis with and without contrast (06/30/2022): post-hysterectomy and post-oophorectomy pelvis. Vaginal cuff smooth without mass or abnormal enhancement. Low T2 signal fibrotic change in the parametrial and presacral soft tissues consistent with post-radiation fibrosis. No pelvic or inguinal lymphadenopathy. Bladder and rectum unremarkable.\n\nShe notes occasional pelvic tightness, no bleeding, no pain. Bowel and bladder at baseline.\nAllergies: NKDA. Medications: none.\nExam: cuff intact with radiation pallor; firm, smooth parametrial tissues on rectovaginal exam, no nodularity. Cytology: negative.\nImpression: no evidence of recurrence. Post-radiation pelvic fibrosis.\nPlan: continue dilator use, pelvic floor PT offered and declined for now. Visits every 6 months through year 2, then yearly."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "office_visit",
+     "start": "2022-09-20T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-09-20T11:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-09-20T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-09-20T11:35",
+       "body": "Six-month check.\nLymphedema: new custom sleeves since June, much more comfortable, finished therapy and does the drainage routine at night. No infections.\nGyn onc July: MRI showed scar-type change in the pelvis from radiation, no cancer. She gets an occasional pulling feeling low in the pelvis, not painful.\nFeels like herself again; volunteering at the library reading program twice a week.\nNKDA, no meds.\n\nExam: vitals charted, weight stable. Lungs clear, heart regular. Abdomen soft, nontender. RUE in sleeve, skin fine.\n\nA/P\n- Lymphedema RUE, stable on new garments.\n- Post-radiation pelvic fibrosis, noted from gyn onc; symptoms mild.\n- CBC today since she asked about fatigue earlier in the year.\n- Flu and new bivalent COVID at a nurse visit in October."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - Flu and COVID",
+       "author": "RN",
+       "date": "2022-10-18T09:35",
+       "body": "Influenza and bivalent COVID booster, both IM left deltoid, left arm only per her lymphedema. No reaction during observation."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

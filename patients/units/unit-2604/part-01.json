@@ -1,0 +1,216 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002604",
+      "given": "Wyatt",
+      "family": "Galvin",
+      "birth_date": "2000-12-22",
+      "address_line": "27 Bay Road, Apt 3",
+      "phone": "+1-774-555-0152",
+      "email": "wyatt.galvin@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with lifelong atopy (seasonal allergic rhinitis, mild persistent asthma on as-needed albuterol, atopic dermatitis) who joins in 2023. A dermatology consult for a winter eczema flare in 2025 is followed by solid-food dysphagia, eosinophilic esophagitis on biopsy, an ED visit for vomiting, and swallowed budesonide from GI in 2026.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-29T10:20",
+              "body": "Caller is starting a grad program this fall and moved to the area last month. Wants an internist here instead of driving back to his old doctor. Uses student health PPO, card info entered. Has asthma, allergies and eczema, takes an inhaler and a daily allergy pill. Booked new patient visit 9/12 at 8:40. Sent portal invite and the records release form to sign."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {"label": "Allergic rhinitis due to pollen", "action": "history", "onset": "2008-04-01", "note": "spring-predominant; tree, grass, ragweed; also dust mites"},
+            {"label": "Mild persistent asthma", "action": "history", "onset": "2007-06-01"},
+            {"label": "Atopic dermatitis", "action": "history", "onset": "2002-01-01"}
+          ],
+          "medications": [
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath", "dose": {"value": 180, "unit": "mcg"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "Mild persistent asthma"},
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Allergic rhinitis"},
+            {"drug": "triamcinolone acetonide 1 MG/ML Topical Cream", "action": "historical", "sig": "Apply a thin layer to affected skin twice daily as needed for eczema flares", "frequency": "BID", "route": "Topical", "course": "chronic", "reason": "Atopic dermatitis"}
+          ],
+          "allergies": [
+            {"substance": "Seasonal pollens (tree, grass, ragweed)", "type": "allergy", "criticality": "low", "severity": "mild"},
+            {"substance": "Dust mites", "type": "allergy", "criticality": "low", "severity": "mild"}
+          ],
+          "state": {"weight_kg": 74.2, "height_cm": 180.3},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T09:25", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-09-12T09:20"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-12T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T09:20"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T09:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T08:40",
+              "body": "22 y/o man here to set up primary care. Just started a graduate program and is renting nearby. Prior care was with a family practice back home; release signed today.\n\nHISTORY\nAsthma since early grade school. Calls it mild but it is more than occasional: uses albuterol a few times most weeks, more in spring and with colds. No ED visits or oral steroids he can recall. Never on a daily inhaler that he remembers.\nAllergic rhinitis, spring worst. Tree, grass and ragweed pollen plus dust mites. Cetirizine every day, sneezing and itchy eyes controlled.\nEczema since infancy. Mostly the elbow creases. Triamcinolone 0.1% cream when it flares, works.\nNo surgeries. No hospital stays.\n\nMEDS: albuterol HFA 90 mcg 2 puffs prn; cetirizine 10 mg daily; triamcinolone 0.1% cream bid prn flares.\nALLERGIES: pollens (tree/grass/ragweed), dust mites - environmental. No drug reactions reported.\nFAMILY: Mom has seasonal allergies and eczema. Dad has asthma. One sister with atopic dermatitis. Everyone allergic, he says.\nSOCIAL: Graduate student. Has never smoked. No alcohol, no drugs. Lives with one roommate. Bikes to campus.\n\nROS: no current wheeze. No chest pain, palpitations, GI or urinary complaints. Mood good, PHQ-2 0.\n\nEXAM\nVitals as charted. Well appearing.\nHEENT: nasal turbinates mildly pale, no polyps. TMs clear. Oropharynx clear.\nNeck: no nodes, thyroid normal.\nLungs: good air movement, no wheeze, no prolonged expiration.\nCV: RRR, no murmur.\nAbd: soft, nontender.\nSkin: antecubital fossae dry, no active patches.\n\nASSESSMENT / PLAN\n1. Mild persistent asthma - stable by his report. Albuterol refilled as he runs low. Asthma action plan handout reviewed.\n2. Allergic rhinitis, seasonal + dust mite - continue cetirizine.\n3. Atopic dermatitis - quiet. Continue triamcinolone for flares.\n4. Prevention - HIV and hep C screening today. Tdap given (last booster date unknown). Records will show childhood shots.\nRTC for a physical next year, earlier if needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "author": "PCP",
+              "date": "2023-09-14T16:05",
+              "body": "Hi Wyatt, your HIV and hepatitis C screening tests were both negative. Nothing else needed there. Welcome to the practice."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "outside_records",
+          "start": "2023-09-27T11:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior family practice",
+              "author": "family medicine",
+              "date": "2023-09-27T11:40",
+              "body": "RECORDS RELEASE - prior family medicine office, pages 1-14 of 14\nPatient: Wyatt Galvin   DOB 12/22/2000\n\nProblem summary carried from that office: asthma, mild persistent, since childhood; seasonal allergic rhinitis (tree, grass and ragweed pollen; dust mite); atopic dermatitis since infancy.\nMedications at last visit: albuterol HFA prn; cetirizine 10 mg daily; triamcinolone 0.1% cream prn.\nAllergies: environmental only as above.\nImmunizations: childhood series complete per state registry printout; HPV series completed in adolescence; MenACWY completed; influenza most years.\nLast well visit summary: normal growth, normal exam, no concerns raised.\n\nScanned and indexed by HIM. Reviewed - nothing new. PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T15:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-10T15:30",
+              "body": "Here for flu and covid. Afebrile, feels well. Screening questions negative, no egg or vaccine reactions. Flu 0.5 mL IM left deltoid, 2023-24 COVID mRNA 0.3 mL IM right deltoid. VIS given. Waited 15 min, no reaction, left for class."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T21:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler refill",
+              "author": "patient",
+              "date": "2024-03-26T21:12",
+              "body": "Hi, the trees are starting and my inhaler is almost empty. Could you send a refill to the pharmacy on file? Thanks, Wyatt"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler refill",
+              "author": "RN",
+              "date": "2024-03-27T09:02",
+              "body": "Albuterol sent with one refill. If you find yourself needing it more than a couple of times a week this spring, let us know and we can get you in."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-09-17T08:55", "results": [
+              {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-17T08:20"},
+            {"procedure": "Venipuncture", "performed": "2024-09-17T08:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T08:20",
+              "body": "Annual exam. Second year of his program, teaching a section this fall.\n\nAsthma: spring was the usual, albuterol a few times a week in April and May, quiet since. No night waking now. No urgent visits.\nRhinitis: cetirizine daily, fine.\nEczema: one small flare at the elbows last winter, triamcinolone cleared it.\nNo new symptoms. Sleeping ok. PHQ-9 2.\nMeds unchanged. Allergies: pollens, dust mites.\nNever smoker, no alcohol.\n\nExam: vitals as charted, weight steady. Nose mildly boggy. Lungs clear, no wheeze. Heart RRR without murmur. Abdomen soft. Skin: elbow creases dry, no active patches. No lymphadenopathy.\n\nPlan\n- Asthma mild persistent, symptoms seasonal; albuterol as needed, refills on file.\n- Rhinitis and eczema stable, same regimen.\n- One-time lipid panel today.\n- Flu and covid at a nurse visit in October.\nNext physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cholesterol result",
+              "author": "PCP",
+              "date": "2024-09-19T12:30",
+              "body": "Your cholesterol numbers are all in a good range. No need to repeat for several years."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:14"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T16:16"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T16:14"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "MA",
+              "date": "2024-10-08T16:10",
+              "body": "Flu (2024-25 trivalent) L deltoid and 2024-25 covid R deltoid, both IM. No prior reactions. Tolerated well, observed 15 min. Next due fall 2025."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

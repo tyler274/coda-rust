@@ -1,0 +1,1313 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002068",
+   "events": [
+    {
+     "id": "2025-01-16a",
+     "kind": "office_visit",
+     "start": "2025-01-16T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.2
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-01-16T16:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-01-16T16:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-16T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 7
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 12
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-01-16T15:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-01-16T16:45",
+       "body": "Winter visit. Slow season at work, short hours until March. Drinking more with the time off - AUDIT-C 12. Mood \"bored, a little down,\" PHQ-9 7, no thoughts of self-harm. Eating less.\nNo bleeding since the fall. No falls.\nExam: AF 80s. Lungs clear. Abd soft. No edema. No asterixis.\nA/P\n- AUD: worse with the slow season. Long talk; he and partner are worried. Offered a structured plan to cut down safely given his seizure history - he wants to wait until he's back at work.\n- Mood: mild symptoms in setting of slow season and drinking; recheck spring.\n- AF/warfarin: INR in range.\n- HFrEF, CLL, cirrhosis: stable labs.\n- FIT kit.\nRTC 3 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 84
+     }
+    },
+    {
+     "id": "2025-02-20a",
+     "kind": "lab_only",
+     "start": "2025-02-20T07:30",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 3.3
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-02-20T07:30",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-17T06:50",
+       "resulted": "2025-02-19T10:30",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "done",
+       "date": "2025-02-19T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "INR High",
+       "author": "RN",
+       "date": "2025-02-20T13:00",
+       "body": "INR above range. No bleeding, no new meds. Drinking heavily, eating little. Hold 1 dose then resume 5 mg. Recheck 2 wks. FIT negative - told him."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-29a",
+     "kind": "hospital_admission",
+     "start": "2025-03-29T16:30",
+     "end": "2025-04-02T12:00",
+     "service": "Pulmonary & Critical Care",
+     "reason": "Fever and cough after being found unresponsive",
+     "conditions": [
+      {
+       "label": "Aspiration pneumonia",
+       "icd10": "J69.0",
+       "action": "diagnosed",
+       "onset": "2025-03-25"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily to complete 7 days total",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Aspiration pneumonia"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-03-29T16:35",
+       "temp_c": 38.5,
+       "hr": 106,
+       "bp": [
+        104,
+        68
+       ],
+       "spo2": 91
+      },
+      {
+       "time": "2025-04-02T08:00",
+       "temp_c": 36.8,
+       "hr": 82,
+       "bp": [
+        112,
+        70
+       ],
+       "spo2": 95
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-03-29T17:00",
+       "text": "PA and lateral. Right lower lobe consolidation. No cavitation. No pleural effusion. Small linear scar at the right base, as before. Heart enlarged, stable.",
+       "conclusion": "Right lower lobe pneumonia without cavity or effusion."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Pulmonary",
+       "author": "pulmonary",
+       "date": "2025-04-04T11:20",
+       "body": "Admit 03/29/2025 - discharge 04/02/2025\nDiagnosis: right lower lobe aspiration pneumonia.\n\n57-year-old man with severe alcohol use disorder, cirrhosis, recurrent aspiration pneumonias and an aspiration lung abscess in April 2024. His partner brought him in: four days of worsening cough and fever, after she found him unresponsive at home at the end of a three-day binge. Over the past few weeks, repeated vomiting and very little eating. Now coughing up brown, foul-smelling sputum, with right-sided chest discomfort.\nT 38.5 C, pulse 106, BP 104/68, SpO2 91% on room air. Diminished breath sounds and coarse crackles at the right posterior base. CXR: RLL consolidation, no cavity.\n\nCourse: supplemental oxygen briefly; IV ampicillin-sulbactam, then oral amoxicillin-clavulanate. Afebrile by day 3. Withdrawal protocol without seizure. INR managed with warfarin continued.\n\nDischarge meds: amoxicillin-clavulanate 875/125 twice daily to complete 7 days; warfarin 5 mg, metoprolol succinate 25 mg, furosemide 20 mg, thiamine, folic acid, pyridoxine.\nAllergies: NKDA.\nFollow-up: PCP in 1 week with INR; repeat chest x-ray in 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-31a",
+     "kind": "telephone",
+     "start": "2025-03-31T10:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Partner Call",
+       "author": "RN",
+       "date": "2025-03-31T10:30",
+       "body": "Partner called to let us know he was admitted Saturday with pneumonia. Improving per team. Will book hospital follow-up once discharged."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-08a",
+     "kind": "office_visit",
+     "start": "2025-04-08T14:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, pneumonia",
+     "state": {
+      "weight_kg": 77.6,
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.7
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-04-08T15:20",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-04-08T15:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-04-08T14:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging",
+       "reason": "follow-up RLL pneumonia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2025-04-08T15:45",
+       "body": "Admitted 3/29-4/2 with RLL aspiration pneumonia. Partner found him unresponsive after a 3-day binge; cough and fevers followed. Finished antibiotics yesterday. Coughing less, no fever, appetite coming back. Partner came with him today.\nExam: lungs: few crackles R base. AF 80s. Lost about 1.5 kg.\nA/P\n1. Aspiration pneumonia: improving. CXR in ~6 wks.\n2. AUD: being found unresponsive is a new level. Talked with both of them. He says he is going to cut down when work restarts. Safety plan: don't stop abruptly, call us.\n3. AF/warfarin: INR in range. With falls/unresponsive episodes, bleeding risk keeps climbing - will raise again with cardiology in July.\nRTC 6 wks."
+      }
+     ],
+     "vitals": {
+      "hr": 86
+     }
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "imaging",
+     "start": "2025-05-13T08:30",
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "done",
+       "date": "2025-05-13T08:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-05-13T08:30",
+       "text": "PA and lateral. Comparison 03/29/2025. Right lower lobe consolidation has cleared. Small linear scar at the right base, unchanged. Heart enlarged, stable. No effusion.",
+       "conclusion": "Resolved right lower lobe pneumonia."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-22a",
+     "kind": "telehealth_visit",
+     "start": "2025-05-22T12:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chest x-ray follow-up",
+     "conditions": [
+      {
+       "label": "Aspiration pneumonia",
+       "icd10": "J69.0",
+       "action": "resolved"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2025-05-22T12:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit",
+       "author": "PCP",
+       "date": "2025-05-22T12:35",
+       "body": "Video, pt on his lunch break in his truck. Back at work full time since mid-April. No cough, no fever. CXR 5/13 clear apart from the old scar.\nDrinking: says weekdays are \"a few\" and weekends still heavy.\nA/P: aspiration pneumonia resolved. Continue current meds. In-person visit in August with INR before."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-05a",
+     "kind": "specialist_visit",
+     "start": "2025-06-05T13:20",
+     "service": "Hematology",
+     "reason": "CLL annual follow-up",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-06-05T12:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Absolute Neutrophil Count"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2025-06-10T10:40",
+       "body": "Hematology/oncology clinic, visit 06/05/2025\nCLL, observation since 2021; s/p splenectomy; alcohol-related sideroblastic anemia.\nInterval: aspiration pneumonia in March, recovered. No night sweats or unexplained fevers. No adenopathy.\nCBC stable for him; Hgb around 13.\nAssessment: CLL stable, no treatment indication.\nPlan: return 1 year. Continue pyridoxine and folic acid. Asplenia precautions reviewed.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-10a",
+     "kind": "specialist_visit",
+     "start": "2025-07-10T09:30",
+     "service": "Cardiology",
+     "reason": "Annual AF and cardiomyopathy follow-up",
+     "vitals": {
+      "bp": [
+       114,
+       70
+      ],
+      "hr": 78
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2025-07-15T10:30",
+       "body": "Outside cardiology group, visit 07/10/2025\nAF on warfarin; HFrEF EF 30%.\nInterval: aspiration pneumonia admission in March after being found unresponsive. No heart failure symptoms beyond his baseline.\nMeds: metoprolol succinate 25 mg, warfarin 5 mg, furosemide 20 mg.\nBP 114/70, HR 78. No JVD. Lungs clear. Trace edema.\nWe discussed with him and his PCP's concern the balance of stroke prevention against bleeding with ongoing heavy alcohol use; his stroke risk score is low (1, for heart failure). He prefers to continue warfarin for now. Revisit if any further bleeding or falls.\nPlan: no changes. Follow up 1 year.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-14a",
+     "kind": "office_visit",
+     "start": "2025-08-14T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "weight_kg": 78.6,
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.5
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-08-14T16:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-08-14T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-08-14T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-08-14T16:40",
+       "body": "Summer check. Working long days. Mood better with work, PHQ-9 3. Drinking: weekday beers, weekend binges. No falls, no bleeding.\nCardiology in July: staying on warfarin for now, his choice after discussion.\nExam: AF 70s. Lungs clear. Abd soft. No edema.\nA/P: stable on current regimen. INR in range. CMP at baseline. Flu/COVID in Oct. RTC Oct."
+      }
+     ],
+     "vitals": {
+      "hr": 74
+     }
+    },
+    {
+     "id": "2025-10-09a",
+     "kind": "office_visit",
+     "start": "2025-10-09T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up; vaccines",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.3
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-10-09T16:00",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-10-09T16:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "AUDIT-C total score",
+       "value": 11
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-09T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-09T16:06"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-10-09T15:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ruq-us-2025",
+       "action": "placed",
+       "order": "Right upper quadrant ultrasound",
+       "category": "imaging",
+       "reason": "cirrhosis surveillance"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-10-09T16:35",
+       "body": "Fall visit. Feeling ok. No new symptoms. Breathing at baseline. Drinking unchanged. Slow season coming again in December - we talked ahead of time about the winter pattern.\nExam: AF controlled. Lungs clear. No edema.\nA/P\n- AF/warfarin: INR in range.\n- CLL/anemia: CBC stable.\n- Cirrhosis: US due, ordered.\n- HM: flu + COVID today.\nRTC Jan."
+      }
+     ],
+     "vitals": {
+      "hr": 78
+     }
+    },
+    {
+     "id": "2025-11-13a",
+     "kind": "imaging",
+     "start": "2025-11-13T08:10",
+     "orders": [
+      {
+       "id": "ruq-us-2025",
+       "action": "done",
+       "date": "2025-11-13T08:10"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Right upper quadrant ultrasound",
+       "performed": "2025-11-13T08:10",
+       "text": "Indication: cirrhosis surveillance. Comparison 11/21/2024.\nLiver: coarse nodular liver, unchanged. No focal lesion. Portal vein patent, hepatopetal.\nGallbladder normal. No ductal dilation. No ascites.",
+       "conclusion": "No focal liver lesion. No ascites. Stable cirrhotic morphology."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-04a",
+     "kind": "lab_only",
+     "start": "2025-12-04T07:40",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.1
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2025-12-04T07:40",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2025-12-04T12:00",
+       "body": "INR in range. Continue 5 mg. US from November was stable - pt aware. Next INR with Jan visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-22a",
+     "kind": "office_visit",
+     "start": "2026-01-22T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.6
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-01-22T16:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-22T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 5
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-01-22T15:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2026",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-01-22T16:30",
+       "body": "Slow season at work again. Says he's keeping it to beer this year, no whiskey; partner nods but not convincingly. No falls, no bleeding, no blackouts since last spring.\nExam: AF 80. Lungs clear. Abd soft. No edema. No asterixis.\nA/P\n- AF/warfarin: INR 2.6.\n- HFrEF: euvolemic, BMP fine.\n- AUD: counseled; plan stays: if he wants to stop, we do it with a plan.\n- FIT kit given.\nRTC 3-4 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 80
+     }
+    },
+    {
+     "id": "2026-02-26a",
+     "kind": "lab_only",
+     "start": "2026-02-26T07:35",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-02-26T07:35",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2026-02-26T11:45",
+       "body": "INR in range. Continue. FIT kit not returned yet - reminded."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-25a",
+     "kind": "hospital_admission",
+     "start": "2026-03-25T17:50",
+     "end": "2026-04-06T12:00",
+     "service": "Trauma Surgery",
+     "reason": "Motor vehicle collision with hemorrhage",
+     "conditions": [
+      {
+       "label": "Acute posthemorrhagic anemia",
+       "icd10": "D62",
+       "action": "diagnosed",
+       "onset": "2026-03-25"
+      },
+      {
+       "label": "Hypocalcemia",
+       "icd10": "E83.51",
+       "action": "diagnosed",
+       "onset": "2026-03-25",
+       "note": "After massive transfusion"
+      },
+      {
+       "label": "Fracture of right pubic rami, closed",
+       "icd10": "S32.591A",
+       "action": "diagnosed",
+       "onset": "2026-03-25",
+       "note": "Nondisplaced superior and inferior rami, nonoperative"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "warfarin sodium 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Major hemorrhage; anticoagulation stopped at trauma discharge"
+      },
+      {
+       "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, 7 days",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Pelvic fracture pain"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-03-25T17:55",
+       "bp": [
+        90,
+        60
+       ],
+       "hr": 120
+      },
+      {
+       "time": "2026-04-06T08:00",
+       "bp": [
+        112,
+        70
+       ],
+       "hr": 82
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-03-25T21:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.0
+        },
+        {
+         "test": "Platelets",
+         "value": 150
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-03-25T21:40",
+       "results": [
+        {
+         "test": "Prothrombin Time",
+         "value": 16
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-25T21:40",
+       "results": [
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "3173-2",
+         "unit": "s",
+         "value": 40
+        },
+        {
+         "test": "Calcium, ionized",
+         "loinc": "1994-3",
+         "unit": "mmol/L",
+         "value": 0.9
+        },
+        {
+         "test": "Lactate",
+         "value": 3.2
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 9.8,
+       "Platelets": 235,
+       "Prothrombin Time-International Normalized Ratio": 1.2
+      }
+     },
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2026-03-25T18:00",
+       "text": "Focused assessment with sonography for trauma. Free fluid in the right upper quadrant and pelvis. No pericardial effusion.",
+       "conclusion": "Positive FAST: free intra-abdominal fluid."
+      },
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2026-03-26T09:30",
+       "text": "Post-operative study. Recent laparotomy with midline incision; small amount of residual postoperative fluid, no active extravasation. Prior splenectomy. Nodular cirrhotic liver without laceration. Kidneys normal, no injury. Bowel without injury after repair. Pelvis: nondisplaced fractures of the right superior and inferior pubic rami. Sacroiliac joints and acetabula intact. Bladder normal.",
+       "conclusion": "Nondisplaced right superior and inferior pubic rami fractures. Post-laparotomy changes without active bleeding."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Trauma Surgery",
+       "author": "trauma surgery",
+       "date": "2026-04-08T14:30",
+       "body": "Regional trauma center\nAdmit 03/25/2026 - discharge 04/06/2026\nDiagnoses: motor vehicle collision; hemorrhagic shock from mesenteric laceration; acute blood loss anemia; hypocalcemia after massive transfusion; nondisplaced right superior and inferior pubic rami fractures; multiple contusions.\nBackground: 58-year-old man with severe alcohol use disorder, cirrhosis, CLL, AF on chronic warfarin, HFrEF, prior splenectomy (atraumatic rupture) and Mallory-Weiss tear.\n\nArrival: hypotensive 90/60, HR 120. Alert but anxious. Multiple contusions, pelvic tenderness with suspected fracture, abdomen distended and tender. FAST positive. Warfarin reversed with prothrombin complex concentrate and vitamin K. Taken directly to the OR for exploratory laparotomy: actively bleeding mesenteric laceration, controlled and repaired; no bowel resection needed. Massive transfusion protocol. During the case he developed perioral numbness and carpopedal spasm. Post-transfusion: ionized calcium 0.9, Hgb 9, platelets 150, PT 16 s, PTT 40 s, lactate 3.2. IV calcium given with correction; lactate cleared.\nCT after stabilization: nondisplaced right pubic rami fractures, managed nonoperatively, weight-bearing as tolerated with walker.\nICU 3 days, then ward. Alcohol withdrawal managed on protocol, no seizure. PT evaluation: home with walker and home PT.\n\nAnticoagulation: warfarin stopped. Third major hemorrhage on warfarin; stroke risk score 1. Recommend he stay off; cardiology to confirm.\nDischarge meds: oxycodone-acetaminophen 5/325 1 tab q6h prn x 7 days (acetaminophen total under 2 g/day); metoprolol succinate 25 mg daily; furosemide 20 mg daily; thiamine, folic acid, pyridoxine. STOP warfarin.\nAllergies: NKDA.\nFollow-up: PCP 1 week; orthopedic fracture clinic 2-3 weeks; trauma clinic for incision."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-27a",
+     "kind": "telephone",
+     "start": "2026-03-27T08:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Partner Call - Trauma Admission",
+       "author": "RN",
+       "date": "2026-03-27T08:45",
+       "body": "Partner called: car accident Wed evening, taken to the trauma center, surgery for internal bleeding, in ICU. Broken pelvis. She is overwhelmed; gave her our direct line. PCP aware. Warfarin INR checks on hold."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-07a",
+     "kind": "telephone",
+     "start": "2026-04-07T13:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge Call",
+       "author": "RN",
+       "date": "2026-04-07T13:30",
+       "body": "TCM call, day after discharge. Home with walker, partner with him. Pain controlled. Has his meds; warfarin was stopped by the trauma team, he understands not to restart. Hospital f/u booked 4/14. Discharge summary requested."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-14a",
+     "kind": "office_visit",
+     "start": "2026-04-14T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after trauma",
+     "conditions": [
+      {
+       "label": "Hypocalcemia",
+       "icd10": "E83.51",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 76.4,
+      "labs": {
+       "Hemoglobin": 10.7
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-04-14T14:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.7
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-04-14T14:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-04-14T14:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-anticoag-2026",
+       "action": "placed",
+       "order": "Cardiology follow-up",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "anticoagulation decision after major hemorrhage"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2026-04-14T15:20",
+       "body": "Seen 8 days after discharge from the trauma center. MVC 3/25 - he does not want to talk about the details today. Bleeding mesenteric tear repaired at laparotomy, massive transfusion, low calcium during the case that was corrected. Right pubic rami fractures, no surgery. Warfarin stopped by trauma.\nNow: walking with a walker, pain 4/10, using the oxycodone-acetaminophen once or twice a day, almost out and doesn't want more. Home PT twice a week. Incision healing. Partner home with him.\nAlcohol: says none since the accident.\nExam: incision clean, staples out. Abd soft. Pelvis tender on R with movement. AF rate 80. No edema.\nA/P\n1. S/p trauma laparotomy, blood loss anemia: Hgb 10.7, recovering.\n2. Hypocalcemia from transfusion: resolved, calcium normal today.\n3. R pubic rami fractures: WBAT, walker, PT; ortho in 2 wks. Acetaminophen alone after the oxycodone runs out, max 2 g/day.\n4. AF: off warfarin. Agree with stopping - third major bleed on it. Asked cardiology to weigh in.\n5. AUD: sober 3 wks. Will support whatever he chooses; offered a counselor.\nRTC 6 wks."
+      }
+     ],
+     "vitals": {
+      "hr": 82
+     }
+    },
+    {
+     "id": "2026-04-23a",
+     "kind": "specialist_visit",
+     "start": "2026-04-23T10:40",
+     "service": "Orthopedics",
+     "reason": "Pelvic fracture follow-up",
+     "reports": [
+      {
+       "study": "Pelvis X-ray",
+       "loinc": "28561-9",
+       "performed": "2026-04-23T10:20",
+       "text": "AP pelvis with inlet and outlet views. Nondisplaced right superior and inferior pubic rami fractures with early callus. Alignment maintained. Sacroiliac joints and hips intact.",
+       "conclusion": "Healing nondisplaced right pubic rami fractures, alignment maintained."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic Fracture Clinic",
+       "author": "orthopedics",
+       "date": "2026-04-27T09:30",
+       "body": "Orthopedic fracture clinic, visit 04/23/2026\nRight superior and inferior pubic rami fractures, nondisplaced, after MVC 03/25/2026.\nWalking with a walker, pain improving. X-rays: early callus, alignment maintained.\nPlan: weight bearing as tolerated, advance from walker to cane with PT. Recheck in 10-12 weeks with x-rays.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-12a",
+     "kind": "specialist_visit",
+     "start": "2026-05-12T09:10",
+     "service": "Cardiology",
+     "reason": "Anticoagulation after major hemorrhage",
+     "vitals": {
+      "bp": [
+       110,
+       70
+      ],
+      "hr": 80
+     },
+     "orders": [
+      {
+       "id": "cards-anticoag-2026",
+       "action": "done",
+       "date": "2026-05-12T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2026-05-15T13:10",
+       "body": "Outside cardiology group, visit 05/12/2026\nAF; HFrEF EF 30%; alcoholic and tachycardia-mediated cardiomyopathy.\nInterval: MVC 03/2026 with hemorrhagic shock and massive transfusion while on warfarin; warfarin stopped at discharge. This follows the 2023 splenic rupture (INR 3.5) and the 2024 Mallory-Weiss bleed.\nNo stroke or TIA symptoms. Walking with a cane.\nMeds: metoprolol succinate 25 mg, furosemide 20 mg, vitamins.\nBP 110/70, HR 80. Lungs clear. No edema.\nAssessment: stroke risk score 1 (heart failure); three major bleeds on anticoagulation with ongoing alcohol use and cirrhosis. Risk of continuing clearly outweighs benefit.\nPlan: remain off anticoagulation. Continue rate control. Follow up 1 year.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-28a",
+     "kind": "office_visit",
+     "start": "2026-05-28T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after trauma",
+     "state": {
+      "weight_kg": 77.4,
+      "labs": {
+       "Hemoglobin": 11.8
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2026-05-28T16:05",
+       "resulted": "2026-05-28T21:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 11.8
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-28T16:05",
+       "resulted": "2026-05-29T07:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "AUDIT-C total score",
+       "value": 8
+      },
+      {
+       "survey": "PHQ-9 total score",
+       "value": 6
+      },
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 2
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-05-28T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-05-28T16:40",
+       "body": "Two months out from the MVC. Off the walker, using a cane outside. Pain 2/10, acetaminophen a few times a week. PT finished last week. Hoping to go back to work in July, desk/supervisory only at first.\nCardiology 5/12: stay off anticoagulation. He's relieved.\nAlcohol: started again in May, \"a few beers at night,\" no liquor he says. AUDIT-C 8. Not interested in a program or medication; knows the offer stands.\nNo bleeding, no black stools.\nExam: walks with cane, mild antalgic gait. Incision healed. Abd soft, no ascites. AF rate 70s. Lungs clear. No edema.\nA/P\n1. R pubic rami fractures: healing, ortho recheck in July.\n2. Blood loss anemia after trauma: CBC today.\n3. AF: off anticoagulation per cardiology; rate controlled on metoprolol.\n4. HFrEF: euvolemic on furosemide 20.\n5. Cirrhosis, CLL: CMP today. US due in Nov. Heme due June.\n6. AUD: drinking again, lower than before by report. Counseled.\nRTC 3 mo - front desk to call to book."
+      }
+     ],
+     "vitals": {
+      "hr": 76
+     }
+    },
+    {
+     "id": "2026-05-29a",
+     "kind": "portal_message",
+     "start": "2026-05-29T09:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs from yesterday",
+       "author": "PCP",
+       "date": "2026-05-29T09:20",
+       "body": "Hi Piotr - your blood count is coming back up (hemoglobin 11.8). Liver and kidney numbers are at your usual. Nothing to change. Keep walking."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-18a",
+     "kind": "pharmacy",
+     "start": "2026-06-18T10:30",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Refill Request",
+       "author": "pharmacy",
+       "date": "2026-06-18T10:30",
+       "body": "Refill request: metoprolol succinate 25 mg daily, 90 days. Approved per PCP protocol."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-09a",
+     "kind": "specialist_visit",
+     "start": "2026-07-09T11:00",
+     "service": "Orthopedics",
+     "reason": "Pelvic fracture follow-up",
+     "reports": [
+      {
+       "study": "Pelvis X-ray",
+       "loinc": "28561-9",
+       "performed": "2026-07-09T10:40",
+       "text": "AP pelvis. Right superior and inferior pubic rami fractures healed with bridging callus. Alignment anatomic. Hips intact.",
+       "conclusion": "Healed right pubic rami fractures."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic Fracture Clinic",
+       "author": "orthopedics",
+       "date": "2026-07-14T09:00",
+       "body": "Orthopedic fracture clinic, visit 07/09/2026\nRight pubic rami fractures, healed. Walking without a cane on level ground. X-rays: bridging callus.\nPlan: full activity as tolerated; may return to work. Follow up as needed.\nAllergies: NKDA."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Records Filed",
+       "author": "MA",
+       "date": "2026-07-14T15:20",
+       "body": "Ortho fracture clinic note 7/9 received by fax, scanned to chart for PCP review."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-06a",
+     "kind": "portal_message",
+     "start": "2026-08-06T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "water pill refill",
+       "author": "patient",
+       "date": "2026-08-06T19:40",
+       "body": "need the furosemide refilled, down to 3 left. also back at work 3 wks now, going ok"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: water pill refill",
+       "author": "RN",
+       "date": "2026-08-07T08:50",
+       "body": "Sent furosemide 20 mg to your pharmacy, 90 days. Glad work is going well. We'll call to set up your fall visit."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

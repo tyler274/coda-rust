@@ -1,0 +1,336 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001754",
+      "events": [
+        {
+          "id": "2021-01-28a",
+          "kind": "office_visit",
+          "start": "2021-01-28T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; review of pulmonology consult",
+          "state": {"labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-01-28T16:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-01-28T16:20", "results": [{"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-01-28T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-01-28T15:50", "body": "F/u diabetes and new asthma dx.\n\nPulm letter reviewed: normal spirometry, positive methacholine at 8 mg/mL, started fluticasone/salmeterol 100/50 BID. She has been using it faithfully for about 7 weeks. Night waking down to maybe once in two weeks. Albuterol a couple of times a week, mostly on cold mornings walking in from the parking lot. Rinsing after doses.\n\nDiabetes: no lows, metformin twice a day. Back in the classroom part time and snacking less than when she was home.\n\nExam: no distress. Chest clear, no wheeze. Heart regular. Feet without lesions.\n\nAssessment\n- Asthma, newly diagnosed, improving on controller. Continue. Pulm f/u already booked for March.\n- T2DM: A1c and CMP today.\n\nFollow up in about 4 months for her physical."}
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "specialist_visit",
+          "start": "2021-03-17T14:00",
+          "service": "Pulmonology",
+          "reason": "Asthma follow-up; nocturnal cough",
+          "state": {"weight_kg": 69.1},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "diagnosed", "onset": "2021-01-15"}
+          ],
+          "medications": [
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth daily, 30 minutes before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Reflux"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-03-17T14:50", "results": [{"test": "White Blood Cells"}]}
+          ],
+          "reports": [
+            {"study": "Spirometry", "performed": "2021-03-17T14:20", "text": "Pre- and post-bronchodilator spirometry with good effort. FEV1/FVC mildly reduced with a concave expiratory limb. After albuterol, no significant change in FEV1 or FVC.", "conclusion": "Mild obstructive defect without significant bronchodilator response."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2021-03-29T10:15", "body": "Outside pulmonology follow-up, visit date 2021-03-17. Received 2021-03-29.\n\nSeen about three months after her first visit for asthma. Since then breathlessness at night has crept back, and she has a persistent cough that is worse when she lies flat. She also describes chest burning after meals. She is reaching for albuterol more often and getting less from it. No recent colds, no new exposures at home or school.\n\nCurrent medications: fluticasone/salmeterol 100/50 mcg twice daily, albuterol as needed, metformin 1000 mg twice daily.\nAllergies: none known.\n\nExam: BMI 27. Mild end-expiratory wheeze both bases. Peak flow today 15% under her personal best. No stridor.\n\nData: CBC normal. Spirometry now shows mild obstruction, without a meaningful response to bronchodilator. We did not do esophageal pH testing.\n\nImpression:\n1. Asthma, not well controlled lately, with reflux as a likely contributor to the nocturnal cough and wheeze.\n2. Gastroesophageal reflux disease, clinical diagnosis.\n\nPlan:\n- Omeprazole 20 mg every morning before breakfast.\n- Head of bed raised, no food within 3 hours of bedtime.\n- Continue fluticasone/salmeterol at current dose and albuterol as needed; inhaler technique reviewed.\n- Return in 6 months or sooner if symptoms do not settle."}
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "portal_message",
+          "start": "2021-04-06T19:25",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-13T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-03T10:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine card", "author": "patient", "date": "2021-04-06T19:25", "body": "Hi! Teachers got moved up so I got both my covid shots at the pharmacy, March 13 and April 3. Attaching a picture of my card. Also the reflux pill the lung doctor started is helping a lot already, I'm coughing less at night."},
+            {"type": "Patient Message", "title": "RE: Vaccine card", "author": "MA", "date": "2021-04-07T08:10", "body": "Thanks Daisy, both doses are entered in your record now. Glad the cough is better!"}
+          ]
+        },
+        {
+          "id": "2021-05-21a",
+          "kind": "annual_physical",
+          "start": "2021-05-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 6.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2021-05-21T08:15", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-05-21T08:15", "results": [{"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2021-05-21T08:15", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-05-21T08:15", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-05-21T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-05-21T07:40", "body": "Physical, before work.\n\nSince last visit: pulm follow-up in March found mild obstruction and reflux; on omeprazole 20 every morning since. Says the night cough is mostly gone and she sleeps through. Albuterol maybe once a week. Heartburn gone unless she eats late.\n\nMeds: metformin 1000 BID, fluticasone/salmeterol 100/50 BID, albuterol prn, omeprazole 20 daily. NKDA.\nCOVID series completed in April.\nPHQ-2 zero.\n\nExam: well. BMI around 27. HEENT normal, no thrush. Neck no nodes. Heart RRR. Lungs clear, no wheezes. Abdomen soft, nontender epigastrium. Skin normal. Feet: intact sensation, good pulses, no skin breakdown.\n\nA/P\n- Asthma: controlled on current regimen.\n- GERD: well controlled on omeprazole.\n- T2DM: A1c, CMP, lipids, urine microalbumin. Eye exam due in August.\n- Prevention: Pap due this year with GYN; she has an appointment in the fall. Flu shot in the fall.\n- They are hoping to try for a pregnancy soon. Reviewed: tell us and OB right away when it happens so diabetes care can be coordinated early.\n\nRTC 3-4 months."},
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2021-05-22T10:40", "body": "A1c 6.8, steady. Lipids, metabolic panel and urine microalbumin normal. Message sent."}
+          ]
+        },
+        {
+          "id": "2021-08-23a",
+          "kind": "office_visit",
+          "start": "2021-08-23T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Wheezing and cough, same-day",
+          "vitals": {"spo2": 96},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "medications": [
+            {"drug": "prednisone 10 MG Oral Tablet", "action": "start", "sig": "Taper: 4 tablets (40 mg) daily for 7 days, then 3 tablets daily for 7 days, then 2 tablets daily for 7 days, then 1 tablet daily for 7 days, then stop", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Asthma flare"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-23T11:20"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Same-day request", "author": "RN", "date": "2021-08-23T08:05", "body": "Pt called, wheezy and coughing for about four days, using albuterol 4-5 times a day with short relief. No fever. Able to talk in full sentences on phone. Offered 11:20 today with PCP, accepted."},
+            {"type": "Progress Notes", "title": "Acute Visit", "author": "PCP", "date": "2021-08-23T11:20", "body": "Asthma flare. Four or so days of wheeze, chest tightness and a dry cough, needing albuterol several times a day and waking twice a night. Setting up her classroom last week, lots of dust from boxes. No fever, no sore throat, no sick contacts that she knows of. Still on fluticasone/salmeterol twice daily.\n\nExam: mildly winded with talking but not in distress. Afebrile. Sat 96% on room air. Scattered expiratory wheezes both lung fields, fair air entry. No accessory muscle use. Heart regular, a little quick.\n\nAssessment: asthma exacerbation, moderate, outpatient-manageable.\n\nPlan:\n- Prednisone taper, starting 40 mg daily, then stepping down by 10 mg each week, four weeks total. I went longer than a burst because she has needed albuterol this often for days; she knows it will push her sugars up.\n- Albuterol every 4 hours while symptomatic, then back to as needed.\n- Continue the controller.\n- Check sugars once a day while on prednisone; call if fasting runs over 250.\n- Return precautions reviewed: worse breathing, albuterol not lasting 2 hours, any trouble talking: ED.\n- Nurse to call next week."}
+          ]
+        },
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T15:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Nurse follow-up call", "author": "RN", "date": "2021-09-02T15:30", "body": "Called pt as planned. Breathing much better, on 30 mg week of taper. Albuterol once yesterday. Morning sugars 150s-180s, no symptoms. Reminded to finish the full taper. Will call if any return of wheeze."}
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "specialist_visit",
+          "start": "2021-09-20T09:45",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Itchy groin rash",
+          "conditions": [
+            {"label": "Cutaneous candidiasis", "icd10": "B37.2", "action": "diagnosed", "onset": "2021-09-06"}
+          ],
+          "medications": [
+            {"drug_text": "clotrimazole 1 % Topical Cream", "action": "start", "sig": "Apply thinly to affected skin twice daily for 2 weeks", "route": "Topical", "frequency": "BID", "course": "short", "reason": "Cutaneous candidiasis"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Office Note", "author": "gynecology", "date": "2021-11-10T13:30", "body": "Gynecology office visit, date of service 2021-09-20. Copy sent to primary care on request; received 2021-11-10.\n\nS: 36 y/o with asthma, type 2 diabetes, reflux. Seen by pulmonology this past year for asthma and reflux. Comes in with an itchy rash in both groin creases for two weeks. Noticed it got worse after switching to a new line of workout leggings. Has been on a prednisone taper from her PCP for the past month for an asthma flare.\nMeds: fluticasone/salmeterol 100/50 BID, albuterol prn, metformin 1000 BID, omeprazole 20 daily, prednisone taper (finishing).\nAllergies: NKDA.\n\nO: Both inguinal folds with red, sharply demarcated plaques and scattered satellite papules and pustules at the edges. No inguinal nodes palpable. Remainder of skin exam unremarkable.\n\nA: Cutaneous candidiasis of the inguinal folds, likely helped along by steroids, diabetes and occlusive synthetic fabric.\n\nP: Clotrimazole 1% cream twice daily for two weeks. Keep the area dry, cotton underwear, loose clothing for exercise. Return if not cleared in two weeks. Cervical screening discussed; she prefers to schedule it separately."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "portal_message",
+          "start": "2021-10-05T20:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Big news", "author": "patient", "date": "2021-10-05T20:50", "body": "Hi, I took a test this morning and it's positive! First appointment with OB is in 2 weeks. Do I keep taking metformin and my inhalers? Also the rash I had in my groin cleared up with the cream my gyn gave me, sorry I forgot to tell you about that visit."},
+            {"type": "Patient Message", "title": "RE: Big news", "author": "PCP", "date": "2021-10-06T07:35", "body": "Congratulations! Yes, keep taking metformin and both inhalers for now. Uncontrolled asthma is a bigger risk to the pregnancy than the inhalers are. OB will take the lead on diabetes in pregnancy and may change things. I'd like to see you in about a month to check your A1c and line things up with them. Glad the rash is gone; we'll ask your gynecologist to send that note."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T15:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-12T15:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2021-10-12T15:45", "body": "Flu vaccine, inactivated, given IM left deltoid. Early pregnancy; confirmed inactivated vaccine appropriate. No reaction."}
+          ]
+        },
+        {
+          "id": "2021-11-15a",
+          "kind": "office_visit",
+          "start": "2021-11-15T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes in early pregnancy",
+          "state": {"weight_kg": 70.5, "labs": {"Hemoglobin A1c": 6.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Cutaneous candidiasis", "icd10": "B37.2", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2021-11-15T16:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-11-15T16:40", "results": [{"test": "Creatinine"}]}
+          ],
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-15T16:35"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-11-15T16:10"},
+            {"procedure": "Immunization administration", "performed": "2021-11-15T16:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-11-15T16:10", "body": "About 10 weeks pregnant by her OB's dating. Some nausea in the mornings, managing with crackers, keeping fluids down. OB saw her in late October and wants her to stay on metformin 1000 BID and work with their diabetes educator on a pregnancy meal plan. Checking fingersticks four times a day now and the numbers have mostly been in range.\n\nAsthma quiet since the prednisone in September. Reflux a little worse with the pregnancy, still on omeprazole.\n\nGyn note from September arrived last week: groin candidiasis, treated with clotrimazole. She says it's fully cleared.\n\nExam: well. Lungs clear. Heart regular.\n\nPlan\n- Diabetes in pregnancy: A1c and BMP today, results to OB. OB is managing during pregnancy; I'll stay in the loop.\n- Asthma: continue controller and rescue.\n- COVID booster today, she wants it before the holidays at school.\n- Candidal rash resolved.\n\nI'll see her after delivery unless something comes up."}
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "pharmacy",
+          "start": "2022-01-18T09:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Inhaler refill", "author": "MA", "date": "2022-01-18T09:40", "body": "Pharmacy requesting refill of fluticasone/salmeterol 100/50 diskus, last fill was from pulmonology with no refills left. Routed to PCP; approved x 3 refills. Pharmacy notified."}
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "office_visit",
+          "start": "2022-03-09T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Sore throat and painful swallowing",
+          "state": {"weight_kg": 76.8},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Oral candidiasis", "icd10": "B37.0", "action": "diagnosed", "onset": "2022-03-02"}
+          ],
+          "medications": [
+            {"drug_text": "nystatin 100000 UNT/ML Oral Suspension", "action": "start", "sig": "Swish 5 mL in the mouth and swallow four times daily for 10 days", "route": "Oral", "frequency": "QID", "course": "short", "reason": "Oral candidiasis"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-03-09T14:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Acute Visit", "author": "PCP", "date": "2022-03-09T14:40", "body": "27 weeks pregnant, here for a week of sore throat and pain when she swallows. Has noticed a white film on her tongue that she can't brush off. No fever, no cough beyond baseline, no breathing trouble. No asthma flares since the fall. Has been on fluticasone/salmeterol twice a day for over a year now; admits she has gotten lazy about rinsing afterward.\n\nVitals all normal.\n\nExam: White plaques on the buccal mucosa and dorsum of the tongue, stuck on firmly; a tongue blade lifts a little and leaves a slightly bleeding base. Posterior pharynx mildly red, no exudate on tonsils. No cervical lymphadenopathy. Lungs clear both sides. Gravid abdomen appropriate for dates.\n\nAssessment: oral candidiasis (thrush), related to inhaled steroid.\n\nPlan:\n- Nystatin suspension 5 mL swish and swallow four times a day for 10 days. Chose this over fluconazole because of the pregnancy.\n- Rinse, gargle and spit after every controller dose; use a mirror and check the mouth weekly.\n- If swallowing gets worse or she can't eat, call; would want to look further.\n- OB updated by fax."}
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "portal_message",
+          "start": "2022-03-21T18:15",
+          "conditions": [
+            {"label": "Oral candidiasis", "icd10": "B37.0", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Mouth update", "author": "patient", "date": "2022-03-21T18:15", "body": "Finished the nystatin yesterday. White stuff gone and swallowing is normal. I'm rinsing after the inhaler every time now, promise."},
+            {"type": "Patient Message", "title": "RE: Mouth update", "author": "PCP", "date": "2022-03-22T07:20", "body": "That's great to hear. Keep up the rinsing. Best of luck with these last weeks."}
+          ]
+        },
+        {
+          "id": "2022-06-05a",
+          "kind": "ed_visit",
+          "start": "2022-06-05T15:20",
+          "end": "2022-06-05T19:00",
+          "service": "Emergency Medicine",
+          "reason": "Seizure, postpartum day 1",
+          "vitals": [{"time": "2022-06-05T15:25", "temp_c": 37.1, "bp": [130, 85], "hr": 88, "rr": 16}],
+          "conditions": [
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "diagnosed", "onset": "2022-06-05"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-06-05T15:40", "results": [
+              {"test": "Sodium", "value": 122},
+              {"test": "Potassium", "value": 4.2},
+              {"test": "Chloride", "value": 88},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Creatinine", "value": 0.9},
+              {"test": "Glucose", "value": 140}
+            ]},
+            {"panel": null, "collected": "2022-06-05T15:40", "results": [
+              {"test": "Osmolality of Serum or Plasma", "loinc": "2692-2", "unit": "mOsm/kg", "value": 260}
+            ]},
+            {"panel": null, "collected": "2022-06-05T16:05", "results": [
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 500}
+            ]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-06-30T11:45", "body": "Community hospital emergency department, 2022-06-05. Faxed to primary care 2022-06-30 with the inpatient summary.\n\nCC: seizure.\n\nHPI: 37-year-old woman, one day after a vaginal delivery of her first baby following a long labor that needed oxytocin augmentation. Went home this morning. Husband says she had a generalized shaking episode on the couch lasting about a minute. Before that she had been queasy for hours and increasingly muddled, asking the same questions. She had no headache, no visual symptoms and no belly pain before the event. History of asthma, type 2 diabetes, reflux, recent oral thrush. Diabetes in this pregnancy was managed without insulin.\n\nMeds: metformin 1000 mg BID, fluticasone/salmeterol 100/50 BID, albuterol prn, omeprazole 20 mg daily.\nAllergies: NKDA.\n\nExam: T 37.1 C, BP 130/85, P 88, RR 16. Drowsy, postictal, rousable to voice and follows commands. No focal weakness, pupils equal and reactive, no clonus. Lungs clear. Fundus firm below umbilicus, lochia normal amount.\n\nLabs: Na 122, K 4.2, Cl 88, HCO3 24, BUN 18, Cr 0.9, glucose 140. Serum osmolality 260, urine osmolality 500.\n\nMDM: Seizure with hypotonic hyponatremia, inappropriately concentrated urine, BP not elevated and no preceding headache or visual change. Picture fits water retention from oxytocin and IV fluids in labor. Given 3% saline 100 mL IV over 10 minutes, seizure precautions. OB consulted. Admitted to the medical floor with OB following.\n\nDispo: admitted."}
+          ]
+        },
+        {
+          "id": "2022-06-05b",
+          "kind": "hospital_admission",
+          "start": "2022-06-05T19:00",
+          "end": "2022-06-08T12:00",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Hyponatremia with seizure, postpartum",
+          "conditions": [
+            {"label": "History of gestational diabetes", "action": "history", "onset": "2022-02-01", "note": "as coded in the OB discharge summary"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-06-05T21:40", "results": [{"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 126}]},
+            {"panel": null, "collected": "2022-06-06T15:40", "results": [{"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 129}]},
+            {"panel": null, "collected": "2022-06-07T15:40", "results": [{"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 133}]},
+            {"panel": null, "collected": "2022-06-08T06:00", "results": [{"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 135}]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2022-06-30T11:45", "body": "Admitted 2022-06-05, discharged 2022-06-08. Received by primary care 2022-06-30.\n\nPrincipal diagnosis: hyponatremia with generalized seizure, postpartum.\nOther: type 2 diabetes; gestational diabetes in the recent pregnancy (per OB record); asthma; GERD.\n\nCourse: Arrived from the ED after a 3% saline bolus for a sodium of 122 and a seizure on postpartum day 1. Free water restricted to 1 liter a day. Sodium 126 at 6 hours, 129 at 24 hours, 133 at 48 hours and 135 on the morning of discharge, within safe correction limits. No further seizures. Mental status back to normal by the first evening. Metformin and inhalers continued. OB followed daily; postpartum course otherwise routine and she was able to breastfeed. Felt to be related to oxytocin and IV fluids during labor.\n\nDischarge meds: unchanged from admission.\nFollow-up: primary care in 1 week with a sodium check. OB postpartum visit as scheduled.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-06-09a",
+          "kind": "portal_message",
+          "start": "2022-06-09T13:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Was in the hospital", "author": "patient", "date": "2022-06-09T13:05", "body": "Hi, I had my baby on Saturday!! But the next day I had a seizure at home and had to go to the ER. They said my sodium was really low. I was admitted for 3 days and I'm home now and feel ok, just tired. They said to see you in a week to check my sodium."},
+            {"type": "Patient Message", "title": "RE: Was in the hospital", "author": "PCP", "date": "2022-06-09T15:30", "body": "Congratulations, and I'm so sorry you went through that. Let's get you in Tuesday for a visit and a sodium level. We'll ask the hospital for the records. Until then keep following the fluid limit they gave you, and call 911 for any confusion or another seizure."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2022-06-09T15:45", "body": "Requested ED and inpatient records from the hospital for 6/5-6/8 admission."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, low sodium",
+          "state": {"weight_kg": 73.4},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Hyponatremia", "icd10": "E87.1", "action": "resolved"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-06-14T10:55", "results": [{"test": "Sodium", "value": 138}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-14T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2022-06-14T10:30", "body": "10 days postpartum, brought the baby along. Per patient: delivered 6/4 after a long labor sped up with pitocin, discharged next morning, seized at home that afternoon, sodium very low, three days inpatient with salt solution and fluid restriction. Records requested, not here yet.\n\nNow: no headaches, no confusion, no further episodes. Sleeping in pieces with a newborn. Drinking to thirst, no longer restricting. Breastfeeding. Mood good, PHQ-9 3. Asthma quiet. Sugars fine on metformin.\n\nExam: alert and oriented, conversational, no focal findings. Lungs clear. Heart regular. No edema.\n\nA/P\n- Hyponatremia, recovered: BMP today.\n- Seizure: single event explained by acute sodium drop; no recurrence. Not driving until we see the level and she feels fully herself.\n- T2DM: continue metformin, compatible with breastfeeding. A1c at the fall visit.\n- Postpartum care with OB.\n\nWill call with result."},
+            {"type": "Result Note", "title": "Sodium result", "author": "PCP", "date": "2022-06-14T17:10", "body": "Sodium 138, normal. Called patient, she was relieved. Hyponatremia resolved. No limit on fluids needed now."}
+          ]
+        },
+        {
+          "id": "2022-06-30a",
+          "kind": "outside_records",
+          "start": "2022-06-30T11:45",
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital records reviewed", "author": "PCP", "date": "2022-06-30T16:20", "body": "ED and discharge summary from 6/5-6/8 now in chart. Matches her account. Discharge summary codes gestational diabetes for this pregnancy, which I've added as a history item; her type 2 diabetes remains the active diagnosis."}
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "office_visit",
+          "start": "2022-09-29T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 70.4, "labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-09-29T16:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-29T16:00", "results": [{"test": "Sodium"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-29T16:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-29T16:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-09-29T16:00", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-29T16:05"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-29T16:05"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-29T15:30"},
+            {"procedure": "Immunization administration", "performed": "2022-09-29T16:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2022-09-29T15:30", "body": "Back at work two weeks, baby with grandma during the day. Breastfeeding in the mornings and evenings. Period came last week, first one since delivery.\n\nDM: on metformin 1000 BID, sugars when she checks are 110s-130s fasting. Eats on the run.\nAsthma: fine, albuterol rarely. Rinsing after the diskus, no thrush since spring.\nReflux: controlled.\nNo headaches or neuro symptoms since June.\n\nExam: no distress. Mouth clear. Lungs clear. Heart regular. Feet intact to monofilament, no lesions, DP pulses palpable.\n\nPlan\n- A1c, CMP, CBC, lipids, urine microalbumin.\n- PCV20 today given asthma and diabetes; flu vaccine today.\n- Eye exam overdue, gave her the optometry number again.\n- RTC 4 months."}
+          ]
+        },
+        {
+          "id": "2022-11-02a",
+          "kind": "portal_message",
+          "start": "2022-11-02T21:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Surprise", "author": "patient", "date": "2022-11-02T21:10", "body": "Well this is a surprise but I'm pregnant again. OB knows. Same plan with the metformin?"},
+            {"type": "Patient Message", "title": "RE: Surprise", "author": "PCP", "date": "2022-11-03T07:45", "body": "Congratulations! Yes, same plan unless OB changes it: metformin, both inhalers, omeprazole. Let's meet in January to check in on sugars and breathing."}
+          ]
+        }
+      ]
+    }
+  ]
+}

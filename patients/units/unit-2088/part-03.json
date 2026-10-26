@@ -1,0 +1,567 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002088",
+      "events": [
+        {
+          "id": "2026-02-03a",
+          "kind": "ed_visit",
+          "start": "2026-02-03T10:50",
+          "end": "2026-02-03T16:40",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, productive cough, fever",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2026-02-01"
+            }
+          ],
+          "vitals": {
+            "temp_c": 38.7,
+            "hr": 110,
+            "rr": 28,
+            "spo2": 92
+          },
+          "measure": [
+            "bp"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-03T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ],
+              "resulted": "2026-02-03T11:55"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-03T11:20",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 300
+                }
+              ],
+              "resulted": "2026-02-03T12:05"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-02-03T11:35",
+              "text": "Indication: fever, productive cough, dyspnea.\nTechnique: PA and lateral chest.\nComparison: none on file at this facility.\nFindings: Airspace consolidation in the right lower lobe. The remaining lungs are clear. No pleural effusion. No pneumothorax. Cardiomediastinal silhouette normal.",
+              "conclusion": "Right lower lobe consolidation, consistent with pneumonia.",
+              "issued": "2026-02-03T12:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-03T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-02-06T09:40",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nSeen 02/03/2026\nPatient: David Thayer, 46M, DOB 12/02/1979\n\nCC: short of breath, cough, fever.\n\nHPI: Two days of worsening breathlessness with a cough bringing up yellow sputum, plus fevers. Known poorly controlled type 2 diabetes; prior histoplasmosis treated last year. No travel. No sick contacts he knows of.\nPMH: type 2 diabetes; histoplasmosis (treated 2025); cellulitis left leg (2025); tobacco use disorder. PSH: tonsillectomy.\nMeds: metformin 1000 mg BID, glipizide 10 mg daily. Allergies: NKDA.\nSocial: smoker, 30 pack-years. Social alcohol.\n\nTriage: T 38.7 C (101.7 F), HR 110, RR 28, SpO2 92% on room air.\nExam: ill appearing, tachypneic, speaking in full sentences. Crackles over the right lower lobe; left side clear. Heart tachycardic, regular. No leg swelling.\n\nResults: WBC 18.0, Hgb 14, Plt 250. BUN 28, Cr 1.2, glucose 300; bicarbonate and anion gap normal, so DKA is not present. CXR: right lower lobe consolidation.\n\nMDM: community-acquired pneumonia with hypoxemia and tachypnea in a poorly controlled diabetic, plus hyperglycemia without ketoacidosis and a BUN/Cr suggesting dehydration. IV ceftriaxone and azithromycin given, IV fluids, insulin started.\n\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03b",
+          "kind": "hospital_admission",
+          "start": "2026-02-03T16:40",
+          "end": "2026-02-04T17:15",
+          "service": "Hospital Medicine",
+          "reason": "Community-acquired pneumonia",
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 875,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Community-acquired pneumonia"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 4 days",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Community-acquired pneumonia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-03T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Against Medical Advice",
+              "author": "hospital medicine",
+              "date": "2026-02-06T09:45",
+              "body": "AREA HOSPITAL - INPATIENT MEDICINE\nAdmitted 02/03/2026. Left against medical advice 02/04/2026.\n\nDiagnosis: community-acquired pneumonia, right lower lobe. Uncontrolled type 2 diabetes with hyperglycemia; diabetic ketoacidosis excluded.\n\nCourse: admitted from the ED on IV ceftriaxone and azithromycin, IV fluids and subcutaneous insulin. After about 24 hours of treatment he asked to go home, worried about what the hospital stay would cost him. The team explained that leaving before treatment was complete risked the infection worsening and respiratory failure. He understood and still chose to leave. He signed the against-medical-advice form.\n\nAt departure he was given prescriptions for amoxicillin-clavulanate 875/125 mg twice daily for 7 days and azithromycin 250 mg daily for 4 days, and told to resume metformin and glipizide. Return precautions given. Advised follow-up with his primary care physician within a week.\n\nAllergies: NKDA.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "telephone",
+          "start": "2026-02-05T10:15",
+          "reason": "Post-hospital call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "RN Call - left hospital AMA",
+              "author": "RN",
+              "date": "2026-02-05T10:30",
+              "body": "Hospital notified us pt left AMA yesterday with pneumonia. Called him. Says he feels 'wiped out but better than Tuesday.' Took both antibiotics last night and this morning. Fever 99.8 this morning. Breathing ok at rest, winded on stairs. Sugars 250s. Encouraged hydration. Reviewed reasons to go back in: harder breathing, lips blue, confusion, fever not breaking. Appt with PCP Tues 2/10, earlier if worse. He apologized about the cost thing, told him no apology needed, we'd rather hear from him."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pneumonia, left hospital AMA",
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "start",
+              "sig": "Inject 10 units under the skin at bedtime",
+              "dose": {
+                "value": 10,
+                "unit": "units"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0,
+            "labs": {
+              "Hemoglobin A1c": 10.2,
+              "Glucose": 240,
+              "Creatinine": 0.9
+            }
+          },
+          "vitals": {
+            "spo2": 96
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-10T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 10.2
+                }
+              ],
+              "resulted": "2026-02-10T13:30"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T08:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ],
+              "resulted": "2026-02-10T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-repeat",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "confirm clearing of right lower lobe pneumonia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-02-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-10T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-02-10T15:00",
+              "body": "Seen after ED visit and one-night admission for right lower lobe pneumonia 2/3, left AMA 2/4 over cost. Hospital records reviewed: WBC 18.0, BUN 28, Cr 1.2, glucose 300, no DKA, RLL consolidation on film; discharged on amox-clav x7 days and azithro x4 days.\n\nToday: on day 6 of amox-clav, azithro done. Fever gone since Friday. Cough still productive but looser, sputum lighter. Breathing near normal at rest, a little short on stairs. Eating and drinking. Fasting sugars 220-260 all week.\nWe talked about the cost worry. He has BCBS, the deductible scared him. Told him to call or text me first next time and we'll sort out the safest place to go. Front desk gave him the hospital's financial assistance number.\n\nExam: afebrile, SpO2 96% RA, RR normal. Looks tired but well. A few crackles at the right base, otherwise clear. Heart regular. No edema.\nBMP today: Cr 0.9, BUN normal, so the hospital numbers were dehydration. A1c 10.2.\n\nA/P:\n1. CAP, RLL, improving on oral therapy. Finish amox-clav. Repeat chest x-ray in about 6 weeks given 30 pack-years.\n2. T2DM, A1c 10.2 on metformin 1000 BID and glipizide 10. This needs more. Starting insulin glargine 10 units at bedtime, pen taught by RN today with a saline practice shot. Raise by 2 units every 3 days until fasting sugar is 90-130; stop increasing and call for any reading under 80. Continue metformin and glipizide. Send me numbers in 2 weeks.\n3. BUN and creatinine back to normal.\n4. Tobacco: he smoked through the pneumonia. Offered patch or varenicline again; still no.\n\nRTC 2 months with A1c."
+            },
+            {
+              "type": "Nurse Notes",
+              "title": "Insulin Teaching",
+              "author": "RN",
+              "date": "2026-02-10T09:10",
+              "body": "Insulin pen teaching done: priming, dialing dose, abdomen site rotation, needle disposal in a hard container, storage of open pen. Pt demonstrated with practice pen. Low sugar rule of 15 reviewed. Log sheet given."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "portal_message",
+          "start": "2026-02-24T21:05",
+          "reason": "Sugar log",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "sugars",
+              "author": "patient",
+              "date": "2026-02-24T21:05",
+              "body": "up to 16 units now. mornings 158, 171, 149, 162, 144. no lows. cough just a little in am."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Re: sugars",
+              "author": "PCP",
+              "date": "2026-02-25T07:40",
+              "body": "Nice work, that's real progress. Keep going up 2 units every 3 days until mornings are under 130. Same rule if you ever see under 80: stop going up and let me know. X-ray in late March."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "imaging",
+          "start": "2026-03-24T16:00",
+          "reason": "Repeat chest x-ray after pneumonia",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-03-24T16:05",
+              "text": "Indication: follow-up of right lower lobe pneumonia, February 2026.\nTechnique: PA and lateral views.\nComparison: 05/20/2025 outside film.\nFindings: The right lower lobe is clear; no residual consolidation. Lungs clear bilaterally. Hilar contours normal. No effusion or pneumothorax. Heart size normal.",
+              "conclusion": "Resolution of right lower lobe pneumonia. No acute cardiopulmonary process."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-repeat",
+              "action": "done",
+              "date": "2026-03-24T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Chest x-ray",
+              "author": "PCP",
+              "date": "2026-03-25T07:55",
+              "body": "CXR clear, pneumonia resolved. Portal msg sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, insulin",
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "start",
+              "sig": "Inject 18 units under the skin at bedtime",
+              "dose": {
+                "value": 18,
+                "unit": "units"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            }
+          ],
+          "state": {
+            "weight_kg": 88.5,
+            "labs": {
+              "Hemoglobin A1c": 8.4,
+              "Glucose": 150
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-21T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.4
+                }
+              ],
+              "resulted": "2026-04-21T13:00"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-21T07:55",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ],
+              "resulted": "2026-04-21T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-21T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2026-04-21T15:00",
+              "body": "Glargine since February. Titrated himself up and has sat at 18 units for about three weeks; mornings mostly 130s-140s, nothing under 90. Hasn't missed a night, keeps the pen by the coffee maker. Still on metformin and glipizide. Cough gone. CXR in March was clear.\nSmoking: still about a pack a day.\n\nExam: vitals as charted. Lungs clear. Heart regular. Injection sites fine, no lumps. Feet normal, monofilament intact.\nA1c 8.4, down from 10.2.\n\nA/P:\n1. T2DM, much better. Glargine 18 units nightly as the standing dose; new script written at that dose so the pharmacy count matches. He may nudge up 2 units if fasting stays above 130 for a week. Continue metformin 1000 BID, glipizide 10 daily.\n2. Tobacco: asked again about a quit date; he will think about it.\n\nPhysical in July."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "annual_physical",
+          "start": "2026-07-29T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical and diabetes follow-up",
+          "state": {
+            "weight_kg": 89.0,
+            "labs": {
+              "Hemoglobin A1c": 7.8,
+              "Glucose": 140
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-29T07:45",
+              "resulted": "2026-07-29T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-29T07:45",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ],
+              "resulted": "2026-07-29T15:30"
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-29T07:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ],
+              "resulted": "2026-07-29T15:30"
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-29T07:45",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ],
+              "resulted": "2026-07-29T15:30"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-07-29T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-29T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-07-29T16:15",
+              "body": "46M, yearly visit plus diabetes check. Good stretch since the spring: no infections, no cough, working full days. Glargine 18 units nightly, metformin 1000 twice a day, glipizide 10 in the morning. Fasting sugars 120s-140s. One reading of 84 after a long day on a roof without lunch, felt fine.\nStill about a pack a day. Says the pneumonia rattled him more than the fungus did. Still no quit date. Alcohol unchanged.\nMood good. PHQ-2 1.\n\nExam: vitals as charted. HEENT normal. Lungs clear. Heart RRR, no murmur. Abdomen soft. Skin: legs without redness or breaks. Feet: no ulcers, sensation intact, pulses 2+.\n\nA/P:\n1. T2DM, improving. A1c today 7.8. Same regimen. Talked about not skipping meals on glipizide days. Lipids, kidney, urine albumin today. Eye exam due November.\n2. Tobacco dependence. Advised to quit; offered varenicline or patches with a quit date of his choosing. Declines for now.\n3. Prevention: FIT due in October, kit at the fall vaccine visit. Flu and COVID in the fall.\n\nRTC October for diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "portal_message",
+          "start": "2026-07-31T12:20",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results from Wednesday",
+              "author": "PCP",
+              "date": "2026-07-31T12:20",
+              "body": "David, your A1c is 7.8, the best it has been since we found the diabetes. Kidney function and urine protein are normal and the rest of the bloodwork is in the range we'd expect. Keep doing what you're doing. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - insulin glargine",
+              "author": "MA",
+              "date": "2026-08-12T10:05",
+              "body": "Pharmacy fax: refill request insulin glargine pens and pen needles, 18 units nightly. Last A1c 7.8 on 7/29. Approved by PCP for 90 days with 1 refill. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-28a",
+          "kind": "office_visit",
+          "start": "2026-10-28T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

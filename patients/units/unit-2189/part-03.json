@@ -1,0 +1,257 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002189",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain and weight loss",
+          "state": {"weight_kg": 80.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "orders": [{"id": "gi-expedite", "action": "placed", "order": "Gastroenterology referral, expedited", "category": "referral", "to": "Gastroenterology", "reason": "epigastric pain and weight loss"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-01-23T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2024-01-23T10:40", "body": "S: For 2-3 months a dull ache high in the belly, sometimes going through to the back, worse after he eats and when he lies flat. Eating less because of it. Down about 3.5 kg on our scale since September and he says his pants are loose. No vomiting, no black stools. Swallowing no different from usual. No fever.\n\nO: Weight as charted. Not obviously icteric in the exam room lighting. Abdomen soft, mildly tender epigastrium, no rebound, no mass felt, no ascites. Lungs and heart as before.\n\nA/P: Epigastric pain radiating to the back with weight loss in a man with cirrhosis and treated HCC - this needs imaging and GI eyes soon. He already has a GI visit in February; I called their office and they agreed to keep him on the 2/8 slot as urgent and to direct the workup. Return precautions: yellow eyes, dark urine, fever, vomiting.\nHolding off on separate labs since GI will draw them with their visit."}
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "specialist_visit",
+          "start": "2024-02-08T13:00",
+          "service": "Gastroenterology",
+          "reason": "Epigastric pain radiating to back with weight loss",
+          "orders": [
+            {"id": "gi-expedite", "action": "done", "date": "2024-02-08T13:00"},
+            {"id": "ct-pancreas", "action": "placed", "order": "CT abdomen and pelvis, pancreas protocol", "category": "imaging", "reason": "epigastric pain, weight loss, jaundice, elevated CA 19-9"}
+          ],
+          "state": {"weight_kg": 79.5, "labs": {"Hemoglobin": 12.1, "Bilirubin, Total": 3.2, "Alkaline Phosphatase": 280}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-02-08T13:40", "results": [{"test": "Bilirubin, Total", "value": 3.2}, {"test": "Alkaline Phosphatase", "value": 280}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-08T13:40", "results": [{"test": "Hemoglobin", "value": 12.1}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2024-02-08T13:40", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 150}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Visit", "author": "gastroenterology", "date": "2024-02-12T09:00", "body": "Outside gastroenterology, seen 02/08/2024 (urgent slot at the request of his PCP).\nKnown to us for a Zenker diverticulum managed conservatively; compensated alcohol-associated cirrhosis with a segment VI HCC ablated in 3/2023, under transplant evaluation.\n\nHPI: Three months of a dull epigastric ache that bores through to the back, worse after meals and when lying down. Unintentional 10-pound weight loss over the same three months. No hematemesis or melena.\n\nMeds: home O2 2 L, tiotropium, salmeterol, albuterol nebs, lisinopril 20, HCTZ 25, metformin 1000 bid. NKDA.\n\nExam: Jaundiced, with scleral icterus. Abdomen soft, mild tenderness in the epigastrium, no rebound or guarding. No ascites.\n\nLabs today: Hgb 12.1, total bilirubin 3.2, alkaline phosphatase 280, CA 19-9 150.\n\nAssessment: cholestatic jaundice with epigastric pain radiating to the back, weight loss and a raised CA 19-9 - pancreatic head malignancy is the leading concern; recurrent HCC with biliary involvement less likely given the December MRI.\nPlan: pancreas-protocol CT this week; EUS with tissue sampling and ERCP for biliary drainage to follow depending on the CT. We have notified the transplant center.\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "imaging",
+          "start": "2024-02-13T09:00",
+          "service": "Radiology",
+          "reason": "Pancreas protocol CT",
+          "orders": [{"id": "ct-pancreas", "action": "done", "date": "2024-02-13T09:00"}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2024-02-13T09:00", "text": "Pancreas protocol, pancreatic and portal venous phases. 2.6 cm hypoattenuating mass in the pancreatic head. Common bile duct dilated to 13 mm, pancreatic duct 5 mm, both tapering at the mass. The mass abuts the superior mesenteric vein over less than 180 degrees without contour deformity. Superior mesenteric artery, celiac axis and common hepatic artery are free of tumor. Cirrhotic liver with the segment VI ablation zone; no other liver lesion. No ascites. No peripancreatic or retroperitoneal adenopathy. Lung bases show fibrotic changes. Bones unremarkable.", "conclusion": "2.6 cm pancreatic head mass with biliary and pancreatic ductal dilation and limited SMV abutment, borderline resectable by imaging. No metastatic disease."}]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "procedure_visit",
+          "start": "2024-02-20T08:00",
+          "end": "2024-02-20T15:30",
+          "service": "Gastroenterology",
+          "reason": "EUS with fine-needle aspiration and ERCP with biliary stent",
+          "documents": [
+            {"type": "Procedure Note", "title": "EUS-FNA and ERCP Report", "author": "gastroenterology", "date": "2024-02-22T10:00", "body": "Outside endoscopy report, 02/20/2024. Monitored anesthesia care with anesthesiology, oxygen continued throughout; tolerated well.\nThe Zenker diverticulum was traversed carefully under direct vision.\nEUS: 2.6 cm hypoechoic irregular mass in the pancreatic head, upstream biliary and pancreatic ductal dilation. Contact with the SMV over a short segment. No peripancreatic nodes of concern. No ascites. FNA x3 passes with a 22-gauge needle; rapid on-site evaluation adequate.\nERCP: distal common bile duct stricture; sphincterotomy and placement of a fully covered self-expanding metal biliary stent with good drainage of bile.\nComplications: none. Observed and discharged the same day.\nPlan: await cytology; oncology referral will follow. NKDA."}
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "outside_records",
+          "start": "2024-02-23T14:00",
+          "service": "Cytopathology",
+          "reason": "Pancreatic mass cytology",
+          "conditions": [{"label": "Malignant neoplasm of pancreas", "action": "diagnosed", "onset": "2023-11-01", "note": "adenocarcinoma, pancreatic head"}],
+          "reports": [{"study": "Surgical pathology report", "performed": "2024-02-20T10:30", "issued": "2024-02-23T14:00", "text": "Specimen: pancreas, head mass, EUS-guided fine-needle aspiration, cytology with cell block. Crowded, disorganized sheets of atypical ductal cells with nuclear enlargement, irregular contours and loss of polarity; single malignant cells in the background. Immunostains on the cell block support a pancreaticobiliary origin.", "conclusion": "Positive for malignancy: adenocarcinoma."}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from GI re: cytology", "author": "PCP", "date": "2024-02-23T16:45", "body": "GI called - FNA is adenocarcinoma of the pancreas. They told the patient this afternoon and have referred to oncology (appointment 2/29). I called Fred and Ingrid afterwards. Mostly listened. He said, \"Well, the liver team won't want me now.\" Offered a visit after oncology; booked."}
+          ]
+        },
+        {
+          "id": "2024-02-29a",
+          "kind": "specialist_visit",
+          "start": "2024-02-29T10:00",
+          "service": "Oncology",
+          "reason": "Pancreatic adenocarcinoma",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Consultation", "author": "oncology", "date": "2024-03-04T15:00", "body": "Outside medical oncology consultation 02/29/2024, with input from surgical oncology and radiation oncology at our multidisciplinary pancreas conference.\n\nDiagnosis: adenocarcinoma of the pancreatic head, 2.6 cm, borderline resectable by CT (limited SMV abutment), no metastases. Biliary metal stent placed 2/20. CA 19-9 150 before stenting.\n\nBackground: IPF and COPD on continuous 2 L oxygen; compensated alcohol-associated cirrhosis with an ablated HCC (complete response); type 2 diabetes; hypertension. Lives with his wife. Walks around the house and to the car; limited by breathlessness.\n\nDiscussion: Surgical oncology does not consider him a candidate for pancreaticoduodenectomy given his fibrotic lung disease, oxygen requirement and cirrhosis. We discussed systemic chemotherapy, including a reduced-dose gemcitabine-based regimen, with its expected benefit and toxicities. After a long conversation with his wife present, Mr. Lindqvist declined chemotherapy. He is interested in local treatment.\n\nPlan:\n1. Stereotactic body radiation therapy to the pancreatic head, 5 fractions, with radiation oncology, starting mid-March.\n2. CT chest/abdomen/pelvis and CA 19-9 about 2 months after radiation, then every 3 months.\n3. Supportive care resources offered.\nNKDA.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "outside_records",
+          "start": "2024-03-05T11:00",
+          "service": "Transplant Hepatology",
+          "reason": "Transplant evaluation update",
+          "documents": [
+            {"type": "Outside Records", "title": "Transplant Center Letter", "author": "transplant hepatology", "date": "2024-03-05T11:00", "body": "Transplant hepatology letter dated 03/04/2024.\nWith the new diagnosis of pancreatic adenocarcinoma, Mr. Lindqvist is not a candidate for liver transplantation, and his evaluation has been closed. We discussed this with him by phone. His general hepatology and HCC surveillance continue with his local hepatology team. We are sorry to send this news and thank you for the referral."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T13:00",
+          "end": "2024-03-12T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after new pancreatic cancer diagnosis",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-03-12T13:00"}, {"procedure": "Advance care planning, first 30 minutes", "performed": "2024-03-12T13:35"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2024-03-12T14:15", "body": "Long visit with Fred and Ingrid.\n\nInterval: pancreatic head adenocarcinoma on EUS-FNA 2/20, metal biliary stent placed. Oncology: no surgery because of lungs/liver; he declined chemo; SBRT x5 starts 3/18. Transplant center has closed his evaluation.\n\nSince the stent the itching and the yellow are going away, urine lighter. Belly ache a little better. Appetite fair.\n\nExam: mild scleral icterus still. Abdomen soft, minimal epigastric tenderness. Lungs crackles bases. Sat as charted on 2 L.\n\nPHQ-9 4 - sad, not depressed, sleeping ok.\n\nACP (35 min): He understands the cancer cannot be removed and that radiation aims at control. Main goals: stay at home, keep breathing comfortably, stay out of the hospital where he can. Would accept hospital care and a breathing tube for a reversible problem; would not want prolonged life support if he could not come back to his current level. Ingrid remains HCP. MOLST discussed; he wants to think it over. Documented.\n\nA/P\n1. Pancreatic adenocarcinoma - per oncology/rad onc.\n2. Cirrhosis/HCC - hepatology surveillance continues.\n3. COPD/IPF on 2 L - stable.\n4. DM, HTN - same meds; will watch sugars and weight.\nRTC after radiation, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "outside_records",
+          "start": "2024-03-26T10:00",
+          "service": "Radiation Oncology",
+          "reason": "Radiation treatment summary",
+          "documents": [
+            {"type": "Outside Records", "title": "Radiation Oncology Treatment Summary", "author": "radiation oncology", "date": "2024-03-26T10:00", "body": "Treatment summary. Diagnosis: adenocarcinoma, pancreatic head. Stereotactic body radiation therapy delivered 03/18/2024 through 03/22/2024 in 5 fractions to the pancreatic head tumor with motion management. He completed all fractions without interruption. Mild fatigue and nausea during the week, resolving. Follow-up imaging per medical oncology in about 2 months."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "portal_message",
+          "start": "2024-04-09T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about energy after radiation",
+          "documents": [
+            {"type": "Patient Message", "title": "Tired", "author": "patient", "date": "2024-04-09T08:15", "body": "Still pretty wiped out two weeks after the radiation. Is that normal? Eating ok. Breathing the same. Ingrid wanted me to ask. - Fred"},
+            {"type": "Patient Message", "title": "RE: Tired", "author": "PCP", "date": "2024-04-09T12:40", "body": "Hi Fred - fatigue for a few weeks after radiation is common and usually lifts gradually. Keep eating what you can and take short walks around the house. If you notice yellow eyes again, fever, dark urine or new belly pain, call us right away, because the stent can occasionally clog. Otherwise I'll see you in June."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "specialist_visit",
+          "start": "2024-05-21T11:00",
+          "service": "Oncology",
+          "reason": "Restaging after radiation",
+          "state": {"weight_kg": 77.0, "labs": {"Bilirubin, Total": 1.4, "Alkaline Phosphatase": 146, "Hemoglobin": 12.3}},
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-05-21T10:15", "results": [{"test": "Bilirubin, Total", "value": 1.4}, {"test": "Alkaline Phosphatase"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2024-05-21T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 64}]}
+          ],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2024-05-14T09:00", "text": "Post-radiation change about the pancreatic head mass, which is not larger. Biliary stent in good position with pneumobilia; no biliary dilation. SMV patent. Cirrhotic liver with the treated segment VI zone; no new liver lesion. No ascites. No adenopathy. Lung bases: fibrotic change without nodules.", "conclusion": "Treated pancreatic head mass, stable. No evidence of metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2024-05-23T13:00", "body": "Medical oncology 05/21/2024. Two months after SBRT. Fatigue improving, appetite returning; weight 77 kg. Jaundice resolved.\nCT 5/14: pancreatic head mass stable with post-treatment change, stent patent, no metastases.\nCA 19-9 64 (150 before stenting). Bilirubin 1.4.\nPlan: surveillance CT and CA 19-9 every 3 months. He continues to decline chemotherapy, which we respect. NKDA.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "annual_physical",
+          "start": "2024-06-25T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-25T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-25T09:45", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-25T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-06-25T09:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-06-25T09:00"}, {"procedure": "Venipuncture", "performed": "2024-06-25T09:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2024-06-25T09:50", "body": "AWV.\nEnergy mostly back since radiation. Oncology CT in May stable, CA 19-9 down. Weight settled around 77.\nFunction: independent in ADLs; Ingrid does driving and errands. No falls.\nPHQ-2 1. AUDIT-C 0.\nACP: HCP Ingrid on file; still deciding on MOLST.\nFeet intact. Skin - no new lesions; derm skin check done in spring, unremarkable per pt.\nVaccines: flu/COVID fall. RSV done.\nLabs today. RTC fall."}
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "hospital_admission",
+          "start": "2024-07-30T06:40",
+          "end": "2024-08-01T14:00",
+          "service": "Emergency Medicine",
+          "reason": "Worsening dyspnea, wheezing and nocturnal cough after upper respiratory infection",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease with acute exacerbation", "action": "diagnosed", "onset": "2024-07-26"},
+            {"label": "Acute respiratory failure with hypercapnia", "icd10": "J96.02", "action": "diagnosed", "onset": "2024-07-30"}
+          ],
+          "medications": [{"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets (40 mg) by mouth daily for 3 more days to complete 5 days", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "COPD exacerbation"}],
+          "reports": [{"study": "Chest X-ray, 1 view", "performed": "2024-07-30T07:10", "text": "Portable AP view. Hyperinflated lungs with flattened hemidiaphragms. Reticular opacities at the bases, known fibrosis. No focal consolidation, effusion or pneumothorax. Heart size normal.", "conclusion": "Hyperinflation. No acute consolidation or pneumothorax."}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2024-07-30T09:30", "body": "Outside regional hospital ED, 07/30/2024.\n72-year-old man with IPF, COPD on continuous home O2 and a recently diagnosed pancreatic cancer treated with radiation, here with several days of worsening breathlessness, persistent wheeze and cough at night following a cold, not settling despite the maximum use of his albuterol nebulizer at home.\nNKDA. Home meds per list.\nExam: tachypneic, prolonged expiratory phase, diffuse wheezes on both sides. Alert and oriented, answering appropriately.\nCXR: hyperinflation with flattened diaphragms, no consolidation.\nAssessment: COPD exacerbation with acute hypercapnic respiratory failure, mental status intact.\nPlan: continuous then scheduled nebulized bronchodilators, IV methylprednisolone, BiPAP overnight; admit to medicine for observation."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2024-08-02T10:00", "body": "Admission 07/30/2024 - discharge 08/01/2024. Outside regional hospital.\nDiagnosis: acute exacerbation of COPD with acute hypercapnic respiratory failure, no altered mentation; triggered by a viral upper respiratory infection.\nCourse: BiPAP the first night, weaned to his baseline 2 L nasal cannula the next morning. Systemic corticosteroids with scheduled nebulized bronchodilators; airflow and wheezing markedly improved within 48 hours. Ambulating on 2 L at discharge.\nDischarge medications: prednisone 40 mg daily for 3 more days (5 days total); resume all home medications (O2 2 L, tiotropium, salmeterol, albuterol nebs, lisinopril, HCTZ, metformin).\nFollow-up: PCP within one week. NKDA."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "office_visit",
+          "start": "2024-08-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, COPD exacerbation",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease with acute exacerbation", "action": "resolved"},
+            {"label": "Acute respiratory failure with hypercapnia", "icd10": "J96.02", "action": "resolved"}
+          ],
+          "medications": [{"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "course completed"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-08-06T11:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]}],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2024-08-06T10:30"}, {"procedure": "Venipuncture", "performed": "2024-08-06T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Follow-up", "author": "PCP", "date": "2024-08-06T11:05", "body": "Seen 5 days after discharge for a COPD flare with hypercapnia (BiPAP one night, steroids). Finished prednisone yesterday. Breathing back near usual, nebulizer twice a day now, tapering off. No fever, cough quieter.\nDischarge summary reviewed.\nExam: sat as charted on 2 L, speaking full sentences. Scattered end-expiratory wheeze, basal crackles. No edema.\nA/P: COPD exacerbation - resolved. Continue tiotropium/salmeterol and albuterol nebs as needed. Discussed early-warning signs and calling us first. BMP today for glucose after steroids. RTC October."}
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "specialist_visit",
+          "start": "2024-08-27T11:00",
+          "service": "Oncology",
+          "reason": "Pancreatic cancer surveillance",
+          "labs": [{"panel": null, "collected": "2024-08-27T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 58}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2024-08-20T09:00", "text": "Pancreatic head mass with post-radiation change, unchanged in size. Biliary stent in place, no ductal dilation. No new liver lesion. No ascites or adenopathy.", "conclusion": "Stable treated pancreatic head mass. No metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2024-08-29T12:00", "body": "Medical oncology 08/27/2024. Recent hospital stay for a COPD flare noted. CT 8/20 stable; CA 19-9 58. No new symptoms related to the pancreas. Continue surveillance every 3 months. NKDA.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "specialist_visit",
+          "start": "2024-09-17T10:00",
+          "service": "Pulmonology",
+          "reason": "IPF and COPD follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2024-09-20T11:00", "body": "Pulmonology 9/17/2024. Hospitalized in July for a COPD exacerbation with hypercapnia, BiPAP one night, recovered. Now at baseline on 2 L. Basal fibrosis on the recent oncology CT unchanged.\nPlan: continue tiotropium and salmeterol, albuterol nebs; flu and COVID vaccines this fall; return 6 to 12 months. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fall vaccines",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-08T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2024-10-08T10:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2024-10-08T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T10:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T10:31"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-08T10:00"}, {"procedure": "Immunization administration", "performed": "2024-10-08T10:30"}, {"procedure": "Venipuncture", "performed": "2024-10-08T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2024-10-08T10:45", "body": "Quarterly. August oncology CT stable, CA 19-9 58. Pulm letter: baseline.\nFeels \"steady.\" Eating smaller meals, weight holding. No jaundice. No new breathing trouble since the summer.\nExam: vitals as charted on 2 L. Lungs - crackles bases, no wheeze. Abdomen soft, nontender. No edema.\nA/P: stable. Labs today. High-dose flu and updated COVID given. RTC January."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T11:00",
+          "service": "Oncology",
+          "reason": "Pancreatic cancer surveillance",
+          "labs": [{"panel": null, "collected": "2024-11-19T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 61}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.0}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2024-11-12T09:00", "text": "Multiphase study coordinated with hepatology. Treated pancreatic head mass unchanged. Stent in place. Liver: segment VI ablation zone without enhancement; no new arterially enhancing lesion or washout. No ascites. No adenopathy.", "conclusion": "Stable pancreatic head mass. No HCC recurrence. No metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2024-11-21T12:00", "body": "Medical oncology 11/19/2024. Doing well. CT 11/12 stable pancreatic head; no liver recurrence (reviewed with hepatology, who will accept this multiphase study in place of a separate MRI this cycle). CA 19-9 61; AFP 5.0. Next surveillance in about 6 months given stability. NKDA.\nMedical Oncology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

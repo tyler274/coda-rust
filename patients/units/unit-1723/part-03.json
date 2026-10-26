@@ -1,0 +1,196 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001723",
+   "events": [
+    {
+     "id": "2026-01-13a",
+     "kind": "telephone",
+     "start": "2026-01-13T14:10",
+     "reason": "Referral scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pulmonology referral",
+       "author": "front desk",
+       "date": "2026-01-13T14:10",
+       "body": "Pulmonology office called: referral and hospital records received, they offered 2/11. Called pt, she accepted the date. Self-pay estimate given to her by their office; she is asking them about their financial assistance form."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-11a",
+     "kind": "specialist_visit",
+     "start": "2026-02-11T13:30",
+     "service": "Pulmonology",
+     "reason": "Severe persistent asthma after ICU admission",
+     "orders": [
+      {
+       "id": "pulm-referral",
+       "action": "done",
+       "date": "2026-02-11T13:30"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology consultation (received 02/16/2026)",
+       "author": "pulmonology",
+       "date": "2026-02-16T09:15",
+       "body": "Outside pulmonary group\nDate of consultation: 02/11/2026\nRe: Jada Simmons, DOB 09/08/2001\nReferred by: primary care\nAllergies: NKDA\n\nThank you for asking me to see Ms. Simmons, a 24-year-old restaurant server with lifelong asthma. She was intubated for an exacerbation in January 2024 and spent part of a December 2025 admission in the ICU on BiPAP for status asthmaticus, a few weeks after a right lower lobe pneumonia. She has never smoked. Her mother has asthma.\n\nUntil December she was on fluticasone 220 mcg alone and by her own account used it about half the time. Since discharge she has been on fluticasone-salmeterol 250/50 twice daily and says she has missed only a handful of doses. Albuterol a few times a week, no night waking, no further steroid courses.\n\nExam: comfortable, conversant. No nasal polyps. Chest clear with a normal expiratory phase. No clubbing or edema.\n\nAssessment: severe persistent asthma with two life-threatening exacerbations, better controlled now that she is on and actually using an ICS-LABA. Allergic rhinitis contributes in the spring and fall.\n\nRecommendations:\n1. Continue fluticasone-salmeterol 250/50 one inhalation twice daily; albuterol as needed.\n2. Inhaler technique checked, good. Written asthma action plan reviewed and given.\n3. Continue levocetirizine in pollen season.\n4. I will see her again in about four months.\n\nThank you for involving me in her care.\nPulmonology attending"
+      }
+     ]
+    },
+    {
+     "id": "2026-03-26a",
+     "kind": "lab_only",
+     "start": "2026-03-26T08:15",
+     "reason": "12-month RPR after syphilis treatment",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-03-26T08:15",
+       "resulted": "2026-03-27T14:05",
+       "results": [
+        {
+         "test": "Rapid Plasma Reagin",
+         "text": "Reactive"
+        },
+        {
+         "test": "RPR titer",
+         "loinc": "31147-2",
+         "text": "1:2"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-03-26T08:15"
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Secondary syphilis",
+       "icd10": "A51.39",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "RPR 12-month result",
+       "author": "PCP",
+       "date": "2026-03-30T08:20",
+       "body": "RPR 1:2 at 12 months after benzathine penicillin; 1:64 at diagnosis, 1:8 at 6 months. More than a fourfold fall: adequate serologic response, syphilis treated. Low titer may persist; no further titers unless new exposure or symptoms. Moved secondary syphilis to resolved."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-30a",
+     "kind": "portal_message",
+     "start": "2026-03-30T08:25",
+     "reason": "Result message",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your blood test",
+       "author": "PCP",
+       "date": "2026-03-30T08:25",
+       "body": "Hi Jada, your syphilis follow-up test came back the way we hoped. The number has dropped well, which means the treatment worked. The test may stay a little positive for a long time, and that is normal after treatment. We'd test again only if you have a new exposure or new symptoms. See you in May for your asthma check."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your blood test",
+       "author": "patient",
+       "date": "2026-03-30T12:47",
+       "body": "ok thank god. thank you!!"
+      }
+     ]
+    },
+    {
+     "id": "2026-05-14a",
+     "kind": "office_visit",
+     "start": "2026-05-14T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-05-14T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Asthma Follow-up",
+       "author": "PCP",
+       "date": "2026-05-14T14:35",
+       "body": "S: Asthma visit. Saw pulm in Feb, letter reviewed, no changes. Fluticasone-salmeterol twice daily, phone alarm still on, misses 'maybe one a week'. Albuterol once or twice a week, mostly with pollen. No night symptoms, no steroids, no urgent visits since December. Levocetirizine daily this month for allergies. Still waiting on Medicaid, now on a second application.\nO: well. Lungs clear, no wheeze. Nose mildly congested.\nA/P\n1. Severe persistent asthma, well controlled on ICS-LABA. Continue. Refills x3 months sent. Pulm follow-up in June.\n2. Allergic rhinitis: levocetirizine through the season.\n3. Syphilis treated, titer appropriate in March.\nFlu/COVID in the fall; physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-17a",
+     "kind": "specialist_visit",
+     "start": "2026-06-17T10:45",
+     "service": "Pulmonology",
+     "reason": "Asthma follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology follow-up (received 06/22/2026)",
+       "author": "pulmonology",
+       "date": "2026-06-22T10:00",
+       "body": "Outside pulmonary group\nDate of visit: 06/17/2026\nRe: Jada Simmons, DOB 09/08/2001\nAllergies: NKDA\n\nFollow-up for severe persistent asthma. Stable since February: no exacerbations, no oral steroids, albuterol about twice weekly in the pollen season. Using fluticasone-salmeterol 250/50 twice daily. Lungs clear today.\n\nPlan: no change. Continue fluticasone-salmeterol and albuterol as needed. Return in six months, sooner with any flare.\n\nPulmonology attending"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-08a",
+     "kind": "pharmacy",
+     "start": "2026-07-08T16:20",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Pharmacy refill request",
+       "author": "MA",
+       "date": "2026-07-08T16:20",
+       "body": "eRx refill request received for fluticasone propionate/salmeterol 250/50 inhaler and albuterol HFA. Last OV 5/14/2026, on current med list. Approved per protocol, 90-day supply, 1 refill. Pharmacy notified electronically."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T09:00",
+     "reason": "Fall vaccine reminder",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Fall vaccines and physical",
+       "author": "front desk",
+       "date": "2026-08-11T09:00",
+       "body": "Hi Jada, this is a reminder that flu shots arrive in September and it's time to schedule your yearly physical. Reply here or call the office and we'll find a time that works around your shifts."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,153 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002189",
+      "events": [
+        {
+          "id": "2026-02-02a",
+          "kind": "hospital_admission",
+          "start": "2026-02-02T16:10",
+          "end": "2026-02-06T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Sudden shortness of breath and left chest pain after coughing",
+          "conditions": [{"label": "Spontaneous tension pneumothorax", "icd10": "J93.0", "action": "diagnosed", "onset": "2026-02-02", "note": "left"}],
+          "vitals": [
+            {"time": "2026-02-02T16:15", "bp": [145, 90], "spo2": 86, "rr": 28, "hr": 122},
+            {"time": "2026-02-02T17:30", "spo2": 93, "rr": 22, "hr": 98}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-02-02T16:25", "text": "Portable AP view. Large left pneumothorax with collapse of the left lung and shift of the mediastinum to the right. Right lung shows chronic basal reticulation. No right pneumothorax.", "conclusion": "Large left pneumothorax with mediastinal shift, consistent with tension physiology."},
+            {"study": "Chest X-ray, 1 view", "performed": "2026-02-02T17:20", "text": "Portable AP view after needle decompression and left chest tube placement. Left lung largely re-expanded with a small residual apical pneumothorax. Mediastinum midline. Chest tube tip at the left apex.", "conclusion": "Left lung re-expanded after chest tube. Small residual apical pneumothorax."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2026-02-02T18:30", "body": "Outside regional hospital ED, 02/02/2026.\nCC: sudden breathlessness and left chest pain after a coughing fit.\nHPI: 73-year-old man with COPD with chronic respiratory failure and IPF, on 2 L home oxygen and nebulizer, ICU stay last February for acute-on-chronic respiratory failure. This afternoon after a bout of coughing he felt a sudden sharp pain on the left side of his chest and could not catch his breath. Brought by his wife.\nNKDA. Home meds per list.\nVitals: BP 145/90, HR 122, RR 28, SpO2 86% on room air.\nExam: anxious, tachypneic, tachycardic. Breath sounds diminished over the left chest without wheeze; hyperresonant to percussion on the left. Remainder of the exam unremarkable.\nPortable CXR obtained at once: large left pneumothorax with rightward mediastinal shift.\nCourse: tension pneumothorax - needle decompression left second intercostal space, midclavicular line, with a rush of air and prompt improvement in heart rate and saturation; left chest tube then placed in the fifth intercostal space, anterior axillary line, under local anesthesia. Repeat film: lung re-expanded, small apical residual. SpO2 93% on 4 L.\nDisposition: ICU for monitoring."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2026-02-07T10:00", "body": "Outside regional hospital. Admitted 02/02/2026, discharged 02/06/2026.\nDiagnosis: left tension pneumothorax, secondary spontaneous, in a patient with COPD and idiopathic pulmonary fibrosis.\nCourse: Needle decompression and left chest tube in the ED. Two days in the ICU, weaned back to 2 L. Small air leak resolved by day 3; tube placed to water seal then removed on hospital day 4 with no recurrence on follow-up film. Pain controlled. Thoracic surgery reviewed; no pleurodesis at this time.\nDischarge medications: unchanged home regimen - oxygen 2 L continuous, tiotropium, salmeterol, albuterol nebs as needed, lisinopril 20, HCTZ 25, metformin 1000 twice daily.\nAdvice: no air travel until cleared by pulmonology; return for any sudden breathlessness or chest pain.\nAllergies: NKDA.\nFollow-up: PCP within one week; pulmonology in 6 to 8 weeks with chest x-ray."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "office_visit",
+          "start": "2026-02-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pneumothorax",
+          "conditions": [{"label": "Spontaneous tension pneumothorax", "icd10": "J93.0", "action": "resolved"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-02-12T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Follow-up", "author": "PCP", "date": "2026-02-12T11:05", "body": "TCM. Tension pneumothorax on the left 2/2 after a coughing spell - needle decompression and chest tube in the ED, ICU 2 nights, tube out day 4, home 2/6. Records reviewed.\nNow: chest tube site sore, improving. Breathing back to his usual on 2 L. No new sudden pain. Shaken by it. Wife did not leave his side.\nExam: sat as charted on 2 L. Left chest tube site clean and dry, sutured, no drainage. Breath sounds present both sides, basal crackles as before. Heart regular.\nA/P: Left tension pneumothorax - resolved, clinically re-expanded. Suture out with nurse next week. Pulm f/u with CXR in April. Reviewed: call 911 for sudden chest pain or breathlessness. RTC May."}
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "nurse_visit",
+          "start": "2026-02-19T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chest tube site suture removal",
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Suture Removal", "author": "RN", "date": "2026-02-19T09:30", "body": "Single suture removed from L chest tube site. Healing well, no redness or drainage. Dry dressing. Pt says breathing feels like before the hospital."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "portal_message",
+          "start": "2026-03-17T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Oxygen tank delivery",
+          "documents": [
+            {"type": "Patient Message", "title": "Portable tanks", "author": "patient", "date": "2026-03-17T16:45", "body": "The oxygen company says my paperwork for the portable tanks runs out this month and they need you to sign again. Ingrid says hello."},
+            {"type": "Patient Message", "title": "RE: Portable tanks", "author": "RN", "date": "2026-03-18T10:10", "body": "Hi Fred, we received their form this morning; it is signed and faxed back. Hello to Ingrid."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "specialist_visit",
+          "start": "2026-04-14T10:00",
+          "service": "Pulmonology",
+          "reason": "Follow-up after pneumothorax",
+          "reports": [{"study": "Chest X-ray, 2 views", "performed": "2026-04-14T09:30", "text": "PA and lateral. No pneumothorax. Bilateral basal reticular opacities, chronic. Lungs hyperinflated. No effusion. Heart size normal.", "conclusion": "No pneumothorax. Chronic basal fibrotic change."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2026-04-17T11:00", "body": "Pulmonology 4/14/2026. Left tension pneumothorax in February treated with decompression and chest tube; no recurrence. Back to baseline on 2 L. CXR today: no pneumothorax.\nWe discussed that recurrence risk is meaningful with his lung disease; he would prefer not to have pleurodesis unless it recurs, which is reasonable. Avoid air travel. Continue current inhalers and oxygen. Return in 6 months. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "office_visit",
+          "start": "2026-05-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-12T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T10:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-05-12T10:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2026-05-12T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-12T10:00"}, {"procedure": "Venipuncture", "performed": "2026-05-12T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-05-12T10:45", "body": "F/u. Pulm April: no recurrence, no pleurodesis for now. Feeling ok. Coughs carefully now, he says. No diarrhea, no jaundice. Swallowing same.\nExam: vitals as charted on 2 L. Lungs basal crackles, no wheeze. L chest scar healed. Abdomen soft. No edema.\nA/P: COPD/IPF - baseline. Cirrhosis/HCC and pancreas - oncology surveillance next week. HTN, DM - labs today. RTC August."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T11:00",
+          "service": "Oncology",
+          "reason": "Pancreatic cancer surveillance",
+          "labs": [{"panel": null, "collected": "2026-05-19T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 73}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.1}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2026-05-12T13:00", "text": "Multiphase study. Treated pancreatic head mass, not changed in size. Biliary stent in place, no ductal dilation. Liver: ablation zone stable; no new lesion. No ascites. No adenopathy.", "conclusion": "Stable. No HCC recurrence. No metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-05-21T12:00", "body": "Medical oncology 05/19/2026. Pneumothorax in February noted. CT 5/12 stable; CA 19-9 73, within the range of the past two years; AFP 5.1. Continue surveillance every 6 months. NKDA.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "office_visit",
+          "start": "2026-08-05T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-05T11:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-05T11:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-08-05T11:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-08-05T10:30"}, {"procedure": "Venipuncture", "performed": "2026-08-05T11:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-08-05T11:15", "body": "Summer f/u. Stayed out of the hospital since February. Oncology in May stable. Breathing at his usual on 2 L, nebulizer most mornings. Regurgitation now and then at night, unchanged. No diarrhea. Appetite fair, weight stable.\nMeds reviewed - unchanged: O2 2 L, tiotropium, salmeterol, albuterol nebs PRN, lisinopril 20, HCTZ 25, metformin 1000 bid.\nExam: vitals as charted on 2 L. Lungs basal crackles. Heart regular. Abdomen soft, nontender. Feet intact to monofilament. No edema.\nA/P: COPD with chronic resp failure / IPF - baseline. HTN - at goal. DM - A1c, BMP, urine microalbumin today. Cirrhosis/HCC s/p ablation and pancreatic cancer s/p SBRT - per hepatology/oncology surveillance. AWV and flu/COVID in the fall; front desk to call with a date."}
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "portal_message",
+          "start": "2026-08-06T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2026-08-06T13:20", "body": "Hi Fred, yesterday's labs: kidney function and potassium normal, sugar control still good, blood counts similar to the spring, urine protein test normal. No changes needed."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "outside_records",
+          "start": "2026-08-18T10:00",
+          "service": "Hepatology",
+          "reason": "Hepatology letter",
+          "documents": [
+            {"type": "Outside Records", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2026-08-18T10:00", "body": "Hepatology visit 08/11/2026. Mr. Lindqvist remains abstinent, compensated, without ascites or encephalopathy. HCC surveillance is being done with his oncology multiphase CTs, most recently in May, without recurrence. Continue current care. NKDA.\nHepatology"}
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T07:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2026-08-20T07:55", "body": "Can you send the metformin and the HCTZ to the pharmacy, 90 days please. Thanks."},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "MA", "date": "2026-08-20T11:30", "body": "Done - both sent for 90 days with refills."}
+          ]
+        }
+      ]
+    }
+  ]
+}

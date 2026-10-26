@@ -1,0 +1,794 @@
+{
+  "unit": "unit-2162",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002162",
+      "given": "Sean",
+      "family": "McDermott",
+      "birth_date": "1978-11-26",
+      "address_line": "27 Briar Hill Road",
+      "phone": "+1-617-555-0150",
+      "email": "sean.mcdermott@example.test",
+      "marital_status": "single",
+      "summary": "Software implementation consultant with reflux, seasonal allergic rhinitis and obesity who joined the practice in June 2025 after a highway crash caused a traumatic cardiac tamponade drained in the ED. A second crash in April 2026, after his last practice visit, caused a second tamponade treated with a subxiphoid pericardial window; those records were filed as received.",
+      "events": [
+        {
+          "id": "2025-04-26a",
+          "kind": "ed_visit",
+          "start": "2025-04-26T17:52",
+          "end": "2025-04-26T20:10",
+          "service": "Emergency Medicine",
+          "reason": "High-speed motor vehicle collision, hypotension",
+          "conditions": [
+            {
+              "label": "Cardiac tamponade",
+              "action": "diagnosed",
+              "onset": "2025-04-26",
+              "note": "Traumatic, after blunt chest injury in a motor vehicle collision; drained by pericardiocentesis in the ED.",
+              "icd10": "I31.4"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-26T17:55",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22,
+              "spo2": 92
+            },
+            {
+              "time": "2025-04-26T19:20",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 98
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-26T18:04",
+              "text": "Portable AP supine chest, trauma bay. Lines: right internal jugular central venous catheter, tip in the lower superior vena cava. Lungs are clear. No pneumothorax. No pleural effusion. Ribs intact, no displaced or nondisplaced fracture identified. Cardiomediastinal silhouette within limits for a supine film. No free air under the diaphragm on this view.",
+              "conclusion": "No rib fracture or pneumothorax."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-26T18:00",
+              "text": "Sinus tachycardia, rate 120. Normal axis. Normal intervals. No ST elevation or depression. No ischemic T-wave changes.",
+              "conclusion": "Sinus tachycardia without ischemic changes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Record — Trauma Activation",
+              "date": "2025-06-12T10:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT — TRAUMA RECORD\nDate of service: 04/26/2025\nReceived by fax 06/12/2025 with discharge summary.\n\nArrived by ambulance as a level 1 trauma activation. 46 y/o man, belted driver in a highway-speed crash with airbag deployment. On arrival he was awake and answering appropriately, visibly anxious, sweating.\n\nPMH: GERD, seasonal allergic rhinitis, obesity. PSH: appendectomy as a child, right knee meniscectomy in his late 20s.\nMeds: omeprazole 20 mg daily, fluticasone nasal 2 sprays each side daily, cetirizine 10 mg daily prn.\nAllergies: PCN (hives), sulfa (rash).\nSocial: never smoker, drinks rarely (1-2 a month). Works as a software implementation consultant.\nFamily: father HTN and type 2 DM, mother hypothyroid, paternal uncle with high cholesterol.\n\nPrimary survey: airway patent, speaking. Breathing: RR 22, SpO2 92% RA, breath sounds equal and clear bilaterally. Circulation: BP 85/50, HR 120. Neck veins distended. No external hemorrhage. Abdomen soft, nontender, no seatbelt sign. Pelvis stable.\n\nStudies: Portable CXR: no rib fractures, no pneumothorax. FAST: RUQ, LUQ and pelvic windows negative for free fluid; subxiphoid window shows pericardial effusion with RV diastolic collapse. ECG: sinus tach, no ischemic change. R IJ central line placed under ultrasound, CVP 18 mmHg.\n\nImpression: traumatic cardiac tamponade.\n\nProcedure: ultrasound-guided pericardiocentesis, subxiphoid approach. 90 mL of non-clotting blood aspirated. Pigtail pericardial drain left in place. Post-procedure BP 116/72, HR 98, patient more comfortable.\n\nDisposition: admitted to trauma ICU, trauma surgery and cardiology aware.\n\nElectronically signed, attending emergency physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-26b",
+          "kind": "hospital_admission",
+          "start": "2025-04-26T20:10",
+          "end": "2025-04-29T12:30",
+          "service": "Trauma Surgery",
+          "reason": "Traumatic cardiac tamponade after pericardiocentesis",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-04-27T09:15",
+              "text": "Indication: follow-up after pericardiocentesis for traumatic tamponade. Pericardial drain in place. Left ventricle normal in size and wall thickness with normal systolic function; no regional wall motion abnormality. LVEF 60% by biplane method. Right ventricle normal in size and function. No residual pericardial effusion. No chamber collapse. Valves structurally normal without significant regurgitation. IVC normal in size with normal respiratory variation.",
+              "conclusion": "No residual pericardial effusion. Normal biventricular function, LVEF 60%."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Discharge Summary — Trauma Surgery",
+              "date": "2025-06-12T10:22",
+              "author": "trauma surgery",
+              "body": "DISCHARGE SUMMARY — TRAUMA SURGERY SERVICE\nAdmit 04/26/2025   Discharge 04/29/2025\n\nAdmitting diagnosis: Traumatic cardiac tamponade s/p MVC.\n\nHospital course: Came up from the ED after bedside pericardiocentesis (90 mL non-clotting blood) with a pigtail drain in place. Hemodynamics normal from arrival in the unit. Drain put out very little over the first day. TTE on HD2 showed no residual effusion, LVEF 60%, no wall motion abnormality; drain pulled the same day and the patient moved to the floor. Ambulating, eating, pain controlled with nothing stronger than over-the-counter medicine by HD3. No other injuries identified on tertiary survey.\n\nDischarge condition: stable, home.\nDischarge medications: no changes. Continue omeprazole 20 mg daily, fluticasone nasal spray daily, cetirizine 10 mg as needed.\nAllergies: penicillin (hives), sulfa (rash).\n\nFollow-up: cardiology clinic echo in about 6 weeks. Establish with a primary care physician — he tells us he does not currently have one.\n\nTrauma surgery attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "telephone",
+          "start": "2025-06-03T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient registration",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2025-06-03T11:05",
+              "author": "front desk",
+              "body": "Pt called to join the practice. No current PCP, was told at hospital discharge in April to get one. Membership paperwork emailed. Booked new pt visit 6/17 at 9:00.\n\nHe was admitted in late April after a car crash — signed release on file, records request sent to the hospital (ED, discharge summary, and the cardiology echo he has this week). Also asked him for the name of his last primary care office; he'll send it by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "specialist_visit",
+          "start": "2025-06-05T14:00",
+          "service": "Cardiology",
+          "reason": "Echocardiogram after traumatic tamponade",
+          "conditions": [
+            {
+              "label": "Cardiac tamponade",
+              "action": "resolved",
+              "onset": "2025-04-26",
+              "icd10": "I31.4"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-06-05T14:00",
+              "text": "Indication: six-week follow-up after traumatic hemopericardium drained by pericardiocentesis. Left ventricle normal in size with normal wall thickness and normal systolic function, LVEF 60%. No regional wall motion abnormality. Right ventricle normal. Atria normal in size. Aortic, mitral, tricuspid and pulmonic valves structurally normal without stenosis or significant regurgitation. No pericardial effusion; pericardium not thickened. Aortic root normal.",
+              "conclusion": "No pericardial effusion. Normal LV function, LVEF 60%. Normal valves."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outside Cardiology Clinic Letter",
+              "date": "2025-06-12T10:25",
+              "author": "cardiology",
+              "body": "Hospital cardiology clinic\nVisit date: 06/05/2025\nTo: primary care physician (patient establishing care)\n\nMr. McDermott is seen six weeks after a traumatic tamponade from a highway crash, drained in our ED and managed on the trauma service. He has been back at work from home, walking daily, and denies chest discomfort, breathlessness, palpitations or lightheadedness.\n\nVitals normal. Neck veins flat. Heart sounds normal, no rub. Lungs clear.\n\nEcho today: no pericardial effusion, LVEF 60%, normal valves.\n\nAssessment: traumatic cardiac tamponade, resolved. No structural heart disease. Nothing further is needed from cardiology; happy to see him again if anything changes.\n\nMeds: omeprazole 20 mg daily, fluticasone nasal, cetirizine prn. Allergies: penicillin (hives), sulfa (rash).\n\nAttending cardiologist"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "establish_care",
+          "start": "2025-06-17T09:00",
+          "end": "2025-06-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "conditions": [
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "1998-01-01"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "BMI 32"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gastroesophageal reflux disease"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "Use 2 sprays in each nostril daily",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 67,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 104.2,
+            "height_cm": 180.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T10:15",
+              "resulted": "2025-06-18T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-17T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 158
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T10:15",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software implementation consultant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-06-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-06-17T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n46M here to establish. His old family practice was a long drive and he let it lapse after his 2024 physical. Main reason now: hospital told him to get a PCP after the crash in April.\n\nThe crash: 4/26, highway speed, he was driving, belted, airbags went off. Arrived hypotensive with distended neck veins; FAST showed blood around the heart. Pericardiocentesis in the ED (90 mL), 3 nights inpatient, echo next day clean. Cardiology echo 6/5: no effusion, EF 60%, discharged from their care. Records reviewed today. He says he feels back to normal. A little jumpy merging onto the highway, nothing more than that, sleeping fine. No chest pain, no trouble breathing on his walks, no palpitations.\n\nOther history\n- Reflux for years, omeprazole 20 every morning keeps it quiet. No trouble swallowing, no weight loss, no black stools.\n- Spring/early summer allergies — fluticasone daily in season (usually stays on it most of the year), cetirizine on bad pollen days.\n- Weight: has been around this for a decade. Desk job, mostly remote, walks the back roads most evenings since the accident.\n- Surgeries: appendix out at 12, right knee meniscus trimmed at 28. Knee fine.\n\nAllergies: penicillin — hives as a kid. Sulfa — rash.\nFamily: father high BP and type 2 diabetes. Mother underactive thyroid. Uncle on dad's side with high cholesterol.\nSocial: implementation consultant for a software firm, travels to client sites a few times a year. Lives alone in Williamsburg. Never smoked. A drink or two a month.\n\nExam\nVitals as charted. BMI 32.\nWell appearing, conversational.\nHEENT: nasal turbinates mildly pale, no polyps. Oropharynx clear. TMs normal.\nNeck: no JVD, no thyroid enlargement.\nCV: RRR, normal S1/S2, no rub or murmur.\nLungs: clear throughout.\nChest: well-healed puncture site below the xiphoid.\nAbd: soft, obese, nontender, old RLQ scar.\nExt: warm, no swelling. R knee full range.\nPsych: normal mood and affect. PHQ-2: 0.\n\nAssessment / plan\n1. Traumatic cardiac tamponade 4/2025, resolved — cardiology has signed off. Nothing further.\n2. GERD — controlled on omeprazole 20. Continue.\n3. Seasonal allergic rhinitis — continue fluticasone, cetirizine as needed.\n4. Obesity, BMI 32 — talked through food and activity in general terms; he is interested in keeping up the walking. Will revisit.\n5. Health maintenance — baseline CMP, CBC, lipids, A1c (father with diabetes). Hep C and HIV screen once, he agrees. Colon cancer screening is due (age 46) — prefers FIT, will hand out the kit at his fall flu shot.\n\nFollow up in about 6 months, sooner as needed. Cell number in chart for texts.\n\nPCP"
+            }
+          ],
+          "state": {
+            "weight_kg": 103.7,
+            "height_cm": 180.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T07:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work from Tuesday",
+              "date": "2025-06-19T07:48",
+              "author": "PCP",
+              "body": "Hi Sean,\n\nEverything from Tuesday came back in the normal range: kidney and liver tests, blood counts, cholesterol, and your A1c (no sign of diabetes). Hepatitis C and HIV screens were negative, and those don't need repeating unless something changes.\n\nNothing to do differently. Keep walking.\n\nPCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "outside_records",
+          "start": "2025-06-24T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Summary",
+              "date": "2025-06-24T13:30",
+              "author": "outside primary care",
+              "body": "Summary of care, prior family practice (patient request)\n\nLast visit: annual physical, 03/2024.\nProblems: GERD; seasonal allergic rhinitis; obesity.\nMedications: omeprazole 20 mg daily; fluticasone propionate nasal 2 sprays each nostril daily; cetirizine 10 mg daily as needed.\nAllergies: penicillin (hives); sulfa (rash).\nSurgical: appendectomy (childhood); right knee meniscectomy.\nRoutine labs 03/2024 (metabolic panel, lipids, glucose): within normal limits.\nImmunizations on file: none recorded at this office.\n\nPatient has left the practice. No outstanding orders.\n\nMedical records department"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "pharmacy",
+          "start": "2025-08-19T09:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Refill Request — Omeprazole",
+              "date": "2025-08-19T09:12",
+              "author": "RN",
+              "body": "E-request from his pharmacy for omeprazole 20 mg — prior prescriber was the hospital's discharge list/old practice, no refills left. On med list since new pt visit, GERD controlled. New Rx sent under PCP: #90, 3 refills. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines and FIT kit",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T16:37"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit — Vaccines",
+              "date": "2025-10-07T16:50",
+              "author": "RN",
+              "body": "In after work for fall vaccines. Afebrile, feels well, no reactions to past vaccines. Allergies reviewed (PCN, sulfa) — no vaccine contraindication.\n\nGiven: trivalent flu, L deltoid. Moderna 2025-26, R deltoid. Lot numbers in the immunization record. VIS sheets provided. Waited 15 min, fine.\n\nFIT kit handed out per PCP plan with instructions — one sample, mail back within a day of collecting. He'll do it this week."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "lab_only",
+          "start": "2025-10-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "FIT result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-18T08:00",
+              "resulted": "2025-10-21T11:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-10-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stool test result",
+              "date": "2025-10-22T08:10",
+              "author": "PCP",
+              "body": "Sean — your stool screening test was negative. We'll repeat it every year; the office will remind you next fall. Thanks for getting it back so quickly."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "office_visit",
+          "start": "2026-02-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "office_visit",
+          "start": "2026-02-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              73
+            ],
+            "hr": 80,
+            "spo2": 98,
+            "weight_kg": 103.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-27T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-02-27T09:05",
+              "author": "PCP",
+              "body": "Moved from last Friday (client trip ran over).\n\nS: Feeling well. Reflux quiet on the morning omeprazole, rarely needs anything else. Wants to get ahead of pollen season this year. Walking still most days, less in the cold; weight about where it was. No chest symptoms, no shortness of breath, nothing since the crash last spring that worries him.\n\nO: Vitals as charted, weight essentially unchanged from June.\nNose: mild turbinate pallor. Throat clear.\nHeart regular, no rub. Lungs clear.\nAbd soft.\n\nA/P\n- Allergic rhinitis: keep fluticasone daily through the season, start before symptoms rather than after; cetirizine on high-count days. Refill sent.\n- GERD: stable on omeprazole 20 daily, continue.\n- Obesity, BMI 32: steady. Discussed a goal of a few pounds by summer through portions and the walking; he'd rather not add anything else right now.\n- FIT due again in the fall with flu shot.\n\nRTC fall for physical, or text me before then.\n\nPCP"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "ed_visit",
+          "start": "2026-04-21T07:41",
+          "end": "2026-04-21T09:30",
+          "service": "Emergency Medicine",
+          "reason": "Motor vehicle collision, chest pain, hypotension",
+          "vitals": [
+            {
+              "time": "2026-04-21T07:44",
+              "bp": [
+                84,
+                60
+              ],
+              "hr": 124
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-21T07:50",
+              "resulted": "2026-04-21T08:35",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "unit": "ng/L",
+                  "value": 46
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-04-21T07:58",
+              "text": "Portable AP chest, trauma bay. The mediastinum is widened. Lungs are clear. No pneumothorax. No pleural effusion. No displaced rib fracture seen.",
+              "conclusion": "Widened mediastinum. No pneumothorax."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-04-21T07:52",
+              "text": "Sinus tachycardia, rate 124.",
+              "conclusion": "Sinus tachycardia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside ED Record — Trauma Activation",
+              "date": "2026-04-24T15:40",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 04/21/2026   Faxed to PCP 04/24/2026\n\n47 y/o M, level 1 trauma. Belted driver, high-speed collision, needed extrication by fire. Complains of chest pain and shortness of breath. Given IV fluids en route and in the bay and still hypotensive.\n\nHistory: GERD, seasonal allergies, obesity. Traumatic tamponade here 04/2025 after a prior crash, treated with pericardiocentesis. No anticoagulants.\nMeds: omeprazole, fluticasone nasal, cetirizine prn. Allergies: penicillin (hives), sulfa (rash). Never smoker.\n\nExam: BP 84/60, HR 124. Awake and following commands, pale, breathing fast, diaphoretic. JVD present. Heart sounds muffled, no murmur. Lungs clear both sides. Extremities cool, cap refill delayed. Pulsus paradoxus measured at 14 mmHg.\n\nData: hs-troponin I 46 ng/L (mildly elevated). ECG sinus tachycardia. Portable CXR with widened mediastinum, no PTX. Bedside echo: large pericardial effusion with right atrial collapse in diastole; no pneumothorax, FAST negative for abdominal fluid. Repeat look after fluids: effusion unchanged, LV function preserved.\n\nImpression: recurrent cardiac tamponade, traumatic.\nPlan: trauma surgery consulted at bedside, to OR.\n\nAttending emergency physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21b",
+          "kind": "hospital_admission",
+          "start": "2026-04-21T09:30",
+          "end": "2026-04-25T13:00",
+          "service": "Trauma Surgery",
+          "reason": "Traumatic cardiac tamponade, pericardial window",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-04-22T10:20",
+              "text": "CT angiography of the chest with IV contrast. Thoracic aorta normal in caliber and contour from root through the hiatus, with no intimal flap, pseudoaneurysm or contrast extravasation. No mediastinal hematoma. Small volume of post-operative pericardial fluid around a subxiphoid pericardial drain. Lungs clear, no pneumothorax. No rib or sternal fracture. Visualized upper abdomen unremarkable.",
+              "conclusion": "No aortic injury. No mediastinal hematoma. Small post-operative pericardial fluid with drain in place."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Discharge Summary — Pericardial Window",
+              "date": "2026-04-29T11:15",
+              "author": "trauma surgery",
+              "body": "DISCHARGE SUMMARY, TRAUMA SURGERY\nAdmitted 04/21/2026 — Discharged 04/25/2026\n\nDiagnosis: traumatic cardiac tamponade (second episode; first 04/2025, treated with pericardiocentesis).\n\nOperation 04/21/2026: subxiphoid pericardial window under general anesthesia. 240 mL of blood and clot evacuated. No active bleeding; no injury to the heart identified on inspection. Pericardial drain left.\n\nCourse: Hemodynamics normalized in the OR. CT angiogram of the chest POD1 for the widened mediastinum on admission film — aorta normal, no hematoma; the widening is read as the pericardial collection. Drain removed POD3 once output fell off. Tolerating diet, walking the halls, incision clean.\n\nDischarge medications: unchanged home medications (omeprazole 20 mg daily, fluticasone nasal, cetirizine prn).\nAllergies: penicillin, sulfa.\n\nFollow-up: trauma clinic in 2-3 weeks. No driving until cleared there. PCP as needed.\n\nTrauma surgery attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T19:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital stay update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital last week",
+              "date": "2026-04-28T19:22",
+              "author": "patient",
+              "body": "Hi — wanted you to know I was in another accident last Tuesday and had the same blood-around-the-heart thing. They did a small surgery this time under my breastbone. Home since Saturday and doing OK, a bit sore. Surgery clinic is seeing me in a couple weeks. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: In the hospital last week",
+              "date": "2026-04-29T07:35",
+              "author": "PCP",
+              "body": "Sean, I'm sorry — that's a lot twice in one year, and I'm glad you're home. Their ED note came in already and I'll watch for the discharge summary. Go to the surgery clinic visit; you don't need to see me first unless something changes. If you get short of breath, lightheaded, or chest pain that is getting worse instead of better, call 911. Otherwise text or call when you'd like to come in and we'll find a time."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T13:40",
+          "service": "Trauma Surgery",
+          "reason": "Post-operative visit, pericardial window",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outside Trauma Clinic Letter",
+              "date": "2026-05-14T09:05",
+              "author": "trauma surgery",
+              "body": "Trauma surgery clinic, 05/12/2026\nRe: Sean McDermott, DOB 11/26/1978\n\nSeen three weeks after subxiphoid pericardial window for traumatic tamponade. Soreness fading, off all pain medicine. No breathlessness or chest pressure.\n\nIncision healed, no erythema or drainage. Heart sounds normal, no rub. Lungs clear.\n\nLimited echo in clinic: no recurrent pericardial effusion, LV function preserved.\n\nPlan: cleared to drive and return to work. No restrictions. No further surgical follow-up scheduled; return if symptoms.\n\nAllergies: penicillin, sulfa. Meds unchanged.\n\nTrauma surgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "pharmacy",
+          "start": "2026-06-16T10:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request — Omeprazole",
+              "date": "2026-06-16T10:02",
+              "author": "RN",
+              "body": "Pharmacy request, omeprazole 20 mg daily. Last office visit 2/27, on list, GERD stable. Renewed per standing refill protocol, #90 with 3 refills. Portal note to pt that it's at the pharmacy."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cardiac tamponade|I31.4": {
+        "code": "I31.4",
+        "display": "Cardiac tamponade",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

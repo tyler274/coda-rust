@@ -1,0 +1,522 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001994",
+      "events": [
+        {
+          "id": "2023-01-12a",
+          "kind": "office_visit",
+          "start": "2023-01-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening cough and shortness of breath",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-12T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive cough and dyspnea in COPD without spirometry on file"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-01-12T11:35",
+              "body": "Rebooked from the December no-show.\n\nCC: breathing.\nHPI: Since late summer the cough has been more days than not, with more breathlessness on stairs and walking out to the mailbox in the cold. Used to get winded on hills only. No fever, no sweats at night, weight steady per our scale. No blood in the sputum. Using the tiotropium daily, technique looks right when he shows me. Still 1 ppd.\n\nExam: vitals as charted. Not in distress, speaks full sentences. Chest: diminished air movement both sides, prolonged expiratory phase, no crackles. Heart regular. No clubbing, no edema.\n\nA/P: COPD by history, symptoms progressing over roughly 4 to 5 months. He has never had spirometry. Referring to pulmonology for PFTs and to sort out next steps on inhalers. Asked him again about quitting; he says he will \"think about it after the lung doctor yells at me.\""
+            }
+          ]
+        },
+        {
+          "id": "2023-03-17a",
+          "kind": "specialist_visit",
+          "start": "2023-03-17T13:30",
+          "service": "Pulmonology",
+          "reason": "Persistent cough and shortness of breath",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 78,
+            "spo2": 92
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-17T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-17T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-03-17T14:00",
+              "text": "PA and lateral views. The lungs are hyperinflated and both hemidiaphragms are flattened. No focal consolidation, effusion or pneumothorax. Cardiomediastinal silhouette within normal limits. Osseous structures intact.",
+              "conclusion": "Hyperinflation with flattened diaphragms. No acute process."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2023-03-17T13:50",
+              "text": "Pre- and post-bronchodilator spirometry with lung volumes. Acceptable and reproducible efforts. FEV1/FVC ratio is reduced, consistent with airflow obstruction. Total lung capacity is within normal limits.",
+              "conclusion": "Obstructive ventilatory defect with normal total lung capacity, consistent with COPD."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath or wheeze",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD rescue"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2023-03-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "author": "pulmonology",
+              "date": "2023-03-24T10:00",
+              "body": "OUTSIDE PULMONARY ASSOCIATES — CONSULTATION\nDate of visit: 03/17/2023\nReferring: primary care physician\n\nThank you for sending Mr. Finn, a 56-year-old man with a clinical COPD label, for evaluation of half a year of increasing cough and breathlessness. He reports no fevers, no night sweats and no weight loss.\n\nCurrent medications: tiotropium 18 mcg daily, metoprolol tartrate 50 mg BID, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, lithium 300 mg TID, aspirin 81 mg, atorvastatin 40 mg.\nAllergies: NKDA.\nSocial: active smoker, roughly 1 pack daily, about 40 pack-years. Rare alcohol.\nFamily: mother with emphysema.\n\nExam: BP 135/85, HR 78, SpO2 92% on room air at rest. Barrel-shaped chest. Breath sounds decreased bilaterally with a prolonged expiratory phase. No clubbing.\n\nData: Hgb 15.0, WBC 7.0, platelets 250. Na 140, K 4.2, creatinine 1.0.\nCXR today: hyperinflated lungs, flattened diaphragms, nothing acute.\nPFTs today: reduced FEV1/FVC, normal TLC.\n\nImpression: COPD, now confirmed by spirometry. Ongoing tobacco use is the main driver.\n\nRecommendations:\n1. Continue tiotropium daily.\n2. Albuterol HFA 2 puffs q4-6h as needed, prescription sent.\n3. Smoking cessation strongly advised; offered pharmacotherapy, he declined for now.\n4. Vaccines appear current per patient.\n5. Return to pulmonary clinic as needed or with any exacerbation.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "portal_message",
+          "start": "2023-03-28T08:12",
+          "reason": "Inhaler cost",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "rescue inhaler",
+              "author": "patient",
+              "date": "2023-03-28T08:12",
+              "body": "The lung doctor gave me an albuterol. Pharmacy says its covered but the brand he wrote costs me more. Can you send the cheaper one?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: rescue inhaler",
+              "author": "RN",
+              "date": "2023-03-28T11:47",
+              "body": "Spoke with the pharmacist, they can substitute the covered albuterol inhaler with no new prescription needed. Should be $0 with your MassHealth. Call us if it is not."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "office_visit",
+          "start": "2023-05-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lump on left side of neck",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-08T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-08T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hn-referral",
+              "action": "placed",
+              "order": "Hematology and oncology referral, head and neck clinic",
+              "category": "referral",
+              "to": "Hematology & Oncology",
+              "reason": "firm 3 cm left cervical lymph node in a heavy smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day visit: neck lump",
+              "author": "PCP",
+              "date": "2023-05-08T16:40",
+              "body": "Texted this morning about a lump; seen same day.\n\nNoticed a bump on the left side of his neck shaving about three weeks ago. Thinks it is a little bigger. It does not hurt. No sore throat, no recent cold or dental infection, no fevers, eating normally, weight unchanged.\n\nExam: left cervical chain with a single firm, non-tender node about 3 cm, not fixed to skin, skin over it normal. No other cervical, supraclavicular, axillary nodes. Oral cavity looked unremarkable to my eye with a light, though I am not the right person to examine the back of his mouth thoroughly. Lungs his baseline.\n\nA/P: Persistent firm 3 cm neck node in a 56-year-old pack-a-day smoker is cancer until proven otherwise; told him that plainly, he appreciated it. Urgent referral to the head and neck clinic at the outside hematology/oncology group for scope and tissue. CBC today. I will call the clinic myself to move it up."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "telephone",
+          "start": "2023-05-09T09:20",
+          "reason": "Referral coordination",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Urgent referral",
+              "author": "MA",
+              "date": "2023-05-09T09:20",
+              "body": "Called the head and neck intake line, faxed note and CBC. Their first new-patient opening is June 19; placed on cancellation list. Pt informed, he will keep his phone on."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "specialist_visit",
+          "start": "2023-06-19T09:00",
+          "service": "Hematology & Oncology",
+          "reason": "Left neck mass",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of border of tongue",
+              "icd10": "C02.1",
+              "action": "diagnosed",
+              "onset": "2023-06-19",
+              "note": "left lateral border; primary for the nodal disease"
+            },
+            {
+              "label": "Secondary malignant neoplasm of lymph nodes of head, face and neck",
+              "icd10": "C77.0",
+              "action": "diagnosed",
+              "onset": "2023-06-19",
+              "note": "left cervical node, FNA squamous cell carcinoma"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-06-19T09:45",
+              "issued": "2023-06-22T15:10",
+              "text": "SPECIMEN: Fine needle aspiration, left cervical lymph node.\nADEQUACY: Satisfactory for evaluation.\nMICROSCOPIC: Smears and cell block show clusters of atypical squamous cells with keratinization in a background of necrosis and lymphoid cells.",
+              "conclusion": "Left cervical lymph node, FNA: positive for malignant cells, consistent with squamous cell carcinoma."
+            }
+          ],
+          "orders": [
+            {
+              "id": "hn-referral",
+              "action": "done",
+              "date": "2023-06-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Oncology Consultation",
+              "author": "oncology",
+              "date": "2023-06-27T14:00",
+              "body": "HEMATOLOGY & ONCOLOGY — HEAD AND NECK CLINIC\nVisit date: 06/19/2023\n\nReason for referral: left neck mass.\n\nHPI: 56-year-old man, active smoker, about 40 pack-years, who first felt a lump on the left neck roughly 2 months ago. It has grown slowly and is painless. He denies a recent infection, fevers and weight loss. He was seen by pulmonology this spring for COPD.\n\nPMH: COPD, hypertension, CAD, bipolar I disorder on lithium.\nMeds: per referral, including lithium 300 mg TID and tiotropium.\nAllergies: none known.\n\nExam: Left cervical chain: firm, non-tender node about 3 cm; no overlying skin change. No other adenopathy appreciated. Flexible fiberoptic laryngoscopy: a small ulcerated lesion along the left lateral tongue border. Remaining oropharyngeal mucosa, larynx and hypopharynx appear normal.\n\nProcedure: ultrasound-guided FNA of the left neck node performed today. Cytology (final 6/22): squamous cell carcinoma.\n\nAssessment: squamous cell carcinoma of the left lateral oral tongue with left cervical nodal metastasis.\n\nPlan:\n- Staging PET-CT.\n- Presented at multidisciplinary tumor board once staging is back; anticipated surgery with partial glossectomy and left neck dissection, likely followed by radiation.\n- Dental evaluation before any radiation.\n- Smoking cessation: discussed its effect on healing and outcomes.\n\nCC: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "telephone",
+          "start": "2023-06-23T17:15",
+          "reason": "Biopsy result",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with patient after FNA result",
+              "author": "PCP",
+              "date": "2023-06-23T17:15",
+              "body": "Pt texted that the oncology team called with the biopsy: squamous cell cancer. Called him back. His wife on speaker. They understand the tongue spot is where it started and the node is spread to the neck. Questions answered in general terms; told them the head and neck team is the right place for treatment specifics. Offered a video visit once the scan is done to go over the plan together. Checked on mood: scared but sleeping, no racing thoughts, taking lithium. Wife will call if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-05a",
+          "kind": "imaging",
+          "start": "2023-07-05T07:30",
+          "reason": "Staging",
+          "reports": [
+            {
+              "study": "PET-CT skull base to mid-thigh",
+              "loinc": "44139-4",
+              "performed": "2023-07-05T07:30",
+              "issued": "2023-07-06T16:00",
+              "text": "INDICATION: Newly diagnosed squamous cell carcinoma, left oral tongue with left cervical nodal metastasis. Staging.\nTECHNIQUE: FDG PET with low-dose CT from skull base to mid-thigh. Fasting glucose acceptable.\nFINDINGS:\nHead and neck: FDG-avid focus along the left lateral oral tongue corresponding to the known primary. Single FDG-avid left level II lymph node measuring about 3 cm in short axis. No contralateral or other cervical nodal uptake.\nChest: no FDG-avid pulmonary nodules or mediastinal or hilar nodes.\nAbdomen and pelvis: physiologic distribution. No suspicious uptake.\nBones: no suspicious osseous uptake.",
+              "conclusion": "FDG-avid left lateral tongue primary and single left level II nodal metastasis. No distant metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Outside PET-CT received",
+              "author": "PCP",
+              "date": "2023-07-07T09:00",
+              "body": "Staging PET from the oncology group's imaging center scanned in: tongue primary and one left level II node, nothing in the chest or beyond. Video visit already booked for next week."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-13a",
+          "kind": "telehealth_visit",
+          "start": "2023-07-13T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review of cancer diagnosis and treatment plan",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2023-07-13T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2023-07-13T12:50",
+              "body": "Video, pt at home with wife, consented. 25 min.\n\nWent through the PET together: one node, the tongue primary, no spread to lungs or elsewhere. Tumor board recommendation as they heard it: surgery on 7/26 (part of the tongue plus the left neck nodes) and then probably radiation. Dental clearance done last week.\n\nMedical prep: he asked if he needs to stop anything. Told him the surgical team will give instructions; usually aspirin decisions come from them and I am fine with whatever they choose. Lithium: anesthesia and surgery should know he is on it; asked them to keep hydrated and check a level if he is NPO long. Sent a summary letter to the surgeon's office with his med list.\n\nMood: anxious but steady. PHQ not repeated today. No changes to lithium; psychiatrist aware.\n\nTobacco: still smoking. The team has asked him to stop for healing; offered help any time he wants it."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "hospital_admission",
+          "start": "2023-07-26T07:00",
+          "end": "2023-07-28T13:00",
+          "service": "Otolaryngology — Head and Neck Surgery",
+          "reason": "Partial glossectomy and left neck dissection",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-26T09:00",
+              "issued": "2023-08-01T11:30",
+              "text": "SPECIMENS: A. Left lateral tongue, partial glossectomy. B. Left neck, selective dissection levels I to IV.\nA. Invasive squamous cell carcinoma, keratinizing, moderately differentiated. Greatest dimension 1.4 cm. Depth of invasion 4 mm. All margins negative for carcinoma.\nB. Metastatic squamous cell carcinoma in 1 of 22 lymph nodes (level II), 3.0 cm. No extranodal extension.",
+              "conclusion": "Squamous cell carcinoma of the left lateral tongue, 1.4 cm, depth of invasion 4 mm, margins negative; 1/22 lymph nodes positive, 3.0 cm, no extranodal extension. pT1 N1."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Head and Neck Surgery",
+              "author": "otolaryngology",
+              "date": "2023-08-08T10:20",
+              "body": "REGIONAL HOSPITAL — OTOLARYNGOLOGY / HEAD AND NECK SURGERY\nAdmit 07/26/2023, discharge 07/28/2023\n\nDiagnosis: squamous cell carcinoma of the left lateral oral tongue with a single left cervical nodal metastasis.\nProcedure 07/26: left partial glossectomy with primary closure and left selective neck dissection (levels I to IV). Drain placed.\n\nCourse: Uneventful. Clear liquids on day 1, soft diet by day 2. Drain removed on day 2. Pain controlled on acetaminophen. Home medications resumed, lithium level checked on day 1 and in range, aspirin held 5 days before surgery and restarted at discharge.\n\nPathology (final 08/01): 1.4 cm keratinizing SCC, depth of invasion 4 mm, margins clear; 1 of 22 nodes positive (level II, 3.0 cm), no extranodal extension. pT1 N1.\n\nDisposition: home with wife. Follow up in clinic in 10 days. Referred to radiation oncology for adjuvant treatment given nodal disease.\n\nDischarge medications: unchanged from admission list.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "telephone",
+          "start": "2023-08-15T14:25",
+          "reason": "Post-operative check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after surgery",
+              "author": "RN",
+              "date": "2023-08-15T14:25",
+              "body": "Called to check in after the 7/26 surgery; discharge summary is in the chart. Neck incision healing, saw the surgeon last week, stitches out. Eating soft foods. Pain controlled with Tylenol. Radiation planning visit is next week. Taking all his usual pills including lithium. No questions for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "specialist_visit",
+          "start": "2023-10-17T10:00",
+          "service": "Radiation Oncology",
+          "reason": "Completion of adjuvant radiation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Radiation Oncology Treatment Summary",
+              "author": "radiation oncology",
+              "date": "2023-10-30T13:40",
+              "body": "RADIATION ONCOLOGY — END OF TREATMENT SUMMARY\n\nDiagnosis: pT1 N1 squamous cell carcinoma, left oral tongue, status post partial glossectomy and left selective neck dissection 07/26/2023, margins negative, no extranodal extension.\nIntent: adjuvant.\nTreatment: IMRT to the tumor bed and left neck, 60 Gy in 30 fractions, 09/05/2023 to 10/17/2023. No concurrent chemotherapy.\nCourse: completed as planned without treatment breaks.\nFollow-up: head and neck surveillance with the oncology group every 3 months for the first year; post-treatment PET-CT about 12 weeks after completion. Annual TSH recommended after neck radiation.\n\nCC: primary care, head and neck surgery, medical oncology"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "office_visit",
+          "start": "2023-11-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cancer treatment",
+          "state": {
+            "labs": {
+              "Creatinine": 1.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-08T11:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-08T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-08T11:15",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-08T11:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-11-08T11:11"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-08T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-08T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-11-08T11:20",
+              "body": "First time in person since the surgery and radiation. Finished radiation 10/17, end-of-treatment summary received. Eating soft foods, speech clear to me. PET planned in January by the oncology group.\n\nBreathing: no change from his usual, using albuterol maybe twice a week. Still smoking a pack a day, which he volunteered with some embarrassment.\n\nMood steady, sleeping.\n\nExam: vitals charted. Healed left neck incision. Lungs diminished with prolonged expiration. Heart regular. No edema.\n\nA/P:\n- Tongue SCC s/p surgery and adjuvant RT, in surveillance with oncology.\n- After neck radiation, TSH yearly; drawn today with lithium level and BMP.\n- COPD stable.\n- Tobacco: 1 ppd. Talked about varenicline again; he will think about it.\n- Flu and updated COVID given."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "portal_message",
+          "start": "2023-11-10T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney number",
+              "author": "PCP",
+              "date": "2023-11-10T13:05",
+              "body": "Sean, thyroid and lithium level are fine. Your kidney number (creatinine) came back 1.5, up from about 1.0 in the spring. Could be from not drinking much during radiation, but lithium can also affect the kidneys over time. Please drink normally, avoid ibuprofen or naproxen, and let's recheck in about 2 months. The lab order is in."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "specialist_visit",
+          "start": "2023-12-05T14:00",
+          "service": "Hematology & Oncology",
+          "reason": "Head and neck cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Surveillance Visit",
+              "author": "oncology",
+              "date": "2023-12-12T09:30",
+              "body": "HEAD AND NECK CLINIC — FOLLOW-UP\nVisit 12/05/2023\n\nSeven weeks out from adjuvant IMRT for pT1 N1 left oral tongue SCC. Swallowing soft solids, weight stable.\nExam: surgical site of the left lateral tongue well healed, no mucosal lesion. Neck soft, no palpable adenopathy. Flexible laryngoscopy: no lesions.\nImpression: no clinical evidence of disease.\nPlan: PET-CT in early January; return 3 months. Continue to encourage smoking cessation.\n\nCC: primary care"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

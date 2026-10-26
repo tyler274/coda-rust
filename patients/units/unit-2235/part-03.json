@@ -1,0 +1,372 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002235",
+      "events": [
+        {
+          "id": "2023-01-17a",
+          "kind": "outside_records",
+          "start": "2023-01-17T10:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Neurology follow-up letter", "author": "neurology", "date": "2023-01-17T10:05",
+             "body": "NEUROLOGY FOLLOW-UP\nVisit date: 10/31/2022\n\nMr. Kerrigan returns for REM sleep behavior disorder, first evaluated here in November 2021. His wife says the night-time episodes have grown more frequent and forceful: he punches and kicks while asleep and has come out of bed several times, with some minor bumps and bruises. He has no awareness of these events, though he can recall dreams full of action and confrontation.\n\nCurrent medications: melatonin 3 mg nightly, metformin 1000 mg twice daily, lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily. Allergies: none.\nActive issues also include type 2 diabetes with retinopathy, hypertension, hyperlipidemia, thoracic spinal stenosis, and a diabetic foot ulcer of the right foot.\n\nExam: alert and oriented, attentive, normal recall and conversation. No rigidity, no slowing of repetitive movements, no tremor. Gait normal.\n\nThe polysomnogram of November 2021 showed REM sleep without atonia; no repeat study is needed.\n\nAssessment and plan: RBD, clinically worse. Increase melatonin to 6 mg at bedtime. Reviewed bedroom safety again; his wife has started sleeping in the guest room on bad nights. Follow-up in 12 months.\n\n(Letter delayed in transcription; we apologize.)"}
+          ]
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "pharmacy",
+          "start": "2023-02-28T12:40",
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Refill: metformin, lisinopril, HCTZ", "author": "MA", "date": "2023-02-28T12:40",
+             "body": "Electronic refill requests x3 from the pharmacy. All on active list, seen 12/2022. Approved 90-day supply each."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, night sweats, weight loss",
+          "state": {"weight_kg": 81.5, "labs": {"Hemoglobin A1c": 8.4, "Mean Corpuscular Volume": 86}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-04-11T11:40", "resulted": "2023-04-11T16:30", "results": [{"test": "White Blood Cells", "value": 13.6}, {"test": "Hemoglobin", "value": 9.4}, {"test": "Platelets", "value": 156}, {"test": "Lymphocytes %", "value": 71}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-11T11:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2023-04-11T11:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-04-11T11:00"}],
+          "orders": [{"id": "heme-2023", "action": "placed", "order": "Hematology/oncology referral, urgent", "category": "referral", "to": "Hematology & Oncology", "reason": "anemia, lymphocytosis, lymphadenopathy, B symptoms"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-04-11T12:00",
+             "body": "CC: tired, sweats, losing weight.\n\nHPI: 67M. About 7 weeks of feeling worn out by early afternoon, drenching sweats at night a few times a week (changing his T-shirt), eating less, and a full feeling in the belly after small meals. Scale at home down about 10 pounds; today's weight confirms the loss. No fever he's measured, no cough, no bleeding, no change in bowels, no urinary symptoms. Back pain no different. Sleep episodes unchanged on melatonin 6.\n\nExam: Vitals as charted. Looks tired, a bit pale. Several firm, non-tender, mobile lymph nodes both sides of the neck and in both armpits, 1-2 cm. Abdomen soft, fullness in the LUQ, I think I can feel a spleen tip. No hepatomegaly. Heart regular, lungs clear. No edema. Skin: no petechiae.\n\nCBC with diff and CMP drawn now, asked lab to call.\n\nA/P: Constitutional symptoms with diffuse adenopathy and probable splenomegaly in a man whose uncle had CLL - concerned for a lymphoproliferative disorder. Urgent heme/onc referral placed today; will call him tonight with the CBC."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "telephone",
+          "start": "2023-04-11T17:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CBC result call", "author": "PCP", "date": "2023-04-11T17:20",
+             "body": "Called pt with CBC: WBC 13.6 with 71% lymphocytes, Hgb 9.4, platelets 156. Explained this fits a blood disorder like the leukemia his uncle had but needs confirmation by hematology. Urgent referral sent; their office will call. Spoke to referral coordinator - appointment 4/27. He and his wife asked good questions. Call sooner for fever, bleeding, worsening breathlessness."}
+          ]
+        },
+        {
+          "id": "2023-05-05a",
+          "kind": "outside_records",
+          "start": "2023-05-05T13:10",
+          "conditions": [
+            {"label": "Chronic lymphocytic leukemia", "action": "diagnosed", "onset": "2023-04-27", "note": "Rai stage III"}
+          ],
+          "orders": [{"id": "heme-2023", "action": "done", "date": "2023-05-05T13:10"}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-04-27T10:30", "results": [{"test": "Hemoglobin", "value": 9.2}, {"test": "Mean Corpuscular Volume", "value": 85}, {"test": "White Blood Cells", "value": 14.0}, {"test": "Platelets", "value": 150}]},
+            {"panel": null, "collected": "2023-04-27T10:30", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "text": "Elevated"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Hematology-oncology consultation", "author": "hematology-oncology", "date": "2023-05-05T13:10",
+             "body": "HEMATOLOGY & ONCOLOGY CONSULTATION\nVisit: 04/27/2023\n\nReason for referral: anemia, lymphocytosis and lymphadenopathy.\n\nHistory: 67-year-old man with type 2 diabetes with retinopathy and a right plantar diabetic foot ulcer, here for two months of fatigue, night sweats and an unintended 10 lb weight loss, along with early fullness and reduced appetite.\nMedications: metformin, lisinopril, hydrochlorothiazide, melatonin. NKDA.\nFamily: maternal uncle with CLL; father with prostate cancer.\n\nExam: pallor. Bilateral cervical and axillary adenopathy. Spleen palpable 3 cm below the left costal margin. No hepatomegaly.\n\nLabs today: hemoglobin 9.2 g/dL, MCV 85 fL, WBC 14,000/uL, platelets 150,000/uL, LDH elevated. Peripheral smear reviewed personally: mature-appearing small lymphocytes with numerous smudge cells.\nPeripheral blood flow cytometry: clonal B-cell population co-expressing CD5 and CD23 with dim CD20, kappa light chain restricted.\n\nImpression: chronic lymphocytic leukemia, Rai stage III by anemia, with B symptoms and splenomegaly - meets criteria for treatment.\n\nPlan: acalabrutinib 100 mg twice daily, to start once the specialty pharmacy completes authorization. Counseled on bruising, bleeding, headache, and infection risk; avoid NSAIDs. CBC every 2 weeks for the first month, then monthly. Return in 6 months, sooner as needed.\n\nThank you for the prompt referral."}
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "pharmacy",
+          "start": "2023-05-19T10:40",
+          "medications": [
+            {"drug_text": "acalabrutinib 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Chronic lymphocytic leukemia"}
+          ],
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Specialty pharmacy start notice", "author": "pharmacy", "date": "2023-05-19T10:40",
+             "body": "Specialty pharmacy notification to primary care: acalabrutinib 100 mg tablets, 1 twice daily, dispensed 05/16/2023, patient reports first dose 05/17/2023. Prescriber: hematology-oncology. Interaction screen against current list (metformin, lisinopril, hydrochlorothiazide, melatonin): no significant interactions. Please notify the pharmacy of any new acid suppressants or strong CYP3A agents."},
+            {"type": "Result Note", "title": "Med list updated", "author": "RN", "date": "2023-05-19T11:00",
+             "body": "Acalabrutinib added to med list as outside-prescribed. FYI to PCP."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 83.0, "labs": {"Hemoglobin": 11.1, "White Blood Cells": 11.8, "Platelets": 172, "Hemoglobin A1c": 8.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-20T09:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-20T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-06-20T09:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-20T09:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-06-20T10:00",
+             "body": "F/u, first time back since the CLL diagnosis.\nOn acalabrutinib since mid-May. Tolerating it. Sweats stopped, appetite back, has put on a few pounds. Hematology checking counts monthly.\nDiabetes: sugars similar, 150s fasting.\n\nExam: neck nodes smaller, still palpable on the left. Spleen not felt today. Skin clear. Feet okay.\n\nA/P: CLL - responding, managed by heme/onc. CBC today for our records. DM2 - A1c/BMP. HTN - fine. No NSAIDs, acetaminophen only for the back."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"weight_kg": 85.0, "labs": {"Hemoglobin": 12.0, "White Blood Cells": 10.2, "Hemoglobin A1c": 8.3}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T09:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Calcium"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-09-19T09:20", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-19T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-09-19T09:35",
+             "body": "MEDICARE AWV\n\nInterval: CLL on acalabrutinib, energy back to normal, weight regained. Sleep episodes ongoing on melatonin 6 mg; wife sleeps separately some nights. Back pain from stenosis manageable.\n\nFunctional: independent. Drives locally. No falls from standing. PHQ-2 1.\nProxy on file (wife).\n\nExam: vitals per flowsheet. Small residual nodes L neck. Lungs clear, heart regular. Feet: monofilament reduced, skin intact.\n\nPrevention: flu, COVID and RSV next month at a nurse visit - discussed that vaccine responses may be blunted on his CLL treatment but still worth giving. Colonoscopy due 2027.\nLabs: CMP, lipids, A1c, urine microalbumin. CBC per heme.\n\nRTC January."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T10:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T10:07"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-03T10:09"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Three vaccines", "author": "RN", "date": "2023-10-03T10:30",
+             "body": "Given: high-dose influenza L deltoid; 2023-24 COVID R deltoid; RSV vaccine L deltoid lower site, 1 inch apart. Pt aware arm may be sore. Observed 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "portal_message",
+          "start": "2023-10-24T07:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Back pain at night", "author": "patient", "date": "2023-10-24T07:50",
+             "body": "Doctor, my back has been different the last several weeks. It's a steady dull ache in the lower back all the time now, and it's worst at night, keeps me up. Resting doesn't help like it used to. I didn't hurt it. I've also dropped some weight again and had a few sweats. I see the cancer doctor next week on Nov 2 for my regular checkup. Should I come in before that?"},
+            {"type": "Patient Message", "title": "RE: Back pain at night", "author": "PCP", "date": "2023-10-24T12:35",
+             "body": "Thanks for telling me. Night pain that doesn't ease with rest, plus the weight loss and sweats, is something your oncologist should look at closely next week, and they can order the right scans and blood work. Please tell them exactly what you told me. Acetaminophen as before in the meantime. If you develop weakness in the legs, numbness in the groin, or trouble with bladder or bowels, go to the emergency department right away. I'll watch for their note."}
+          ]
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "outside_records",
+          "start": "2023-11-10T14:20",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-02T10:15", "results": [{"test": "Hemoglobin", "value": 12.5}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-02T10:15", "results": [{"test": "Calcium", "value": 10.2}, {"test": "Alkaline Phosphatase", "value": 120}]},
+            {"panel": null, "collected": "2023-11-02T10:15", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 70}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology follow-up", "author": "oncology", "date": "2023-11-10T14:20",
+             "body": "ONCOLOGY FOLLOW-UP\nDate of visit: 11/02/2023\n\nDiagnoses: CLL, Rai III at diagnosis, on acalabrutinib since 05/2023. Type 2 diabetes. Diabetic foot ulcer right foot. RBD. Thoracic spinal stenosis.\n\nInterval: six months since diagnosis. Today he reports a constant, dull low back ache, not relieved by rest and worse at night, without trauma. He has lost 10 lb over the last two months and has occasional night sweats again.\n\nMedications: acalabrutinib 100 mg BID, metformin 1000 mg BID, lisinopril 20 mg daily, hydrochlorothiazide 12.5 mg daily, melatonin. NKDA.\n\nExam: tender over the lumbar spinous processes, no step-off or deformity. Straight leg raise negative bilaterally. Strength, sensation and reflexes in the legs unremarkable.\n\nLabs today: hemoglobin 12.5 g/dL (improved from 9.2), ESR 70 mm/hr, calcium 10.2 mg/dL, alkaline phosphatase 120 U/L.\n\nAssessment: new inflammatory-pattern back pain with recurrent weight loss and a high ESR. CLL itself is responding, so we need to exclude a second process in the bone.\n\nPlan: whole-body bone scan and CT chest/abdomen/pelvis with contrast, PSA. Continue acalabrutinib. Will call with results.\n\nCC: primary care"}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "outside_records",
+          "start": "2023-11-14T16:00",
+          "labs": [
+            {"panel": null, "collected": "2023-11-08T08:30", "results": [{"test": "Prostate Specific Antigen", "value": 64.8}]}
+          ],
+          "reports": [
+            {"study": "CT chest", "performed": "2023-11-08T11:00", "text": "CT CHEST WITH IV CONTRAST. Indication: CLL, back pain, weight loss. Mildly enlarged bilateral axillary lymph nodes, largest 1.4 cm short axis. Lungs clear without nodules or consolidation. No pleural or pericardial effusion. Heart normal in size. Sclerotic lesions in several thoracic vertebral bodies and in multiple ribs bilaterally.", "conclusion": "Sclerotic osseous lesions in thoracic vertebrae and ribs, suspicious for metastases. Mild axillary adenopathy in keeping with known CLL."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-11-08T11:00", "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST. Spleen mildly enlarged, 14.2 cm. Liver normal without focal lesion. Adrenal glands normal. Kidneys enhance symmetrically without hydronephrosis. No abdominal or pelvic lymphadenopathy by size criteria. Bladder unremarkable. Multiple sclerotic lesions in lumbar vertebral bodies and both iliac bones; no pathologic fracture.", "conclusion": "Sclerotic lesions of the lumbar spine and pelvis, suspicious for osteoblastic metastases. Mild splenomegaly consistent with known CLL. No visceral metastasis."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Imaging and PSA results", "author": "oncology", "date": "2023-11-14T16:00",
+             "body": "Results packet from oncology, studies of 11/08/2023:\n\nWhole-body bone scan: multiple foci of increased radiotracer uptake in the thoracic and lumbar spine, pelvis and several ribs, in a pattern typical of osseous metastatic disease.\nCT chest and CT abdomen/pelvis reports attached.\nPSA 64.8 ng/mL.\n\nNote from oncology: findings are concerning for metastatic carcinoma to bone, with prostate the leading possibility. CT-guided bone biopsy is being arranged."},
+            {"type": "Result Note", "title": "Reviewed", "author": "PCP", "date": "2023-11-14T17:10",
+             "body": "Reviewed. Called Francis - oncology had already gone over it with him and his wife. Biopsy scheduled for this week. Offered a visit any time; he'll let me know after the biopsy."}
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "pharmacy",
+          "start": "2023-12-11T15:30",
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Fill history notice", "author": "pharmacy", "date": "2023-12-11T15:30",
+             "body": "Pharmacy courtesy notice: new fills for this patient from an outside prescriber (oncology) - abiraterone acetate 250 mg tablets, 4 tablets daily on an empty stomach, filled 12/05/2023; prednisone 5 mg daily, filled 12/05/2023. Please review against diabetes regimen."},
+            {"type": "Result Note", "title": "FYI", "author": "RN", "date": "2023-12-11T15:45",
+             "body": "No oncology note about this yet. Will call pt."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "telephone",
+          "start": "2023-12-12T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re: new medications", "author": "RN", "date": "2023-12-12T09:10",
+             "body": "Spoke with pt. Biopsy of the hip bone in November showed the cancer came from the prostate. Got a hormone shot (leuprolide) at the oncology office about two weeks ago and started abiraterone and prednisone last week. Back pain somewhat better. Asked about blood sugars on the prednisone - fasting a little higher, 170s-180s. Told him we'll update his list once the oncology letter arrives and review the diabetes at his January visit; call sooner for sugars over 300 or symptoms. Records request sent to oncology."}
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "outside_records",
+          "start": "2023-12-19T11:30",
+          "conditions": [
+            {"label": "Malignant neoplasm of prostate", "action": "diagnosed", "onset": "2023-11-16", "note": "adenocarcinoma, metastatic to bone"},
+            {"label": "Metastatic carcinoma to bone", "icd10": "C79.51", "action": "diagnosed", "onset": "2023-11-02", "note": "spine, pelvis, ribs; prostatic primary"}
+          ],
+          "medications": [
+            {"drug_text": "leuprolide acetate 22.5 MG Injectable Suspension", "action": "historical", "sig": "22.5 mg intramuscularly every 12 weeks at oncology", "dose": {"value": 22.5, "unit": "mg"}, "frequency": "EVERY 12 WEEKS", "route": "Intramuscular", "course": "chronic", "reason": "Metastatic prostate cancer"},
+            {"drug_text": "abiraterone acetate 250 MG Oral Tablet", "action": "historical", "sig": "Take 4 tablets (1000 mg) by mouth once daily on an empty stomach", "dose": {"value": 1000, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Metastatic prostate cancer"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with abiraterone", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "With abiraterone"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-11-16T13:00", "text": "SPECIMEN: left iliac bone, CT-guided core biopsy x3. MICROSCOPIC: cores of bone and marrow largely replaced by infiltrating glands and cords of malignant epithelial cells with prominent nucleoli in a desmoplastic stroma. Background marrow with small mature lymphocytes. IMMUNOHISTOCHEMISTRY: tumor cells positive for NKX3.1 and PSA; negative for TTF-1 and CDX2.", "conclusion": "Metastatic adenocarcinoma, immunoprofile consistent with prostatic origin."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology letter: new diagnosis", "author": "oncology", "date": "2023-12-19T11:30",
+             "body": "ONCOLOGY\nDate of letter: 12/08/2023\n\nDear colleague,\n\nFurther to our visit of 11/02, Mr. Kerrigan's workup shows metastatic carcinoma to bone. Bone scan showed widespread osseous uptake in the spine, pelvis and ribs, CT showed corresponding sclerotic lesions without visceral disease, and PSA was 64.8. CT-guided biopsy of the left iliac bone on 11/16/2023 confirmed metastatic adenocarcinoma of prostatic origin (pathology enclosed). He has metastatic hormone-sensitive prostate cancer, alongside his CLL, which continues to respond to acalabrutinib.\n\nTreatment begun:\n- Leuprolide 22.5 mg IM every 12 weeks, first dose 11/29/2023.\n- Abiraterone 1000 mg daily with prednisone 5 mg daily, started 12/06/2023.\n- Acalabrutinib 100 mg twice daily continues.\nWe will monitor PSA, liver tests, potassium and blood pressure monthly at first. Prednisone may raise his glucose; we would appreciate your help with his diabetes.\n\nOther medications: metformin, lisinopril, hydrochlorothiazide, melatonin. Allergies: NKDA.\n\nFollow-up in 3 months with PSA."}
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; new prostate cancer",
+          "state": {"weight_kg": 81.5, "labs": {"Hemoglobin": 13.4, "White Blood Cells": 8.2, "Mean Corpuscular Volume": 90, "Glucose": 182, "Hemoglobin A1c": 8.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-09T13:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-01-09T13:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-01-09T13:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-01-09T13:50",
+             "body": "Here with wife. Oncology letter of 12/8 and biopsy reviewed with them. Metastatic prostate cancer to bone, on leuprolide, abiraterone and prednisone 5 since late Nov/early Dec. CLL controlled on acalabrutinib. He's taking it in stride; back pain much improved since the hormone shot. Weight down from the fall.\nSugars: fasting 160s-180s since starting prednisone.\n\nMeds reconciled: metformin 1000 BID, lisinopril 20, HCTZ 12.5, melatonin 6 qhs, acetaminophen PRN, acalabrutinib 100 BID, abiraterone 1000 daily, prednisone 5 daily, leuprolide q12 wks.\n\nExam: vitals per chart. Comfortable. Mild tenderness low lumbar. Lungs clear. Feet intact, monofilament reduced.\n\nA/P:\n1. Metastatic prostate adenocarcinoma, bone - per oncology. Problem list updated.\n2. CLL - stable.\n3. DM2 with retinopathy - A1c today; continue metformin.\n4. HTN - continue; oncology also watching BP/K on abiraterone.\nRTC April."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "outside_records",
+          "start": "2024-02-06T09:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "ophthalmology", "date": "2024-02-06T09:20",
+             "body": "Exam 01/30/2024 (rescheduled from November). Acuity 20/30 right, 20/30 left. Right IOL clear. Diabetic retinopathy both eyes, no progression. No macular edema. Return in one year."}
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "outside_records",
+          "start": "2024-03-14T10:45",
+          "labs": [
+            {"panel": null, "collected": "2024-03-06T09:15", "results": [{"test": "Prostate Specific Antigen", "value": 2.1}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-06T09:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology follow-up", "author": "oncology", "date": "2024-03-14T10:45",
+             "body": "Oncology visit 03/06/2024. Three months into ADT with abiraterone/prednisone. Back pain largely resolved. PSA 2.1 (from 64.8). CBC within normal limits on acalabrutinib. Second leuprolide injection given 02/21. Continue all. Next visit in 3 months with PSA."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 82.0, "labs": {"Hemoglobin A1c": 8.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-16T10:55", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-04-16T10:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-16T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-04-16T10:55",
+             "body": "DM f/u. Feels decent. PSA way down per March oncology letter. Sleep: still acting out some dreams, about the same.\nGlucose log fasting 150-180.\nExam: BP per vitals. Lungs clear. Feet intact.\nPlan: A1c, BMP. Same meds. RTC July."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-23T09:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-07-23T09:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-23T09:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-07-23T09:40",
+             "body": "Saw oncology in June; no letter here. He says PSA was 0.3 and they were pleased, continuing everything, next shot due August. Has his own notebook with the numbers.\nDM: fasting 140s-170s. No lows.\nBack: occasional ache, acetaminophen twice a week.\nExam: vitals per chart. Heart/lungs normal. Feet: intact, callus trimmed by podiatry.\nA/P: A1c/BMP. Request June oncology note. RTC September for AWV."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 8.5}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T09:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-17T09:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-09-17T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-09-17T09:50",
+             "body": "AWV.\nCancer care ongoing at oncology (ADT/abiraterone/prednisone, acalabrutinib). Feeling okay overall. Walks 15-20 minutes.\nFunctional: independent ADLs; wife handles more of the driving now by choice. No falls while walking; occasional bed exits at night with the RBD, onto the floor mattress.\nCognition: conversant, does crosswords daily, no concerns from him or wife. PHQ-2 1.\nAdvance care: proxy is wife; we talked briefly about his wishes - he'd want to discuss more if things change.\n\nExam: unremarkable for him. Feet intact.\n\nPrevention: flu/COVID in October. Colonoscopy 2027 - will revisit given his other conditions.\nLabs as ordered. RTC January."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T14:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T14:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T14:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines given", "author": "RN", "date": "2024-10-08T14:55",
+             "body": "High-dose flu (trivalent) L arm and 2024-25 COVID R arm. Pt had no issues with last year's doses. No reaction today."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T20:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Prescriptions", "author": "patient", "date": "2024-11-12T20:10",
+             "body": "Could you send new prescriptions for metformin and the two blood pressure pills? The pharmacy says I'm out of refills. Thanks, Fran"},
+            {"type": "Patient Message", "title": "RE: Prescriptions", "author": "MA", "date": "2024-11-13T08:50",
+             "body": "Done - all three went to your pharmacy with a year of refills. Have a good week."}
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "outside_records",
+          "start": "2024-12-16T13:25",
+          "labs": [
+            {"panel": null, "collected": "2024-12-04T09:00", "results": [{"test": "Prostate Specific Antigen", "text": "<0.1"}]},
+            {"panel": "CBC with Differential", "collected": "2024-12-04T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Lymphocytes %"}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology follow-up", "author": "oncology", "date": "2024-12-16T13:25",
+             "body": "Oncology note, 12/04/2024.\nProblems: metastatic prostate adenocarcinoma to bone on ADT plus abiraterone/prednisone since 11/2023; CLL on acalabrutinib since 05/2023; diabetic foot ulcer, right foot; type 2 diabetes.\nDoing well. No bone pain. PSA undetectable (<0.1). CBC normal with normal lymphocyte count. LFTs and potassium normal. BP acceptable.\nPlan: continue leuprolide q12 weeks, abiraterone 1000 mg with prednisone 5 mg, acalabrutinib 100 mg BID. Return 6 months."}
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "outside_records",
+          "start": "2024-12-20T11:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "ophthalmology", "date": "2024-12-20T11:00",
+             "body": "Dilated exam 12/12/2024. VA 20/30 OU. Stable diabetic retinopathy both eyes. No macular edema. Pseudophakic OD. RTC 12 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

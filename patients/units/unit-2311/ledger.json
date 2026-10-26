@@ -1,0 +1,1844 @@
+{
+  "unit": "unit-2311",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002311",
+      "given": "Arthur",
+      "family": "Cummings",
+      "birth_date": "1948-07-24",
+      "address_line": "27 Kendall Lane, Granby, MA 01033",
+      "phone": "+1-603-555-0150",
+      "email": "arthur.cummings@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired postal worker with moderate Alzheimer disease, hypertension, knee osteoarthritis and BPH who joined in 2023 with his daughter. Delirium superimposed on dementia at an ED visit in late 2023 cleared; he moved into a nursing home in 2024 and had classic heat stroke there in July 2025, after his last practice visit.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T10:00",
+          "end": "2023-08-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establishing care; memory loss and blood pressure",
+          "conditions": [
+            {
+              "label": "Alzheimer disease",
+              "action": "history",
+              "note": "Moderate stage; diagnosed before joining the practice"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "history"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "donepezil hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alzheimer disease"
+            },
+            {
+              "drug_text": "memantine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alzheimer disease"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth at bedtime",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Benign prostatic hyperplasia"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for knee pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis"
+            },
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              76
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 74.4,
+            "height_cm": 177.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T10:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 496
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker, quit 2005, 25 pack-years"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None since 2018"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal worker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives with his daughter"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T10:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2023",
+              "action": "placed",
+              "order": "Records request, prior primary care practice",
+              "category": "procedure",
+              "reason": "establishing care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T11:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nArthur is a 75 y/o retired mail carrier here with his daughter, who does most of the talking and keeps his pills. They are moving his care closer to her. Memory trouble has been going on for several years; he was given an Alzheimer's diagnosis before he came to us and is now in the moderate stage. Per daughter he needs reminders for meals and showers, can still dress himself with some setting out of clothes, gets turned around outside the house. Some evenings are worse than mornings. No falls. She manages his medications with a weekly box.\n\nOther problems: blood pressure, on amlodipine for years. Both knees ache with walking, worse on stairs, takes Tylenol a couple of times a day and that is enough. Prostate: up once or twice a night to urinate on tamsulosin, stream fine. Occasional constipation, uses MiraLAX powder a few times a week.\n\nPSH: bilateral cataract surgery with lens implants 2020; open inguinal hernia repair 2016.\nMeds: donepezil 10 mg qhs, memantine 10 mg BID, amlodipine 5 mg daily, tamsulosin 0.4 mg qhs, acetaminophen 500 mg q6h prn, PEG 3350 17 g daily prn.\nAllergies: PENICILLIN (anaphylaxis), SULFA (rash).\nFH: mother had Alzheimer dementia starting around 79. Father had CAD, heart attack at 76. One sister with type 2 diabetes.\nSH: worked for the post office until retirement. Smoked about 25 pack-years, quit in 2005. Has not had alcohol since 2018, the family stopped keeping it in the house as his memory slipped. Lives with his daughter in Granby; she works part time.\n\nExam: vitals as recorded. Pleasant, cooperative, smiles a lot, answers simple questions, looks to his daughter for anything about dates. Oriented to self, not to month or year. Pupils equal, pseudophakic. Neck supple. Heart regular rate, no murmur. Lungs clear throughout. Abdomen soft, nontender. Knees: crepitus both sides, no effusion, full extension, flexion a bit limited. Gait slow but steady without a device. No edema.\n\nAssessment and plan:\n1. Alzheimer disease, moderate. Continue donepezil and memantine; we will take over refills. Labs today to make sure nothing reversible is piling on (TSH, B12, CMP, CBC).\n2. Hypertension, at goal on amlodipine 5.\n3. Knee OA, both. Acetaminophen as he is doing, no NSAIDs.\n4. BPH, stable on tamsulosin.\n5. Health maintenance: PHQ-2 negative. Requesting old records to sort out vaccines. Flu and COVID in the fall.\n\nRTC about 3 months, sooner if needed. Daughter has the portal login."
+            },
+            {
+              "type": "Administrative",
+              "title": "Records Request",
+              "date": "2023-08-22T13:05",
+              "author": "front desk",
+              "body": "Faxed signed release and request for records to his prior primary care office. Asked for last 5 years of notes, labs, immunizations and any neurology letters."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              80
+            ],
+            "weight_kg": 74.0,
+            "height_cm": 176.0,
+            "labs": {
+              "Creatinine": 1.0,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Vitamin B12": 512
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2023-08-24T16:10",
+              "author": "PCP",
+              "body": "Hi, sharing your dad's bloodwork from Tuesday. Kidney and liver tests, blood counts, thyroid and B12 are all normal, and his cholesterol is fine for his age with no need for a medicine. Nothing here that would be adding to his memory trouble. No changes to his medicines."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T09:30",
+          "orders": [
+            {
+              "id": "prior-records-2023",
+              "action": "done",
+              "date": "2023-09-05T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2023-09-05T09:30",
+              "author": "outside primary care",
+              "body": "Records from prior primary care office, received by fax, 38 pages.\n\nProblem list on their side: Alzheimer disease, hypertension, osteoarthritis of knees, BPH. Allergy list: penicillin (anaphylaxis), sulfa (rash).\n\nPreventive: colonoscopy 2016, normal, no further screening advised given age. Tdap 2019. Shingrix 2 doses, 2021. Last flu shot fall 2022. COVID primary series and a booster, last in 2022.\n\nSurgical: cataracts both eyes 2020; open right inguinal hernia repair 2016.\n\nMedication list matches what he takes now. Notes from 2021 onward describe steady memory decline with family support.\n\nReviewed and abstracted. Immunization history updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "bp": [
+              142,
+              81
+            ],
+            "hr": 62
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T14:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-11T14:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-11T14:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-11T14:40",
+              "author": "RN",
+              "body": "In with daughter for fall vaccines. Screening questions answered by daughter, no prior reactions. High-dose flu given left deltoid, updated Moderna COVID given right deltoid. Tolerated well, waited 15 minutes, left with daughter. VIS sheets given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-12a",
+          "kind": "ed_visit",
+          "start": "2023-11-12T18:40",
+          "end": "2023-11-13T01:10",
+          "service": "Emergency Medicine",
+          "reason": "Worsening confusion and agitation",
+          "conditions": [
+            {
+              "label": "Delirium superimposed on dementia",
+              "action": "diagnosed",
+              "onset": "2023-11-10",
+              "icd10": "F05"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-12T19:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-12T19:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-11-12T20:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2023-11-12T20:30",
+              "text": "Non-contrast CT of the head. No intracranial hemorrhage, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci appropriate for age. Basal cisterns patent. Calvarium intact. Bilateral lens implants.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-11-12T18:40"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "telephone",
+          "start": "2023-11-13T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Daughter Call re ED Visit",
+              "date": "2023-11-13T09:15",
+              "author": "RN",
+              "body": "Daughter called. Took him to the ED last night, he had been confused and riled up for two days, up walking around the house at night and did not know who she was at times. Bloodwork, urine and head scan were all OK per ED and they sent him home around 1 am. This morning he is quieter, ate breakfast, still not himself. No fever, no falls, taking his usual meds. Advised to keep the house calm, lights on in the evening, keep him on his routine. Booked with PCP Thursday. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "office_visit",
+          "start": "2023-11-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, confusion",
+          "vitals": {
+            "bp": [
+              142,
+              83
+            ],
+            "hr": 62,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 74.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-16T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up after ED Visit",
+              "date": "2023-11-16T11:45",
+              "author": "PCP",
+              "body": "F/u ED visit Sunday night for acute confusion. Daughter says the last few nights have been better, he is sleeping through mostly, less agitated, but still foggier than his usual and asked twice today where his mother was. No fever, cough, burning with urination, new meds or missed doses. Eating and drinking OK. Bowels moving.\n\nED did BMP, CBC, UA and a head CT, all fine per daughter; I don't have their note yet, asked front desk to chase it.\n\nExam: vitals reviewed, afebrile. Sitting calmly, distractible, oriented to self only today. Follows one-step commands. Mucous membranes moist. Heart regular. Lungs clear. Abdomen soft, not tender, bladder not palpable. Moves all extremities, no focal weakness.\n\nA/P: Delirium on top of his Alzheimer's, slowly clearing, cause not found. Nothing to add with a negative workup. Keep his routine steady, lights and clock in his room, daytime activity, avoid naps late. No sedating meds. Continue current meds unchanged. Recheck in about 4 weeks, call if it worsens or he has fever or stops eating."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "outside_records",
+          "start": "2023-11-20T10:40",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note (11/12/2023)",
+              "date": "2023-11-20T10:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Seen 11/12/2023.\n\nCC: confusion, agitation x 2 days.\n\n75M with moderate Alzheimer disease, HTN, knee OA, BPH, brought by daughter. Two days of increasing confusion and agitation, up wandering at night, at times not recognizing family. Became more agitated when held for IV access.\n\nMeds: donepezil, memantine, amlodipine, tamsulosin, acetaminophen prn, PEG prn. Allergies: penicillin (anaphylaxis), sulfa (rash).\n\nExam: VS stable. Disoriented to time and place, knows who he is. Cannot follow multistep commands, easily pulled off task by surroundings. Remainder of exam unremarkable.\n\nResults: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 98, Ca 9.2. CBC WNL. UA negative. CT head without contrast: no acute abnormality.\n\nImpression: delirium superimposed on dementia, no acute precipitant identified.\nDispo: discharged home with daughter. Follow up with PCP this week. Return for fever, falls, worsening confusion.\n\nScanned to chart; PCP reviewed, consistent with what family described."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "office_visit",
+          "start": "2023-12-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up confusion, blood pressure",
+          "conditions": [
+            {
+              "label": "Delirium superimposed on dementia",
+              "action": "resolved",
+              "onset": "2023-11-10",
+              "icd10": "F05"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              79
+            ],
+            "hr": 61,
+            "spo2": 99,
+            "weight_kg": 74.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-12-14T11:05",
+              "author": "PCP",
+              "body": "S: Back for recheck after last month's delirium. Daughter feels he is back to where he was in the summer: knows her, calmer in the evenings, sleeping most nights, though he still gets up to use the bathroom once or twice and sometimes wanders the hall before she steers him back. Appetite fine. Knees about the same, Tylenol in the morning helps. No new meds.\n\nO: Vitals as charted, BP at goal. Alert, chatting about the weather, oriented to self, guesses the season correctly. Heart regular, lungs clear. Knees with crepitus, no effusion. Walking steadily.\n\nA/P:\n- Delirium superimposed on dementia: resolved, at baseline.\n- Alzheimer disease, moderate: continue donepezil and memantine.\n- HTN: controlled on amlodipine 5.\n- Knee OA, BPH: stable, no changes.\nNext visit in 2 to 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "portal_message",
+          "start": "2023-12-28T08:50",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Refill Request",
+              "date": "2023-12-28T08:50",
+              "author": "patient",
+              "body": "Hi, this is Arthur's daughter. Dad is down to about a week of the memantine. Can you send a new script to the pharmacy? Happy new year to all of you."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Refill Sent",
+              "date": "2023-12-28T12:15",
+              "author": "PCP",
+              "body": "Done, memantine 10 mg twice daily, 90-day supply with refills sent this morning. Happy new year to you both."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "pharmacy",
+          "start": "2024-01-18T15:30",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Donepezil",
+              "date": "2024-01-18T15:30",
+              "author": "MA",
+              "body": "E-refill request from pharmacy for donepezil 10 mg tab, 1 at bedtime, #90. Last visit 12/14/23. Approved per protocol, 90 days x 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dementia and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              81
+            ],
+            "hr": 63,
+            "spo2": 96,
+            "weight_kg": 73.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-20T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-20T14:50",
+              "author": "PCP",
+              "body": "Here with his daughter. The main issue is nights. He gets up after midnight, gets dressed, tries the doors; last week she found him in the driveway in his slippers. She has put chimes on the doors and is sleeping lightly herself, and she is worn out. Days are OK, he naps in his chair, eats well. No confusion like November, just his usual. No falls. Urinating 1 to 2 times a night, unchanged. Knees ache on cold days.\n\nExam: vitals as charted, BP fine. Calm, friendly, oriented to self. Heart regular, lungs clear. Knees with crepitus, no swelling. Steady gait.\n\nA/P:\n1. Alzheimer disease, moderate, with nighttime wandering. Long talk with daughter about safety. She is looking at nursing homes near her and has toured two; I support that, she cannot keep watch around the clock. Will fill out any forms the facility needs. Continue donepezil 10 and memantine 10 BID. Discussed that sleeping pills tend to make him worse and fall more, and she agrees not to try them.\n2. HTN: controlled, amlodipine 5.\n3. Knee OA: acetaminophen prn.\n4. BPH: tamsulosin.\nCaregiver resources given. Follow-up 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-25a",
+          "kind": "telephone",
+          "start": "2024-03-25T10:20",
+          "social": [
+            {
+              "item": "Housing status",
+              "value": "Nursing home resident"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Daughter Call: Moved to Nursing Home",
+              "date": "2024-03-25T10:20",
+              "author": "RN",
+              "body": "Daughter called to let us know Arthur moved into a nursing home last Tuesday. Settling in slowly, first two nights were rough, better since. Facility nurse will fax admission paperwork and their med order sheet for us to sign. She wants him to stay with this practice and will bring him to appointments. Address in chart updated with facility info. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Note",
+              "date": "2024-03-25T12:40",
+              "author": "PCP",
+              "body": "Noted. Will sign facility orders when they come; current meds unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "outside_records",
+          "start": "2024-03-27T09:05",
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Nursing Home Admission Forms",
+              "date": "2024-03-27T09:05",
+              "author": "front desk",
+              "body": "Received from nursing home by fax: physician admission order form, medication reconciliation sheet, TB screening request. Med sheet lists donepezil 10 qhs, memantine 10 BID, amlodipine 5 daily, tamsulosin 0.4 qhs, acetaminophen 500 q6h prn, PEG 17 g daily prn. Allergies penicillin, sulfa. Placed in PCP box."
+            },
+            {
+              "type": "Administrative",
+              "title": "Forms Completed",
+              "date": "2024-03-28T17:10",
+              "author": "PCP",
+              "body": "Reviewed facility med sheet, matches our list. Orders signed. Diet regular, activity as tolerated with supervision, code status full code for now pending a goals talk with daughter at his next visit. Faxed back."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after move to nursing home",
+          "vitals": {
+            "bp": [
+              137,
+              85
+            ],
+            "hr": 68,
+            "spo2": 96,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-21T14:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-05-21T13:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-21T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-21T14:15",
+              "author": "PCP",
+              "body": "Two months into the nursing home. Daughter drove him over from the facility. Staff tell her he joins the music group and walks the halls a lot in the evening but stays on the unit, which has a code door. Sleeping better there. Eats most of his meals. No falls reported. Facility gives his meds.\n\nExam: BP at goal. Weight steady. Smiling, says he lives \"at the hotel\". Oriented to self. Heart regular, lungs clear, no edema. Knees with crepitus, walks without help.\n\nA/P: Alzheimer disease moderate, settled in his new home. HTN at goal, BMP today. Knee OA and BPH stable. Same meds. Daughter wants to talk about goals of care at his wellness visit this summer, which works. 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "portal_message",
+          "start": "2024-05-22T17:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2024-05-22T17:30",
+              "author": "PCP",
+              "body": "Arthur's kidney function and salts from yesterday look normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "annual_physical",
+          "start": "2024-08-27T09:30",
+          "end": "2024-08-27T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              129,
+              82
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 75.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-27T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-08-27T10:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-27T10:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-08-27T09:30"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2024-08-27T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-27T10:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-27T10:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-08-27T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-08-27T11:10",
+              "author": "PCP",
+              "body": "MEDICARE ANNUAL WELLNESS VISIT\n\nWith daughter. Just turned 76. History mostly from her and from the facility's monthly summary she brought.\n\nFunction: needs help with bathing and set-up for dressing, feeds himself, continent by day with toileting reminders, walks on the unit without an aid. No falls this year. Hearing adequate for conversation. Vision fine since cataract surgery.\nMood: PHQ-2 1 per daughter and staff, mostly content, some evening restlessness.\nCognition: known moderate Alzheimer disease, no formal testing today, no change in his drugs.\nSafety: secured unit.\n\nExam: vitals as charted. Well-groomed, pleasant. Heart regular without murmur, lungs clear, abdomen soft. Knees with crepitus, no effusion. Skin intact over heels and sacrum. No edema.\n\nPrevention: no further colon screening at his age. Not a lung screening candidate, quit almost 20 years ago. PCV20 today. Flu and COVID at a nurse visit in October; RSV at the same visit.\n\nAdvance care planning (about 20 minutes with daughter): she is his health care proxy, form on file. They want him treated for things that can be fixed, including hospital care, but would not want CPR or a breathing machine if his heart stopped; daughter wants time to think it over before changing his code status. Remains full code for now. MOLST form given to take home.\n\nLabs today: CBC, BMP, lipids.\n\nPlan: same meds. Follow-up in 3 to 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "portal_message",
+          "start": "2024-08-29T12:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2024-08-29T12:05",
+              "author": "PCP",
+              "body": "Results from Tuesday are back: blood counts, kidney tests and cholesterol are all fine for him. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "bp": [
+              139,
+              85
+            ],
+            "hr": 54
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:07"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-10-08T15:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T15:25",
+              "author": "RN",
+              "body": "Brought in by daughter from the nursing home. Consent from daughter as proxy. Given: high-dose trivalent flu L arm, Pfizer 2024-25 COVID R arm, RSV (Abrysvo) L arm lower site. No reactions to past vaccines. Observed 15 min, fine. Facility nurse faxed a copy of today's record for their MAR."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              68
+            ],
+            "hr": 54,
+            "spo2": 96,
+            "weight_kg": 74.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-10T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-10T12:00",
+              "author": "PCP",
+              "body": "Routine visit, daughter with him. Facility reports no behavior incidents this fall, eating fine, weight steady. Knees stiff in the morning, staff give acetaminophen most mornings and that seems to cover it. Up once a night to urinate. Bowels OK with PEG a couple of times a week.\n\nCode status: daughter has thought it over and wants to keep full code for now. Will revisit.\n\nExam: BP at goal. Alert, says hello to everyone, oriented to self. Heart and lungs unremarkable. No edema. Knees crepitant, no effusion.\n\nA/P: Moderate Alzheimer disease, stable on donepezil and memantine. HTN controlled on amlodipine 5. Knee OA and BPH stable. No changes. Back in about 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "pharmacy",
+          "start": "2024-12-19T10:10",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Tamsulosin",
+              "date": "2024-12-19T10:10",
+              "author": "MA",
+              "body": "Request from the nursing home's long-term care pharmacy for tamsulosin 0.4 mg cap qhs. Our earlier scripts went to his old retail pharmacy; facility pharmacy asks that all new scripts come to them. Sent 90 days x 3 refills to LTC pharmacy. Pharmacy preference updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "pharmacy",
+          "start": "2025-02-04T11:20",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Memantine",
+              "date": "2025-02-04T11:20",
+              "author": "MA",
+              "body": "LTC pharmacy request, memantine 10 mg BID #180. Last OV 12/10/24. Sent with 1 refill. Due for f/u in March, already scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Missed Appointment",
+              "date": "2025-03-11T10:40",
+              "author": "front desk",
+              "body": "Pt did not arrive for 10:00. Called daughter: she thought the facility van was bringing him, facility thought she was. Rebooked 3/25 at 1:30, daughter will drive."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              78
+            ],
+            "hr": 61,
+            "spo2": 99,
+            "weight_kg": 73.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-25T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-25T14:05",
+              "author": "PCP",
+              "body": "Rescheduled from the 11th. Daughter here. Winter was quiet at the facility, no hospital trips, no falls. Staff say he is a little slower to find words than last year but still joins activities. Eating fine. Night waking about the same.\n\nExam: vitals as charted, BP at goal, weight unchanged. Cheerful, oriented to self. Heart regular, lungs clear. Knees crepitant. Gait steady, a bit slower.\n\nA/P: Alzheimer disease moderate, slow drift as expected; continue donepezil and memantine. HTN controlled. OA knees and BPH stable on current regimen. Summer visit in July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T19:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Knee Pain Question",
+              "date": "2025-05-20T19:45",
+              "author": "patient",
+              "body": "Hi, it's Arthur's daughter. Staff said Dad has been rubbing his knees more since they started walks outside. Is it OK for them to give the Tylenol more regularly instead of only when he asks? He can't always tell them he hurts."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Reply",
+              "date": "2025-05-21T08:30",
+              "author": "PCP",
+              "body": "Yes, that's reasonable. They can give the acetaminophen 500 mg on a schedule up to every 6 hours as it's already written, no more than 4 tablets a day. Please have them avoid ibuprofen or naproxen. We can look at his knees at his July visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "office_visit",
+          "start": "2025-07-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up, blood pressure and memory",
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 67,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-14T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-07-14T09:50",
+              "author": "PCP",
+              "body": "Summer check. Daughter with him. Facility now gives acetaminophen in the morning and evening and staff feel he walks more comfortably. No falls. Eating and drinking per staff, no change in bowels or urination. Mood good.\n\nExam: vitals as charted, BP at goal. Alert, says he is 50 and works for the post office. Oriented to self. Heart regular, lungs clear, abdomen soft. Knees with crepitus and bony enlargement, no effusion. Steady with standby help.\n\nA/P:\n1. Alzheimer disease, moderate: continue donepezil 10 qhs, memantine 10 BID.\n2. HTN: at goal on amlodipine 5. BMP today.\n3. Knee OA: scheduled acetaminophen within current order, fine.\n4. BPH: tamsulosin.\nFull code remains per daughter. Next visit in about 4 months, around November, with flu shot."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "portal_message",
+          "start": "2025-07-16T13:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "date": "2025-07-16T13:15",
+              "author": "PCP",
+              "body": "His kidney tests and electrolytes from Monday are normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "hospital_admission",
+          "start": "2025-07-29T15:40",
+          "end": "2025-08-05T12:30",
+          "service": "Internal Medicine — Inpatient",
+          "reason": "Altered mental status and hyperthermia during heatwave",
+          "vitals": [
+            {
+              "time": "2025-07-29T15:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110,
+              "rr": 24,
+              "temp_c": 41.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-29T16:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 150
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 30
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-29T16:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.3
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 30
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-05T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 62
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-29T15:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-07-29T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-08-05T11:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "portal_message",
+          "start": "2025-07-30T07:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Dad in the Hospital",
+              "date": "2025-07-30T07:05",
+              "author": "patient",
+              "body": "Wanted you to know Dad is in the ICU at the regional hospital. The heat got to him, his room at the home has no AC and he was barely answering us yesterday afternoon. His temperature was over 106 when we got him in. They are cooling him and giving fluids. I'll let you know more when I know."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Reply",
+              "date": "2025-07-30T08:20",
+              "author": "PCP",
+              "body": "I'm so sorry, thank you for letting me know. Please ask the team to send us a summary when he leaves, and call the office if you'd like me to speak with them. Thinking of you both."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "telephone",
+          "start": "2025-08-06T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Facility Call: Hospital Discharge",
+              "date": "2025-08-06T11:10",
+              "author": "RN",
+              "body": "Nursing home nurse called. Arthur came back from the hospital yesterday after a week there for heat stroke. More like himself, eating some, walking with staff. They have moved him to a room with a window unit. Discharge paperwork was handed to the family; she does not have the summary. Post-hospital visit booked 8/12 at 10:30. Asked her to fax the med list they received at discharge."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Cancelled Appointment",
+              "date": "2025-08-12T08:15",
+              "author": "front desk",
+              "body": "Facility called to cancel 10:30, no van or driver available today and daughter at work. Offered later this week; they will call back to rebook."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "telephone",
+          "start": "2025-08-20T14:00",
+          "orders": [
+            {
+              "id": "hosp-records-2025",
+              "action": "placed",
+              "order": "Records request, regional hospital admission July 2025",
+              "category": "procedure",
+              "reason": "heat-related admission"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative",
+              "title": "Records Request",
+              "date": "2025-08-20T14:00",
+              "author": "front desk",
+              "body": "No discharge summary yet and facility never faxed a med list. Faxed request to regional hospital HIM for discharge summary and labs, admission 7/29/25. Left VM for facility to rebook the cancelled follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "outside_records",
+          "start": "2025-09-16T09:50",
+          "orders": [
+            {
+              "id": "hosp-records-2025",
+              "action": "done",
+              "date": "2025-09-16T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (7/29/2025 to 8/5/2025)",
+              "date": "2025-09-16T09:50",
+              "author": "hospital medicine",
+              "body": "Regional hospital. Admitted 7/29/2025, discharged 8/5/2025.\n\nDiagnoses: nonexertional (classic) heat stroke; delirium superimposed on dementia; Alzheimer disease, moderate; HTN; BPH; OA knees.\n\nBrief course: 77M, nursing home resident (no air conditioning), brought by family in a July heat wave after a day of increasing confusion and poor responsiveness; prior delirium episode about two years earlier. In the ED T 41.1 C (106 F), HR 110, BP 90/60, RR 24. Lethargic, disoriented, unable to give coherent answers, skin hot and dry. Na 150, K 3.2, BUN 30, Cr 1.8. ABG 7.30 / 30 / 95, HCO3 18. Temperature and mental status did not improve much with initial cooling and IV fluids in the ED and he went to the ICU. There: ongoing evaporative and ice-pack cooling and IV fluids; afebrile by the next morning. Potassium replaced. Sodium brought down gradually. Amlodipine held while pressures were low, restarted before discharge. Transferred to the floor, mentation returned to baseline over several days per family.\n\nDischarge labs: Na 141, K 4.1, Cr 1.2.\nDischarge meds: unchanged from admission (donepezil, memantine, amlodipine, tamsulosin, acetaminophen prn, PEG prn).\nAllergies: penicillin (anaphylaxis), sulfa (rash).\nDisposition: back to nursing home. Follow up with PCP 1 to 2 weeks; keep in a cooled environment during hot weather.\n\nReceived after request. Filed to chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "pharmacy",
+          "start": "2025-11-04T10:35",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Amlodipine",
+              "date": "2025-11-04T10:35",
+              "author": "MA",
+              "body": "LTC pharmacy request, amlodipine 5 mg daily #90. Last OV 7/14/25, hospital f/u never rebooked. Routed to PCP."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "PCP Approval",
+              "date": "2025-11-04T16:00",
+              "author": "PCP",
+              "body": "Approved 90 days. Please reach out to daughter to get him in."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "telephone",
+          "start": "2025-11-06T12:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outreach Call",
+              "date": "2025-11-06T12:25",
+              "author": "front desk",
+              "body": "Called daughter to schedule overdue visit. No answer, left message with office number."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T20:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Checking In",
+              "date": "2026-01-13T20:10",
+              "author": "patient",
+              "body": "Sorry I missed your calls, it's been a lot. Dad is doing OK at the home. They gave him his flu shot and the covid one there in the fall. I'd like to bring him in when the roads are better, maybe in the spring?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "Reply",
+              "date": "2026-01-14T09:00",
+              "author": "front desk",
+              "body": "No problem at all. Whenever you're ready, call or message us and we will find a time that works with the facility's van schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T09:40",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Donepezil and Memantine",
+              "date": "2026-02-17T09:40",
+              "author": "MA",
+              "body": "LTC pharmacy requesting donepezil 10 mg qhs and memantine 10 mg BID, 90 days each. Last OV 7/14/25. Approved by PCP for 90 days, no further refills until seen."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T14:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Tamsulosin",
+              "date": "2026-05-12T14:15",
+              "author": "MA",
+              "body": "LTC pharmacy request for tamsulosin 0.4 mg qhs. Approved 90 days by PCP. Reminder letter mailed to daughter that he is overdue for a visit and labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T10:05",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill Request: Donepezil and Memantine",
+              "date": "2026-05-19T10:05",
+              "author": "MA",
+              "body": "LTC pharmacy asking for more donepezil and memantine. PCP approved a 30-day bridge and asked that the visit be booked; message left for daughter."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Delirium superimposed on dementia|F05": {
+        "code": "F05",
+        "display": "Delirium due to known physiological condition",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "memantine hydrochloride 10 MG Oral Tablet": {
+        "code": "996561",
+        "display": "memantine hydrochloride 10 MG Oral Tablet",
+        "ingredient": "memantine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

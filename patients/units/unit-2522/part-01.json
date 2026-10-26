@@ -1,0 +1,302 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002522",
+      "given": "Andre",
+      "family": "Palmer",
+      "birth_date": "1987-10-24",
+      "address_line": "41 Loudville Road, Easthampton, MA 01027",
+      "phone": "+1-617-555-0176",
+      "email": "andre.palmer@example.test",
+      "marital_status": "partnered",
+      "summary": "Former security guard with diabetes and hypertension who joins in 2020 and is found to have HIV with a CD4 under 200 on screening. Poor antiretroviral adherence, then IgA nephropathy and FSGS with nephrotic syndrome and AKI on CKD 3; last seen September 2024, after which a run of opportunistic infections reaches the practice only as outside records.",
+      "events": [
+        {
+          "id": "2020-10-19a",
+          "kind": "establish_care",
+          "start": "2020-10-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care for diabetes and blood pressure",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2017-06-01", "note": "Diagnosed at prior practice about 3 years ago"},
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2018-09-01", "note": "Diagnosed at prior practice about 2 years ago"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "2005-06-01", "note": "About 10 cigarettes a day since around age 20"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [138, 88], "weight_kg": 84.0, "height_cm": 180.0, "labs": {"Creatinine": 1.5, "Hemoglobin A1c": 7.1, "Microalbumin/Creatinine Ratio": 380, "Hemoglobin": 13.2, "Glucose": 142}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Unemployed; formerly security guard"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-10-19T10:05", "results": [{"test": "Creatinine", "value": 1.5}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": "CBC with Differential", "collected": "2020-10-19T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2020-10-19T10:05", "results": [{"test": "Hemoglobin A1c", "value": 7.1}]},
+            {"panel": "Lipid Panel", "collected": "2020-10-19T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2020-10-19T10:05", "results": [{"test": "Urine Protein", "text": "1+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Glucose", "text": "Negative"}, {"test": "Urine Red Blood Cells", "value": 6}]},
+            {"panel": null, "collected": "2020-10-19T10:05", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 380}]},
+            {"panel": null, "collected": "2020-10-19T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Reactive"}]},
+            {"panel": null, "collected": "2020-10-19T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-10-19T09:20"}],
+          "orders": [
+            {"id": "lab-2020-10-19", "action": "placed", "order": "CMP, CBC, A1c, lipids, UA, urine albumin/creatinine, HIV and HCV screening", "category": "lab", "reason": "New patient baseline"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-10-19T10:00", "body": "32 y/o man establishing care. Previous PCP was across the river; he stopped going after his insurance changed to Medicaid and has been getting refills through urgent care. Records requested.\n\nDM2 dx roughly 3 yrs ago, on metformin 1000 BID, says he takes it most days. No home glucose checks. HTN about 2 yrs, lisinopril 20 daily. Denies chest pain, SOB, vision change, foot numbness. No NSAID use.\n\nPSH: appendectomy around age 22.\nFHx: mother DM2 (dx at 45). Father HTN. Maternal uncle on dialysis, cause unknown.\nSH: lives in Easthampton with partner. Unemployed, used to do security work. Smokes ~10/day since about 20. Alcohol a drink or two a month. No drugs.\nAllergies: NKDA.\n\nExam: BP 138/88. Well appearing. Fundi not dilated. Neck supple, no LAD. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed RLQ scar. Ext without edema. Feet intact to monofilament bilaterally, pulses 2+.\n\nA/P\n1. DM2 - A1c today. Continue metformin.\n2. HTN - near goal, continue lisinopril 20. Recheck next visit.\n3. Tobacco - advised quitting. He wants to cut down on his own, not ready for patches.\n4. Health maintenance - CMP, CBC, lipids, UA, urine microalbumin. Offered routine HIV and hep C screening (one-time adult screening), he agreed. Flu shot at nurse visit in a couple weeks.\nRTC 3 mo, sooner pending labs."}
+          ]
+        },
+        {
+          "id": "2020-10-22a",
+          "kind": "telephone",
+          "start": "2020-10-22T11:40",
+          "reason": "Results call",
+          "orders": [
+            {"id": "lab-2020-10-19", "action": "done", "date": "2020-10-22T11:40"},
+            {"id": "lab-2020-10-22", "action": "placed", "order": "HIV-1 RNA viral load and CD4 count", "category": "lab", "reason": "Reactive HIV screen"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results discussed by phone", "author": "PCP", "date": "2020-10-22T11:55", "body": "Called pt with screening results. HIV antigen/antibody screen is reactive. Explained this needs confirmation and a viral load and CD4 count. He was quiet, asked whether it could be wrong. Told him we confirm before calling it anything, but to take it seriously. He agreed to come in for blood work this afternoon and to come back Monday to go over everything in person.\n\nAlso: creatinine 1.5, which gives an eGFR right around 60, and urine microalbumin 380 with 1+ protein and 1+ blood on UA. A1c 7.1. Hep C antibody negative. Will repeat kidney tests in a few months; may need nephrology.\n\nAdvised condoms with partner until we have answers."}
+          ]
+        },
+        {
+          "id": "2020-10-22b",
+          "kind": "lab_only",
+          "start": "2020-10-22T15:10",
+          "labs": [
+            {"panel": null, "collected": "2020-10-22T15:10", "resulted": "2020-10-24T08:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 85000}]},
+            {"panel": null, "collected": "2020-10-22T15:10", "resulted": "2020-10-23T14:00", "results": [{"test": "CD4 Count", "value": 140, "unit": "cells/uL"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2020-10-22T15:10"}],
+          "orders": [{"id": "lab-2020-10-22", "action": "done", "date": "2020-10-24T08:00"}]
+        },
+        {
+          "id": "2020-10-26a",
+          "kind": "office_visit",
+          "start": "2020-10-26T13:30",
+          "end": "2020-10-26T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review of HIV testing",
+          "conditions": [
+            {"label": "Human immunodeficiency virus disease", "action": "diagnosed", "onset": "2020-10-19", "note": "AIDS by CD4 under 200 at diagnosis"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2020-10-26T13:30"}],
+          "orders": [
+            {"id": "id-referral-2020", "action": "placed", "order": "Infectious disease referral", "category": "referral", "to": "Infectious Disease", "reason": "New HIV diagnosis, CD4 140"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - HIV Results", "author": "PCP", "date": "2020-10-26T14:30", "body": "Here to go over confirmatory testing. Came alone, partner waiting in the car.\n\nHIV-1 RNA 85,000 copies/mL. CD4 140. This confirms HIV infection, and with a CD4 below 200 it meets the definition of AIDS. Spent most of the visit on what this means and does not mean: very treatable, one pill a day for most people, near-normal life expectancy when the virus is kept suppressed. He does not know when or how he acquired it; no prior test he can recall.\n\nDenies fevers, sweats, thrush, rash, diarrhea, cough or headache today. Weight stable.\n\nExam: BP as charted. No oral thrush. No LAD. Skin clear. Lungs clear.\n\nA/P\n1. HIV disease, CD4 140 / VL 85k - urgent referral to the ID clinic at the regional hospital; front desk to call for first available. ID will start ART and prophylaxis. Discussed partner testing; he plans to tell his partner tonight and we can test the partner here or the partner's own doctor can. Condoms until suppressed.\n2. Kidney labs - mild CKD picture with albuminuria. Will repeat in early 2021. Lisinopril helps here.\n3. Gave crisis line and our after-hours number. He can text me.\n\nf/u Jan, or sooner."}
+          ]
+        },
+        {
+          "id": "2020-10-28a",
+          "kind": "telephone",
+          "start": "2020-10-28T09:15",
+          "reason": "Referral scheduling",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ID appointment scheduled", "author": "front desk", "date": "2020-10-28T09:20", "body": "Called ID clinic, faxed referral and labs. First new-patient slot Nov 23 at 10:30. Called pt, gave date and address, he wrote it down. Reminder text set."}
+          ]
+        },
+        {
+          "id": "2020-11-02a",
+          "kind": "nurse_visit",
+          "start": "2020-11-02T10:00",
+          "reason": "Flu vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-11-02T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-11-02T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccination", "author": "RN", "date": "2020-11-02T10:15", "body": "Quadrivalent flu 0.5 mL given IM left deltoid. VIS reviewed. Tolerated, no reaction during 15 minute wait. Reminded of ID appt on the 23rd."}
+          ]
+        },
+        {
+          "id": "2020-11-30a",
+          "kind": "outside_records",
+          "start": "2020-11-30T14:00",
+          "reason": "Infectious disease consult received",
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV, prescribed by ID"},
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "PCP prophylaxis, prescribed by ID"}
+          ],
+          "orders": [{"id": "id-referral-2020", "action": "done", "date": "2020-11-30T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease New Patient Consultation", "author": "infectious disease", "date": "2020-11-30T14:00", "body": "INFECTIOUS DISEASE CLINIC, REGIONAL HOSPITAL\nDate of visit: 11/23/2020\nReferred by: primary care\n\nReason: newly diagnosed HIV-1.\n\n33-year-old man with type 2 diabetes and hypertension found HIV-positive on routine screening at his new primary care practice in October. Baseline HIV-1 RNA 85,000 copies/mL, CD4 140 cells/mm3. No prior testing. Asymptomatic: no fever, weight loss, thrush, dysphagia, diarrhea, cough or headache.\n\nMedications: metformin 1000 mg BID, lisinopril 20 mg daily.\nAllergies: none known.\nSocial: lives with partner. Smokes about half a pack daily. Rare alcohol.\n\nExam: afebrile. Oropharynx clear. No lymphadenopathy. Lungs clear. Skin without lesions.\n\nAssessment: HIV-1 infection, AIDS-defining by CD4 count.\nPlan:\n- Start bictegravir/emtricitabine/tenofovir alafenamide 50/200/25 mg one tablet daily. Renal function adequate for this regimen; will follow creatinine.\n- Start trimethoprim-sulfamethoxazole DS one tablet daily for PCP prophylaxis while CD4 under 200.\n- Genotype and remaining baseline labs drawn here; results will follow in our chart.\n- Adherence counseling done with our pharmacist. Partner testing encouraged.\n- Return in 4 weeks, then every 3 months.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "portal_message",
+          "start": "2020-12-07T20:42",
+          "reason": "Update after ID visit",
+          "documents": [
+            {"type": "Patient Message", "title": "started the meds", "author": "patient", "date": "2020-12-07T20:42", "body": "hey doc just letting you know I started the HIV pill and the antibiotic one a week and a half ago. stomach was a little off the first few days but fine now. my partner got tested at the clinic downtown and its negative. thank you for being straight with me"},
+            {"type": "Patient Message", "title": "RE: started the meds", "author": "PCP", "date": "2020-12-08T07:50", "body": "That is really good news on both counts. Keep taking it every day, same time if you can - phone alarm helps. See you in January. Text me if anything comes up before then."}
+          ]
+        },
+        {
+          "id": "2021-01-25a",
+          "kind": "office_visit",
+          "start": "2021-01-25T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Creatinine": 1.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-01-25T14:40", "results": [{"test": "Creatinine", "value": 1.6}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2021-01-25T14:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-01-25T14:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-01-25T14:45", "body": "S: 2 months on ART. Saw ID again in late December, says they told him the virus is \"coming down\"; we don't have that letter yet. Misses maybe one or two doses a week, usually weekends. Taking metformin and lisinopril. Still smoking about the same.\nNo fevers, rashes, diarrhea.\n\nO: Vitals as charted. Lungs clear, RRR, no edema. Mouth clear.\n\nA/P\nDM2 - A1c and BMP today.\nHTN - ok today, continue lisinopril 20.\nKidneys - repeat creatinine today; if still around 1.5-1.6 that is CKD 3a by eGFR with albuminuria. Will decide on nephrology after.\nHIV - on bictegravir/FTC/TAF + TMP-SMX per ID. Pushed daily adherence, pill box given.\nTobacco - discussed, not ready.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-01-27a",
+          "kind": "portal_message",
+          "start": "2021-01-27T16:20",
+          "reason": "Result note",
+          "documents": [
+            {"type": "Result Note", "title": "Your recent labs", "author": "PCP", "date": "2021-01-27T16:20", "body": "Andre - A1c is about where it was, fine for now. Kidney number (creatinine) is 1.6, a touch higher than October. I'll recheck at your April visit along with a urine test. Nothing to change today."}
+          ]
+        },
+        {
+          "id": "2021-04-26a",
+          "kind": "office_visit",
+          "start": "2021-04-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, kidney function",
+          "conditions": [
+            {"label": "Chronic kidney disease, stage 3a", "action": "diagnosed", "onset": "2020-10-19", "note": "eGFR under 60 on repeat with albuminuria"}
+          ],
+          "state": {"labs": {"Microalbumin/Creatinine Ratio": 520}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-04-26T11:05", "resulted": "2021-04-26T17:30", "results": [{"test": "Creatinine", "value": 1.6}, {"test": "Potassium"}]},
+            {"panel": "Urinalysis", "collected": "2021-04-26T11:05", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 8}]},
+            {"panel": null, "collected": "2021-04-26T11:05", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 520}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-04-26T10:40"}],
+          "orders": [
+            {"id": "neph-referral-2021", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "CKD 3a with albuminuria and microscopic hematuria"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-04-26T17:45", "body": "Interval: feels well. First COVID shot at the pharmacy two weeks ago, second one next week. ART most days. No dark urine, no swelling.\n\nExam: BP and weight as charted. Heart and lungs normal. No pedal edema.\n\nLabs back this afternoon: creatinine 1.6 again, eGFR in the high 50s. Urine microalbumin up to 520. UA 2+ protein, 1+ blood with a few RBCs.\n\nA/P\n1. CKD stage 3a - now two values more than 3 months apart under 60 with albuminuria and microscopic blood. Young for this and the blood makes me want a kidney specialist to look, not just call it diabetic. Nephrology referral placed. Continue lisinopril. Avoid NSAIDs.\n2. DM2, HTN - unchanged.\n3. HIV - per ID, adherence still spotty by his account.\nRTC Sept for physical."}
+          ]
+        },
+        {
+          "id": "2021-05-10a",
+          "kind": "outside_records",
+          "start": "2021-05-10T09:00",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-12T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-03T13:20"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy vaccine administration record", "author": "pharmacy", "date": "2021-05-10T09:00", "body": "Community pharmacy immunization record. Patient: Andre Palmer, DOB 10/24/1987.\nPfizer-BioNTech COVID-19 vaccine 0.3 mL IM, dose 1 on 04/12/2021, dose 2 on 05/03/2021. No adverse events reported. State registry updated."}
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "outside_records",
+          "start": "2021-06-14T11:30",
+          "reason": "ID follow-up letter received",
+          "labs": [
+            {"panel": null, "collected": "2021-06-07T10:00", "results": [{"test": "CD4 Count", "value": 210, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2021-06-07T10:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 1200}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2021-06-14T11:30", "body": "ID clinic follow-up, seen 06/07/2021.\n\nOn bictegravir/emtricitabine/TAF and TMP-SMX DS daily since late November. Reports missing doses a few times a week, more when routines change. Feels well.\n\nCD4 210. HIV-1 RNA 1,200 copies/mL - a large drop from baseline but not suppressed, consistent with partial adherence.\n\nExam unremarkable.\n\nPlan: same regimen. Discussed that a CD4 just over 200 once is not enough to stop prophylaxis; continue TMP-SMX. Adherence check-in with clinic pharmacist by phone monthly. Return 3 months.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-07-19a",
+          "kind": "telephone",
+          "start": "2021-07-19T15:05",
+          "reason": "Nephrology referral follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Nephrology referral status", "author": "front desk", "date": "2021-07-19T15:10", "body": "Nephrology office says they mailed pt a letter and called twice in May, no response. Called pt, he said he'd been meaning to, \"too many doctors right now\". Gave him their number again. He'll call this week."}
+          ]
+        },
+        {
+          "id": "2021-08-23a",
+          "kind": "outside_records",
+          "start": "2021-08-23T10:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2021-08-23T10:00", "body": "Optometry, dilated diabetic eye exam on 08/18/2021.\nVA 20/20 OD, 20/25 OS. IOP normal. Anterior segments quiet. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema. Cup-to-disc 0.3 both eyes.\nImpression: diabetes without retinopathy. Recall 12 months."}
+          ]
+        },
+        {
+          "id": "2021-09-13a",
+          "kind": "annual_physical",
+          "start": "2021-09-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-13T09:10", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2021-09-13T09:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-13T09:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-13T09:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Urinalysis", "collected": "2021-09-13T09:10", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 5}]},
+            {"panel": null, "collected": "2021-09-13T09:10", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 470}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-13T09:20"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-09-13T09:22"},
+            {"vaccine": "Tdap", "date": "2021-09-13T09:24"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-09-13T08:40"},
+            {"procedure": "Immunization administration", "performed": "2021-09-13T09:20"}
+          ],
+          "orders": [
+            {"id": "neph-referral-2021", "action": "cancelled", "date": "2021-09-13T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-09-13T09:40", "body": "Annual exam. 33M with HIV (on ART via ID), DM2, HTN, CKD 3a.\n\nHe never made the nephrology appointment. Asked him plainly; he says between ID, the pharmacist calls and this office he can't take another specialist right now and he feels fine. I explained why I wanted it (blood and protein in the urine at his age). He would rather we keep an eye on it here for now. Referral closed at his request; will revisit.\n\nROS otherwise negative. Smoking ~10/day. Alcohol rare. Sleeping ok, mood ok - PHQ-9 4.\n\nExam: BP as charted. HEENT normal, oropharynx without thrush. Neck no LAD, thyroid normal. Heart RRR. Lungs clear. Abdomen soft, nontender. GU deferred. Skin no rashes. Ext no edema. Monofilament intact both feet.\n\nPrevention: flu, PCV20 (HIV indication) and Tdap today. COVID series done in spring. Eye exam in August, no retinopathy. HCV negative last fall.\n\nLabs: CMP, CBC, lipids, A1c, UA, urine microalbumin.\n\nPlan: continue current meds. Cessation offered again. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T12:10",
+          "reason": "Result note",
+          "documents": [
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2021-09-16T12:10", "body": "Hi Andre, cholesterol fine, liver tests fine, blood counts fine. Kidney function steady compared to spring. Urine protein still there (470), which is why the lisinopril matters - please don't skip it. A1c in range for you. See you in December."}
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "office_visit",
+          "start": "2021-12-13T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "telephone",
+          "start": "2021-12-14T10:00",
+          "reason": "Missed appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-show follow-up", "author": "front desk", "date": "2021-12-14T10:05", "body": "Pt missed yesterday 3:20. Reached him, said he forgot, had a ride problem. Rebooked Jan 10 at 1:00. Bus route info given."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,696 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001723",
+   "given": "Jada",
+   "family": "Simmons",
+   "birth_date": "2001-09-08",
+   "address_line": "212 Pelham Road, Apt 2B",
+   "phone": "+1-802-555-0118",
+   "email": "jada.simmons@example.test",
+   "marital_status": "single",
+   "summary": "Young woman with severe persistent asthma (prior intubation) and allergic rhinitis, uninsured with Medicaid pending, who joins in 2023. Gonococcal cervicitis and then secondary syphilis are treated at outside OB/GYN with practice-run titer follow-up; a community-acquired pneumonia precedes an ICU admission for status asthmaticus that finally steps her up to ICS-LABA.",
+   "events": [
+    {
+     "id": "2023-06-20a",
+     "kind": "establish_care",
+     "start": "2023-06-20T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care, asthma",
+     "conditions": [
+      {
+       "label": "Severe persistent asthma",
+       "action": "diagnosed",
+       "onset": "2008-05-01",
+       "note": "since childhood, per patient"
+      },
+      {
+       "label": "Allergic rhinitis",
+       "action": "diagnosed",
+       "onset": "2012-04-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+       "dose": {
+        "value": 180,
+        "unit": "mcg"
+       },
+       "frequency": "Q4-6H PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "asthma"
+      },
+      {
+       "drug_text": "fluticasone propionate 0.22 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 1 puff twice daily, rinse mouth after use",
+       "dose": {
+        "value": 220,
+        "unit": "mcg"
+       },
+       "frequency": "BID",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "asthma"
+      },
+      {
+       "drug_text": "levocetirizine dihydrochloride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily as needed for seasonal allergies",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "allergic rhinitis"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 62.6,
+      "height_cm": 165.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Occasional, 1-2 drinks on weekends"
+      },
+      {
+       "item": "Occupation",
+       "value": "Part-time restaurant server"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-06-20T10:25",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-20T10:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-20T10:25",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Non-reactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 18-39",
+       "performed": "2023-06-20T09:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "prior-records-2023",
+       "action": "placed",
+       "order": "Request records from prior primary care practice",
+       "category": "procedure",
+       "reason": "establishing care"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2023-06-20T10:30",
+       "body": "21 yo woman here to establish. Moved her care to us after her old pediatric/adolescent office stopped seeing adults. Works part time waiting tables in town. No insurance right now; Medicaid application started, she has the confirmation letter.\n\nAsthma: since she was little. Says it is 'bad asthma', has been told severe. Uses albuterol a few days most weeks, more with colds and in the spring. Fluticasone 220 one puff BID is prescribed but she admits she takes it 'when I remember, maybe half the time'. Night cough a couple of nights a month. Has a peak flow meter at home, does not use it much. Never been on a combination inhaler that she knows of.\nAllergies: seasonal sneezing, itchy eyes in spring and fall; levocetirizine as needed helps.\n\nPMH: asthma, allergic rhinitis. PSH: none. Meds as listed. NKDA.\nFH: mother has asthma. A maternal uncle has eczema.\nSH: never smoked, no vaping. Drinks a little on weekends, 1-2.\n\nExam: well, talking in full sentences. HEENT: nasal turbinates mildly pale and boggy, OP clear. Neck supple, no nodes. Lungs: clear, no wheeze, good air movement. Heart RRR, no murmur. Abd soft. Skin clear.\n\nA/P\n1. Severe persistent asthma, partly controlled. The main issue is adherence to the controller. Talked through why the fluticasone matters even on good days, linked it to brushing teeth. Spacer technique reviewed. Refill albuterol and fluticasone. Return 4 mo, sooner if using albuterol more than twice a week.\n2. Allergic rhinitis: levocetirizine prn, ok.\n3. Health maintenance: hep C screen today with baseline CBC/BMP. Will get vaccine and Pap history from prior office. Flu/COVID/pneumococcal in the fall.\nPHQ-2 negative."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-21a",
+     "kind": "telephone",
+     "start": "2023-06-21T11:05",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Result note",
+       "author": "RN",
+       "date": "2023-06-21T11:05",
+       "body": "Called pt with lab results per PCP: blood counts, kidney function and sugar normal, hep C screen negative. She verbalized understanding. Release form for her prior office signed at check-in yesterday, faxed today."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-11a",
+     "kind": "outside_records",
+     "start": "2023-07-11T14:20",
+     "reason": "Prior practice records",
+     "orders": [
+      {
+       "id": "prior-records-2023",
+       "action": "done",
+       "date": "2023-07-11T14:20"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2022-10-18T10:00",
+       "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+       "conclusion": "NILM."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-08-20T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2023-07-11T14:20",
+       "body": "28 pages received by fax from prior pediatric and adolescent office. Contents: immunization record (childhood series complete; HPV series x3 completed age 12-13; hepatitis B series complete in infancy; Tdap 2019), problem list (asthma, allergic rhinitis), asthma visit notes, Pap 10/2022 negative. Scanned to media tab, routed to PCP.\n\nPCP addendum: reviewed. Vaccines entered. Pap due again fall 2025."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-02a",
+     "kind": "portal_message",
+     "start": "2023-08-02T21:14",
+     "reason": "Inhaler cost",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "inhaler price",
+       "author": "patient",
+       "date": "2023-08-02T21:14",
+       "body": "hi the pharmacy said the fluticasone is sooo expensive without insurance?? i can't do that right now. the albuterol was ok with the coupon. is there anything cheaper"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: inhaler price",
+       "author": "PCP",
+       "date": "2023-08-03T08:40",
+       "body": "Hi Jada, thanks for telling me rather than just going without. Our MA is going to send you a discount card link that brings the generic fluticasone down a lot at most chain pharmacies, and I put a note on your Medicaid paperwork that it's a daily medicine. Please don't stretch it out. If it is still too much, message back and we'll find another way."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T16:10",
+     "reason": "Vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-10T16:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T16:16"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2023-10-10T16:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2023-10-10T16:30",
+       "body": "Here after her lunch shift for vaccines. Afebrile, feels well. Flu L deltoid, COVID R deltoid, PCV20 L deltoid lower site (asthma indication, per PCP order). VIS sheets given. Observed 15 min, no reaction. Pt reminded about controller inhaler every day; says she is doing better with it, keeps it by the coffee maker."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-28a",
+     "kind": "pharmacy",
+     "start": "2023-11-28T10:05",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Pharmacy refill request",
+       "author": "MA",
+       "date": "2023-11-28T10:05",
+       "body": "Refill request from pharmacy for albuterol HFA. Last fill 6 weeks ago. Fluticasone last filled in August per pharmacy. Albuterol approved per protocol; message to PCP about the controller gap."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Controller gap",
+       "author": "RN",
+       "date": "2023-11-28T15:40",
+       "body": "Called pt about fluticasone not filled since August. She ran out and was 'waiting till payday'. Discount card info re-sent by text. She will pick up both today. Reminded to call if using albuterol daily."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-08a",
+     "kind": "hospital_admission",
+     "start": "2024-01-08T03:20",
+     "end": "2024-01-12T13:00",
+     "service": "Medical Intensive Care",
+     "reason": "Asthma exacerbation requiring intubation",
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "asthma exacerbation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary (received 01/16/2024)",
+       "author": "hospital medicine",
+       "date": "2024-01-16T09:10",
+       "body": "Regional hospital, Department of Medicine\nAdmission 01/08/2024  Discharge 01/12/2024\nPatient: Jada Simmons  DOB 09/08/2001\nAllergies: NKDA\n\nAdmitting diagnosis: acute asthma exacerbation with hypercapnic respiratory failure\n\nHistory: 22 yo with lifelong asthma on fluticasone and albuterol, adherence by her report irregular, brought in overnight by EMS with 2 days of worsening wheeze after a cold. Failed to improve with back-to-back nebulizers and IV steroids in the ED and was intubated there.\n\nHospital course: Admitted to the MICU on the ventilator. Treated with scheduled bronchodilators and IV corticosteroids. Rapid improvement; extubated on hospital day 2 without difficulty. Transferred to the floor, weaned to room air, ambulating without desaturation by discharge. No pneumonia on imaging.\n\nDischarge medications:\n- prednisone 40 mg daily x 5 days\n- fluticasone propionate HFA 220 mcg 1 puff twice daily (continue)\n- albuterol HFA 2 puffs q4-6h prn\n- levocetirizine 5 mg daily prn\n\nInstructions: take the controller every day. Follow up with PCP within 1 week.\nDischarging physician: hospitalist"
+      }
+     ]
+    },
+    {
+     "id": "2024-01-18a",
+     "kind": "office_visit",
+     "start": "2024-01-18T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, asthma",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2024-01-18T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital Visit",
+       "author": "PCP",
+       "date": "2024-01-18T14:05",
+       "body": "Seen after her admission 1/8-1/12 at the regional hospital, discharge summary reviewed. She was intubated in their ED for a severe asthma flare that started with a cold, extubated the next day. Finished the 5 days of prednisone yesterday. Back at work Saturday. Says she was scared, first time on a breathing machine.\n\nNow: mild cough in the mornings, no night waking this week, albuterol once or twice a day, less each day. Taking fluticasone twice a day since discharge.\n\nExam: comfortable, full sentences. Lungs clear, no wheeze, normal expiratory phase. Heart regular.\n\nA/P: Severe persistent asthma, recovering after a near-fatal exacerbation needing intubation. Regimen unchanged per discharge plan; long talk about using the controller daily, not just after flares. She has a peak flow meter, encouraged to start using it again. Written instructions on when to go to the ED: albuterol not lasting 4 hours, can't speak full sentences. Recheck 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-20a",
+     "kind": "portal_message",
+     "start": "2024-02-20T22:03",
+     "reason": "Peak flow question",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "peak flow",
+       "author": "patient",
+       "date": "2024-02-20T22:03",
+       "body": "started doing the peak flow thing again like you said. what number am i supposed to worry about"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: peak flow",
+       "author": "PCP",
+       "date": "2024-02-21T08:15",
+       "body": "Great that you're using it. For the next 2 weeks, do it each morning when you feel well and write down the best number you get. That becomes your personal best. Bring the log to your April visit and we'll write your zones on your action plan. Until then, the rule is the same: if albuterol isn't lasting 4 hours or you can't talk in full sentences, go to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "office_visit",
+     "start": "2024-04-09T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "No-show",
+       "author": "front desk",
+       "date": "2024-04-09T10:25",
+       "body": "Pt did not arrive for 10:00. Called, she picked up a double shift and forgot. Rebooked 4/23."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "office_visit",
+     "start": "2024-04-23T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-04-23T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Asthma Follow-up",
+       "author": "PCP",
+       "date": "2024-04-23T16:10",
+       "body": "S: Asthma check. Since the hospital she has been more regular with fluticasone, 'most days', but slipped some over the last month. Spring pollen starting; some sneezing, taking levocetirizine. Albuterol 2-3 times a week, no night waking, no ED or urgent care since January.\nO: well. Lungs clear bilaterally. Nasal mucosa a bit boggy.\nA/P: Severe persistent asthma, fair control. Same plan, daily controller, albuterol as needed. Rhinitis: levocetirizine daily through the season rather than as needed. Physical in August."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-25a",
+     "kind": "pharmacy",
+     "start": "2024-06-25T09:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Pharmacy refill request",
+       "author": "MA",
+       "date": "2024-06-25T09:30",
+       "body": "eRx refill request for fluticasone propionate HFA 220 mcg and levocetirizine. Last OV 4/23/2024. Approved per protocol, 1 inhaler with 2 refills; levocetirizine 30 days with 2 refills."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-13a",
+     "kind": "annual_physical",
+     "start": "2024-08-13T08:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-08-13T09:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Eosinophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-08-13T09:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-08-13T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-08-13T09:40",
+       "body": "22 yo here for yearly physical.\n\nInterval: no hospital or ED visits since January. Asthma 'okay this summer'; uses albuterol about twice a week, fluticasone 'most days' (honestly closer to every other day when she works closing shifts). No nocturnal symptoms. Allergies quiet in summer.\nGyn: sees an outside gynecology office for women's health; no contraception from us. LMP 2 weeks ago, regular.\nSH: unchanged, never smoker, weekend drinks 1-2. Still uninsured; Medicaid application stalled waiting for a pay stub, gave her the navigator's number.\nROS otherwise negative.\n\nExam: well-appearing. HEENT normal. Thyroid not enlarged. Lungs clear. Heart RRR without murmur. Abdomen soft, nontender. Extremities without edema. Skin without rash.\n\nA/P\n- Health maintenance: CBC/CMP today. Pap not due until fall 2025 (normal 10/2022). Flu and updated COVID in October. Tdap current (2019). HPV complete.\n- Asthma: controller adherence again. She is willing to set a phone alarm. Continue current inhalers.\n- PHQ-2 0."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-16a",
+     "kind": "nurse_visit",
+     "start": "2024-10-16T15:30",
+     "reason": "Flu and COVID vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-16T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2024-10-16T15:36"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-16T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "MA",
+       "date": "2024-10-16T15:50",
+       "body": "Afebrile. Influenza (trivalent) L deltoid, Moderna updated COVID R deltoid. Tolerated, waited 15 min, left feeling fine."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-20a",
+     "kind": "telephone",
+     "start": "2024-12-20T08:55",
+     "reason": "Urinary symptoms, discharge",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Triage call",
+       "author": "RN",
+       "date": "2024-12-20T09:10",
+       "body": "Pt calling: burning with urination, going more often, and yellow discharge for about 2 days. No fever, no back pain, no pelvic pain she can describe. Offered same-day visit here today. She already has an appointment Monday 12/23 with her outside gynecologist and would rather go there since they do her exams. Advised to keep it, avoid intercourse until seen, call back or go to urgent care for fever, flank pain or worse pain over the weekend. She agreed. Will ask the gyn office to send us their note."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-23a",
+     "kind": "specialist_visit",
+     "start": "2024-12-23T11:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "Dysuria, frequency and vaginal discharge",
+     "conditions": [
+      {
+       "label": "Gonococcal cervicitis",
+       "icd10": "A54.03",
+       "action": "diagnosed",
+       "onset": "2024-12-18"
+      },
+      {
+       "label": "High risk heterosexual behavior",
+       "icd10": "Z72.51",
+       "action": "diagnosed",
+       "onset": "2024-11-23"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ceftriaxone 500 MG Injection",
+       "action": "historical",
+       "sig": "500 mg IM once, given in clinic",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intramuscular",
+       "course": "short",
+       "reason": "gonococcal cervicitis"
+      },
+      {
+       "drug": "doxycycline hyclate 100 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth twice daily for 7 days",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "empiric chlamydia coverage"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-12-23T11:20",
+       "results": [
+        {
+         "test": "Pregnancy Test, Urine",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-12-23T11:20",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-12-23T11:25",
+       "resulted": "2024-12-26T07:40",
+       "results": [
+        {
+         "test": "Neisseria gonorrhoeae NAAT",
+         "text": "Detected"
+        },
+        {
+         "test": "Chlamydia trachomatis NAAT",
+         "text": "Not detected"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-12-23T11:30",
+       "resulted": "2024-12-24T15:10",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Non-reactive"
+        },
+        {
+         "test": "Rapid Plasma Reagin",
+         "text": "Non-reactive"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gynecology visit letter (received 12/27/2024)",
+       "author": "obstetrics and gynecology",
+       "date": "2024-12-27T10:45",
+       "body": "Outside OB/GYN group\nVisit date: 12/23/2024\nRe: Jada Simmons, DOB 09/08/2001\nAllergies: NKDA\n\nDear colleague,\n\nI saw Ms. Simmons for five days of burning with urination, frequency, and a yellow vaginal discharge. Over the past month she has had unprotected intercourse with more than one partner.\n\nHer history includes severe persistent asthma and allergic rhinitis. Medications: albuterol inhaler as needed, fluticasone 220 mcg inhaler twice daily (she tells me she misses doses), levocetirizine as needed. No surgeries.\n\nVital signs were normal. On speculum exam there was purulent discharge from the cervical os, and bimanual exam elicited cervical motion tenderness. No adnexal mass.\n\nUrine hCG negative. Urinalysis not suggestive of urinary infection. Cervical NAAT came back positive for gonorrhea and negative for chlamydia. HIV antigen/antibody and RPR were both negative.\n\nImpression: gonococcal cervicitis; high-risk sexual exposure.\n\nPlan: ceftriaxone 500 mg IM given in the office, plus doxycycline 100 mg twice daily for seven days started empirically before the chlamydia result returned (she is to finish it). Abstain until treatment complete and partners treated; partner referral information given and the case reported as required. Condom counseling. Return in three months for repeat testing.\n\nSincerely,\nAttending gynecologist"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

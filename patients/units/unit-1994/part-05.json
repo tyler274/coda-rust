@@ -1,0 +1,462 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001994",
+      "events": [
+        {
+          "id": "2026-01-22a",
+          "kind": "specialist_visit",
+          "start": "2026-01-22T09:30",
+          "service": "Pulmonology",
+          "reason": "Follow-up after hemoptysis",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-01-22T08:45",
+              "text": "TECHNIQUE: CT chest without contrast.\nCOMPARISON: CT angiography 11/25/2025.\nFINDINGS: Previously seen right lower lobe consolidation and intrabronchial blood have resolved. Embolization material near the right bronchial artery origin. No pulmonary nodule or mass. No adenopathy. No effusion. Hyperinflated lungs.",
+              "conclusion": "Resolution of right lower lobe consolidation. No nodule or mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "author": "pulmonology",
+              "date": "2026-01-29T12:15",
+              "body": "PULMONARY CLINIC — FOLLOW-UP\nVisit 01/22/2026\n\nSeen 8 weeks after admission for massive hemoptysis from the right lower lobe, treated with right bronchial artery embolization. No recurrence of bleeding since. Breathing at his baseline. Still smoking about 1 pack daily.\n\nCT chest today: RLL consolidation resolved; no nodule or mass.\n\nImpression: hemoptysis without recurrence after embolization; no source lesion identified. COPD stable on tiotropium with albuterol as needed.\n\nPlan: no further imaging needed for this unless bleeding recurs. Continue current inhalers. Smoking cessation once more strongly advised. Return as needed.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "specialist_visit",
+          "start": "2026-01-27T10:45",
+          "service": "Hematology & Oncology",
+          "reason": "Head and neck cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Surveillance Visit",
+              "author": "oncology",
+              "date": "2026-02-03T08:30",
+              "body": "HEAD AND NECK CLINIC\nVisit 01/27/2026\n\nTwo years and three months after adjuvant radiation for pT1 N1 left oral tongue SCC. Hospitalized in November for hemoptysis; pulmonary CT last week clear of any mass, reviewed.\nExam: oral cavity and oropharynx without lesions. Neck without adenopathy. Laryngoscopy normal.\nImpression: no evidence of disease.\nPlan: visits every 6 months. TSH yearly with PCP.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "lab_only",
+          "start": "2026-02-10T08:05",
+          "reason": "Quarterly lithium monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T08:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-10T08:05",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Quarterly labs",
+              "author": "PCP",
+              "date": "2026-02-11T07:45",
+              "body": "Stable creatinine, normal potassium, therapeutic lithium. Copy to psychiatry. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "hospital_admission",
+          "start": "2026-03-30T08:10",
+          "end": "2026-04-14T11:00",
+          "service": "Cardiology",
+          "reason": "Cardiac arrest",
+          "conditions": [
+            {
+              "label": "Ventricular fibrillation",
+              "icd10": "I49.01",
+              "action": "diagnosed",
+              "onset": "2026-03-30",
+              "note": "refractory, out-of-hospital arrest"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-30T08:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-30T08:40",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-30T20:40",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 2460
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-30T09:05",
+              "text": "Obtained after return of spontaneous circulation. Sinus rhythm. No ST-segment elevation. No acute ST depression.",
+              "conclusion": "Sinus rhythm without ST elevation."
+            },
+            {
+              "study": "Coronary angiography",
+              "loinc": "18745-0",
+              "performed": "2026-03-30T10:20",
+              "text": "INDICATION: Out-of-hospital ventricular fibrillation arrest with return of circulation; known coronary artery disease.\nACCESS: right radial artery.\nFINDINGS: Left main without significant disease. Left anterior descending with moderate 40% stenosis. Circumflex without significant disease. Right coronary artery with moderate 50% stenosis. No acute occlusion or thrombus. TIMI 3 flow in all vessels.\nINTERVENTION: none.",
+              "conclusion": "Moderate non-obstructive coronary artery disease (LAD 40%, RCA 50%). No culprit lesion. No intervention."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-04-01T11:00",
+              "text": "Left ventricle normal in size with low-normal systolic function, LVEF 50%. No regional wall motion abnormality. Right ventricle normal size and function. No significant valvular disease. No pericardial effusion.",
+              "conclusion": "LVEF 50% without regional wall motion abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department and Resuscitation Record",
+              "author": "emergency medicine",
+              "date": "2026-04-16T10:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 03/30/2026 08:10 by EMS.\n\n59-year-old man with CAD, COPD, a recent admission for massive hemoptysis and one last September for metoprolol overdose. Per bystanders at a train station he was holding his chest and seemed confused before he collapsed. Bystander CPR started right away; EMS AED delivered several shocks.\n\nOn arrival: unresponsive, pulseless, CPR in progress. Monitor: ventricular fibrillation. Bedside echo: no organized ventricular contraction.\n\nResuscitation: continued CPR, repeated defibrillation, epinephrine, amiodarone and then lidocaine for persistent VF. Return of spontaneous circulation after prolonged resuscitation. Intubated.\nPost-ROSC ECG: sinus rhythm, no ST elevation.\nLabs: potassium 3.9, magnesium 2.0, lithium 0.8.\n\nImpression: out-of-hospital cardiac arrest from refractory ventricular fibrillation.\nDisposition: emergent coronary angiography, then cardiac ICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Cardiology",
+              "author": "cardiology",
+              "date": "2026-04-16T10:01",
+              "body": "REGIONAL HOSPITAL — CARDIOLOGY DISCHARGE SUMMARY\nAdmitted 03/30/2026, discharged 04/14/2026\n\nPrincipal diagnosis: out-of-hospital cardiac arrest, refractory ventricular fibrillation.\nOther: coronary artery disease, COPD, hypertension, CKD stage 3b from lithium, bipolar I disorder, treated oral tongue SCC.\n\nCourse:\n- Coronary angiography 03/30: moderate non-obstructive disease (LAD 40%, RCA 50%), no acute occlusion, no intervention.\n- Targeted temperature management for 24 hours in the cardiac ICU.\n- High-sensitivity troponin I peaked at 2,460 ng/L, attributed to the arrest and resuscitation.\n- Echo 04/01: LVEF 50%, no regional wall motion abnormality.\n- Extubated day 3. Awake, oriented, following commands; no focal neurologic deficit.\n- Lithium held while intubated and resumed on day 4; level 0.8 on arrival.\n- No reversible cause identified. Single-chamber transvenous ICD implanted 04/10 via the left pectoral approach for secondary prevention. Device check before discharge normal.\n\nDischarge medications: home medications unchanged (metoprolol tartrate 50 mg BID, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, lithium 300 mg TID, aspirin 81 mg, atorvastatin 40 mg, tiotropium, albuterol as needed).\nActivity: no lifting with left arm above shoulder for 4 weeks. No driving for 6 months.\nFollow-up: device clinic in 4 to 6 weeks; PCP within 1 to 2 weeks.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "telephone",
+          "start": "2026-03-31T07:45",
+          "reason": "Family call: hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from wife",
+              "author": "RN",
+              "date": "2026-03-31T07:45",
+              "body": "Wife called crying. Sean collapsed at the train station yesterday morning, his heart stopped, strangers did CPR and the ambulance shocked him. He is in the cardiac ICU at the regional hospital on a breathing machine, and they are cooling him. Heart catheter yesterday, no stent. Told her we are so sorry, PCP will be told now. Asked her to call with updates and to have the hospital send records. PCP called her back at 9:10."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "office_visit",
+          "start": "2026-04-20T11:00",
+          "end": "2026-04-20T11:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after cardiac arrest",
+          "conditions": [
+            {
+              "label": "Ventricular fibrillation",
+              "icd10": "I49.01",
+              "action": "resolved"
+            },
+            {
+              "label": "Presence of automatic (implantable) cardiac defibrillator",
+              "action": "diagnosed",
+              "onset": "2026-04-10"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-20T11:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-20T11:45",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-04-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-04-20T12:05",
+              "body": "First visit since the VF arrest on 3/30 (admitted to 4/14). Discharge summary in since 4/16. Wife with him.\n\nHe remembers getting off the train and a tight chest, then nothing until a few days later in the ICU. Since home: tired, walking the block twice a day, no chest pain, no palpitations, no shocks from the device. Left chest incision sore but healing. Not driving, his wife drives. Mood: shaken, \"lucky,\" sleeping ok. No thoughts of self-harm.\n\nRecap: cath with moderate non-obstructive disease, no stent. EF 50%. No reversible cause found, single-chamber ICD 4/10. Neuro intact.\n\nMeds: unchanged from before, confirmed with the blister pack and the bottles.\n\nExam: vitals charted. Alert, oriented, normal conversation and recall. Left pectoral device pocket clean, dry, no swelling. Heart regular. Lungs diminished with long expiration as before. No edema.\n\nA/P:\n1. Cardiac arrest from VF, survived neurologically intact, now with ICD. Device clinic follow-up next month. No driving until October per cardiology.\n2. CAD: aspirin, atorvastatin 40, metoprolol continue.\n3. Smoking: talked at length. Still a pack a day. Varenicline offered again with psychiatry in the loop; he will think on it.\n4. Lithium: level and BMP today.\n5. Wife given caregiver resources."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "telephone",
+          "start": "2026-05-05T15:50",
+          "reason": "Device monitor question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home device monitor",
+              "author": "front desk",
+              "date": "2026-05-05T15:50",
+              "body": "Pt called asking if we needed anything about the box the heart device company mailed him. Told him it is for remote checks with the device clinic and to call the number on the box for setup. He has his device clinic visit on 5/20."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T14:00",
+          "service": "Cardiology",
+          "reason": "ICD follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Device Clinic and Cardiology Follow-up",
+              "author": "cardiology",
+              "date": "2026-05-27T15:30",
+              "body": "CARDIOLOGY / DEVICE CLINIC\nVisit 05/20/2026\n\nSix weeks after single-chamber ICD implant for secondary prevention following a refractory VF arrest on 03/30/2026.\nSymptoms: no syncope, no palpitations, no shocks.\nDevice interrogation: battery and lead parameters within normal limits; sensing and impedance stable. No ventricular arrhythmias recorded. No therapies delivered since implant.\nWound: well healed.\nPlan: remote monitoring every 3 months; in-person device check in 6 months. Continue current medications. Driving restriction stands until October.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T18:22",
+          "reason": "Question about driving",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "driving",
+              "author": "patient",
+              "date": "2026-06-09T18:22",
+              "body": "Is it really 6 months for driving? I feel fine and my wife is getting worn out driving me everywhere."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: driving",
+              "author": "PCP",
+              "date": "2026-06-10T07:30",
+              "body": "I know it is hard. After a cardiac arrest with a new defibrillator the 6 months comes from cardiology and the state guidance, and I agree with it. The date is around mid-October. Our office can help find a ride service for appointments if that would help your wife."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T08:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "lisinopril",
+              "author": "patient",
+              "date": "2026-06-23T08:05",
+              "body": "Blister pack pharmacy says they need a new lisinopril script."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: lisinopril",
+              "author": "MA",
+              "date": "2026-06-23T10:20",
+              "body": "Sent lisinopril 20 mg, 90 days with refills, to the pharmacy that does your packs. See you July 17."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-17a",
+          "kind": "office_visit",
+          "start": "2026-07-17T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-17T09:55",
+              "resulted": "2026-07-18T06:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-17T09:55",
+              "resulted": "2026-07-18T06:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-17T09:55",
+              "resulted": "2026-07-18T06:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-17T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-07-17T09:55",
+              "body": "Three months after the arrest. Getting stronger; walking 20 minutes most days. No chest pain, no fainting, no shocks. Device clinic in May was clean.\nBreathing as usual, albuterol a couple of times a week. No blood in the sputum since November.\nMood stable, psychiatry last month, same lithium dose.\nBlister packs going well, no missed or doubled doses that he or his wife know of.\nSmoking: a pack a day. He says he tried and \"couldn't.\"\n\nExam: vitals as charted. Well appearing. Neck without nodes. Device site healed. Heart regular. Lungs diminished, long expiratory phase, no crackles. No edema.\n\nA/P:\n1. VF arrest survivor with ICD, CAD: stable. Cardiology following.\n2. COPD: stable on tiotropium plus albuterol as needed.\n3. CKD 3b from lithium, bipolar I: quarterly BMP and lithium today, CBC with it.\n4. HTN: at goal.\n5. Tongue SCC: NED, oncology visit later this month.\n6. Tobacco: still 1 ppd. Offer stands.\nRTC in about 3 months, or sooner."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.6
+            }
+          }
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T12:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Friday",
+              "author": "PCP",
+              "date": "2026-07-20T12:40",
+              "body": "Hi Sean, kidney function is holding steady, potassium and sodium normal, blood count fine, lithium in range. Sent to your psychiatrist. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "specialist_visit",
+          "start": "2026-07-28T10:15",
+          "service": "Hematology & Oncology",
+          "reason": "Head and neck cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Surveillance Visit",
+              "author": "oncology",
+              "date": "2026-08-11T09:00",
+              "body": "HEAD AND NECK CLINIC\nVisit 07/28/2026\n\nNearly three years after adjuvant radiation for pT1 N1 left oral tongue SCC. Interval cardiac arrest in March with ICD placement, recovering. No head and neck complaints.\nExam: oral cavity, oropharynx and neck without abnormality. Laryngoscopy without lesions.\nImpression: no evidence of disease.\nPlan: continue visits every 6 months.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T10:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request: tiotropium",
+              "author": "MA",
+              "date": "2026-08-04T10:10",
+              "body": "Pharmacy refill request for tiotropium 18 mcg capsules, 90-day supply. Last visit 7/17, on med list. Approved per refill protocol, 3 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

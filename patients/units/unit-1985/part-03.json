@@ -1,0 +1,275 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001985",
+      "events": [
+        {
+          "id": "2025-02-12a",
+          "kind": "office_visit",
+          "start": "2025-02-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-12T16:25", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2025-02-12T16:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-12T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-02-12T18:10", "body": "After-school slot. Routine check on sugars and pressure. Says winter has been quiet. No missed doses he can think of.\nExam: BP acceptable. Heart rhythm regular, lungs clear. Legs and feet fine.\nA/P: T2DM and HTN, no changes. A1c and BMP drawn. Eye exam still not done for 2024; he promises this summer. Physical in June."}
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "portal_message",
+          "start": "2025-02-13T13:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-02-13T13:00", "body": "Your kidney panel from yesterday is normal. A1c is filed and we will go over the trend at the June physical. Same medicines for now."}
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "annual_physical",
+          "start": "2025-06-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-09T07:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-09T07:45", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-06-09T07:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-06-09T07:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-06-09T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-06-09T11:40", "body": "56 y/o man, yearly visit. Feels well, finishing the school year. Takes metformin 1000 twice daily and lisinopril 20 daily.\n\nROS: negative across systems, specifically no chest pain, dyspnea, edema, urinary change, or neuropathic symptoms.\n\nExam: vitals in range, BMI around 30. HEENT normal. Neck without thyromegaly. CV: regular, no murmur. Lungs: clear. Abdomen: soft, nontender. Ext: warm, no swelling. Feet: monofilament and vibration intact, DP and PT pulses present. PHQ-2 0.\n\nPlan: fasting labs today. Vaccines up to date; fall shots in October. He booked his eye exam for August. Next diabetes visit in about 6 months."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T14:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-06-10T14:25", "body": "Derek, labs from your physical are in. Kidney and liver function normal, blood count normal, no protein in the urine. A1c is stable. Have a good summer."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T10:30",
+          "service": "Optometry",
+          "reason": "Diabetic eye examination",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Exam Report", "author": "optometry", "date": "2025-08-26T09:15", "body": "Date of service 8/19/2025. Dilated exam for diabetes.\nAcuity 20/20 right and left with current glasses. IOP within normal limits.\nRetina: no hemorrhages, exudates or microaneurysms; maculae dry; discs normal each eye.\nAssessment: type 2 diabetes without retinopathy. Recall 12 months."}
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "nurse_visit",
+          "start": "2025-10-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-10T15:33"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-10T15:35"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-10T15:33"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Fall Vaccines", "author": "MA", "date": "2025-10-10T15:45", "body": "Flu (trivalent) L deltoid, COVID 2025-26 formula R deltoid. Feels well. Both tolerated without incident."}
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "office_visit",
+          "start": "2025-12-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, swelling, dark urine",
+          "conditions": [{"label": "Acute poststreptococcal glomerulonephritis", "action": "diagnosed", "icd10": "N00.9", "onset": "2025-12-08"}],
+          "vitals": {"bp": [160, 100]},
+          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-22T09:10", "resulted": "2025-12-22T13:30", "results": [{"test": "Creatinine", "value": 2.8}, {"test": "Blood Urea Nitrogen", "value": 45}, {"test": "Albumin", "value": 3.2}]},
+            {"panel": "Urinalysis", "collected": "2025-12-22T09:05", "resulted": "2025-12-22T11:00", "results": [{"test": "Urine Color", "text": "Brown"}, {"test": "Urine Protein", "text": "3+"}, {"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "text": "Too numerous to count"}]},
+            {"panel": null, "collected": "2025-12-22T09:05", "resulted": "2025-12-22T11:00", "results": [{"test": "Urine RBC casts", "loinc": "5807-3", "unit": "/[LPF]", "text": "Present"}]},
+            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-22T16:10", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 62}, {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 24}]},
+            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-23T11:20", "results": [{"test": "Antistreptolysin O titer", "loinc": "5370-2", "unit": "[IU]/mL", "value": 640}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-12-22T08:40"}],
+          "orders": [{"id": "neph-2025", "action": "placed", "order": "Nephrology referral, urgent", "category": "referral", "to": "Nephrology", "reason": "Acute nephritic syndrome with creatinine 2.8"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Acute Visit - Swelling and Dark Urine", "author": "PCP", "date": "2025-12-22T17:20", "body": "Texted over the weekend asking to be seen; first slot this morning.\n\nHPI: 56 y/o teacher with HTN and type 2 diabetes, followed here, with two weeks of feeling wiped out, puffiness all over, and making less urine than usual. Over the same stretch his urine has gone a dark brown, like cola. Still taking metformin and lisinopril.\n\nExam: BP 160/100, well above his usual low 130s. Looks tired, not toxic. Heart regular, no rub. Lungs clear. 2+ pitting edema both lower legs to mid-shin.\n\nUA in office: brown, 3+ protein, large blood, red cells too many to count, red cell casts on microscopy.\n\nLabs back this afternoon: creatinine 2.8 (his baseline has been about 1.0), BUN 45, albumin 3.2. C3 62 (low), C4 24 (normal).\n\nAssessment: acute nephritic syndrome with kidney injury, low C3 with normal C4. Most consistent with acute poststreptococcal glomerulonephritis. ASO titer sent and pending.\n\nPlan:\n- Urgent nephrology referral, front desk to push for an appointment within two weeks.\n- Salt restriction, call or come in for shortness of breath, much less urine, or confusion.\n- Called him at 4:45 pm with the afternoon results and plan. He understands.\n- Will repeat labs per nephrology."}
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "telephone",
+          "start": "2025-12-23T12:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ASO Result", "author": "PCP", "date": "2025-12-23T12:10", "body": "ASO titer 640 IU/mL (lab reference under 200), supports a recent strep infection and the post-strep diagnosis. Told Derek. Nephrology has him for Jan 7. Swelling unchanged, breathing fine. Reviewed warning signs again."}
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "portal_message",
+          "start": "2026-01-08T19:05",
+          "orders": [{"id": "neph-2025", "action": "done", "date": "2026-01-07T14:00"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Saw the kidney doctor", "author": "patient", "date": "2026-01-08T19:05", "body": "Update: saw nephrology yesterday. She agreed it's the post-strep kind and said it usually settles on its own, so no biopsy for now. They drew more blood and want to see me again in about six weeks. Not sure if they send you anything, so passing it along."},
+            {"type": "Patient Message", "title": "Re: Saw the kidney doctor", "author": "PCP", "date": "2026-01-09T07:50", "body": "Thanks Derek, that's helpful. We haven't gotten their note yet. Glad the plan is to watch it. Keep the salt low and let me know if the swelling gets worse."}
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "specialist_visit",
+          "start": "2026-02-18T13:30",
+          "service": "Nephrology",
+          "reason": "Glomerulonephritis follow-up",
+          "medications": [{"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Blood pressure and edema"}],
+          "documents": [
+            {"type": "Letter", "title": "Nephrology Visit Summary", "author": "nephrology", "date": "2026-04-06T10:45", "body": "Outside nephrology office. Visit summary, date of service 02/18/2026. Sent in response to records request.\n\nDiagnosis: acute poststreptococcal glomerulonephritis, recovering.\nInterval: kidney function recovering on repeat labs. Swelling better. Blood pressure remains above goal.\nMedications: metformin 1000 mg twice daily, lisinopril 20 mg daily. Allergies: none known.\nPlan: start hydrochlorothiazide 25 mg once daily for blood pressure and residual edema. Continue lisinopril. Low-sodium diet. Return 3 months with labs."}
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "ed_visit",
+          "start": "2026-02-25T15:05",
+          "end": "2026-02-25T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Weakness and palpitations",
+          "conditions": [{"label": "Hypokalemia", "action": "diagnosed", "icd10": "E87.6", "onset": "2026-02-25"}],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "stop", "reason": "Hypokalemia"},
+            {"drug": "potassium chloride 20 MEQ Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 5 days", "dose": {"value": 20, "unit": "meq"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Hypokalemia"}
+          ],
+          "vitals": {"bp": [145, 90], "hr": 102},
+          "measure": ["rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-25T15:30", "resulted": "2026-02-25T16:20", "results": [{"test": "Potassium", "value": 2.9}, {"test": "Sodium", "value": 140}, {"test": "Chloride", "value": 100}, {"test": "Bicarbonate", "value": 28}, {"test": "Glucose", "value": 180}, {"test": "Creatinine", "value": 1.0}]}
+          ],
+          "reports": [{"study": "12-lead ECG", "performed": "2026-02-25T15:20", "text": "Sinus tachycardia at 102 beats per minute. PR and QRS durations normal. Flattened T waves with prominent U waves. No ST elevation.", "conclusion": "Sinus tachycardia; flattened T waves and U waves, consistent with hypokalemia."}],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-02-25T15:05"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-02-25T15:20"}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2026-03-04T09:30", "body": "Community hospital emergency department. Date of service 02/25/2026. Received by fax.\n\nCC: feeling weak, heart racing, started about two hours before arrival.\n\nHPI: 56M with hypertension and type 2 diabetes, recently treated for acute poststreptococcal glomerulonephritis by nephrology. Thiazide (hydrochlorothiazide) added one week ago. Today sudden generalized weakness and a fluttering heartbeat. No vomiting, no diarrhea, no laxatives. Adherent to metformin and lisinopril.\n\nAllergies: NKDA.\n\nTriage: BP 145/90, HR 102.\nExam: alert, oriented. Fine tremor of the outstretched hands. Heart tachycardic, regular. Lungs clear. Abdomen soft. Strength symmetric.\n\nLabs: K 2.9, Na 140, Cl 100, HCO3 28, glucose 180, creatinine 1.0.\nECG: sinus tachycardia, flattened T waves, U waves.\n\nMDM: symptomatic hypokalemia, most likely from the newly started thiazide. No GI losses. Kidney function at baseline.\n\nED course: potassium chloride 40 mEq by mouth, tolerated without nausea. Palpitations eased while here. Monitored on telemetry.\n\nDisposition: discharged home. Stop hydrochlorothiazide. Potassium chloride 20 mEq ER twice daily for 5 days. See primary care in 2 to 3 days for repeat potassium. Return for worsening weakness, chest pain, or fainting."}
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "telephone",
+          "start": "2026-02-26T08:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call After ED Visit", "author": "RN", "date": "2026-02-26T08:15", "body": "Pt called. Went to the ED yesterday afternoon with weakness and a racing heart; told his potassium was low, likely from the water pill the kidney doctor started last week. They stopped the water pill and gave him potassium tablets for 5 days. Feels better this morning, no palpitations. We do not have the ED record or a nephrology note about the new pill. Booked with PCP Monday 3/2 with a potassium check. ED instructions to return if symptoms recur reviewed."}
+          ]
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "office_visit",
+          "start": "2026-03-02T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for low potassium",
+          "conditions": [{"label": "Hypokalemia", "action": "resolved", "icd10": "E87.6"}],
+          "medications": [{"drug": "amlodipine 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}],
+          "vitals": {"bp": [142, 88]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-02T07:45", "resulted": "2026-03-02T09:05", "results": [{"test": "Potassium", "value": 3.9}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-02T09:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED Follow-up", "author": "PCP", "date": "2026-03-02T12:15", "body": "Seen after his ED visit 2/25. Story from him: nephrology started hydrochlorothiazide 25 mg on 2/18 (we never received that note), and a week later he had sudden weakness and palpitations. ED found potassium 2.9 with U waves on ECG, gave oral potassium, stopped the HCTZ, sent him home on KCl 20 mEq twice a day for 5 days. He finished the course yesterday. ED record not yet here either.\n\nToday: no palpitations, no weakness, no tremor. Swelling much less than in December. Taking metformin 1000 BID and lisinopril 20 daily.\n\nBP 142/88. Heart regular, normal rate. Lungs clear. No pitting edema today.\n\nPotassium this morning 3.9.\n\nA/P\n1. Hypokalemia from thiazide: resolved on recheck. Thiazide stays off.\n2. HTN, above goal off the thiazide: start amlodipine 5 mg daily. Continue lisinopril 20. Home readings, recheck at the physical.\n3. Post-strep GN, recovering per patient report from nephrology. Records requested from nephrology and the ED today.\n4. T2DM: continue metformin."}
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "outside_records",
+          "start": "2026-03-04T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records Received", "author": "front desk", "date": "2026-03-04T09:35", "body": "ED physician record from 2/25 arrived by fax, indexed to chart and routed to PCP. Nephrology office says the 2/18 summary will be sent once their provider signs it."}
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "outside_records",
+          "start": "2026-04-06T10:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Nephrology Summary Received", "author": "PCP", "date": "2026-04-06T11:30", "body": "Nephrology visit summary from 2/18 finally in, after a second call. Confirms HCTZ 25 was their start for pressure and edema; already stopped after the ED visit. Their medication list predates amlodipine. Will let them know at his next nephrology visit via patient."}
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T06:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Amlodipine refill and BP log", "author": "patient", "date": "2026-04-20T06:55", "body": "Running low on the amlodipine, can it be a 90 day supply? Home BPs this month mostly 125-132 over 78-84. No ankle swelling to speak of."},
+            {"type": "Patient Message", "title": "Re: Amlodipine refill and BP log", "author": "RN", "date": "2026-04-20T10:40", "body": "Those numbers look good. 90-day amlodipine with 1 refill sent. Fasting labs on 5/11 before your physical on 5/14."}
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "lab_only",
+          "start": "2026-05-11T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fasting labs before physical",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Urinalysis", "collected": "2026-05-11T07:25", "resulted": "2026-05-12T10:00", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}]},
+            {"panel": null, "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 112}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-05-11T07:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Lab Draw", "author": "MA", "date": "2026-05-11T07:35", "body": "Fasting labs and clean-catch urine collected for 5/14 physical. Left arm, no difficulty."}
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "annual_physical",
+          "start": "2026-05-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [{"label": "Acute poststreptococcal glomerulonephritis", "action": "resolved", "icd10": "N00.9"}],
+          "state": {"bp": [128, 80]},
+          "vitals": {"bp": [128, 80]},
+          "measure": ["hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2026-05-14T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-05-14T12:40", "body": "57 tomorrow. Yearly exam and a check on the kidneys after the winter.\n\nInterval: post-strep GN in December, followed by nephrology; thiazide-related low potassium in February, resolved. Amlodipine added in March. He feels back to normal: energy good, no swelling, urine a normal color.\n\nMeds: metformin 1000 mg twice daily, lisinopril 20 mg daily, amlodipine 5 mg daily. NKDA.\n\nVitals: BP 128/80. \nExam: well-appearing. HEENT and neck normal. Heart regular, no murmur or rub. Lungs clear. Abdomen soft. No ankle or shin edema. Feet: sensation and pulses normal, skin intact. PHQ-2 0.\n\nLabs 5/11: urinalysis negative for blood and protein. C3 112, back to normal. Kidney function and potassium normal. A1c in his usual range. Urine microalbumin normal. Lipids similar to prior.\n\nA/P\n- Post-streptococcal GN: resolved by labs and exam. Off the active list. He sees nephrology again in the late spring.\n- HTN: at goal on lisinopril plus amlodipine. Continue both.\n- T2DM: continue metformin.\n- Health maintenance: eye exam due in August. Colonoscopy 2029. Fall vaccines.\nDiabetes follow-up in about four months."}
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "portal_message",
+          "start": "2026-05-15T16:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Visit summary", "author": "PCP", "date": "2026-05-15T16:00", "body": "Good seeing you yesterday, Derek. Quick summary: your kidneys look fully recovered on the urine test and the complement level. Keep the amlodipine, lisinopril and metformin as they are. Book your eye exam for August, and we'll see you in September."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "pharmacy",
+          "start": "2026-06-23T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "RN", "date": "2026-06-23T11:05", "body": "Pharmacy e-request: metformin 1000 mg #180 and lisinopril 20 mg #90. Seen 5/14. Approved, 1 refill each until his September visit."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "September appointment", "author": "patient", "date": "2026-08-18T20:15", "body": "Hi, school starts next week. Can I get a morning slot in mid-September for my diabetes check? Before 10 would be best."},
+            {"type": "Patient Message", "title": "Re: September appointment", "author": "front desk", "date": "2026-08-19T09:05", "body": "You're booked Thursday 9/17 at 9:20 with your physician. See you then."}
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T09:20",
+          "appointment": "booked",
+          "reason": "Diabetes follow-up"
+        }
+      ]
+    }
+  ]
+}

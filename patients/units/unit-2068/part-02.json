@@ -1,0 +1,1646 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002068",
+   "events": [
+    {
+     "id": "2023-01-19a",
+     "kind": "office_visit",
+     "start": "2023-01-19T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 12.0,
+       "Mean Corpuscular Volume": 73,
+       "Prothrombin Time-International Normalized Ratio": 2.7
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-01-19T16:25",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.0
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-01-19T16:25",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-01-19T15:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-01-19T16:55",
+       "body": "Winter check. Work slow, which means more time at home and, he admits, more drinking. Did not do the taper he talked about in the fall. Partner worried.\nNo bleeding, no falls. Breathing fine. Taking meds most days.\nExam: AF, rate controlled. Lungs clear. Abd soft, no ascites, no tenderness. No edema.\nA/P\n- AF/warfarin: INR 2.7, continue.\n- HFrEF: stable, no change.\n- Anemia: Hgb 12.0, best yet. Continue B6/folate.\n- AUD: talked again; offered to see him more often if he wants to try cutting down. He'll think about it.\n- Lung screening due next month, ordered.\nRTC 3 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 78
+     }
+    },
+    {
+     "id": "2023-02-09a",
+     "kind": "imaging",
+     "start": "2023-02-09T07:30",
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "done",
+       "date": "2023-02-09T07:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-02-09T07:30",
+       "text": "Annual lung cancer screening, low-dose, non-contrast. Comparison 02/22/2022.\nLungs: no pulmonary nodules. Clear.\nPleura: no effusion.\nHeart enlarged, unchanged. No mediastinal adenopathy.\nUpper abdomen: nodular liver, partially imaged.",
+       "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "CT result",
+       "author": "PCP",
+       "date": "2023-02-10T09:30",
+       "body": "Lung screening CT is clear again. Next one in a year."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-02a",
+     "kind": "lab_only",
+     "start": "2023-03-02T07:40",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.8
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-03-02T07:40",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2023-03-02T12:00",
+       "body": "INR in range, upper half. No change to warfarin 5 mg. Recheck 4-6 wks."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-05a",
+     "kind": "hospital_admission",
+     "start": "2023-04-05T18:40",
+     "end": "2023-04-11T12:00",
+     "service": "General Surgery",
+     "reason": "Sudden left upper quadrant pain, near-syncope",
+     "conditions": [
+      {
+       "label": "Atraumatic splenic rupture with hemoperitoneum",
+       "icd10": "D73.5",
+       "action": "diagnosed",
+       "onset": "2023-04-05"
+      },
+      {
+       "label": "Acute posthemorrhagic anemia",
+       "icd10": "D62",
+       "action": "diagnosed",
+       "onset": "2023-04-05"
+      },
+      {
+       "label": "Acquired absence of spleen",
+       "action": "diagnosed",
+       "onset": "2023-04-05",
+       "note": "Splenectomy 04/05/2023"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2023-04-05T18:45",
+       "bp": [
+        90,
+        60
+       ],
+       "hr": 120
+      },
+      {
+       "time": "2023-04-11T08:00",
+       "bp": [
+        108,
+        66
+       ],
+       "hr": 82
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-05T18:55",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 8.2
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Platelets",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-04-05T18:55",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 3.5
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-05T18:55",
+       "results": [
+        {
+         "test": "Lactate dehydrogenase",
+         "loinc": "2532-0",
+         "unit": "U/L",
+         "value": 410
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.2,
+       "White Blood Cells": 13.0,
+       "Platelets": 290,
+       "Lymphocytes %": 60
+      }
+     },
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2023-04-05T19:10",
+       "text": "Bedside abdominal ultrasound for acute left upper quadrant pain and hypotension. Free fluid in the abdomen, including the left upper quadrant and pelvis. Liver echotexture coarse. No hydronephrosis.",
+       "conclusion": "Free intra-abdominal fluid."
+      },
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-04-05T21:30",
+       "issued": "2023-04-10T14:00",
+       "text": "Specimen: spleen, splenectomy.\nGross: spleen with a 5 cm capsular tear along the lateral surface and adherent blood clot.\nMicroscopic: capsular disruption with acute parenchymal hemorrhage. White pulp expanded by a diffuse infiltrate of small mature lymphocytes, consistent with the patient's known chronic lymphocytic leukemia. No other neoplasm.",
+       "conclusion": "Spleen with capsular rupture and acute hemorrhage; involvement by known chronic lymphocytic leukemia/small lymphocytic lymphoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - General Surgery",
+       "author": "general surgery",
+       "date": "2023-04-13T10:30",
+       "body": "Admit 04/05/2023 - discharge 04/11/2023\nPrincipal diagnosis: atraumatic splenic rupture with hemoperitoneum.\nSecondary: acute blood loss anemia; supratherapeutic INR on warfarin; CLL; alcoholic cirrhosis; AF; alcohol use disorder.\n\nPresentation: 55-year-old man with heavy alcohol use, cirrhosis, CLL and AF on warfarin who developed abrupt severe left upper quadrant pain going up into the left shoulder, with lightheadedness and several near-faints. No trauma he could recall. Arrival BP 90/60, HR 120. Pale and sweaty; LUQ tender with guarding, bowel sounds present, no rebound. Hgb 8.2 (his baseline about 12), platelets 150, INR 3.5, LDH 410. Bedside ultrasound showed free fluid.\n\nCourse: warfarin reversed with IV vitamin K and 4-factor prothrombin complex concentrate; transfused packed red cells. Taken emergently for exploratory laparotomy, which found a ruptured spleen with hemoperitoneum; splenectomy performed. Pathology: capsular rupture, spleen involved by CLL. Uneventful post-op course. Monitored for alcohol withdrawal on symptom-triggered protocol, no significant withdrawal. Warfarin resumed on post-op day 5 at prior dose. Hgb 10.2 at discharge.\n\nDischarge meds: warfarin 5 mg daily (resumed), metoprolol succinate 25 mg daily, furosemide 20 mg daily, thiamine, folic acid, pyridoxine. Short course acetaminophen for incision pain.\nAllergies: NKDA.\nFollow-up: PCP 1-2 weeks; post-splenectomy vaccines due 14 days after surgery (meningococcal ACWY and B, Hib; check pneumococcal status). Surgery clinic 3 weeks. INR in 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-07a",
+     "kind": "telephone",
+     "start": "2023-04-07T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Partner Call - Hospitalized",
+       "author": "RN",
+       "date": "2023-04-07T09:15",
+       "body": "Partner called: Piotr was taken to the hospital Wed night with belly pain, had emergency surgery, spleen removed. In step-down, stable. She asked us to hold his INR draw this week. Asked her to have him call when discharged to set up a visit. Records request sent."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-20a",
+     "kind": "office_visit",
+     "start": "2023-04-20T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after splenectomy",
+     "conditions": [
+      {
+       "label": "Atraumatic splenic rupture with hemoperitoneum",
+       "icd10": "D73.5",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 77.8,
+      "labs": {
+       "Hemoglobin": 10.8,
+       "Prothrombin Time-International Normalized Ratio": 2.2
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-04-20T15:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.8
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-04-20T15:00",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.2
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Meningococcal conjugate MenACWY",
+       "date": "2023-04-20T15:05"
+      },
+      {
+       "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+       "date": "2023-04-20T15:06"
+      },
+      {
+       "vaccine": "Haemophilus influenzae type b (PRP-T)",
+       "date": "2023-04-20T15:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2023-04-20T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2023-04-20T15:40",
+       "body": "Seen 9 days after discharge. Spleen ruptured on its own on 4/5 - INR was 3.5 at the time - emergency splenectomy, transfused. Pathology shows the spleen was full of CLL. Scary for him and his partner.\nNow: incision sore but healing, walking around the house, off work for 6 wks per surgery. Eating ok. Says he hasn't had a drink since the hospital.\nExam: BP and HR as recorded. Midline incision clean, staples out at surgery clinic next week. Abdomen soft. Lungs clear. AF rate 70s.\nA/P\n1. S/p splenectomy for atraumatic rupture: healing. Asplenia - vaccines today: MenACWY #1, MenB #1, Hib. PCV20 already done 2021. Reviewed: fever over 101 = call or go to ED same day, no waiting it out.\n2. Acute blood loss anemia: Hgb 10.8 today, recovering.\n3. AF on warfarin: INR 2.2. Resumed at 5 mg in hospital. Continue, close monitoring.\n4. AUD: abstinent 2 wks. Encouraged; offered support, he wants to do it on his own.\nRTC 2 mo. Nurse visit 5 weeks for MenB #2."
+      }
+     ],
+     "vitals": {
+      "hr": 76
+     }
+    },
+    {
+     "id": "2023-05-11a",
+     "kind": "specialist_visit",
+     "start": "2023-05-11T13:30",
+     "service": "Hematology",
+     "reason": "CLL after splenectomy",
+     "state": {
+      "labs": {
+       "Hemoglobin": 11.6
+      }
+     },
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-05-11T13:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 11.6
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Absolute Neutrophil Count"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2023-05-16T09:40",
+       "body": "Hematology/oncology clinic, visit 05/11/2023\nCLL, observation. Acquired sideroblastic anemia, alcohol-related. S/p splenectomy 04/2023 for atraumatic rupture; spleen involved by CLL.\nRecovering from surgery. No sweats, fevers or weight loss beyond the post-op period. No adenopathy.\nCBC: WBC higher after splenectomy, as expected; Hgb 11.6 recovering; platelets up post-splenectomy.\nAssessment: CLL without treatment indication. Post-splenectomy counts as expected.\nPlan: observation. Continue pyridoxine/folic acid. Asplenia precautions and vaccines per PCP. Return 1 year.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-25a",
+     "kind": "nurse_visit",
+     "start": "2023-05-25T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccine and INR",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-05-25T15:30",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+       "date": "2023-05-25T15:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-05-25T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit",
+       "author": "RN",
+       "date": "2023-05-25T15:55",
+       "body": "MenB dose 2 L deltoid. INR drawn, in range. Back at work light duty. Next: MenACWY #2 at PCP visit in June."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-22a",
+     "kind": "office_visit",
+     "start": "2023-06-22T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after splenectomy",
+     "conditions": [
+      {
+       "label": "Acute posthemorrhagic anemia",
+       "icd10": "D62",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 78.8,
+      "labs": {
+       "Hemoglobin": 12.4,
+       "Mean Corpuscular Volume": 74,
+       "Prothrombin Time-International Normalized Ratio": 2.6
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-06-22T16:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.4
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-06-22T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-06-22T16:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Meningococcal conjugate MenACWY",
+       "date": "2023-06-22T16:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-06-22T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-06-22T16:45",
+       "body": "Recovered from splenectomy, back to full duty. Hgb back to 12.4, blood loss anemia resolved.\nAlcohol: made it about 5 weeks without drinking, then back to beer \"just on weekends\" which has become most nights. AUDIT-C high again. Disappointed in himself.\nExam: incision well healed. Lungs clear. AF rate controlled. No edema.\nA/P\n- S/p splenectomy: MenACWY #2 today; series complete (MenB x2, Hib, PCV20 2021). MenACWY booster every 5 yrs.\n- Posthemorrhagic anemia: resolved.\n- AF/warfarin: INR in range.\n- AUD: back to drinking. Talked about how close the April bleed was. Door open.\n- Labs: CMP at his usual.\nRTC 3-4 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 74
+     }
+    },
+    {
+     "id": "2023-07-13a",
+     "kind": "specialist_visit",
+     "start": "2023-07-13T10:00",
+     "service": "Cardiology",
+     "reason": "AF and cardiomyopathy follow-up",
+     "vitals": {
+      "bp": [
+       110,
+       68
+      ],
+      "hr": 76
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2023-07-18T11:15",
+       "body": "Outside cardiology group, visit 07/13/2023\nAF, HFrEF (EF 30%), alcoholic and tachycardia-mediated cardiomyopathy.\nInterval: splenectomy in April for spontaneous rupture with INR 3.5 on warfarin. Recovered.\nSymptoms: no orthopnea or PND, mild exertional fatigue, no syncope.\nMeds: metoprolol succinate 25, warfarin 5 (INR by PCP), furosemide 20.\nBP 110/68, HR 76. Lungs clear, no JVD, no edema.\nPlan: continue rate control and anticoagulation; benefit vs bleeding reviewed again given the April bleed and ongoing alcohol use - he wants to stay on it. Keep INR tightly in range. Follow up 1 year.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-17a",
+     "kind": "lab_only",
+     "start": "2023-08-17T07:30",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 1.8
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-08-17T07:30",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "INR Low",
+       "author": "RN",
+       "date": "2023-08-17T13:20",
+       "body": "INR below goal. Pt says he missed 2-3 doses last week, \"lost track.\" No change to dose, resume daily. Recheck 2 wks. Reminded about pill box."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-07a",
+     "kind": "portal_message",
+     "start": "2023-09-07T20:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "refills",
+       "author": "patient",
+       "date": "2023-09-07T20:10",
+       "body": "can you send the vitamin ones again, thiamine folic and the b6. pharmacy says no refills left"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: refills",
+       "author": "RN",
+       "date": "2023-09-08T08:30",
+       "body": "Sent all three with a year of refills. INR is due next week too - walk-in lab is fine."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-05a",
+     "kind": "office_visit",
+     "start": "2023-10-05T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up; vaccines",
+     "state": {
+      "labs": {
+       "Hemoglobin": 12.8,
+       "Prothrombin Time-International Normalized Ratio": 2.5
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-10-05T16:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.8
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-10-05T16:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-10-05T16:05",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 6
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 11
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-05T16:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-10-05T16:11"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-10-05T15:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ruq-us-2023",
+       "action": "placed",
+       "order": "Right upper quadrant ultrasound",
+       "category": "imaging",
+       "reason": "cirrhosis surveillance"
+      },
+      {
+       "id": "fit-2023",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-10-05T16:40",
+       "body": "Fall visit. Busy season at work, foreman on a school addition. Fatigue better than it has been in years. Drinking daily, weekends heavy. No bleeding, no fevers since surgery.\nExam: AF controlled. Lungs clear. Abd soft, healed scar. No edema. No jaundice.\nA/P\n- AF on warfarin: in range today. Missed doses in August.\n- HFrEF: compensated.\n- Cirrhosis: compensated; US surveillance overdue - ordered.\n- CLL/sideroblastic anemia: Hgb 12.8.\n- Asplenia: vaccines up to date.\n- HM: flu + updated COVID today; FIT kit.\nRTC 2-3 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 80
+     }
+    },
+    {
+     "id": "2023-11-09a",
+     "kind": "imaging",
+     "start": "2023-11-09T08:15",
+     "orders": [
+      {
+       "id": "ruq-us-2023",
+       "action": "done",
+       "date": "2023-11-09T08:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Right upper quadrant ultrasound",
+       "performed": "2023-11-09T08:15",
+       "text": "Indication: cirrhosis, HCC surveillance. Comparison 07/21/2022.\nLiver: coarse, nodular, unchanged. No focal lesion. Portal vein patent with hepatopetal flow.\nGallbladder normal. No biliary dilation.\nSplenectomy. No ascites.",
+       "conclusion": "Cirrhotic liver without focal mass. No ascites."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Result Note",
+       "author": "PCP",
+       "date": "2023-11-09T15:00",
+       "body": "US stable, no mass, no ascites. FIT still not returned - reminder sent."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-07a",
+     "kind": "office_visit",
+     "start": "2023-12-07T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "No Show",
+       "author": "front desk",
+       "date": "2023-12-07T16:10",
+       "body": "No show. Called, partner answered, said he's working late on a job. Rescheduled for January. INR overdue - asked him to come in for a lab draw this week."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-11a",
+     "kind": "office_visit",
+     "start": "2024-01-11T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.9
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-01-11T16:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-01-11T16:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-01-08T06:45",
+       "resulted": "2024-01-10T11:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-01-11T15:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2023",
+       "action": "done",
+       "date": "2024-01-10T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-01-11T16:35",
+       "body": "Missed December. Doing ok. Finally returned the FIT - negative. No bleeding. Some ankle swelling after long days, gone by morning. No orthopnea.\nAlcohol unchanged.\nExam: AF 70s. Lungs clear. Trace edema.\nA/P\n- AF/warfarin: INR 2.9, continue.\n- HFrEF: stable on furosemide 20; BMP today.\n- Lung screening: due Feb - he'd like to wait until spring. Ok.\n- AUD: unchanged, counseled.\nRTC 3 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 76
+     }
+    },
+    {
+     "id": "2024-02-22a",
+     "kind": "lab_only",
+     "start": "2024-02-22T07:35",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-02-22T07:35",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2024-02-22T11:50",
+       "body": "INR in range. Continue 5 mg. Next in 4-6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-08a",
+     "kind": "hospital_admission",
+     "start": "2024-04-08T11:20",
+     "end": "2024-04-15T13:00",
+     "service": "Pulmonary & Critical Care",
+     "reason": "Fever, foul sputum after a seizure",
+     "conditions": [
+      {
+       "label": "Lung abscess (aspiration)",
+       "icd10": "J85.1",
+       "action": "diagnosed",
+       "onset": "2024-03-18"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily to finish 6 weeks of treatment",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Lung abscess"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-04-08T11:25",
+       "temp_c": 38.2,
+       "hr": 102,
+       "rr": 22,
+       "bp": [
+        135,
+        85
+       ]
+      },
+      {
+       "time": "2024-04-15T08:00",
+       "temp_c": 36.9,
+       "hr": 80,
+       "rr": 16,
+       "bp": [
+        118,
+        72
+       ]
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-04-08T11:45",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 15.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        },
+        {
+         "test": "Neutrophils %"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-08T11:45",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 135
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 13.2,
+       "White Blood Cells": 12.6,
+       "Platelets": 255,
+       "Mean Corpuscular Volume": 75
+      }
+     },
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2024-04-08T12:10",
+       "text": "PA and lateral. Right lower lobe cavitary lesion with an air-fluid level and surrounding consolidation. Heart enlarged, unchanged. No pneumothorax.",
+       "conclusion": "Cavitary lesion right lower lobe, consistent with lung abscess."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Pulmonary",
+       "author": "pulmonary",
+       "date": "2024-04-17T09:30",
+       "body": "Admit 04/08/2024 - discharge 04/15/2024\nDiagnosis: right lower lobe lung abscess, aspiration.\n\nHistory: about three weeks of low-grade fevers, feeling unwell and a productive cough with foul-smelling sputum. Before that, a seizure at home with loss of consciousness, likely withdrawal after a short stop in drinking; he did not seek care at the time. Background: severe alcohol use disorder, cirrhosis, CLL, s/p splenectomy, AF on warfarin, HFrEF, prior aspiration pneumonias.\nOn arrival T 38.2 C, HR 102, RR 22, BP 135/85. Decreased breath sounds and dullness to percussion at the right base. WBC 15.0, Hgb 13.2, platelets 250, Na 135, K 4.2, BUN 18, Cr 1.0. CXR: cavitary RLL lesion.\n\nCourse: IV ampicillin-sulbactam with steady improvement; afebrile by day 4, sputum lessening. Withdrawal protocol, no further seizures. INR followed, stayed in range on warfarin with antibiotics. Transitioned to oral amoxicillin-clavulanate.\n\nDischarge meds: amoxicillin-clavulanate 875/125 mg twice daily through 05/20/2024 (total about 6 weeks), warfarin 5 mg, metoprolol succinate 25 mg, furosemide 20 mg, thiamine, folic acid, pyridoxine.\nAllergies: NKDA.\nFollow-up: PCP 1 week with INR (antibiotic interaction); CT chest after antibiotics finish."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-10a",
+     "kind": "telephone",
+     "start": "2024-04-10T14:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Hospital Notification",
+       "author": "front desk",
+       "date": "2024-04-10T14:00",
+       "body": "Hospital case manager called: pt admitted 4/8 with pneumonia/abscess, expected stay about a week. Asked for PCP follow-up within 7-10 days of discharge. Placeholder made."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "office_visit",
+     "start": "2024-04-23T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up, lung abscess",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.9
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-04-23T15:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.9
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-04-23T15:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2024-04-23T14:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ct-chest-2024",
+       "action": "placed",
+       "order": "CT chest",
+       "category": "imaging",
+       "reason": "follow-up of RLL lung abscess after antibiotics"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Hospital Follow-up",
+       "author": "PCP",
+       "date": "2024-04-23T15:35",
+       "body": "Discharged 4/15 after a week for a right lower lobe lung abscess. Had a seizure at home in March - he says he'd stopped drinking for a couple of days to \"dry out\" and it happened then. Partner found him. Didn't go in. Three weeks later the fevers and foul sputum.\nNow: no fever, cough much less, sputum clearing. Taking the amoxicillin-clavulanate twice a day, through 5/20. Stomach a little upset.\nExam: afebrile. Lungs: few crackles right base. AF rate 80. No edema.\nA/P\n1. RLL lung abscess, aspiration: improving on amox-clav, finish course to 5/20. CT chest after.\n2. Withdrawal seizure in March: reviewed - stopping suddenly is dangerous for him; if he wants to stop, we do it with a plan and meds. He was surprised; noted.\n3. AF/warfarin + antibiotic: INR 2.9, upper edge. Recheck 1 wk.\n4. CBC: WBC down.\nRTC after CT."
+      }
+     ],
+     "vitals": {
+      "hr": 82
+     }
+    },
+    {
+     "id": "2024-05-16a",
+     "kind": "specialist_visit",
+     "start": "2024-05-16T13:40",
+     "service": "Hematology",
+     "reason": "CLL annual follow-up",
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-05-16T13:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        },
+        {
+         "test": "Absolute Neutrophil Count"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2024-05-21T10:15",
+       "body": "Hematology/oncology clinic, visit 05/16/2024\nCLL, observation; s/p splenectomy 2023; alcohol-related sideroblastic anemia.\nInterval: April admission for an aspiration lung abscess, finishing oral antibiotics. Otherwise no B symptoms. No adenopathy on exam.\nCBC: Hgb 13 range, WBC stable for him post-splenectomy, platelets normal.\nAssessment: CLL stable, no treatment indication. Anemia much improved.\nPlan: observation; return 1 year. Continue pyridoxine/folic acid.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-11a",
+     "kind": "imaging",
+     "start": "2024-06-11T09:00",
+     "orders": [
+      {
+       "id": "ct-chest-2024",
+       "action": "done",
+       "date": "2024-06-11T09:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2024-06-11T09:00",
+       "text": "CT chest without contrast. Indication: follow-up of right lower lobe lung abscess after treatment. Comparison: chest radiograph 04/08/2024.\nLungs: the previously described right lower lobe cavity has resolved. Small linear scar at the right lung base. No new consolidation. No nodules.\nPleura: no effusion.\nHeart enlarged. No mediastinal adenopathy.\nUpper abdomen: nodular liver. Splenectomy.",
+       "conclusion": "Resolved right lower lobe lung abscess with small residual linear scar."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-13a",
+     "kind": "office_visit",
+     "start": "2024-06-13T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after lung abscess",
+     "conditions": [
+      {
+       "label": "Lung abscess (aspiration)",
+       "icd10": "J85.1",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.3
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-06-13T16:20",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.3
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-13T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-06-13T16:35",
+       "body": "Finished antibiotics 5/20. No cough, no fever. CT 6/11: abscess gone, small scar at the right base. Back at work.\nDrinking: says less, but the pattern is the same.\nExam: lungs clear. AF 70s. No edema.\nA/P\n- Lung abscess: resolved.\n- AF/warfarin: INR 2.3.\n- HFrEF, cirrhosis, CLL: stable.\nRTC 3-4 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 74
+     }
+    },
+    {
+     "id": "2024-07-18a",
+     "kind": "specialist_visit",
+     "start": "2024-07-18T09:20",
+     "service": "Cardiology",
+     "reason": "Annual AF and cardiomyopathy follow-up",
+     "vitals": {
+      "bp": [
+       116,
+       72
+      ],
+      "hr": 80
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2024-07-23T14:00",
+       "body": "Outside cardiology group, visit 07/18/2024\nAF on warfarin; HFrEF EF 30% with alcoholic and tachycardia-mediated components.\nInterval: lung abscess in April, treated. No heart failure admissions.\nSymptoms: stable exertional tolerance. No PND, no syncope.\nMeds: metoprolol succinate 25 mg, warfarin 5 mg, furosemide 20 mg.\nBP 116/72, HR 80. No JVD, lungs clear, trace edema.\nPlan: no changes. Follow up 1 year.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-08a",
+     "kind": "lab_only",
+     "start": "2024-08-08T07:40",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.6
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-08-08T07:40",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2024-08-08T12:40",
+       "body": "INR in range. No change. Next 6 weeks, or with his fall visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-26a",
+     "kind": "hospital_admission",
+     "start": "2024-09-26T01:30",
+     "end": "2024-09-28T11:00",
+     "service": "Emergency Medicine / Gastroenterology",
+     "reason": "Vomiting blood after retching",
+     "conditions": [
+      {
+       "label": "Mallory-Weiss tear",
+       "icd10": "K22.6",
+       "action": "diagnosed",
+       "onset": "2024-09-25"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily before meals for 4 weeks",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Mallory-Weiss tear"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-09-26T01:35",
+       "bp": [
+        110,
+        70
+       ],
+       "hr": 98
+      },
+      {
+       "time": "2024-09-28T08:00",
+       "bp": [
+        114,
+        70
+       ],
+       "hr": 78
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-26T01:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "Hematocrit",
+         "value": 39.4
+        },
+        {
+         "test": "Platelets",
+         "value": 225
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-09-26T01:50",
+       "results": [
+        {
+         "test": "Prothrombin Time",
+         "value": 12
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.1
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-26T01:50",
+       "results": [
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "3173-2",
+         "unit": "s",
+         "value": 30
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Upper endoscopy",
+       "loinc": "18751-8",
+       "performed": "2024-09-26T06:40",
+       "text": "Indication: hematemesis after forceful retching.\nEsophagus: normal mucosa; no varices. At the gastroesophageal junction, a single linear mucosal tear with mild continued oozing. One band applied across the tear with hemostasis.\nStomach: small amount of old blood, otherwise normal mucosa. No ulcer.\nDuodenum: normal bulb and second portion.",
+       "conclusion": "Mallory-Weiss tear at the GE junction with mild oozing, treated with band ligation. No varices."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "ED and Observation Summary",
+       "author": "hospital medicine",
+       "date": "2024-09-30T10:00",
+       "body": "ED arrival 09/26/2024 01:30, observation, discharged 09/28/2024\nDiagnosis: Mallory-Weiss tear.\n\nAbout 2 hours of vomiting, then bright red blood, after a night of heavy drinking and hard retching. Known severe alcohol use disorder, cirrhosis, prior withdrawal seizures, AF on warfarin.\nBP 110/70, pulse 98. Pale. Abdomen soft, not distended, nontender.\nHgb 13.2, Hct 39.4%, platelets 225, PT 12 s, PTT 30 s. He says he had not taken warfarin for about a week while drinking.\n\nUrgent upper endoscopy: linear tear at the GE junction, still oozing mildly; banded with hemostasis. No varices.\nObserved 2 nights: no further bleeding, Hgb stable. Withdrawal protocol, no seizure.\n\nDischarge meds: pantoprazole 40 mg twice daily x 4 weeks (new). Hold warfarin 2 more days, then resume 5 mg daily with INR check in 1 week. Continue metoprolol, furosemide, vitamins.\nAllergies: NKDA.\nFollow-up: PCP 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-03a",
+     "kind": "office_visit",
+     "start": "2024-10-03T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up; vaccines",
+     "conditions": [
+      {
+       "label": "Mallory-Weiss tear",
+       "icd10": "K22.6",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 1.6
+      }
+     },
+     "measure": [
+      "bp",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-10-03T16:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Lymphocytes %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-10-03T16:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-10-03T16:00",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.6
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-03T16:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-03T16:06"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-10-03T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-10-03T16:40",
+       "body": "ED/obs 9/26-9/28 for a Mallory-Weiss tear after a binge and hard retching; banded on EGD, no varices. Hadn't been taking warfarin for a week. No more bleeding since. On pantoprazole BID through ~10/26. Restarted warfarin 9/30.\nExam: not pale. Abd soft, nontender. AF rate 70s.\nA/P\n1. Mallory-Weiss tear: healed clinically, no further bleeding, Hgb stable. Finish PPI course.\n2. AF/warfarin: INR 1.6, only 4 days back on it. Continue 5 mg, recheck 2 wks.\n3. AUD: this is the third major bleed/emergency in 18 months tied to drinking. Said so plainly. He agrees and is still not ready.\n4. Cirrhosis: US due next month.\n5. HM: flu + COVID today.\nRTC 3 mo."
+      }
+     ],
+     "vitals": {
+      "hr": 76
+     }
+    },
+    {
+     "id": "2024-10-17a",
+     "kind": "lab_only",
+     "start": "2024-10-17T07:35",
+     "state": {
+      "labs": {
+       "Prothrombin Time-International Normalized Ratio": 2.4
+      }
+     },
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-10-17T07:35",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        },
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2024-10-17T12:10",
+       "body": "INR back in range. Continue warfarin 5 mg. Next 4 wks."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-21a",
+     "kind": "imaging",
+     "start": "2024-11-21T08:20",
+     "reports": [
+      {
+       "study": "Right upper quadrant ultrasound",
+       "performed": "2024-11-21T08:20",
+       "text": "Indication: cirrhosis surveillance. Comparison 11/09/2023.\nLiver: coarse, nodular contour, no change. No focal mass. Portal vein patent, hepatopetal.\nGallbladder normal. Bile ducts not dilated. No ascites.",
+       "conclusion": "Stable cirrhotic liver. No focal lesion. No ascites."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Ultrasound",
+       "author": "PCP",
+       "date": "2024-11-22T10:00",
+       "body": "Your liver ultrasound looks the same as last year - no growths and no fluid. See you in January."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

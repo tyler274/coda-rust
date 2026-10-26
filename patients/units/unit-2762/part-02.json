@@ -1,0 +1,318 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002762",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Prednisone refill",
+              "author": "patient",
+              "date": "2025-01-14T20:10",
+              "body": "My insurance is pushing me to do 90 day supplies by mail now. Could you send the prednisone that way? Same 10 mg. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Prednisone refill",
+              "author": "MA",
+              "date": "2025-01-15T08:40",
+              "body": "Done, 90 day supply with 3 refills went to the mail order pharmacy. Keep your current bottle going until it arrives."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fibroid symptoms worse",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-18T16:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-18T15:30"},
+            {"procedure": "Venipuncture", "performed": "2025-03-18T16:10"}
+          ],
+          "orders": [
+            {"id": "gyn-referral", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "Symptomatic uterine fibroids"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-03-18T16:25",
+              "body": "Here mainly about the fibroids. Over the winter her periods have gotten heavier and longer, now 7 to 8 days with 2 days of changing protection every hour or two, plus a constant pelvic heaviness that she notices standing at the board all day. Wants it dealt with. Thinking about her mother's course.\nAlso: dry cough and getting winded on the stairs to her classroom for about the last 2 months. No fever, chest pain or weight loss. Already has her pulmonology follow-up in June and has sent them a message.\nMeds unchanged. NKDA.\n\nExam: vitals as charted, afebrile, sat normal. Comfortable. Lungs clear, no crackles, no wheeze. Heart regular. Abdomen soft, nontender, firm irregular uterus palpable just above the pubic bone. Shins without lesions today.\n\nA/P\n1. Symptomatic uterine fibroids, worsening. CBC today. Referral to gynecology to discuss options including surgery. Reminded her that any surgery has to be planned around her steroid dependence, and to tell gyn and anesthesia she has been on prednisone for years.\n2. Pulmonary sarcoidosis with new cough and exertional dyspnea. Lungs clear here and sats fine. Keep June pulmonology visit; call sooner if worse.\n3. Continue prednisone 10, alendronate, calcium/D.\nRTC after gyn."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "portal_message",
+          "start": "2025-03-19T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2025-03-19T12:30",
+              "body": "Your blood count is normal, no anemia from the heavier bleeding. Gyn referral is in; their office will call you. If they are booking out far, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "portal_message",
+          "start": "2025-05-06T21:00",
+          "orders": [
+            {"id": "gyn-referral", "action": "done", "date": "2025-05-06T21:00"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gyn update",
+              "author": "patient",
+              "date": "2025-05-06T21:00",
+              "body": "Quick update. Saw the gynecologist last month and had a pelvic ultrasound, it showed the fibroids. We talked through everything and I decided on a hysterectomy. They want to do it open, not laparoscopic, because of how the uterus is. I asked to wait until after the summer. It's on the calendar for the end of September. They said they'd be in touch with you about my steroids before surgery."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gyn update",
+              "author": "PCP",
+              "date": "2025-05-07T07:20",
+              "body": "Thanks for letting me know, that sounds like a reasonable plan. The steroid part is important: make sure the surgeon and the anesthesia team both know about the prednisone and the adrenal suppression. Send me the date when you have it."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T10:00",
+          "service": "Pulmonology",
+          "reason": "Progressive exertional dyspnea and dry cough",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Clinic Letter",
+              "author": "pulmonology",
+              "date": "2025-07-14T09:00",
+              "body": "Outside pulmonology group. Date of service 06/30/2025. Copy to primary care.\n\nMs. Owusu is a 43 year old teacher we follow for sarcoidosis (lung, with prior anterior uveitis), on prednisone 10 mg daily for about three years. She returns describing six months of exertional breathlessness that has slowly progressed and a dry, nonproductive cough. She has had no chest pain, fevers or weight loss.\n\nMedications: prednisone 10 mg daily, calcium carbonate/vitamin D3 600 mg/400 IU twice daily, alendronate 70 mg weekly. Allergies: none known. Never smoker.\n\nExam: in no distress at rest. Chest clear to auscultation. Skin: several erythematous nodules over both shins, not tender. No clubbing.\n\nImaging: chest radiograph shows bilateral hilar lymph node enlargement with parenchymal reticular change, in keeping with Stage II disease.\n\nPulmonary function: FEV1 65% predicted, FVC 68% predicted, FEV1/FVC 80%, TLC 60% predicted, DLCO 55% predicted. This is a restrictive pattern with a moderate reduction in gas transfer.\n\nImpression: Stage II pulmonary sarcoidosis with symptomatic restriction and reduced diffusion, now with skin involvement on the shins, on chronic low-dose prednisone.\n\nPlan: continue prednisone 10 mg daily. Repeat full PFTs in about six months. She is to contact us for worsening breathlessness."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "outside_records",
+          "start": "2025-07-14T13:20",
+          "conditions": [
+            {"label": "Sarcoidosis", "icd10": "D86.9", "action": "diagnosed", "onset": "2022-02-01", "note": "multisystem: lung (Stage II), eye (prior anterior uveitis), skin of shins"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PCP review: pulmonology letter",
+              "author": "PCP",
+              "date": "2025-07-14T13:20",
+              "body": "Pulm letter from 6/30 reviewed. PFTs restrictive (TLC 60%, DLCO 55%), Stage II on CXR, new shin nodules. Same prednisone dose, repeat PFTs in 6 months. Problem list updated to multisystem sarcoidosis (lung, eye, skin). Scanned."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "telephone",
+          "start": "2025-08-26T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op clinic request",
+              "author": "MA",
+              "date": "2025-08-26T11:05",
+              "body": "Surgical pre-admission clinic at the hospital called for a current med list and problem list ahead of her 9/27 surgery. Faxed both, plus last labs. They said she is seeing them in person next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-27a",
+          "kind": "hospital_admission",
+          "start": "2025-09-27T07:30",
+          "end": "2025-10-01T13:00",
+          "service": "Gynecology",
+          "reason": "Elective total abdominal hysterectomy for symptomatic uterine fibroids",
+          "vitals": [
+            {"time": "2025-09-27T08:25", "bp": [76, 50], "hr": 108},
+            {"time": "2025-09-27T09:40", "bp": [80, 40]}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-27T06:40", "results": [{"test": "Creatinine", "value": 0.8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-28T05:30", "results": [{"test": "Creatinine", "value": 1.6}, {"test": "Blood Urea Nitrogen", "value": 31}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-01T06:00", "results": [{"test": "Creatinine", "value": 0.9}]}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "gynecology",
+              "date": "2025-10-20T10:15",
+              "body": "Regional hospital, gynecology service. Admitted 09/27/2025, discharged 10/01/2025.\nProcedure: total abdominal hysterectomy, 09/27/2025, for symptomatic uterine leiomyomata.\nAllergies: NKDA.\n\nCourse: 43 year old with Stage II pulmonary sarcoidosis on chronic prednisone. Pre-admission evaluation unremarkable; baseline hemoglobin and electrolytes normal, creatinine 0.8. Shortly after the start of the case she became hypotensive to 76/50 with heart rate 108, pale and diaphoretic, with little response to 2 L of crystalloid. Given IV hydrocortisone for suspected adrenal crisis with improvement in pressure. Later in the case there was significant blood loss with a brief drop to 80/40 for about half a minute, managed with fluids and 5 units of packed red cells. Hemodynamics normal within the hour.\n\nInternal medicine consulted the evening of surgery for low urine output and fatigue. Warm, well perfused, lungs clear, Foley output minimal; creatinine and BUN rising. Assessment: drug-induced adrenal insufficiency with crisis, and prerenal acute kidney injury from hypovolemia. Stress-dose hydrocortisone continued and tapered; volume repleted. Creatinine peaked at 1.6 with BUN 31 on postoperative day 1 and was 0.9 by discharge; urine output recovered.\n\nDischarge medications: prednisone 10 mg daily (resumed), calcium carbonate/vitamin D3 600 mg/400 IU twice daily, alendronate 70 mg weekly.\nFollow-up: gynecology in 2 weeks; primary care within 1 to 2 weeks for kidney function and steroid plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "ed_visit",
+          "start": "2025-10-03T14:50",
+          "end": "2025-10-04T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Left flank pain after hysterectomy",
+          "vitals": [
+            {"time": "2025-10-03T15:00", "temp_c": 37.4, "bp": [128, 78], "hr": 88}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2025-10-03T17:10", "text": "IV contrast with portal venous and 10-minute delayed excretory images. Postsurgical pelvis after hysterectomy with expected postoperative change at the vaginal cuff. Mild left hydroureteronephrosis to the level of the distal ureter. Small fluid collection adjacent to the distal left ureter, into which excreted contrast extends on delayed images. Right kidney and ureter normal. No free air. Bowel normal in caliber. Liver, spleen, pancreas and adrenals unremarkable.", "conclusion": "Contrast leak from the distal left ureter with small adjacent collection and mild left hydroureteronephrosis, consistent with ureteral injury."}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-10-09T08:30",
+              "body": "Regional hospital ED, seen 10/03/2025.\nCC: left flank pain.\n43F, home two days after a 9/27 abdominal hysterectomy whose stay was complicated by adrenal crisis on chronic prednisone and prerenal AKI. Since getting home, worsening lower abdominal ache and sharp pain into the left flank. No BM since surgery, passing flatus.\nT 37.4 C, BP 128/78, HR 88.\nLeft CVA tenderness. Abdomen with healing incision, no rebound or guarding.\nLabs: mild leukocytosis. UA trace blood, otherwise unremarkable.\nCT A/P with delayed images: contrast leak at the distal left ureter with small collection, mild left hydro.\nUrology consulted, took her for cystoscopy and left retrograde pyelogram showing extravasation from the distal left ureter; left double-J stent placed. Observed overnight, pain controlled, home 10/4. Urology clinic will arrange stent removal. Steroids: home prednisone continued.\nDx: left ureteral injury after hysterectomy."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "telephone",
+          "start": "2025-10-06T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2025-10-06T09:15",
+              "body": "Pt called to tell us she was in the ED Friday with left side pain and they found a leak from the left ureter from the surgery. Had a stent put in, went home Saturday. Pain much better, peeing fine, a little pink at times, no fever. Bowels moved yesterday. Still on prednisone 10. Explained PCP wants to see her after the hospital stay anyway; booked 10/14. Hospital records requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Drug-induced adrenocortical insufficiency", "icd10": "E27.3", "action": "diagnosed", "onset": "2025-09-27", "note": "adrenal crisis at hysterectomy on chronic prednisone"},
+            {"label": "Prerenal acute kidney injury secondary to hypovolemia", "icd10": "N17.9", "action": "diagnosed", "onset": "2025-09-27"},
+            {"label": "Ureteral injury", "icd10": "S37.10XA", "action": "diagnosed", "onset": "2025-09-27", "note": "distal left ureter, stented 10/3/2025"},
+            {"label": "Uterine leiomyoma", "action": "resolved"},
+            {"label": "Acquired absence of uterus and cervix", "action": "diagnosed", "onset": "2025-09-27", "note": "total abdominal hysterectomy for fibroids"}
+          ],
+          "medications": [
+            {"drug_text": "hydrocortisone sodium succinate 100 MG Injection", "action": "start", "sig": "Inject 100 mg into the thigh muscle once for adrenal crisis (vomiting, unable to keep prednisone down, or collapse), then call 911", "dose": {"value": 100, "unit": "mg"}, "frequency": "ONCE PRN", "route": "Intramuscular", "course": "chronic", "reason": "Adrenal insufficiency, emergency use"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-14T16:00", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-14T16:00", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T15:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T15:57"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2025-10-14T15:20"},
+            {"procedure": "Immunization administration", "performed": "2025-10-14T15:55"},
+            {"procedure": "Venipuncture", "performed": "2025-10-14T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-10-14T16:30",
+              "body": "Seen after two hospital contacts. Discharge summary not here yet; history from her, her discharge papers and the ED note.\n\n9/27 open hysterectomy for fibroids. Her pressure dropped early in the case and did not come up with fluids; they gave IV hydrocortisone for adrenal crisis. She also bled and got 5 units of blood. After surgery her urine output was low and her kidney numbers went up; medicine saw her and called it adrenal insufficiency plus kidney injury from low volume. Home 10/1 on her usual prednisone.\n10/3 ED for left flank pain: CT showed a leak from the lower left ureter, urology did a cystoscopy with dye study and put in a stent. Home the next day.\n\nNow: flank pain gone, mild incision soreness only. Urine occasionally pink with activity, no fever or chills, no burning. Eating normally, bowels back to normal. Energy coming back slowly. Taking prednisone 10 every morning. Gyn post-op visit went fine last week. Urology plans stent removal in about 6 weeks.\n\nExam: vitals as charted, afebrile. Tired but well. Lungs clear. Heart regular. Abdomen: midline incision clean, dry, healing, mild tenderness at the wound only. No CVA tenderness. No edema.\n\nA/P\n1. Drug-induced adrenal insufficiency with crisis at surgery, on top of known suppression from 3 years of prednisone. Sick-day rules reviewed in detail: double the prednisone for 2 to 3 days with fever or a real illness, and if vomiting and cannot keep it down, use the injection and go to the ED. Prescribed an IM hydrocortisone 100 mg emergency kit; RN taught the injection today. Suggested a medical alert bracelet or wallet card. Any future procedure needs stress dosing planned ahead.\n2. AKI, prerenal, from hypovolemia: BMP today to confirm it has settled.\n3. Left ureteral injury, stented. Urology following.\n4. Post-op after transfusion of 5 units: CBC today.\n5. S/p hysterectomy: fibroids resolved off the list. No further cervical screening needed.\n6. Sarcoidosis: unchanged on prednisone 10, pulm repeat PFTs around the new year.\nFlu and COVID today. RTC January."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Injection teaching",
+              "author": "RN",
+              "date": "2025-10-14T16:05",
+              "body": "Taught use of hydrocortisone 100 mg emergency vial: mixing the vial, drawing up, outer thigh IM, then calling 911. Pt did a return demonstration on a training pad without trouble. Written sick-day sheet given. She plans to keep one kit at home and one at school."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "portal_message",
+          "start": "2025-10-15T12:40",
+          "conditions": [
+            {"label": "Prerenal acute kidney injury secondary to hypovolemia", "icd10": "N17.9", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney and blood count",
+              "author": "PCP",
+              "date": "2025-10-15T12:40",
+              "body": "Good news: kidney function is back to normal and your blood count is normal after the transfusions. The kidney injury from surgery has resolved. The emergency kit went to your pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PCP review: discharge summary",
+              "author": "PCP",
+              "date": "2025-10-20T10:30",
+              "body": "Hysterectomy discharge summary received and reviewed, matches her account: adrenal crisis treated with hydrocortisone, 5 u PRBC, prerenal AKI with creatinine peak 1.6 (baseline 0.8), 0.9 at discharge. Nothing further to act on."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "portal_message",
+          "start": "2025-11-24T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stent out",
+              "author": "patient",
+              "date": "2025-11-24T18:30",
+              "body": "The urologist took the stent out last Thursday. They did a kidney ultrasound first and said there was no swelling of the kidney anymore. Feeling like myself again and back in the classroom full time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stent out",
+              "author": "PCP",
+              "date": "2025-11-25T07:15",
+              "body": "Very glad to hear it. If you get flank pain, fever or blood in the urine again, call. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: prednisone",
+              "author": "MA",
+              "date": "2025-12-09T10:00",
+              "body": "Mail order renewal for prednisone 10 mg, 90 days, 3 refills. Sent per protocol."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

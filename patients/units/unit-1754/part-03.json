@@ -1,0 +1,225 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001754",
+      "events": [
+        {
+          "id": "2023-01-25a",
+          "kind": "office_visit",
+          "start": "2023-01-25T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and asthma check, pregnant",
+          "state": {"weight_kg": 72.0, "labs": {"Hemoglobin A1c": 6.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-01-25T16:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-25T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-01-25T16:00", "body": "About 18 weeks. Anatomy scan next week. OB visits going smoothly so far, no insulin, staying on metformin twice daily. Fasting sugars in the 90s, after meals under 140 most days.\n\nAsthma steady; one cold over the holidays, needed albuterol a few days and that was it. Reflux back a bit at night, propping up on pillows.\n\nExam: well. Lungs clear, no wheeze. Heart regular. Mouth clear.\n\nPlan: A1c today and copy to OB. Continue everything. Next PCP visit after the baby comes."},
+            {"type": "Result Note", "title": "A1c", "author": "PCP", "date": "2023-01-26T12:00", "body": "A1c 6.1. Faxed to OB."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "outside_records",
+          "start": "2023-03-14T10:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry report", "author": "optometry", "date": "2023-03-14T10:20", "body": "Diabetic eye exam, 2023-03-07. Patient is pregnant, second trimester. Acuity 20/20 both eyes with glasses. Pupils normal. Dilated exam: optic nerves healthy, maculae flat, no microaneurysms, hemorrhages or exudates in either eye. No diabetic retinopathy. Recheck 1 year, sooner if vision changes during pregnancy."}
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "hospital_admission",
+          "start": "2023-06-22T04:10",
+          "end": "2023-06-25T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Active labor at 39 weeks",
+          "conditions": [
+            {"label": "Placenta accreta", "icd10": "O43.213", "action": "diagnosed", "onset": "2023-06-22"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily for 3 months", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Postpartum blood loss"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-22T04:30", "results": [{"test": "Hemoglobin", "value": 12.5}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-22T13:00", "results": [{"test": "Hemoglobin", "value": 10.2}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2023-06-22T10:50", "text": "Bedside transabdominal ultrasound immediately postpartum for retained placenta. Uterus enlarged, consistent with the immediate postpartum state. Echogenic placental tissue persists at the fundal implantation site. The placental bed is irregular, with loss of the normal hypoechoic boundary and placental tissue extending into the myometrium. No free fluid in the abdomen.", "conclusion": "Retained placental tissue with myometrial invasion, consistent with placenta accreta."},
+            {"study": "Surgical pathology report", "performed": "2023-06-22T11:30", "issued": "2023-06-24T14:00", "text": "Specimen: placental tissue and uterine curettings. Gross: multiple fragments of placental tissue and tan soft tissue. Microscopic: chorionic villi directly apposed to myometrial smooth muscle without intervening decidua.", "conclusion": "Placenta accreta."}
+          ],
+          "documents": [
+            {"type": "Operative Note", "title": "Operative Report", "author": "obstetrics", "date": "2023-10-05T15:00", "body": "Labor and delivery operating room, 2023-06-22. Copy received by primary care 2023-10-05.\n\nPreoperative diagnosis: retained placenta with postpartum hemorrhage.\nPostoperative diagnosis: placenta accreta.\nProcedure: ultrasound-guided suction curettage of adherent placental tissue; placement of intrauterine balloon tamponade.\nAnesthesia: epidural, already in place for labor.\n\nFindings: Firm, well-contracted uterus. Adherent placental tissue at the fundus with no plane of separation on ultrasound, removed in fragments under ultrasound guidance until the cavity appeared clear. Brisk bleeding from the placental bed settled once the balloon was inflated.\n\nSpecimens: placental tissue and curettings to pathology.\nComplications: none beyond the indication.\nCondition: stable to recovery. No blood products given."},
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2023-10-05T15:00", "body": "Admission 2023-06-22 to 2023-06-25. Faxed to primary care 2023-10-05 after a records request.\n\n38-year-old G3P1 at 39 weeks with type 2 diabetes, asthma and reflux, admitted in active labor. Prenatal course uneventful. Labor progressed normally to a spontaneous vaginal birth of a healthy boy, 1- and 5-minute scores 8 and 9.\n\nThe placenta had not delivered at 30 minutes. Attempted manual extraction led to heavy vaginal bleeding that persisted despite fundal massage and oxytocin; the uterus remained firm and the cervix open. Bedside ultrasound showed an irregular placental bed with placental tissue invading the myometrium. She went to the OR for ultrasound-guided suction curettage and an intrauterine balloon, which stopped the bleeding. Uterus preserved. Pathology confirmed placenta accreta.\n\nHemoglobin 12.5 on admission and 10.2 after the hemorrhage. Not transfused. Balloon removed the next morning with no further bleeding. Vitals remained stable.\n\nDischarge meds: metformin 1000 mg twice daily, fluticasone/salmeterol 100/50 twice daily, albuterol as needed, omeprazole 20 mg daily, ferrous sulfate 325 mg daily for 3 months.\nAllergies: NKDA.\nFollow-up: OB in 2 weeks and at 6 weeks. Any future pregnancy is high risk and needs early OB planning given the accreta."}
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "office_visit",
+          "start": "2023-08-14T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "state": {"weight_kg": 72.8, "labs": {"Hemoglobin A1c": 6.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Placenta accreta", "icd10": "O43.213", "action": "resolved"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-14T13:50", "results": [{"test": "Hemoglobin", "value": 11.6}]},
+            {"panel": null, "collected": "2023-08-14T13:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-08-14T13:50", "results": [{"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-14T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum Check", "author": "PCP", "date": "2023-08-14T13:20", "body": "Seven weeks after the birth of her son on 6/22. Hospital never sent us anything, so this is her account: normal labor, but the placenta would not come out and she bled a lot when they tried. Went to the OR, they scraped out the placenta with an ultrasound and put a balloon in. Told it was placenta accreta. Did not need blood. Sent home on iron, which she is taking daily with some constipation.\n\nSaw OB at 6 weeks, everything healing. Bleeding finished.\n\nTired, which she says is mostly the two kids under 15 months. Sleeping when they sleep. PHQ-9 4, denies low mood. Asthma fine. Sugars a little higher since delivery, fasting 120s-140s.\n\nExam: a little pale conjunctivae. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender.\n\nA/P\n- Recent postpartum hemorrhage from placenta accreta, treated: CBC today. Continue iron to finish 3 months.\n- T2DM: A1c and BMP. Continue metformin.\n- Records: requesting the delivery admission records.\n- Mood screen reassuring; reviewed signs of postpartum depression and how to reach us."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-08-14T15:00", "body": "Faxed request to the hospital's medical records office for L&D admission 6/22-6/25/2023, including operative and pathology reports."}
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "portal_message",
+          "start": "2023-08-15T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2023-08-15T12:40", "body": "Daisy, your hemoglobin is 11.6, so it's coming back up nicely from the bleed. Keep taking the iron through September. A1c 6.4, a little better than before the pregnancy. No changes for now."}
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "outside_records",
+          "start": "2023-10-05T15:00",
+          "documents": [
+            {"type": "Progress Notes", "title": "Delivery records reviewed", "author": "PCP", "date": "2023-10-06T08:15", "body": "June L&D records arrived after our August request: discharge summary, operative report, pathology confirming accreta. Consistent with what she told me. Of note, they recommend early OB planning for any future pregnancy."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T15:35"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit", "author": "RN", "date": "2023-10-17T15:30", "body": "Flu vaccine left arm, 2023-24 COVID vaccine right arm. Breastfeeding, no contraindication. Observed 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2023-11-30a",
+          "kind": "office_visit",
+          "start": "2023-11-30T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, recheck blood count",
+          "state": {"weight_kg": 70.6, "labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-30T16:15", "results": [{"test": "Hemoglobin", "value": 12.7}]},
+            {"panel": null, "collected": "2023-11-30T16:15", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-30T16:15", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2023-11-30T16:15", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-11-30T16:15", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-30T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2023-11-30T15:45", "body": "Finished the iron in late September. More energy. Weaned the baby last month. Back to teaching full time.\n\nDM: metformin both doses. Fasting 130s. Not much time for exercise; eating the kids' leftovers.\nAsthma: controlled, albuterol a few times a month. Thrush none.\nGERD: fine on omeprazole.\n\nExam: color better. Lungs clear throughout. Heart regular. Feet: sensation intact, no lesions.\n\nA/P\n- Anemia after hemorrhage: recheck CBC today, expect normal.\n- T2DM: A1c, CMP, lipids, microalbumin. Talked about a realistic goal: 20 minute walk with the stroller 3 days a week.\n- Eye exam due in March.\n- RTC 4-5 months."},
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2023-12-01T09:30", "body": "Hgb 12.7, back to normal. A1c 7.0, up a bit; she knows. Lipids and kidney labs normal. Will revisit at next visit."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T06:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Pregnant", "author": "patient", "date": "2024-03-12T06:55", "body": "Hi doctor, I'm pregnant again, about 5 weeks. I called my OB right away like the hospital said because of what happened last time. They're seeing me next week. Should I still take everything?"},
+            {"type": "Patient Message", "title": "RE: Pregnant", "author": "PCP", "date": "2024-03-12T12:10", "body": "Congratulations, and good call contacting OB first. Yes, continue metformin, the inhalers and omeprazole unless OB tells you otherwise. Let's see you in April."}
+          ]
+        },
+        {
+          "id": "2024-04-18a",
+          "kind": "office_visit",
+          "start": "2024-04-18T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Early pregnancy, diabetes and asthma",
+          "state": {"weight_kg": 70.9, "labs": {"Hemoglobin A1c": 6.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-04-18T16:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-18T16:20", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-18T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-04-18T15:50", "body": "About 10 weeks. Seeing high-risk OB given the accreta last year; they have her on metformin, fingersticks four times daily, no insulin so far. Fasting 95-105.\n\nAsthma: well controlled. Reflux: worse with nausea, using omeprazole daily.\nNo bleeding or cramping.\n\nExam: well. Lungs clear. Heart regular. BP normal.\n\nPlan: A1c and BMP, copies to OB. Continue meds. See me after delivery."}
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization", "author": "MA", "date": "2024-07-09T11:30", "body": "Insurance changed its formulary for July; fluticasone/salmeterol 100/50 diskus now needs PA. Submitted with asthma diagnosis, prior trial of albuterol alone, current pregnancy. Approved for 12 months same day. Pharmacy notified, patient picking up."}
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "hospital_admission",
+          "start": "2024-10-21T07:30",
+          "end": "2024-10-23T12:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Induction of labor for gestational hypertension",
+          "vitals": [
+            {"time": "2024-10-21T07:40", "bp": [145, 95], "hr": 88, "rr": 16},
+            {"time": "2024-10-21T11:10", "bp": [85, 45], "hr": 110, "spo2": 98},
+            {"time": "2024-10-21T11:20", "bp": [112, 68]},
+            {"time": "2024-10-23T10:00", "bp": [132, 84]}
+          ],
+          "conditions": [
+            {"label": "Gestational hypertension", "icd10": "O13.3", "action": "diagnosed", "onset": "2024-10-14"},
+            {"label": "Hypotension due to neuraxial anesthesia", "icd10": "O74.8", "action": "diagnosed", "onset": "2024-10-21"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2024-11-14T10:00", "body": "Labor and delivery admission 2024-10-21 to 2024-10-23. Received by primary care 2024-11-14.\n\n39-year-old G4P2 at 37 weeks, with type 2 diabetes managed through the pregnancy without insulin (coded as gestational diabetes), asthma, reflux and a placenta accreta in 2023, admitted for induction because of gestational hypertension. Admission BP 145/95, HR 88, RR 16, afebrile. Fetal heart tracing reassuring.\n\nAfter discussion she chose epidural analgesia. About 30 minutes after placement she became nauseated and lightheaded; BP 85/45, HR 110, SpO2 98% on room air. Fetal tracing stayed reassuring throughout. Treated as hypotension from the neuraxial block: left uterine displacement, 500 mL lactated Ringer's bolus and phenylephrine 100 mcg IV. BP 112/68 within 10 minutes, symptoms resolved.\n\nLabor progressed to a vaginal delivery of a healthy infant later the same day. Given the history, the team was prepared for hemorrhage; the placenta delivered spontaneously and complete, with ordinary blood loss.\n\nPostpartum BP 130s/80s without medication; 132/84 on discharge.\n\nDischarge meds: metformin 1000 mg twice daily, fluticasone/salmeterol 100/50 twice daily, albuterol as needed, omeprazole 20 mg daily.\nAllergies: NKDA.\nFollow-up: BP check with OB in 1 week; postpartum visit at 6 weeks."}
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "outside_records",
+          "start": "2024-11-14T10:00",
+          "documents": [
+            {"type": "Progress Notes", "title": "Delivery summary reviewed", "author": "PCP", "date": "2024-11-14T17:40", "body": "October delivery summary in. Induced for gestational hypertension; epidural-related drop in BP treated quickly; uncomplicated vaginal birth and placenta. Postpartum visit with me in December to recheck BP."}
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up, blood pressure",
+          "state": {"weight_kg": 72.5, "labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Gestational hypertension", "icd10": "O13.3", "action": "resolved"},
+            {"label": "Hypotension due to neuraxial anesthesia", "icd10": "O74.8", "action": "resolved"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": null, "collected": "2024-12-09T16:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-12-09T16:10", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-09T16:10", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2024-12-09T16:05"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-09T15:40"},
+            {"procedure": "Immunization administration", "performed": "2024-12-09T16:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum Follow-up", "author": "PCP", "date": "2024-12-09T15:40", "body": "Seven weeks out from the October delivery. OB postpartum visit last week was fine; their BP check at 1 week was normal. No home BP cuff. No headaches, no swelling. Pumping at work.\n\nThree kids now, oldest is two and a half. Husband is home in the afternoons. PHQ-9 2.\n\nMeds unchanged: metformin, fluticasone/salmeterol, albuterol, omeprazole.\n\nExam: BP normal today. Lungs clear. Heart regular. No edema.\n\nA/P\n- Gestational hypertension: resolved, normal BP off all medication. Note for the future: her lifetime cardiovascular risk is higher after this and with diabetes; recheck BP every visit.\n- Epidural hypotension: resolved at delivery.\n- T2DM: A1c, CMP, CBC.\n- Flu vaccine today; she skipped it in pregnancy.\n- Physical in February."}
+          ]
+        }
+      ]
+    }
+  ]
+}

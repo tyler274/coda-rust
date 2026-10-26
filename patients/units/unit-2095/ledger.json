@@ -1,0 +1,2804 @@
+{
+  "unit": "unit-2095",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002095",
+      "given": "Todd",
+      "family": "Jacobs",
+      "birth_date": "1975-12-19",
+      "address_line": "14 Quarry Hill Road",
+      "phone": "+1-774-555-0172",
+      "email": "todd.jacobs@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker on disability with HIV/AIDS on ART at an outside ID clinic, heavy current smoker, history of IV drug use in remission. Joins in 2021 with weakness and dysphagia that become a hereditary myopathy and achalasia; Kaposi sarcoma in 2024 treated with liposomal doxorubicin; drug-induced urticarial vasculitis from SMX-TMP in 2026 after his last visit.",
+      "events": [
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T09:40",
+          "end": "2021-06-08T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care; weakness and trouble swallowing",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "note": "AIDS by history (recurrent bacterial pneumonia); ART through outside ID clinic"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "note": "1.5 ppd since age 20, 35 pack-years"
+            },
+            {
+              "label": "History of intravenous drug use (in remission)",
+              "action": "history",
+              "icd10": "F19.21"
+            },
+            {
+              "label": "History of recurrent bacterial pneumonia",
+              "action": "history",
+              "icd10": "Z87.01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV, prescribed by ID clinic"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pain"
+            },
+            {
+              "drug": "24 HR nicotine 0.875 MG/HR Transdermal System",
+              "action": "start",
+              "sig": "Apply 1 patch to skin daily, rotate sites",
+              "dose": {
+                "value": 21,
+                "unit": "mg/24h"
+              },
+              "frequency": "DAILY",
+              "route": "Transdermal",
+              "course": "chronic",
+              "reason": "tobacco use"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              83
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 77.4,
+            "height_cm": 177.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-08T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T10:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker, currently on medical disability"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2021-06-08T10:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive limb weakness, dysphagia, brother with myopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-06-08T11:20",
+              "author": "PCP",
+              "body": "45M here to set up primary care. Has not had regular primary care for a while; his ID clinic wanted him to have a PCP for everything else.\n\nCC: getting weaker, and food sticks.\n\nHPI: Over the last several months he has noticed his arms and legs giving out on him. Hard to get up off the floor, carrying drywall was the first thing to go and he hasn't worked construction since he went out on disability. No falls yet. Separately, trouble getting food and sometimes drinks to go down; he eats slowly and drinks a lot of water with meals. He wonders if the two are connected because his brother has a muscle disease that started with leg weakness.\n\nPMH: HIV, told he has AIDS because of repeated bacterial pneumonias years ago at the old practice. Followed at an outside ID clinic, on bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily, says he doesn't miss doses. Recurrent bacterial pneumonia in the past. Former IV drug use, in remission for years, not interested in going into detail today and I didn't push.\nMeds: B/F/TAF daily (ID prescribes). Acetaminophen 500 mg q6h prn aches.\nAllergies: penicillin (rash).\nFH: brother with progressive limb-girdle weakness, told it is genetic. Father COPD. Paternal uncle lung cancer at 62.\nSH: smokes 1.5 packs/day since age 20, about 35 pack-years. Alcohol 1-2 drinks a month. On disability from construction.\n\nROS: no fever, no chest pain. Denies weight loss. No rash.\n\nExam: vitals as recorded. Pleasant, in no distress. Oropharynx clear. Lungs clear bilaterally. RRR, no murmur. Abdomen soft. Has to push off his thighs to stand from the chair. Reflexes present and symmetric. Skin without lesions.\n\nA/P:\n1. Progressive limb weakness + dysphagia, family history of a genetic myopathy. Neurology referral placed; likely needs neuromuscular workup.\n2. HIV/AIDS - per ID. Requesting their last note and labs.\n3. Tobacco use disorder - wants to try something. Nicotine patch 21 mg daily sent. Talked about cutting down while on it. Not setting a quit date yet.\n4. Hx IVDU in remission. HCV antibody today.\n5. Baseline CBC, CMP.\n6. Records request to prior practice.\nRTC 3-4 months, sooner once neuro weighs in."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T14:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2021-06-10T14:05",
+              "author": "PCP",
+              "body": "Hi Todd, your blood counts, kidney and liver tests came back fine. Hepatitis C antibody is negative. Neurology should be calling you to schedule; let us know if you haven't heard from them in two weeks."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Lab results",
+              "date": "2021-06-10T19:31",
+              "author": "patient",
+              "body": "ok thanks. they called already, appt is end of july"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T11:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-05-20T09:30",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 342
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infectious Disease Clinic Note (05/20/2021)",
+              "date": "2021-06-22T11:15",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 05/20/2021\n\n45-year-old man with HIV, AIDS-defining history of recurrent bacterial pneumonia, here for routine follow-up. Taking bictegravir/emtricitabine/tenofovir alafenamide daily, reports full adherence, no side effects. No recent infections.\n\nAllergies: penicillin (rash).\nSocial: active smoker, about 1.5 ppd. Prior IVDU, in sustained remission.\n\nLabs today: CD4 342 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: virologically suppressed on current regimen. CD4 above 200, no OI prophylaxis indicated.\nPlan: continue B/F/TAF, 90-day supply sent. Return in about 1 year with labs, sooner as needed. Encouraged smoking cessation. Patient states he is establishing with a new PCP; copy of this note to be sent."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2021-06-22T11:20",
+              "author": "outside primary care",
+              "body": "Records from prior primary care office, received by fax.\n\nProblem list on file: HIV disease, followed by ID. Tobacco use. History of pneumonia, several episodes. History of IV drug use.\nAllergies: PCN - rash.\nImmunization record: COVID-19 Pfizer 04/06/2021 and 04/27/2021 (pharmacy, per state registry). Tdap and influenza dates not documented.\nLast visit in file was a routine follow-up with normal vitals. Lipids at that visit within normal limits.\nNo colorectal cancer screening on file.\n\nScanned to chart."
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "Records received",
+              "date": "2021-06-22T11:25",
+              "author": "front desk",
+              "body": "Prior PCP records and ID clinic note received by fax. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-16a",
+          "kind": "specialist_visit",
+          "start": "2021-08-16T13:30",
+          "service": "Neurology",
+          "reason": "Progressive muscle weakness and dysphagia",
+          "conditions": [
+            {
+              "label": "Hereditary myopathy with chaperone protein abnormality",
+              "action": "diagnosed",
+              "onset": "2021-08-16",
+              "icd10": "G71.8"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-07-27T10:00",
+              "text": "Specimen: skeletal muscle, left quadriceps, open biopsy.\nGross: received in multiple portions, fresh and in fixative.\nMicroscopic: skeletal muscle with myopathic changes. Immunohistochemistry demonstrates abnormal accumulation of chaperone proteins within muscle fibers. No inflammatory infiltrate. No vasculitis.\nComment: findings support a hereditary myopathy involving chaperone protein abnormality. Correlate with genetic evaluation.",
+              "conclusion": "Skeletal muscle with abnormal chaperone protein accumulation, consistent with a hereditary myopathy.",
+              "issued": "2021-08-10T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2021-08-16T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2021-08-24T09:10",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - NEUROMUSCULAR CLINIC\nDate of service: 08/16/2021\nReason for referral: weakness, swallowing difficulty\n\nThank you for sending Mr. Jacobs, a 45-year-old right-handed man with HIV, seen first in July for slowly worsening weakness of the arms and legs over many months. He also has trouble swallowing. His brother has a progressive limb-girdle pattern of weakness attributed to a genetic myopathy.\n\nWe obtained a left quadriceps muscle biopsy on 07/27/2021. Today we reviewed the result with him: abnormal accumulation of chaperone proteins within the muscle fibers, no inflammation.\n\nMeds: bictegravir/emtricitabine/TAF daily, acetaminophen as needed, nicotine patch.\nAllergies: penicillin (rash).\nSocial: smoker, 35 pack-years. Rare alcohol. On medical disability from construction work.\nFamily: brother with genetic myopathy, as above.\n\nImpression: hereditary myopathy with chaperone protein abnormality. The family history fits an inherited process. Genetic counseling offered; he will think about it.\n\nRegarding the dysphagia: he describes both solids and liquids hanging up. That pattern is not typical for a myopathic oropharyngeal problem, and I would recommend gastroenterology evaluation for an esophageal cause.\n\nPlan: home exercise program, avoid exhausting effort. Return in 1 year, sooner if breathing or swallowing change. Will monitor respiratory function at follow-up.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2021-08-26a",
+          "kind": "telephone",
+          "start": "2021-08-26T12:10",
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "dysphagia to solids and liquids"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology results discussed",
+              "date": "2021-08-26T12:25",
+              "author": "PCP",
+              "body": "Called pt. Went over the neuromuscular letter: biopsy shows an inherited myopathy, same family of problem as his brother. He was not surprised. Neuro wants GI to look at the swallowing, which makes sense to me - solids and liquids both. GI referral placed. He will keep up the home exercises. Asked how the patch is going: wearing it most days, down to about a pack a day on a good day."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "office_visit",
+          "start": "2021-10-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, weakness, smoking",
+          "vitals": {
+            "bp": [
+              120,
+              79
+            ],
+            "hr": 71,
+            "spo2": 96,
+            "weight_kg": 77.3
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-12T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T15:52"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T15:50"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-12T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-10-12T16:30",
+              "author": "PCP",
+              "body": "S: Checking in. Neuro diagnosed an inherited myopathy in August. Doing the stretches they gave him most days. Swallowing about the same, eats slow, a lot of water. GI appointment is set for early November. Smoking back up to 1.5 ppd, patch helps a little in the mornings. Not ready to set a date.\nNo fevers, cough or breathing trouble.\n\nO: vitals as charted. NAD. Lungs clear. Heart regular. Stands from the chair with a push from his hands, unchanged from June.\n\nA/P:\n- Hereditary myopathy - neuro following; annual review there.\n- Dysphagia - GI pending.\n- HIV - ID clinic, suppressed in May.\n- Tobacco - counseled again, keep the patch, try to delay the first cigarette.\n- Flu shot and PCV20 today (immunocompromised).\nRTC 3-4 months."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2021-10-12T15:55",
+              "author": "MA",
+              "body": "Influenza quadrivalent 0.5 mL IM left deltoid. PCV20 0.5 mL IM right deltoid. VIS given. Tolerated well, observed 15 min."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "specialist_visit",
+          "start": "2021-12-14T10:00",
+          "service": "Gastroenterology",
+          "reason": "Progressive dysphagia to solids and liquids",
+          "conditions": [
+            {
+              "label": "Achalasia",
+              "action": "diagnosed",
+              "onset": "2021-12-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nifedipine 30 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "achalasia, prescribed by GI"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.9
+          },
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-11-30T08:45",
+              "text": "Specimen: gastroesophageal junction, biopsies.\nMicroscopic: squamous and glandular mucosa without dysplasia or malignancy. No eosinophilia.",
+              "conclusion": "Benign gastroesophageal junction mucosa. No dysplasia or malignancy.",
+              "issued": "2021-12-03T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2021-11-30T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2021-12-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up Consultation",
+              "date": "2022-01-25T10:40",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY ASSOCIATES\nDate of service: 12/14/2021\nReferring: primary care\n\nMr. Jacobs returns to go over his swallowing workup. He has HIV, a hereditary myopathy diagnosed by neurology this summer, and has been seen once here already. For several months food and liquids alike hang up behind the breastbone. He brings back undigested food, sometimes his breath smells bad, and he gets a vague, mild chest discomfort with meals. No weight loss, no pain with swallowing, no heartburn.\n\nMeds: bictegravir/emtricitabine/TAF, acetaminophen prn, nicotine patch.\nAllergies: penicillin (rash).\nSocial: current smoker, 35 pack-years. Alcohol 1-2 drinks monthly. On medical disability.\nFamily: brother with a genetic myopathy; father COPD.\n\nVitals: T 36.9 C, BP 126/78, HR 74, RR 14.\nExam: unremarkable.\n\nStudies since the first visit:\n- Barium esophagram: dilated esophagus with retained contrast and smooth tapering to a narrow segment at the gastroesophageal junction (bird's-beak appearance).\n- Upper endoscopy 11/30/2021: retained food in a dilated esophagus. No mass and no stricture at the GE junction; the scope passed with gentle pressure. GE junction biopsies benign.\n- High-resolution esophageal manometry: absent peristalsis with incomplete relaxation of the lower esophageal sphincter.\n\nImpression: achalasia. Endoscopy does not suggest a mechanical or malignant cause.\n\nPlan: we discussed options. Starting nifedipine extended-release 30 mg daily. Eat upright, small bites, liquids with meals, stay upright after eating. Return in 6 months.\n\nGastroenterology"
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "GI records received",
+              "date": "2022-01-25T10:45",
+              "author": "front desk",
+              "body": "GI consult note from 12/14/21 received by fax today after our request. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-06a",
+          "kind": "portal_message",
+          "start": "2022-01-06T20:12",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "new med from GI",
+              "date": "2022-01-06T20:12",
+              "author": "patient",
+              "body": "fyi the stomach doctor put me on nifedipine 30 once a day, they said its for the esophagus muscle. they said it might drop my blood pressure. is that ok with my HIV pill"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: new med from GI",
+              "date": "2022-01-07T08:50",
+              "author": "PCP",
+              "body": "Thanks for telling me. No problem combining nifedipine with your HIV medicine. If you get lightheaded standing up or your ankles swell, let me know. We haven't received the GI note yet so I'll ask them to fax it. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-15a",
+          "kind": "office_visit",
+          "start": "2022-02-15T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up achalasia, myopathy",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 77.1
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-15T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-15T11:15",
+              "author": "PCP",
+              "body": "Follow-up. GI note now in: achalasia on esophagram, endoscopy and manometry; endoscopy benign. On nifedipine ER 30 daily since mid-December. No dizziness, no ankle swelling. Still regurgitates sometimes at night, sleeps propped on two pillows. Weakness stable by his account. Smoking 1-1.5 ppd with the patch.\n\nExam: BP and HR as charted, fine on nifedipine. Lungs clear. No edema.\n\nAssessment/plan:\n- Achalasia - GI managing, nifedipine ER 30. Back to GI in June.\n- Hereditary myopathy - neuro in August.\n- HIV - ID visit due in spring.\n- Tobacco use disorder - patch refilled, counseled.\nPhysical in May with fasting labs."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "Nicotine patch refill",
+              "date": "2022-02-15T11:16",
+              "author": "PCP",
+              "body": "Nicotine 21 mg/24 hr patch, #28, 2 refills, sent to his pharmacy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "specialist_visit",
+          "start": "2022-04-26T09:15",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-26T09:40",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 371
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2022-05-03T13:00",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 04/26/2022\n\nHIV follow-up. Interval diagnoses from outside: hereditary myopathy (neurology), achalasia (GI, started on nifedipine ER). No interactions of concern with his ART. Adherent to bictegravir/emtricitabine/TAF.\n\nLabs: CD4 371 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: HIV well controlled. Plan: continue regimen, labs and visit in 12 months. Smoking cessation encouraged."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              80
+            ],
+            "hr": 62,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 77.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 319
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-05-17T09:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.6
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-17T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-05-17T09:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-17T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-17T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-17T10:00",
+              "author": "PCP",
+              "body": "Annual exam, 46M.\n\nInterval: saw ID last month, viral load still undetectable, CD4 in the 300s. Swallowing about the same on nifedipine, still some nighttime regurgitation. Weakness slowly creeping per him, still walks fine on level ground, stairs harder. Smoking unchanged, wears the patch most days.\nDiet: soft foods, small meals. Activity: home exercises.\nPHQ-9 3.\n\nExam: vitals as charted. Well appearing. HEENT normal, dentition fair. Neck supple, no nodes. Lungs clear. RRR. Abdomen soft, nontender, no organomegaly. Skin: no rashes or lesions. Neuro: proximal pushing off to rise, otherwise unchanged. No edema.\n\nPreventive:\n- Colorectal: none prior, age 46. FIT kit given.\n- Shingrix #1 today (HIV); #2 in 2 months.\n- Hep C done 2021, negative.\n- Labs: CBC, CMP, lipids, A1c, UA.\n- Tobacco: counseled, 5 minutes. Not ready to quit.\n\nRTC fall."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix dose 1",
+              "date": "2022-05-17T09:22",
+              "author": "MA",
+              "body": "Shingrix 0.5 mL IM left deltoid. Dose 2 due in 2 months, nurse visit booked July."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical labs",
+              "date": "2022-05-19T12:30",
+              "author": "PCP",
+              "body": "Todd - all of your labs from the physical were normal: blood count, kidney and liver function, sugar, cholesterol and urine. Don't forget to send back the stool card."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "lab_only",
+          "start": "2022-06-07T11:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-03T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-06-07T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2022-06-07T15:10",
+              "author": "RN",
+              "body": "FIT negative. Pt notified by portal. Repeat in 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "nurse_visit",
+          "start": "2022-07-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-07-19T13:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-07-19T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2022-07-19T13:55",
+              "author": "RN",
+              "body": "Here for the second Shingrix. Said the first one knocked him out for a day. Shingrix 0.5 mL IM right deltoid, tolerated. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "specialist_visit",
+          "start": "2022-08-23T14:00",
+          "service": "Neurology",
+          "reason": "Myopathy follow-up",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2022-08-23T13:30",
+              "text": "Good effort and reproducibility. FVC, FEV1 and FEV1/FVC within normal limits. No restrictive or obstructive pattern. Seated and supine FVC similar.",
+              "conclusion": "Normal spirometry."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Spirometry",
+              "performed": "2022-08-23T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2022-09-01T09:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - NEUROMUSCULAR CLINIC\nDate of service: 08/23/2022\n\nOne-year follow-up for hereditary myopathy with chaperone protein abnormality. He feels the weakness has progressed slowly; stairs and getting up from low seats are harder than last year. No shortness of breath, no orthopnea. Swallowing now attributed to achalasia by GI, on nifedipine.\n\nExam: slowly progressive limb weakness compared with last year; gait steady.\nSpirometry today normal, no difference sitting versus lying.\n\nPlan: continue home exercise program; physical therapy referral offered, he declined for now. Genetic counseling still open to him. Return 1 year or sooner with breathing symptoms.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-10a",
+          "kind": "office_visit",
+          "start": "2022-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-up",
+          "conditions": [
+            {
+              "label": "Lung cancer screening candidate (high-risk smoker)",
+              "action": "diagnosed",
+              "onset": "2022-10-10",
+              "note": "35 pack-years, current smoker; annual LDCT from age 50 (Dec 2025)",
+              "icd10": "Z12.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 64,
+            "rr": 19,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 78.1
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-10-10T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-10T09:37"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-10T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-10T09:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-10-10T10:05",
+              "author": "PCP",
+              "body": "Routine follow-up: HIV, inherited myopathy, achalasia. Neuro saw him in August (letter in chart, spirometry normal). GI follow-up done over the summer per him, no changes. Feels fine today, nothing new to report.\n\nHe has been thinking about lung cancer - father has COPD, uncle had lung cancer, he knows he smokes too much. Wants to know if there's a test.\n\nExam: vitals normal. Lungs clear to auscultation throughout, no wheeze or crackles. Heart regular.\n\nA/P:\n- Lung cancer risk: 35 pack-years and still smoking, so he qualifies for annual low-dose CT screening by smoking history, but screening starts at age 50 - he turns 50 in Dec 2025. Explained what the scan is, the false-positive and follow-up scan issue, and that quitting does more than any scan. Added to problem list so we catch it at 50. He liked having a plan.\n- Tobacco - same; patch refilled.\n- Achalasia - nifedipine ER 30, GI following.\n- Myopathy - neuro yearly.\n- HIV - ID yearly, suppressed.\n- Flu and bivalent COVID booster today.\nPhysical in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Miscellaneous",
+              "title": "No-show",
+              "date": "2023-01-17T14:30",
+              "author": "front desk",
+              "body": "Pt did not arrive for 2pm follow-up. Called, no answer, left message with callback number. Texted reschedule link."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "office_visit",
+          "start": "2023-01-31T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up (rescheduled)",
+          "vitals": {
+            "bp": [
+              125,
+              81
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 77.7
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-31T11:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-31T12:05",
+              "author": "PCP",
+              "body": "Missed the 1/17 slot - truck wouldn't start in the cold, he says.\n\nNo new problems. Swallowing steady on nifedipine ER, eats slowly, sleeps propped up. Legs about the same. Using acetaminophen a few times a week for aches. Still 1-1.5 ppd with the patch.\n\nBP/HR as charted. Lungs clear. Heart regular. No edema.\n\nPlan: no changes. Patch refilled. Physical in May. ID visit due in spring - he has it booked."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "Nicotine patch refill",
+              "date": "2023-01-31T12:06",
+              "author": "PCP",
+              "body": "Nicotine 21 mg/24 hr patch #28 x 2 refills sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              81
+            ],
+            "hr": 65,
+            "rr": 18,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 78.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-23T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-23T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-23T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-05-23T09:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-23T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-05-23T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-05-23T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-05-23T09:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-05-23T09:50",
+              "author": "PCP",
+              "body": "Physical, age 47.\n\nSaw ID in April - he says it went fine, numbers good, same pills; we never got a note. Neuro not since last August, he plans to call. GI: still on nifedipine, nothing else planned.\n\nNo new complaints. Weight steady. Smoking the same; not interested in medication to quit, patch is enough for him. PHQ-9 2.\n\nExam: vitals reviewed. Alert, in no distress. Oral mucosa pink, no lesions. Neck without adenopathy. Lungs clear. RRR, no murmur. Abdomen benign. Skin: no rash, no lesions on legs or trunk. Rises from chair using arms. No edema.\n\nHealth maintenance:\n- FIT again this year, kit given.\n- Tdap today; no record of one.\n- Shingrix complete 2022. PCV20 2021.\n- Labs: CBC, CMP, lipids, A1c, UA.\n- Lung screening: from age 50.\n\nRTC fall for shots."
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "Records request",
+              "date": "2023-05-23T10:10",
+              "author": "front desk",
+              "body": "Faxed request to ID clinic for April 2023 visit note and labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-25a",
+          "kind": "portal_message",
+          "start": "2023-05-25T10:15",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical results",
+              "date": "2023-05-25T10:15",
+              "author": "PCP",
+              "body": "Hi Todd, everything from your physical came back in the normal range again. Stool kit whenever you get to it."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "lab_only",
+          "start": "2023-06-13T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-09T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-06-13T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2023-06-13T14:00",
+              "author": "RN",
+              "body": "FIT negative, letter mailed and posted to portal. Due again 6/2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:07"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-17T16:20",
+              "author": "RN",
+              "body": "Influenza 0.5 mL IM L deltoid, 2023-24 COVID (Pfizer) 0.3 mL IM R deltoid. No reactions. Pt asked about his ID note request - still nothing from them, refaxed."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T13:20",
+          "end": "2024-02-06T14:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Purple spots in mouth and on legs, cough, weight loss",
+          "vitals": {
+            "bp": [
+              127,
+              73
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 301
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-06T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-02-06T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2024-02",
+              "action": "placed",
+              "order": "CT chest",
+              "category": "imaging",
+              "reason": "chronic cough, weight loss, night sweats in HIV"
+            },
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral, urgent",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "violaceous lesions palate and lower legs, HIV"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-06T14:40",
+              "author": "PCP",
+              "body": "S: Came in because of purple spots. For several weeks he has had dark purple spots on the roof of his mouth and on both lower legs. Not painful. Also a dry cough that won't quit, several weeks, no blood. Waking up soaked at night. Pants are loose - down about 7 kg since last year on our scale. No fever he knows of. Still taking his HIV pill every day.\n\nO: Vitals as charted; weight 71.0 kg (78 last spring). Thin. Several violaceous macules and papules on the hard palate. Multiple similar purple papules on both shins and calves, non-blanching. No adenopathy felt in the neck or axillae. Lungs: clear to auscultation, no crackles. Heart regular. Abdomen soft.\n\nA/P: violaceous skin and palate lesions with cough, night sweats and weight loss in a man with AIDS. Kaposi sarcoma is high on the list; infection needs to be excluded too.\n- Urgent dermatology referral for biopsy - called and got him in on 2/19.\n- CT chest ordered.\n- CBC, CMP today.\n- Messaged his ID clinic, they will move his visit up.\n- Return precautions for fever or shortness of breath.\nI'll call with results."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "ID clinic notified",
+              "date": "2024-02-06T15:30",
+              "author": "RN",
+              "body": "Called ID clinic nurse line per PCP, relayed lesions, cough, weight loss, night sweats. They will see pt 2/27 with labs and want derm and CT results faxed."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "imaging",
+          "start": "2024-02-13T08:30",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-02-13T08:30",
+              "text": "OUTSIDE IMAGING CENTER\nCT chest without contrast.\nIndication: chronic cough, weight loss, night sweats; HIV.\nComparison: none.\n\nFindings: Bilateral perihilar infiltrates. Small bilateral pleural effusions. No pneumothorax. Central airways patent. Heart size normal, no pericardial effusion. No mediastinal mass. Visualized upper abdomen unremarkable. Bones without suspicious lesion.",
+              "conclusion": "Bilateral perihilar infiltrates with small bilateral pleural effusions.",
+              "issued": "2024-02-13T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-chest-2024-02",
+              "action": "done",
+              "date": "2024-02-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CT chest result",
+              "date": "2024-02-14T08:15",
+              "author": "PCP",
+              "body": "CT: bilateral perihilar infiltrates and small effusions. Called pt - discussed, no fever or dyspnea. Faxed to derm and ID ahead of their visits. Labs from 2/6 fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-19a",
+          "kind": "specialist_visit",
+          "start": "2024-02-19T10:30",
+          "service": "Dermatology",
+          "reason": "Violaceous lesions of hard palate and lower extremities",
+          "conditions": [
+            {
+              "label": "Kaposi sarcoma",
+              "action": "diagnosed",
+              "onset": "2024-02-19",
+              "icd10": "C46.9"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-02-19T10:55",
+              "text": "Specimen: skin, left lower leg, 4 mm punch biopsy.\nMicroscopic: dermal proliferation of spindle-shaped cells forming slit-like vascular spaces, with neovascularization and extravasated red blood cells.\nComment: diagnostic of Kaposi sarcoma in this clinical setting.",
+              "conclusion": "Kaposi sarcoma.",
+              "issued": "2024-02-22T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2024-02-19T10:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2024-02-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2024-02-26T09:45",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY\nDate of service: 02/19/2024\nReferred urgently by PCP.\n\n48-year-old man with HIV on ART and achalasia, seen for purple lesions of the palate and legs. He also has a dry cough lasting weeks, with weight loss and drenching night sweats over the same period.\n\nAllergies: penicillin (rash).\nMeds: bictegravir/emtricitabine/TAF, nifedipine ER 30 mg, acetaminophen prn, nicotine patch.\n\nExam: numerous red-violet papules that do not blanch, on the hard palate and over both lower legs.\nChest CT from 02/13 reviewed: bilateral perihilar infiltrates, small effusions.\n\nProcedure: 4 mm punch biopsy, left lower leg, after consent; hemostasis with pressure, one suture.\n\nPathology (02/22): spindle cell proliferation with new vessel formation and red cells outside the vessels - Kaposi sarcoma.\n\nAssessment: Kaposi sarcoma involving skin and oral mucosa; the chest CT raises concern for lung involvement.\nPlan: urgent oncology referral placed; ID aware. Suture out in 10 to 14 days at PCP or here.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "specialist_visit",
+          "start": "2024-02-27T09:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up, new Kaposi sarcoma",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-27T09:20",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 291
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2024-03-05T11:30",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 02/27/2024\n\nSeen sooner than planned for biopsy-proven Kaposi sarcoma of skin and palate, with perihilar infiltrates and small effusions on CT, cough, night sweats and weight loss.\n\nAdherent to bictegravir/emtricitabine/TAF.\nCD4 291 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: KS despite viral suppression. Infection must be excluded as a cause of the lung findings before they are attributed to KS. Pulmonary referral for bronchoscopy with BAL arranged; oncology referral already placed by dermatology. CD4 above 200: no PJP prophylaxis.\nPlan: continue ART unchanged through chemotherapy, no interactions of concern with liposomal doxorubicin. Labs again in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "nurse_visit",
+          "start": "2024-03-01T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Suture removal",
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Suture removal",
+              "date": "2024-03-01T10:30",
+              "author": "RN",
+              "body": "Single suture removed from left lower leg biopsy site. Site clean and healed, no drainage. Pt has bronchoscopy next week and oncology the week after."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "procedure_visit",
+          "start": "2024-03-07T07:30",
+          "end": "2024-03-07T11:30",
+          "service": "Pulmonology",
+          "reason": "Bronchoscopy with BAL, perihilar infiltrates",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Bronchoscopy with Bronchoalveolar Lavage",
+              "date": "2024-03-14T13:00",
+              "author": "pulmonology",
+              "body": "OUTSIDE PULMONARY - BRONCHOSCOPY REPORT\nDate of procedure: 03/07/2024\nIndication: bilateral perihilar infiltrates and small effusions in a man with HIV and newly diagnosed cutaneous/oral Kaposi sarcoma; exclude infection.\nAllergies: penicillin.\nSedation: moderate, monitored.\n\nFindings: vocal cords normal. Trachea and main bronchi patent. Airway mucosa without focal lesion. Scant clear secretions.\nBAL right middle lobe, returns clear.\n\nBAL results (final 03/13): bacterial culture no growth. AFB smear negative; AFB culture no growth so far, final at 6 weeks. Pneumocystis stain negative.\n\nImpression: no infection identified on BAL. Results to oncology and ID.\nNo complications; discharged home same day.\n\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T13:00",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma",
+          "medications": [
+            {
+              "drug_text": "doxorubicin hydrochloride liposomal 2 MG/ML Injectable Suspension",
+              "action": "historical",
+              "sig": "20 mg/m2 IV every 3 weeks for 6 cycles, given at oncology infusion center",
+              "dose": {
+                "value": 20,
+                "unit": "mg/m2"
+              },
+              "frequency": "EVERY 3 WEEKS",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Kaposi sarcoma, oncology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Consultation",
+              "date": "2024-03-20T08:50",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 03/12/2024\n\nReason: Kaposi sarcoma, referred by dermatology.\n\nHistory: HIV on ART with suppressed viral load, CD4 291 last month. Several weeks of red-violet lesions on the palate and lower legs, punch biopsy 02/19 Kaposi sarcoma. Dry cough, night sweats, weight loss of about 7 kg. CT chest 02/13: bilateral perihilar infiltrates with small pleural effusions. Bronchoscopy 03/07 with BAL negative for bacteria, AFB and Pneumocystis.\nOther history: hereditary myopathy, achalasia on nifedipine ER, tobacco use (35 pack-years, current), remote IVDU in remission.\nAllergies: penicillin (rash).\n\nExam: palate and bilateral lower-leg violaceous papules as described. Lungs clear. No hepatosplenomegaly.\n\nAssessment: AIDS-related Kaposi sarcoma involving skin and oral mucosa, with pulmonary involvement - with infection excluded, the perihilar infiltrates and effusions are attributed to KS. Systemic therapy indicated.\n\nPlan: liposomal doxorubicin 20 mg/m2 IV every 3 weeks, 6 cycles, starting 03/18/2024. Continue ART per ID. CBC before each cycle here. Restaging CT chest after cycle 6. Discussed hair, mouth sores, low counts, hand-foot reaction, infusion reactions.\n\nOncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, Kaposi sarcoma on chemotherapy",
+          "vitals": {
+            "bp": [
+              111,
+              82
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 70.9
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-26T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-26T11:45",
+              "author": "PCP",
+              "body": "Interval: bronch BAL negative for infection; oncology calls the lung findings KS along with skin and palate. Cycle 1 of liposomal doxorubicin 3/18. Tired for a few days after, appetite ok, no fever. Next cycle 4/8. Still smoking about a pack a day, patch on.\n\nExam: vitals as charted, weight holding since February. Palate and shin lesions unchanged in appearance. Lungs clear. Heart regular. No edema. Biopsy site healed.\n\nA/P:\n- Kaposi sarcoma (skin, palate, lung) - on liposomal doxorubicin per oncology; CBCs there. Fever = call oncology same day.\n- HIV - ART unchanged per ID.\n- Achalasia - nifedipine ER, soft diet is helping him keep weight on.\n- Myopathy - unchanged.\n- Tobacco - encouraged cutting down during treatment.\nRTC after chemo course, around August."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "portal_message",
+          "start": "2024-05-14T18:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "update",
+              "date": "2024-05-14T18:40",
+              "author": "patient",
+              "body": "4 treatments done, 2 to go. the spots on my legs are flatter and lighter. cough is mostly gone. just tired. need my patches refilled please"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: update",
+              "date": "2024-05-15T08:20",
+              "author": "PCP",
+              "body": "That's great to hear, Todd. Patch refill sent. Keep oncology posted if the tiredness gets worse or you run a fever."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "Nicotine patch refill",
+              "date": "2024-05-15T08:21",
+              "author": "PCP",
+              "body": "Nicotine 21 mg/24 hr patch #28 x 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "specialist_visit",
+          "start": "2024-07-01T12:30",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma, cycle 6",
+          "medications": [
+            {
+              "drug_text": "doxorubicin hydrochloride liposomal 2 MG/ML Injectable Suspension",
+              "action": "stop",
+              "reason": "planned 6 cycles complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Progress Note",
+              "date": "2024-08-13T15:20",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 07/01/2024\n\nCycle 6 of 6 liposomal doxorubicin 20 mg/m2 given today; course complete.\n\nTolerated treatment with fatigue only; no delays. Counts adequate before each cycle.\nSkin and palate lesions are now flat and faded. Cough has resolved; no night sweats for about two months. Weight coming back.\n\nPlan: restaging CT chest in 4-5 weeks. Surveillance visits every 6 months after that. Continue ART.\n\nOncology"
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "Oncology note received",
+              "date": "2024-08-13T15:25",
+              "author": "front desk",
+              "body": "Oncology note from 7/1 received by fax after pt mentioned it at check-in scheduling. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "imaging",
+          "start": "2024-08-05T09:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-08-05T09:00",
+              "text": "OUTSIDE IMAGING CENTER\nCT chest without contrast.\nIndication: Kaposi sarcoma, restaging after chemotherapy.\nComparison: 02/13/2024.\n\nFindings: The previously seen bilateral perihilar infiltrates have resolved. No pleural effusion. No new consolidation. Central airways patent. Heart normal in size. No mediastinal mass.",
+              "conclusion": "Resolution of perihilar infiltrates and pleural effusions since 02/2024. No new findings.",
+              "issued": "2024-08-05T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "CT chest report received",
+              "date": "2024-08-07T09:30",
+              "author": "front desk",
+              "body": "Restaging CT report (ordered by oncology) received and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemotherapy",
+          "vitals": {
+            "bp": [
+              128,
+              85
+            ],
+            "hr": 74,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 74.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T09:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-08-20T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-08-20T10:30",
+              "author": "PCP",
+              "body": "Here after finishing 6 cycles of liposomal doxorubicin (last 7/1). Oncology note and restaging CT in chart: lung infiltrates and effusions gone. Lesions faded. He feels like himself again - eating better within the limits of the achalasia, no cough, no sweats.\n\nWeight up about 3.5 kg since March.\n\nExam: palate with faint flat purplish discoloration only. Shins with flat brown-violet macules, no raised lesions. Lungs clear. Heart regular. No edema.\n\nA/P:\n- Kaposi sarcoma - treatment complete, good response. Oncology surveillance every 6 months.\n- HIV - ID visit in October.\n- Achalasia, myopathy - unchanged.\n- Tobacco - 1 ppd. Again offered help; he'll stay on the patch.\n- CBC, CMP today after chemo.\n- FIT overdue (due June) - kit given.\nFlu/COVID in October. Check in late fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T11:00",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Labs",
+              "date": "2024-08-22T11:00",
+              "author": "PCP",
+              "body": "Your blood counts have recovered nicely after chemo and your kidney and liver tests are normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:37"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-08T15:45",
+              "author": "MA",
+              "body": "Flu (trivalent) 0.5 mL IM L deltoid and 2024-25 COVID 0.3 mL IM R deltoid given. Tolerated. Reminded pt about the FIT kit, he says it is still on the counter."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "specialist_visit",
+          "start": "2024-10-22T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-22T10:20",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 318
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2024-10-29T14:10",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 10/22/2024\n\nFollow-up after completing liposomal doxorubicin for KS in July; lesions faded and restaging CT clear per oncology.\nMarch BAL AFB culture final: no growth.\nAdherent to bictegravir/emtricitabine/TAF.\nCD4 318 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nPlan: continue ART. Labs and visit in 6 months. Smoking cessation advised."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-11-28T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-11-28T10:40",
+              "author": "PCP",
+              "body": "Video visit, pt at home, ID verified by name and DOB.\n\nShort check-in. ID note from October in chart: viral load undetectable, CD4 318. No new skin spots he can see, the old ones keep fading. No cough. Swallowing the same on nifedipine ER - slow meals, sleeps propped up. Legs about the same; uses acetaminophen now and then.\nStill smoking around a pack a day. Needs patches.\n\nExam limited to video: comfortable, speaking full sentences, no visible lesions on the face or lips.\n\nA/P:\n- Kaposi sarcoma s/p liposomal doxorubicin - oncology surveillance due February.\n- HIV - ID every 6 months.\n- Achalasia - GI, nifedipine.\n- Hereditary myopathy - stable by report; reminded him to rebook neurology.\n- Tobacco - patch refilled.\n- Turns 50 in December 2025 - lung screening CT then.\n- FIT still not returned; he'll mail it.\nOffice visit in the spring."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "Nicotine patch refill",
+              "date": "2024-11-28T10:41",
+              "author": "PCP",
+              "body": "Nicotine 21 mg/24 hr patch #28 x 5 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "specialist_visit",
+          "start": "2025-02-10T14:00",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Surveillance",
+              "date": "2025-02-18T10:00",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 02/10/2025\n\nSurveillance, AIDS-related Kaposi sarcoma, 7 months after 6 cycles of liposomal doxorubicin.\nNo new skin or mouth lesions noticed. No cough, sweats or weight loss.\nExam: residual flat pigmented macules on both shins and faint palatal discoloration; no new papules or nodules. Lungs clear.\nAssessment: no evidence of active disease.\nPlan: return in 6 months. Continue ART with ID."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "specialist_visit",
+          "start": "2025-04-14T09:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-14T09:50",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 337
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2025-04-22T12:40",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 04/14/2025\n\nDoing well. KS quiet on oncology surveillance. Adherent to bictegravir/emtricitabine/TAF, no missed doses reported.\nCD4 337 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\nPlan: continue ART, 90-day supplies. Return in 12 months, sooner if needed. Still smoking; cessation advised again."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "telephone",
+          "start": "2025-05-20T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Recall - overdue follow-up",
+              "date": "2025-05-20T11:10",
+              "author": "front desk",
+              "body": "Called to schedule spring follow-up the PCP asked for in November. No answer, voicemail left with our number. Portal reminder sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "pharmacy",
+          "start": "2025-06-03T09:15",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - nicotine patch",
+              "date": "2025-06-03T12:30",
+              "author": "PCP",
+              "body": "Pharmacy request for nicotine 21 mg/24 hr patches. Approved #28 x 1 refill. Not seen since November - front desk please try him again for a visit."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling attempt",
+              "date": "2025-06-03T14:00",
+              "author": "front desk",
+              "body": "Second attempt to reach pt to book follow-up. Mailbox full. Sent a portal message."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "specialist_visit",
+          "start": "2025-08-11T13:30",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Surveillance",
+              "date": "2025-08-19T09:20",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 08/11/2025\n\nKaposi sarcoma, about 13 months out from completing liposomal doxorubicin.\nNo new lesions, no respiratory symptoms, weight stable.\nExam: old shin macules continue to fade. Palate clear of raised lesions. Lungs clear.\nAssessment: remains without evidence of active KS.\nPlan: surveillance in 6 months; sooner for any new lesion or cough."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "ed_visit",
+          "start": "2026-02-02T16:40",
+          "end": "2026-02-02T22:15",
+          "service": "Emergency Medicine",
+          "reason": "Rash on legs and joint stiffness after antibiotic course",
+          "vitals": {
+            "bp": [
+              128,
+              75
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 95
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-02T17:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-02T17:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-02T17:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-02-02T20:10",
+              "text": "Specimen: skin, right lower leg, 4 mm punch biopsy.\nMicroscopic: perivascular infiltrate of neutrophils with nuclear dust (leukocytoclasis) and fibrinoid necrosis of the walls of small dermal vessels. No spindle cell proliferation.\nComment: leukocytoclastic small-vessel vasculitis; correlate clinically.",
+              "conclusion": "Leukocytoclastic vasculitis of small dermal vessels.",
+              "issued": "2026-02-05T11:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-02T22:00"
+            },
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2026-02-02T20:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-02-23T13:15",
+              "author": "emergency medicine",
+              "body": "OUTSIDE REGIONAL EMERGENCY DEPARTMENT\nDate of visit: 02/02/2026\n\nCC: leg rash, stiff joints.\n\nHPI: 50M with HIV on ART and a history of Kaposi sarcoma treated with chemotherapy in 2024. About a week ago a rash came up on both legs and has spread and darkened since. Achy, stiff joints and tired. Seen at an urgent care 01/19 for pneumonia and given sulfamethoxazole-trimethoprim DS twice daily for 10 days, finished 01/28. He says his lips swelled for an afternoon during the course and went down on their own. No fever. No weight loss. No belly pain.\n\nPMH: HIV/AIDS, Kaposi sarcoma, achalasia, hereditary myopathy, tobacco use, remote IVDU, recurrent pneumonia.\nMeds: bictegravir/emtricitabine/TAF, nifedipine ER 30 mg, nicotine patch, acetaminophen prn.\nAllergies: penicillin (rash).\nSocial: smokes about a pack a day.\n\nExam: vitals reviewed, afebrile. Both lower legs with many non-blanching purpuric papules, palpable, no ulceration. Lips and tongue normal now. Heart regular, lungs clear, abdomen soft and nontender. Joints without effusion.\n\nLabs: platelets normal. PT/INR normal. UA without blood or protein.\n\nDermatology consulted by phone, came down and did a 4 mm punch biopsy of the right leg.\n\nAssessment: palpable purpura after sulfamethoxazole-trimethoprim - drug-induced urticarial vasculitis most likely; biopsy pending.\nDisposition: home. Antibiotic already finished. Sulfamethoxazole-trimethoprim added as an allergy (urticarial vasculitis and angioedema). Acetaminophen for joint stiffness. Dermatology clinic follow-up in about 1 month; return for fever, spreading rash, abdominal pain, dark urine, swelling of lips or throat.\n\nAddendum 02/05: biopsy shows leukocytoclastic vasculitis of small dermal vessels, consistent with the clinical diagnosis. Patient informed by phone.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "ED records received",
+              "date": "2026-02-23T13:20",
+              "author": "front desk",
+              "body": "ED record from 2/2/26 received after records request of 2/10. Scanned and routed to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "portal_message",
+          "start": "2026-02-09T21:02",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "went to the ER",
+              "date": "2026-02-09T21:02",
+              "author": "patient",
+              "body": "wanted you to know I was in the ER last monday. got a bad rash on both legs after the antibiotic the urgent care gave me for pneumonia. they did a biopsy and said its vasculitis from that antibiotic. its fading now. derm appt in march"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: went to the ER",
+              "date": "2026-02-10T08:15",
+              "author": "PCP",
+              "body": "Thanks for letting me know, Todd - glad it's fading. Avoid that antibiotic from here on. We'll get the ER records. If the rash comes back, you get a fever, or your belly or joints get worse, get seen. We still need to get you in for a visit; call the front desk when you can."
+            },
+            {
+              "type": "Miscellaneous",
+              "title": "Records request",
+              "date": "2026-02-10T09:00",
+              "author": "front desk",
+              "body": "Records request faxed to ED for 2/2/26 visit. Urgent care name unknown - pt didn't remember which one, left message asking."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T10:30",
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Medication fill history reviewed",
+              "date": "2026-02-24T10:45",
+              "author": "RN",
+              "body": "Pulled fill history after the ED record came in. Sulfamethoxazole-trimethoprim 800/160 mg, #20, BID x 10 days, filled 01/19/2026, prescriber at an urgent care. Other fills: B/F/TAF 90-day (ID), nifedipine ER 30 (GI), nicotine patch. No urgent care note has come to us. Flagged for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "specialist_visit",
+          "start": "2026-03-09T11:15",
+          "service": "Dermatology",
+          "reason": "Follow-up, urticarial vasculitis",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2026-03-16T10:20",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY\nDate of service: 03/09/2026\n\nFollow-up after the ED visit of 02/02 for palpable purpura on both legs following a course of sulfamethoxazole-trimethoprim. The rash cleared over about two weeks after the antibiotic ended; joint stiffness gone. No new lesions.\n\nBiopsy reviewed with him: leukocytoclastic vasculitis of small dermal vessels.\n\nExam: legs without purpura. Old flat macules from prior Kaposi sarcoma, unchanged. No new violaceous lesions.\n\nAssessment: drug-induced urticarial vasculitis from sulfamethoxazole-trimethoprim, resolved. Avoid sulfonamide antibiotics. No further treatment needed.\nReturn as needed.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "specialist_visit",
+          "start": "2026-04-20T10:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-20T10:50",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "unit": "cells/uL",
+                  "value": 352
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Not detected (<20 copies/mL)"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "date": "2026-04-28T15:05",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 04/20/2026\n\nAnnual HIV visit. Since last year: pneumonia in January treated at urgent care with TMP-SMX, then a drug-induced vasculitis of the legs, resolved per dermatology. TMP-SMX now listed as an allergy.\nAdherent to bictegravir/emtricitabine/TAF.\nCD4 352 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\nAllergies: penicillin (rash); sulfamethoxazole-trimethoprim (urticarial vasculitis, angioedema).\nPlan: continue ART. Recheck in 12 months. Should he ever need PJP prophylaxis, avoid TMP-SMX."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "pharmacy",
+          "start": "2026-06-16T09:40",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - nicotine patch",
+              "date": "2026-06-16T13:05",
+              "author": "PCP",
+              "body": "Pharmacy asking for nicotine 21 mg patches. One month sent. Last seen 11/2024 - needs a visit for further refills. Front desk to call."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling attempt",
+              "date": "2026-06-16T15:20",
+              "author": "front desk",
+              "body": "Called pt re: overdue visit. Said he'd call back after checking his ride situation. Nothing booked."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hereditary myopathy with chaperone protein abnormality|G71.8": {
+        "code": "G71.8",
+        "display": "Other primary disorders of muscles",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use (in remission)|F19.21": {
+        "code": "F19.21",
+        "display": "Other psychoactive substance dependence, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of recurrent bacterial pneumonia|Z87.01": {
+        "code": "Z87.01",
+        "display": "Personal history of pneumonia (recurrent)",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Kaposi sarcoma|C46.9": {
+        "code": "C46.9",
+        "display": "Kaposi's sarcoma, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lung cancer screening candidate (high-risk smoker)|Z12.2": {
+        "code": "Z12.2",
+        "display": "Encounter for screening for malignant neoplasm of respiratory organs",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "doxorubicin hydrochloride liposomal 2 MG/ML Injectable Suspension": {
+        "code": "1790127",
+        "display": "25 ML doxorubicin hydrochloride liposome 2 MG/ML Injection",
+        "ingredient": "doxorubicin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "nifedipine 30 MG Extended Release Oral Tablet": {
+        "code": "198034",
+        "display": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+        "ingredient": "nifedipine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

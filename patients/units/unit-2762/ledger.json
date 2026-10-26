@@ -1,0 +1,2129 @@
+{
+  "unit": "unit-2762",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002762",
+      "given": "Aisha",
+      "family": "Owusu",
+      "birth_date": "1981-10-04",
+      "address_line": "41 Petticoat Hill Road",
+      "phone": "+1-617-555-0125",
+      "email": "aisha.owusu@example.test",
+      "marital_status": "single",
+      "summary": "High school history teacher with Stage II pulmonary sarcoidosis on long-term prednisone, prior sarcoid anterior uveitis, steroid osteopenia and adrenal suppression, and symptomatic fibroids. A 2025 abdominal hysterectomy brings an adrenal crisis, hemorrhage with transfusion, prerenal AKI and a stented left ureteral injury, all settled by early 2026.",
+      "events": [
+        {
+          "id": "2023-08-28a",
+          "kind": "telephone",
+          "start": "2023-08-28T15:40",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-28T15:40",
+              "author": "front desk",
+              "body": "Caller is looking for a new internist, says her old doctor is retiring and she wants someone closer to home in the hills. Teaches history at the regional high school, asked for a late afternoon slot. Sees outside lung and eye specialists for sarcoidosis, takes prednisone. Booked new patient physical 9/12 at 3:30. Sent the intake packet and records release by email."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T15:30",
+          "end": "2023-09-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit and physical",
+          "conditions": [
+            {
+              "label": "Sarcoidosis of lung",
+              "action": "history",
+              "onset": "2022-04-01",
+              "note": "Stage II; followed by outside pulmonology"
+            },
+            {
+              "label": "History of ocular sarcoidosis (anterior uveitis)",
+              "action": "history",
+              "onset": "2022-02-01",
+              "note": "anterior uveitis 2022, quiet since; outside ophthalmology checks",
+              "icd10": "D86.83"
+            },
+            {
+              "label": "Uterine leiomyoma",
+              "action": "history",
+              "onset": "2021-06-01",
+              "note": "symptomatic fibroids"
+            },
+            {
+              "label": "Chronic glucocorticoid-induced adrenal suppression",
+              "action": "history",
+              "onset": "2022-10-01",
+              "icd10": "E27.3"
+            },
+            {
+              "label": "Osteopenia",
+              "action": "history",
+              "onset": "2022-10-01",
+              "note": "related to long-term corticosteroids"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pulmonary sarcoidosis"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bone health on prednisone"
+            },
+            {
+              "drug": "alendronic acid 70 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once weekly in the morning with a full glass of water, stay upright 30 minutes",
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Osteopenia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              71
+            ],
+            "hr": 61,
+            "rr": 12,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 72.7,
+            "height_cm": 165.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use (1-2 glasses of wine per month)"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school history teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-09-12T16:05",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2023-09-14T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2023-09-12T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T16:40",
+              "author": "PCP",
+              "body": "New patient, 41F, transferring care; prior records requested.\n\nSarcoidosis: diagnosed in 2022 after an episode of anterior uveitis, workup at that point showed lung involvement, staged II by her pulmonologist. On prednisone 10 mg every day since 2022. Breathing is fine right now, walks most evenings, no cough to speak of. Sees pulmonology about twice a year.\nEyes: one bout of uveitis, red painful eye, treated by ophthalmology, quiet since. Gets slit-lamp exams and eye pressure checks there periodically, last spring, told all fine.\nBones: told she has osteopenia on a bone density scan from the steroids. Takes alendronate weekly and calcium with D twice a day. Tolerating alendronate, no heartburn.\nAdrenal: prior doctor told her that after this long on prednisone her own adrenal glands are suppressed and not to stop the prednisone abruptly. Understands that.\nGyn: has fibroids, known for a couple of years. Periods heavy and long, some pelvic pressure. Manages with pads and planning. Not interested in procedures right now. Mom had the same and ended up with a hysterectomy at 45.\n\nMeds: prednisone 10 mg daily; calcium carbonate/D3 600 mg/400 IU BID; alendronate 70 mg weekly.\nAllergies: NKDA.\nFamily: mother fibroids, hysterectomy at 45. Maternal aunt with lupus. Father type 2 diabetes. No one in the family with sarcoid or lung disease.\nSocial: teaches high school history. Never smoked. Glass of wine a month or two, if that. Lives in Williamsburg.\nPrevention: Tdap within the last 10 years per her, prior office to send. Last Pap more than 3 years ago. One mammogram at 40, normal.\n\nExam: vitals as recorded, BMI about 26. Well appearing. Eyes: conjunctivae clear, pupils equal. No cervical or supraclavicular nodes. Lungs clear, no crackles, normal effort. Heart regular, no murmur. Abdomen soft, nontender, uterus not palpable above the pelvis. Skin without rash or nodules. No edema. Breast exam without masses. Pelvic: normal external genitalia, cervix normal appearing, Pap with HPV collected; uterus enlarged and irregular on bimanual, nontender, adnexa without masses.\n\nA/P\n1. Pulmonary sarcoidosis, Stage II, on chronic prednisone. Stable by her report. Continue per pulmonology; will ask for their notes.\n2. Prior sarcoid anterior uveitis. Quiet. Ophthalmology follows.\n3. Glucocorticoid-induced adrenal suppression. Do not stop prednisone abruptly; we discussed that illness or surgery would need extra steroid coverage.\n4. Osteopenia on steroids. Continue alendronate, calcium/D. Vitamin D level today.\n5. Fibroids, symptomatic but tolerable. Revisit if bleeding worsens.\n6. Health maintenance: CMP, CBC, lipids, A1c (steroids), vitamin D, one-time hep C and HIV. Pap/HPV done. Screening mammogram ordered. Flu, COVID and pneumococcal (PCV20, on immunosuppression) at a nurse visit next month. Zoster series in the spring.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.4,
+            "height_cm": 166.0,
+            "labs": {
+              "25-hydroxy Vitamin D": 36,
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2023-09-14T12:15",
+              "author": "PCP",
+              "body": "Hi Ms. Owusu, all of your blood work came back normal, including blood sugar and A1c, kidney and liver tests, blood counts and cholesterol. Vitamin D is in a good range on your supplement. Hepatitis C and HIV screens negative. Your Pap was normal and HPV negative, so no repeat for 5 years. The mammogram order is in; radiology will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:52"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-10T15:54"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2023-10-10T16:10",
+              "author": "RN",
+              "body": "Here after school for vaccines per PCP. Afebrile, feeling well, no prior vaccine reactions. Flu 0.5 mL IM left deltoid. Updated COVID 0.3 mL IM right deltoid. PCV20 0.5 mL IM left deltoid, separate site. Lots and VIS documented. Waited 15 min, no reaction. Told her the arms may ache tomorrow."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "imaging",
+          "start": "2023-11-07T16:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-07T16:00",
+              "text": "Bilateral CC and MLO views with tomosynthesis. Comparison: outside study from 2022, reported normal. Breast density: heterogeneously dense, which may obscure small masses. No suspicious mass, calcification or architectural distortion in either breast. Axillae unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening.",
+              "issued": "2023-11-08T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-08T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: prednisone",
+              "date": "2024-01-09T10:20",
+              "author": "MA",
+              "body": "Pharmacy fax for prednisone 10 mg, last filled by her prior doctor. On med list, chronic. Approved per PCP protocol, #90 with 1 refill. Pt aware through portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic steroids",
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-19T16:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-19T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-19T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-03-19T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-03-19T16:30",
+              "author": "PCP",
+              "body": "6 month check on long-term prednisone.\nSaw pulmonology in January, she says they were happy, same dose. Eye doctor in December, quiet. Breathing ok, no cough. Sleeping fine, appetite stable, no thirst or frequent urination. Periods still heavy, a heavy day or two where she plans around class, no dizziness. Taking alendronate correctly on Sunday mornings.\nRecords from prior office arrived and were reviewed: Tdap 2019, bone density in 2022 read as osteopenia, consistent with what she told me.\n\nExam: BP and weight stable. Lungs clear. Heart regular. No edema. Skin clear on shins and arms.\n\nA/P\nSarcoidosis on prednisone 10 mg: unchanged, per pulm.\nSteroid monitoring: BMP and A1c today.\nOsteopenia: continue current regimen.\nFibroids: tolerable, she will message if worse.\nShingrix #1 today (immunosuppressed on prednisone); #2 in 2 to 6 months, RN visit.\nPhysical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-03-20T08:50",
+              "author": "PCP",
+              "body": "Sugar, A1c, potassium and kidney numbers all normal. Nothing to change. Book the second shingles shot for May."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "nurse_visit",
+          "start": "2024-05-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-05-14T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-05-14T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Shingrix #2",
+              "date": "2024-05-14T15:50",
+              "author": "RN",
+              "body": "Second Shingrix, 0.5 mL IM right deltoid. After dose 1 she had only some arm soreness. Series now complete. Observed without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "date": "2024-06-11T19:05",
+              "author": "patient",
+              "body": "Hi, the district HR office wants an updated copy of my vaccination record for my file before summer. Could you send one through here? Thanks, Aisha"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "date": "2024-06-12T09:30",
+              "author": "MA",
+              "body": "Hi Aisha, your immunization record is attached to this message, including the shingles series and the vaccines from last fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10b",
+          "kind": "telephone",
+          "start": "2024-09-09T13:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2024-09-09T13:10",
+              "author": "front desk",
+              "body": "Ms. Owusu called, open house night at school tomorrow, cannot make her physical. Rebooked 9/24 at 3:30."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              84
+            ],
+            "hr": 60,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 71.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T16:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T16:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T16:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T16:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T16:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T16:07"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T16:35",
+              "author": "PCP",
+              "body": "Annual exam, 42F.\nInterval: good year. Pulmonology visit in July, she reports stable and no dose change. Eyes checked in the spring, fine. No cough, no shortness of breath climbing the stairs at school. Fibroid bleeding the same, heavy for a couple of days a month. Mood good, sleeping ok. Exercise: walking, some yard work.\nMeds: prednisone 10 daily, calcium/D BID, alendronate weekly. NKDA.\n\nROS otherwise negative: no fevers, no weight change, no vision changes, no joint pain, no bowel or urinary change.\n\nExam: vitals as charted. Well. Eyes clear. Oropharynx normal. No lymphadenopathy. Thyroid not enlarged. Lungs clear throughout. Heart regular rate and rhythm, no murmur. Breasts without masses. Abdomen soft, nontender. Skin: no nodules or plaques. Extremities without edema.\n\nA/P\n1. Sarcoidosis, pulmonary Stage II and prior uveitis: stable on prednisone 10, specialists following.\n2. Steroid effects: CMP, A1c, lipids, vitamin D today. Osteopenia on alendronate.\n3. Adrenal suppression: reviewed again that she needs extra steroid if she gets sick or has any procedure; she should tell any surgeon.\n4. Fibroids: unchanged; CBC today.\n5. Prevention: flu and COVID given today. Mammogram ordered. Pap current. PHQ-2 negative.\nFollow-up in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-09-26T07:45",
+              "author": "PCP",
+              "body": "Everything normal again: blood count, sugar and A1c, kidney, liver, cholesterol, vitamin D. Even with the heavy periods your blood count is fine. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T16:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-12T16:10",
+              "text": "Bilateral digital breast tomosynthesis, standard views. Compared with 11/2023. Heterogeneously dense tissue. No new mass, suspicious calcifications or distortion. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Repeat in one year.",
+              "issued": "2024-11-13T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-11-13T11:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: alendronate",
+              "date": "2024-12-03T11:30",
+              "author": "MA",
+              "body": "eRx request alendronate 70 mg weekly, #12 with 3 refills. Chronic, last visit 9/24. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Prednisone refill",
+              "date": "2025-01-14T20:10",
+              "author": "patient",
+              "body": "My insurance is pushing me to do 90 day supplies by mail now. Could you send the prednisone that way? Same 10 mg. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Prednisone refill",
+              "date": "2025-01-15T08:40",
+              "author": "MA",
+              "body": "Done, 90 day supply with 3 refills went to the mail order pharmacy. Keep your current bottle going until it arrives."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fibroid symptoms worse",
+          "vitals": {
+            "bp": [
+              135,
+              75
+            ],
+            "hr": 61,
+            "rr": 18,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 72.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-18T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T16:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Symptomatic uterine fibroids"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-18T16:25",
+              "author": "PCP",
+              "body": "Here mainly about the fibroids. Over the winter her periods have gotten heavier and longer, now 7 to 8 days with 2 days of changing protection every hour or two, plus a constant pelvic heaviness that she notices standing at the board all day. Wants it dealt with. Thinking about her mother's course.\nAlso: dry cough and getting winded on the stairs to her classroom for about the last 2 months. No fever, chest pain or weight loss. Already has her pulmonology follow-up in June and has sent them a message.\nMeds unchanged. NKDA.\n\nExam: vitals as charted, afebrile, sat normal. Comfortable. Lungs clear, no crackles, no wheeze. Heart regular. Abdomen soft, nontender, firm irregular uterus palpable just above the pubic bone. Shins without lesions today.\n\nA/P\n1. Symptomatic uterine fibroids, worsening. CBC today. Referral to gynecology to discuss options including surgery. Reminded her that any surgery has to be planned around her steroid dependence, and to tell gyn and anesthesia she has been on prednisone for years.\n2. Pulmonary sarcoidosis with new cough and exertional dyspnea. Lungs clear here and sats fine. Keep June pulmonology visit; call sooner if worse.\n3. Continue prednisone 10, alendronate, calcium/D.\nRTC after gyn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "portal_message",
+          "start": "2025-03-19T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-03-19T12:30",
+              "author": "PCP",
+              "body": "Your blood count is normal, no anemia from the heavier bleeding. Gyn referral is in; their office will call you. If they are booking out far, let us know."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "portal_message",
+          "start": "2025-05-06T21:00",
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2025-05-06T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gyn update",
+              "date": "2025-05-06T21:00",
+              "author": "patient",
+              "body": "Quick update. Saw the gynecologist last month and had a pelvic ultrasound, it showed the fibroids. We talked through everything and I decided on a hysterectomy. They want to do it open, not laparoscopic, because of how the uterus is. I asked to wait until after the summer. It's on the calendar for the end of September. They said they'd be in touch with you about my steroids before surgery."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gyn update",
+              "date": "2025-05-07T07:20",
+              "author": "PCP",
+              "body": "Thanks for letting me know, that sounds like a reasonable plan. The steroid part is important: make sure the surgeon and the anesthesia team both know about the prednisone and the adrenal suppression. Send me the date when you have it."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T10:00",
+          "service": "Pulmonology",
+          "reason": "Progressive exertional dyspnea and dry cough",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Clinic Letter",
+              "date": "2025-07-14T09:00",
+              "author": "pulmonology",
+              "body": "Outside pulmonology group. Date of service 06/30/2025. Copy to primary care.\n\nMs. Owusu is a 43 year old teacher we follow for sarcoidosis (lung, with prior anterior uveitis), on prednisone 10 mg daily for about three years. She returns describing six months of exertional breathlessness that has slowly progressed and a dry, nonproductive cough. She has had no chest pain, fevers or weight loss.\n\nMedications: prednisone 10 mg daily, calcium carbonate/vitamin D3 600 mg/400 IU twice daily, alendronate 70 mg weekly. Allergies: none known. Never smoker.\n\nExam: in no distress at rest. Chest clear to auscultation. Skin: several erythematous nodules over both shins, not tender. No clubbing.\n\nImaging: chest radiograph shows bilateral hilar lymph node enlargement with parenchymal reticular change, in keeping with Stage II disease.\n\nPulmonary function: FEV1 65% predicted, FVC 68% predicted, FEV1/FVC 80%, TLC 60% predicted, DLCO 55% predicted. This is a restrictive pattern with a moderate reduction in gas transfer.\n\nImpression: Stage II pulmonary sarcoidosis with symptomatic restriction and reduced diffusion, now with skin involvement on the shins, on chronic low-dose prednisone.\n\nPlan: continue prednisone 10 mg daily. Repeat full PFTs in about six months. She is to contact us for worsening breathlessness."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "outside_records",
+          "start": "2025-07-14T13:20",
+          "conditions": [
+            {
+              "label": "Sarcoidosis",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "note": "multisystem: lung (Stage II), eye (prior anterior uveitis), skin of shins",
+              "icd10": "D86.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PCP review: pulmonology letter",
+              "date": "2025-07-14T13:20",
+              "author": "PCP",
+              "body": "Pulm letter from 6/30 reviewed. PFTs restrictive (TLC 60%, DLCO 55%), Stage II on CXR, new shin nodules. Same prednisone dose, repeat PFTs in 6 months. Problem list updated to multisystem sarcoidosis (lung, eye, skin). Scanned."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "telephone",
+          "start": "2025-08-26T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op clinic request",
+              "date": "2025-08-26T11:05",
+              "author": "MA",
+              "body": "Surgical pre-admission clinic at the hospital called for a current med list and problem list ahead of her 9/27 surgery. Faxed both, plus last labs. They said she is seeing them in person next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-27a",
+          "kind": "hospital_admission",
+          "start": "2025-09-27T07:30",
+          "end": "2025-10-01T13:00",
+          "service": "Gynecology",
+          "reason": "Elective total abdominal hysterectomy for symptomatic uterine fibroids",
+          "vitals": [
+            {
+              "time": "2025-09-27T08:25",
+              "bp": [
+                76,
+                50
+              ],
+              "hr": 108
+            },
+            {
+              "time": "2025-09-27T09:40",
+              "bp": [
+                80,
+                40
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-27T06:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-28T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 31
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 41
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-01T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-10-20T10:15",
+              "author": "gynecology",
+              "body": "Regional hospital, gynecology service. Admitted 09/27/2025, discharged 10/01/2025.\nProcedure: total abdominal hysterectomy, 09/27/2025, for symptomatic uterine leiomyomata.\nAllergies: NKDA.\n\nCourse: 43 year old with Stage II pulmonary sarcoidosis on chronic prednisone. Pre-admission evaluation unremarkable; baseline hemoglobin and electrolytes normal, creatinine 0.8. Shortly after the start of the case she became hypotensive to 76/50 with heart rate 108, pale and diaphoretic, with little response to 2 L of crystalloid. Given IV hydrocortisone for suspected adrenal crisis with improvement in pressure. Later in the case there was significant blood loss with a brief drop to 80/40 for about half a minute, managed with fluids and 5 units of packed red cells. Hemodynamics normal within the hour.\n\nInternal medicine consulted the evening of surgery for low urine output and fatigue. Warm, well perfused, lungs clear, Foley output minimal; creatinine and BUN rising. Assessment: drug-induced adrenal insufficiency with crisis, and prerenal acute kidney injury from hypovolemia. Stress-dose hydrocortisone continued and tapered; volume repleted. Creatinine peaked at 1.6 with BUN 31 on postoperative day 1 and was 0.9 by discharge; urine output recovered.\n\nDischarge medications: prednisone 10 mg daily (resumed), calcium carbonate/vitamin D3 600 mg/400 IU twice daily, alendronate 70 mg weekly.\nFollow-up: gynecology in 2 weeks; primary care within 1 to 2 weeks for kidney function and steroid plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "ed_visit",
+          "start": "2025-10-03T14:50",
+          "end": "2025-10-04T11:30",
+          "service": "Emergency Medicine",
+          "reason": "Left flank pain after hysterectomy",
+          "vitals": [
+            {
+              "time": "2025-10-03T15:00",
+              "bp": [
+                128,
+                78
+              ],
+              "hr": 88,
+              "temp_c": 37.4
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-10-03T17:10",
+              "text": "IV contrast with portal venous and 10-minute delayed excretory images. Postsurgical pelvis after hysterectomy with expected postoperative change at the vaginal cuff. Mild left hydroureteronephrosis to the level of the distal ureter. Small fluid collection adjacent to the distal left ureter, into which excreted contrast extends on delayed images. Right kidney and ureter normal. No free air. Bowel normal in caliber. Liver, spleen, pancreas and adrenals unremarkable.",
+              "conclusion": "Contrast leak from the distal left ureter with small adjacent collection and mild left hydroureteronephrosis, consistent with ureteral injury."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-10-09T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, seen 10/03/2025.\nCC: left flank pain.\n43F, home two days after a 9/27 abdominal hysterectomy whose stay was complicated by adrenal crisis on chronic prednisone and prerenal AKI. Since getting home, worsening lower abdominal ache and sharp pain into the left flank. No BM since surgery, passing flatus.\nT 37.4 C, BP 128/78, HR 88.\nLeft CVA tenderness. Abdomen with healing incision, no rebound or guarding.\nLabs: mild leukocytosis. UA trace blood, otherwise unremarkable.\nCT A/P with delayed images: contrast leak at the distal left ureter with small collection, mild left hydro.\nUrology consulted, took her for cystoscopy and left retrograde pyelogram showing extravasation from the distal left ureter; left double-J stent placed. Observed overnight, pain controlled, home 10/4. Urology clinic will arrange stent removal. Steroids: home prednisone continued.\nDx: left ureteral injury after hysterectomy."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "telephone",
+          "start": "2025-10-06T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2025-10-06T09:15",
+              "author": "RN",
+              "body": "Pt called to tell us she was in the ED Friday with left side pain and they found a leak from the left ureter from the surgery. Had a stent put in, went home Saturday. Pain much better, peeing fine, a little pink at times, no fever. Bowels moved yesterday. Still on prednisone 10. Explained PCP wants to see her after the hospital stay anyway; booked 10/14. Hospital records requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "office_visit",
+          "start": "2025-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {
+              "label": "Drug-induced adrenocortical insufficiency",
+              "action": "diagnosed",
+              "onset": "2025-09-27",
+              "note": "adrenal crisis at hysterectomy on chronic prednisone",
+              "icd10": "E27.3"
+            },
+            {
+              "label": "Prerenal acute kidney injury secondary to hypovolemia",
+              "action": "diagnosed",
+              "onset": "2025-09-27",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Ureteral injury",
+              "action": "diagnosed",
+              "onset": "2025-09-27",
+              "note": "distal left ureter, stented 10/3/2025",
+              "icd10": "S37.10XA"
+            },
+            {
+              "label": "Uterine leiomyoma",
+              "action": "resolved"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2025-09-27",
+              "note": "total abdominal hysterectomy for fibroids"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone sodium succinate 100 MG Injection",
+              "action": "start",
+              "sig": "Inject 100 mg into the thigh muscle once for adrenal crisis (vomiting, unable to keep prednisone down, or collapse), then call 911",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "ONCE PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Adrenal insufficiency, emergency use"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              82
+            ],
+            "hr": 57,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-14T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-14T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-14T16:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-10-14T16:30",
+              "author": "PCP",
+              "body": "Seen after two hospital contacts. Discharge summary not here yet; history from her, her discharge papers and the ED note.\n\n9/27 open hysterectomy for fibroids. Her pressure dropped early in the case and did not come up with fluids; they gave IV hydrocortisone for adrenal crisis. She also bled and got 5 units of blood. After surgery her urine output was low and her kidney numbers went up; medicine saw her and called it adrenal insufficiency plus kidney injury from low volume. Home 10/1 on her usual prednisone.\n10/3 ED for left flank pain: CT showed a leak from the lower left ureter, urology did a cystoscopy with dye study and put in a stent. Home the next day.\n\nNow: flank pain gone, mild incision soreness only. Urine occasionally pink with activity, no fever or chills, no burning. Eating normally, bowels back to normal. Energy coming back slowly. Taking prednisone 10 every morning. Gyn post-op visit went fine last week. Urology plans stent removal in about 6 weeks.\n\nExam: vitals as charted, afebrile. Tired but well. Lungs clear. Heart regular. Abdomen: midline incision clean, dry, healing, mild tenderness at the wound only. No CVA tenderness. No edema.\n\nA/P\n1. Drug-induced adrenal insufficiency with crisis at surgery, on top of known suppression from 3 years of prednisone. Sick-day rules reviewed in detail: double the prednisone for 2 to 3 days with fever or a real illness, and if vomiting and cannot keep it down, use the injection and go to the ED. Prescribed an IM hydrocortisone 100 mg emergency kit; RN taught the injection today. Suggested a medical alert bracelet or wallet card. Any future procedure needs stress dosing planned ahead.\n2. AKI, prerenal, from hypovolemia: BMP today to confirm it has settled.\n3. Left ureteral injury, stented. Urology following.\n4. Post-op after transfusion of 5 units: CBC today.\n5. S/p hysterectomy: fibroids resolved off the list. No further cervical screening needed.\n6. Sarcoidosis: unchanged on prednisone 10, pulm repeat PFTs around the new year.\nFlu and COVID today. RTC January."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Injection teaching",
+              "date": "2025-10-14T16:05",
+              "author": "RN",
+              "body": "Taught use of hydrocortisone 100 mg emergency vial: mixing the vial, drawing up, outer thigh IM, then calling 911. Pt did a return demonstration on a training pad without trouble. Written sick-day sheet given. She plans to keep one kit at home and one at school."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "portal_message",
+          "start": "2025-10-15T12:40",
+          "conditions": [
+            {
+              "label": "Prerenal acute kidney injury secondary to hypovolemia",
+              "action": "resolved",
+              "icd10": "N17.9"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney and blood count",
+              "date": "2025-10-15T12:40",
+              "author": "PCP",
+              "body": "Good news: kidney function is back to normal and your blood count is normal after the transfusions. The kidney injury from surgery has resolved. The emergency kit went to your pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "PCP review: discharge summary",
+              "date": "2025-10-20T10:30",
+              "author": "PCP",
+              "body": "Hysterectomy discharge summary received and reviewed, matches her account: adrenal crisis treated with hydrocortisone, 5 u PRBC, prerenal AKI with creatinine peak 1.6 (baseline 0.8), 0.9 at discharge. Nothing further to act on."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "portal_message",
+          "start": "2025-11-24T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stent out",
+              "date": "2025-11-24T18:30",
+              "author": "patient",
+              "body": "The urologist took the stent out last Thursday. They did a kidney ultrasound first and said there was no swelling of the kidney anymore. Feeling like myself again and back in the classroom full time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stent out",
+              "date": "2025-11-25T07:15",
+              "author": "PCP",
+              "body": "Very glad to hear it. If you get flank pain, fever or blood in the urine again, call. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: prednisone",
+              "date": "2025-12-09T10:00",
+              "author": "MA",
+              "body": "Mail order renewal for prednisone 10 mg, 90 days, 3 refills. Sent per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after surgery; chronic steroids",
+          "conditions": [
+            {
+              "label": "Ureteral injury",
+              "action": "resolved",
+              "icd10": "S37.10XA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 61,
+            "spo2": 97,
+            "weight_kg": 73.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-20T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-01-20T16:10",
+              "author": "PCP",
+              "body": "Three months out from the hysterectomy and the ureter repair stent.\nStent came out 11/20 at urology, ultrasound beforehand without hydronephrosis per her. No flank pain since, urine clear, no infections. Incision healed. Back to full teaching days.\nSaw pulmonology on 1/8 and repeated her breathing tests: told they were about the same as last summer and to stay on prednisone 10. Still some breathlessness on the stairs, no worse. Dry cough comes and goes.\nHas the hydrocortisone kits, one at home and one in the nurse's office at school. Has not needed one. No illnesses this winter.\n\nExam: vitals as charted. Lungs clear. Heart regular. Abdomen soft, incision well healed. No CVA tenderness.\n\nA/P\n1. Ureteral injury, healed after stenting. Resolved.\n2. Sarcoidosis, stable per pulm, prednisone 10 daily.\n3. Adrenal insufficiency: sick-day plan in place, kits current.\n4. Osteopenia: alendronate, calcium/D.\nPhysical in the spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T16:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letter for school nurse",
+              "date": "2026-02-10T16:50",
+              "author": "patient",
+              "body": "Our school nurse asked for a doctor's note about the emergency hydrocortisone kit I keep in her office, saying what it's for and when it should be used. Can you write one?"
+            },
+            {
+              "type": "Letter",
+              "title": "Letter to school nurse",
+              "date": "2026-02-11T12:00",
+              "author": "PCP",
+              "body": "To the school nurse: Ms. Aisha Owusu is under my care for adrenal insufficiency related to long-term steroid treatment. She keeps an emergency hydrocortisone 100 mg intramuscular kit at school. It should be given into the outer thigh if she is vomiting and unable to keep her medication down, is confused or very drowsy, or collapses, and 911 should be called right away even if it is given. She is trained to self-inject. Please contact our office with questions. Primary care physician."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills: alendronate, calcium/vitamin D",
+              "date": "2026-03-17T09:40",
+              "author": "MA",
+              "body": "Mail order renewals for alendronate 70 mg weekly and calcium carbonate/D3 600/400 BID. Both on active list. Sent with refills to cover until her April physical and beyond."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "annual_physical",
+          "start": "2026-04-27T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              77
+            ],
+            "hr": 62,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 72.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-27T16:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-27T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-27T16:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-27T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-27T16:20",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 39
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-04-27T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-27T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-04-27T16:40",
+              "author": "PCP",
+              "body": "Annual exam, 44F.\nMissed last fall's mammogram while recovering, wants to catch up. Feeling well. Stairs still make her breathless at the top, unchanged since winter. Cough occasional. No flank pain or urinary symptoms. No illness requiring extra steroid since the surgery. Eye check due this summer.\nMeds: prednisone 10 daily; calcium/D3 600/400 BID; alendronate 70 weekly; hydrocortisone 100 mg IM emergency kit. NKDA.\nSocial: teaching, finishing the year. Never smoker. Rare wine.\nROS: no fevers, sweats or weight change. No vision changes or eye pain. No joint pain. No bowel change.\n\nExam: vitals as charted. Well appearing. Eyes white, no redness. No cervical or axillary nodes. Lungs clear without crackles. Heart regular, no murmur. Breasts without masses or skin change. Abdomen soft, healed midline scar. Skin without rash. No edema.\n\nA/P\n1. Sarcoidosis, lung Stage II with prior uveitis and skin findings: stable on prednisone 10 per pulm.\n2. Adrenal insufficiency, steroid-related, with crisis in 2025: sick-day plan reviewed, kits not expired.\n3. Osteopenia on steroids: alendronate, calcium/D; vitamin D today.\n4. Steroid labs: CMP, A1c, lipids, CBC.\n5. Prevention: mammogram ordered. No cervical screening after hysterectomy for benign disease. Colon screening starts at 45 this fall. PHQ-2 negative. Flu and COVID at the fall visit.\nRTC October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "portal_message",
+          "start": "2026-04-29T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2026-04-29T07:30",
+              "author": "PCP",
+              "body": "Your labs are all normal: blood sugar and A1c, kidney and liver function, blood count, cholesterol, vitamin D. No changes. Radiology should call about the mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "imaging",
+          "start": "2026-05-19T16:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-05-19T16:20",
+              "text": "Bilateral screening tomosynthesis. Prior studies 2023 and 2024 for comparison. Heterogeneously dense breasts. No suspicious masses, calcifications or areas of distortion. No change from prior.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended.",
+              "issued": "2026-05-20T09:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "done",
+              "date": "2026-05-20T09:45"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "outside_records",
+          "start": "2026-06-16T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology Visit Note",
+              "date": "2026-06-16T14:00",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology. Exam date 06/09/2026. Routine surveillance, history of sarcoid anterior uveitis, on systemic prednisone. Vision stable. Slit lamp: anterior chambers deep and quiet both eyes, no cells or flare, no keratic precipitates, lenses clear. Intraocular pressure normal both eyes. Impression: no active uveitis. Return in one year or sooner for redness, pain or blurring."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: prednisone",
+              "date": "2026-07-21T10:10",
+              "author": "MA",
+              "body": "Mail order request, prednisone 10 mg daily. 90 days with 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall appointment",
+              "date": "2026-08-11T13:25",
+              "author": "patient",
+              "body": "Hi, I want to get my October visit on the books before school starts and my schedule fills up. Late afternoon if possible. Can I get my flu shot at it too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall appointment",
+              "date": "2026-08-11T14:05",
+              "author": "front desk",
+              "body": "You're booked Tuesday 10/13 at 3:30. Yes, we can give the flu shot then."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "office_visit",
+          "start": "2026-10-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up and flu shot",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Chronic glucocorticoid-induced adrenal suppression|E27.3": {
+        "code": "E27.3",
+        "display": "Drug-induced adrenocortical insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Drug-induced adrenocortical insufficiency|E27.3": {
+        "code": "E27.3",
+        "display": "Drug-induced adrenocortical insufficiency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of ocular sarcoidosis (anterior uveitis)|D86.83": {
+        "code": "D86.83",
+        "display": "Sarcoid iridocyclitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Prerenal acute kidney injury secondary to hypovolemia|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sarcoidosis|D86.9": {
+        "code": "D86.9",
+        "display": "Sarcoidosis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ureteral injury|S37.10XA": {
+        "code": "S37.10XA",
+        "display": "Unspecified injury of ureter, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "hydrocortisone sodium succinate 100 MG Injection": {
+        "code": "238755",
+        "display": "hydrocortisone 100 MG Injection",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "rejected": [
+      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
+    ]
+  }
+}

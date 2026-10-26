@@ -1,0 +1,323 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002536",
+      "given": "Silas",
+      "family": "Carlson",
+      "birth_date": "1999-01-28",
+      "address_line": "27 Old Goshen Road, Williamsburg, MA 01096",
+      "phone": "+1-646-555-0159",
+      "email": "silas.carlson@example.test",
+      "marital_status": "single",
+      "summary": "Undergraduate who joins at 20 with recurrent HSV-1 cold sores, develops type 1 diabetes in 2021 managed by endocrinology, and has recurrent stress-related jaundice attributed by GI to both Dubin-Johnson and Gilbert syndromes. Laparoscopic appendectomy in 2023; heat exhaustion ED visit in July 2026 after his last practice visit.",
+      "events": [
+        {
+          "id": "2019-08-29a",
+          "kind": "telephone",
+          "start": "2019-08-29T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2019-08-29T10:20",
+              "body": "Pt called asking to become a patient. 20 y/o, starting his second year at college, living in Williamsburg. Previously seen at a family practice near his parents' home. Student health insurance plan, card info taken. Only med is valacyclovir as needed for cold sores. New pt visit booked 9/10 at 9:00. Release signed by pt over the portal; request for records sent to the prior office."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Recurrent herpes simplex virus type 1 infection",
+              "icd10": "B00.1",
+              "action": "history",
+              "onset": "2014-06-01",
+              "note": "cold sores since mid-teens, a few a year"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valacyclovir 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily as needed for cold sores",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "recurrent cold sores"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8,
+              "Microalbumin/Creatinine Ratio": 7,
+              "Tissue Transglutaminase IgA": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Undergraduate student"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2019-09-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-09-10T09:45",
+              "body": "NEW PATIENT\n\n20 y/o man here to set up primary care now that he is at school locally year-round. Feels well. No concerns today beyond keeping his valacyclovir on file.\n\nPMH: cold sores (HSV-1) since about age 15. Gets 2-4 a year, usually around exams or when run down. Takes valacyclovir 500 mg twice a day when he feels the tingle, stops once crusted. No eye involvement ever.\nPSH: none.\nMeds: valacyclovir 500 mg BID prn.\nAllergies: NKDA.\nFamily: father has type 2 diabetes. Mother has hypothyroidism (autoimmune). Older brother was told he has Gilbert syndrome. A cousin on his dad's side has Dubin-Johnson syndrome. Pt has never had his own liver tests that he knows of and has never been yellow.\nSocial: undergraduate, lives with a roommate off campus. Never smoked, no alcohol, no drugs. Plays pickup soccer most weekends. Single.\n\nROS: negative in full.\n\nExam: vitals as charted. Thin, well. HEENT normal, no active lip lesions. Neck supple, no nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly normal.\n\nA/P\n1. Recurrent herpes labialis - continue episodic valacyclovir, refills given.\n2. Health maintenance - prior records requested to confirm childhood series; flu shot at a nurse visit next month. Labs at a physical next year.\nPHQ-2 0.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T14:00",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior family practice",
+              "author": "outside family medicine",
+              "date": "2019-09-26T14:00",
+              "body": "Summary of care, outside family medicine office, patient seen from infancy through 2019.\n\nProblems: herpes labialis, recurrent.\nMedications: valacyclovir 500 mg tablets, one twice daily as needed at onset of lesions.\nAllergies: none known.\nImmunizations: hepatitis B series complete in infancy; MMR x2; varicella x2; DTaP series and IPV complete; Tdap at age 12; HPV series complete; meningococcal conjugate x2 (last at 16).\nWell visits yearly through adolescence with normal growth and development. Sports physicals on file.\n\nScanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T16:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2019-10-08T16:20",
+              "body": "Here after class for flu shot. Denies fever today, no prior reactions, no egg issues. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Waited 15 min, fine on leaving."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "portal_message",
+          "start": "2020-01-21T20:44",
+          "reason": "Immunization form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School form",
+              "author": "patient",
+              "date": "2020-01-21T20:44",
+              "body": "Hi, the college wants an updated immunization form before I can register for spring housing. Can you fill it out from the records my old doctor sent? I can pick it up. Thanks, Silas"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "author": "MA",
+              "date": "2020-01-23T11:05",
+              "body": "Immunization form completed from scanned prior records, signed by PCP. Uploaded to the portal and paper copy at front desk. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-10a",
+          "kind": "portal_message",
+          "start": "2020-03-10T08:12",
+          "reason": "Cold sore, refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cold sore starting",
+              "author": "patient",
+              "date": "2020-03-10T08:12",
+              "body": "Midterms this week and I can feel one starting on my lower lip. I'm down to 2 valacyclovir. Could you send more to the pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Cold sore starting",
+              "author": "PCP",
+              "date": "2020-03-10T12:30",
+              "body": "Sent a new prescription for valacyclovir 500 mg, twice a day as needed, with refills. Start it now. If you get any eye redness or pain with it, call us the same day. Good luck with exams."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T09:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T08:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-09-22T09:30",
+              "body": "PHYSICAL\n\nClasses mostly remote this fall, still in his apartment in town. Doing fine. Two cold sores since spring, both settled within a few days on valacyclovir. Sleeping ok, some late nights. Soccer has been on hold.\n\nMeds: valacyclovir prn. NKDA.\nFH/SH unchanged: never smoker, no alcohol.\n\nROS negative.\n\nExam: vitals as charted. Well, thin. Lips without lesions. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin clear, no jaundice. Normal gait.\n\nPHQ-9: 2.\n\nA/P\n- Health maintenance: one-time HIV and hepatitis C screens today along with BMP, CBC and lipids. Flu shot given today.\n- Recurrent HSV-1 labialis: stable, refills current.\nFollow up in a year."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T13:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your physical labs",
+              "author": "PCP",
+              "date": "2020-09-24T13:40",
+              "body": "Silas - everything from Tuesday came back normal: blood counts, kidney function, sugar and cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Take care."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

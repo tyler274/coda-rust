@@ -1,0 +1,599 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001772",
+      "events": [
+        {
+          "id": "2023-01-18a",
+          "kind": "office_visit",
+          "start": "2023-01-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2023-01-18T11:30",
+              "body": "Did not arrive for 10:40 physical. Two calls to the cell number went to voicemail, message left to reschedule. Portal reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "telephone",
+          "start": "2023-03-21T14:05",
+          "reason": "Family concern",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's sister",
+              "author": "RN",
+              "date": "2023-03-21T14:05",
+              "body": "Sister called (listed on the release as a contact, patient in the room and agreed to her speaking for her). Over the winter Sharon has been hearing voices that nobody else hears and is convinced the people from her old job are working together against her. She stopped going to work toward the end of last year. Not sleeping well. Sister denies any talk of hurting herself or anyone else, no weapons in the home, eating and drinking. Not using alcohol or drugs as far as the family knows.\n\nDiscussed with PCP: seen tomorrow first thing. Gave sister the crisis line and told her to call 911 or go to the ED if there is any statement about harm or she cannot keep her safe overnight. Sister understood and will bring her in."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "office_visit",
+          "start": "2023-03-22T08:15",
+          "end": "2023-03-22T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hearing voices, paranoid thoughts",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Unemployed; previously worked as an administrative assistant"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "new psychotic symptoms, urgent"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-03-22T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Psychotic Symptoms",
+              "author": "PCP",
+              "date": "2023-03-22T08:15",
+              "body": "Seen with her sister, who called yesterday.\n\nS: Since roughly October Sharon has been hearing voices commenting on her when no one is around. She believes her former coworkers have been coordinating against her and talking about her. Left her administrative job in late 2022 because of it. Guarded, answers in short phrases, sister fills in. No visual hallucinations reported. Denies thoughts of self-harm or harming others, no plan, no intent. Sleep broken. No alcohol, no cannabis or other drugs, no new medications or supplements. No head injury, headaches, fevers or seizures.\n\nO: Vitals normal, afebrile. Thin, glasses, casually dressed. Alert, oriented to person, place and date. Eye contact limited, affect flat, speech sparse but coherent. Endorses auditory hallucinations; not obviously responding to them in the room. Insight limited, though she is willing to see a specialist. Neuro grossly nonfocal, gait normal. PHQ-9 6.\n\nA/P: New psychotic symptoms over about five months in a 28 year old with a maternal uncle with schizophrenia. Not acutely dangerous today by her and her sister's account, safety plan reviewed, sister staying with her.\n- Urgent outpatient psychiatry referral placed, marked expedited. Our referral coordinator to call today.\n- Psychiatry to do their own intake labs and tox; she would rather have one blood draw, which is reasonable.\n- Crisis line and ED precautions repeated to both of them.\n- Check in by phone next week.\n\n50 minutes, most of it history from both and coordinating."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "telephone",
+          "start": "2023-03-29T12:20",
+          "reason": "Check-in, referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up call",
+              "author": "PCP",
+              "date": "2023-03-29T12:20",
+              "body": "Spoke with sister and briefly with Sharon. Psychiatry intake is set for 4/12. No change, no safety concerns, sleeping a bit more. Sister knows to call sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "specialist_visit",
+          "start": "2023-04-12T13:00",
+          "service": "Psychiatry",
+          "reason": "Auditory hallucinations and paranoid delusions",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "diagnosed",
+              "onset": "2022-10-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia; prescribed by psychiatry"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-12T14:10",
+              "results": []
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-12T14:10",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-12T14:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.06
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2023-04-12T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "author": "psychiatry",
+              "date": "2023-04-20T09:00",
+              "body": "OUTPATIENT PSYCHIATRY - INITIAL EVALUATION\nVisit date: 04/12/2023\nReferral source: primary care, expedited\n\nIdentifying information: 28 year old married woman, previously employed in office administration, accompanied by her sister.\n\nPresenting problem: For about half a year she has heard voices that others do not hear, and she holds a fixed belief that her coworkers from her last job are conspiring against her. She also reports that her thoughts are being sent out so that other people can hear them.\n\nPsychiatric history: No prior psychiatric treatment, no hospitalizations, no suicide attempts.\nSubstance use: denies alcohol, cannabis and other drugs. Never smoker.\nFamily psychiatric history: maternal uncle with schizophrenia; mother with major depressive disorder.\nMedical: no chronic conditions. No medications prior to today. No known drug allergies.\n\nMental status: Alert and oriented x3. Appears anxious. Affect blunted. Thought process mostly linear, slowed. Thought content with persecutory delusions and thought broadcasting. Endorses auditory hallucinations. Denies suicidal and homicidal ideation. Insight partial, judgment fair.\nPhysical examination: unremarkable.\n\nStudies: CBC, comprehensive metabolic panel and thyroid function within normal limits. Urine toxicology screen negative.\n\nImpression: Schizophrenia. Symptoms present about six months with functional decline, no mood episode, no substance or medical cause found.\n\nPlan:\n1. Start risperidone 2 mg by mouth at bedtime.\n2. Psychoeducation given to patient and sister.\n3. Return in 3 to 4 weeks.\n4. We ask primary care to follow weight, glucose and lipids on antipsychotic therapy.\n\nThank you for this referral.\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "office_visit",
+          "start": "2023-05-17T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, new antipsychotic",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-17T15:05",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-17T15:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "worsening distance vision, high myopia, father with retinal detachment"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-17T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-17T15:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-05-17T14:30",
+              "body": "F/u after psychiatry intake. Psych letter reviewed: schizophrenia, started risperidone 2 mg qhs. She has been taking it nightly, sister sets out the pill. Voices are quieter. Sleeping better. Still not working.\n\nSeparate issue: her distance vision has gotten steadily worse over the last couple of years. Can't read signs until she is close, has trouble recognizing faces across a room. No eye pain, no red eye, no flashes. Last eye exam was about three years ago. Dad has very bad nearsightedness and had a detached retina.\n\nMeds: risperidone 2 mg qhs (psychiatry).\nNKDA.\n\nExam: vitals and weight in flowsheet. Calm, flat, more conversational than in March. Wearing glasses, conjunctivae clear, pupils equal and reactive. Heart and lungs normal. No tremor, no rigidity on passive movement.\n\nA/P\n1. Schizophrenia, on risperidone through psychiatry. Baseline A1c and fasting lipids today for metabolic monitoring as psychiatry asked; weight today is our baseline on the drug.\n2. Worsening myopia with a family history of retinal detachment. Referral to ophthalmology. Reviewed sudden floaters, flashes or a curtain over vision as reasons to go in the same day.\n3. Physical overdue (missed in January), rebook for later this year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "portal_message",
+          "start": "2023-05-19T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-05-19T08:50",
+              "body": "Sharon, your sugar test (A1c) and cholesterol are normal. We'll repeat them around the time of your physical since the new medication can change them over time."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T10:15",
+          "service": "Ophthalmology",
+          "reason": "Progressive decline in distance vision",
+          "conditions": [
+            {
+              "label": "Degenerative high myopia",
+              "icd10": "H44.23",
+              "action": "diagnosed",
+              "onset": "2023-06-12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2023-06-12T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "author": "ophthalmology",
+              "date": "2023-08-02T13:40",
+              "body": "OPHTHALMOLOGY CONSULTATION\nExam date: 06/12/2023\nReason for referral: decreasing distance vision\n\nHistory: 28 year old woman seen by psychiatry this spring for schizophrenia. Two years of slowly worsening distance vision: street signs are hard to make out and she has trouble telling who someone is from across a room. Has worn glasses since childhood. Her most recent eye exam, three years back, found a correction of -5.50 diopters in each eye. Denies pain, redness and photopsia. Father has high myopia and a history of retinal detachment.\nMedications: risperidone 2 mg at bedtime.\nAllergies: no known drug allergies.\n\nExamination:\nUncorrected visual acuity 20/200 OD and OS, improving to 20/30 OD and OS with -7.00 D sphere.\nPupils equal, round, reactive, no afferent defect. Intraocular pressures normal. Anterior segment quiet both eyes, lenses clear.\nDilated fundus examination: tessellated fundus both eyes with thin, pale-appearing optic discs consistent with myopic change. Peripheral retina examined 360 degrees: no tears, holes or detachment.\n\nAssessment: Degenerative (pathologic) high myopia, both eyes.\n\nPlan: Updated spectacle prescription provided. Dilated examination yearly. Reviewed symptoms of retinal detachment (new floaters, flashes, a shadow in the vision) and the need to be seen urgently if they occur.\n\nOphthalmology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Ophthalmology note received",
+              "author": "MA",
+              "date": "2023-08-02T13:55",
+              "body": "Ophthalmology consult from 6/12 received after the 7/26 request. Scanned to the visit and routed to PCP. Referral closed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "office_visit",
+          "start": "2023-07-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pain with intercourse",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "pain with attempted vaginal penetration"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-07-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-07-12T11:00",
+              "body": "Came alone today. Hesitant to bring this up. For about the last six months, every time she and her husband try to have intercourse she has a lot of pain as soon as he tries penetration, so she has mostly stopped trying. No vaginal discharge, no odor, no bleeding. Periods regular.\n\nAlso asked if we got the eye doctor's letter. Not yet; she says she was seen last month and got new glasses. Will ask MA to request it.\n\nPsych: still on risperidone, taking it. Says the voices are \"background.\"\n\nExam: vitals fine. Pelvic exam not done today; she was very anxious about it and asked to see a gynecologist instead, which is reasonable.\n\nA/P\n1. Pain with attempted penetration, six months, with avoidance. Gyn referral placed.\n2. Schizophrenia, psychiatry following.\n3. Ophthalmology letter to be requested."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "telephone",
+          "start": "2023-07-26T09:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "MA",
+              "date": "2023-07-26T09:35",
+              "body": "Called the ophthalmology office about the 6/12 visit note. They had no record of a copy request from us. Faxed request with release, they said 5 to 7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "specialist_visit",
+          "start": "2023-08-17T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Difficulty with sexual intercourse",
+          "conditions": [
+            {
+              "label": "Genito-pelvic pain/penetration disorder",
+              "icd10": "F52.6",
+              "action": "diagnosed",
+              "onset": "2023-02-15"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-17T10:15",
+              "results": []
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-08-17T10:15",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-17T10:05",
+              "results": [
+                {
+                  "test": "Vaginal culture",
+                  "loinc": "6463-4",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2023-08-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2023-08-24T15:10",
+              "body": "GYNECOLOGY - NEW CONSULT\nDate of service: 08/17/2023\nReferred by primary care for pain with intercourse\n\nHPI: 28 year old who has had pain for six months whenever her partner attempts vaginal penetration. The pain is significant and predictable, and she now avoids sexual activity. No discharge, odor or bleeding. Also recently evaluated by psychiatry (auditory hallucinations) and ophthalmology (progressive myopia).\nPMH: schizophrenia; high myopia.\nMedications: risperidone 2 mg nightly.\nAllergies: NKDA.\nFamily history: mother with major depressive disorder; father with degenerative myopia; sister without psychiatric illness, her main support; maternal Ashkenazi Jewish ancestry.\nSocial: never smoker, no alcohol. Not currently employed; previously an administrative assistant.\n\nVitals: within normal limits.\nAbdomen: soft, nontender, no masses.\nPelvic: external genitalia normal in appearance, no lesions, no erythema. Attempted insertion of a small speculum caused severe pain and was stopped; she reports this is the same pain she has with intercourse. Visibly anxious throughout. Bimanual not performed.\n\nLabs: CBC unremarkable; UA unremarkable; vaginal cultures showed no growth.\n\nAssessment: Genito-pelvic pain/penetration disorder. No infection or structural lesion identified.\n\nPlan:\n- Referral to pelvic floor physical therapy for evaluation and dilator-based therapy.\n- Discussed the role of anxiety and the pain cycle; she may benefit from therapy alongside PT.\n- Return as needed.\n\nObstetrics & Gynecology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Gynecology note received",
+              "author": "MA",
+              "date": "2023-08-24T15:20",
+              "body": "Gyn consult 8/17 arrived by fax. Filed. Pelvic PT referral was sent by their office directly; no action needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "pharmacy",
+          "start": "2023-10-05T13:15",
+          "medications": [
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "stop",
+              "reason": "switched by psychiatry 9/26 for inadequate response"
+            },
+            {
+              "drug_text": "aripiprazole 15 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia; prescribed by psychiatry"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Pharmacy fill history review",
+              "author": "MA",
+              "date": "2023-10-05T13:15",
+              "body": "Prepping for flu clinic list, pulled external fill history. Last risperidone fill 8/30. New fill 9/26 for aripiprazole 15 mg #30, one daily, prescriber is the outpatient psychiatry clinic. No psych letter about a change. Called patient: she confirms psychiatry stopped risperidone because it wasn't helping enough and started the new one. Med list updated. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP note on med change",
+              "author": "PCP",
+              "date": "2023-10-05T17:00",
+              "body": "Reviewed. Aripiprazole per psychiatry. Will recheck metabolic labs at physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-18T15:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza and COVID-19",
+              "author": "RN",
+              "date": "2023-10-18T15:40",
+              "body": "Flu quadrivalent 0.5 mL IM L deltoid; 2023-24 Pfizer COVID 0.3 mL IM R deltoid. No prior reactions, afebrile, feels well. Sister drove her. Waited 15 minutes, fine. Physical booked for December."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "portal_message",
+          "start": "2023-11-08T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about therapy",
+              "author": "patient",
+              "date": "2023-11-08T19:22",
+              "body": "hi i wanted to let you know i went to the pelvic physical therapy the gyn sent me to. i went 3 times but it was hard to get rides there so i stopped for now. do i need a new referral if i want to go back? thanks sharon"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about therapy",
+              "author": "RN",
+              "date": "2023-11-09T09:10",
+              "body": "Hi Sharon, thanks for letting us know. The referral came from gynecology, so the PT office can usually restart you on the same one for a while; call them first. If they need a new order, let us know. Your Medicaid plan also covers rides to medical appointments, and we can give you the number at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "annual_physical",
+          "start": "2023-12-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Situational anxiety",
+              "icd10": "F41.8",
+              "action": "diagnosed",
+              "onset": "2023-08-01"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-06T09:45",
+              "results": []
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-06T09:45",
+              "results": []
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-12-06T09:45",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-06T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-12-06T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-06T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-12-06T09:00",
+              "body": "Annual exam. Sister in the waiting room.\n\nInterval: psychiatry switched risperidone to aripiprazole in late September (we learned from the pharmacy). She thinks it is \"about the same\"; still hears voices most days, less upsetting than in the spring. Sees psychiatry monthly. Ophthalmology: new glasses, letter in chart, degenerative high myopia, yearly dilated exams. Gyn: genito-pelvic pain/penetration disorder, went to pelvic PT three times then stopped because of transportation.\n\nShe says she gets very keyed up before any medical visit, worse before anything involving a pelvic exam; heart pounding, can't think, wants to leave. Not every day, mostly tied to appointments. GAD-7 9, PHQ-9 5. No SI.\n\nMeds: aripiprazole 15 mg daily (psych). NKDA.\nSocial: not working. Lives with husband and sister. Never smoker, no alcohol.\n\nExam: vitals in flowsheet, normal; weight up about 2 kg since May. Anxious but cooperative. Thick lenses. Neck without adenopathy. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. No abnormal movements.\n\nA/P\n1. Health maintenance. Pap is due (last 2020); she declines a speculum exam today and would rather have it done at gyn when she feels ready. Respected. Flu and COVID done in October.\n2. Schizophrenia on aripiprazole, psychiatry managing. CBC, CMP, lipids, A1c today.\n3. Situational anxiety around medical encounters. Talked through it; she will raise it with psychiatry since they know her meds. We will keep visits predictable and explain exams beforehand.\n4. Degenerative high myopia, ophthalmology yearly.\n5. Genito-pelvic pain disorder, gyn and PT. Gave her the Medicaid ride number.\n\nRTC 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2023-12-08T12:15",
+              "body": "Hi Sharon - blood counts, kidney, liver, cholesterol and the A1c are all in the normal range. Good news since the medication can sometimes nudge these up. See you in the spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
