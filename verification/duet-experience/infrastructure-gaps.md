@@ -86,8 +86,8 @@ newer Terms, a new AI permission, proactive work paused) never uses work up.
 
 ## Health sources
 
-**Assumed away.** Portal authorization, token custody, paging, retries and
-phone uploads. The graph shows an import running and ending, and readings
+**Assumed away.** Portal authorization, token custody, paging, retries, how
+often sources refresh on their own, and phone uploads. The graph shows an import running and ending, and readings
 arriving.
 
 **Must guarantee.** A portal sign-in finishes only in the session and account
@@ -96,7 +96,8 @@ one (B1). An interrupted import resumes without duplicates and never reports
 itself complete when it isn't; one unreadable record fails alone, named (B2,
 B5). Unsent phone readings survive app exit, relaunch and a locked phone, and
 wait untouched while another account is signed in (A6). Continuous sensor data
-never leaves the phone (A1). Engineering sees when each connection last
+never leaves the phone (A1). Each connected organization refreshes on its own
+at most once a day (B7), and a refresh the person asks for never waits on it. Engineering sees when each connection last
 succeeded and is alerted, naming the connection and the reason, when one is
 overdue (ENG-162, ENG-73).
 

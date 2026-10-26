@@ -87,18 +87,18 @@ stateDiagram-v2
 %% conversation or directly. Duet's AI never resumes them. They continue through
 %% inactivity. A Plan is a routine with no schedule.
 %% event Duet saves the {kind} you asked for | by Duet's AI | needs RWriting | reason: a reply saves follow-through only from your current message or a proposal you accepted; reading a record or a provider's note adds no step, and nothing it read can ask for more than you did (Dev 2026-09-25; ENG-34, Dev 2026-10-25) | The {kind} is saved and shows on Today; the thread shows its receipt only once the save is confirmed (ENG-34).
-%% event the {kind} comes due | by the clock | Its scheduled time arrives, in the timezone you agreed. A Reminder needs no AI, so a time that comes while AI is off, newer Terms wait or a newer AI permission waits still posts your words (Dev 2026-10-26). Any other time that comes while AI permission is withdrawn, or while a newer AI permission, AI off or newer Terms wait (for a Check-in), or proactive work is paused passes undelivered; nothing stale arrives later (F3; Dev 2026-10-25). A time that comes while the last Check-in couldn't finish replaces it.
+%% event the {kind} comes due | by the clock | Its scheduled time arrives, in the timezone you agreed. A Reminder needs no AI, so at its time Duet delivers it, even while AI is off, newer Terms wait or a newer AI permission waits (Dev 2026-10-26). Any other time that comes while AI permission is withdrawn, or while a newer AI permission, AI off or newer Terms wait (for a Check-in), or proactive work is paused passes undelivered; nothing stale arrives later (F3; Dev 2026-10-25). A time that comes while the last Check-in couldn't finish replaces it.
 %% event Duet starts the Check-in | by Duet | needs FuDue@checkin, PAllowed, SwOn, TCur, PwOn | reason: a Check-in is AI work and proactive work: it needs your permission, the switch on, current Terms and proactive work on (F3, D7, D10) | Duet's AI begins the Check-in from your current context; its accepted instruction is fixed.
 %% event Duet delivers the Check-in | by Duet's AI | needs FuRun@checkin | reason: only a running Check-in delivers | Its result posts in the thread as Duet's message; a delivered Check-in never means you did something medical. After its last time the Check-in is completed.
 %% event the Check-in can't finish | by Duet's runtime | needs FuRun@checkin | reason: only a running Check-in fails | What was written stays, marked unfinished, and Duet says so in the thread with Try again, since you asked for it; never silence (D1; Dev 2026-10-26).
 %% event the Check-in keeps failing | by Duet's runtime | needs FuRun@checkin | reason: only a running Check-in fails | After failing repeatedly, it pauses itself and Duet says so in the thread; only you resume it (Dev 2026-10-26). How many failures in a row count as repeatedly is the runtime's (infrastructure-gaps.md).
 %% event try the Check-in again | by you | command on the Check-in: Try again, clicked while DIn | needs FuStuck@checkin, PAllowed, SwOn, TCur, PwOn | reason: a Check-in is AI work and proactive work: it needs your permission, the switch on, current Terms and proactive work on (F3, D7) | Duet runs the same Check-in again with its accepted instruction.
 %% events proactive AI work pauses = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | pause proactive work
-%% event Duet delivers the Reminder | by Duet | needs FuDue@reminder, PAllowed, PNew, PwOn | reason: a Reminder needs no AI, but your consent and proactive work still govern it (north-star.md, Insight evidence; Dev 2026-10-26) | Duet posts it in the thread: your agreed words lead, unchanged, and with AI on Duet may add what it judges useful (Dev 2026-10-26). After its last time the Reminder is completed.
-%% event pause the {kind} | by you | command on the {kind}: Pause, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, TCur | reason: only a live {kind} pauses; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pause it; a run in progress ends for good.
+%% event Duet delivers the Reminder | by Duet | needs FuSched@reminder, PAllowed, PNew, PwOn | reason: a Reminder needs no AI, but your consent and proactive work still govern it (north-star.md, Insight evidence; Dev 2026-10-26) | At its time, Duet posts it in the thread: your agreed words lead, unchanged, and with AI on Duet may add what it judges useful (Dev 2026-10-26). After its last time the Reminder is completed.
+%% event pause the {kind} | by you | command on the {kind}: Pause, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, TCur | reason: only a live {kind} pauses; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pause it; a run in progress ends for good.
 %% event resume the {kind} | by you | command on the {kind}: Resume, clicked while DIn | needs FuPaused@{key}, TCur | reason: only a paused {kind} resumes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It continues from its next time.
-%% event change the {kind} | by you | command on the {kind}: Change, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change it directly; a run in progress ends for good (backend-architecture.md, Accepted follow-through).
-%% event cancel the {kind} | by you | command on the {kind}: Cancel, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} is cancelled; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You cancel it; its receipt in the thread says so.
+%% event change the {kind} | by you | command on the {kind}: Change, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change it directly; a run in progress ends for good (backend-architecture.md, Accepted follow-through).
+%% event cancel the {kind} | by you | command on the {kind}: Cancel, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} is cancelled; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You cancel it; its receipt in the thread says so.
 %% event Duet changes the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply changes follow-through only from your current message; what it read can't ask for more than you did (backend-architecture.md, Accepted follow-through; ENG-34) | The reply changes the {kind} as your message asked; a run in progress ends for good, and its receipt shows once the change is confirmed (ENG-34).
 %% event Duet pauses the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply pauses follow-through only from your current message | The reply pauses the {kind} as your message asked; a run in progress ends for good. Only you resume it.
 %% event Duet cancels the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply cancels follow-through only from your current message | The reply cancels the {kind} as your message asked; its receipt in the thread says so.
@@ -106,7 +106,7 @@ stateDiagram-v2
 %% event change the Plan | by you | command on the Plan: Save, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit the Plan directly; asking in conversation saves it again.
 %% event delete the Plan | by you | command on the Plan: Delete, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The Plan goes; Reminders and Check-ins that served it keep running (Dev 2026-09-28).
 %% event Duet deletes the Plan as you asked | by Duet's AI | needs RWriting, PlSaved | reason: a reply deletes a Plan only from your current message | The Plan goes as your message asked; Reminders and Check-ins that served it keep running.
-%% event Duet links the {kind} to your Plan as you asked | by Duet's AI | needs RWriting, PlSaved, FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key} | reason: a reply links follow-through only from your current message, to a saved Plan, for a {kind} you have (Dev 2026-09-28) | The {kind} now serves your Plan, and the Plan's detail shows it. A {kind} serves at most one Plan; you change the link in conversation, not with a new control.
+%% event Duet links the {kind} to your Plan as you asked | by Duet's AI | needs RWriting, PlSaved, FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key} | reason: a reply links follow-through only from your current message, to a saved Plan, for a {kind} you have (Dev 2026-09-28) | The {kind} now serves your Plan, and the Plan's detail shows it. A {kind} serves at most one Plan; you change the link in conversation, not with a new control.
 %% event Duet unlinks the {kind} from your Plan as you asked | by Duet's AI | needs RWriting, LkPlan@{key} | reason: a reply changes the link only from your current message (Dev 2026-09-28) | The {kind} keeps running on its own.
 %%
 %% Duet's own work and Today. Duet may take something on whenever it judges it worth doing for you
@@ -131,7 +131,7 @@ stateDiagram-v2
 %% event the import can't finish | by the organization's portal | needs OrgImporting | reason: only a running import fails | The source is down or keeps failing; what you already have stays visible and the next refresh tries again (B5, B6).
 %% event the organization stops accepting Duet's access | by the organization's portal | needs OrgConn | reason: only a connected organization can drop its access | The portal's sign-in expired or was revoked; the source shows it couldn't update since its last import, with Reconnect (Dev 2026-10-26).
 %% event refresh your records | by you | command on the organization: Refresh, clicked while DIn | needs OrgCurrent, OrgPartial, OrgTrouble, TCur | reason: only a connected organization that isn't already importing refreshes; newer Terms wait for your acceptance first | You ask for an update now; a stuck import elsewhere never blocks it (B6).
-%% event the daily refresh starts | by the clock | needs OrgCurrent, OrgPartial, OrgTrouble | reason: only a connected organization that isn't already importing refreshes | At most once a day Duet asks each connected organization for what changed (B7).
+%% event your records refresh on their own | by Duet | needs OrgCurrent, OrgPartial, OrgTrouble | reason: only a connected organization that isn't already importing refreshes | Duet asks each connected organization for what changed, on its own; how often is the harness's (infrastructure-gaps.md, Health sources). A refresh you ask for never waits on it (B6, B7).
 %% event reconnect the organization | by you | needs DIn, OrgSignIn, TCur | reason: only an organization that needs you to sign in again is reconnected; newer Terms wait for your acceptance first | You go back to the portal to sign in again; your history stays as it is.
 %% event disconnect the organization | by you | command on the organization: Disconnect, clicked while DIn | needs OrgConn | reason: only a connected organization disconnects; stopping a source is always yours, even before newer Terms, as leaving your practice is (Dev 2026-10-26) | New data stops at once and work in flight is fenced; everything already imported stays, as of its last update, until you delete your account (F1).
 %% event allow your phone's health data | by you | needs DIn, AReady, PhOff, TCur | reason: a set-up account connects; newer Terms wait for your acceptance first | You allow Duet to read Apple Health on iPhone or Health Connect on Android; declining changes nothing (ENG-162; north-star.md, Connect your health).
@@ -254,7 +254,7 @@ stateDiagram-v2
 %% event choose Today's measurements | by you | needs TabToday, TCur | reason: the choice is yours; newer Terms wait first | Up to three measurements to show on Today; choosing is not a second health library (ui-surface-map.md, At a glance picker).
 %% event save Today's measurements | by you | needs ToPick, TCur | reason: only an open choice is saved; newer Terms wait first | Today shows the measurements you chose.
 %% event open your Plan | by you | needs TabToday, PlSaved, TCur | reason: only a saved Plan opens; newer Terms wait first | The Plan, the Reminders and Check-ins that serve it, and the conversation that saved it; no counts, progress or results.
-%% event open the Reminder | by you | needs TabToday, FuActive@reminder, FuDue@reminder, FuPaused@reminder, FuDone@reminder, FuCancelled@reminder, TCur | reason: only a Reminder you have opens; newer Terms wait first | The Reminder's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
+%% event open the Reminder | by you | needs TabToday, FuActive@reminder, FuPaused@reminder, FuDone@reminder, FuCancelled@reminder, TCur | reason: only a Reminder you have opens; newer Terms wait first | The Reminder's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
 %% event open the Check-in | by you | needs TabToday, FuActive@checkin, FuDue@checkin, FuRun@checkin, FuStuck@checkin, FuPaused@checkin, FuDone@checkin, FuCancelled@checkin, TCur | reason: only a Check-in you have opens; newer Terms wait first | The Check-in's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
 %% event open For my doctor | by you | needs TabToday, TCur | reason: the workspace is yours whether or not it has anything yet; newer Terms wait first | Your workspace for your doctor, empty or saved, with your appointment (ENG-169).
 %% event open your doctor's plan | by you | needs TabToday, DpCurrent, DpOld, TCur | reason: only a plan your practice sent opens; newer Terms wait first | Your doctor's documented decisions and open items, with source, author and date, and whether it is still updated (ENG-45).
@@ -527,8 +527,8 @@ stateDiagram-v2
         %% One saved item per kind stands for each of its kind; each behaves the same way.
         state "{Kind}" as Fu {
           %% template
-          %% instance reminder: kind = Reminder, Kind = Reminder, run = FuDue@reminder, stuck = FuDue@reminder
-          %% instance checkin: kind = Check-in, Kind = Check-in, run = FuRun@checkin, stuck = FuStuck@checkin
+          %% instance reminder: kind = Reminder, Kind = Reminder, due = FuSched@reminder, run = FuSched@reminder, stuck = FuSched@reminder
+          %% instance checkin: kind = Check-in, Kind = Check-in, due = FuDue@checkin, run = FuRun@checkin, stuck = FuStuck@checkin
           [*] --> FuNone
           state "No {kind}" as FuNone
           %% Scheduled: waiting for its next time, whether or not its last run failed. What happens
@@ -540,6 +540,7 @@ stateDiagram-v2
             %% only checkin
           }
           state "{Kind} due" as FuDue
+          %% only checkin
           state "Check-in running" as FuRun
           %% only checkin
           state "{Kind} paused" as FuPaused {
@@ -555,6 +556,7 @@ stateDiagram-v2
           FuCancelled --> FuActive : Duet saves the {kind} you asked for
           FuSched --> FuDue : the {kind} comes due [AI allowed, on, current Terms, proactive work on]
           %% when PAllowed, SwOn, TCur, PwOn | reason: Duet delivers only while you allow it, AI is on, Terms are current and proactive work is on (F3, D7)
+          %% only checkin
           FuSched --> FuActive : the {kind} comes due [newer AI permission, a later time remains]
           %% when PNew | reason: a time that comes while a newer AI permission waits passes undelivered (Dev 2026-10-25)
           %% only checkin
@@ -581,26 +583,17 @@ stateDiagram-v2
           %% when PAllowed, SwOn, TCur, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
           FuSched --> FuDone : the {kind} comes due [proactive work paused, its last time]
           %% when PAllowed, SwOn, TCur, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
-          FuSched --> FuDue : the {kind} comes due [newer AI permission, proactive work on]
-          %% when PNew, PwOn | reason: a Reminder needs no AI, so it still posts your words (Dev 2026-10-26)
-          %% only reminder
           FuSched --> FuActive : the {kind} comes due [newer AI permission, proactive work paused, a later time remains]
           %% when PNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
           %% only reminder
           FuSched --> FuDone : the {kind} comes due [newer AI permission, proactive work paused, its last time]
           %% when PNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
           %% only reminder
-          FuSched --> FuDue : the {kind} comes due [AI off, proactive work on]
-          %% when PAllowed, SwOff, PwOn | reason: a Reminder needs no AI, so it still posts your words (Dev 2026-10-26)
-          %% only reminder
           FuSched --> FuActive : the {kind} comes due [AI off, proactive work paused, a later time remains]
           %% when PAllowed, SwOff, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
           %% only reminder
           FuSched --> FuDone : the {kind} comes due [AI off, proactive work paused, its last time]
           %% when PAllowed, SwOff, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
-          %% only reminder
-          FuSched --> FuDue : the {kind} comes due [newer Terms, proactive work on]
-          %% when PAllowed, SwOn, TNew, PwOn | reason: a Reminder needs no AI, so it still posts your words (Dev 2026-10-26)
           %% only reminder
           FuSched --> FuActive : the {kind} comes due [newer Terms, proactive work paused, a later time remains]
           %% when PAllowed, SwOn, TNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
@@ -620,9 +613,9 @@ stateDiagram-v2
           %% only checkin
           FuRun --> FuDone : Duet delivers the Check-in
           %% only checkin
-          FuDue --> FuActive : Duet delivers the Reminder
+          FuSched --> FuActive : Duet delivers the Reminder
           %% only reminder
-          FuDue --> FuDone : Duet delivers the Reminder
+          FuSched --> FuDone : Duet delivers the Reminder
           %% only reminder
           FuRun --> FuDue : proactive AI work pauses
           %% only checkin
@@ -639,14 +632,18 @@ stateDiagram-v2
           FuStuck --> FuDone : withdraw AI permission
           %% only checkin
           FuDue --> FuActive : withdraw AI permission
+          %% only checkin
           FuDue --> FuDone : withdraw AI permission
+          %% only checkin
           FuSched --> FuPaused : pause the {kind}
           FuDue --> FuPaused : pause the {kind}
+          %% only checkin
           FuRun --> FuPaused : pause the {kind}
           %% only checkin
           FuPaused --> FuActive : resume the {kind}
           FuSched --> FuActive : change the {kind}
           FuDue --> FuActive : change the {kind}
+          %% only checkin
           FuRun --> FuActive : change the {kind}
           %% only checkin
           FuPausedYou --> FuPausedYou : change the {kind}
@@ -654,11 +651,13 @@ stateDiagram-v2
           %% only checkin
           FuSched --> FuCancelled : cancel the {kind}
           FuDue --> FuCancelled : cancel the {kind}
+          %% only checkin
           FuRun --> FuCancelled : cancel the {kind}
           %% only checkin
           FuPaused --> FuCancelled : cancel the {kind}
           FuSched --> FuActive : Duet changes the {kind} as you asked
           FuDue --> FuActive : Duet changes the {kind} as you asked
+          %% only checkin
           FuRun --> FuActive : Duet changes the {kind} as you asked
           %% only checkin
           FuPausedYou --> FuPausedYou : Duet changes the {kind} as you asked
@@ -666,14 +665,15 @@ stateDiagram-v2
           %% only checkin
           FuSched --> FuPaused : Duet pauses the {kind} as you asked
           FuDue --> FuPaused : Duet pauses the {kind} as you asked
+          %% only checkin
           FuRun --> FuPaused : Duet pauses the {kind} as you asked
           %% only checkin
           FuSched --> FuCancelled : Duet cancels the {kind} as you asked
           FuDue --> FuCancelled : Duet cancels the {kind} as you asked
+          %% only checkin
           FuRun --> FuCancelled : Duet cancels the {kind} as you asked
           %% only checkin
           FuPaused --> FuCancelled : Duet cancels the {kind} as you asked
-          %% never DueNeedsAIAllowed: {Kind} due & AI not allowed -- A time that comes while AI permission is withdrawn passes undelivered (F3).
         }
         --
         state "Your Plan" as Plan {
@@ -719,13 +719,6 @@ stateDiagram-v2
           ExFailed --> ExPreparing : export your data
           ExPreparing --> ExReady : your export is ready
           ExPreparing --> ExFailed : your export can't finish
-        }
-        --
-        %% The name Duet uses for you: yours to change at any time; Duet holds no legal name (Dev 2026-10-26).
-        state "Your display name" as Nm {
-          [*] --> NmSet
-          state "The name Duet uses for you" as NmSet
-          NmSet --> NmSet : change your display name
         }
         --
         %% Duet's own work: one region stands for whatever Duet took on. A pause or a withdrawal stops it, and
@@ -934,6 +927,7 @@ stateDiagram-v2
         %% never PlanCurrentNotInvited: Your doctor's plan, current & A practice's invitation waits for you -- A plan is current only while connected (ENG-45).
         %% never PracticeAppointmentOnlyConnected: Appointment from your practice & Connection ended -- Once the connection ends, the practice's appointment goes away (Dev 2026-10-26).
         %% never PracticeAppointmentNotInvited: Appointment from your practice & A practice's invitation waits for you -- The practice's schedule reaches Duet only while connected (ENG-169).
+        %% never CheckInDueNeedsAIAllowed: Check-in due & AI not allowed -- A time that comes while AI permission is withdrawn passes undelivered (F3).
         %% never CheckInOnlyWithAIAllowed: Check-in running & AI not allowed -- No AI work without your permission (F3).
         %% never CheckInOnlyWithAIOn: Check-in running & AI off -- The AI switch pauses AI work (D7).
         %% never CheckInOnlyWithCurrentAIPermission: Check-in running & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
@@ -1498,15 +1492,13 @@ stateDiagram-v2
         OrgCurrent --> OrgImporting : refresh your records
         OrgPartial --> OrgImporting : refresh your records
         OrgTrouble --> OrgImporting : refresh your records
-        OrgCurrent --> OrgImporting : the daily refresh starts
-        OrgPartial --> OrgImporting : the daily refresh starts
-        OrgTrouble --> OrgImporting : the daily refresh starts
+        OrgCurrent --> OrgImporting : your records refresh on their own
+        OrgPartial --> OrgImporting : your records refresh on their own
+        OrgTrouble --> OrgImporting : your records refresh on their own
         OrgSignIn --> OrgResigning : reconnect the organization
         OrgResigning --> OrgImporting : the portal signs you in
         OrgResigning --> OrgSignIn : cancel the portal sign-in
         OrgResigning --> OrgSignIn : the portal sign-in fails
-        OrgImporting --> OrgImporting : new records arrive
-        OrgImporting --> OrgImporting : a record is corrected
       }
       OrgOff --> OrgSigning : connect a doctor or hospital
       OrgSigning --> OrgConn : the portal signs you in
@@ -1527,14 +1519,6 @@ stateDiagram-v2
         state "Bringing in your history" as PhImporting
         state "Up to date from your phone" as PhCurrent
         PhImporting --> PhCurrent : your phone's history finishes importing
-        PhImporting --> PhImporting : your phone's readings arrive
-        PhCurrent --> PhCurrent : your phone's readings arrive
-        PhImporting --> PhImporting : a reading is deleted in your phone's health app
-        PhImporting --> PhImporting : clinical records arrive from your phone's health app
-        PhImporting --> PhImporting : a clinical record changes in your phone's health app
-        PhCurrent --> PhCurrent : a reading is deleted in your phone's health app
-        PhCurrent --> PhCurrent : clinical records arrive from your phone's health app
-        PhCurrent --> PhCurrent : a clinical record changes in your phone's health app
       }
       state "Access turned off in your phone's settings; your readings stay" as PhBlocked
       PhOff --> PhOn : allow your phone's health data
