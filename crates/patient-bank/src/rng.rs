@@ -146,6 +146,11 @@ impl Rng {
         a + self.randbelow((b - a + 1) as u64) as i64
     }
 
+    /// `choice(items)`: one of `items`, which must not be empty.
+    pub fn choice<'a, T>(&mut self, items: &'a [T]) -> &'a T {
+        &items[self.randbelow(items.len() as u64) as usize]
+    }
+
     pub fn uniform(&mut self, a: f64, b: f64) -> f64 {
         a + (b - a) * self.random()
     }

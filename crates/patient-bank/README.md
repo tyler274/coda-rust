@@ -8,6 +8,9 @@ works.
 ## Pipeline
 
 ```text
+import --db benchmark_v1.3.db  adds each adult's source.md and a seed drawn from
+                               it (name from data/name-pool.json, town, practice
+                               dates, last seen, booked); never overwrites
 patients/units/<unit>/
   seed.json                    who the patient is in the practice
   source.md                    the synthetic_hospital patient the unit is made from
@@ -22,6 +25,7 @@ patients/units/<unit>/
 ```
 
 ```bash
+cargo run -q -p patient-bank -- import --db <synthetic_hospital benchmark_v1.3.db>
 cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]

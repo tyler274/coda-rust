@@ -47,7 +47,7 @@ state, never typed by an author.
 
 | What | Where |
 | --- | --- |
-| The tool: authoring, checks, FHIR build and validation | [`crates/patient-bank`](/crates/patient-bank/src/lib.rs); its <a href="/crates/patient-bank/README%2Emd">README</a> has the commands and what the code owns |
+| The tool: import from synthetic_hospital, authoring, checks, FHIR build and validation | [`crates/patient-bank`](/crates/patient-bank/src/lib.rs); its <a href="/crates/patient-bank/README%2Emd">README</a> has the commands and what the code owns |
 | The patients, one folder each: the seed, the source, the requirements, the author's drafts and the accepted chart | `patients/units/<unit>/` |
 | The FHIR bank, previews and caches, all derived | `target/patient-bank/`, ignored and rebuilt |
 

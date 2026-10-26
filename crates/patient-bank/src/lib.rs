@@ -8,6 +8,7 @@ pub mod catalog;
 pub mod check;
 pub mod draw;
 pub mod fhir;
+pub mod import;
 pub mod labs;
 pub mod ledger;
 pub mod measure;
