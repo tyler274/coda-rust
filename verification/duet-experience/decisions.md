@@ -339,6 +339,38 @@ Linear wins.
 - While you're connected to a practice, phone readings, Apple Health clinical
   records and their changes join the live feed with your records (ENG-39).
 
+## Your screens (step 9)
+
+The graph models what you see and open, as the physician graph does (Dev
+2026-10-26: "yes, model the screens"). Sources: north-star.md (Product
+structure, Today, You) and the original app's ui-surface-map.md (Navigation
+map; Page and state inventory), with later decisions winning.
+
+- Three tabs: Duet, Today and You. Shared is removed (ENG-141). Today is the
+  home for insights and current care: Plans, Reminders, Check-ins, For my
+  doctor and your doctor's plan (ENG-34, ENG-168), replacing the companion's
+  card as the way in. Your doctor's plan lives on Today with them (Dev
+  2026-10-26); the order and density of Today is still open (ENG-168).
+- Each tab keeps what it has open. Moving around never changes your health
+  data or Duet's work, and opening something never marks it done.
+- Ask about this takes you to the conversation with that item, leaving the
+  other tabs as they were.
+- You holds the library (records groups, records, Measurements & trends,
+  Health history, Earlier insights, search), Sources & data, and Settings. A
+  record opens from its group, a search or Health history, and going back
+  returns there.
+- Settings and AI settings stay reachable while newer Terms wait, since
+  exporting, deleting your account and withdrawing AI permission are allowed
+  then; everything else waits for the Terms (Dev 2026-10-26).
+- Supporting information shows the exact version a reply cited, with a note
+  when a newer version exists, never the newer one in its place (C6, E5).
+- Every read behaves the same way: a saved copy shows at once, loading shows
+  only when nothing can, a failure keeps what is shown with one quiet line and
+  Retry, and with nothing shown it says it couldn't load; never a false empty
+  state (ui-surface-map.md, Navigation map).
+- A Plan deleted while you have it open stays open and says it was removed;
+  going back returns to Today (ui-surface-map.md, Plan; Dev 2026-10-26).
+
 ## Open, to add later
 
 - **Pausing reviews while you're away (Dev 2026-10-25).** coda-app paused
