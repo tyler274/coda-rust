@@ -203,5 +203,5 @@ Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
 prescribed. A short course (`"course": "short"`) needs no stop. An ED visit or
 admission may give `vitals` as a list of sets, each with its own `time`.
 
-Phone numbers use 413-555-01xx, and emails use `@example.test`. Never name real
+Phone numbers use 555-01xx, and emails use `@example.test`. Never name real
 practices, hospitals, labs or pharmacies; drug and vaccine product names are fine.

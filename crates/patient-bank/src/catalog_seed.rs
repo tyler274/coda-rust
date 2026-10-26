@@ -1172,6 +1172,8 @@ pub const VACCINES: &[(&str, &str)] = &[
     ("MMR", "03"),
     ("Varicella", "21"),
     ("Meningococcal conjugate MenACWY", "136"),
+    ("Meningococcal B, recombinant (MenB-4C)", "163"),
+    ("Haemophilus influenzae type b (PRP-T)", "48"),
     ("Typhoid Vi polysaccharide", "101"),
 ];
 

@@ -480,7 +480,10 @@ fn check_event<'a>(
     }
     for x in &ev.procedures {
         if !catalog.procedures.contains_key(&x.procedure) {
-            errors.push(format!("{eid}: unknown procedure {:?}", x.procedure));
+            warnings.push(format!(
+                "{eid}: procedure {:?} not in catalog (text only, no CPT)",
+                x.procedure
+            ));
         }
     }
     for i in &ev.immunizations {

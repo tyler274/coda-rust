@@ -257,6 +257,10 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
                 .iter()
                 .map(|x| format!("left text-only (not verified): {x}")),
         );
+        // so the author sees what each code it chose means
+        for (label, v) in terms.labs.iter().chain(&terms.reports) {
+            println!("coded: {label:?} as LOINC {} {:?}", v.code, v.display);
+        }
         for (mrn, chart) in render(unit, &merged.patients, catalog, &terms, time::as_of()) {
             let seed = unit.members.iter().find(|m| m.mrn == mrn).expect("member");
             let counts: Vec<String> = chart
