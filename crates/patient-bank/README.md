@@ -51,7 +51,8 @@ the terminology cache, the bank and the schema live under the ignored
   practice calendar. What happens after today is decided later, when the patients
   are run.
 - **Codes.** `data/catalog.json` holds verified ICD-10-CM, LOINC, RxNorm, SNOMED,
-  CVX and CPT codes. `check` verifies any extra condition code, drug text, or lab or
+  CVX and CPT codes. A concept is added by writing its label and code there and
+  running `catalog`, which reads every entry back from its official service. `check` verifies any extra condition code, drug text, or lab or
   study LOINC an author proposes and stores the answer in the ledger, so build and
   validate need no network.
 - **Repeats.** Authors write alone, so they fall back on the same defaults.

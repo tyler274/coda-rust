@@ -9,8 +9,8 @@
 //! A unit lives in `patients/units/<unit>/`: seed.json, who it is; source.md and
 //! build-req.md, which it is written from; the author's story.md and part-NN.json;
 //! and ledger.json, the accepted chart, the only input the bank build renders, with
-//! `check` its only writer. chart.txt and taken.md are derived into
-//! `<root>/preview/<unit>/`. See `data/authoring-guide.md`.
+//! `check` its only writer. chart.txt, taken.md and the unit's terminology answers
+//! (lookups.json) are derived into `<root>/preview/<unit>/`. See `data/authoring-guide.md`.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -182,8 +182,10 @@ fn render(
         .collect()
 }
 
-fn verify(drafts: &Path, patients: &[Patient], catalog: &Catalog) -> Result<Terms> {
-    let mut look = Lookup::layered(&drafts.join("lookups.json"))?;
+/// Verify the unit's out-of-catalog codes; the service answers are kept beside its
+/// preview, so a repeat check asks nothing again.
+fn verify(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> Result<Terms> {
+    let mut look = Lookup::layered(&paths::preview_dir(&unit.unit).join("lookups.json"))?;
     terms::resolve(patients, catalog, &mut look)
 }
 
@@ -246,7 +248,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
     }));
     let mut terms = Terms::default();
     if errors.is_empty() {
-        terms = verify(drafts, &merged.patients, catalog)?;
+        terms = verify(unit, &merged.patients, catalog)?;
         warnings.extend(
             terms
                 .rejected
@@ -308,7 +310,7 @@ fn preview(unit: &Unit, drafts: &Path, out: &Path, catalog: &Catalog) -> Result<
         }
         return Ok(1);
     }
-    let terms = verify(drafts, &merged.patients, catalog)?;
+    let terms = verify(unit, &merged.patients, catalog)?;
     let text: Vec<String> = render(unit, &merged.patients, catalog, &terms, time::as_of())
         .iter()
         .map(|(mrn, c)| {

@@ -5,7 +5,6 @@
 pub mod bank;
 pub mod calendar;
 pub mod catalog;
-pub mod catalog_seed;
 pub mod check;
 pub mod draw;
 pub mod fhir;

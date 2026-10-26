@@ -3,9 +3,9 @@
 //! `data/catalog.json` holds every code authors may use by label: ICD-10-CM
 //! conditions, RxNorm drugs, LOINC labs, panels, surveys, social items and reports,
 //! CPT and HCPCS procedures, SNOMED allergens, reactions and order categories, and
-//! CVX vaccines. `catalog` reads each candidate in `catalog_seed` back from its
-//! official service and records the canonical display and a receipt; nothing is
-//! guessed. Responses are kept in a local cache under `target/patient-bank/`, so a
+//! CVX vaccines. `catalog` reads every entry back from its official service and
+//! records the canonical display and a receipt; nothing is guessed. The catalog is
+//! its own input: a concept is added by writing its label and code into it. Responses are kept in a local cache under `target/patient-bank/`, so a
 //! service is asked each question once; the catalog build is that cache's only writer.
 
 use std::collections::{BTreeMap, HashMap};
@@ -17,7 +17,6 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::catalog_seed as seed;
 use crate::{Result, paths};
 
 pub const ICD: &str = "http://hl7.org/fhir/sid/icd-10-cm";
@@ -120,7 +119,11 @@ impl Catalog {
 #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Entry {
+    /// Set by the catalog build from the entry's section.
+    #[serde(default)]
     pub system: String,
+    /// A drug's is set by the catalog build from its exact name.
+    #[serde(default)]
     pub code: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub display: Option<String>,
@@ -184,8 +187,8 @@ fn number(v: &Value) -> Option<f64> {
 /// Terminology service lookups, answered from the cache when possible.
 ///
 /// The catalog build reads and writes the shared cache. A unit's check layers its
-/// own lookups file over the shared cache, read-only, so concurrent authoring
-/// never writes a file another process writes.
+/// own lookups file in its preview folder over the shared cache, read-only, so
+/// concurrent authoring never writes a file another process writes.
 pub struct Lookup {
     shared: BTreeMap<String, Value>,
     own: BTreeMap<String, Value>,
@@ -442,35 +445,39 @@ pub fn urlencode(pairs: &[(&str, &str)]) -> String {
         .join("&")
 }
 
-fn entry(system: &str, code: &str, display: &str) -> Entry {
-    Entry {
-        system: system.into(),
-        code: code.into(),
-        display: Some(display.into()),
-        ..Entry::default()
+/// Record a service's display for `e`, or the problem when it has none.
+fn confirm(problems: &mut Vec<String>, what: &str, label: &str, e: &mut Entry, d: Option<String>) {
+    match d {
+        Some(display) => e.display = Some(display),
+        None => problems.push(format!(
+            "{what} {label:?}: {} {} not found",
+            e.system, e.code
+        )),
     }
 }
 
-/// Verify every candidate and write `data/catalog.json`. Prints the counts and every
-/// problem; returns 1 when any candidate was not confirmed.
+/// Verify every entry of `data/catalog.json` against its official service again and
+/// write it back with the services' displays. A concept is added by writing its
+/// label and code (a drug: its exact RxNorm name and ingredient; a report: its
+/// v2-0074 section; a procedure: `hcpcs`, `fixture` or `recalled`) and running
+/// this. Prints the counts and every problem; when any entry is not confirmed it
+/// writes nothing and returns 1.
 pub fn build(roger: &Path) -> Result<i32> {
     let mut look = Lookup::shared()?;
     let mut problems: Vec<String> = Vec::new();
-    let mut c = Catalog {
-        systems: [
-            ("icd10cm", ICD),
-            ("loinc", LOINC),
-            ("rxnorm", RXNORM),
-            ("snomed", SNOMED),
-            ("cpt", CPT),
-            ("hcpcs", HCPCS),
-            ("cvx", CVX),
-        ]
-        .into_iter()
-        .map(|(k, v)| (k.into(), v.into()))
-        .collect(),
-        ..Catalog::default()
-    };
+    let mut c = Catalog::load(&paths::catalog())?;
+    c.systems = [
+        ("icd10cm", ICD),
+        ("loinc", LOINC),
+        ("rxnorm", RXNORM),
+        ("snomed", SNOMED),
+        ("cpt", CPT),
+        ("hcpcs", HCPCS),
+        ("cvx", CVX),
+    ]
+    .into_iter()
+    .map(|(k, v)| (k.into(), v.into()))
+    .collect();
 
     // coda-gym's lab labels and ranges; the first row wins (blood before urine,
     // BMP before ABG), and urine rows also answer to "Urine <label>".
@@ -484,78 +491,39 @@ pub fn build(roger: &Path) -> Result<i32> {
         }
     }
 
-    for &(label, code) in seed::CONDITIONS {
-        match look.icd10(code)? {
-            Some(display) => {
-                let e = Entry {
-                    receipt: Some("NLM Clinical Tables ICD-10-CM".into()),
-                    ..entry(ICD, code, &display)
-                };
-                c.conditions.insert(label.into(), e);
-            }
-            None => problems.push(format!("condition {label:?}: ICD-10-CM {code} not found")),
-        }
+    for (label, e) in &mut c.conditions {
+        e.system = ICD.into();
+        e.receipt = Some("NLM Clinical Tables ICD-10-CM".into());
+        let d = look.icd10(&e.code)?;
+        confirm(&mut problems, "condition", label, e, d);
     }
 
-    for &(ingredient, strengths, form) in seed::MEDICATIONS {
-        let scds = look.rxnorm_drugs(ingredient)?;
-        let wanted: Vec<Option<&str>> = if strengths.is_empty() {
-            vec![None]
-        } else {
-            strengths.iter().copied().map(Some).collect()
+    // a drug is its exact RxNorm name, found among its ingredient's drugs
+    for (label, e) in &mut c.medications {
+        let Some(ingredient) = e.ingredient.clone() else {
+            problems.push(format!("medication {label:?}: no ingredient"));
+            continue;
         };
-        for strength in wanted {
-            // The shortest exact SCD name (no packaging qualifiers) of this form and strength.
-            let chosen = scds
-                .iter()
-                .filter_map(|d| Some((d["name"].as_str()?, d)))
-                .filter(|(name, _)| name.to_lowercase().contains(&form.to_lowercase()))
-                .filter(|(name, _)| {
-                    strength.is_none_or(|s| format!(" {name} ").contains(&format!(" {s} ")))
-                })
-                .min_by(|a, b| (a.0.chars().count(), a.0).cmp(&(b.0.chars().count(), b.0)));
-            let Some((name, d)) = chosen else {
-                problems.push(format!(
-                    "medication {ingredient} {} {form}: no SCD",
-                    strength.unwrap_or("-")
-                ));
-                continue;
-            };
-            let e = Entry {
-                ingredient: Some(ingredient.into()),
-                receipt: Some("NLM RxNav drugs.json (SCD)".into()),
-                ..entry(RXNORM, d["rxcui"].as_str().unwrap_or_default(), name)
-            };
-            c.medications.insert(name.into(), e);
-        }
-    }
-    for &(ingredient, exact) in seed::EXACT_MEDICATIONS {
-        let drugs = look.rxnorm_drugs(ingredient)?;
-        let Some(d) = drugs.iter().find(|d| d["name"] == exact) else {
+        let drugs = look.rxnorm_drugs(&ingredient)?;
+        let Some(d) = drugs.iter().find(|d| d["name"] == label.as_str()) else {
             problems.push(format!(
-                "medication exact {exact:?}: not an RxNorm SCD/GPCK name"
+                "medication {label:?}: not an RxNorm drug of {ingredient}"
             ));
             continue;
         };
-        let e = Entry {
-            ingredient: Some(ingredient.into()),
-            receipt: Some("NLM RxNav drugs.json (exact name)".into()),
-            ..entry(RXNORM, d["rxcui"].as_str().unwrap_or_default(), exact)
-        };
-        c.medications.insert(exact.into(), e);
+        e.system = RXNORM.into();
+        e.code = d["rxcui"].as_str().unwrap_or_default().into();
+        e.display = Some(label.clone());
+        e.receipt
+            .get_or_insert_with(|| "NLM RxNav drugs.json (exact name)".into());
     }
 
-    for &(label, code, unit) in seed::LABS {
-        let Some(display) = look.loinc(code)? else {
-            problems.push(format!("lab {label:?}: LOINC {code} not found"));
-            continue;
-        };
-        let mut e = Entry {
-            unit: unit.map(String::from),
-            receipt: Some("NLM Clinical Tables LOINC".into()),
-            ..entry(LOINC, code, &display)
-        };
-        if let Some(g) = gym.get(label) {
+    for (label, e) in &mut c.labs {
+        e.system = LOINC.into();
+        e.receipt = Some("NLM Clinical Tables LOINC".into());
+        let d = look.loinc(&e.code)?;
+        confirm(&mut problems, "lab", label, e, d);
+        if let Some(g) = gym.get(label.as_str()) {
             let range: BTreeMap<String, Value> = ["low", "high", "low_f", "high_f"]
                 .into_iter()
                 .filter(|k| !g[*k].is_null() && g[*k] != "None")
@@ -564,68 +532,43 @@ pub fn build(roger: &Path) -> Result<i32> {
             e.range = Some(range);
             e.range_source = Some("coda-gym lab_reference_ranges.xlsx".into());
         }
-        c.labs.insert(label.into(), e);
     }
-    for &(label, code, members) in seed::PANELS {
-        let display = look.loinc(code)?;
-        let missing: Vec<&str> = members
-            .iter()
-            .copied()
+    for (label, e) in &mut c.panels {
+        e.system = LOINC.into();
+        let missing: Vec<&String> = (e.members.iter())
             .filter(|m| !c.labs.contains_key(*m))
             .collect();
-        match display {
-            Some(display) if missing.is_empty() => {
-                let e = Entry {
-                    members: members.iter().map(|m| m.to_string()).collect(),
-                    ..entry(LOINC, code, &display)
-                };
-                c.panels.insert(label.into(), e);
-            }
-            display => problems.push(format!(
-                "panel {label:?}: LOINC {code} found={} missing={missing:?}",
-                display.is_some()
-            )),
+        if !missing.is_empty() {
+            problems.push(format!("panel {label:?}: members not in labs {missing:?}"));
+        }
+        let d = look.loinc(&e.code)?;
+        confirm(&mut problems, "panel", label, e, d);
+    }
+    for (what, section) in [("survey", &mut c.surveys), ("social", &mut c.social)] {
+        for (label, e) in section {
+            e.system = LOINC.into();
+            let d = look.loinc(&e.code)?;
+            confirm(&mut problems, what, label, e, d);
         }
     }
-
-    for &(label, code, unit) in seed::SURVEYS {
-        match look.loinc(code)? {
-            Some(display) => {
-                let e = Entry {
-                    unit: Some(unit.into()),
-                    ..entry(LOINC, code, &display)
-                };
-                c.surveys.insert(label.into(), e);
-            }
-            None => problems.push(format!("surveys {label:?}: LOINC {code} not found")),
-        }
-    }
-    for &(label, code) in seed::SOCIAL {
-        match look.loinc(code)? {
-            Some(display) => {
-                c.social.insert(label.into(), entry(LOINC, code, &display));
-            }
-            None => problems.push(format!("social {label:?}: LOINC {code} not found")),
-        }
-    }
-
-    for &(label, code, section) in seed::REPORTS {
-        let Some(display) = look.loinc(code)? else {
-            problems.push(format!("report {label:?}: LOINC {code} not found"));
-            continue;
+    for (label, e) in &mut c.reports {
+        e.system = LOINC.into();
+        let d = look.loinc(&e.code)?;
+        confirm(&mut problems, "report", label, e, d);
+        let section = match &e.category {
+            Some(Category::Section { code, .. }) => code.clone(),
+            Some(Category::Text(code)) => code.clone(),
+            None => String::new(),
         };
-        let (_, section_display) = V2_0074
-            .iter()
-            .find(|(s, _)| *s == section)
-            .ok_or("unknown v2-0074 section")?;
-        let e = Entry {
-            category: Some(Category::Section {
-                code: section.into(),
-                display: (*section_display).into(),
-            }),
-            ..entry(LOINC, code, &display)
-        };
-        c.reports.insert(label.into(), e);
+        match V2_0074.iter().find(|(s, _)| *s == section) {
+            Some((code, display)) => {
+                e.category = Some(Category::Section {
+                    code: (*code).into(),
+                    display: (*display).into(),
+                });
+            }
+            None => problems.push(format!("report {label:?}: no v2-0074 section {section:?}")),
+        }
     }
 
     // CPT has no public verification service. Codes harvested from the Coda Agents
@@ -650,90 +593,49 @@ pub fn build(roger: &Path) -> Result<i32> {
             fixture.display()
         )),
     }
-    for &(label, code, prov) in seed::PROCEDURES {
-        let e = match prov {
+    for (label, e) in &mut c.procedures {
+        match e.provenance.as_deref() {
             // HCPCS Level II is verifiable: NLM Clinical Tables
-            "hcpcs" => match look.hcpcs(code)? {
-                Some(display) => Entry {
-                    provenance: Some("NLM Clinical Tables HCPCS".into()),
-                    ..entry(HCPCS, code, &display)
-                },
-                None => {
-                    problems.push(format!("procedure {label:?}: HCPCS {code} not found"));
-                    continue;
-                }
-            },
-            "fixture" => match fixture_display.get(code) {
-                Some(display) => Entry {
-                    provenance: Some(prov.into()),
-                    ..entry(CPT, code, display)
-                },
-                None => {
-                    problems.push(format!(
-                        "procedure {label:?}: CPT {code} not in the Roger fixture"
-                    ));
-                    continue;
-                }
-            },
-            _ => Entry {
-                system: CPT.into(),
-                code: code.into(),
-                provenance: Some(prov.into()),
-                ..Entry::default()
-            },
-        };
-        c.procedures.insert(label.into(), e);
-    }
-
-    for &(label, code, category) in seed::ALLERGENS {
-        match look.snomed(code) {
-            Some(display) => {
-                let e = Entry {
-                    category: Some(Category::Text(category.into())),
-                    ..entry(SNOMED, code, &display)
-                };
-                c.allergens.insert(label.into(), e);
+            Some("hcpcs" | "NLM Clinical Tables HCPCS") => {
+                e.system = HCPCS.into();
+                e.provenance = Some("NLM Clinical Tables HCPCS".into());
+                let d = look.hcpcs(&e.code)?;
+                confirm(&mut problems, "procedure", label, e, d);
             }
-            None => problems.push(format!("allergen {label:?}: SNOMED {code} not found")),
-        }
-    }
-    for &(label, code) in seed::REACTIONS {
-        match look.snomed(code) {
-            Some(display) => {
-                c.reactions
-                    .insert(label.into(), entry(SNOMED, code, &display));
+            Some("fixture") => {
+                e.system = CPT.into();
+                let d = fixture_display.get(&e.code).cloned();
+                confirm(&mut problems, "procedure", label, e, d);
             }
-            None => problems.push(format!("reaction {label:?}: SNOMED {code} not found")),
+            Some("recalled") => {
+                e.system = CPT.into();
+                e.display = None;
+            }
+            other => problems.push(format!(
+                "procedure {label:?}: provenance {other:?} is not hcpcs, fixture or recalled"
+            )),
         }
     }
 
-    for &(label, code) in seed::VACCINES {
-        match look.tx(CVX, code) {
-            Some(display) => {
-                let e = Entry {
-                    receipt: Some("tx.fhir.org CVX".into()),
-                    ..entry(CVX, code, &display)
-                };
-                c.vaccines.insert(label.into(), e);
-            }
-            None => problems.push(format!("vaccine {label:?}: CVX {code} not found")),
+    for (what, section) in [
+        ("allergen", &mut c.allergens),
+        ("reaction", &mut c.reactions),
+        ("order category", &mut c.order_categories),
+    ] {
+        for (label, e) in section {
+            e.system = SNOMED.into();
+            let d = look.snomed(&e.code);
+            confirm(&mut problems, what, label, e, d);
         }
     }
-    for &(label, code) in seed::ORDER_CATEGORIES {
-        match look.snomed(code) {
-            Some(display) => {
-                c.order_categories
-                    .insert(label.into(), entry(SNOMED, code, &display));
-            }
-            None => problems.push(format!("order category {label:?}: SNOMED {code} not found")),
-        }
+    for (label, e) in &mut c.vaccines {
+        e.system = CVX.into();
+        e.receipt = Some("tx.fhir.org CVX".into());
+        let d = look.tx(CVX, &e.code);
+        confirm(&mut problems, "vaccine", label, e, d);
     }
 
     look.save()?;
-    write_atomic(
-        &paths::catalog(),
-        &(serde_json::to_string_pretty(&c)? + "\n"),
-    )?;
     let counts: Vec<String> = c
         .sections()
         .iter()
@@ -742,6 +644,12 @@ pub fn build(roger: &Path) -> Result<i32> {
     println!("{}", counts.join(", "));
     for p in &problems {
         println!("PROBLEM {p}");
+    }
+    if problems.is_empty() {
+        write_atomic(
+            &paths::catalog(),
+            &(serde_json::to_string_pretty(&c)? + "\n"),
+        )?;
     }
     Ok(i32::from(!problems.is_empty()))
 }
