@@ -774,3 +774,93 @@ pub fn push_body(delivery: &Delivery, message_id: &str) -> Vec<u8> {
     }))
     .expect("push body")
 }
+
+pub fn unix_now() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|since| since.as_secs())
+        .unwrap_or_default()
+}
+
+/// Creates the staging physician the site's local sign-in accepts.
+pub async fn staging_account(url: &str) {
+    let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
+        .await
+        .expect("auth store");
+    auth.ensure_account(
+        physician_sample::STAGING_PRACTICE_ID,
+        "staging-physician",
+        "physician@codahealth.test",
+        "Staging Physician",
+        true,
+        unix_now(),
+    )
+    .await
+    .expect("staging account");
+}
+
+/// Signs the staging physician in on a non-hosted site; returns the bearer.
+pub async fn sign_in(host: &str) -> String {
+    let (status, body) = post(
+        host,
+        "/auth/sign-in",
+        None,
+        &json!({ "email": "physician@codahealth.test" }),
+    )
+    .await;
+    assert_eq!(status, 200, "{body}");
+    let token = body["token"].as_str().expect("sign-in token").to_owned();
+    let (status, body) = post(
+        host,
+        "/auth/verify",
+        None,
+        &json!({ "email": "physician@codahealth.test", "token": token }),
+    )
+    .await;
+    assert_eq!(status, 200, "{body}");
+    body["session"].as_str().expect("bearer session").to_owned()
+}
+
+pub async fn post(host: &str, path: &str, bearer: Option<&str>, body: &Value) -> (u16, Value) {
+    let bytes = serde_json::to_vec(body).expect("json");
+    let mut headers = vec![("content-type", "application/json")];
+    let authorization;
+    if let Some(bearer) = bearer {
+        authorization = format!("Bearer {bearer}");
+        headers.push(("authorization", authorization.as_str()));
+    }
+    let (status, text) = exchange(host, "POST", path, &headers, Some(&bytes))
+        .await
+        .expect("post");
+    let value = serde_json::from_str(&text).unwrap_or(json!({ "raw": text }));
+    (status, value)
+}
+
+pub async fn get_json(host: &str, path: &str, bearer: &str) -> (u16, Value) {
+    let authorization = format!("Bearer {bearer}");
+    let (status, text) = exchange(
+        host,
+        "GET",
+        path,
+        &[("authorization", authorization.as_str())],
+        None,
+    )
+    .await
+    .expect("get");
+    let value = serde_json::from_str(&text).unwrap_or(json!({ "raw": text }));
+    (status, value)
+}
+
+/// A `message.submit` command body for one new chat line.
+pub fn submit(workspace: &str, chat: &str, text: &str) -> Value {
+    json!({
+        "type": "message.submit",
+        "idempotency_key": format!("key-{}", uuid::Uuid::new_v4().simple()),
+        "payload": {
+            "patient_workspace_id": workspace,
+            "chat_id": chat,
+            "text": text,
+            "physician_time_zone": "America/New_York"
+        }
+    })
+}
