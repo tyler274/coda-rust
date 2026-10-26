@@ -623,9 +623,9 @@ fn code_measures_from_the_state_the_author_records() {
         })
         .collect();
     let p = patient(json!(visits));
-    let (once, errors) = measure::apply(&seed(), &p);
+    let (once, errors) = measure::apply(&seed(), &p, &catalog());
     assert!(errors.is_empty(), "{errors:?}");
-    let (again, _) = measure::apply(&seed(), &p);
+    let (again, _) = measure::apply(&seed(), &p, &catalog());
     assert_eq!(
         serde_json::to_string(&once).expect("json"),
         serde_json::to_string(&again).expect("json"),
@@ -655,7 +655,56 @@ fn code_measures_from_the_state_the_author_records() {
         "2024-01-01T09:00",
         json!({"measure": ["weight_kg"]})
     )]));
-    assert!(!measure::apply(&seed(), &unset).1.is_empty());
+    assert!(!measure::apply(&seed(), &unset, &catalog()).1.is_empty());
+}
+
+#[test]
+fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
+    let draw = |at: &str| {
+        json!({"state": {"labs": {"Hemoglobin": 9.1, "Ferritin": 5, "Total Cholesterol": 240}},
+            "labs": [{"panel": "Lipid Panel", "collected": at,
+                      "results": [{"test": "Total Cholesterol"}, {"test": "Non-HDL Cholesterol"}]},
+                     {"panel": "Complete Blood Count (CBC)", "collected": at, "results": []},
+                     {"panel": null, "collected": at, "results": [{"test": "Ferritin"}]}]})
+    };
+    let visits: Vec<serde_json::Value> = (0..20)
+        .map(|i| {
+            let at = format!("{}-{:02}-03T09:00", 2010 + i / 12, i % 12 + 1);
+            visit(&format!("e{i:02}"), &at, draw(&at))
+        })
+        .collect();
+    let (p, errors) = measure::apply(&seed(), &patient(json!(visits)), &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    for e in &p.events {
+        let value = |k: usize, t: &str| {
+            e.labs[k]
+                .results
+                .iter()
+                .find(|r| r.test == t)
+                .map(|r| r.value.clone())
+        };
+        // derived members are left for the renderer, which calculates them
+        assert_eq!(value(0, "Total Cholesterol"), Some(None));
+        assert_eq!(value(0, "Non-HDL Cholesterol"), Some(None));
+        // a set total cholesterol moves the measured members it is derived from
+        let lipid = |t: &str| patient_bank::ledger::num(value(0, t).flatten().as_ref().expect(t));
+        let total = lipid("Low Density Lipoprotein")
+            + lipid("High Density Lipoprotein")
+            + lipid("Triglycerides") / 5.0;
+        assert!((total - 240.0).abs() < 25.0, "total cholesterol {total}");
+        // a set level reaches the panel member the author did not name
+        let hgb =
+            patient_bank::ledger::num(value(1, "Hemoglobin").flatten().as_ref().expect("hgb"));
+        assert!((hgb - 9.1).abs() < 1.5, "hemoglobin {hgb}");
+        // a low level strays in proportion to itself, not to the normal range
+        let ferritin =
+            patient_bank::ledger::num(value(2, "Ferritin").flatten().as_ref().expect("ferritin"));
+        assert!((2.0..=8.0).contains(&ferritin), "ferritin {ferritin}");
+    }
+}
+
+fn catalog() -> Catalog {
+    Catalog::load(&paths::catalog()).expect("catalog")
 }
 
 #[test]
@@ -670,7 +719,7 @@ fn a_patients_own_normal_stays_in_range() {
             )
         })
         .collect();
-    let (p, errors) = measure::apply(&seed(), &patient(json!(visits)));
+    let (p, errors) = measure::apply(&seed(), &patient(json!(visits)), &catalog());
     assert!(errors.is_empty(), "{errors:?}");
     for e in &p.events {
         for r in &e.labs[0].results {

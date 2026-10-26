@@ -21,7 +21,7 @@ const prompt = (u) => `You are making unit ${u} of a primary-care patient bank: 
 
 Write only inside patients/units/${u}/, never source.md. Don't open other units (the guide's worked example, patients/units/unit-2013/build-req.md, is fine), the seeds file or code, don't edit the guides, and don't run git. Return the structured result; accepted=true only if your last check printed ACCEPTED.`
 
-const results = await pipeline(args.units, (u) => agent(prompt(u), { label: u, phase: 'Author', schema: SCHEMA }))
+const results = await pipeline(args.units, (u) => agent(prompt(u), { label: u, phase: 'Author', schema: SCHEMA, effort: 'medium' }))
 const summary = results.map((r, i) => r || { unit: args.units[i], failed: true })
 log(`${summary.filter((s) => s.accepted).length}/${args.units.length} accepted, ${summary.filter((s) => s.unfit).length} unfit`)
 return summary

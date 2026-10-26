@@ -146,11 +146,11 @@ pub fn merge(drafts: &Path) -> (Merged, Vec<String>) {
 }
 
 /// The unit's drafts merged, with every value `measure` makes filled in.
-fn merge_measured(unit: &Unit, drafts: &Path) -> (Merged, Vec<String>) {
+fn merge_measured(unit: &Unit, drafts: &Path, catalog: &Catalog) -> (Merged, Vec<String>) {
     let (mut merged, mut errors) = merge(drafts);
     for p in &mut merged.patients {
         if let Some(seed) = unit.members.iter().find(|m| m.mrn == p.mrn) {
-            let (measured, errs) = measure::apply(seed, p);
+            let (measured, errs) = measure::apply(seed, p, catalog);
             *p = measured;
             errors.extend(errs);
         }
@@ -239,7 +239,7 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path, out: &Path) -> Result<i32> {
 }
 
 fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
-    let (merged, mut errors) = merge_measured(unit, drafts);
+    let (merged, mut errors) = merge_measured(unit, drafts, catalog);
     let (errs, mut warnings) = check::check(unit, &merged.patients, catalog);
     errors.extend(errs.into_iter().map(|e| {
         let eid = e.split(':').next().unwrap_or("");
@@ -306,7 +306,7 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
 }
 
 fn preview(unit: &Unit, drafts: &Path, out: &Path, catalog: &Catalog) -> Result<i32> {
-    let (merged, errors) = merge_measured(unit, drafts);
+    let (merged, errors) = merge_measured(unit, drafts, catalog);
     if !errors.is_empty() {
         for e in &errors {
             println!("ERROR: {e}");

@@ -23,19 +23,24 @@ contradictions are resolved, the few things added, and the primary-care layer th
 may surround them. **build-req.md is the authority for every clinical fact.** Run
 every command from the repository root. `<unit>` is the one you were given.
 
-1. Read source.md end to end, then `data/build-req-guide.md`, and write
-   build-req.md as it says. `cargo run -q -p patient-bank -- brief <unit>` prints the
-   seed and the paths.
+Every turn costs the whole conversation again, so take few of them: make
+independent calls together in one turn, write each file whole in one call, and
+search for several labels in one command.
+
+1. Read source.md, `data/build-req-guide.md` and `taken.md` together, then write
+   build-req.md as the guide says. `cargo run -q -p patient-bank -- brief <unit>`
+   prints the seed and the paths.
 2. Write `story.md`: one line per contact in date order, each tagged with the
    build-req letter it rests on (S, R1, A2, P).
 3. Write the part files (`part-01.json`, `part-02.json`, ...), a few years each, with
-   the documents in them. Look labels up in the vocabulary file when you need one
-   (search it; don't read it end to end), and glance at `taken.md` for names,
-   phrases and values other charts already use.
-4. `check` until it prints `ACCEPTED`; its errors say what to change. Then
-   `preview` and read `chart.txt` once, start to end, as the physician who will
+   the documents in them. Look up every label you need in the vocabulary file in
+   one or two searches (don't read it end to end), and avoid the names, phrases and
+   values `taken.md` lists.
+4. `check`, fix every error it lists in one pass, and check again until it prints
+   `ACCEPTED`. Then `preview` and read, in `chart.txt`, the problem and medication
+   lists and the records of each source encounter, as the physician who will
    inherit this patient. Fix what that physician would not believe and anything not
-   traceable to build-req.md, and check again. Reread only what you changed.
+   traceable to build-req.md, and check again.
 
 ## What may be in the chart
 

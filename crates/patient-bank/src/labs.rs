@@ -129,6 +129,11 @@ const DERIVED: &[&str] = &[
 
 const EGFR: &str = "Estimated Glomerular Filtration Rate (Creatinine)";
 
+/// A test the renderer calculates from other members of its draw.
+pub fn derived(test: &str) -> bool {
+    DERIVED.contains(&test)
+}
+
 fn table<'a, V>(t: &'a [(&str, V)], key: &str) -> Option<&'a V> {
     t.iter().find(|(k, _)| *k == key).map(|(_, v)| v)
 }
@@ -245,6 +250,10 @@ pub fn render(
             continue;
         }
         if values.contains_key(r.test.as_str()) {
+            continue;
+        }
+        // a panel member left without a value is derived or filled below
+        if panel.is_some() && !lab.pending && r.value.is_none() && r.text.is_none() {
             continue;
         }
         stated_order.push(&r.test);
